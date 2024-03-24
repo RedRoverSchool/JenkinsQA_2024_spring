@@ -56,6 +56,7 @@ public class AqaGroupEviltesterTest {
             driver.quit();
         }
     }
+
     @Test
     public void testSimpleAlert() {
         String link = "https://testpages.eviltester.com/styled/alerts/alert-test.html";
