@@ -11,6 +11,7 @@ public class GroupCarlthefogTest {
     @Test
     public void testSaucedemo() {
         String expectedPageName = "Swag Labs";
+
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.saucedemo.com/");
         driver.findElement(By.id("user-name")).sendKeys("standard_user");
