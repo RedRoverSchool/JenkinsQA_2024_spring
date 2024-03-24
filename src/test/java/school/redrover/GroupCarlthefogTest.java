@@ -17,6 +17,7 @@ public class GroupCarlthefogTest {
         driver.findElement(By.id("user-name")).sendKeys("standard_user");
         driver.findElement(By.id("password")).sendKeys("secret_sauce");
         driver.findElement(By.id("login-button")).click();
+
         String actualPageName = driver.findElement(By.xpath("//div[@class= 'app_logo']")).getText();
 
         Assert.assertEquals(expectedPageName, actualPageName);
