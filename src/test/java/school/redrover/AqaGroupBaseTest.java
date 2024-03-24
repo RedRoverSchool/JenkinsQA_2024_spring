@@ -1,7 +1,9 @@
 package school.redrover;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.AfterMethod;
@@ -17,6 +19,11 @@ public class AqaGroupBaseTest {
 //        chromeOptions.addArguments("--headless");
         chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
         driver = new ChromeDriver(chromeOptions);
+    }
+
+    public WebElement scrollIntoView(WebElement element) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+        return element;
     }
 
     @AfterMethod
