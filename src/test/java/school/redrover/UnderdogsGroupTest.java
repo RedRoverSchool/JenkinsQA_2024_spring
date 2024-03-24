@@ -25,4 +25,22 @@ public class UnderdogsGroupTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testElementsTextBox() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://demoqa.com/");
+        driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[1]")).click();
+        driver.findElement(By.xpath("(//*[@id=\"item-0\"])[1]")).click();
+        String email = "test@gmail.com";
+
+        driver.findElement(By.id("userEmail")).sendKeys(email);
+        driver.findElement(By.id("submit")).click();
+        String result = driver.findElement(By.id("email")).getText();
+
+        Assert.assertEquals(result, "Email:" + email);
+
+        driver.quit();
+    }
 }
