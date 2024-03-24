@@ -76,5 +76,24 @@ public class AqaGroupEviltesterTest {
             driver.quit();
         }
     }
+    @Test
+    public void testAcceptConfirmAlert() {
+        String link = "https://testpages.eviltester.com/styled/alerts/alert-test.html";
+        WebDriver driver = new ChromeDriver();
+
+        try {
+            driver.get(link);
+
+            driver.findElement(By.id("confirmexample")).click();
+
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+            Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+            alert.accept();
+
+            Assert.assertEquals(driver.findElement(By.id("confirmexplanation")).getText(), "You clicked OK, confirm returned true.");
+        } finally {
+            driver.quit();
+        }
+    }
 }
 
