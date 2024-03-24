@@ -116,5 +116,48 @@ public class AqaGroupEviltesterTest {
             driver.quit();
         }
     }
+
+
+    @Test
+    public void testAcceptPromptAlert() {
+        String link = "https://testpages.eviltester.com/styled/alerts/alert-test.html";
+        WebDriver driver = new ChromeDriver();
+
+        try {
+            driver.get(link);
+
+            driver.findElement(By.id("promptexample")).click();
+
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+            Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+            String myKeys = "some random input";
+            alert.sendKeys(myKeys);
+            alert.accept();
+
+            Assert.assertEquals(driver.findElement(By.id("promptexplanation")).getText(), String.format("You clicked OK. 'prompt' returned %s", myKeys));
+        } finally {
+            driver.quit();
+        }
+    }
+
+    @Test
+    public void testDismissPromptAlert() {
+        String link = "https://testpages.eviltester.com/styled/alerts/alert-test.html";
+        WebDriver driver = new ChromeDriver();
+
+        try {
+            driver.get(link);
+
+            driver.findElement(By.id("promptexample")).click();
+
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+            Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+            alert.dismiss();
+
+            Assert.assertEquals(driver.findElement(By.id("promptexplanation")).getText(), "You clicked Cancel. 'prompt' returned null");
+        } finally {
+            driver.quit();
+        }
+    }
 }
 
