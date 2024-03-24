@@ -1,5 +1,6 @@
 package school.redrover;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -51,6 +52,25 @@ public class AqaGroupEviltesterTest {
             wait.until(ExpectedConditions.textToBePresentInElement(message, "All Buttons Clicked"));
 
             Assert.assertEquals(message.getText(), "All Buttons Clicked");
+        } finally {
+            driver.quit();
+        }
+    }
+    @Test
+    public void testSimpleAlert() {
+        String link = "https://testpages.eviltester.com/styled/alerts/alert-test.html";
+        WebDriver driver = new ChromeDriver();
+
+        try {
+            driver.get(link);
+
+            driver.findElement(By.id("alertexamples")).click();
+
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+            Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+            alert.accept();
+
+            Assert.assertEquals(driver.findElement(By.id("alertexplanation")).getText(), "You triggered and handled the alert dialog");
         } finally {
             driver.quit();
         }
