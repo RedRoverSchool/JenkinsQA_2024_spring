@@ -35,4 +35,15 @@ public class AqaGroupDynamicButtonsTest {
 
         Assert.assertEquals(driver.findElement(By.id("buttonmessage")).getText(), "All Buttons Clicked", "Not All Buttons Clicked");
     }
+
+    @Test
+    public void XHTTPMessagesTest() {
+        driver = new ChromeDriver();
+        driver.get("https://testpages.eviltester.com/styled/sync/xhttp-messages.html");
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+        wait.until(ExpectedConditions.textToBePresentInElement(driver.findElement(By.id("messagesstatus")), "Message Count: 0 : 0"));
+
+        Assert.assertEquals(driver.findElement(By.id("messagesstatus")).getText(), "Message Count: 0 : 0", "message count is not zero");
+    }
 }
