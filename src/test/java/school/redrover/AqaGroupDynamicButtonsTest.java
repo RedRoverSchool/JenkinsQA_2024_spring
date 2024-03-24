@@ -21,7 +21,7 @@ public class AqaGroupDynamicButtonsTest {
     }
 
     @Test
-    public void simpleDynamicButtonsTest() throws InterruptedException {
+    public void simpleDynamicButtonsTest() {
         driver = new ChromeDriver();
         driver.get("https://testpages.eviltester.com/styled/dynamic-buttons-simple.html");
 
