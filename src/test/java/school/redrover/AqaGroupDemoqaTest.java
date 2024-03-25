@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 
 public class AqaGroupDemoqaTest extends AqaGroupBaseTest {
     private static final String BUTTONS_URL = "https://demoqa.com/buttons";
-    private static final String DROWSER_WINDOWS_URL = "https://demoqa.com/browser-windows";
+    private static final String BROWSER_WINDOWS_URL = "https://demoqa.com/browser-windows";
 
     @Test
     public void testDoubleClickButton() {
@@ -54,7 +54,7 @@ public class AqaGroupDemoqaTest extends AqaGroupBaseTest {
 
     @Test
     public void testBrowserWindowOpenInNewTab() {
-        driver.get(DROWSER_WINDOWS_URL);
+        driver.get(BROWSER_WINDOWS_URL);
 
         driver.findElement(By.id("tabButton")).click();
         getWait5().until(ExpectedConditions.numberOfWindowsToBe(2));
@@ -65,7 +65,27 @@ public class AqaGroupDemoqaTest extends AqaGroupBaseTest {
                 break;
             }
         }
-        ;
+        String text = driver.findElement(By.id("sampleHeading")).getText();
+//        close the new window and switch back to original one if we still need it
+        driver.close();
+        driver.switchTo().window(original);
+
+        Assert.assertEquals(text, "This is a sample page");
+    }
+
+    @Test
+    public void testBrowserWindowOpenInNewWindow() {
+        driver.get(BROWSER_WINDOWS_URL);
+
+        driver.findElement(By.id("windowButton")).click();
+        getWait5().until(ExpectedConditions.numberOfWindowsToBe(2));
+        String original = driver.getWindowHandle();
+        for (String handle : driver.getWindowHandles()) {
+            if (!handle.equals(original)) {
+                driver.switchTo().window(handle);
+                break;
+            }
+        }
         String text = driver.findElement(By.id("sampleHeading")).getText();
 //        close the new window and switch back to original one if we still need it
         driver.close();
