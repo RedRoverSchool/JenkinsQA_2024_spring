@@ -6,6 +6,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+
+import java.awt.*;
 import java.time.Duration;
 
  public class SearchTest {
@@ -22,8 +24,8 @@ import java.time.Duration;
             searchField.sendKeys("RedRover School");
             WebElement findButton = driver.findElement(By.xpath("/html/body/main/div[2]/form/div[3]/button"));
             findButton.click();
-            WebElement schoolLink = driver.findElement(By.linkText("RedRover | Бесплатная IT-школа"));
-            String value = expectedLinkTitle.getText();
+            WebElement schoolLinkTitle = driver.findElement(By.linkText("RedRover | Бесплатная IT-школа"));
+            String value = schoolLinkTitle.getText();
             Assert.assertEquals(value, "RedRover | Бесплатная IT-школа");
             driver.quit();
         }
