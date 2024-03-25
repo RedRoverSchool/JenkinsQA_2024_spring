@@ -19,9 +19,6 @@ public class RedRoverTest {
         driver.get("https://www.selenium.dev/selenium/web/web-form.html");
 
 
-
-
-
         WebElement submitButton = driver.findElement(By.className("btn"));//find button
         submitButton.click();
        
