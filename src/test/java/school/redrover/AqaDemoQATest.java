@@ -3,7 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 
-public class DemoqaExtendsAqaBase extends AqaGroupBaseTest {
+public class AqaDemoQATest extends AqaGroupBaseTest {
     @Test
     public void practiceFillFormTest() {
         driver.get("https://demoqa.com/automation-practice-form");
