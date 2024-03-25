@@ -8,8 +8,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.time.Duration;
-
 public class UnderdogsGroupTest {
     @Test
     public void testDemoqaInput() {
@@ -69,5 +67,25 @@ public class UnderdogsGroupTest {
         Assert.assertEquals(quantity, "1");
 
         driver.quit();
+    }
+    @Test
+    public void testCheckBox() {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://demoqa.com/checkbox");
+
+        driver
+                .findElement(By.xpath("//div[@id='tree-node']/ol/li/span/button"))
+                .click();
+        driver.findElement(By.xpath("//*[@id='tree-node']//li[2]//button"))
+                .click();
+        driver.findElement(By.xpath("//*[@for='tree-node-workspace']/span"))
+                .click();
+        try {
+            Assert.assertEquals(driver.findElement(By.id("result")).getText(),
+                    "You have selected :\nworkspace\nreact\nangular\nveu");
+        } finally {
+            driver.quit();
+        }
     }
 }
