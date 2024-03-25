@@ -1,10 +1,17 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.time.Duration;
+import java.util.List;
 
 public class UnderdogsGroupTest {
     @Test
@@ -42,6 +49,28 @@ public class UnderdogsGroupTest {
 
         Assert.assertEquals(result, "Email:" + email);
 
+        driver.quit();
+    }
+
+    @Test
+    public void numberOfTheCarsPresented() {
+
+        WebDriver driver = new ChromeDriver();
+        WebDriverWait wait=new WebDriverWait(driver, Duration.ofSeconds(10));
+        driver.get("https://av.by/");
+        List<String> carsManufacture = List.of("Alfa Romeo", "Dodge", "Infiniti", "Mercedes-Benz", "Skoda",
+                "Audi", "Fiat", "Kia", "Mitsubishi", "Subaru","BMW","Ford","Lada (ВАЗ)","Nissan", "Tesla","Chevrolet",
+                "Geely", "Land Rover", "Opel", "Toyota", "Chrysler", "Honda", "Lexus", "Peugeot","Volkswagen",
+                "Citroen","Hyundai","Mazda","Renault","Volvo");
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//button[@class='button button--default button--block button--large']"))));
+        driver.findElement(By.xpath("//button[@class='button button--default button--block button--large']")).click();
+        ((JavascriptExecutor) driver).executeScript("javascript:window.scrollBy(0,500)");
+        List<WebElement> carsModels = driver.findElements(By.xpath("//span[@class='catalog__title']"));
+        System.out.println(carsModels.size());//must be 30 brands of cars that are presented on the page
+        Assert.assertEquals(carsModels.size(), 30);
+        for(int i=0;i < carsModels.size();i++){
+            Assert.assertEquals(carsModels.get(i).getText() , carsManufacture.get(i));
+        }
         driver.quit();
     }
 }
