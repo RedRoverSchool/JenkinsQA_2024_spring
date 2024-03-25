@@ -33,7 +33,7 @@ public class RedRoverTest {
 
 
 
-        Assert.assertEquals(value, "Received!!!");
+        Assert.assertEquals(value, "Received!");
 
 
         driver.quit();
