@@ -13,51 +13,44 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-public class AqaGroupEviltesterTest {
+public class AqaGroupEviltesterTest extends AqaGroupBaseTest {
+
+    private static final String BUTTONS_URL = "https://testpages.eviltester.com/styled/dynamic-buttons-disabled.html";
+    private static final String ALERTS_URL = "https://testpages.eviltester.com/styled/alerts/alert-test.html";
+
     @Test
     public void testDisabledDynamicButtonsVersionOne() {
-        String link = "https://testpages.eviltester.com/styled/dynamic-buttons-disabled.html";
-        WebDriver driver = new ChromeDriver();
+        driver.get(BUTTONS_URL);
 
-        try {
-            driver.get(link);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("button00"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("button01"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("button02"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("button03"))).click();
 
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-            wait.until(ExpectedConditions.elementToBeClickable(By.id("button00"))).click();
-            wait.until(ExpectedConditions.elementToBeClickable(By.id("button01"))).click();
-            wait.until(ExpectedConditions.elementToBeClickable(By.id("button02"))).click();
-            wait.until(ExpectedConditions.elementToBeClickable(By.id("button03"))).click();
+        Boolean found = wait.until(ExpectedConditions.textToBePresentInElementLocated(
+                By.id("buttonmessage"),
+                "All Buttons Clicked"));
+        Assert.assertTrue(found, "Text \"All Buttons Clicked\" not found");
 
-            Boolean found = wait.until(ExpectedConditions.textToBePresentInElementLocated(
-                            By.id("buttonmessage"),
-                            "All Buttons Clicked"));
-            Assert.assertTrue(found, "Text \"All Buttons Clicked\" not found");
-        } finally {
-            driver.quit();
-        }
+
     }
 
     @Test
     public void testDisabledDynamicButtonsVersionTwo() {
-        String link = "https://testpages.eviltester.com/styled/dynamic-buttons-disabled.html";
-        WebDriver driver = new ChromeDriver();
+        driver.get(BUTTONS_URL);
 
-        try {
-            driver.get(link);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("button00"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("button01"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("button02"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("button03"))).click();
 
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-            wait.until(ExpectedConditions.elementToBeClickable(By.id("button00"))).click();
-            wait.until(ExpectedConditions.elementToBeClickable(By.id("button01"))).click();
-            wait.until(ExpectedConditions.elementToBeClickable(By.id("button02"))).click();
-            wait.until(ExpectedConditions.elementToBeClickable(By.id("button03"))).click();
+        WebElement message = driver.findElement(By.id("buttonmessage"));
+        wait.until(ExpectedConditions.textToBePresentInElement(message, "All Buttons Clicked"));
 
-            WebElement message = driver.findElement(By.id("buttonmessage"));
-            wait.until(ExpectedConditions.textToBePresentInElement(message, "All Buttons Clicked"));
+        Assert.assertEquals(message.getText(), "All Buttons Clicked");
 
-            Assert.assertEquals(message.getText(), "All Buttons Clicked");
-        } finally {
-            driver.quit();
-        }
     }
 
     @Test
@@ -193,5 +186,45 @@ public class AqaGroupEviltesterTest {
             driver.quit();
         }
     }
+
+    @Test
+    public void fakeAlertTest() {
+        driver.get("https://testpages.eviltester.com/styled/alerts/fake-alert-test.html");
+
+        driver.findElement(By.id("fakealert")).click();
+        WebElement message = driver.findElement(By.id("dialog-text"));
+        driver.findElement(By.id("dialog-ok")).click();
+
+        Assert.assertFalse(
+                message.isDisplayed(),
+                "fake alert box is active");
+    }
+
+    @Test
+    public void fakeModalAlertCloseOkTest() {
+        driver.get("https://testpages.eviltester.com/styled/alerts/fake-alert-test.html");
+
+        driver.findElement(By.id("modaldialog")).click();
+        WebElement message = driver.findElement(By.id("dialog-text"));
+        driver.findElement(By.id("dialog-ok")).click();
+
+        Assert.assertFalse(
+                message.isDisplayed(),
+                "fake modal alert box is active");
+    }
+
+    @Test
+    public void fakeModalAlertCloseBackgroundTest() {
+        driver.get("https://testpages.eviltester.com/styled/alerts/fake-alert-test.html");
+
+        driver.findElement(By.id("modaldialog")).click();
+        WebElement message = driver.findElement(By.id("dialog-text"));
+        driver.findElement(By.cssSelector(".faded-background.active")).click();
+
+        Assert.assertFalse(
+                message.isDisplayed(),
+                "fake modal alert box is active");
+    }
+
 }
 
