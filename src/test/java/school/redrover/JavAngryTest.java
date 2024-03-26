@@ -126,4 +126,17 @@ public class JavAngryTest {
 
     }
 
+    @Test
+    public void testBuyBracelet() {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+        driver.manage().window().maximize();
+        driver.get("https://askomdch.com/");
+        driver.findElement(By.xpath("//a[contains(text(), 'Check Out')]")).click();
+        driver.findElement(By.xpath("//a[contains(@aria-label,'Bangle Bracelet')]")).click();
+        driver.findElement(By.xpath("//a[@class='added_to_cart wc-forward']")).click();
+        String subtotal = driver.findElement(By.xpath("//td[@class='product-subtotal']")).getText();
+        Assert.assertEquals(subtotal, "$25.00");
+        driver.quit();
+    }
 }
