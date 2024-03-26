@@ -23,6 +23,10 @@ public class FairfaxIceArenaTest {
         String currentUrl = driver.getCurrentUrl();
         Assert.assertEquals(currentUrl, "https://www.fairfaxicearena.com/pro-shop.html");
 
+        WebElement appointmentRequestForm = driver.findElement(By.xpath("//span[contains(text(),'Pro Shop Appointment Request Form')]"));
+        boolean appointmentRequestFormVisible = appointmentRequestForm.isDisplayed();
+        Assert.assertTrue(appointmentRequestFormVisible);
+
         driver.quit();
     }
 }

@@ -1,17 +1,19 @@
+package school.redrover;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class SauceDemoTest {
+public class NaumovichTest {
+
     @Test
     public void testSauceDemo() {
         String expectedResult = "https://www.saucedemo.com/inventory.html";
 
-        WebDriver driver = new FirefoxDriver();
+        WebDriver driver = new ChromeDriver();
 
         driver.get("https://www.saucedemo.com/");
         WebElement name = driver.findElement(By.xpath("//input[@id='user-name']"));
@@ -27,5 +29,4 @@ public class SauceDemoTest {
         driver.quit();
 
     }
-
 }

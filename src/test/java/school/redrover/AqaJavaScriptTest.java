@@ -108,4 +108,6 @@ public class AqaJavaScriptTest extends AqaGroupBaseTest {
                 driver.findElement(By.id("event1")).getText(),
                 "down a 65");
     }
+
+
 }

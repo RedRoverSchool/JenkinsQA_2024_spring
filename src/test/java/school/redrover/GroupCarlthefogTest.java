@@ -23,4 +23,21 @@ public class GroupCarlthefogTest {
         Assert.assertEquals(expectedPageName, actualPageName);
         driver.quit();
     }
+
+    @Test
+    public void testPageHeader() {
+        String expectedPageHeader1 = "99 Bottles of Beer";
+        String expectedPageHeader2 = "Welcome to 99 Bottles of Beer";
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.99-bottles-of-beer.net/");
+
+        String actualPageHeader1 = driver.findElement(By.xpath("//h1")).getText();
+        String actualPageHeader2 = driver.findElement(By.xpath("//div[@id='main']//h2")).getText();
+
+        Assert.assertEquals(expectedPageHeader1, actualPageHeader1);
+        Assert.assertEquals(expectedPageHeader2, actualPageHeader2);
+
+        driver.quit();
+    }
 }
