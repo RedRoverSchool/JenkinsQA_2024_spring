@@ -50,5 +50,6 @@ public class AqaGroupBaseTest {
         if (driver != null)
             driver.quit();
         wait5 = null;
+        wait15 = null;
     }
 }
