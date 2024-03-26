@@ -12,6 +12,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
+import java.util.Map;
 
 public class AqaGroupEviltesterTest extends AqaGroupBaseTest {
 
@@ -226,5 +227,18 @@ public class AqaGroupEviltesterTest extends AqaGroupBaseTest {
                 "fake modal alert box is active");
     }
 
+    @Test
+    public void testCDPUserAgentChange() {
+        final String pixelSeven = "Mozilla/5.0 (Linux; Android 13; Pixel 7) " +
+                "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36";
+        ((ChromeDriver) driver).executeCdpCommand(
+                "Network.setUserAgentOverride", Map.of("userAgent", pixelSeven));
+
+        driver.get("https://testpages.eviltester.com/styled/redirect/user-agent-redirect-test");
+
+        Assert.assertTrue(
+                driver.findElement(By.className("explanation")).getText().startsWith("You probably"),
+                "UserAgent change failed");
+    }
 }
 
