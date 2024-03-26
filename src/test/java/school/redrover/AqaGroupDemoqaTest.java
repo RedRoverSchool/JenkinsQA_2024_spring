@@ -93,4 +93,12 @@ public class AqaGroupDemoqaTest extends AqaGroupBaseTest {
 
         Assert.assertEquals(text, "This is a sample page");
     }
+
+    @Test
+    public void RadioButtonTest4() throws InterruptedException{
+        driver.get("https://demoqa.com/radio-button");
+        driver.findElement(By.xpath("//*[@for=\"impressiveRadio\"]")).click();
+        Thread.sleep(5000);
+        Assert.assertTrue(driver.findElement(By.className("text-success")).isDisplayed(), "radiobutton is not selected");
+    }
 }
