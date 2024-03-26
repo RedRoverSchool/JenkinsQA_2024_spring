@@ -15,6 +15,7 @@ import java.time.Duration;
 public class AqaGroupBaseTest {
     protected WebDriver driver;
     private WebDriverWait wait5;
+    private WebDriverWait wait15;
 
     @BeforeMethod
     protected void setUp() {
@@ -35,6 +36,13 @@ public class AqaGroupBaseTest {
             wait5 = new WebDriverWait(driver, Duration.ofSeconds(5));
         }
         return wait5;
+    }
+
+    protected WebDriverWait getWait15(){
+        if (wait15 == null) {
+            wait15 = new WebDriverWait(driver, Duration.ofSeconds(15));
+        }
+        return wait15;
     }
 
     @AfterMethod
