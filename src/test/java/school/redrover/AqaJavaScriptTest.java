@@ -9,13 +9,11 @@ import org.testng.annotations.Test;
 
 public class AqaJavaScriptTest extends AqaGroupBaseTest {
     @Test
-    public void dragAndDropTest() throws InterruptedException {
+    public void dragAndDropTest() {
         driver.get("https://testpages.eviltester.com/styled/drag-drop-javascript.html");
 
         WebElement dragMe1 = driver.findElement(By.id("draggable1"));
         WebElement dropHere1 = driver.findElement(By.id("droppable1"));
-
-        WebElement box2 = driver.findElement(By.id("draggable2"));
 
         Actions actions = new Actions(driver);
         actions.
@@ -30,7 +28,7 @@ public class AqaJavaScriptTest extends AqaGroupBaseTest {
     }
 
     @Test
-    public void dragAndDropBothTest() throws InterruptedException {
+    public void dragAndDropBothTest() {
         driver.get("https://testpages.eviltester.com/styled/drag-drop-javascript.html");
 
         WebElement dragMe1 = driver.findElement(By.id("draggable1"));
