@@ -7,6 +7,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import static org.openqa.selenium.By.className;
+
 public class LegionOfJavaGroupTest {
 
     @Test
@@ -24,6 +26,23 @@ public class LegionOfJavaGroupTest {
             String result = String.valueOf(driver.findElement(By.className("h1")).getText());
             Assert.assertEquals(result, "Alimento para Perro cachorro FIT FORMULA Saco 10 kg");
         } finally {
+            driver.quit();
+        }
+    }
+    @Test
+    public void testFerosorLogin() {
+        WebDriver driver = new ChromeDriver();
+        try{
+            driver.get("https://ferosor.cl");
+            driver.findElement(className("login")).click();
+            WebElement email = driver.findElement(className("form-control"));
+            email.sendKeys("test@test.com");
+            WebElement password = driver.findElement(className("js-child-focus"));
+            password.sendKeys("12345");
+            driver.findElement(By.id("submit-login")).click();
+            String result = String.valueOf(driver.findElement(By.className("page-header")).getText());
+            Assert.assertEquals(result, "Su cuenta");
+        }finally{
             driver.quit();
         }
     }
