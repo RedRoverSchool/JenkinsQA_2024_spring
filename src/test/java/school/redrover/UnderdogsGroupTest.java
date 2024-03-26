@@ -108,4 +108,15 @@ public class UnderdogsGroupTest {
         Assert.assertEquals(carsModels.size(), 30);
         driver.quit();
     }
+
+    @Test
+    public void testRightSideAdvertisement() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/");
+        driver.findElement(By.xpath("//h5[contains(text(),'Elements')]")).click();
+
+        Assert.assertTrue( driver.findElement(By.id("RightSide_Advertisement")).isDisplayed());
+
+        driver.quit();
+    }
 }
