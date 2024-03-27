@@ -16,21 +16,16 @@ import java.time.Duration;
 public class AqaGroupUitestingplaygroundTest extends AqaGroupBaseTest{
     @Test
     public void testClientSideDelay() {
-        String link = "http://uitestingplayground.com/clientdelay";
-        WebDriver driver = new ChromeDriver();
+        getDriver().get("http://uitestingplayground.com/clientdelay");
 
-        try {
-            driver.get(link);
+        getWait25().until(ExpectedConditions.elementToBeClickable(By.id("ajaxButton"))).click();
 
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-            wait.until(ExpectedConditions.elementToBeClickable(By.id("ajaxButton"))).click();
-
-            WebElement label = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("bg-success")));
-
-            Assert.assertTrue(label.getText().startsWith("Data calculated"), "Label text wrong");
-        } finally {
-            driver.quit();
-        }
+        Assert.assertTrue(
+                getWait25()
+                        .until(ExpectedConditions.visibilityOfElementLocated(By.className("bg-success")))
+                        .getText()
+                        .startsWith("Data calculated"),
+                "Label text wrong");
     }
 
     @Test
