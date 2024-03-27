@@ -45,6 +45,7 @@ public class GroupLearnForWinAK2024 {
         Actions actions = new Actions(driver);
         WebElement element = driver.findElement(By.xpath("//div[@id='layout']//button[@aria-label='Close Modal']"));
         actions.moveToElement(element).click().perform();
+        driver.quit();
     }
 
 
@@ -143,6 +144,7 @@ public class GroupLearnForWinAK2024 {
         for (String expectedItem : expectedMenuItems) {
             Assert.assertTrue("Меню не содержит элемент: " + expectedItem, menuItemsText.contains(expectedItem));
         }
+        driver.quit();
     }
 
     @Test
