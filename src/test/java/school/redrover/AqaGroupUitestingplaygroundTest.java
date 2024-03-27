@@ -13,7 +13,7 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 
 
-public class AqaGroupUitestingplaygroundTest {
+public class AqaGroupUitestingplaygroundTest extends AqaGroupBaseTest{
     @Test
     public void testClientSideDelay() {
         String link = "http://uitestingplayground.com/clientdelay";
