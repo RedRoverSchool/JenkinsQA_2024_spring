@@ -15,6 +15,7 @@ import java.time.Duration;
 import java.util.List;
 
 public class UnderdogsGroupTest {
+    private  final static String URL_HOMEPAGE = "https://demoqa.com/";
     @Test
     public void testDemoqaInput() {
 
@@ -117,6 +118,14 @@ public class UnderdogsGroupTest {
 
         Assert.assertTrue( driver.findElement(By.id("RightSide_Advertisement")).isDisplayed());
 
+        driver.quit();
+    }
+    @Test
+    public  void testVerifyTitle() {
+        WebDriver driver = new ChromeDriver();
+        driver.get(URL_HOMEPAGE);
+
+        Assert.assertEquals(driver.getTitle(), "DEMOQA", "Not equal your message with title of page");
         driver.quit();
     }
 }
