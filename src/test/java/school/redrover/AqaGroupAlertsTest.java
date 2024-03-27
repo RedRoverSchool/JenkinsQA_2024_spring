@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-public class AqaAlertsTest extends AqaGroupBaseTest {
+public class AqaGroupAlertsTest extends AqaGroupBaseTest {
     private static final String URL = "https://demoqa.com/alerts";
 
     @Test

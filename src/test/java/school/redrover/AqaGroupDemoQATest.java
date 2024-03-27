@@ -6,7 +6,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class AqaGroupDemoqaTest extends AqaGroupBaseTest {
+public class AqaGroupDemoQATest extends AqaGroupBaseTest {
     private static final String BUTTONS_URL = "https://demoqa.com/buttons";
     private static final String BROWSER_WINDOWS_URL = "https://demoqa.com/browser-windows";
 
@@ -95,10 +95,23 @@ public class AqaGroupDemoqaTest extends AqaGroupBaseTest {
     }
 
     @Test
-    public void RadioButtonTest4() throws InterruptedException{
+    public void RadioButtonTest4() throws InterruptedException {
         driver.get("https://demoqa.com/radio-button");
         driver.findElement(By.xpath("//*[@for=\"impressiveRadio\"]")).click();
         Thread.sleep(5000);
         Assert.assertTrue(driver.findElement(By.className("text-success")).isDisplayed(), "radiobutton is not selected");
+    }
+
+    @Test
+    public void practiceFillFormTest() {
+        driver.get("https://demoqa.com/automation-practice-form");
+
+        driver.findElement(By.id("firstName")).sendKeys("Irina");
+        driver.findElement(By.id("lastName")).sendKeys("Kuperman");
+        driver.findElement(By.id("userEmail")).sendKeys("ama@ama.com");
+        driver.findElement(By.cssSelector("[for=\"gender-radio-2\"")).click();
+        driver.findElement(By.id("userNumber")).sendKeys("1234567890");
+
+        scrollIntoView(driver.findElement(By.id("submit"))).click();
     }
 }
