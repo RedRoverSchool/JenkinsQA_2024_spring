@@ -103,7 +103,7 @@ public class AqaGroupDemoQATest extends AqaGroupBaseTest {
     }
 
     @Test
-    public void practiceFillFormTest() {
+    public void testPracticeFillForm() {
         driver.get("https://demoqa.com/automation-practice-form");
 
         driver.findElement(By.id("firstName")).sendKeys("Irina");
@@ -113,5 +113,9 @@ public class AqaGroupDemoQATest extends AqaGroupBaseTest {
         driver.findElement(By.id("userNumber")).sendKeys("1234567890");
 
         scrollIntoView(driver.findElement(By.id("submit"))).click();
+
+        Assert.assertEquals(
+                driver.findElement(By.id("example-modal-sizes-title-lg")).getText(),
+                "Thanks for submitting the form");
     }
 }

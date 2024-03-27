@@ -13,7 +13,7 @@ public class AqaGroupAlertsTest extends AqaGroupBaseTest {
     private static final String URL = "https://demoqa.com/alerts";
 
     @Test
-    public void alertTest() {
+    public void testAlert() {
         driver.get(URL);
 
         driver.findElement(By.id("alertButton")).click();
@@ -24,7 +24,7 @@ public class AqaGroupAlertsTest extends AqaGroupBaseTest {
     }
 
     @Test
-    public void waitingAlertTest() {
+    public void testWaitingAlert() {
         driver.get(URL);
 
         driver.findElement(By.id("timerAlertButton")).click();
@@ -38,8 +38,9 @@ public class AqaGroupAlertsTest extends AqaGroupBaseTest {
     }
 
     @Test
-    public void acceptConfirmAlertTest() {
+    public void testAcceptConfirmAlert() {
         driver.get(URL);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         driver.findElement(By.id("confirmButton")).click();
         driver.switchTo().alert().accept();
@@ -51,8 +52,9 @@ public class AqaGroupAlertsTest extends AqaGroupBaseTest {
     }
 
     @Test
-    public void dismissConfirmAlertTest() {
+    public void testDismissConfirmAlert() {
         driver.get(URL);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         driver.findElement(By.id("confirmButton")).click();
         driver.switchTo().alert().dismiss();
@@ -64,8 +66,9 @@ public class AqaGroupAlertsTest extends AqaGroupBaseTest {
     }
 
     @Test
-    public void promptAlertTest() {
+    public void testPromptAlert() {
         driver.get(URL);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         driver.findElement(By.id("promtButton")).click();
         Alert alert = driver.switchTo().alert();
@@ -77,5 +80,4 @@ public class AqaGroupAlertsTest extends AqaGroupBaseTest {
                 "You entered Irina",
                 "unexpected result");
     }
-
 }
