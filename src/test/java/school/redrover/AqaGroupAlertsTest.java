@@ -3,12 +3,10 @@ package school.redrover;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 public class AqaGroupAlertsTest extends AqaGroupBaseTest {
     private static final String URL = "https://demoqa.com/alerts";
