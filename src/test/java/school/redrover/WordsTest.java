@@ -33,7 +33,6 @@ public class WordsTest {
 
         List<String> str = new ArrayList<>();
 
-
         for (WebElement li : liElements) {
             str.add(li.getText());
         }
