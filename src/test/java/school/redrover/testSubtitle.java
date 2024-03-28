@@ -20,10 +20,8 @@ public class testSubtitle {
         WebElement subtitleSubmitNewLang = driver.findElement(By
                 .xpath("//body/div[@id='wrap']/div[@id='navigation']/"
                         + "ul[@id='submenu']/li/a[@href='./submitnewlanguage.html']"));
-
         String actualResult = subtitleSubmitNewLang.getText();
         String expectedResult = "Submit New Language";
-
 
         driver.quit();
     }
