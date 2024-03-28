@@ -3,9 +3,11 @@ package school.redrover;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
+//import org.testng.annotations.AfterMethod;
+//import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.util.ArrayList;
 
 public class ArSoftTest {
 
@@ -16,6 +18,8 @@ public class ArSoftTest {
     public static final String EMAIL = "n-k-65@list.ru";
     private final By getPaswordText = By.xpath("//h2[@class='ant-typography h2_m RestorePassword__sendSuccess-text'][contains(.,'Мы отправили по адресу')]");
     private final By getErrorText = By.xpath("//div[@style='text-align: center; margin-bottom: 20px; color: rgb(255, 0, 0);']");
+    private final By newProgectNameText = By.xpath("//div[@class='Sidebar__project-name'][contains(.,'1Новый проект')]");
+    private final By getPoliticaText = By.xpath("//h1[@class='page-header-title clr']");
 
     WebDriver driver = new ChromeDriver();
 
@@ -68,6 +72,7 @@ public class ArSoftTest {
         driver.get(URL);
 
     }
+
     @Test
     public void testCreateProgect() throws InterruptedException {
 
@@ -78,8 +83,9 @@ public class ArSoftTest {
         driver.findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
         driver.findElement(By.xpath(INPUT_PASSWORD)).sendKeys("qwe13567");
         driver.findElement(By.xpath(BTN_PASSWORD)).click();
-        Thread.sleep(3000);
-
+//  сайт тормоз не убирать sleep ================
+        Thread.sleep(9000);
+//=================================
         WebElement input = driver.findElement(By.xpath("//button[@class='ant-btn ant-btn-default primaryButton big colorPrimary ']"));
         input.click();
         Thread.sleep(1000);
@@ -125,7 +131,7 @@ public class ArSoftTest {
         NewData.click();
 
         WebElement EndData = driver.findElement(By.xpath("//input[@id='CreateProjectForm_endDate']"));
-        EndData.sendKeys("26-03-2024");
+        EndData.sendKeys("26-05-2024");
         Thread.sleep(1000);
 
         EndData.sendKeys(Keys.ENTER);
@@ -153,11 +159,11 @@ public class ArSoftTest {
 //           textSectionInput.click();
 //           Thread.sleep(4000);
 
-//              ======  добавить проверку проекта перед удалением===
-//
-//           String getErr = driver.findElement(getText).getText();
-//
-//           Assert.assertEquals("1Новый проект", );
+
+
+        String newProgectName = driver.findElement(newProgectNameText).getText();
+
+        Assert.assertEquals("1Новый проект", newProgectName);
 
         WebElement btnDt = driver.findElement(By.xpath("//button[@class='ant-btn ant-btn-default primaryButton big colorRed ']"));
         btnDt.click();
@@ -172,8 +178,20 @@ public class ArSoftTest {
     }
 
     @Test
-    public void test() {
+    public void testHrefPolitic() throws InterruptedException {
 
+        driver.get(URL);
+        driver.manage().window().setSize(new Dimension(1920,1080));
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("//a[@href='https://vr-arsoft.com/personal-data-processing-policy/']")).click();
+        Thread.sleep(1000);
+
+        ArrayList<String> newTab = new ArrayList<>(driver.getWindowHandles());
+        driver.switchTo().window(newTab.get(1));
+        String getErr = driver.findElement(getPoliticaText).getText();
+
+        Assert.assertEquals("Политика обработки персональных данных", getErr);
+        driver.quit();
     }
 
 }
