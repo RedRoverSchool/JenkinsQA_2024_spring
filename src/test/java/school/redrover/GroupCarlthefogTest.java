@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -14,6 +15,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GroupCarlthefogTest {
+
+    private final static String FULL_NAME = "John Smith";
+    private final static String EMAIL = "john.smith@jmail.com";
 
     @Test
     public void testSaucedemo() {
@@ -143,6 +147,39 @@ public class GroupCarlthefogTest {
         String actualHeader2 = header2.getText();
 
         Assert.assertEquals(actualHeader2, expectedHeader2);
+
+        driver.quit();
+    }
+
+    @Test
+    public void testTexBoxUseForm(){
+
+        String expectedlHeader = "Text Box";
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/");
+
+        driver.findElement(By.xpath("//div[@id='app']/div/div/div[2]/div/div[1]/div/div[1]")).click();
+        WebElement element = driver.findElement(By.xpath("//span[contains (.,'Text Box')]"));
+        element.click();
+
+        String actualHeader = driver.findElement(By.xpath("//div[@id='app']//h1")).getText();
+
+        Assert.assertEquals(expectedlHeader, actualHeader);
+
+        driver.findElement(By.id("userName")).sendKeys(FULL_NAME);
+        driver.findElement(By.id("userEmail")).sendKeys(EMAIL);
+
+        Actions act = new Actions(driver);
+        act.sendKeys(Keys.PAGE_DOWN).build().perform();
+
+        driver.findElement(By.xpath("//button[@id='submit']")).click();
+
+        String actualResult1 = driver.findElement(By.xpath("//p[@id='name']")).getText();
+        String actualResult2 = driver.findElement(By.xpath("//p[@id='email']")).getText();
+
+        Assert.assertEquals("Name:" + FULL_NAME, actualResult1);
+        Assert.assertEquals("Email:" + EMAIL, actualResult2);
 
         driver.quit();
     }
