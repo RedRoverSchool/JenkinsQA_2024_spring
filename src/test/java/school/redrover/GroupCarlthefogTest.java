@@ -146,4 +146,18 @@ public class GroupCarlthefogTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testMortgagePage() {
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.bankofamerica.com/");
+
+        driver.findElement(By.xpath("//a[@id='navHomeLoans']")).click();
+        driver.findElement(By.xpath("//a[@id='mortgage']")).click();
+
+        Assert.assertTrue(driver.findElement(By.xpath("//h1[@id='skip-to-h1']")).getText().contains("Mortgage"));
+
+        driver.quit();
+    }
 }
