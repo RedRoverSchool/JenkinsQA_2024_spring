@@ -13,6 +13,7 @@ import org.testng.annotations.BeforeMethod;
 import java.time.Duration;
 
 public class AqaGroupBaseTest {
+
     protected WebDriver driver;
     private WebDriverWait wait5;
     private WebDriverWait wait15;
