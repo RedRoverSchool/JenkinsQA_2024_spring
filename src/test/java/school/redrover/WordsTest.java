@@ -37,9 +37,6 @@ public class WordsTest {
             str.add(li.getText());
         }
 
-//        System.out.println(str);
-
-
         Map<Character, String> longestWords = new HashMap<>();
 
         for (String word : str) {
