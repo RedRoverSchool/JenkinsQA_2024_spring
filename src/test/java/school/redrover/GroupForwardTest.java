@@ -20,5 +20,18 @@ public class GroupForwardTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testCostcoReturnToHomePage() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.costco.com/apple-brand-showcase.html");
+        driver.findElement(By.xpath("//img[@automation-id = 'headerCostcoLogo']")).click();
+        driver.findElement(By.xpath("//*[@id='search-field']")).sendKeys(Keys.ENTER);
+
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.costco.com/");
+
+        driver.quit();
+
+    }
 }
 
