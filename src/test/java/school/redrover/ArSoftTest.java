@@ -1,9 +1,6 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -71,63 +68,112 @@ public class ArSoftTest {
         driver.get(URL);
 
     }
-        @Test
-        public void testCreateProgect() throws InterruptedException {
+    @Test
+    public void testCreateProgect() throws InterruptedException {
 
-            driver.get(URL);
+        driver.get(URL);
 
-            driver.manage().window().setSize(new Dimension(1920,1080));
-            Thread.sleep(1000);
-            driver.findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
-            driver.findElement(By.xpath(INPUT_PASSWORD)).sendKeys("qwe13567");
-            driver.findElement(By.xpath(BTN_PASSWORD)).click();
-            Thread.sleep(3000);
+        driver.manage().window().setSize(new Dimension(1920,1080));
+        Thread.sleep(1000);
+        driver.findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
+        driver.findElement(By.xpath(INPUT_PASSWORD)).sendKeys("qwe13567");
+        driver.findElement(By.xpath(BTN_PASSWORD)).click();
+        Thread.sleep(3000);
 
-            WebElement input = driver.findElement(By.xpath("//button[@class='ant-btn ant-btn-default primaryButton big colorPrimary ']"));
-            input.click();
-            Thread.sleep(1000);
+        WebElement input = driver.findElement(By.xpath("//button[@class='ant-btn ant-btn-default primaryButton big colorPrimary ']"));
+        input.click();
+        Thread.sleep(1000);
 
-            WebElement inp = driver.findElement(By.xpath("//input[@class='ant-input primaryInput  not-entered']"));
-            inp.sendKeys("1Новый проект");
-            Thread.sleep(1000);
+        WebElement inp = driver.findElement(By.xpath("//input[@class='ant-input primaryInput  not-entered']"));
+        inp.sendKeys("1Новый проект");
+        Thread.sleep(1000);
 
-            WebElement inp1 =driver.findElement(By.xpath("//input[@id='CreateProjectForm_city']"));
-            inp1.sendKeys("Самара");
-            Thread.sleep(1000);
+        WebElement inp1 =driver.findElement(By.xpath("//input[@id='CreateProjectForm_city']"));
+        inp1.sendKeys("Самара");
+        Thread.sleep(1000);
 
-            WebElement inp2 =driver.findElement(By.xpath("//input[@id='CreateProjectForm_country']"));
-            inp2.sendKeys("РФ");
-            Thread.sleep(1000);
+        WebElement inp2 =driver.findElement(By.xpath("//input[@id='CreateProjectForm_country']"));
+        inp2.sendKeys("РФ");
+        Thread.sleep(1000);
 
-            WebElement inp3 =driver.findElement(By.xpath("//textarea[@id='CreateProjectForm_street']"));
-            inp3.sendKeys("Победы");
-            Thread.sleep(1000);
+        WebElement inp3 =driver.findElement(By.xpath("//textarea[@id='CreateProjectForm_street']"));
+        inp3.sendKeys("Победы");
+        Thread.sleep(1000);
 
-            WebElement inp4 =driver.findElement(By.xpath("//input[@id='CreateProjectForm_postalCode']"));
-            inp4.sendKeys("444444");
-            Thread.sleep(1000);
+        WebElement inp4 =driver.findElement(By.xpath("//input[@id='CreateProjectForm_postalCode']"));
+        inp4.sendKeys("444444");
+        Thread.sleep(1000);
 
-            WebElement inp5 =driver.findElement(By.xpath("//input[@id='CreateProjectForm_code']"));
-            inp5.sendKeys("123");
-            Thread.sleep(1000);
+        WebElement inp5 =driver.findElement(By.xpath("//input[@id='CreateProjectForm_code']"));
+        inp5.sendKeys("123");
+        Thread.sleep(1000);
 
-            WebElement inp6 =driver.findElement(By.xpath("//input[@id='CreateProjectForm_building']"));
-            inp6.sendKeys("121");
-            Thread.sleep(1000);
+        WebElement inp6 =driver.findElement(By.xpath("//input[@id='CreateProjectForm_building']"));
+        inp6.sendKeys("121");
+        Thread.sleep(1000);
 
-            WebElement inp7 =driver.findElement(By.xpath("//input[@id='CreateProjectForm_office']"));
-            inp7.sendKeys("117");
-            Thread.sleep(1000);
+        WebElement inp7 =driver.findElement(By.xpath("//input[@id='CreateProjectForm_office']"));
+        inp7.sendKeys("117");
+        Thread.sleep(1000);
 
-            WebElement inp8 =driver.findElement(By.xpath("//input[@id='CreateProjectForm_startDate']"));
-            inp8.click();
-            Thread.sleep(1000);
+        WebElement inp8 =driver.findElement(By.xpath("//input[@id='CreateProjectForm_startDate']"));
+        inp8.click();
+        Thread.sleep(1000);
 
-            WebElement NewData = driver.findElement(By.xpath("//a[@class='ant-picker-today-btn']"));
+        WebElement NewData = driver.findElement(By.xpath("//a[@class='ant-picker-today-btn']"));
+        Thread.sleep(1000);
+        NewData.click();
 
-            Thread.sleep(1000);
-            NewData.click();
-            driver.quit();
-        }
+        WebElement EndData = driver.findElement(By.xpath("//input[@id='CreateProjectForm_endDate']"));
+        EndData.sendKeys("26-03-2024");
+        Thread.sleep(1000);
+
+        EndData.sendKeys(Keys.ENTER);
+
+        WebElement btn = driver.findElement(By.xpath("//button[@class='ant-btn ant-btn-default primaryButton big colorPrimary ']"));
+        btn.click();
+        Thread.sleep(4000);
+
+        WebElement btnD = driver.findElement(By.xpath("//div[@class='ant-typography ant-typography-ellipsis ant-typography-single-line ant-typography-ellipsis-single-line p_r']"));
+        btnD.click();
+        Thread.sleep(2000);
+
+//       ==============================кнопка отмены ===========================
+
+//          WebElement textBoxAside = driver.findElement(By.xpath("//button[@class='Sidebar__collapsibleBtn']"));
+//          textBoxAside.click();
+//          Thread.sleep(3000);
+
+        WebElement textSection = driver.findElement(By.xpath("//a[@style='color: inherit;'][contains(.,'Настройки')]"));
+        textSection.click();
+
+//        =========================== свернутый сайтбар ===============================
+
+//           WebElement textSectionInput = driver.findElement(By.xpath("//input[@value='1Новый проект']"));
+//           textSectionInput.click();
+//           Thread.sleep(4000);
+
+//              ======  добавить проверку проекта перед удалением===
+//
+//           String getErr = driver.findElement(getText).getText();
+//
+//           Assert.assertEquals("1Новый проект", );
+
+        WebElement btnDt = driver.findElement(By.xpath("//button[@class='ant-btn ant-btn-default primaryButton big colorRed ']"));
+        btnDt.click();
+        Thread.sleep(2000);
+
+
+
+        WebElement btnDel = driver.findElement(By.xpath("//button[@class='ant-btn ant-btn-default primaryButton big colorPrimary '][contains(.,'Подтвердить')]"));
+        btnDel.click();
+
+        driver.quit();
+    }
+
+    @Test
+    public void test() {
+
+    }
 
 }
