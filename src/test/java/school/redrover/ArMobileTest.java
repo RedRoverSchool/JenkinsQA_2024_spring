@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 
-public class ArSoftTest {
+public class ArMobileTest {
 
     public static final String URL = "http://23.105.246.172:5000/login";
     public static final String INPUT_PASSWORD = "//input[@class='ant-input']";
@@ -20,6 +20,7 @@ public class ArSoftTest {
     private final By getErrorText = By.xpath("//div[@style='text-align: center; margin-bottom: 20px; color: rgb(255, 0, 0);']");
     private final By newProgectNameText = By.xpath("//div[@class='Sidebar__project-name'][contains(.,'1Новый проект')]");
     private final By getPoliticaText = By.xpath("//h1[@class='page-header-title clr']");
+    private final By getPoliticaUserText = By.xpath("//span[@style='font-size: 19px;'][contains(.,'Предмет пользовательского соглашения')]");
 
     WebDriver driver = new ChromeDriver();
 
@@ -67,10 +68,22 @@ public class ArSoftTest {
     }
 
     @Test
-    public void testReg() {
+    public void testHrefPoluticUser() throws InterruptedException{
 
         driver.get(URL);
+        driver.manage().window().setSize(new Dimension(1920,1080));
+        Thread.sleep(1000);
 
+        driver.findElement(By.xpath("//a[@href='https://vr-arsoft.com/user-agreement-armobail/']")).click();
+
+        ArrayList<String> newTab = new ArrayList<>(driver.getWindowHandles());
+        driver.switchTo().window(newTab.get(1));
+        Thread.sleep(1000);
+
+        String getPoliticaUser = driver.findElement(getPoliticaUserText).getText();
+
+        Assert.assertEquals("Предмет пользовательского соглашения", getPoliticaUser);
+        driver.quit();
     }
 
     @Test
