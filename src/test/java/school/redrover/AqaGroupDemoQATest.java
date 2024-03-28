@@ -7,91 +7,91 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class AqaGroupDemoQATest extends AqaGroupBaseTest {
+
     private static final String BUTTONS_URL = "https://demoqa.com/buttons";
     private static final String BROWSER_WINDOWS_URL = "https://demoqa.com/browser-windows";
 
     @Test
     public void testDoubleClickButton() {
-        driver.get(BUTTONS_URL);
+        getDriver().get(BUTTONS_URL);
 
-        new Actions(driver)
-                .doubleClick(scrollIntoView(driver.findElement(By.id("doubleClickBtn"))))
+        new Actions(getDriver())
+                .doubleClick(scrollIntoView(getDriver().findElement(By.id("doubleClickBtn"))))
                 .perform();
 
         Assert.assertEquals(
-                driver.findElement(By.id("doubleClickMessage")).getText(),
+                getDriver().findElement(By.id("doubleClickMessage")).getText(),
                 "You have done a double click",
                 "Double click attempt failed.");
     }
 
     @Test
     public void testRightClickButton() {
-        driver.get(BUTTONS_URL);
+        getDriver().get(BUTTONS_URL);
 
-        new Actions(driver)
-                .contextClick(scrollIntoView(driver.findElement(By.id("rightClickBtn"))))
+        new Actions(getDriver())
+                .contextClick(scrollIntoView(getDriver().findElement(By.id("rightClickBtn"))))
                 .perform();
 
         Assert.assertEquals(
-                driver.findElement(By.id("rightClickMessage")).getText(),
+                getDriver().findElement(By.id("rightClickMessage")).getText(),
                 "You have done a right click",
                 "Right click attempt failed.");
     }
 
     @Test
     public void testDynamicClickButton() {
-        driver.get(BUTTONS_URL);
+        getDriver().get(BUTTONS_URL);
 
-        scrollIntoView(driver
-                .findElement(By.xpath("//*[@id=\"rightClickBtn\"]/../following-sibling::div/button")))
+        scrollIntoView(getDriver().findElement(By.xpath("//*[@id='rightClickBtn']/../following-sibling::div/button")))
                 .click();
 
         Assert.assertEquals(
-                driver.findElement(By.id("dynamicClickMessage")).getText(),
+                getDriver().findElement(By.id("dynamicClickMessage")).getText(),
                 "You have done a dynamic click",
                 "Right click attempt failed.");
     }
 
     @Test
     public void testBrowserWindowOpenInNewTab() {
-        driver.get(BROWSER_WINDOWS_URL);
+        getDriver().get(BROWSER_WINDOWS_URL);
 
-        driver.findElement(By.id("tabButton")).click();
+        getDriver().findElement(By.id("tabButton")).click();
+
         getWait5().until(ExpectedConditions.numberOfWindowsToBe(2));
-        String original = driver.getWindowHandle();
-        for (String handle : driver.getWindowHandles()) {
+
+        String original = getDriver().getWindowHandle();
+        for (String handle : getDriver().getWindowHandles()) {
             if (!handle.equals(original)) {
-                driver.switchTo().window(handle);
+                getDriver().switchTo().window(handle);
                 break;
             }
         }
-        String text = driver.findElement(By.id("sampleHeading")).getText();
-//        close the new window and switch back to original one if we still need it
-        driver.close();
-        driver.switchTo().window(original);
 
-        Assert.assertEquals(text, "This is a sample page");
+        Assert.assertEquals(
+                getDriver().findElement(By.id("sampleHeading")).getText(),
+                "This is a sample page");
     }
 
     @Test
     public void testBrowserWindowOpenInNewWindow() {
-        driver.get(BROWSER_WINDOWS_URL);
+        getDriver().get(BROWSER_WINDOWS_URL);
 
-        driver.findElement(By.id("windowButton")).click();
+        getDriver().findElement(By.id("windowButton")).click();
+
         getWait5().until(ExpectedConditions.numberOfWindowsToBe(2));
-        String original = driver.getWindowHandle();
-        for (String handle : driver.getWindowHandles()) {
+
+        String original = getDriver().getWindowHandle();
+        for (String handle : getDriver().getWindowHandles()) {
             if (!handle.equals(original)) {
-                driver.switchTo().window(handle);
+                getDriver().switchTo().window(handle);
                 break;
             }
         }
-        String text = driver.findElement(By.id("sampleHeading")).getText();
-//        close the new window and switch back to original one if we still need it
-        driver.close();
-        driver.switchTo().window(original);
 
-        Assert.assertEquals(text, "This is a sample page");
+        Assert.assertEquals(
+                getDriver().findElement(By.id("sampleHeading")).getText(),
+                "This is a sample page");
     }
 
     @Test
