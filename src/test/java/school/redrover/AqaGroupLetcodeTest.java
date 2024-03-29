@@ -5,7 +5,7 @@ import org.openqa.selenium.Keys;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class AqaGroupLetcodeTests extends AqaGroupBaseTest {
+public class AqaGroupLetcodeTest extends AqaGroupBaseTest {
 
     private static final String URL = "https://letcode.in/edit";
 

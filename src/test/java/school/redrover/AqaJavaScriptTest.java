@@ -9,6 +9,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class AqaJavaScriptTest extends AqaGroupBaseTest {
+
     @Test
     public void testDragAndDrop() {
         getDriver().get("https://testpages.eviltester.com/styled/drag-drop-javascript.html");
