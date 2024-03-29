@@ -14,6 +14,8 @@ public class ArMobileTest extends BaseTest {
     private static final String INPUT_EMAIL = "//input[@class='ant-input primaryInput  not-entered']";
     private static final String BTN_PASSWORD = "//button[@class='ant-btn ant-btn-default authButton big colorPrimary ']";
     private static final String EMAIL = "n-k-65@list.ru";
+    private static final String PASSWORD = "qwe13567";
+
     private final By getPaswordText = By.xpath("//h2[@class='ant-typography h2_m RestorePassword__sendSuccess-text'][contains(.,'Мы отправили по адресу')]");
     private final By getErrorText = By.xpath("//div[@style='text-align: center; margin-bottom: 20px; color: rgb(255, 0, 0);']");
     private final By newProgectNameText = By.xpath("//div[@class='Sidebar__project-name'][contains(.,'1Новый проект')]");
@@ -86,7 +88,7 @@ public class ArMobileTest extends BaseTest {
         Thread.sleep(1000);
 
         getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
-        getDriver().findElement(By.xpath(INPUT_PASSWORD)).sendKeys("qwe13567");
+        getDriver().findElement(By.xpath(INPUT_PASSWORD)).sendKeys(PASSWORD);
         getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
 
         Thread.sleep(9000); //  сайт тормоз не убирать sleep ===
@@ -175,7 +177,7 @@ public class ArMobileTest extends BaseTest {
 
         getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
 
-        getDriver().findElement(By.xpath(INPUT_PASSWORD)).sendKeys("qwe13567");
+        getDriver().findElement(By.xpath(INPUT_PASSWORD)).sendKeys(PASSWORD);
         getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
         Thread.sleep(1000);
 
@@ -187,5 +189,39 @@ public class ArMobileTest extends BaseTest {
         String getBot = getDriver().findElement(getBotText).getText();
 
         Assert.assertEquals("AR SOFT support", getBot);
+    }
+
+    @Test
+    public void testUserNab() throws InterruptedException {
+
+        getDriver().get(URL);
+        getDriver().manage().window().setSize(new Dimension(1920,1080));
+        getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
+        getDriver().findElement(By.xpath(INPUT_PASSWORD)).sendKeys(PASSWORD);
+        getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
+        Thread.sleep(9000);
+
+        getDriver().findElement(By.xpath("//a[@href='/users']")).click();
+
+        getDriver().findElement(By.xpath("//button[@class='ant-btn ant-btn-default primaryButton big colorPrimary '] ")).click();
+
+        getDriver().findElement(By.xpath("//input[@id='InviteUserModal_email']")).sendKeys("yevgeniy.gor.91@mail.ru");
+
+        WebElement userRoles = getDriver().findElement(By.xpath("//input[@id='InviteUserModal_roles']"));
+        userRoles.click();
+        userRoles.sendKeys(Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ENTER);
+
+        WebElement createRole = getDriver().findElement(By.xpath("//input[@id='InviteUserModal_employmentId']"));
+        Thread.sleep(2000);
+
+        createRole.click();
+        createRole.sendKeys("Kir", Keys.ENTER);
+
+        getDriver().findElement(By.xpath("//button[@class='ant-btn ant-btn-primary primaryButton big colorPrimary ']")).click();
+        Thread.sleep(2000);
+
+        String getTextD = getDriver().findElement(By.xpath("//span[@class='anticon anticon-close-circle']")).getText();
+
+        Assert.assertEquals("Ошибка обращения к серверу", getTextD);
     }
 }
