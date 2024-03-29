@@ -7,6 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.Map;
@@ -26,81 +27,43 @@ public class AqaGroupEviltesterTest extends AqaGroupBaseTest {
         getWait15().until(ExpectedConditions.elementToBeClickable(By.id("button02"))).click();
         getWait15().until(ExpectedConditions.elementToBeClickable(By.id("button03"))).click();
 
-//        TODO make it prettier
-        Assert.assertTrue(getWait15().until(
-                        ExpectedConditions.textToBePresentInElementLocated(
-                                By.id("buttonmessage"),
-                                "All Buttons Clicked")),
-                "Text \"All Buttons Clicked\" not found");
+        Boolean found = getWait15().until(ExpectedConditions.textToBePresentInElementLocated(By.id("buttonmessage"),
+                "All Buttons Clicked"));
+        Assert.assertTrue(found, "Text \"All Buttons Clicked\" not found");
     }
 
-    @Test
-    public void testSimpleAlert() {
-        getDriver().get(ALERTS_URL);
-
-        getDriver().findElement(By.id("alertexamples")).click();
-
-        getWait15().until(ExpectedConditions.alertIsPresent()).accept();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.id("alertexplanation")).getText(),
-                "You triggered and handled the alert dialog");
+    @DataProvider(name = "alertDataProvider")
+    public Object[][] alertDataProvider() {
+        return new Object[][]{
+                {"alertexamples", "alertexplanation", "You triggered and handled the alert dialog", null, true},
+                {"confirmexample", "confirmexplanation", "You clicked OK, confirm returned true.", null, true},
+                {"confirmexample", "confirmexplanation", "You clicked Cancel, confirm returned false.", null, false},
+                {"promptexample", "promptexplanation", "You clicked OK. 'prompt' returned some random input", "some random input", true},
+                {"promptexample", "promptexplanation", "You clicked Cancel. 'prompt' returned null", "some random input", false}
+        };
     }
 
-    @Test
-    public void testAcceptConfirmAlert() {
+    @Test(dataProvider = "alertDataProvider")
+    public void testAlerts(String buttonId, String messageId, String expected, String keys, boolean accept) {
         getDriver().get(ALERTS_URL);
 
-        getDriver().findElement(By.id("confirmexample")).click();
-
-        getWait15().until(ExpectedConditions.alertIsPresent()).accept();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.id("confirmexplanation")).getText(),
-                "You clicked OK, confirm returned true.");
-    }
-
-    @Test
-    public void testDismissConfirmAlert() {
-        getDriver().get(ALERTS_URL);
-
-        getDriver().findElement(By.id("confirmexample")).click();
-
-        getWait15().until(ExpectedConditions.alertIsPresent()).dismiss();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.id("confirmexplanation")).getText(),
-                "You clicked Cancel, confirm returned false.");
-    }
-
-    @Test
-    public void testAcceptPromptAlert() {
-        getDriver().get(ALERTS_URL);
-
-        getDriver().findElement(By.id("promptexample")).click();
+        getDriver().findElement(By.id(buttonId)).click();
 
         Alert alert = getWait15().until(ExpectedConditions.alertIsPresent());
 
-        final String myKeys = "some random input";
-        alert.sendKeys(myKeys);
-        alert.accept();
+        if (keys != null) {
+            alert.sendKeys(keys);
+        }
+
+        if (accept) {
+            alert.accept();
+        } else {
+            alert.dismiss();
+        }
 
         Assert.assertEquals(
-                getDriver().findElement(By.id("promptexplanation")).getText(),
-                String.format("You clicked OK. 'prompt' returned %s", myKeys));
-    }
-
-    @Test
-    public void testDismissPromptAlert() {
-        getDriver().get(ALERTS_URL);
-
-        getDriver().findElement(By.id("promptexample")).click();
-
-        getWait15().until(ExpectedConditions.alertIsPresent()).dismiss();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.id("promptexplanation")).getText(),
-                "You clicked Cancel. 'prompt' returned null");
+                getDriver().findElement(By.id(messageId)).getText(),
+                expected);
     }
 
     @Test
