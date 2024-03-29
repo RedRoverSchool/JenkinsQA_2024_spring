@@ -52,11 +52,15 @@ public class LegionOfJavaGroupTest {
 
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.toolsqa.com/");
+
         WebElement button = driver.findElement(By.xpath("//a[@href = '/selenium-training?q=headers']"));
         button.click();
+
         WebElement text = driver.findElement(By.xpath("//div[@class='enroll__heading']"));
         String value = text.getText();
+
         Assert.assertEquals(value, "Selenium Certification Training | Enroll Now | Study Online");
+
         driver.close();
     }
 }
