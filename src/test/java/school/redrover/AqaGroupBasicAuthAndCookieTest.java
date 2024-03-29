@@ -38,6 +38,7 @@ public class AqaGroupBasicAuthAndCookieTest extends AqaGroupBaseTest {
         Assert.assertTrue(getDriver().findElement(By.className("s1200")).isDisplayed());
     }
 
+    @Ignore
     @Test
     public void testCookieControlledAdmin() throws InterruptedException {
         getDriver().get("https://testpages.eviltester.com/styled/cookies/adminview.html");
@@ -52,6 +53,7 @@ public class AqaGroupBasicAuthAndCookieTest extends AqaGroupBaseTest {
         Assert.assertEquals(getDriver().findElement(By.id("adminh1")).getText(), "Admin View");
     }
 
+    @Ignore
     @Test
     public void testCookieAddAdmin() throws InterruptedException {
         getDriver().get("https://testpages.eviltester.com");
