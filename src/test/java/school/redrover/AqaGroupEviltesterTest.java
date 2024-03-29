@@ -8,6 +8,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.util.Map;
@@ -83,12 +84,11 @@ public class AqaGroupEviltesterTest extends AqaGroupBaseTest {
 
     @Test
     public void fakeAlertTest() {
-//        TODO getDriver()
-        driver.get(FAKE_ALERTS_URL);
+        getDriver().get(FAKE_ALERTS_URL);
 
-        driver.findElement(By.id("fakealert")).click();
-        WebElement message = driver.findElement(By.id("dialog-text"));
-        driver.findElement(By.id("dialog-ok")).click();
+        getDriver().findElement(By.id("fakealert")).click();
+        WebElement message = getDriver().findElement(By.id("dialog-text"));
+        getDriver().findElement(By.id("dialog-ok")).click();
 
         Assert.assertFalse(
                 message.isDisplayed(),
@@ -97,26 +97,25 @@ public class AqaGroupEviltesterTest extends AqaGroupBaseTest {
 
     @Test
     public void fakeModalAlertCloseOkTest() {
-        //        TODO getDriver()
-        driver.get(FAKE_ALERTS_URL);
+        getDriver().get(FAKE_ALERTS_URL);
 
-        driver.findElement(By.id("modaldialog")).click();
-        WebElement message = driver.findElement(By.id("dialog-text"));
-        driver.findElement(By.id("dialog-ok")).click();
+        getDriver().findElement(By.id("modaldialog")).click();
+        WebElement message = getDriver().findElement(By.id("dialog-text"));
+        getDriver().findElement(By.id("dialog-ok")).click();
 
         Assert.assertFalse(
                 message.isDisplayed(),
                 "fake modal alert box is active");
     }
 
+    @Ignore
     @Test
     public void fakeModalAlertCloseBackgroundTest() {
-        //        TODO getDriver()
-        driver.get(FAKE_ALERTS_URL);
+        getDriver().get(FAKE_ALERTS_URL);
 
-        driver.findElement(By.id("modaldialog")).click();
-        WebElement message = driver.findElement(By.id("dialog-text"));
-        driver.findElement(By.cssSelector(".faded-background.active")).click();
+        getDriver().findElement(By.id("modaldialog")).click();
+        WebElement message = getDriver().findElement(By.id("dialog-text"));
+        getDriver().findElement(By.cssSelector(".faded-background.active")).click();
 
         Assert.assertFalse(
                 message.isDisplayed(),

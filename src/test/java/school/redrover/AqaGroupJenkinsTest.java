@@ -9,7 +9,7 @@ public class AqaGroupJenkinsTest extends AqaGroupBaseTest {
     private void login() {
         getDriver().get("http://localhost:8080/login");
 
-        getDriver().findElement(By.id("j_username")).sendKeys("amalgammy");
+        getDriver().findElement(By.id("j_username")).sendKeys("admin");
         getDriver().findElement(By.id("j_password")).sendKeys("admin");
         getDriver().findElement(By.name("Submit")).click();
     }

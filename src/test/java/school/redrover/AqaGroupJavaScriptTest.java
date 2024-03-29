@@ -8,7 +8,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class AqaJavaScriptTest extends AqaGroupBaseTest {
+public class AqaGroupJavaScriptTest extends AqaGroupBaseTest {
 
     @Test
     public void testDragAndDrop() {

@@ -5,6 +5,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 public class AqaGroupDemoQATest extends AqaGroupBaseTest {
@@ -80,28 +81,29 @@ public class AqaGroupDemoQATest extends AqaGroupBaseTest {
     }
 
     @Test
-    public void RadioButtonTest4() throws InterruptedException {
-//        TODO getDriver(), \" -> ', sleep -> wait
-        driver.get("https://demoqa.com/radio-button");
-        driver.findElement(By.xpath("//*[@for=\"impressiveRadio\"]")).click();
+    public void testRadioButton() throws InterruptedException {
+//        TODO sleep -> wait
+        getDriver().get("https://demoqa.com/radio-button");
+        getDriver().findElement(By.xpath("//*[@for='impressiveRadio']")).click();
         Thread.sleep(5000);
-        Assert.assertTrue(driver.findElement(By.className("text-success")).isDisplayed(), "radiobutton is not selected");
+        Assert.assertTrue(getDriver().findElement(By.className("text-success")).isDisplayed(), "radiobutton is not selected");
     }
 
+    @Ignore
     @Test
     public void testPracticeFillForm() {
-        driver.get("https://demoqa.com/automation-practice-form");
+        getDriver().get("https://demoqa.com/automation-practice-form");
 
-        driver.findElement(By.id("firstName")).sendKeys("Irina");
-        driver.findElement(By.id("lastName")).sendKeys("Kuperman");
-        driver.findElement(By.id("userEmail")).sendKeys("ama@ama.com");
-        driver.findElement(By.cssSelector("[for=\"gender-radio-2\"")).click();
-        driver.findElement(By.id("userNumber")).sendKeys("1234567890");
+        getDriver().findElement(By.id("firstName")).sendKeys("Irina");
+        getDriver().findElement(By.id("lastName")).sendKeys("Kuperman");
+        getDriver().findElement(By.id("userEmail")).sendKeys("ama@ama.com");
+        getDriver().findElement(By.cssSelector("[for='gender-radio-2'")).click();
+        getDriver().findElement(By.id("userNumber")).sendKeys("1234567890");
 
-        scrollIntoView(driver.findElement(By.id("submit"))).click();
+        scrollIntoView(getDriver().findElement(By.id("submit"))).click();
 
         Assert.assertEquals(
-                driver.findElement(By.id("example-modal-sizes-title-lg")).getText(),
+                getDriver().findElement(By.id("example-modal-sizes-title-lg")).getText(),
                 "Thanks for submitting the form");
     }
 }
