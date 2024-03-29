@@ -34,21 +34,6 @@ public class AqaGroupEviltesterTest extends AqaGroupBaseTest {
     }
 
     @Test
-    public void testDisabledDynamicButtonsVersionTwo() {
-        getDriver().get(BUTTONS_URL);
-
-        getWait15().until(ExpectedConditions.elementToBeClickable(By.id("button00"))).click();
-        getWait15().until(ExpectedConditions.elementToBeClickable(By.id("button01"))).click();
-        getWait15().until(ExpectedConditions.elementToBeClickable(By.id("button02"))).click();
-        getWait15().until(ExpectedConditions.elementToBeClickable(By.id("button03"))).click();
-
-        WebElement message = getDriver().findElement(By.id("buttonmessage"));
-        getWait15().until(ExpectedConditions.textToBePresentInElement(message, "All Buttons Clicked"));
-
-        Assert.assertEquals(message.getText(), "All Buttons Clicked");
-    }
-
-    @Test
     public void testSimpleAlert() {
         getDriver().get(ALERTS_URL);
 
