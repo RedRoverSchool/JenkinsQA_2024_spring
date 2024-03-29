@@ -1,8 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -20,16 +18,7 @@ public abstract class AqaGroupBaseTest extends BaseTest {
     @BeforeMethod
     protected void beforeMethod() {
         getDriver().manage().window().setSize(new Dimension(1920, 1080));
-//        ChromeOptions chromeOptions = new ChromeOptions();
-//        chromeOptions.addArguments("--window-size=1920,1080");
-////        chromeOptions.addArguments("--headless");
-//        chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
-//        driver = new ChromeDriver(chromeOptions);
     }
-
-//    protected WebDriver getDriver() {
-//        return driver;
-//    }
 
     protected WebElement scrollIntoView(WebElement element) {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
