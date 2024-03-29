@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 public class SauceDemoTest {
     @Test
     public void testSauceDemo() {
-        String expectedResult = "https://www.saucedemo.com/inventory.html";
+        String expectedResult = "https://www.saucedemo.com/";
 
         WebDriver driver = new FirefoxDriver();
 

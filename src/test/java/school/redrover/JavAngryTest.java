@@ -140,7 +140,55 @@ public class JavAngryTest {
         driver.findElement(By.xpath("//ul[@class='pagination']"));
         driver.findElement(By.linkText("2")).click();
 
-        Assert.assertEquals(driver.getCurrentUrl(),"https://portal.311.nyc.gov/search/?q=concerts&page=2");
+        Assert.assertEquals(driver.getCurrentUrl(), "https://portal.311.nyc.gov/search/?q=concerts&page=2");
+        driver.quit();
+    }
+
+    @Test
+    public void testBuyBracelet() {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+        driver.manage().window().maximize();
+        driver.get("https://askomdch.com/");
+
+        driver.findElement(By.xpath("//a[contains(text(), 'Check Out')]")).click();
+        driver.findElement(By.xpath("//a[contains(@aria-label,'Bangle Bracelet')]")).click();
+        driver.findElement(By.xpath("//a[@class='added_to_cart wc-forward']")).click();
+        String subtotal = driver.findElement(By.xpath("//td[@class='product-subtotal']")).getText();
+
+        Assert.assertEquals(subtotal, "$25.00");
+        driver.quit();
+    }
+
+    @Test
+    public void testCheckoutForm() {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        driver.manage().window().maximize();
+        driver.get("https://askomdch.com/");
+
+        driver.findElement(By.xpath("//a[@class='wp-block-button__link']")).click();
+        driver.findElement(By.xpath("//a[contains(@data-product_id,'1193') and text()='Add to cart']")).click();
+        driver.findElement(By.xpath("(//a[@href='https://askomdch.com/cart/' and text()='View cart'])[3]")).click();
+        driver.findElement(By.xpath("//a[@class='checkout-button button alt wc-forward']")).click();
+        driver.findElement(By.xpath("//input[@id='billing_first_name']")).sendKeys("Ivan");
+        driver.findElement(By.xpath("//input[@id='billing_last_name']")).sendKeys("Ivanov");
+        driver.findElement(By.xpath("(//span[@class='select2-selection select2-selection--single'])[1]")).click();
+        // driver.findElement(By.xpath("(//span[@class='select2-selection__rendered' and @title='Belarus'])[1]")).click();
+        driver.findElement(By.xpath("(//span[@class='select2-selection__rendered' and @title='United States (US)'])[1]")).click();
+        driver.findElement(By.xpath("//input[@id='billing_address_1']")).sendKeys("125, Lenina street");
+        driver.findElement(By.xpath("//input[@id='billing_city']")).sendKeys("Sacramento");
+        driver.findElement(By.xpath("//span[@id='select2-billing_state-container']")).click();
+        driver.findElement(By.xpath("//input[@name='billing_postcode']")).click();
+        driver.findElement(By.xpath("//input[@name='billing_postcode']")).sendKeys("94203");
+        driver.findElement(By.xpath("//input[@name='billing_email']")).click();
+        driver.findElement(By.xpath("//input[@name='billing_email']")).sendKeys("Ivanov@mail.ru");
+        driver.findElement(By.xpath("//input[@id='createaccount']")).click();
+        driver.findElement(By.xpath("//input[@name='account_username']")).sendKeys("ivanov12");
+        driver.findElement(By.xpath("//input[@name='account_password']")).sendKeys("password");
+        driver.findElement(By.xpath("//input[@id='payment_method_cod']")).click();
+        driver.findElement(By.xpath("//button[@name='woocommerce_checkout_place_order']")).click();
         driver.quit();
     }
 }
+

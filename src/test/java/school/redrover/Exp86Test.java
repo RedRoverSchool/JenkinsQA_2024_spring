@@ -16,6 +16,7 @@ public class Exp86Test {
         WebElement textBox = driver.findElement(By.name("q"));
         textBox.sendKeys("Hello world!");
 
+//        How find element "Личный кабинет"
         WebElement registrationHrev = driver.findElement(By.linkText("Личный кабинет"));
         registrationHrev.click();
 

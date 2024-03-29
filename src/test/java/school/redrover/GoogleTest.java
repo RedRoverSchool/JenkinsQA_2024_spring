@@ -1,38 +1,29 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
-import static org.testng.Assert.assertEquals;
+public class GoogleTest extends BaseTest {
 
-public class GoogleTest {
     @Test
-    public void testGoogle() throws InterruptedException{
-        WebDriver driver = new ChromeDriver ();
-        driver.get("https://www.google.com");
+    public void testGoogle() throws InterruptedException {
+        getDriver().get("https://www.google.com");
 
-
-        WebElement text = driver.findElement(By.id("APjFqb"));
+        WebElement text = getDriver().findElement(By.id("APjFqb"));
         text.sendKeys("Selenium");
 
-        Thread.sleep(1000);
+        Thread.sleep(1000); // make it 500
 
-
-        WebElement button = driver.findElement(By.className("gNO89b"));
+        WebElement button = getDriver().findElement(By.className("gNO89b"));
         button.click();
 
-        WebElement link = driver.findElement(By.xpath("//a[@href = 'https://www.selenium.dev/']/h3"));
+        WebElement link = getDriver().findElement(By.xpath("//a[@href = 'https://www.selenium.dev/']/h3"));
         String resultText = link.getText();
 
-
         Assert.assertEquals(resultText, "Selenium");
-
-        driver.quit();
-
     }
 }

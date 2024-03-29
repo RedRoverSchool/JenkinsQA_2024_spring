@@ -3,7 +3,6 @@ package school.redrover;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -14,69 +13,69 @@ public class AqaGroupAlertsTest extends AqaGroupBaseTest {
 
     @Test
     public void testAlert() {
-        driver.get(URL);
+        getDriver().get(URL);
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(15000));
 
-        driver.findElement(By.id("alertButton")).click();
-        driver.switchTo().alert().accept();
+        getDriver().findElement(By.id("alertButton")).click();
+        getDriver().switchTo().alert().accept();
         Assert.assertTrue(
-                driver.findElement(By.id("alertButton")).isDisplayed(),
+                getDriver().findElement(By.id("alertButton")).isDisplayed(),
                 "alert is not accepted");
     }
 
     @Test
     public void testWaitingAlert() {
-        driver.get(URL);
+        getDriver().get(URL);
 
-        driver.findElement(By.id("timerAlertButton")).click();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+        getDriver().findElement(By.id("timerAlertButton")).click();
+        Alert alert = getWait15().until(ExpectedConditions.alertIsPresent());
         alert.accept();
 
         Assert.assertTrue(
-                driver.findElement(By.id("timerAlertButton")).isDisplayed(),
+                getDriver().findElement(By.id("timerAlertButton")).isDisplayed(),
                 "alert is not accepted");
     }
 
     @Test
     public void testAcceptConfirmAlert() {
-        driver.get(URL);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        getDriver().get(URL);
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(15000));
 
-        driver.findElement(By.id("confirmButton")).click();
-        driver.switchTo().alert().accept();
+        getDriver().findElement(By.id("confirmButton")).click();
+        getDriver().switchTo().alert().accept();
 
         Assert.assertEquals(
-                driver.findElement(By.id("confirmResult")).getText(),
+                getDriver().findElement(By.id("confirmResult")).getText(),
                 "You selected Ok",
                 "alert is not accepted");
     }
 
     @Test
     public void testDismissConfirmAlert() {
-        driver.get(URL);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        getDriver().get(URL);
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(15000));
 
-        driver.findElement(By.id("confirmButton")).click();
-        driver.switchTo().alert().dismiss();
+        getDriver().findElement(By.id("confirmButton")).click();
+        getDriver().switchTo().alert().dismiss();
 
         Assert.assertEquals(
-                driver.findElement(By.id("confirmResult")).getText(),
+                getDriver().findElement(By.id("confirmResult")).getText(),
                 "You selected Cancel",
                 "alert is not dismissed");
     }
 
     @Test
     public void testPromptAlert() {
-        driver.get(URL);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        getDriver().get(URL);
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(15000));
 
-        driver.findElement(By.id("promtButton")).click();
-        Alert alert = driver.switchTo().alert();
+        getDriver().findElement(By.id("promtButton")).click();
+        Alert alert = getDriver().switchTo().alert();
         alert.sendKeys("Irina");
         alert.accept();
 
         Assert.assertEquals(
-                driver.findElement(By.id("promptResult")).getText(),
+                getDriver().findElement(By.id("promptResult")).getText(),
                 "You entered Irina",
                 "unexpected result");
     }
