@@ -171,4 +171,40 @@ public class UnderdogsGroupTest {
 
         Assert.assertEquals(actualText.getText(), "WOMEN'S BACKPACKS");
     }
+
+    @Test
+    public void testAutomationTestingOnline() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://automationintesting.online/");
+
+        String name = "Anhelina";
+        WebElement fieldName = driver.findElement(By.xpath("//*[@id=\"name\"]"));
+        fieldName.sendKeys(name);
+
+        WebElement fieldEmail = driver.findElement(By.xpath("//*[@id=\"email\"]"));
+        fieldEmail.sendKeys("qa@mail.com");
+
+        WebElement fieldPhone = driver.findElement(By.xpath("//*[@id=\"phone\"]"));
+        fieldPhone.sendKeys("01234567890");
+
+        String subject = "rooms";
+        WebElement fieldSubject = driver.findElement(By.xpath("//*[@id=\"subject\"]"));
+        fieldSubject.sendKeys(subject);
+
+        WebElement fieldMessage = driver.findElement(By.xpath("//*[@id=\"description\"]"));
+        fieldMessage.sendKeys("Hello. I'm Anhelina.");
+
+        WebElement buttonSubmit = driver.findElement(By.xpath("//*[@id=\"submitContact\"]"));
+        buttonSubmit.click();
+
+        Thread.sleep(500);
+        WebElement actualText = driver.findElement(By.xpath("//div[@class = \"row contact\"]/div[2]"));
+
+        Assert.assertEquals(actualText.getText(), "Thanks for getting in touch " + name + "!" + "\n"
+                                                         + "We'll get back to you about" + "\n"
+                                                         + subject + "\n"
+                                                         + "as soon as possible.");
+
+        driver.quit();
+    }
 }
