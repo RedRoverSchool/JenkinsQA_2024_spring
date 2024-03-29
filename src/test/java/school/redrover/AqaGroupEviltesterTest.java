@@ -18,7 +18,7 @@ public class AqaGroupEviltesterTest extends AqaGroupBaseTest {
     private static final String FAKE_ALERTS_URL = "https://testpages.eviltester.com/styled/alerts/fake-alert-test.html";
 
     @Test
-    public void testDisabledDynamicButtonsVersionOne() {
+    public void testDisabledDynamicButtons() {
         getDriver().get(BUTTONS_URL);
 
         getWait15().until(ExpectedConditions.elementToBeClickable(By.id("button00"))).click();
