@@ -26,6 +26,7 @@ public class AqaGroupEviltesterTest extends AqaGroupBaseTest {
         getWait15().until(ExpectedConditions.elementToBeClickable(By.id("button02"))).click();
         getWait15().until(ExpectedConditions.elementToBeClickable(By.id("button03"))).click();
 
+//        TODO make it prettier
         Assert.assertTrue(getWait15().until(
                         ExpectedConditions.textToBePresentInElementLocated(
                                 By.id("buttonmessage"),
@@ -119,6 +120,7 @@ public class AqaGroupEviltesterTest extends AqaGroupBaseTest {
 
     @Test
     public void fakeAlertTest() {
+//        TODO getDriver()
         driver.get(FAKE_ALERTS_URL);
 
         driver.findElement(By.id("fakealert")).click();
@@ -132,6 +134,7 @@ public class AqaGroupEviltesterTest extends AqaGroupBaseTest {
 
     @Test
     public void fakeModalAlertCloseOkTest() {
+        //        TODO getDriver()
         driver.get(FAKE_ALERTS_URL);
 
         driver.findElement(By.id("modaldialog")).click();
@@ -145,6 +148,7 @@ public class AqaGroupEviltesterTest extends AqaGroupBaseTest {
 
     @Test
     public void fakeModalAlertCloseBackgroundTest() {
+        //        TODO getDriver()
         driver.get(FAKE_ALERTS_URL);
 
         driver.findElement(By.id("modaldialog")).click();
