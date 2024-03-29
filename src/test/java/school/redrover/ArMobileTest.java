@@ -224,4 +224,38 @@ public class ArMobileTest extends BaseTest {
 
         Assert.assertEquals("Ошибка обращения к серверу", getTextD);
     }
+
+    @Test
+    public void testCreateUser() throws InterruptedException {
+
+        getDriver().get(URL);
+        getDriver().manage().window().setSize(new Dimension(1920,1080));
+        Thread.sleep(2000);
+
+        getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
+        getDriver().findElement(By.xpath(INPUT_PASSWORD)).sendKeys(PASSWORD);
+        getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
+        Thread.sleep(3000);
+
+        getDriver().findElement(By.xpath("//a[@href='/users']")).click();
+        Thread.sleep(2000);
+
+        getDriver().findElement(By.xpath("//button[@class='ant-btn ant-btn-default primaryButton big colorPrimary '] ")).click();
+        Thread.sleep(2000);
+
+        getDriver().findElement(By.xpath("//input[@id='InviteUserModal_email']")).sendKeys(EMAIL);
+        Thread.sleep(2000);
+
+        WebElement userRoles = getDriver().findElement(By.xpath("//input[@id='InviteUserModal_roles']"));
+        userRoles.click();
+        userRoles.sendKeys(Keys.ARROW_DOWN, Keys.ENTER);
+        Thread.sleep(2000);
+
+        getDriver().findElement(By.xpath("//button[@class='ant-btn ant-btn-primary primaryButton big colorPrimary ']")).click();
+        Thread.sleep(2000);
+
+        String getTextD = getDriver().findElement(By.xpath("//span[@class='anticon anticon-close-circle']")).getText();
+
+        Assert.assertEquals("Ошибка обращения к серверу", getTextD);
+    }
 }
