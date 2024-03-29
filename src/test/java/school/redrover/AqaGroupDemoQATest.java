@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class AqaGroupDemoQATest extends AqaGroupBaseTest {
@@ -52,32 +53,16 @@ public class AqaGroupDemoQATest extends AqaGroupBaseTest {
                 "Right click attempt failed.");
     }
 
-    @Test
-    public void testBrowserWindowOpenInNewTab() {
-        getDriver().get(BROWSER_WINDOWS_URL);
-
-        getDriver().findElement(By.id("tabButton")).click();
-
-        getWait5().until(ExpectedConditions.numberOfWindowsToBe(2));
-
-        String original = getDriver().getWindowHandle();
-        for (String handle : getDriver().getWindowHandles()) {
-            if (!handle.equals(original)) {
-                getDriver().switchTo().window(handle);
-                break;
-            }
-        }
-
-        Assert.assertEquals(
-                getDriver().findElement(By.id("sampleHeading")).getText(),
-                "This is a sample page");
+    @DataProvider(name = "windowDataProvider")
+    public Object[][] windowDataProvider() {
+        return new Object[][] {{"tabButton"}, {"windowButton"}};
     }
 
-    @Test
-    public void testBrowserWindowOpenInNewWindow() {
+    @Test(dataProvider = "windowDataProvider")
+    public void testBrowserWindowOpen(String buttonId) {
         getDriver().get(BROWSER_WINDOWS_URL);
 
-        getDriver().findElement(By.id("windowButton")).click();
+        getDriver().findElement(By.id(buttonId)).click();
 
         getWait5().until(ExpectedConditions.numberOfWindowsToBe(2));
 
@@ -96,6 +81,7 @@ public class AqaGroupDemoQATest extends AqaGroupBaseTest {
 
     @Test
     public void RadioButtonTest4() throws InterruptedException {
+//        TODO getDriver()
         driver.get("https://demoqa.com/radio-button");
         driver.findElement(By.xpath("//*[@for=\"impressiveRadio\"]")).click();
         Thread.sleep(5000);
