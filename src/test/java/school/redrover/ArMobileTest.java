@@ -21,6 +21,7 @@ public class ArMobileTest {
     private final By newProgectNameText = By.xpath("//div[@class='Sidebar__project-name'][contains(.,'1Новый проект')]");
     private final By getPoliticaText = By.xpath("//h1[@class='page-header-title clr']");
     private final By getPoliticaUserText = By.xpath("//span[@style='font-size: 19px;'][contains(.,'Предмет пользовательского соглашения')]");
+    private final By getBotText = By.xpath("//span[@dir='auto']");
 
     WebDriver driver = new ChromeDriver();
 
@@ -207,4 +208,27 @@ public class ArMobileTest {
         driver.quit();
     }
 
+    @Test
+    public void testHrefBot() throws InterruptedException {
+
+        driver.get(URL);
+        driver.manage().window().setSize(new Dimension(1920,1080));
+        Thread.sleep(3000);
+
+        driver.findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
+
+        driver.findElement(By.xpath(INPUT_PASSWORD)).sendKeys("qwe13567");
+        driver.findElement(By.xpath(BTN_PASSWORD)).click();
+        Thread.sleep(1000);
+
+        driver.findElement(By.xpath("//a[@href='https://t.me/arsoft_support_bot']")).click();
+        Thread.sleep(1000);
+
+        ArrayList<String> newTab = new ArrayList<>(driver.getWindowHandles());
+        driver.switchTo().window(newTab.get(1));
+        String getBot = driver.findElement(getBotText).getText();
+
+        Assert.assertEquals("AR SOFT support", getBot);
+        driver.quit();
+    }
 }
