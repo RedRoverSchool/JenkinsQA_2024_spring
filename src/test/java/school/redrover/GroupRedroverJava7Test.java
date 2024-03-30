@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -133,4 +132,18 @@ public class GroupRedroverJava7Test extends BaseTest {
 
         Assert.assertTrue(isStatus);
     }
+
+    @Test
+    public void datePicker() {
+        getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
+
+        WebElement myDate = getDriver().findElement(By.name("my-date"));
+        myDate.click();
+
+        WebElement weekDay = getDriver().findElement(By.xpath("//thead/tr[3]/th[1]"));
+        String text = weekDay.getText();
+
+        Assert.assertEquals(text,"Su");
+    }
+
 }
