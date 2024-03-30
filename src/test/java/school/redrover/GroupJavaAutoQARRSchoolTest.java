@@ -3,17 +3,16 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
-import java.time.Duration;
+public class GroupJavaAutoQARRSchoolTest extends BaseTest {
 
-public class GroupJavaAutoqaRrschoolTest {
     @Test
     public void testReturnToHomePageFromInventoryDetailsCard() {
-        WebDriver driver = new ChromeDriver();
 
+        WebDriver driver = getDriver();
         driver.get("https://www.saucedemo.com");
 
         driver.findElement(By.name("user-name")).sendKeys("standard_user");
@@ -30,7 +29,5 @@ public class GroupJavaAutoqaRrschoolTest {
         String value = headerProductsOnTheHomePage.getText();
 
         Assert.assertEquals(value, "Products");
-
-        driver.quit();
     }
 }
