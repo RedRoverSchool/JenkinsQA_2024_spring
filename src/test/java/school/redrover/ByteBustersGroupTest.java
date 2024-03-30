@@ -2,7 +2,9 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -33,4 +35,26 @@ public class ByteBustersGroupTest extends BaseTest {
             WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"IT\"]")));
 
         }
+
+    @Test
+        public void wooordHunttest() {
+
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+
+        getDriver().get("https://wooordhunt.ru/");
+
+        WebElement inputBox = getDriver().findElement(By.id("hunted_word"));
+        inputBox.sendKeys("apple");
+
+        WebElement submitButton = getDriver().findElement(By.id("hunted_word_submit"));
+        submitButton.click();
+
+        WebElement translation = getDriver().findElement(By.className("t_inline_en"));
+        String value = translation.getText();
+
+        Assert.assertEquals("яблоко, яблоня, чепуха, лесть, яблочный", value);
+
+
     }
+}
