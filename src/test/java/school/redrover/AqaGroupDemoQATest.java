@@ -5,7 +5,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 public class AqaGroupDemoQATest extends AqaGroupBaseTest {
@@ -81,29 +80,42 @@ public class AqaGroupDemoQATest extends AqaGroupBaseTest {
     }
 
     @Test
-    public void testRadioButton() throws InterruptedException {
-//        TODO sleep -> wait
+    public void testRadioButton() {
         getDriver().get("https://demoqa.com/radio-button");
+
         getDriver().findElement(By.xpath("//*[@for='impressiveRadio']")).click();
-        Thread.sleep(5000);
-        Assert.assertTrue(getDriver().findElement(By.className("text-success")).isDisplayed(), "radiobutton is not selected");
+
+        Assert.assertTrue(
+                getDriver().findElement(By.className("text-success")).isDisplayed(),
+                "radiobutton is not selected");
     }
 
-    @Ignore
     @Test
     public void testPracticeFillForm() {
         getDriver().get("https://demoqa.com/automation-practice-form");
 
-        getDriver().findElement(By.id("firstName")).sendKeys("Irina");
-        getDriver().findElement(By.id("lastName")).sendKeys("Kuperman");
-        getDriver().findElement(By.id("userEmail")).sendKeys("ama@ama.com");
-        getDriver().findElement(By.cssSelector("[for='gender-radio-2'")).click();
-        getDriver().findElement(By.id("userNumber")).sendKeys("1234567890");
+        scrollIntoView(getDriver().findElement(By.id("firstName"))).sendKeys("Irina");
+        scrollIntoView(getDriver().findElement(By.id("lastName"))).sendKeys("Kuperman");
+        scrollIntoView(getDriver().findElement(By.id("userEmail"))).sendKeys("ama@ama.com");
+        scrollIntoView(getDriver().findElement(By.cssSelector("[for='gender-radio-2'"))).click();
+        scrollIntoView(getDriver().findElement(By.id("userNumber"))).sendKeys("1234567890");
 
         scrollIntoView(getDriver().findElement(By.id("submit"))).click();
 
         Assert.assertEquals(
                 getDriver().findElement(By.id("example-modal-sizes-title-lg")).getText(),
                 "Thanks for submitting the form");
+    }
+
+    @Test
+    public void test2GetTextLinks() {
+        getDriver().get("https://demoqa.com/links");
+
+        scrollIntoView(getDriver().findElement(By.id("no-content"))).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.id("linkResponse")).getText(),
+                "Link has responded with staus 204 and status text No Content",
+                "wrong answer");
     }
 }
