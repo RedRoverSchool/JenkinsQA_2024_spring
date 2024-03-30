@@ -6,9 +6,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-public class MyLoginTest extends BaseTest {
+public class GroupCarlthefogPracticeExpandTestingTest extends BaseTest {
     @Test
-    public void testTest () {
+    public void practiceExpandTestingTest () {
 
         WebDriver driver = getDriver();
         driver.get("https://practice.expandtesting.com/login");
@@ -20,7 +20,6 @@ public class MyLoginTest extends BaseTest {
         String actual = driver.findElement(By.id("flash")).getText();
 
         Assert.assertEquals(actual, "You logged into a secure area!");
-
     }
 }
 
