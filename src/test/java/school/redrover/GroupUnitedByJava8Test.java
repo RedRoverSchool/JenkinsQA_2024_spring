@@ -3,9 +3,12 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import java.time.Duration;
 
 public class GroupUnitedByJava8Test extends BaseTest {
 
@@ -26,5 +29,16 @@ public class GroupUnitedByJava8Test extends BaseTest {
         String doubleClickMessageText = getDriver().findElement(By.id("doubleClickMessage")).getText();
 
         Assert.assertEquals(doubleClickMessageText, "You have done a double click");
+    }
+
+    @Test
+    public void testLookingForTheSummer() {
+        WebDriverWait webDriverWait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+
+        getDriver().get("https://www.onlinetrade.ru/");
+        webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name = 'query']"))).sendKeys("лето");
+        getDriver().findElement(By.xpath("//input[@type = 'submit']")).click();
+
+        Assert.assertTrue((getDriver().findElement(By.xpath("//h1[contains(text(), 'Найденные товары')]")).isDisplayed()));
     }
 }
