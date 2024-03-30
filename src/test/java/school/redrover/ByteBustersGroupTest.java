@@ -60,4 +60,25 @@ public class ByteBustersGroupTest extends BaseTest {
 
         Assert.assertEquals("Products", value);
     }
+    @Test
+    public void wooordHunttest() {
+
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+
+        getDriver().get("https://wooordhunt.ru/");
+
+        WebElement inputBox = getDriver().findElement(By.id("hunted_word"));
+        inputBox.sendKeys("apple");
+
+        WebElement submitButton = getDriver().findElement(By.id("hunted_word_submit"));
+        submitButton.click();
+
+        WebElement translation = getDriver().findElement(By.className("t_inline_en"));
+        String value = translation.getText();
+
+        Assert.assertEquals("яблоко, яблоня, чепуха, лесть, яблочный", value);
+
+
     }
+}
