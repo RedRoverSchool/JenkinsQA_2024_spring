@@ -227,4 +227,25 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
         Assert.assertTrue(elementSelector.isDisplayed());
         Assert.assertEquals(elementSelector.getText(), reviewMessage);
     }
+    @Test
+    public void testContactUs() {
+        final String expectedMessage = "Success! Your details have been submitted successfully.";
+        final String name = "Tom";
+        final String email = "tom@gmail.com";
+        final String subjectMessage = "Claim";
+        final String textMessage = "My problem is....";
+
+        getDriver().get(BASE_URL);
+        getDriver().findElement(By.xpath("//a[@href='/contact_us']")).click();
+        getDriver().findElement(By.xpath("//input[@placeholder ='Name']")).sendKeys(name);
+        getDriver().findElement(By.xpath("//input[@placeholder ='Email']")).sendKeys(email);
+        getDriver().findElement(By.xpath("//input[@placeholder ='Subject']")).sendKeys(subjectMessage);
+        getDriver().findElement(By.id("message")).sendKeys(textMessage);
+        getDriver().findElement(By.xpath("//input[@name ='submit']")).click();
+        getDriver().switchTo().alert().accept();
+
+        final String actualMessage = getDriver().findElement(By.xpath("//div[@class='status alert alert-success']")).getText();
+        Assert.assertEquals(actualMessage, expectedMessage);
+
+    }
 }
