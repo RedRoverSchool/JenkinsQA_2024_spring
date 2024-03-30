@@ -29,12 +29,7 @@ public class TeaPartyGroupTest {
 
         WebElement loginButton=driver.findElement(By.id("login-button"));
         loginButton.click();
-
-//        WebElement menu = driver.findElement(By.id("react-burger-menu-btn"));
-//        String nMenu = menu.getText();
-//
-//        assert menu.getText().equals(nMenu) : "All Items";
-//        menu.click();
+        driver.quit();
 
 
 
