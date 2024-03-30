@@ -6,16 +6,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.Test;
 
-
-import java.time.Duration;
-
 public class GuruTest {
     @Test
     public void FormTest() {
 
         WebDriver driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-
         driver.get("https://demo.guru99.com/test/login.html");
 
         WebElement email = driver.findElement(By.id("email"));
@@ -29,4 +24,22 @@ public class GuruTest {
 
         driver.quit();
     }
+
+    @Test
+    public void GuruRadioTest() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demo.guru99.com/test/radio.html");
+
+        WebElement radio1 = driver.findElement(By.id("vfb-7-1"));
+        radio1.click();
+
+        WebElement radio2 = driver.findElement(By.id("vfb-7-2"));
+        radio2.click();
+
+        WebElement option1 = driver.findElement(By.id("vfb-6-0"));
+        option1.click();
+
+        driver.quit();
+    }
 }
+
