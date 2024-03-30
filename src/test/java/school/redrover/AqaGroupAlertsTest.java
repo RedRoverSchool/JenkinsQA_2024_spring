@@ -41,7 +41,7 @@ public class AqaGroupAlertsTest extends AqaGroupBaseTest {
         getDriver().get(URL);
         getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(15000));
 
-        getDriver().findElement(By.id("confirmButton")).click();
+        scrollIntoView(getDriver().findElement(By.id("confirmButton"))).click();
         getDriver().switchTo().alert().accept();
 
         Assert.assertEquals(
@@ -55,7 +55,7 @@ public class AqaGroupAlertsTest extends AqaGroupBaseTest {
         getDriver().get(URL);
         getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(15000));
 
-        getDriver().findElement(By.id("confirmButton")).click();
+        scrollIntoView(getDriver().findElement(By.id("confirmButton"))).click();
         getDriver().switchTo().alert().dismiss();
 
         Assert.assertEquals(
@@ -69,7 +69,7 @@ public class AqaGroupAlertsTest extends AqaGroupBaseTest {
         getDriver().get(URL);
         getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(15000));
 
-        getDriver().findElement(By.id("promtButton")).click();
+        scrollIntoView(getDriver().findElement(By.id("promtButton"))).click();
         Alert alert = getDriver().switchTo().alert();
         alert.sendKeys("Irina");
         alert.accept();
