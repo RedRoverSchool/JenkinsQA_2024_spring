@@ -26,7 +26,7 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[@href='/products']")).click();
         Thread.sleep(1000);
-        if (getDriver().findElement(By.xpath("//ins[@class='adsbygoogle adsbygoogle-noablate']")).isDisplayed()) {
+        if (getDriver().findElements(By.xpath("//ins[@class='adsbygoogle adsbygoogle-noablate']")).size() > 0) {
             JavascriptExecutor jse = (JavascriptExecutor) getDriver();
             jse.executeScript(
                     "const ads = document.getElementsByClassName('adsbygoogle adsbygoogle-noablate'); while (ads.length > 0) ads[0].remove();"
@@ -89,7 +89,7 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[@href='/products']")).click();
         Thread.sleep(1000);
-        if (getDriver().findElement(By.xpath("//ins[@class='adsbygoogle adsbygoogle-noablate']")).isDisplayed()) {
+        if (!getDriver().findElements(By.xpath("//ins[@class='adsbygoogle adsbygoogle-noablate']")).isEmpty()) {
             JavascriptExecutor jse = (JavascriptExecutor) getDriver();
             jse.executeScript(
                     "const ads = document.getElementsByClassName('adsbygoogle adsbygoogle-noablate'); while (ads.length > 0) ads[0].remove();"
