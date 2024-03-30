@@ -207,4 +207,20 @@ public class UnderdogsGroupTest {
 
         driver.quit();
     }
+
+    @Test
+    public void TestCarSearch() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.echopark.com/used-cars?gad_source=1&gclid=Cj0KCQjw8J6wBhDXARIsAPo7QA_Ks0oT-6VTPvrUjmYNusBm9_g5S74vFLkrKMTO74acOC2CVRQRxzcaAv50EALw_wcB");
+
+        driver.findElement(By.id("searchbar")).sendKeys("Jeep Grand Cherokee");
+        driver.findElement(By.id("btnSearchIcon")).click();
+
+        Thread.sleep(4000);
+
+        WebElement actualText = driver.findElement(By.id("filterheading"));
+
+        Assert.assertTrue(actualText.getText().contains("Jeep Grand Cherokee"));
+    }
+
 }
