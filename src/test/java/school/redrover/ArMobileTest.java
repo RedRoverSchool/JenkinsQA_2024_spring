@@ -5,6 +5,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 
 public class ArMobileTest extends BaseTest {
@@ -29,12 +30,11 @@ public class ArMobileTest extends BaseTest {
 
         getDriver().get(URL);
         getDriver().manage().window().setSize(new Dimension(1920,1080));
-        Thread.sleep(1000);
+        getDriver().manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+        getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys("yyyyyyyyyy@mail.xx");
-
         getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
-        Thread.sleep(1000);
 
         String getError = getDriver().findElement(getErrorText).getText();
 
@@ -46,14 +46,13 @@ public class ArMobileTest extends BaseTest {
 
         getDriver().get(URL);
         getDriver().manage().window().setSize(new Dimension(1920,1080));
-        Thread.sleep(1000);
+        getDriver().manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+        getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         getDriver().findElement(By.xpath("//h2[@class='ant-typography h2_m Login__restore-text']")).click();
 
         getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
-
         getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
-        Thread.sleep(1000);
 
         String getPasError = getDriver().findElement(getPaswordText).getText();
 
@@ -66,18 +65,17 @@ public class ArMobileTest extends BaseTest {
         getDriver().get(URL);
 
         getDriver().manage().window().setSize(new Dimension(1920,1080));
-        Thread.sleep(1000);
+        getDriver().manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+        getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         getDriver().findElement(By.xpath("//a[@href='https://vr-arsoft.com/user-agreement-armobail/']")).click();
 
         ArrayList<String> newTab = new ArrayList<>(getDriver().getWindowHandles());
         getDriver().switchTo().window(newTab.get(1));
-        Thread.sleep(1000);
 
         String getPoliticaUser = getDriver().findElement(getPoliticaUserText).getText();
 
         Assert.assertEquals("Предмет пользовательского соглашения", getPoliticaUser);
-        getDriver().quit();
     }
 
     @Test
