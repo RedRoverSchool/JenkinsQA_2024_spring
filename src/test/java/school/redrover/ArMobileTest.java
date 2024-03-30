@@ -83,60 +83,31 @@ public class ArMobileTest extends BaseTest {
 
         getDriver().get(URL);
         getDriver().manage().window().setSize(new Dimension(1920,1080));
-        Thread.sleep(1000);
+        getDriver().manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+        getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
         getDriver().findElement(By.xpath(INPUT_PASSWORD)).sendKeys(PASSWORD);
         getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
 
-        Thread.sleep(9000); //  сайт тормоз не убирать sleep ===
-
-
         getDriver().findElement(By.xpath("//button[@class='ant-btn ant-btn-default primaryButton big colorPrimary ']")).click();
-        Thread.sleep(1000);
-
         getDriver().findElement(By.xpath("//input[@class='ant-input primaryInput  not-entered']")).sendKeys("1Новый проект");
-        Thread.sleep(1000);
-
         getDriver().findElement(By.xpath("//input[@id='CreateProjectForm_city']")).sendKeys("Самара");
-        Thread.sleep(1000);
-
         getDriver().findElement(By.xpath("//input[@id='CreateProjectForm_country']")).sendKeys("РФ");
-        Thread.sleep(1000);
-
         getDriver().findElement(By.xpath("//textarea[@id='CreateProjectForm_street']")).sendKeys("Победы");
-        Thread.sleep(1000);
-
         getDriver().findElement(By.xpath("//input[@id='CreateProjectForm_postalCode']")).sendKeys("444444");
-        Thread.sleep(1000);
-
         getDriver().findElement(By.xpath("//input[@id='CreateProjectForm_code']")).sendKeys("123");
-        Thread.sleep(1000);
-
         getDriver().findElement(By.xpath("//input[@id='CreateProjectForm_building']")).sendKeys("121");
-        Thread.sleep(1000);
-
         getDriver().findElement(By.xpath("//input[@id='CreateProjectForm_office']")).sendKeys("117");
-        Thread.sleep(1000);
-
         getDriver().findElement(By.xpath("//input[@id='CreateProjectForm_startDate']")).click();
-        Thread.sleep(1000);
-
-        WebElement NewData = getDriver().findElement(By.xpath("//a[@class='ant-picker-today-btn']"));
-        Thread.sleep(1000);
-        NewData.click();
+        getDriver().findElement(By.xpath("//a[@class='ant-picker-today-btn']")).click();
 
         WebElement EndData = getDriver().findElement(By.xpath("//input[@id='CreateProjectForm_endDate']"));
         EndData.sendKeys("26-05-2024");
-        Thread.sleep(1000);
         EndData.sendKeys(Keys.ENTER);
 
         getDriver().findElement(By.xpath("//button[@class='ant-btn ant-btn-default primaryButton big colorPrimary ']")).click();
-        Thread.sleep(4000);
-
         getDriver().findElement(By.xpath("//div[@class='ant-typography ant-typography-ellipsis ant-typography-single-line ant-typography-ellipsis-single-line p_r']")).click();
-        Thread.sleep(2000);
-
         getDriver().findElement(By.xpath("//a[@style='color: inherit;'][contains(.,'Настройки')]")).click();
 
         String newProgectName = getDriver().findElement(newProgectNameText).getText();
@@ -144,8 +115,6 @@ public class ArMobileTest extends BaseTest {
         Assert.assertEquals("1Новый проект", newProgectName);
 
         getDriver().findElement(By.xpath("//button[@class='ant-btn ant-btn-default primaryButton big colorRed ']")).click();
-        Thread.sleep(2000);
-
         getDriver().findElement(By.xpath("//button[@class='ant-btn ant-btn-default primaryButton big colorPrimary '][contains(.,'Подтвердить')]")).click();
     }
 
@@ -154,10 +123,10 @@ public class ArMobileTest extends BaseTest {
 
         getDriver().get(URL);
         getDriver().manage().window().setSize(new Dimension(1920,1080));
-        Thread.sleep(1000);
+        getDriver().manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+        getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         getDriver().findElement(By.xpath("//a[@href='https://vr-arsoft.com/personal-data-processing-policy/']")).click();
-        Thread.sleep(1000);
 
         ArrayList<String> newTab = new ArrayList<>(getDriver().getWindowHandles());
         getDriver().switchTo().window(newTab.get(1));
@@ -171,16 +140,15 @@ public class ArMobileTest extends BaseTest {
 
         getDriver().get(URL);
         getDriver().manage().window().setSize(new Dimension(1920,1080));
-        Thread.sleep(3000);
+        getDriver().manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+        getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
 
         getDriver().findElement(By.xpath(INPUT_PASSWORD)).sendKeys(PASSWORD);
         getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
-        Thread.sleep(1000);
 
         getDriver().findElement(By.xpath("//a[@href='https://t.me/arsoft_support_bot']")).click();
-        Thread.sleep(1000);
 
         ArrayList<String> newTab = new ArrayList<>(getDriver().getWindowHandles());
         getDriver().switchTo().window(newTab.get(1));
@@ -194,15 +162,14 @@ public class ArMobileTest extends BaseTest {
 
         getDriver().get(URL);
         getDriver().manage().window().setSize(new Dimension(1920,1080));
+        getDriver().manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+        getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
         getDriver().findElement(By.xpath(INPUT_PASSWORD)).sendKeys(PASSWORD);
         getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
-        Thread.sleep(9000);
 
         getDriver().findElement(By.xpath("//a[@href='/users']")).click();
-
         getDriver().findElement(By.xpath("//button[@class='ant-btn ant-btn-default primaryButton big colorPrimary '] ")).click();
-
         getDriver().findElement(By.xpath("//input[@id='InviteUserModal_email']")).sendKeys("yevgeniy.gor.91@mail.ru");
 
         WebElement userRoles = getDriver().findElement(By.xpath("//input[@id='InviteUserModal_roles']"));
@@ -210,13 +177,10 @@ public class ArMobileTest extends BaseTest {
         userRoles.sendKeys(Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ENTER);
 
         WebElement createRole = getDriver().findElement(By.xpath("//input[@id='InviteUserModal_employmentId']"));
-        Thread.sleep(2000);
-
         createRole.click();
         createRole.sendKeys("Kir", Keys.ENTER);
 
         getDriver().findElement(By.xpath("//button[@class='ant-btn ant-btn-primary primaryButton big colorPrimary ']")).click();
-        Thread.sleep(2000);
 
         String getTextD = getDriver().findElement(By.xpath("//span[@class='anticon anticon-close-circle']")).getText();
 
@@ -228,29 +192,22 @@ public class ArMobileTest extends BaseTest {
 
         getDriver().get(URL);
         getDriver().manage().window().setSize(new Dimension(1920,1080));
-        Thread.sleep(2000);
+        getDriver().manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+        getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
         getDriver().findElement(By.xpath(INPUT_PASSWORD)).sendKeys(PASSWORD);
         getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
-        Thread.sleep(3000);
 
         getDriver().findElement(By.xpath("//a[@href='/users']")).click();
-        Thread.sleep(2000);
-
         getDriver().findElement(By.xpath("//button[@class='ant-btn ant-btn-default primaryButton big colorPrimary '] ")).click();
-        Thread.sleep(2000);
-
         getDriver().findElement(By.xpath("//input[@id='InviteUserModal_email']")).sendKeys(EMAIL);
-        Thread.sleep(2000);
 
         WebElement userRoles = getDriver().findElement(By.xpath("//input[@id='InviteUserModal_roles']"));
         userRoles.click();
         userRoles.sendKeys(Keys.ARROW_DOWN, Keys.ENTER);
-        Thread.sleep(2000);
 
         getDriver().findElement(By.xpath("//button[@class='ant-btn ant-btn-primary primaryButton big colorPrimary ']")).click();
-        Thread.sleep(2000);
 
         String getTextD = getDriver().findElement(By.xpath("//span[@class='anticon anticon-close-circle']")).getText();
 
