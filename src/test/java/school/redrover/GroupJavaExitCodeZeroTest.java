@@ -1,9 +1,14 @@
 package school.redrover;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
+import java.time.Duration;
 
 public class GroupJavaExitCodeZeroTest extends BaseTest {
     private static final String BASE_URL = "http://automationexercise.com";
@@ -55,5 +60,20 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
         String actualResult = firstArticle.getText();
 
         Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void testEightComponents() {
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
+
+        WebElement textBox = getDriver().findElement(By.name("my-text"));
+        WebElement submitButton = getDriver().findElement(By.cssSelector("button"));
+        textBox.sendKeys("Selenium");
+        submitButton.click();
+        WebElement message = getDriver().findElement(By.id("message"));
+        String value = message.getText();
+
+        Assert.assertEquals("Received!", value);
     }
 }
