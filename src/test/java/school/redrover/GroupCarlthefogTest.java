@@ -2,9 +2,11 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -17,7 +19,10 @@ import java.util.List;
 public class GroupCarlthefogTest {
 
     private final static String FULL_NAME = "John Smith";
-    private final static String EMAIL = "john.smith@jmail.com";
+    private final static String EMAIL = "john.smith@gmail.com";
+    private final static String ADDRESS = "5th Ave, New York";
+    private final static String PERM_ADDRESS = "5th Ave, New York";
+
 
     @Test
     public void testSaucedemo() {
@@ -152,34 +157,41 @@ public class GroupCarlthefogTest {
     }
 
     @Test
-    public void testTexBoxUseForm(){
+    public void testTexBoxUseForm() {
 
-        String expectedlHeader = "Text Box";
+        String expectedHeader = "Text Box";
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://demoqa.com/");
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.setPageLoadStrategy(PageLoadStrategy.EAGER);
 
-        driver.findElement(By.xpath("//div[@id='app']/div/div/div[2]/div/div[1]/div/div[1]")).click();
-        WebElement element = driver.findElement(By.xpath("//span[contains (.,'Text Box')]"));
-        element.click();
+        WebDriver driver = new ChromeDriver(chromeOptions);
+        driver.manage().window().maximize();
+        driver.get("https://demoqa.com/text-box");
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
         String actualHeader = driver.findElement(By.xpath("//div[@id='app']//h1")).getText();
 
-        Assert.assertEquals(expectedlHeader, actualHeader);
-
-        driver.findElement(By.id("userName")).sendKeys(FULL_NAME);
-        driver.findElement(By.id("userEmail")).sendKeys(EMAIL);
+        driver.findElement(By.cssSelector("input#userName")).sendKeys(FULL_NAME);
+        driver.findElement(By.cssSelector("input#userEmail")).sendKeys(EMAIL);
+        driver.findElement(By.cssSelector("textarea#currentAddress")).sendKeys(ADDRESS);
+        driver.findElement(By.cssSelector("textarea#permanentAddress")).sendKeys(PERM_ADDRESS);
 
         Actions act = new Actions(driver);
         act.sendKeys(Keys.PAGE_DOWN).build().perform();
+        WebElement submitButton = driver.findElement(By.cssSelector("button#submit"));
+        submitButton.click();
 
-        driver.findElement(By.xpath("//button[@id='submit']")).click();
+        WebElement expectedName = driver.findElement(By.cssSelector("p#name"));
+        WebElement expectedEmail = driver.findElement(By.cssSelector("p#email"));
+        WebElement expectedCurrentAddress = driver.findElement(By.cssSelector("p#currentAddress"));
+        WebElement expectedPermanentAddress = driver.findElement(By.cssSelector("p#permanentAddress"));
 
-        String actualResult1 = driver.findElement(By.xpath("//p[@id='name']")).getText();
-        String actualResult2 = driver.findElement(By.xpath("//p[@id='email']")).getText();
-
-        Assert.assertEquals("Name:" + FULL_NAME, actualResult1);
-        Assert.assertEquals("Email:" + EMAIL, actualResult2);
+        Assert.assertEquals(actualHeader, expectedHeader);
+        Assert.assertEquals(expectedName.getText(), "Name:" + FULL_NAME);
+        Assert.assertEquals(expectedEmail.getText(), "Email:" + EMAIL);
+        Assert.assertEquals(expectedCurrentAddress.getText(), "Current Address :" + ADDRESS);
+        Assert.assertEquals(expectedPermanentAddress.getText(), "Permananet Address :" + PERM_ADDRESS);
 
         driver.quit();
     }
