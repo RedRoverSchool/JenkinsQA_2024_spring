@@ -7,7 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class TestTheInternetHerokuapp {
+public class HerokuappTest {
     @Test
     public void testPage() throws InterruptedException{
         WebDriver driver = new ChromeDriver();

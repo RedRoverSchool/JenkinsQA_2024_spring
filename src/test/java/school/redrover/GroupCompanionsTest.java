@@ -6,11 +6,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
-public class Exp86Test {
+public class GroupCompanionsTest extends BaseTest {
     @Test
     public void testExp86() {
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = getDriver();
         driver.get("https://exp86.ru/");
 
         WebElement textBox = driver.findElement(By.name("q"));
