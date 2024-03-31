@@ -72,26 +72,21 @@ public class UnderdogsGroupTest extends BaseTest {
         driver.quit();
     }
 
-    @Ignore
     @Test
     public void testCheckBox() {
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get("https://demoqa.com/checkbox");
+        getDriver().get("https://demoqa.com/checkbox");
+        getDriver().manage().window().maximize();
 
-        driver
+        getDriver()
                 .findElement(By.xpath("//div[@id='tree-node']/ol/li/span/button"))
                 .click();
-        driver.findElement(By.xpath("//*[@id='tree-node']//li[2]//button"))
+        getDriver().findElement(By.xpath("//*[@id='tree-node']//li[2]//button"))
                 .click();
-        driver.findElement(By.xpath("//*[@for='tree-node-workspace']/span"))
+        getDriver().findElement(By.xpath("//*[@for='tree-node-workspace']/span"))
                 .click();
-        try {
-            Assert.assertEquals(driver.findElement(By.id("result")).getText(),
-                    "You have selected :\nworkspace\nreact\nangular\nveu");
-        } finally {
-            driver.quit();
-        }
+
+        Assert.assertEquals(getDriver().findElement(By.id("result")).getText(),
+                "You have selected :\nworkspace\nreact\nangular\nveu");
     }
 
     @Ignore
