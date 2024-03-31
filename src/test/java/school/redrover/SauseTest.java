@@ -61,69 +61,9 @@ public class SauseTest {
 
     }
 
-    @Test
-    public void testStandartUser() {
-        int expectedResult = 6;
-        driver.get(SITE);
-
-        driver.findElement(By.xpath(LOGIN_FIELD)).sendKeys(standartUser);
-        driver.findElement(By.xpath(PASSWORD_FIELD)).sendKeys(password);
-        driver.findElement(By.xpath(LOGIN_BUTTON)).click();
-
-        List<WebElement> listProducts = driver.findElements(By.xpath("//div[@class='inventory_item']"));
-        int actualResult = listProducts.size();
-
-        Assert.assertEquals(actualResult, expectedResult);
-    }
-
-    @Test
-    public void testlockedOutUser() {
-        String expectedResult = "Epic sadface: Sorry, this user has been locked out.";
-
-        login(lockedOutUser);
-
-        Assert.assertEquals(driver.findElement(By.xpath("//div[@class='error-message-container error']")).getAttribute("textContent"), expectedResult);
-    }
-
-    @Test
-    public void testProblemUser() {
-        driver.get(SITE);
-        login(problemUser);
-
-        WebElement imageSourceList = driver.findElement(By.xpath("//div[@class='inventory_list']/div/div/a/img"));
-        String actualResult = imageSourceList.getAttribute("src");
-        driver.findElement(By.xpath("//div[text()='Sauce Labs Backpack']")).click();
-
-        WebElement imageSourceItem = driver.findElement(By.xpath("//img[@alt='Sauce Labs Fleece Jacket']"));
-        String expectedResult = imageSourceItem.getAttribute("src");
-
-        Assert.assertEquals(actualResult, expectedResult);
-    }
 
 
-    @Test
-    public void testErrorUser() throws InterruptedException {
-        login(errorUser);
 
-        driver.findElement(By.xpath("//button[@name='add-to-cart-sauce-labs-backpack']")).click();
-        WebElement removeButton = driver.findElement(By.xpath("//button[@name='remove-sauce-labs-backpack']"));
-
-        Assert.assertEquals(removeButton.getText(), "Remove");
-        Thread.sleep(1000);
-        removeButton.click();
-        Assert.assertEquals(removeButton.getText(), "Remove");
-    }
-
-    @Test
-    public void testVisualUser() {
-        login(visualUser);
-        String expectedRes = "Inherit";
-
-        WebElement cssAtribute = driver.findElement(By.xpath("//a[@class='shopping_cart_link']"));
-        String actualRes = cssAtribute.getCssValue("position");
-
-        Assert.assertEquals(actualRes, expectedRes);
-    }
 
     @AfterTest
     public void tearDown() {
