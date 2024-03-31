@@ -207,5 +207,20 @@ public class AqaGroupEviltesterTest extends AqaGroupBaseTest {
                 getDriver().findElement(By.className("explanation")).getText().startsWith("You probably"),
                 "UserAgent change failed");
     }
+
+    @Test
+    public void testBasicAuthProtection() {
+        ((ChromeDriver) getDriver()).executeCdpCommand(
+                "Network.enable", Map.of());
+        ((ChromeDriver) getDriver()).executeCdpCommand(
+                "Network.setExtraHTTPHeaders",
+                Map.of("headers", Map.of("Authorization", "Basic YXV0aG9yaXplZDpwYXNzd29yZDAwMQ==")));
+
+        getDriver().get("https://testpages.eviltester.com/styled/auth/basic-auth-results.html");
+
+        Assert.assertEquals(
+                getDriver().findElement(By.id("status")).getText(),
+                "Authenticated");
+    }
 }
 
