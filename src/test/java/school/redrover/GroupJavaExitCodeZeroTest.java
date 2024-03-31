@@ -17,6 +17,21 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
     private static final String BASE_URL = "https://automationexercise.com";
     private final static String HABR_URL = "https://habr.com/ru/search/";
 
+    private static String getRandomEmail() {
+        int n = 15;
+        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                + "0123456789"
+                + "abcdefghijklmnopqrstuvxyz";
+
+        StringBuilder sb = new StringBuilder(n);
+
+        for (int i = 0; i < n; i++) {
+            int index = (int)(AlphaNumericString.length() * Math.random());
+            sb.append(AlphaNumericString.charAt(index));
+        }
+        return sb.toString() + "@gmail.com";
+    }
+
     @Test
     public void testAllProductsNavigation() throws InterruptedException {
         final String expectedProductsUrl = "https://automationexercise.com/products";
@@ -231,21 +246,19 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
     public void testContactUs() {
         final String expectedMessage = "Success! Your details have been submitted successfully.";
         final String name = "Tom";
-        final String email = "tom@gmail.com";
         final String subjectMessage = "Claim";
         final String textMessage = "My problem is....";
 
         getDriver().get(BASE_URL);
         getDriver().findElement(By.xpath("//a[@href='/contact_us']")).click();
         getDriver().findElement(By.xpath("//input[@placeholder ='Name']")).sendKeys(name);
-        getDriver().findElement(By.xpath("//input[@placeholder ='Email']")).sendKeys(email);
+        getDriver().findElement(By.xpath("//input[@placeholder ='Email']")).sendKeys(getRandomEmail());
         getDriver().findElement(By.xpath("//input[@placeholder ='Subject']")).sendKeys(subjectMessage);
         getDriver().findElement(By.id("message")).sendKeys(textMessage);
         getDriver().findElement(By.xpath("//input[@name ='submit']")).click();
         getDriver().switchTo().alert().accept();
+        String actualMessage = getDriver().findElement(By.xpath("//div[@class='status alert alert-success']")).getText();
 
-        final String actualMessage = getDriver().findElement(By.xpath("//div[@class='status alert alert-success']")).getText();
         Assert.assertEquals(actualMessage, expectedMessage);
-
     }
 }
