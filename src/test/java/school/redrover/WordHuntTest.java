@@ -6,10 +6,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
 
-public class WordHuntTest {
+public class WordHuntTest extends BaseTest {
     @Test
     public void wooordHunttest(){
         WebDriver driver = new ChromeDriver();

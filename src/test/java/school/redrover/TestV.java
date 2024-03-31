@@ -6,8 +6,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
-public class TestV {
+public class TestV extends BaseTest {
     @Test
     public void testTest2() {
         WebDriver driver = new ChromeDriver();
