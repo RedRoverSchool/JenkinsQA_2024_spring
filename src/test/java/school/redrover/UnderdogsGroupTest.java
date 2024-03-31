@@ -231,4 +231,18 @@ public class UnderdogsGroupTest extends BaseTest {
                                                         + "as soon as possible.");
 
     }
+
+    @Test
+    public void testMainTest() throws InterruptedException {
+        getDriver().get("https://art-complex.ru/brand/kl-acoustics/");
+        Thread.sleep(2000);
+        getDriver().findElement(By.id("mod_search_searchword")).sendKeys("INVOTONE H829");
+        Thread.sleep(3000);
+        getDriver().findElement(By.id("sr0")).click();
+        getDriver().findElement(By.id("tocart_3341")).click();
+        getDriver().findElement(By.id("count_3341")).sendKeys("2");
+        String resultText = getDriver().findElement(By.className("shop-cart-div-1")).getText();
+
+        Assert.assertEquals(resultText, "Минимальный заказ в нашем магазине 10 000 руб.");
+    }
 }
