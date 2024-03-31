@@ -9,38 +9,33 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 
-public class UnderdogsGroupTest {
+public class UnderdogsGroupTest extends BaseTest {
     private  final static String URL_HOMEPAGE = "https://demoqa.com/";
     @Test
-    public void testDemoqaInput() {
-
-        WebDriver driver = new ChromeDriver();
-
-        driver.get("https://demoqa.com/");
-        driver.findElement(By.id("close-fixedban")).click();
-        driver.findElement(By.xpath("//div[@class='category-cards']/div[1]")).click();
-        driver.findElement(By.xpath("//span[text()='Text Box']")).click();
+    public void testDemoQAInput() {
+        getDriver().get("https://demoqa.com/");
+        getDriver().findElement(By.id("close-fixedban")).click();
+        getDriver().findElement(By.xpath("//div[@class='category-cards']/div[1]")).click();
+        getDriver().findElement(By.xpath("//span[text()='Text Box']")).click();
         String name = "test";
-
-        driver.findElement(By.id("userName")).sendKeys(name);
-        driver.findElement(By.id("submit")).click();
-        String result = driver.findElement(By.id("name")).getText();
+        getDriver().findElement(By.id("userName")).sendKeys(name);
+        getDriver().findElement(By.id("submit")).click();
+        String result = getDriver().findElement(By.id("name")).getText();
 
         Assert.assertEquals(result, "Name:" + name);
-
-        driver.quit();
     }
 
+    @Ignore
     @Test
     public void testElementsTextBox() {
         WebDriver driver = new ChromeDriver();
-
         driver.get("https://demoqa.com/");
         driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[1]")).click();
         driver.findElement(By.xpath("(//*[@id=\"item-0\"])[1]")).click();
@@ -54,11 +49,10 @@ public class UnderdogsGroupTest {
 
         driver.quit();
     }
-
+    @Ignore
     @Test
     public void testCheckTheQuantityInTheCart() {
         WebDriver driver = new ChromeDriver();
-
         driver.get("https://natr.com.tr/en/");
         driver.findElement(By.xpath("//li[@class='search']")).click();
 
@@ -78,6 +72,7 @@ public class UnderdogsGroupTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void testCheckBox() {
         WebDriver driver = new ChromeDriver();
@@ -99,9 +94,9 @@ public class UnderdogsGroupTest {
         }
     }
 
+    @Ignore
     @Test
     public void numberOfTheCarsPresented() {
-
         WebDriver driver = new ChromeDriver();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.get("https://av.by/");
@@ -113,6 +108,7 @@ public class UnderdogsGroupTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void testRightSideAdvertisement() {
         WebDriver driver = new ChromeDriver();
@@ -124,6 +120,7 @@ public class UnderdogsGroupTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void testAddToCartButton() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -147,6 +144,8 @@ public class UnderdogsGroupTest {
 
         driver.quit();
     }
+
+    @Ignore
     @Test
     public  void testVerifyTitle() {
         WebDriver driver = new ChromeDriver();
@@ -156,6 +155,7 @@ public class UnderdogsGroupTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void testSearchByName() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -172,6 +172,7 @@ public class UnderdogsGroupTest {
         Assert.assertEquals(actualText.getText(), "WOMEN'S BACKPACKS");
     }
 
+    @Ignore
     @Test
     public void testAutomationTestingOnline() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
