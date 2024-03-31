@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class AqaGroupEviltesterTest extends AqaGroupBaseTest {
 
-    private static final String BUTTONS_URL = "https://testpages.eviltester.com/styled/dynamic-buttons-disabled.html";
+    private static final String BUTTONS_URL_ET = "https://testpages.eviltester.com/styled/dynamic-buttons-disabled.html";
     private static final String ALERTS_URL = "https://testpages.eviltester.com/styled/alerts/alert-test.html";
     private static final String FAKE_ALERTS_URL = "https://testpages.eviltester.com/styled/alerts/fake-alert-test.html";
     private static final String ALERT_DISPLAYED = "fake alert box is displayed";
@@ -49,7 +49,7 @@ public class AqaGroupEviltesterTest extends AqaGroupBaseTest {
 
     @Test
     public void testDisabledDynamicButtons() {
-        getDriver().get(BUTTONS_URL);
+        getDriver().get(BUTTONS_URL_ET);
 
         getWait15().until(ExpectedConditions.elementToBeClickable(By.id("button00"))).click();
         getWait15().until(ExpectedConditions.elementToBeClickable(By.id("button01"))).click();
