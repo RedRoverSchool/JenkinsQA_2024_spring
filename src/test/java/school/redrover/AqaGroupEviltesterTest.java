@@ -222,5 +222,13 @@ public class AqaGroupEviltesterTest extends AqaGroupBaseTest {
                 getDriver().findElement(By.id("status")).getText(),
                 "Authenticated");
     }
+
+    @Test
+    public void testBasicAuthorization() {
+        getDriver().get("https://authorized:password001@testpages.eviltester.com/styled/auth/basic-auth-results.html");
+        Assert.assertEquals(
+                getDriver().findElement(By.id("status")).getText(),
+                "Authenticated");
+    }
 }
 
