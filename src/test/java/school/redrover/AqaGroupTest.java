@@ -28,6 +28,7 @@ public class AqaGroupTest extends AqaGroupBaseTest {
     private static final By OPEN_MODAL_DIALOG_BUTTON = By.id("modaldialog");
     private static final By MODAL_DIALOG_OK_BUTTON = By.id("dialog-ok");
     private static final By MODAL_DIALOG_TEXT = By.id("dialog-text");
+    private static final String URL_LETCODE = "https://letcode.in/edit";
 
     @Test
     public void testAlert() {
@@ -695,6 +696,45 @@ public class AqaGroupTest extends AqaGroupBaseTest {
                 getDriver().findElement(By.id("event1")).getText(),
                 "down a 65");
     }
+    @Test
+    public void testSendKeys() {
+        getDriver().get(URL_LETCODE);
+        getDriver().findElement(By.id("fullName")).sendKeys("Ira");
+        Assert.assertEquals(
+                getDriver().findElement(By.id("fullName")).getAttribute("value"),
+                "Ira");
+    }
 
+    @Test
+    public void testKeyboardTAB() {
+        getDriver().get(URL_LETCODE);
+        getDriver().findElement(By.id("join")).sendKeys(" at all" + Keys.TAB);
+//        getDriver().findElement(By.id("join")).sendKeys(" at all\t");
+        Assert.assertEquals(
+                getDriver().switchTo().activeElement().getAttribute("value"),
+                "ortonikc");
+    }
 
+    @Test
+    public void testClear() {
+        getDriver().get(URL_LETCODE);
+        getDriver().findElement(By.id("clearMe")).clear();
+        Assert.assertEquals(
+                getDriver().findElement(By.id("clearMe")).getAttribute("value"),
+                "");
+    }
+
+    @Test
+    public void testIsEnabled() {
+        getDriver().get(URL_LETCODE);
+        Assert.assertFalse(getDriver().findElement(By.id("noEdit")).isEnabled());
+    }
+
+    @Test
+    public void testReadonly() {
+        getDriver().get(URL_LETCODE);
+        Assert.assertEquals(
+                getDriver().findElement(By.id("dontwrite")).getAttribute("readonly"),
+                "true");
+    }
 }
