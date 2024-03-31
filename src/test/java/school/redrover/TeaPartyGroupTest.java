@@ -31,8 +31,6 @@ public class TeaPartyGroupTest {
         loginButton.click();
         driver.quit();
 
-
-
  }
 
  @Test
@@ -48,7 +46,6 @@ public class TeaPartyGroupTest {
 
      driver.findElement(By.xpath("//input[@data-component='SearchInputControlled']")).sendKeys("YSL Heels");
      driver.findElement(By.xpath("//input[@data-testid='search-input']")).click();
-
 
      driver.quit();
  }
