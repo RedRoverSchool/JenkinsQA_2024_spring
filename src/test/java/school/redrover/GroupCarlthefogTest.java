@@ -176,7 +176,7 @@ public class GroupCarlthefogTest extends BaseTest {
     }
     @Test
     public void tangaTest() {
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = getDriver();
         driver.get("https://www.tanga.com/");
 
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
@@ -192,8 +192,5 @@ public class GroupCarlthefogTest extends BaseTest {
         String value = message.getText();
 
         Assert.assertEquals("No products found", value);
-
-        driver.quit();
-
     }
 }
