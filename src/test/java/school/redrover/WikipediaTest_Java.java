@@ -7,7 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class WikipediaTestJava {
+public class WikipediaTest_Java {
     @Test
     public void testWikipedia() throws Exception {
         WebDriver driver = new ChromeDriver();
@@ -24,6 +24,7 @@ public class WikipediaTestJava {
         Thread.sleep(2000);
 
         driver.quit();
+
     }
 }
 
