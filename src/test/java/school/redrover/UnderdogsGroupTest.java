@@ -172,40 +172,37 @@ public class UnderdogsGroupTest extends BaseTest {
         Assert.assertEquals(actualText.getText(), "WOMEN'S BACKPACKS");
     }
 
-    @Ignore
     @Test
     public void testAutomationTestingOnline() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://automationintesting.online/");
+        getDriver().get("https://automationintesting.online/");
 
         String name = "Anhelina";
-        WebElement fieldName = driver.findElement(By.xpath("//*[@id=\"name\"]"));
+        WebElement fieldName = getDriver().findElement(By.xpath("//*[@id=\"name\"]"));
         fieldName.sendKeys(name);
 
-        WebElement fieldEmail = driver.findElement(By.xpath("//*[@id=\"email\"]"));
+        WebElement fieldEmail = getDriver().findElement(By.xpath("//*[@id=\"email\"]"));
         fieldEmail.sendKeys("qa@mail.com");
 
-        WebElement fieldPhone = driver.findElement(By.xpath("//*[@id=\"phone\"]"));
+        WebElement fieldPhone = getDriver().findElement(By.xpath("//*[@id=\"phone\"]"));
         fieldPhone.sendKeys("01234567890");
 
         String subject = "rooms";
-        WebElement fieldSubject = driver.findElement(By.xpath("//*[@id=\"subject\"]"));
+        WebElement fieldSubject = getDriver().findElement(By.xpath("//*[@id=\"subject\"]"));
         fieldSubject.sendKeys(subject);
 
-        WebElement fieldMessage = driver.findElement(By.xpath("//*[@id=\"description\"]"));
+        WebElement fieldMessage = getDriver().findElement(By.xpath("//*[@id=\"description\"]"));
         fieldMessage.sendKeys("Hello. I'm Anhelina.");
 
-        WebElement buttonSubmit = driver.findElement(By.xpath("//*[@id=\"submitContact\"]"));
+        WebElement buttonSubmit = getDriver().findElement(By.xpath("//*[@id=\"submitContact\"]"));
         buttonSubmit.click();
 
         Thread.sleep(500);
-        WebElement actualText = driver.findElement(By.xpath("//div[@class = \"row contact\"]/div[2]"));
+        WebElement actualText = getDriver().findElement(By.xpath("//div[@class = \"row contact\"]/div[2]"));
 
         Assert.assertEquals(actualText.getText(), "Thanks for getting in touch " + name + "!" + "\n"
-                                                         + "We'll get back to you about" + "\n"
-                                                         + subject + "\n"
-                                                         + "as soon as possible.");
+                                                        + "We'll get back to you about" + "\n"
+                                                        + subject + "\n"
+                                                        + "as soon as possible.");
 
-        driver.quit();
     }
 }
