@@ -59,18 +59,15 @@ public class JavAngryTest extends BaseTest {
     }
 
     @Test
-    void testMainPageBannerTitlesText() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://demoqa.com/");
-        List<String> expectedBannerTitles = new ArrayList<>(Arrays.asList("Elements", "Forms", "Alerts, Frame & Windows", "Widgets", "Interactions", "Book Store Application"));
-        List<WebElement> elementList = driver.findElements(By.xpath("//div[@class='card mt-4 top-card']"));
+    void testActionCardsTitlesDemoQAMainPage() {
+        getDriver().get("https://demoqa.com/");
 
+        List<String> expectedBannerTitles = new ArrayList<>(Arrays.asList("Elements", "Forms", "Alerts, Frame & Windows",
+                "Widgets", "Interactions", "Book Store Application"));
+        List<WebElement> elementList = getDriver().findElements(By.xpath("//div[@class='card mt-4 top-card']"));
         List<String> actualBannerTitles = WebElementToString(elementList);
 
         Assert.assertEquals(actualBannerTitles, expectedBannerTitles);
-        Assert.assertTrue(actualBannerTitles.contains("Book Store Application"));
-
-        driver.quit();
     }
 
     public static List<String> WebElementToString(List<WebElement> elementList) {
