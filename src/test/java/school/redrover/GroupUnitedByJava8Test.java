@@ -99,4 +99,36 @@ public class GroupUnitedByJava8Test extends BaseTest {
         Assert.assertEquals("https://www.saucedemo.com/inventory.html", expectedResult);
 
     }
+    @Test
+    public void testAlertAppearsAfterItemIsAddedToCart() {
+
+        getDriver().get("https://magento.softwaretestingboard.com/");
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
+
+        WebElement searchField = getDriver().findElement(By.id("search"));
+        searchField.sendKeys("Pant");
+
+        WebElement submitButton = getDriver().findElement(By.xpath("//div[@class='actions']/button"));
+        submitButton.click();
+
+        WebElement submitShortLink = getDriver().findElement(By.xpath("//a[contains(., 'Cronus')]"));
+        submitShortLink.click();
+
+        WebElement submitSize = getDriver().findElement(By.xpath("//*[@id=\"option-label-size-143-item-175\"]"));
+        submitSize.click();
+
+        WebElement submitColor = getDriver().findElement(By.xpath("//div[@option-id ='49']"));
+        submitColor.click();
+
+        WebElement submitQty = getDriver().findElement(By.id("qty"));
+        submitQty.sendKeys("12");
+
+        WebElement submitAddToCart = getDriver().findElement(By.id("product-addtocart-button"));
+        submitAddToCart.click();
+
+        WebElement alertShoppingCart = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@role='alert']")));
+
+        Assert.assertTrue(alertShoppingCart.isDisplayed());
+        Assert.assertEquals(alertShoppingCart.getText(), "You added Cronus Yoga Pant to your shopping cart.");
+    }
 }
