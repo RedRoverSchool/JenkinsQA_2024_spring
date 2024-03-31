@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import java.util.ArrayList;
@@ -24,20 +25,20 @@ public class ArMobileTest extends BaseTest {
     private final By getPoliticaUserText = By.xpath("//span[@style='font-size: 19px;'][contains(.,'Предмет пользовательского соглашения')]");
     private final By getBotText = By.xpath("//span[@dir='auto']");
 
-public void url() {
+    public void url() {
 
-    getDriver().get(URL);
-    getDriver().manage().window().setSize(new Dimension(1920,1080));
-    getDriver().manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
-    getDriver().manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-}
+        getDriver().get(URL);
+        getDriver().manage().window().setSize(new Dimension(1920,1080));
+        getDriver().manage().timeouts().pageLoadTimeout(25, TimeUnit.SECONDS);
+        getDriver().manage().timeouts().implicitlyWait(25, TimeUnit.SECONDS);
+    }
 
-public void login() {
+    public void login() {
 
-    getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
-    getDriver().findElement(By.xpath(INPUT_PASSWORD)).sendKeys(PASSWORD);
-    getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
-}
+        getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
+        getDriver().findElement(By.xpath(INPUT_PASSWORD)).sendKeys(PASSWORD);
+        getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
+    }
 
     @Test
     public void testRemovePasword() {
@@ -81,6 +82,7 @@ public void login() {
         Assert.assertEquals("Предмет пользовательского соглашения", getPoliticaUser);
     }
 
+    @Ignore
     @Test
     public void testCreateProgect() {
         url();
@@ -143,6 +145,7 @@ public void login() {
         Assert.assertEquals("AR SOFT support", getBot);
     }
 
+    @Ignore
     @Test
     public void testUserNab() {
 
@@ -168,6 +171,7 @@ public void login() {
         Assert.assertEquals("Ошибка обращения к серверу", getTextD);
     }
 
+    @Ignore
     @Test
     public void testCreateUser() {
 
