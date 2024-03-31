@@ -18,7 +18,7 @@ public class GroupHollyGuacamoleTest extends BaseTest {
     private static final String PASSWORD = "secret_sauce";
     private static final String CART_PAGE = "//a[@class='shopping_cart_link']";
     private static final String BACKPACK_REMOVE_BUTTON = "//button[@id='remove-sauce-labs-backpack']";
-    private void login(String login, String password){
+    public void login(String login, String password){
         getDriver().get(BASE_URL);
         getDriver().findElement(By.xpath("//input[@id='user-name']")).sendKeys(login);
         getDriver().findElement(By.xpath("//input[@id='password']")).sendKeys(password);
@@ -26,7 +26,7 @@ public class GroupHollyGuacamoleTest extends BaseTest {
     }
 
     @Test
-    private void testLoginSuccess(){
+    public void testLoginSuccess(){
         String expectedResult = BASE_URL + "inventory.html";
         login(STANDARD_USER, PASSWORD);
         String actualResult = getDriver().getCurrentUrl();
@@ -35,7 +35,7 @@ public class GroupHollyGuacamoleTest extends BaseTest {
     }
 
     @Test
-    private void testCheckAmountItems() throws InterruptedException {
+    public void testCheckAmountItems() throws InterruptedException {
         int expectedResult = 6;
         login(STANDARD_USER, PASSWORD);
         Thread.sleep(1000);
@@ -46,7 +46,7 @@ public class GroupHollyGuacamoleTest extends BaseTest {
     }
 
     @Test
-    private void testAddItemToTheCard(){
+    public void testAddItemToTheCard(){
         boolean expectedResult = true;
         login(STANDARD_USER, PASSWORD);
         getDriver().findElement(By.xpath("//button[@id='add-to-cart-sauce-labs-bike-light']")).click();
@@ -57,7 +57,7 @@ public class GroupHollyGuacamoleTest extends BaseTest {
     }
 
     @Test
-    private void testRemoveItemFromTheCart(){
+    public void testRemoveItemFromTheCart(){
         login(STANDARD_USER, PASSWORD);
         getDriver().findElement(By.xpath("//button[@id='add-to-cart-sauce-labs-backpack']")).click();
         getDriver().findElement(By.xpath(CART_PAGE)).click();
@@ -70,7 +70,7 @@ public class GroupHollyGuacamoleTest extends BaseTest {
     }
 
     @Test
-    private void testLoginSaucedemo () {
+    public void testLoginSaucedemo () {
         getDriver().get(BASE_URL);
 
         getDriver().findElement(By.xpath("//input[@data-test='username']")).sendKeys("standard_user");
