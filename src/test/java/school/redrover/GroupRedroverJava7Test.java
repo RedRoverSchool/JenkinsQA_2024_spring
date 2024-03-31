@@ -1,14 +1,15 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 public class GroupRedroverJava7Test extends BaseTest {
 
@@ -50,6 +51,7 @@ public class GroupRedroverJava7Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@id='login']")).click();
 
         WebElement header = getDriver().findElement(By.xpath("//h3"));
+
 
         Assert.assertEquals(header.getText(), "Dinesh's Pizza House");
     }
@@ -146,4 +148,35 @@ public class GroupRedroverJava7Test extends BaseTest {
         Assert.assertEquals(text,"Su");
     }
 
+    @Test
+    public void testSwagLogin() {
+        getDriver().get("https://www.saucedemo.com/?ref=hackernoon.com");
+
+        WebElement usernameInput = getDriver().findElement(By.id("user-name"));
+        usernameInput.sendKeys("standard_user");
+
+        WebElement passwordInput = getDriver().findElement(By.id("password"));
+        passwordInput.sendKeys("secret_sauce");
+
+        WebElement loginButton = getDriver().findElement(By.id("login-button"));
+        loginButton.click();
+        WebElement shopCartButton = getDriver().findElement(By.id("shopping_cart_container"));
+
+        Assert.assertTrue(shopCartButton.isDisplayed(), "Shop cart doesn't displayed");
+    }
+
+    @Test
+    public void testPlaceAnOrder() {
+        getDriver().get("https://www.papajohns.com/");
+        getDriver().manage().window().maximize();
+
+        getDriver().findElement(By.xpath("//*[@href=' /order/menu']")).click();
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(2000));
+
+        getDriver().findElement(By.cssSelector("[aria-label=\"Order Now Pepperoni Pizza\"]")).click();
+
+        WebElement text = getDriver().findElement(By.xpath("//h2[text()='Find Your Store']"));
+        String value = text.getText();
+        Assert.assertEquals("FIND YOUR STORE", value);
+    }
 }
