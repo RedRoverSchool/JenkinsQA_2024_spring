@@ -595,6 +595,9 @@ public class AqaGroupTest extends AqaGroupBaseTest {
         getDriver().get("https://the-internet.herokuapp.com/broken_images");
 
         LogEntries logs = getDriver().manage().logs().get(LogType.BROWSER);
+
+        Assert.assertFalse(logs.getAll().isEmpty());
+
         for (LogEntry entry : logs) {
             Assert.assertTrue(
                     entry.getMessage().contains("Failed to load resource: the server responded with a status of 404"),
