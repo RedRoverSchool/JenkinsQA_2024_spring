@@ -17,7 +17,7 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
     private static final String BASE_URL = "https://automationexercise.com";
     private final static String HABR_URL = "https://habr.com/ru/search/";
 
-    private static String getRandomEmail() {
+    private String getRandomEmail() {
         int n = 15;
         String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 + "0123456789"
