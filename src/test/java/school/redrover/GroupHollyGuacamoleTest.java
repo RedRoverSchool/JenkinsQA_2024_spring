@@ -1,7 +1,7 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -61,5 +61,18 @@ public class GroupHollyGuacamoleTest extends BaseTest {
         yestCho = getDriver().findElements(By.xpath(BACKPACK_REMOVE_BUTTON)).isEmpty();
 
         Assert.assertTrue(yestCho);
+    }
+
+    @Test
+    private void testLoginSaucedemo () {
+        getDriver().get(BASE_URL);
+
+        getDriver().findElement(By.xpath("//input[@data-test='username']")).sendKeys("standard_user");
+        getDriver().findElement(By.xpath("//input[@data-test='password']")).sendKeys("secret_sauce");
+        getDriver().findElement(By.xpath("//input[@data-test='login-button']")).click();
+
+        String actual = getDriver().findElement(By.xpath("//span[@class='title']")).getText();
+
+        Assert.assertEquals(actual, "Products");
     }
 }
