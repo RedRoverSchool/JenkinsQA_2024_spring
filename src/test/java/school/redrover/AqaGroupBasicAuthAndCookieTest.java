@@ -18,7 +18,7 @@ public class AqaGroupBasicAuthAndCookieTest extends AqaGroupBaseTest {
     }
 
     @Test
-    public void testCookieControlledAdmin() throws InterruptedException {
+    public void testCookieControlledAdmin() {
         getDriver().get("https://testpages.eviltester.com/styled/cookies/adminview.html");
 
         getDriver().findElement(By.id("username")).sendKeys("Admin");
@@ -33,7 +33,7 @@ public class AqaGroupBasicAuthAndCookieTest extends AqaGroupBaseTest {
     }
 
     @Test
-    public void testAdminLoginWithCookie() throws InterruptedException {
+    public void testAdminLoginWithCookie() {
         getDriver().get("https://testpages.eviltester.com");
 
         getDriver().manage().addCookie(new Cookie("loggedin", "Admin"));
@@ -46,7 +46,7 @@ public class AqaGroupBasicAuthAndCookieTest extends AqaGroupBaseTest {
     }
 
     @Test
-    public void testAdminLoginWithCookieAsSuperAdmin() throws InterruptedException {
+    public void testAdminLoginWithCookieAsSuperAdmin() {
         getDriver().get("https://testpages.eviltester.com");
 
         getDriver().manage().addCookie(new Cookie("loggedin", "Admin"));
@@ -59,7 +59,7 @@ public class AqaGroupBasicAuthAndCookieTest extends AqaGroupBaseTest {
     }
 
     @Test
-    public void testSuperAdminLoginWithCookieAsAdmin() throws InterruptedException {
+    public void testSuperAdminLoginWithCookieAsAdmin() {
         getDriver().get("https://testpages.eviltester.com");
 
         getDriver().manage().addCookie(new Cookie("loggedin", "SuperAdmin"));
