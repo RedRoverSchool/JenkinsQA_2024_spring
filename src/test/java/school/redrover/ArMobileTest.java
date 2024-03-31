@@ -24,15 +24,25 @@ public class ArMobileTest extends BaseTest {
     private final By getPoliticaUserText = By.xpath("//span[@style='font-size: 19px;'][contains(.,'Предмет пользовательского соглашения')]");
     private final By getBotText = By.xpath("//span[@dir='auto']");
 
+public void url() {
+
+    getDriver().get(URL);
+    getDriver().manage().window().setSize(new Dimension(1920,1080));
+    getDriver().manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
+    getDriver().manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+}
+
+public void login() {
+
+    getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
+    getDriver().findElement(By.xpath(INPUT_PASSWORD)).sendKeys(PASSWORD);
+    getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
+}
 
     @Test
-    public void testRemovePasword() throws InterruptedException {
+    public void testRemovePasword() {
 
-        getDriver().get(URL);
-        getDriver().manage().window().setSize(new Dimension(1920,1080));
-        getDriver().manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-        getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-
+        url();
         getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys("yyyyyyyyyy@mail.xx");
         getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
 
@@ -42,12 +52,9 @@ public class ArMobileTest extends BaseTest {
     }
 
     @Test
-    public void testRega() throws InterruptedException {
+    public void testRega() {
 
-        getDriver().get(URL);
-        getDriver().manage().window().setSize(new Dimension(1920,1080));
-        getDriver().manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-        getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        url();
 
         getDriver().findElement(By.xpath("//h2[@class='ant-typography h2_m Login__restore-text']")).click();
 
@@ -60,13 +67,9 @@ public class ArMobileTest extends BaseTest {
     }
 
     @Test
-    public void testHrefPoluticUser() throws InterruptedException{
+    public void testHrefPoluticUser() {
 
-        getDriver().get(URL);
-
-        getDriver().manage().window().setSize(new Dimension(1920,1080));
-        getDriver().manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-        getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        url();
 
         getDriver().findElement(By.xpath("//a[@href='https://vr-arsoft.com/user-agreement-armobail/']")).click();
 
@@ -79,16 +82,9 @@ public class ArMobileTest extends BaseTest {
     }
 
     @Test
-    public void testCreateProgect() throws InterruptedException {
-
-        getDriver().get(URL);
-        getDriver().manage().window().setSize(new Dimension(1920,1080));
-        getDriver().manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-        getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-
-        getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
-        getDriver().findElement(By.xpath(INPUT_PASSWORD)).sendKeys(PASSWORD);
-        getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
+    public void testCreateProgect() {
+        url();
+        login();
 
         getDriver().findElement(By.xpath("//button[@class='ant-btn ant-btn-default primaryButton big colorPrimary ']")).click();
         getDriver().findElement(By.xpath("//input[@class='ant-input primaryInput  not-entered']")).sendKeys("1Новый проект");
@@ -119,12 +115,9 @@ public class ArMobileTest extends BaseTest {
     }
 
     @Test
-    public void testHrefPolitic() throws InterruptedException {
+    public void testHrefPolitic() {
 
-        getDriver().get(URL);
-        getDriver().manage().window().setSize(new Dimension(1920,1080));
-        getDriver().manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-        getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        url();
 
         getDriver().findElement(By.xpath("//a[@href='https://vr-arsoft.com/personal-data-processing-policy/']")).click();
 
@@ -136,17 +129,10 @@ public class ArMobileTest extends BaseTest {
     }
 
     @Test
-    public void testHrefBot() throws InterruptedException {
+    public void testHrefBot() {
 
-        getDriver().get(URL);
-        getDriver().manage().window().setSize(new Dimension(1920,1080));
-        getDriver().manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-        getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-
-        getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
-
-        getDriver().findElement(By.xpath(INPUT_PASSWORD)).sendKeys(PASSWORD);
-        getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
+        url();
+        login();
 
         getDriver().findElement(By.xpath("//a[@href='https://t.me/arsoft_support_bot']")).click();
 
@@ -158,15 +144,10 @@ public class ArMobileTest extends BaseTest {
     }
 
     @Test
-    public void testUserNab() throws InterruptedException {
+    public void testUserNab() {
 
-        getDriver().get(URL);
-        getDriver().manage().window().setSize(new Dimension(1920,1080));
-        getDriver().manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-        getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
-        getDriver().findElement(By.xpath(INPUT_PASSWORD)).sendKeys(PASSWORD);
-        getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
+        url();
+        login();
 
         getDriver().findElement(By.xpath("//a[@href='/users']")).click();
         getDriver().findElement(By.xpath("//button[@class='ant-btn ant-btn-default primaryButton big colorPrimary '] ")).click();
@@ -188,16 +169,10 @@ public class ArMobileTest extends BaseTest {
     }
 
     @Test
-    public void testCreateUser() throws InterruptedException {
+    public void testCreateUser() {
 
-        getDriver().get(URL);
-        getDriver().manage().window().setSize(new Dimension(1920,1080));
-        getDriver().manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-        getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-
-        getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
-        getDriver().findElement(By.xpath(INPUT_PASSWORD)).sendKeys(PASSWORD);
-        getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
+        url();
+        login();
 
         getDriver().findElement(By.xpath("//a[@href='/users']")).click();
         getDriver().findElement(By.xpath("//button[@class='ant-btn ant-btn-default primaryButton big colorPrimary '] ")).click();
