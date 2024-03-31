@@ -279,8 +279,10 @@ public class AqaGroupTest extends AqaGroupBaseTest {
 
         scrollIntoView(getDriver().findElement(By.id("no-content"))).click();
 
+        WebElement link = getWait15().until(ExpectedConditions.visibilityOfElementLocated(By.id("linkResponse")));
+
         Assert.assertEquals(
-                getDriver().findElement(By.id("linkResponse")).getText(),
+                link.getText(),
                 "Link has responded with staus 204 and status text No Content",
                 "wrong answer");
     }
