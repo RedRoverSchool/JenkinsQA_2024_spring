@@ -29,6 +29,9 @@ public class AqaGroupTest extends AqaGroupBaseTest {
     private static final By MODAL_DIALOG_OK_BUTTON = By.id("dialog-ok");
     private static final By MODAL_DIALOG_TEXT = By.id("dialog-text");
     private static final String URL_LETCODE = "https://letcode.in/edit";
+    private String calc(String x) {
+        return String.valueOf(Math.log(Math.abs(12 * Math.sin(Integer.parseInt(x)))));
+    }
 
     @Test
     public void testAlert() {
@@ -737,4 +740,43 @@ public class AqaGroupTest extends AqaGroupBaseTest {
                 getDriver().findElement(By.id("dontwrite")).getAttribute("readonly"),
                 "true");
     }
+
+    @Test
+    public void testHugeForm() {
+        getDriver().get("https://suninjuly.github.io/huge_form.html");
+
+        List<WebElement> elements = getDriver().findElements(By.tagName("input"));
+        for (WebElement item : elements) {
+            item.sendKeys("Мой ответ");
+        }
+
+        getDriver().findElement(By.cssSelector("button.btn")).click();
+
+        Assert.assertTrue(
+                getWait15()
+                        .until(ExpectedConditions.alertIsPresent())
+                        .getText()
+                        .startsWith("Congrats, you've passed the task!"),
+                "You shall not pass");
+    }
+
+    @Test
+    public void testTextToBePresent() {
+        getDriver().get("https://suninjuly.github.io/explicit_wait2.html");
+
+        WebElement button_book = getDriver().findElement(By.id("book"));
+        getWait15().until(ExpectedConditions.textToBePresentInElementLocated(By.id("price"), "$100"));
+        button_book.click();
+
+        getDriver().findElement(By.id("answer")).sendKeys(calc(getDriver().findElement(By.id("input_value")).getText()));
+        getDriver().findElement(By.id("solve")).click();
+
+        Assert.assertTrue(
+                getWait15()
+                        .until(ExpectedConditions.alertIsPresent())
+                        .getText()
+                        .startsWith("Congrats, you've passed the task!"),
+                "You shall not pass");
+    }
+
 }
