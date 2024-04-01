@@ -15,8 +15,8 @@ public class ArMobileTest extends BaseTest {
     private static final String INPUT_PASSWORD = "//input[@class='ant-input']";
     private static final String INPUT_EMAIL = "//input[@class='ant-input primaryInput  not-entered']";
     private static final String BTN_PASSWORD = "//button[@class='ant-btn ant-btn-default authButton big colorPrimary ']";
-    private static final String EMAIL = "n-k-65@list.ru";
-    private static final String PASSWORD = "qwe13567";
+    private static final String EMAIL = "f.ff.1980@list.ru";
+    private static final String PASSWORD = "012345678";
 
     private static final By GET_PASWORD = By.xpath("//h2[@class='ant-typography h2_m RestorePassword__sendSuccess-text'][contains(.,'Мы отправили по адресу')]");
     private static final By GET_ERROR = By.xpath("//div[@style='text-align: center; margin-bottom: 20px; color: rgb(255, 0, 0);']");
