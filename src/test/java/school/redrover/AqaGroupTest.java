@@ -13,9 +13,13 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class AqaGroupTest extends AqaGroupBaseTest {
 
@@ -31,9 +35,21 @@ public class AqaGroupTest extends AqaGroupBaseTest {
     private static final By MODAL_DIALOG_TEXT = By.id("dialog-text");
     private static final String URL_LETCODE = "https://letcode.in/edit";
     private static final String MODAL_WINDOW_URL = "https://tympanus.net/Development/ModalWindowEffects/";
+    private static final String URL_MOB = "http://23.105.246.172:5000/login";
+    private static final String INPUT_EMAIL = "//input[@class='ant-input primaryInput  not-entered']";
+    private static final String BTN_PASSWORD = "//button[@class='ant-btn ant-btn-default authButton big colorPrimary ']";
+    private static final By GET_ERROR = By.xpath("//div[@style='text-align: center; margin-bottom: 20px; color: rgb(255, 0, 0);']");
+
 
     private String calc(String x) {
         return String.valueOf(Math.log(Math.abs(12 * Math.sin(Integer.parseInt(x)))));
+    }
+
+    private void url() {
+        getDriver().get(URL_MOB);
+        getDriver().manage().window().setSize(new Dimension(1920, 1080));
+        getDriver().manage().timeouts().pageLoadTimeout(25, TimeUnit.SECONDS);
+        getDriver().manage().timeouts().implicitlyWait(25, TimeUnit.SECONDS);
     }
 
     @Test
@@ -857,6 +873,18 @@ public class AqaGroupTest extends AqaGroupBaseTest {
     }
 
     @Test
+    public void testRefreshPage() {
+        getDriver().get("https://testpages.eviltester.com/styled/refresh");
+
+        String text = getDriver().findElement(By.id("embeddedrefreshdatevalue")).getText();
+        getDriver().findElement(By.id("button")).click();
+
+        Assert.assertNotEquals(
+                getDriver().findElement(By.id("embeddedrefreshdatevalue")).getText(),
+                text);
+    }
+
+    @Test
     public void testHoverDiv() {
         getDriver().get("https://testpages.eviltester.com/styled/csspseudo/css-hover.html");
 
@@ -892,5 +920,30 @@ public class AqaGroupTest extends AqaGroupBaseTest {
 
         Assert.assertTrue(
                 getWait5().until(ExpectedConditions.invisibilityOfElementLocated(By.className("md-content"))));
+    }
+  
+    @Test
+    public void testUploadFile() throws URISyntaxException {
+        getDriver().get("https://testpages.eviltester.com/styled/file-upload-test.html");
+
+        getDriver().findElement(By.id("fileinput")).sendKeys(
+                Paths.get(Objects.requireNonNull(getClass().getClassLoader().getResource("1.jpg"))
+                        .toURI()).toFile().getAbsolutePath());
+
+        getDriver().findElement(By.id("itsanimage")).click();
+        getDriver().findElement(By.className("styled-click-button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.id("uploadedfilename")).getText(), "1.jpg");
+    }
+
+    @Test
+    public void testRemovesPasword() {
+        url();
+        getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys("yyyyyyyyyy@mail.xx");
+        getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
+
+        String getError = getDriver().findElement(GET_ERROR).getText();
+
+        Assert.assertEquals(getError, "Неправильный логин или пароль");
     }
 }
