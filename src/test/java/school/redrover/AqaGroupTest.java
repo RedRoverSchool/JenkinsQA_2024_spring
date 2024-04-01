@@ -13,13 +13,11 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.net.URL;
 import java.util.Objects;
 
 public class AqaGroupTest extends AqaGroupBaseTest {
