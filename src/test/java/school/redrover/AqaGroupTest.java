@@ -813,6 +813,20 @@ public class AqaGroupTest extends AqaGroupBaseTest {
     }
 
     @Test
+    public void testHoverParagraph() {
+        getDriver().get("https://testpages.eviltester.com/styled/csspseudo/css-hover.html");
+
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.id("hoverpara")))
+                .perform();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.id("hoverparaeffect")).getText(),
+                "You can see this paragraph now that you hovered on the above 'button'.");
+
+    }
+
+    @Test
     public void testModalWindow() {
         getDriver().get("https://tympanus.net/Development/ModalWindowEffects/");
 
