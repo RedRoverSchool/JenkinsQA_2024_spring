@@ -178,7 +178,7 @@ public class GroupRedroverJava7Test extends BaseTest {
         WebElement text = getDriver().findElement(By.xpath("//h2[text()='Find Your Store']"));
         String value = text.getText();
 
-        Assert.assertEquals("FIND YOUR STORE", value);
+        Assert.assertEquals(value,"FIND YOUR STORE");
     }
     @Test
     public void TestYMCA() {
