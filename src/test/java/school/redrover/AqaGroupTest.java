@@ -811,4 +811,14 @@ public class AqaGroupTest extends AqaGroupBaseTest {
                 myName,
                 "input field contains wrong value");
     }
+
+    @Test
+    public void testModalWindow() {
+        getDriver().get("https://tympanus.net/Development/ModalWindowEffects/");
+
+        getDriver().findElement(By.cssSelector("[data-modal = 'modal-1']")).click();
+        getDriver().findElement(By.className("md-close")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.cssSelector("[data-modal = 'modal-1']")).isEnabled());
+    }
 }
