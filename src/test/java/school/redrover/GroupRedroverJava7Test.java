@@ -181,13 +181,13 @@ public class GroupRedroverJava7Test extends BaseTest {
         Assert.assertEquals(value,"FIND YOUR STORE");
     }
     @Test
-    public void TestYMCA() {
+    public void testYMCA() {
         getDriver().get("https://ymcacapecod.org/");
 
         WebElement textBox = getDriver().findElement(By.className("field"));
-        WebElement SearchButton = getDriver().findElement(By.className("submit"));
+        WebElement searchButton = getDriver().findElement(By.className("submit"));
         textBox.sendKeys("pool");
-        SearchButton.click();
+        searchButton.click();
 
         getDriver().findElement(By.xpath("//footer//a[@href='/programs/swimming/']")).click();
 
