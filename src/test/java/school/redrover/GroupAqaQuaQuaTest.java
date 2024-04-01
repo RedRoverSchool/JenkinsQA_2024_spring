@@ -33,23 +33,17 @@ public class GroupAqaQuaQuaTest extends BaseTest {
     }
     @Test
     public void testLoginTheInternet() {
-        WebDriver driver = getDriver();
-        driver.get("https://the-internet.herokuapp.com/");
+        getDriver().get("https://the-internet.herokuapp.com/");
 
-        Assert.assertEquals(driver.getTitle(), "The Internet");
+        Assert.assertEquals(getDriver().getTitle(), "The Internet");
 
-        driver.findElement(By.linkText("Form Authentication")).click();
+        getDriver().findElement(By.linkText("Form Authentication")).click();
 
-        driver.findElement(By.id("username")).sendKeys("tomsmith");
-        driver.findElement(By.id("password")).sendKeys("SuperSecretPassword!");
-        driver.findElement(By.cssSelector("button")).click();
+        getDriver().findElement(By.id("username")).sendKeys("tomsmith");
+        getDriver().findElement(By.id("password")).sendKeys("SuperSecretPassword!");
+        getDriver().findElement(By.cssSelector("button")).click();
 
-        Assert.assertEquals(driver.findElement(By.tagName("h2")).getText(), "Secure Area");
-//
-//        driver.findElement(By.linkText("Logout")).click();
-//        driver.findElement(By.tagName("h2")).getText();
-//
-//        Assert.assertEquals(driver.findElement(By.tagName("h2")).getText(), "Login Page");
+        Assert.assertEquals(getDriver().findElement(By.tagName("h2")).getText(), "Secure Area");
     }
 }
 
