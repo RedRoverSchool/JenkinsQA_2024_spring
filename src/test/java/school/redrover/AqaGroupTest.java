@@ -835,4 +835,20 @@ public class AqaGroupTest extends AqaGroupBaseTest {
 
         Assert.assertTrue(getDriver().findElement(By.cssSelector("[data-modal = 'modal-1']")).isEnabled());
     }
+
+    @Test
+    public void testRefreshPage() {
+        getDriver().get("https://testpages.eviltester.com/styled/refresh");
+
+        String text = getDriver().findElement(By.id("embeddedrefreshdatevalue")).getText();
+        getDriver().findElement(By.id("button")).click();
+
+        Assert.assertNotEquals(
+                getDriver().findElement(By.id("embeddedrefreshdatevalue")).getText(),
+                text);
+
+
+
+
+    }
 }
