@@ -413,7 +413,7 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
     }
 
     @Test
-    public void testVerifyProductQuantityInCart() throws InterruptedException {
+    public void testVerifyProductInCart() throws InterruptedException {
         final String expectVerifyHomePage = "FEATURES ITEMS";
         final String expectVerifyProductDetail = "Availability:";
 
