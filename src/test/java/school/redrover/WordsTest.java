@@ -3,12 +3,8 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-
-import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,9 +45,6 @@ public class WordsTest extends BaseTest {
                 longestWords.put(firstChar, word);
             }
         }
-
         System.out.println(longestWords.values());
-        driver.quit();
-
     }
 }
