@@ -864,4 +864,10 @@ public class AqaGroupTest extends AqaGroupBaseTest {
                 getDriver().findElement(By.id("hoverdivparaeffect")).getText(),
                 "You can see this child div content now that you hovered on the above 'button'.");
     }
+    @Test
+    public void testIsEnabled2() {
+        getDriver().get(URL_LETCODE);
+
+        Assert.assertTrue(getDriver().findElement(By.id("dontwrite")).isEnabled());
+    }
 }
