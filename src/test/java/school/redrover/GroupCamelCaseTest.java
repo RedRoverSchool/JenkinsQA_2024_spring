@@ -52,5 +52,7 @@ public class GroupCamelCaseTest extends BaseTest {
         Thread.sleep(1000);
 
         Assert.assertEquals("Оформление заказа", value);
+
+
     }
 }
