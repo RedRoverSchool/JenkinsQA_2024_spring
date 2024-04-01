@@ -49,6 +49,25 @@ public class CodeQAGroupTest extends BaseTest {
         newItemButton.click();
     }
     @Test
+    public void testFreestyleProject() {
+        preconditions();
+
+        WebElement itemNameField = getDriver().findElement(By.id("name"));
+        itemNameField.sendKeys("freestylePrTest39");
+
+        WebElement freestyleProjSelect = getDriver().findElement(By.className("hudson_model_FreeStyleProject"));
+        freestyleProjSelect.click();
+
+        WebElement buttonOK = getDriver().findElement(By.id("ok-button"));
+        buttonOK.click();
+        WebElement buttonSave = getDriver().findElement(By.name("Submit"));
+        buttonSave.click();
+
+        String actualRes = getDriver().findElement(By.tagName("h1")).getText();
+
+        Assert.assertEquals(actualRes, "Project freestylePrTest39");
+    }
+    @Test
     public void testDropDownMenu() {
         getDriver().get("https://the-internet.herokuapp.com");
 
