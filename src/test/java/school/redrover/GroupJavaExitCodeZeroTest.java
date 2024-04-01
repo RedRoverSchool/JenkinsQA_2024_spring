@@ -261,4 +261,29 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
 
         Assert.assertEquals(actualMessage, expectedMessage);
     }
+
+    @Test
+    public void testFindWomenBootsPage() throws InterruptedException {
+        final String expectedElement = "Women'S Boots";
+        final  String BASE_URL = "https://www.6pm.com/";
+
+        getDriver().get(BASE_URL);
+        getDriver().manage().window().maximize();
+        getDriver().findElement(By.xpath("//a[@href='/shoes']")).click();
+
+        Thread.sleep(3000);
+
+        getDriver().findElement(By.xpath("//li[1]/button")).click();
+        getDriver().findElement(By.xpath("//a[@data-eventvalue='S-NAV-WomensBoots']")).click();
+
+        Assert.assertEquals(getDriver().getCurrentUrl(), BASE_URL
+                + "women-boots/CK_XARCz1wHAAQHiAgMBAhg.zso?s=isNew/desc/goLiveDate/desc/recentSalesStyle/desc/");
+
+        Thread.sleep(3000);
+
+        By womensBoots = By.xpath("//h1[@class='px-z']");
+        String actualElement = getDriver().findElement(womensBoots).getText();
+
+        Assert.assertEquals(actualElement, expectedElement);
+    }
 }
