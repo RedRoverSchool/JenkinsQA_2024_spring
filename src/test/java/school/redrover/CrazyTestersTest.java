@@ -58,4 +58,38 @@ public class CrazyTestersTest extends BaseTest {
 
         Assert.assertEquals("Thanks for submitting the form", resultText);
     }
+
+    @Test
+
+    public void testDemoQaElementsRadioButtonYes() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/");
+
+        Thread.sleep(1000);
+
+        WebElement buttonBookStoreApplication = driver.findElement(
+                By.xpath("//h5[text()='Book Store Application']"));
+        new Actions(driver).scrollToElement(buttonBookStoreApplication).perform();
+
+        WebElement buttonElements = driver.findElement(
+                By.xpath("//h5[text()='Elements']"));
+        buttonElements.click();
+
+        WebElement buttonRadioButton = driver.findElement(
+                By.xpath("//span[text()='Radio Button']"));
+        buttonRadioButton.click();
+
+        WebElement buttonYesRadio = driver.findElement(
+                By.xpath("//label[@class='custom-control-label'][1]"));
+        buttonYesRadio.click();
+
+        WebElement text = driver.findElement(
+                By.xpath("//span[@class='text-success']"));
+        String resultText = text.getText();
+
+        Assert.assertEquals(resultText, "Yes");
+
+        driver.quit();
+
+    }
 }
