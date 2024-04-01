@@ -823,7 +823,6 @@ public class AqaGroupTest extends AqaGroupBaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.id("hoverparaeffect")).getText(),
                 "You can see this paragraph now that you hovered on the above 'button'.");
-
     }
 
     @Test
@@ -851,5 +850,18 @@ public class AqaGroupTest extends AqaGroupBaseTest {
                 getDriver().findElement(By.id("droppable1")).getText(),
                 "Dropped!",
                 "Не удалось перетащить элемент");
+    }
+
+    @Test
+    public void testHoverDiv() {
+        getDriver().get("https://testpages.eviltester.com/styled/csspseudo/css-hover.html");
+
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.id("hoverdivpara")))
+                .perform();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.id("hoverdivparaeffect")).getText(),
+                "You can see this child div content now that you hovered on the above 'button'.");
     }
 }
