@@ -8,6 +8,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -412,7 +413,7 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
         Assert.assertEquals(emailInForm,expectedEmail);
     }
 
-    @Test
+     @Test
     public void testVerifyProductInCart() throws InterruptedException {
         final String expectVerifyHomePage = "FEATURES ITEMS";
         final String expectVerifyProductDetail = "Availability:";
@@ -437,7 +438,7 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
         Thread.sleep(1000);
         if (!getDriver().findElements(By.xpath("//ins[@class='adsbygoogle adsbygoogle-noablate']")).isEmpty()) {
             JavascriptExecutor js = (JavascriptExecutor) getDriver();
-            jse.executeScript(
+            js.executeScript(
                     "const ads = document.getElementsByClassName('adsbygoogle adsbygoogle-noablate'); while (ads.length > 0) ads[0].remove();"
             );
 
@@ -456,7 +457,7 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
         Thread.sleep(1000);
         if (!getDriver().findElements(By.xpath("//ins[@class='adsbygoogle adsbygoogle-noablate']")).isEmpty()) {
             JavascriptExecutor js = (JavascriptExecutor) getDriver();
-            jse.executeScript(
+            js.executeScript(
                     "const ads = document.getElementsByClassName('adsbygoogle adsbygoogle-noablate'); while (ads.length > 0) ads[0].remove();"
             );
 
@@ -467,7 +468,7 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
         Thread.sleep(1000);
         if (!getDriver().findElements(By.xpath("//ins[@class='adsbygoogle adsbygoogle-noablate']")).isEmpty()) {
             JavascriptExecutor js = (JavascriptExecutor) getDriver();
-            jse.executeScript(
+            js.executeScript(
                     "const ads = document.getElementsByClassName('adsbygoogle adsbygoogle-noablate'); while (ads.length > 0) ads[0].remove();"
             );
 
