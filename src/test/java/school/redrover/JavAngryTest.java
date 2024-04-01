@@ -39,23 +39,20 @@ public class JavAngryTest extends BaseTest {
 
     @Test
     void testDoubleClickButton() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://demoqa.com/");
+        getDriver().get("https://demoqa.com/");
 
         String expectedText = "You have done a double click";
 
-        driver.findElement(By.xpath("//h5[text()='Elements']")).click();
-        driver.findElement(By.xpath("//span[text() = 'Buttons']")).click();
-        WebElement clickable = driver.findElement(By.id("doubleClickBtn"));
-        new Actions(driver)
+        getDriver().findElement(By.xpath("//h5[text()='Elements']")).click();
+        getDriver().findElement(By.xpath("//span[text() = 'Buttons']")).click();
+        WebElement clickable = getDriver().findElement(By.id("doubleClickBtn"));
+        new Actions(getDriver())
                 .doubleClick(clickable)
                 .perform();
 
-        String actualText = driver.findElement(By.id("doubleClickMessage")).getText();
+        String actualText = getDriver().findElement(By.id("doubleClickMessage")).getText();
 
         Assert.assertEquals(actualText, expectedText);
-
-        driver.quit();
     }
 
     @Test

@@ -1,5 +1,4 @@
 package school.redrover;
-
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -214,6 +213,22 @@ public class GroupRedroverJava7Test extends BaseTest {
         String value = text.getText();
 
         Assert.assertEquals(value, "Python");
+    }
+
+    @Test
+    public void testDatalist() {
+
+        getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
+
+        WebElement dataList = getDriver().findElement(By.name("my-datalist"));
+        dataList.click();
+
+        WebElement options = getDriver().findElement(By.cssSelector("datalist#my-options option:nth-child(2)"));
+        String optionValue = options.getAttribute("value");
+        dataList.sendKeys(optionValue);
+
+        Assert.assertEquals(optionValue,"New York");
+
     }
 }
 
