@@ -24,7 +24,6 @@ public class WikipediaTest_Java {
         Thread.sleep(2000);
 
         driver.quit();
-
     }
 }
 
