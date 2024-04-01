@@ -28,9 +28,9 @@ public class GroupUnitedByJava8Test extends BaseTest {
         WebElement buttons = getDriver().findElement(By.xpath("//span[@class='text' and text()='Buttons']"));
         buttons.click();
 
-        WebElement doubleClickMe = getDriver().findElement(By.id("doubleClickBtn"));
+        WebElement doubleClickMeButton = getDriver().findElement(By.id("doubleClickBtn"));
         new Actions(getDriver())
-            .doubleClick(doubleClickMe)
+            .doubleClick(doubleClickMeButton)
             .perform();
 
         String doubleClickMessageText = getDriver().findElement(By.id("doubleClickMessage")).getText();
@@ -208,5 +208,24 @@ public class GroupUnitedByJava8Test extends BaseTest {
 
         String textTitle = driver.getTitle();
         Assert.assertEquals(textTitle, "Swag Labs");
+    }
+
+    @Test
+    public void testDemoQARightClick() {
+        getDriver().get("https://demoqa.com/");
+
+        WebElement elementsPage = getDriver().findElement(By.xpath("//h5[text()='Elements']"));
+        elementsPage.click();
+        WebElement buttons = getDriver().findElement(By.xpath("//span[@class='text' and text()='Buttons']"));
+        buttons.click();
+
+        WebElement rightClickMeButton = getDriver().findElement(By.id("rightClickBtn"));
+        new Actions(getDriver())
+                .contextClick(rightClickMeButton)
+                .perform();
+
+        String contextClickMessageText = getDriver().findElement(By.id("rightClickMessage")).getText();
+
+        Assert.assertEquals(contextClickMessageText, "You have done a right click");
     }
 }
