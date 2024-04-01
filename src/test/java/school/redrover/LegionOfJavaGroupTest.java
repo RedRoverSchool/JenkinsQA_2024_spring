@@ -1,4 +1,5 @@
 package school.redrover;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -8,7 +9,9 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
 import java.time.Duration;
+
 import static org.openqa.selenium.By.className;
 import static org.testng.Assert.assertTrue;
 
@@ -129,4 +132,37 @@ public class LegionOfJavaGroupTest extends BaseTest {
         assertTrue(homeWebElement.isEnabled());
     }
 
+    @Test
+    public void testLiveMomentousStore() {
+        WebDriver driver = getDriver();
+        driver.get("https://www.livemomentous.com/");
+
+        driver.findElement(By.xpath("//button[contains(@class, 'mobile-menu-trigger')]")).click();
+        driver.findElement(By.xpath("//li[contains(@class, 'navigation-list')]/a[@href = '/collections/best-sellers']")).click();
+        driver.findElement(By.xpath("//div[@aria-label='close']")).click();
+
+        WebElement item = driver.findElement(By.xpath("//h3[text() = 'Creatine']"));
+        Assert.assertTrue(item.isDisplayed());
+    }
+
+    @Test
+    public void testNobullSearch() throws InterruptedException {
+        WebDriver driver = getDriver();
+        driver.get("https://www.nobullproject.com/");
+
+        driver.findElement(By.id("onetrust-close-btn-container")).click();
+        driver.findElement(By.xpath("//*[@data-target = 'search-button']")).click();
+        driver.findElement(By.xpath("//input[@name = 'q']")).sendKeys("Tank");
+        driver.findElement(By.xpath("//button[@class = 'text-black'][1]")).click();
+
+        Thread.sleep(8000);
+
+        driver.switchTo().frame("attentive_creative");
+        driver.findElement(By.id("closeIconContainer")).click();
+
+        driver.switchTo().defaultContent();
+
+        WebElement result = driver.findElement(By.xpath("//span[@class = 'ss__query']"));
+        Assert.assertEquals(result.getText(), "TANK");
+    }
 }
