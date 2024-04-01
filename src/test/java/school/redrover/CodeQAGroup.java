@@ -32,4 +32,41 @@ public class CodeQAGroup extends BaseTest {
             expectedValue -= step;
         }
     }
+
+    public void preconditions() {
+        getDriver().get("http://localhost:8080/");
+
+        WebElement loginArea = getDriver().findElement(By.cssSelector("#j_username"));
+        loginArea.sendKeys("admin");
+
+        WebElement passwordArea = getDriver().findElement(By.cssSelector("#j_password"));
+        passwordArea.sendKeys("admin");
+
+        WebElement buttonSubmit = getDriver().findElement(By.name("Submit"));
+        buttonSubmit.click();
+
+        WebElement newItemButton = getDriver().findElement(By.linkText("New Item"));
+        newItemButton.click();
+    }
+
+    @Test
+    public void freestyleProjectTest() {
+        preconditions();
+
+        WebElement itemNameField = getDriver().findElement(By.id("name"));
+        itemNameField.sendKeys("freestylePrTest33");
+
+        WebElement freestyleProjSelect = getDriver().findElement(By.className("hudson_model_FreeStyleProject"));
+        freestyleProjSelect.click();
+
+        WebElement buttonOK = getDriver().findElement(By.id("ok-button"));
+        buttonOK.click();
+        WebElement buttonSave = getDriver().findElement(By.name("Submit"));
+        buttonSave.click();
+
+        String actualRes = getDriver().findElement(By.tagName("h1")).getText();
+        Assert.assertEquals(actualRes, "Project freestylePrTest33");
+
+        getDriver().quit();
+    }
 }
