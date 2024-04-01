@@ -191,7 +191,7 @@ public class GroupCarlthefogTest extends BaseTest {
         }
 
         @Test
-        public void testWikipediaSearch() {
+        public void testWikipediaSearch() throws InterruptedException {
             // Открыть страницу Wikipedia
             driver.get("https://en.wikipedia.org");
 
@@ -208,11 +208,9 @@ public class GroupCarlthefogTest extends BaseTest {
             submitButton.click();
 
             // Подождать некоторое время для загрузки результатов поиска
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
+           Thread.sleep(3000);
+
 
             // Проверить заголовок страницы
             String expectedTitle = "Selenium (software) - Wikipedia";
