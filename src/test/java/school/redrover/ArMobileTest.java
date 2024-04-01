@@ -25,7 +25,7 @@ public class ArMobileTest extends BaseTest {
     private final By getPoliticaUserText = By.xpath("//span[@style='font-size: 19px;'][contains(.,'Предмет пользовательского соглашения')]");
     private final By getBotText = By.xpath("//span[@dir='auto']");
 
-    public void url() {
+    private void url() {
 
         getDriver().get(URL);
         getDriver().manage().window().setSize(new Dimension(1920,1080));
@@ -33,7 +33,7 @@ public class ArMobileTest extends BaseTest {
         getDriver().manage().timeouts().implicitlyWait(25, TimeUnit.SECONDS);
     }
 
-    public void login() {
+    private void login() {
 
         getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
         getDriver().findElement(By.xpath(INPUT_PASSWORD)).sendKeys(PASSWORD);
