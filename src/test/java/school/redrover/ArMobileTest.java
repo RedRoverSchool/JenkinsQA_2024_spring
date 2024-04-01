@@ -79,7 +79,7 @@ public class ArMobileTest extends BaseTest {
 
         String getPoliticaUser = getDriver().findElement(GET_POLITICA_USER).getText();
 
-        Assert.assertEquals("Предмет пользовательского соглашения", getPoliticaUser);
+        Assert.assertEquals(getPoliticaUser, "Предмет пользовательского соглашения");
     }
 
     @Ignore
@@ -110,7 +110,7 @@ public class ArMobileTest extends BaseTest {
 
         String newProgectName = getDriver().findElement(NEW_PROGECT_TEXT).getText();
 
-        Assert.assertEquals("1Новый проект", newProgectName);
+        Assert.assertEquals(newProgectName, "1Новый проект");
 
         getDriver().findElement(By.xpath("//button[@class='ant-btn ant-btn-default primaryButton big colorRed ']")).click();
         getDriver().findElement(By.xpath("//button[@class='ant-btn ant-btn-default primaryButton big colorPrimary '][contains(.,'Подтвердить')]")).click();
@@ -127,7 +127,7 @@ public class ArMobileTest extends BaseTest {
         getDriver().switchTo().window(newTab.get(1));
         String getErr = getDriver().findElement(GET_POLITICA).getText();
 
-        Assert.assertEquals("Политика обработки персональных данных", getErr);
+        Assert.assertEquals(getErr, "Политика обработки персональных данных");
     }
 
     @Test
@@ -142,7 +142,7 @@ public class ArMobileTest extends BaseTest {
         getDriver().switchTo().window(newTab.get(1));
         String getBot = getDriver().findElement(GET_BOT).getText();
 
-        Assert.assertEquals("AR SOFT support", getBot);
+        Assert.assertEquals(getBot, "AR SOFT support");
     }
 
     @Ignore
@@ -168,7 +168,7 @@ public class ArMobileTest extends BaseTest {
 
         String getTextD = getDriver().findElement(By.xpath("//span[@class='anticon anticon-close-circle']")).getText();
 
-        Assert.assertEquals("Ошибка обращения к серверу", getTextD);
+        Assert.assertEquals(getTextD, "Ошибка обращения к серверу");
     }
 
     @Ignore
@@ -190,6 +190,6 @@ public class ArMobileTest extends BaseTest {
 
         String getTextD = getDriver().findElement(By.xpath("//span[@class='anticon anticon-close-circle']")).getText();
 
-        Assert.assertEquals("Ошибка обращения к серверу", getTextD);
+        Assert.assertEquals(getTextD, "Ошибка обращения к серверу");
     }
 }
