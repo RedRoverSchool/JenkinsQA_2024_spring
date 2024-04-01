@@ -7,13 +7,14 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class GroupCarlthefogTest {
+public class GroupCarlthefogTest extends BaseTest {
 
     @Test
     public void testSaucedemo() {
@@ -68,7 +69,7 @@ public class GroupCarlthefogTest {
         List<String> actualElementsHeader = WebElementsToString(elementsHeaderList);
 
         Assert.assertEquals(expectedElementsQuantity, actualElementsQuantity);
-        Assert.assertEquals(expectedElementsHeader,actualElementsHeader);
+        Assert.assertEquals(expectedElementsHeader, actualElementsHeader);
 
         driver.quit();
     }
@@ -159,5 +160,32 @@ public class GroupCarlthefogTest {
         Assert.assertTrue(driver.findElement(By.xpath("//h1[@id='skip-to-h1']")).getText().contains("Mortgage"));
 
         driver.quit();
+    }
+
+    @Test
+    public void purchaseItemTest() {
+
+        getDriver().get("https://qa-practice.netlify.app");
+
+        getDriver().findElement(By.id("products-list")).click();
+        getDriver().findElement(By.xpath("//div[@class='shop-item-details']/button")).click();
+        getDriver().findElement(By.xpath("//button[text()='PURCHASE']")).click();
+        String value = getDriver().findElement(By.id("message")).getText();
+
+        Assert.assertEquals(value, "Congrats! Your order of $905.99 has been registered!");
+    }
+
+    @Test
+    public void testExpandtesting() {
+
+        getDriver().get("https://practice.expandtesting.com/login");
+
+        getDriver().findElement(By.id("username")).sendKeys("practice");
+        getDriver().findElement(By.name("password")).sendKeys("SuperSecretPassword!");
+        getDriver().findElement(By.xpath("//button[@type='submit' and contains(text(),'Login')]")).click();
+
+        String actual = getDriver().findElement(By.id("flash")).getText();
+
+        Assert.assertEquals(actual, "You logged into a secure area!");
     }
 }

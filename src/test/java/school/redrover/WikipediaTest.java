@@ -2,9 +2,12 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.time.Duration;
 
 public class WikipediaTest {
 
@@ -31,4 +34,16 @@ public class WikipediaTest {
         driver.quit();
     }
 
+    @Test
+    public void testTest() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://ru.wikipedia.org/w/index.php?title=%D0%92%D0%B8%D0%BA%D0%B8%D0%BF%D0%B5%D0%B4%D0%B8%D1%8F&action=edit");
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        WebElement articuiLink = driver.findElement(By.id("ca-nstab-main"));
+        articuiLink.click();
+        String value = driver.findElement(By.cssSelector(".mw-page-title-main")).getText();
+
+        Assert.assertEquals(value, "Википедия");
+        driver.quit();
+    }
 }

@@ -22,15 +22,18 @@ public class RedRoverTest {
         textBox.sendKeys("Selenium");
 
         WebElement textArea = driver.findElement(By.name("my-textarea"));
-        textArea.sendKeys("Julia");
+        textArea.sendKeys("Hello!");
 
-        WebElement submitButton = driver.findElement(By.className("btn"));
+
+        WebElement submitButton = driver.findElement(By.className("btn"));//find button
         submitButton.click();
 
         WebElement message = driver.findElement(By.id("message"));
         String value = message.getText();
 
+
         Assert.assertEquals(value, "Received!");
+
 
         driver.quit();
     }

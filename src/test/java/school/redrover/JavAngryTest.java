@@ -7,13 +7,14 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class JavAngryTest {
+public class JavAngryTest extends BaseTest {
 
     @Test
     void testPriceCheckMainPageShoppingPage() {
@@ -38,38 +39,32 @@ public class JavAngryTest {
 
     @Test
     void testDoubleClickButton() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://demoqa.com/");
+        getDriver().get("https://demoqa.com/");
 
         String expectedText = "You have done a double click";
 
-        driver.findElement(By.xpath("//h5[text()='Elements']")).click();
-        driver.findElement(By.xpath("//span[text() = 'Buttons']")).click();
-        WebElement clickable = driver.findElement(By.id("doubleClickBtn"));
-        new Actions(driver)
+        getDriver().findElement(By.xpath("//h5[text()='Elements']")).click();
+        getDriver().findElement(By.xpath("//span[text() = 'Buttons']")).click();
+        WebElement clickable = getDriver().findElement(By.id("doubleClickBtn"));
+        new Actions(getDriver())
                 .doubleClick(clickable)
                 .perform();
 
-        String actualText = driver.findElement(By.id("doubleClickMessage")).getText();
+        String actualText = getDriver().findElement(By.id("doubleClickMessage")).getText();
 
         Assert.assertEquals(actualText, expectedText);
-
-        driver.quit();
     }
 
     @Test
-    void testMainPageBannerTitlesText() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://demoqa.com/");
-        List<String> expectedBannerTitles = new ArrayList<>(Arrays.asList("Elements", "Forms", "Alerts, Frame & Windows", "Widgets", "Interactions", "Book Store Application"));
-        List<WebElement> elementList = driver.findElements(By.xpath("//div[@class='card mt-4 top-card']"));
+    void testActionCardsTitlesDemoQAMainPage() {
+        getDriver().get("https://demoqa.com/");
 
+        List<String> expectedBannerTitles = new ArrayList<>(Arrays.asList("Elements", "Forms", "Alerts, Frame & Windows",
+                "Widgets", "Interactions", "Book Store Application"));
+        List<WebElement> elementList = getDriver().findElements(By.xpath("//div[@class='card mt-4 top-card']"));
         List<String> actualBannerTitles = WebElementToString(elementList);
 
         Assert.assertEquals(actualBannerTitles, expectedBannerTitles);
-        Assert.assertTrue(actualBannerTitles.contains("Book Store Application"));
-
-        driver.quit();
     }
 
     public static List<String> WebElementToString(List<WebElement> elementList) {
@@ -128,20 +123,19 @@ public class JavAngryTest {
 
     @Test
     public void testInputAndPagination() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://portal.311.nyc.gov/");
-        driver.findElement(By.xpath("//input[@aria-label='Search']")).sendKeys("concerts");
-        driver.findElement(By.className("search-magnify")).click();
-        WebElement widgets = driver.findElement(By.xpath("//ul[@class='pagination']"));
+        getDriver().get("https://portal.311.nyc.gov/");
+        getDriver().findElement(By.xpath("//input[@aria-label='Search']")).sendKeys("concerts");
+        getDriver().findElement(By.className("search-magnify")).click();
+
+        WebElement widgets = getDriver().findElement(By.xpath("//ul[@class='pagination']"));
         int deltaY = widgets.getRect().y;
-        new Actions(driver)
+        new Actions(getDriver())
                 .scrollByAmount(0, deltaY)
                 .perform();
-        driver.findElement(By.xpath("//ul[@class='pagination']"));
-        driver.findElement(By.linkText("2")).click();
+        getDriver().findElement(By.xpath("//ul[@class='pagination']"));
+        getDriver().findElement(By.linkText("2")).click();
 
-        Assert.assertEquals(driver.getCurrentUrl(), "https://portal.311.nyc.gov/search/?q=concerts&page=2");
-        driver.quit();
+        Assert.assertEquals(getDriver().getCurrentUrl(), "https://portal.311.nyc.gov/search/?q=concerts&page=2");
     }
 
     @Test
@@ -189,6 +183,70 @@ public class JavAngryTest {
         driver.findElement(By.xpath("//input[@id='payment_method_cod']")).click();
         driver.findElement(By.xpath("//button[@name='woocommerce_checkout_place_order']")).click();
         driver.quit();
+    }
+
+    @Test
+    void testFields() {
+        WebDriver webDriver = getDriver();
+        webDriver.get("https://letcode.in/test");
+
+        webDriver.findElement(By.xpath("//a[contains(text(),'Edit')]")).click();
+        webDriver.findElement(By.id("fullName")).sendKeys("Ali Ian");
+        webDriver.findElement(By.id("join")).sendKeys(" and happy \t");
+        webDriver.findElement(By.id("clearMe")).clear();
+
+        Assert.assertTrue(webDriver.findElement(By.id("noEdit")).isDisplayed());
+    }
+
+    @Test
+    public void registrationTest() {
+        WebDriver driver = getDriver();
+        driver.get("https://demoqa.com/webtables");
+        driver.manage().window().maximize();
+
+        WebElement addBtn = driver.findElement(By.cssSelector("#addNewRecordButton"));
+        addBtn.click();
+
+        WebElement firstName = driver.findElement(By.id("firstName"));
+        firstName.sendKeys("Irina");
+
+        WebElement lastName = driver.findElement(By.id("lastName"));
+        lastName.sendKeys("Romanova");
+
+        WebElement email = driver.findElement(By.id("userEmail"));
+        email.sendKeys("test@test.ru");
+
+        WebElement age = driver.findElement(By.id("age"));
+        age.sendKeys("18");
+
+        WebElement salary = driver.findElement(By.id("salary"));
+        salary.sendKeys("180");
+
+        WebElement department = driver.findElement(By.id("department"));
+        department.sendKeys("IT");
+
+        WebElement btnSubmit = driver.findElement(By.id("submit"));
+        btnSubmit.click();
+
+        WebElement currentName = driver.findElement(By.xpath("//div[contains(text(),'Irina')]"));
+        String curName = currentName.getText();
+        Assert.assertEquals(curName, "Irina");
+    }
+
+    @Test
+    public void testDatika() {
+        getDriver().get("https://datika.me/ru/");
+
+        WebElement textBox = getDriver().findElement(By.id("search"));
+        textBox.sendKeys("Акция");
+
+        WebElement submitButton = getDriver().findElement(By.xpath("//*[@id='header']/div/div[2]/form/button"));
+        submitButton.click();
+
+        WebElement message = getDriver().findElement(By.xpath("//*[@id='page-content']/h1"));
+        String value = message.getText();
+
+        Assert.assertEquals(value, "По запросу «Акция»");
     }
 }
 
