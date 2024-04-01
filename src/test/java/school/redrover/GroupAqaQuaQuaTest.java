@@ -1,7 +1,10 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -39,6 +42,20 @@ public class GroupAqaQuaQuaTest extends BaseTest {
         getDriver().findElement(By.cssSelector("button")).click();
 
         Assert.assertEquals(getDriver().findElement(By.tagName("h2")).getText(), "Secure Area");
+    }
+    @Test
+    public void testCameraSortByLowPrise() {
+        getDriver().get("https://demowebshop.tricentis.com/camera-photo");
+
+        getDriver().findElement(By.name("products-orderby")).click();
+        Select sortBy = new Select(getDriver().findElement(By.name("products-orderby")));
+        sortBy.selectByVisibleText("Price: Low to High");
+
+        getDriver().findElement(By.id("products-viewmode")).click();
+        Select viewAs = new Select(getDriver().findElement(By.id("products-viewmode")));
+        viewAs.selectByVisibleText("List");
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("span.actual-price")).getText(), "349.00");
     }
 }
 
