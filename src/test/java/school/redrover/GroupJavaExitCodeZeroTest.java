@@ -376,4 +376,38 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
         Assert.assertEquals(getDriver().getCurrentUrl(), BASE_URL + "/view_cart");
         Assert.assertTrue(getDriver().findElement(By.xpath("//tr[@id='product-1']")).isDisplayed());
     }
+
+    @Test
+    public void testForm() {
+        final String url = "https://demoqa.com/";
+        final String expectedTitleElementPage = "Please select an item from left to start practice.";
+        final String urlTextBoxPage = "https://demoqa.com/text-box";
+        final String userName = "Tom";
+        final String userEmail = "test@test.com";
+        final String expectedName = "Name:Tom";
+        final String expectedEmail = "Email:test@test.com";
+
+        getDriver().get(url);
+        getDriver().manage().window().maximize();
+        getDriver().findElement(By.xpath("//div[@class='card mt-4 top-card'][1]")).click();
+
+        String titleElementPage = getDriver().findElement(By.xpath("//div[@class='col-12 mt-4 col-md-6']"))
+                .getText()
+                .trim();
+
+        Assert.assertEquals(titleElementPage, expectedTitleElementPage);
+
+        getDriver().findElement(By.xpath("//ul//li[@id='item-0']/span[text()='Text Box']")).click();
+
+        Assert.assertEquals(getDriver().getCurrentUrl(),urlTextBoxPage);
+
+        getDriver().findElement(By.cssSelector("#userName")).sendKeys(userName);
+        getDriver().findElement(By.cssSelector("#userEmail")).sendKeys(userEmail);
+        getDriver().findElement(By.cssSelector("#submit")).click();
+        String nameInForm = getDriver().findElement(By.cssSelector("div>p#name")).getText().trim();
+        String emailInForm = getDriver().findElement(By.cssSelector("div>p#email")).getText().trim();
+
+        Assert.assertEquals(nameInForm, expectedName);
+        Assert.assertEquals(emailInForm,expectedEmail);
+    }
 }
