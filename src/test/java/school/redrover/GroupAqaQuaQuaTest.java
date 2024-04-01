@@ -55,6 +55,27 @@ public class GroupAqaQuaQuaTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.cssSelector("span.actual-price")).getText(), "349.00");
     }
+    @Test
+    public void testRegistration() {
+        getDriver().get("https://demowebshop.tricentis.com/");
+
+        Assert.assertEquals(getDriver().getTitle(), "Demo Web Shop");
+
+        getDriver().findElement(By.className("ico-register")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "Register");
+
+        getDriver().findElement(By.id("gender-male")).click();
+        getDriver().findElement(By.id("FirstName")).sendKeys("Topper");
+        getDriver().findElement(By.id("LastName")).sendKeys("Harley");
+        getDriver().findElement(By.id("Email")).sendKeys("topperharley@hotmail.com");
+        getDriver().findElement(By.id("Password")).sendKeys("HotShots");
+        getDriver().findElement(By.id("ConfirmPassword")).sendKeys("HotShots");
+        getDriver().findElement(By.id("register-button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.className("validation-summary-errors")).getText(),
+                "The specified email already exists");
+    }
 }
 
 
