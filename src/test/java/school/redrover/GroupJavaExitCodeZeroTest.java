@@ -337,9 +337,7 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
         js.executeScript("arguments[0].scrollIntoView(true);", createAccount);
         createAccount.click();
 
-        WebElement accountCreated = getDriver().findElement(By.cssSelector("b"));
-
-        Assert.assertEquals(accountCreated.getText(), expectedCreated);
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("b")).getText(), expectedCreated);
 
         getDriver().findElement(By.linkText("Continue")).click();
         new Actions(getDriver()).moveByOffset(50, 50).click().perform();
@@ -352,8 +350,7 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
 
         getDriver().findElement(By.linkText("Delete Account")).click();
 
-        WebElement accountDeleted = getDriver().findElement(By.cssSelector("b"));
-        Assert.assertEquals(accountDeleted.getText(), expectedDeleted);
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("b")).getText(), expectedDeleted);
 
         getDriver().findElement(By.linkText("Continue")).click();
     }
@@ -368,20 +365,15 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
         js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
         Thread.sleep(1000);
 
-        WebElement recommendedItemsHeading = getDriver().findElement(By.xpath("//h2[contains(text(), 'recommended items')]"));
-        Assert.assertTrue(recommendedItemsHeading.isDisplayed());
+        WebElement recommendedItems = getDriver().findElement(By.xpath("//h2[contains(text(), 'recommended items')]"));
 
-        WebElement addToCartButton = getDriver().findElement(By.xpath("//a[@class='btn btn-default add-to-cart']"));
-        addToCartButton.click();
+        Assert.assertTrue(recommendedItems.isDisplayed());
+
+        getDriver().findElement(By.xpath("//a[@class='btn btn-default add-to-cart']")).click();
         Thread.sleep(1000);
+        getDriver().findElement(By.partialLinkText("View Cart")).click();
 
-        WebElement viewCartLink = getDriver().findElement(By.partialLinkText("View Cart"));
-        viewCartLink.click();
-
-        String currentUrl = getDriver().getCurrentUrl();
-        Assert.assertEquals(currentUrl, BASE_URL + "/view_cart");
-
-        WebElement productInCart = getDriver().findElement(By.xpath("//tr[@id='product-1']"));
-        Assert.assertTrue(productInCart.isDisplayed());
+        Assert.assertEquals(getDriver().getCurrentUrl(), BASE_URL + "/view_cart");
+        Assert.assertTrue(getDriver().findElement(By.xpath("//tr[@id='product-1']")).isDisplayed());
     }
 }
