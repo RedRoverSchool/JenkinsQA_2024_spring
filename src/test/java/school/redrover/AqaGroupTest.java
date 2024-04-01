@@ -13,9 +13,14 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.net.URL;
+import java.util.Objects;
 
 public class AqaGroupTest extends AqaGroupBaseTest {
     private static final String URL = "https://demoqa.com/alerts";
@@ -875,5 +880,19 @@ public class AqaGroupTest extends AqaGroupBaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.id("hoverdivparaeffect")).getText(),
                 "You can see this child div content now that you hovered on the above 'button'.");
+    }
+
+    @Test
+    public void testUploadFile() throws URISyntaxException {
+        getDriver().get("https://testpages.eviltester.com/styled/file-upload-test.html");
+
+        getDriver().findElement(By.id("fileinput")).sendKeys(
+                Paths.get(Objects.requireNonNull(getClass().getClassLoader().getResource("1.jpg"))
+                        .toURI()).toFile().getAbsolutePath());
+
+        getDriver().findElement(By.id("itsanimage")).click();
+        getDriver().findElement(By.className("styled-click-button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.id("uploadedfilename")).getText(), "1.jpg");
     }
 }
