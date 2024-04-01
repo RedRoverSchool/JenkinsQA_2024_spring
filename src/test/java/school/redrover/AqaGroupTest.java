@@ -846,9 +846,5 @@ public class AqaGroupTest extends AqaGroupBaseTest {
         Assert.assertNotEquals(
                 getDriver().findElement(By.id("embeddedrefreshdatevalue")).getText(),
                 text);
-
-
-
-
     }
 }
