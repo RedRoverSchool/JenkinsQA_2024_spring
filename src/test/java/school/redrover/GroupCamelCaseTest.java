@@ -53,5 +53,6 @@ public class GroupCamelCaseTest extends BaseTest {
 
         Assert.assertEquals("Оформление заказа", value);
 
+
     }
 }
