@@ -17,7 +17,6 @@ public class GroupAqaQuaQuaTest extends BaseTest {
     public void testyAddingBookToCart() {
         getDriver().get("https://demowebshop.tricentis.com/");
 
-
         WebElement books = getDriver().findElement(By.xpath("//ul[@class='top-menu']//a[@href='/books']"));
         books.click();
 
@@ -30,9 +29,7 @@ public class GroupAqaQuaQuaTest extends BaseTest {
         WebElement shoppingCart = getDriver().findElement(By.className("cart-label"));
         shoppingCart.click();
 
-
         Assert.assertEquals(getDriver().findElement(By.className("product-name")).getText(), "Computing and Internet");
-
     }
     @Test
     public void testLoginTheInternet() {
