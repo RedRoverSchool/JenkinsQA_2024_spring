@@ -180,6 +180,22 @@ public class GroupRedroverJava7Test extends BaseTest {
 
         Assert.assertEquals("FIND YOUR STORE", value);
     }
+    @Test
+    public void TestYMCA() {
+        getDriver().get("https://ymcacapecod.org/");
+
+        WebElement textBox = getDriver().findElement(By.className("field"));
+        WebElement SearchButton = getDriver().findElement(By.className("submit"));
+        textBox.sendKeys("pool");
+        SearchButton.click();
+
+        getDriver().findElement(By.xpath("//footer//a[@href='/programs/swimming/']")).click();
+
+        WebElement text = getDriver().findElement(By.xpath("//h1[@class='program-hero__title']"));
+        text.click();
+        String value = text.getText();
+        Assert.assertEquals(value, "SWIM LESSONS");
+    }
 
     @Test
     public void testMouseHover() {
