@@ -69,7 +69,7 @@ public class GroupCarlthefogTest extends BaseTest {
         List<String> actualElementsHeader = WebElementsToString(elementsHeaderList);
 
         Assert.assertEquals(expectedElementsQuantity, actualElementsQuantity);
-        Assert.assertEquals(expectedElementsHeader,actualElementsHeader);
+        Assert.assertEquals(expectedElementsHeader, actualElementsHeader);
 
         driver.quit();
     }
@@ -167,11 +167,25 @@ public class GroupCarlthefogTest extends BaseTest {
 
         getDriver().get("https://qa-practice.netlify.app");
 
-        getDriver().findElement( By.id("products-list") ).click();
+        getDriver().findElement(By.id("products-list")).click();
         getDriver().findElement(By.xpath("//div[@class='shop-item-details']/button")).click();
         getDriver().findElement(By.xpath("//button[text()='PURCHASE']")).click();
         String value = getDriver().findElement(By.id("message")).getText();
 
         Assert.assertEquals(value, "Congrats! Your order of $905.99 has been registered!");
+    }
+
+    @Test
+    public void testExpandtesting() {
+
+        getDriver().get("https://practice.expandtesting.com/login");
+
+        getDriver().findElement(By.id("username")).sendKeys("practice");
+        getDriver().findElement(By.name("password")).sendKeys("SuperSecretPassword!");
+        getDriver().findElement(By.xpath("//button[@type='submit' and contains(text(),'Login')]")).click();
+
+        String actual = getDriver().findElement(By.id("flash")).getText();
+
+        Assert.assertEquals(actual, "You logged into a secure area!");
     }
 }

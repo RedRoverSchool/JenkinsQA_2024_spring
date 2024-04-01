@@ -2,7 +2,9 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -98,4 +100,50 @@ public class ByteBustersGroupTest extends BaseTest {
                 .getText(), "За Вашим запитом нічого не знайдено.");
     }
 
+    @Test
+    public void testAddToCart() {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(1000));
+
+        getDriver().findElement(By.name("user-name")).sendKeys("standard_user");
+        getDriver().findElement(By.name("password")).sendKeys("secret_sauce");
+        getDriver().findElement(By.id("login-button")).click();
+        getDriver().findElement(By.id("add-to-cart-test.allthethings()-t-shirt-(red)")).click();
+        getDriver().findElement(By.className("shopping_cart_link")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.className("shopping_cart_badge")).getText(), "1");
+        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@id='item_3_title_link']/div[@class = 'inventory_item_name']")).getText(), "Test.allTheThings() T-Shirt (Red)");
+    }
+
+    @Test
+    public void testRemoveFromCart() {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(1000));
+
+        getDriver().findElement(By.name("user-name")).sendKeys("standard_user");
+        getDriver().findElement(By.name("password")).sendKeys("secret_sauce");
+        getDriver().findElement(By.id("login-button")).click();
+        getDriver().findElement(By.id("add-to-cart-test.allthethings()-t-shirt-(red)")).click();
+        getDriver().findElement(By.id("remove-test.allthethings()-t-shirt-(red)")).click();
+        getDriver().findElement(By.className("shopping_cart_link")).click();
+
+        Assert.assertTrue(getDriver().findElements(By.className("shopping_cart_badge")).isEmpty());
+        Assert.assertTrue(getDriver().findElements(By.className("cart_item")).isEmpty());
+    }
+
+    @Test
+    public void googleTranslatorTest() throws InterruptedException {
+
+        getDriver().get("https://translate.google.com/#");
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(2000));
+
+        WebElement textField = getDriver().findElement(By.className("er8xn"));
+        textField.sendKeys("Hello World");
+
+        WebElement translationFieldText = getDriver().findElement(By.
+                xpath("(//span[@class='ryNqvb'])[1]"));
+
+        Assert.assertEquals(translationFieldText.getText(), "Привет, мир");
+
+    }
 }

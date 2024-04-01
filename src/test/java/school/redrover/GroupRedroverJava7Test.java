@@ -1,15 +1,15 @@
 package school.redrover;
 
-import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-
-
 
 public class GroupRedroverJava7Test extends BaseTest {
 
@@ -52,7 +52,6 @@ public class GroupRedroverJava7Test extends BaseTest {
 
         WebElement header = getDriver().findElement(By.xpath("//h3"));
 
-
         Assert.assertEquals(header.getText(), "Dinesh's Pizza House");
     }
 
@@ -82,16 +81,17 @@ public class GroupRedroverJava7Test extends BaseTest {
     }
 
     @Test
-    public void testItemSearch() {
+    public void testItemSearch() throws InterruptedException {
         getDriver().get("https://www.applebees.com/en");
         getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
         getDriver().manage().window().maximize();
+        Thread.sleep(1000);
 
-        WebElement menuButton = getDriver().findElement(By.xpath("//ul/li/a[@href='/en/menu'][1]"));
+        WebElement menuButton = getDriver().findElement(By.xpath("(//ul/li/a[@href='/en/menu'])[1]"));
         menuButton.click();
 
-        WebElement searchMenu = getDriver().findElement(By.xpath("//a[@class='btn btn-lg btn-text']"));
+        WebElement searchMenu = getDriver().findElement(By.xpath("//a[@href='/en/menu-search']"));
         searchMenu.click();
 
         WebElement textBox = getDriver().findElement(By.xpath("//input[contains(@class,'menu-search')]"));
@@ -100,26 +100,26 @@ public class GroupRedroverJava7Test extends BaseTest {
         WebElement massage = getDriver().findElement(By.xpath("//a[@href='/en/menu/seafood/blackened-cajun-salmon']"));
         String value = massage.getText();
 
-        Assert.assertEquals("Blackened Cajun Salmon", value);
+        Assert.assertEquals(value, "Blackened Cajun Salmon");
     }
 
     @Test
     public void testLocationList() {
-        List<String> actualLocationNames = List.of("Bensalem", "Doylestown", "Langhorne", "Levittown", "Perkasie", "Quakertown", "Yardley-Makefield");
-        List<String> expectedLocationNames = new ArrayList<>();
+        List<String> expectedLocationsNames = List.of("Bensalem", "Doylestown", "Langhorne", "Levittown", "Perkasie", "Quakertown", "Yardley-Makefield");
+        List<String> actualLocationNames = new ArrayList<>();
 
         getDriver().get("https://buckslib.org/");
         getDriver().manage().window().maximize();
 
         getDriver().findElement(By.xpath("//*[contains(text(),' Locations')]")).click();
 
-        for (String locationName : actualLocationNames) {
+        for (String locationName : expectedLocationsNames) {
             String locationText = getDriver()
                     .findElement(By.xpath("//div[@id='wp-faqp-accordion-1']/div/div[@class='faq-title']/h4[text()='" + locationName + "']")).getText();
-            expectedLocationNames.add(locationText);
+            actualLocationNames.add(locationText);
         }
 
-        Assert.assertEquals(actualLocationNames, expectedLocationNames);
+        Assert.assertEquals(actualLocationNames, expectedLocationsNames);
     }
 
     @Test
@@ -177,6 +177,43 @@ public class GroupRedroverJava7Test extends BaseTest {
 
         WebElement text = getDriver().findElement(By.xpath("//h2[text()='Find Your Store']"));
         String value = text.getText();
-        Assert.assertEquals("FIND YOUR STORE", value);
+
+        Assert.assertEquals(value,"FIND YOUR STORE");
+    }
+    @Test
+    public void testYMCA() {
+        getDriver().get("https://ymcacapecod.org/");
+
+        WebElement textBox = getDriver().findElement(By.className("field"));
+        WebElement searchButton = getDriver().findElement(By.className("submit"));
+        textBox.sendKeys("pool");
+        searchButton.click();
+
+        getDriver().findElement(By.xpath("//footer//a[@href='/programs/swimming/']")).click();
+
+        WebElement text = getDriver().findElement(By.xpath("//h1[@class='program-hero__title']"));
+        String value = text.getText();
+        Assert.assertEquals(value, "SWIM LESSONS");
+    }
+
+    @Test
+    public void testMouseHover() {
+        getDriver().get("https://play1.automationcamp.ir/");
+
+        WebElement buttonMouseViewPage = getDriver().findElement(By.xpath("//a[starts-with(@*,'mouse')]"));
+        buttonMouseViewPage.click();
+
+        WebElement elementToHoverOver = getDriver().findElement(By.xpath("//button[@class='dropbtn']"));
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(elementToHoverOver).perform();
+
+        WebElement subMenuItem = getDriver().findElement(By.id("dd_python"));
+        subMenuItem.click();
+
+        WebElement text = getDriver().findElement(By.id("hover_validate"));
+        String value = text.getText();
+
+        Assert.assertEquals(value, "Python");
     }
 }
+

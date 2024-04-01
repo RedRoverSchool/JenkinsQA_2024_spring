@@ -2,42 +2,29 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
-public class TheInternetTest {
+public class TheInternetTest extends BaseTest {
     @Test
-    public void loginPage() {
-        WebDriver driver = new ChromeDriver();
+    public void testLoginAndLogout() {
+        WebDriver driver = getDriver();
         driver.get("https://the-internet.herokuapp.com/");
-        String title = driver.getTitle();
-        Assert.assertEquals(title, "The Internet");
 
-        WebElement linkToLoginPage = driver.findElement(By.linkText("Form Authentication"));
-        linkToLoginPage.click();
+        Assert.assertEquals(driver.getTitle(), "The Internet");
 
-        WebElement inputLogin = driver.findElement(By.id("username"));
-        inputLogin.sendKeys("tomsmith");
-        WebElement inputPassword = driver.findElement(By.id("password"));
-        inputPassword.sendKeys("SuperSecretPassword!");
+        driver.findElement(By.linkText("Form Authentication")).click();
 
-        WebElement loginButton = driver.findElement(By.cssSelector("button"));
-        loginButton.click();
+        driver.findElement(By.id("username")).sendKeys("tomsmith");
+        driver.findElement(By.id("password")).sendKeys("SuperSecretPassword!");
+        driver.findElement(By.cssSelector("button")).click();
 
-        WebElement loggedIn = driver.findElement(By.tagName("h2"));
-        String message = loggedIn.getText();
-        Assert.assertEquals(message, "Secure Area");
+        Assert.assertEquals(driver.findElement(By.tagName("h2")).getText(), "Secure Area");
 
-        WebElement logoutButton = driver.findElement(By.linkText("Logout"));
-        logoutButton.click();
+        driver.findElement(By.linkText("Logout")).click();
+        driver.findElement(By.tagName("h2")).getText();
 
-        WebElement loggedOut = driver.findElement(By.tagName("h2"));
-        String messageLogOut = loggedOut.getText();
-        Assert.assertEquals(messageLogOut, "Login Page");
-
-        driver.quit();
-
+        Assert.assertEquals(driver.findElement(By.tagName("h2")).getText(), "Login Page");
     }
 }
