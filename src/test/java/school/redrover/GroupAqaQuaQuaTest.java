@@ -76,6 +76,21 @@ public class GroupAqaQuaQuaTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.className("validation-summary-errors")).getText(),
                 "The specified email already exists");
     }
+    @Test
+    public void testLoginPositive() {
+        getDriver().get("https://demowebshop.tricentis.com/");
+
+        Assert.assertEquals(getDriver().getTitle(), "Demo Web Shop");
+
+        getDriver().findElement(By.className("ico-login")).click();
+        getDriver().findElement(By.id("Email")).sendKeys("topperharley@hotmail.com");
+        getDriver().findElement(By.id("Password")).sendKeys("HotShots");
+        getDriver().findElement(By.id("RememberMe")).click();
+        getDriver().findElement(By.className("login-button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.className("account")).getText(),
+                "topperharley@hotmail.com");
+    }
 }
 
 
