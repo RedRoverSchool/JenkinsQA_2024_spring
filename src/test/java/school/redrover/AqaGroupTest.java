@@ -835,4 +835,21 @@ public class AqaGroupTest extends AqaGroupBaseTest {
 
         Assert.assertTrue(getDriver().findElement(By.cssSelector("[data-modal = 'modal-1']")).isEnabled());
     }
+
+    @Test
+    public void testDragDrop(){
+        getDriver().get("https://testpages.eviltester.com/styled/drag-drop-javascript.html");
+
+        WebElement draggable = getDriver().findElement(By.id("draggable1"));
+        WebElement droppable = getDriver().findElement(By.id("droppable1"));
+
+        new Actions(getDriver())
+                .dragAndDrop(draggable, droppable)
+                .perform();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.id("droppable1")).getText(),
+                "Dropped!",
+                "Не удалось перетащить элемент");
+    }
 }
