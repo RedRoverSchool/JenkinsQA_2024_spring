@@ -836,6 +836,23 @@ public class AqaGroupTest extends AqaGroupBaseTest {
     }
 
     @Test
+    public void testDragDrop(){
+        getDriver().get("https://testpages.eviltester.com/styled/drag-drop-javascript.html");
+
+        WebElement draggable = getDriver().findElement(By.id("draggable1"));
+        WebElement droppable = getDriver().findElement(By.id("droppable1"));
+
+        new Actions(getDriver())
+                .dragAndDrop(draggable, droppable)
+                .perform();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.id("droppable1")).getText(),
+                "Dropped!",
+                "Не удалось перетащить элемент");
+    }
+
+    @Test
     public void testRefreshPage() {
         getDriver().get("https://testpages.eviltester.com/styled/refresh");
 
@@ -845,7 +862,8 @@ public class AqaGroupTest extends AqaGroupBaseTest {
         Assert.assertNotEquals(
                 getDriver().findElement(By.id("embeddedrefreshdatevalue")).getText(),
                 text);
-      
+    }
+
     @Test
     public void testHoverDiv() {
         getDriver().get("https://testpages.eviltester.com/styled/csspseudo/css-hover.html");

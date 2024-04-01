@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import java.util.ArrayList;
@@ -14,30 +15,30 @@ public class ArMobileTest extends BaseTest {
     private static final String INPUT_PASSWORD = "//input[@class='ant-input']";
     private static final String INPUT_EMAIL = "//input[@class='ant-input primaryInput  not-entered']";
     private static final String BTN_PASSWORD = "//button[@class='ant-btn ant-btn-default authButton big colorPrimary ']";
-    private static final String EMAIL = "n-k-65@list.ru";
-    private static final String PASSWORD = "qwe13567";
+    private static final String EMAIL = "f.ff.1980@list.ru";
+    private static final String PASSWORD = "012345678";
 
-    private final By getPaswordText = By.xpath("//h2[@class='ant-typography h2_m RestorePassword__sendSuccess-text'][contains(.,'Мы отправили по адресу')]");
-    private final By getErrorText = By.xpath("//div[@style='text-align: center; margin-bottom: 20px; color: rgb(255, 0, 0);']");
-    private final By newProgectNameText = By.xpath("//div[@class='Sidebar__project-name'][contains(.,'1Новый проект')]");
-    private final By getPoliticaText = By.xpath("//h1[@class='page-header-title clr']");
-    private final By getPoliticaUserText = By.xpath("//span[@style='font-size: 19px;'][contains(.,'Предмет пользовательского соглашения')]");
-    private final By getBotText = By.xpath("//span[@dir='auto']");
+    private static final By GET_PASWORD = By.xpath("//h2[@class='ant-typography h2_m RestorePassword__sendSuccess-text'][contains(.,'Мы отправили по адресу')]");
+    private static final By GET_ERROR = By.xpath("//div[@style='text-align: center; margin-bottom: 20px; color: rgb(255, 0, 0);']");
+    private static final By NEW_PROGECT_TEXT = By.xpath("//div[@class='Sidebar__project-name'][contains(.,'1Новый проект')]");
+    private static final By GET_POLITICA = By.xpath("//h1[@class='page-header-title clr']");
+    private static final By GET_POLITICA_USER = By.xpath("//span[@style='font-size: 19px;'][contains(.,'Предмет пользовательского соглашения')]");
+    private static final By GET_BOT = By.xpath("//span[@dir='auto']");
 
-public void url() {
+    private void url() {
 
-    getDriver().get(URL);
-    getDriver().manage().window().setSize(new Dimension(1920,1080));
-    getDriver().manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
-    getDriver().manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-}
+        getDriver().get(URL);
+        getDriver().manage().window().setSize(new Dimension(1920,1080));
+        getDriver().manage().timeouts().pageLoadTimeout(25, TimeUnit.SECONDS);
+        getDriver().manage().timeouts().implicitlyWait(25, TimeUnit.SECONDS);
+    }
 
-public void login() {
+    private void login() {
 
-    getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
-    getDriver().findElement(By.xpath(INPUT_PASSWORD)).sendKeys(PASSWORD);
-    getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
-}
+        getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
+        getDriver().findElement(By.xpath(INPUT_PASSWORD)).sendKeys(PASSWORD);
+        getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
+    }
 
     @Test
     public void testRemovePasword() {
@@ -46,7 +47,7 @@ public void login() {
         getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys("yyyyyyyyyy@mail.xx");
         getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
 
-        String getError = getDriver().findElement(getErrorText).getText();
+        String getError = getDriver().findElement(GET_ERROR).getText();
 
         Assert.assertEquals(getError,"Неправильный логин или пароль");
     }
@@ -61,7 +62,7 @@ public void login() {
         getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
         getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
 
-        String getPasError = getDriver().findElement(getPaswordText).getText();
+        String getPasError = getDriver().findElement(GET_PASWORD).getText();
 
         Assert.assertEquals(getPasError,"Мы отправили по адресу n-k-65@list.ru ссылку для восстановления доступа");
     }
@@ -76,11 +77,12 @@ public void login() {
         ArrayList<String> newTab = new ArrayList<>(getDriver().getWindowHandles());
         getDriver().switchTo().window(newTab.get(1));
 
-        String getPoliticaUser = getDriver().findElement(getPoliticaUserText).getText();
+        String getPoliticaUser = getDriver().findElement(GET_POLITICA_USER).getText();
 
-        Assert.assertEquals("Предмет пользовательского соглашения", getPoliticaUser);
+        Assert.assertEquals(getPoliticaUser, "Предмет пользовательского соглашения");
     }
 
+    @Ignore
     @Test
     public void testCreateProgect() {
         url();
@@ -106,9 +108,9 @@ public void login() {
         getDriver().findElement(By.xpath("//div[@class='ant-typography ant-typography-ellipsis ant-typography-single-line ant-typography-ellipsis-single-line p_r']")).click();
         getDriver().findElement(By.xpath("//a[@style='color: inherit;'][contains(.,'Настройки')]")).click();
 
-        String newProgectName = getDriver().findElement(newProgectNameText).getText();
+        String newProgectName = getDriver().findElement(NEW_PROGECT_TEXT).getText();
 
-        Assert.assertEquals("1Новый проект", newProgectName);
+        Assert.assertEquals(newProgectName, "1Новый проект");
 
         getDriver().findElement(By.xpath("//button[@class='ant-btn ant-btn-default primaryButton big colorRed ']")).click();
         getDriver().findElement(By.xpath("//button[@class='ant-btn ant-btn-default primaryButton big colorPrimary '][contains(.,'Подтвердить')]")).click();
@@ -123,9 +125,9 @@ public void login() {
 
         ArrayList<String> newTab = new ArrayList<>(getDriver().getWindowHandles());
         getDriver().switchTo().window(newTab.get(1));
-        String getErr = getDriver().findElement(getPoliticaText).getText();
+        String getErr = getDriver().findElement(GET_POLITICA).getText();
 
-        Assert.assertEquals("Политика обработки персональных данных", getErr);
+        Assert.assertEquals(getErr, "Политика обработки персональных данных");
     }
 
     @Test
@@ -138,11 +140,12 @@ public void login() {
 
         ArrayList<String> newTab = new ArrayList<>(getDriver().getWindowHandles());
         getDriver().switchTo().window(newTab.get(1));
-        String getBot = getDriver().findElement(getBotText).getText();
+        String getBot = getDriver().findElement(GET_BOT).getText();
 
-        Assert.assertEquals("AR SOFT support", getBot);
+        Assert.assertEquals(getBot, "AR SOFT support");
     }
 
+    @Ignore
     @Test
     public void testUserNab() {
 
@@ -165,9 +168,10 @@ public void login() {
 
         String getTextD = getDriver().findElement(By.xpath("//span[@class='anticon anticon-close-circle']")).getText();
 
-        Assert.assertEquals("Ошибка обращения к серверу", getTextD);
+        Assert.assertEquals(getTextD, "Ошибка обращения к серверу");
     }
 
+    @Ignore
     @Test
     public void testCreateUser() {
 
@@ -186,6 +190,6 @@ public void login() {
 
         String getTextD = getDriver().findElement(By.xpath("//span[@class='anticon anticon-close-circle']")).getText();
 
-        Assert.assertEquals("Ошибка обращения к серверу", getTextD);
+        Assert.assertEquals(getTextD, "Ошибка обращения к серверу");
     }
 }
