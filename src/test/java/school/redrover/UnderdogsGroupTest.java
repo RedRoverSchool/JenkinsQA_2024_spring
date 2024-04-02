@@ -36,8 +36,8 @@ public class UnderdogsGroupTest extends BaseTest {
     @Test
     public void testElementsTextBox() {
         getDriver().get("https://demoqa.com/");
-        getDriver().findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[1]")).click();
-        getDriver().findElement(By.xpath("(//*[@id=\"item-0\"])[1]")).click();
+        getDriver().findElement(By.xpath("//*[@Class=\"card mt-4 top-card\"]")).click();
+        getDriver().findElement(By.xpath("//*[contains(text(),'Text Box')]")).click();
         String email = "test@gmail.com";
 
         getDriver().findElement(By.id("userEmail")).sendKeys(email);
