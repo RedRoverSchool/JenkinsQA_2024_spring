@@ -929,9 +929,38 @@ public class AqaGroupTest extends AqaGroupBaseTest {
     }
 
     @Test
+    public void testButtonChangeItsName() {
+        getDriver().get("http://uitestingplayground.com/textinput");
+
+        getDriver().findElement(By.id("newButtonName")).sendKeys("carolync");
+        getDriver().findElement(By.id("updatingButton")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.id("updatingButton")).getText(), "carolync");
+    }
+
+    @Test
+    public void testWaitUntilPageLoad() {
+        getDriver().get("http://uitestingplayground.com/home");
+
+        getDriver().findElement(By.xpath("//*[contains(text(), 'Load Delay')]")).click();
+        Assert.assertTrue(getWait60().until(ExpectedConditions.urlContains("http://uitestingplayground.com/loaddelay")), "Error of redirection!");
+    }
+
+    @Test
+    public void testHiddenButtons() {
+        getDriver().get("http://uitestingplayground.com/visibility");
+
+        String xpath = "//button[@id='removedButton' or @id='zeroWidthButton' or @id='overlappedButton' or @id='transparentButton'" +
+                " or @id='invisibleButton' or @id='notdisplayedButton' or @id='offscreenButton']";
+
+        getDriver().findElement(By.id("hideButton")).click();
+
+        Assert.assertFalse(getDriver().findElement(By.xpath(xpath)).isDisplayed(), "Not all the buttons are hidden!");
+     }
+
+    @Test
     public void testRemovesPassword() {
         getDriver().get(URL_MOB);
-
         getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys("yyyyyyyyyy@mail.xx");
         getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
 
