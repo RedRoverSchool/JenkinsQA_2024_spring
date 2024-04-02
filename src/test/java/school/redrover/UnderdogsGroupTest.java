@@ -166,14 +166,11 @@ public class UnderdogsGroupTest extends BaseTest {
 
         Assert.assertEquals(element.trim(), order);
     }
-    @Ignore
     @Test
     public  void testVerifyTitle() {
-        WebDriver driver = new ChromeDriver();
-        driver.get(URL_HOMEPAGE);
+        getDriver().get(URL_HOMEPAGE);
 
-        Assert.assertEquals(driver.getTitle(), "DEMOQA", "Not equal your message with title of page");
-        driver.quit();
+        Assert.assertEquals(getDriver().getTitle(), "DEMOQA", "Not equal your message with title of page");
     }
 
     @Ignore
