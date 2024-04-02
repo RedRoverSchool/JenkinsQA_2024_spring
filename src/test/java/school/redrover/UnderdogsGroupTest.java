@@ -32,22 +32,19 @@ public class UnderdogsGroupTest extends BaseTest {
         Assert.assertEquals(result, "Name:" + name);
     }
 
-    @Ignore
+
     @Test
     public void testElementsTextBox() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://demoqa.com/");
-        driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[1]")).click();
-        driver.findElement(By.xpath("(//*[@id=\"item-0\"])[1]")).click();
+        getDriver().get("https://demoqa.com/");
+        getDriver().findElement(By.xpath("//*[@Class=\"card mt-4 top-card\"]")).click();
+        getDriver().findElement(By.xpath("//*[contains(text(),'Text Box')]")).click();
         String email = "test@gmail.com";
 
-        driver.findElement(By.id("userEmail")).sendKeys(email);
-        driver.findElement(By.id("submit")).click();
-        String result = driver.findElement(By.id("email")).getText();
+        getDriver().findElement(By.id("userEmail")).sendKeys(email);
+        getDriver().findElement(By.id("submit")).click();
+        String result = getDriver().findElement(By.id("email")).getText();
 
         Assert.assertEquals(result, "Email:" + email);
-
-        driver.quit();
     }
     @Ignore
     @Test

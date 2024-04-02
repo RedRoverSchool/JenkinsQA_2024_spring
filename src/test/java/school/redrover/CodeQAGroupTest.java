@@ -10,6 +10,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.awt.*;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -331,23 +332,27 @@ public class CodeQAGroupTest extends BaseTest {
     }
 
     @Test
-    public void testForConflict2() {
+    public void testForConflict2() throws AWTException {
 
         getDriver().get("https://the-internet.herokuapp.com/");
 
         WebDriverWait wait60 = new WebDriverWait(getDriver(), Duration.ofSeconds(60));
 
         wait60.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a [@href='/floating_menu']")));
+                By.xpath("//a [@href='/exit_intent']")));
 
-        WebElement linkToDynamicallyLoadedPageElementsPage = getDriver().findElement(
+        WebElement linkToExitIntentPage = getDriver().findElement(
                 By.xpath("//a [@href='/exit_intent']"));
-        linkToDynamicallyLoadedPageElementsPage.click();
+        linkToExitIntentPage.click();
 
-        String expectedResult = "This is a modal window";
+        Robot robot = new Robot();
+        robot.mouseMove(600,0);
 
         wait60.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div [@class='modal-title']")));
+                By.xpath("//div [@class='modal-title']/h3")));
+
+        String expectedResult = "This is a modal window";
+        expectedResult = expectedResult.toUpperCase();
 
         String actualResult = getDriver().findElement(
                 By.xpath("//div [@class='modal-title']/h3")).getText();
