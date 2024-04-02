@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,6 +15,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
 import java.time.Duration;
 
 public class GroupUnitedByJava8Test extends BaseTest {
@@ -253,7 +255,7 @@ public class GroupUnitedByJava8Test extends BaseTest {
     }
 
     @Test
-    public void testSuccessLoginSaucedemo(){
+    public void testSuccessLoginSaucedemo() {
         getDriver().get("https://www.saucedemo.com/");
         getDriver().manage().window().maximize();
 
