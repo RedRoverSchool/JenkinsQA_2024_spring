@@ -2,9 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -12,7 +10,11 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.awt.*;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class CodeQAGroupTest extends BaseTest {
 
@@ -76,6 +78,7 @@ public class CodeQAGroupTest extends BaseTest {
 
         Assert.assertEquals(actualRes, "Project freestylePrTest39");
     }
+
     @Test
     public void testDropDownMenu() {
         getDriver().get("https://the-internet.herokuapp.com");
@@ -264,6 +267,7 @@ public class CodeQAGroupTest extends BaseTest {
 
         Assert.assertTrue(menuIsDisplayed);
     }
+
     @Test
     public void testFieldValidation() throws InterruptedException {
 
@@ -294,14 +298,95 @@ public class CodeQAGroupTest extends BaseTest {
 
         Assert.assertEquals(actualMessage, expectedMessage);
     }
+
+  @Test
+      public void testGoToAnotherPage() {
+
+        getDriver().get("https://the-internet.herokuapp.com/");
+        getDriver().findElement(By.cssSelector("a[href='/abtest']")).click();
+        String actualResult = getDriver().findElement(By.cssSelector("h3")).getText();
+
+        Assert.assertEquals(actualResult, "A/B Test Control");
+    }
+
     @Test
-    public void testGoToAnotherPage() {
+    public void testForConflict() {
 
-       getDriver().get("https://the-internet.herokuapp.com/");
-        WebElement atrValue = getDriver().findElement(By.cssSelector("a[href='/abtest']"));
+        getDriver().get("https://the-internet.herokuapp.com/");
+
+        WebDriverWait wait60 = new WebDriverWait(getDriver(), Duration.ofSeconds(60));
+
+        wait60.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//a [@href='/floating_menu']")));
+
+        WebElement linkToDynamicallyLoadedPageElementsPage = getDriver().findElement(
+                By.xpath("//a [@href='/exit_intent']"));
+        linkToDynamicallyLoadedPageElementsPage.click();
+
+        String expectedResult = "Exit Intent";
+
+        String actualResult = getDriver().findElement(
+                By.xpath("//h3")).getText();
+
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void testForConflict2() throws AWTException {
+
+        getDriver().get("https://the-internet.herokuapp.com/");
+
+        WebDriverWait wait60 = new WebDriverWait(getDriver(), Duration.ofSeconds(60));
+
+        wait60.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//a [@href='/exit_intent']")));
+
+        WebElement linkToExitIntentPage = getDriver().findElement(
+                By.xpath("//a [@href='/exit_intent']"));
+        linkToExitIntentPage.click();
+
+        Robot robot = new Robot();
+        robot.mouseMove(600,0);
+
+        wait60.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div [@class='modal-title']/h3")));
+
+        String expectedResult = "This is a modal window";
+        expectedResult = expectedResult.toUpperCase();
+
+        String actualResult = getDriver().findElement(
+                By.xpath("//div [@class='modal-title']/h3")).getText();
+
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void testLoginFormWithEmptyFields() {
+        getDriver().get("https://the-internet.herokuapp.com/");
+
+        getDriver().findElement(By.cssSelector("a[href='/login']")).click();
+        getDriver().findElement(By.xpath("//*[@class='radius']")).click();
+        String actualResult = getDriver().findElement(By.id("flash")).getText();
+
+        Assert.assertTrue(actualResult.contains( "Your username is invalid!"));
+    }
+
+    @Test
+    public void testDropDown() {
+
+        getDriver().get("https://the-internet.herokuapp.com/");
+
+        WebElement atrValue = getDriver().findElement(By.xpath("//a[@href='/dropdown']"));
         atrValue.click();
-        WebElement header3 = getDriver().findElement(By.cssSelector("h3"));
+        WebElement dropdown = getDriver().findElement(By.xpath("//*[@id='dropdown']"));
+        dropdown.click();
+        List<String> exResult = new ArrayList<>();
+        exResult.add("Option 1");
+        exResult.add("Option 2");
+        List<String> acResult = new ArrayList<>();
+        acResult.add(getDriver().findElement(By.cssSelector("#dropdown > option:nth-child(2)")).getText());
+        acResult.add(getDriver().findElement(By.cssSelector("#dropdown > option:nth-child(3)")).getText());
 
-        Assert.assertEquals(header3.getText(), "A/B Test Control");
+        Assert.assertEquals(acResult, exResult);
     }
 }

@@ -1,15 +1,21 @@
 package school.redrover;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
 import java.time.Duration;
 
 public class GroupUnitedByJava8Test extends BaseTest {
@@ -30,8 +36,9 @@ public class GroupUnitedByJava8Test extends BaseTest {
 
         WebElement doubleClickMeButton = getDriver().findElement(By.id("doubleClickBtn"));
         new Actions(getDriver())
-            .doubleClick(doubleClickMeButton)
-            .perform();
+
+                .doubleClick(doubleClickMeButton)
+                .perform();
 
         String doubleClickMessageText = getDriver().findElement(By.id("doubleClickMessage")).getText();
 
@@ -98,8 +105,9 @@ public class GroupUnitedByJava8Test extends BaseTest {
         getDriver().findElement(By.id("login-button")).click();
         String actualResult = getDriver().getCurrentUrl();
 
-        Assert.assertEquals(actualResult, "https://www.saucedemo.com/inventory.html" );
+        Assert.assertEquals(actualResult, "https://www.saucedemo.com/inventory.html");
     }
+
     @Test
     public void testAlertAppearsAfterItemIsAddedToCart() {
 
@@ -155,6 +163,7 @@ public class GroupUnitedByJava8Test extends BaseTest {
 
         Assert.assertEquals(cartList.getText(), EXPECTED_TEXT);
     }
+
     @Test
     public void testAddingItemToCart() {
 
@@ -181,6 +190,7 @@ public class GroupUnitedByJava8Test extends BaseTest {
 
         Assert.assertEquals(resultText, "Sauce Labs Bike Light");
     }
+
     @Test
     public void testLogoutUser() throws InterruptedException {
 
@@ -225,5 +235,73 @@ public class GroupUnitedByJava8Test extends BaseTest {
         String contextClickMessageText = getDriver().findElement(By.id("rightClickMessage")).getText();
 
         Assert.assertEquals(contextClickMessageText, "You have done a right click");
+    }
+
+    @Test
+    public void testPraktikum() throws InterruptedException {
+        getDriver().get("https://qa-mesto.praktikum-services.ru/signin");
+
+        WebElement eMail = getDriver().findElement(By.id("email"));
+        eMail.sendKeys("wovibic859@mnsaf.com");
+
+        WebElement password = getDriver().findElement(By.id("password"));
+        password.sendKeys("123");
+
+        WebElement LoginEnter = getDriver().findElement(By.className("auth-form__button"));
+        LoginEnter.click();
+
+        Thread.sleep(3000);
+        WebElement accountName = getDriver().findElement(By.className("profile__title"));
+        Assert.assertEquals(accountName.getText(), "Жак-Ив Кусто");
+    }
+
+    @Test
+    public void testSuccessLoginSaucedemo() {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().manage().window().maximize();
+
+        getDriver().findElement(By.id("user-name")).sendKeys("standard_user");
+        getDriver().findElement(By.id("password")).sendKeys("secret_sauce");
+        getDriver().findElement(By.id("login-button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='app_logo']")).getText(), "Swag Labs");
+    }
+
+    @Test
+    public void testClassifiedCheckbox(){
+        getDriver().get("https://demoqa.com");
+
+        getDriver().findElement(By.xpath("//h5[text()='Elements']")).click();
+        getDriver().findElement(By.id("item-1")).click();
+        getDriver().findElement(By.className("rct-option-expand-all")).click();
+        getDriver().findElement(By.xpath("//label[@for='tree-node-classified']")).click();
+        String value = getDriver().findElement(By.id("result")).getText();
+
+        Assert.assertEquals(value, "You have selected :\n" + "classified");
+    }
+
+    @Test
+    public void testItemsSortedInReverseOrder() {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.id("user-name")).sendKeys(STANDARD_USER_LOGIN);
+        getDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
+        getDriver().findElement(By.id("login-button")).click();
+
+        WebElement selectItemsSortingCriterion = getDriver().findElement(By.className("product_sort_container"));
+        Select select = new Select(selectItemsSortingCriterion);
+        select.selectByVisibleText("Name (Z to A)");
+
+        List<WebElement> items = getDriver().findElements(By.xpath("//div[@class='inventory_item_name ']"));
+
+        List<String> itemsNames = new ArrayList<>();
+        for (WebElement itemName : items) {
+            String name = itemName.getText();
+            itemsNames.add(name);
+        }
+
+        List<String> expectedSortedNames = new ArrayList<>(itemsNames);
+        expectedSortedNames.sort(Collections.reverseOrder());
+
+        Assert.assertEquals(itemsNames, expectedSortedNames);
     }
 }

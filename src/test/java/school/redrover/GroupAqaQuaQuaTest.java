@@ -108,4 +108,116 @@ public class GroupAqaQuaQuaTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.cssSelector("span.actual-price")).getText(), "349.00");
     }
+
+    @Test
+    public void testAddGiftCardToCart() {
+        getDriver().get("https://demowebshop.tricentis.com/");
+
+        WebElement selectSortBy = getDriver().findElement(
+                By.cssSelector("div.header-menu>ul.top-menu>li>a[href='/gift-cards']"));
+        selectSortBy.click();
+
+        getDriver().findElement(
+                        By.cssSelector("div.product-grid>div.item-box>div.product-item[data-productid='1']>div.picture"))
+                .click();
+        getDriver().findElement(
+                By.cssSelector("div.breadcrumb>ul>li>strong.current-item"));
+
+        Assert.assertEquals(getDriver().findElement(
+                By.cssSelector("div.breadcrumb>ul>li>strong.current-item")).getText(), "$5 VIRTUAL GIFT CARD");
+
+        getDriver().findElement(
+                By.cssSelector("input#giftcard_1_RecipientName")).sendKeys("Ippolit");
+        getDriver().findElement(
+                By.cssSelector("input#giftcard_1_RecipientEmail")).sendKeys("ippolit@mail.ru");
+        getDriver().findElement(
+                By.cssSelector("input#giftcard_1_SenderName")).sendKeys("Barbara");
+        getDriver().findElement(
+                By.cssSelector("input#giftcard_1_SenderEmail")).sendKeys("barbara@mail.com");
+        getDriver().findElement(
+                By.cssSelector("textarea#giftcard_1_Message")).sendKeys("Тебе от меня! :)");
+        getDriver().findElement(
+                By.cssSelector("input[type='button']#add-to-cart-button-1")).click();
+        getDriver().findElement(
+                By.cssSelector("div.header-links>ul>li#topcartlink")).click();
+
+        Assert.assertEquals(getDriver().getCurrentUrl(), "https://demowebshop.tricentis.com/cart");
+        Assert.assertEquals(getDriver().findElement(
+                        By.cssSelector("div.page-title>h1")).getText(), "Shopping cart");
+        Assert.assertEquals(getDriver().findElement(
+                        By.cssSelector("td.product>a.product-name")).getText(), "$5 Virtual Gift Card");
+        // как подцепить эл.адреса?
+        Assert.assertEquals(getDriver().findElement(
+                        By.cssSelector("td.unit-price.nobr>span.product-unit-price")).getText(), "5.00");
+        Assert.assertEquals(getDriver().findElement(
+                        By.cssSelector("td.qty.nobr>input.qty-input")).getAttribute("value"), "1");
+        Assert.assertEquals(getDriver().findElement(
+                        By.cssSelector("td.subtotal.nobr.end>span.product-subtotal")).getText(), "5.00");
+        Assert.assertEquals(getDriver().findElement(
+                        By.cssSelector("td.cart-total-right>span.nobr>span.product-price")).getText(), "5.00");
+        Assert.assertEquals(getDriver().findElement(
+                                By.cssSelector("td.cart-total-right>span.nobr>span.product-price.order-total>strong"))
+                        .getText(), "5.00");
+
+        getDriver().findElement(By.id("termsofservice")).click();
+        getDriver().findElement(By.id("checkout")).click();
+
+        Assert.assertEquals(getDriver().findElement(
+                By.cssSelector("div.page-title>h1")).getText(), "Welcome, Please Sign In!");
+    }
+    @Test
+    public void testAdvancedSearch() {
+        getDriver().get("https://demowebshop.tricentis.com/");
+
+        getDriver().findElement(By.linkText("Search")).click();
+
+        getDriver().findElement(By.cssSelector("[id= 'Q']")).sendKeys("corel");
+
+        getDriver().findElement(By.id("As")).click();
+        new Select(getDriver().findElement(By.id("Cid"))).selectByVisibleText("All");
+        getDriver().findElement(By.id("Isc")).click();
+        new Select(getDriver().findElement(By.id("Mid"))).selectByVisibleText("All");
+
+        getDriver().findElement(By.className("price-from")).sendKeys("0");
+        getDriver().findElement(By.className("price-to")).sendKeys("1000000");
+        getDriver().findElement(By.id("Sid")).click();
+        getDriver().findElement(By.cssSelector("[class^='search-i'] [type= 'submit']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("h2 a[href^= '/corel']")).getText(),
+                "Corel Paint Shop Pro Photo X2");
+    }
+    @Test
+    public void testNewsletterPositive() throws InterruptedException {
+        getDriver().get("https://demowebshop.tricentis.com/");
+
+        getDriver().findElement(By.cssSelector("[name^='News']")).sendKeys("topperharley@hotmail.com");
+        getDriver().findElement(By.cssSelector("[value^='Sub']")).click();
+        Thread.sleep(500);
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("[class$='result-block']")).getText().substring(0,5),
+                "Thank");
+    }
+    @Test
+    public void testNewsletterNegative() throws InterruptedException {
+        getDriver().get("https://demowebshop.tricentis.com/");
+
+        getDriver().findElement(By.cssSelector("[name^='News']")).sendKeys("hotmail.com");
+        getDriver().findElement(By.cssSelector("[value^='Sub']")).click();
+        Thread.sleep(500);
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("[id$='result-block']")).getText(), "Enter valid email");
+    }
+    @Test
+    public void testLoginNegativePass() {
+        getDriver().get("https://demowebshop.tricentis.com/");
+
+        getDriver().findElement(By.className("ico-login")).click();
+        getDriver().findElement(By.id("Email")).sendKeys("topperharley@hotmail.com");
+        getDriver().findElement(By.id("Password")).sendKeys("Hot");
+        getDriver().findElement(By.id("RememberMe")).click();
+        getDriver().findElement(By.className("login-button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//form/div[1]/div/ul/li")).getText(),
+                "The credentials provided are incorrect");
+    }
 }

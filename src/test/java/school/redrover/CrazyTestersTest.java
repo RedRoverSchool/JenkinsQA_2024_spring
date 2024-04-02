@@ -92,4 +92,52 @@ public class CrazyTestersTest extends BaseTest {
         driver.quit();
 
     }
+
+    @Test
+    public void placeholderFillTest(){
+        WebDriver driver = getDriver();
+        // driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        driver.get("https://www.saucedemo.com/");
+
+        WebElement textBoxUser = driver.findElement(By.name("user-name"));
+        textBoxUser.sendKeys("standard_user");
+        WebElement textBoxPass = driver.findElement(By.id("password"));
+        textBoxPass.sendKeys("secret_sauce");
+        WebElement submitButton = driver.findElement(By.id("login-button"));
+
+        submitButton.click();
+
+        String currentUrl = driver.getCurrentUrl();
+        Assert.assertEquals(currentUrl, "https://www.saucedemo.com/inventory.html");
+
+    }
+    @Test
+    public void w3schoolTest() throws InterruptedException {
+
+        WebDriver driver = getDriver();
+        driver.get("https://www.w3schools.com/");
+
+        WebElement link = driver.findElement(By.linkText("Java Tutorial"));
+        link.click();
+
+        WebElement menu = driver.findElement(By.cssSelector("#menubtn_container > span > a"));
+        menu.click();
+
+        WebElement link2 = driver.findElement(By.linkText("Java Variables"));
+        link2.click();
+
+        WebElement text1 = driver.findElement(By.name("ex1"));
+        text1.sendKeys("String");
+
+        WebElement text2 = driver.findElement(By.name("ex2"));
+        text2.sendKeys("carName");
+
+        WebElement text3 = driver.findElement(By.name("ex3"));
+        text3.sendKeys("\"Volvo\"");
+
+        WebElement button = driver.findElement(By.cssSelector("#w3-exerciseform > div > button"));
+        String resultText = button.getText();
+        Assert.assertEquals(resultText, "Submit Answer »");
+        button.click();
+    }
 }
