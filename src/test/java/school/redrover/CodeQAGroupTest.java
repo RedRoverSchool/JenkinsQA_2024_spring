@@ -48,6 +48,7 @@ public class CodeQAGroupTest extends BaseTest {
         WebElement newItemButton = getDriver().findElement(By.linkText("New Item"));
         newItemButton.click();
     }
+
     @Test
     public void testDropDownMenu() {
         getDriver().get("https://the-internet.herokuapp.com");
@@ -60,5 +61,16 @@ public class CodeQAGroupTest extends BaseTest {
         dropDownOption1.click();
 
         Assert.assertTrue(dropDownOption1.isDisplayed());
+    }
+
+    @Test
+    public void testCheckBox() {
+        getDriver().get("https://the-internet.herokuapp.com");
+
+        getDriver().findElement(By.linkText("Checkboxes")).click();
+        WebElement checkBox1 = getDriver().findElement(By.xpath("//*[@id='checkboxes']/input[1]"));
+        checkBox1.click();
+
+        Assert.assertTrue(checkBox1.isSelected());
     }
 }
