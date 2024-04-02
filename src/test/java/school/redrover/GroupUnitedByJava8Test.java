@@ -1,11 +1,15 @@
 package school.redrover;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -258,5 +262,30 @@ public class GroupUnitedByJava8Test extends BaseTest {
         getDriver().findElement(By.id("login-button")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='app_logo']")).getText(), "Swag Labs");
+    }
+
+    @Test
+    public void testItemsSortedInReverseOrder() {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.id("user-name")).sendKeys(STANDARD_USER_LOGIN);
+        getDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
+        getDriver().findElement(By.id("login-button")).click();
+
+        WebElement selectItemsSortingCriterion = getDriver().findElement(By.className("product_sort_container"));
+        Select select = new Select(selectItemsSortingCriterion);
+        select.selectByVisibleText("Name (Z to A)");
+
+        List<WebElement> items = getDriver().findElements(By.xpath("//div[@class='inventory_item_name ']"));
+
+        List<String> itemsNames = new ArrayList<>();
+        for (WebElement itemName : items) {
+            String name = itemName.getText();
+            itemsNames.add(name);
+        }
+
+        List<String> expectedSortedNames = new ArrayList<>(itemsNames);
+        expectedSortedNames.sort(Collections.reverseOrder());
+
+        Assert.assertEquals(itemsNames, expectedSortedNames);
     }
 }
