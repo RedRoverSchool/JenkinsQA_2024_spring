@@ -32,6 +32,22 @@ public class CodeQAGroupTest extends BaseTest {
             expectedValue -= step;
         }
     }
+
+    public void preconditions() {
+        getDriver().get("http://localhost:8080/");
+
+        WebElement loginArea = getDriver().findElement(By.cssSelector("#j_username"));
+        loginArea.sendKeys("admin");
+
+        WebElement passwordArea = getDriver().findElement(By.cssSelector("#j_password"));
+        passwordArea.sendKeys("admin");
+
+        WebElement buttonSubmit = getDriver().findElement(By.name("Submit"));
+        buttonSubmit.click();
+
+        WebElement newItemButton = getDriver().findElement(By.linkText("New Item"));
+        newItemButton.click();
+    }
     @Test
     public void testDropDownMenu() {
         getDriver().get("https://the-internet.herokuapp.com");

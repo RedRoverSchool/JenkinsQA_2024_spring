@@ -108,4 +108,24 @@ public class GroupJavaAutoQARRSchoolTest extends BaseTest {
         getDriver().findElement(By.cssSelector("a[aria-label=\"Профиль\"]")).click();
         getDriver().findElement(By.xpath("//body//div//main//div//button[contains(text(), \"Выйти\")]")).click();
     }
+    @Test
+    public void addGiftCardToCart() {
+        WebDriver driver = getDriver();
+        String recipientName = "Very Good Person";
+        String senderName = "Very Generous Person";
+
+        driver.get("https://demowebshop.tricentis.com/");
+        driver.findElement(By.xpath("/html/body/div[4]/div[1]/div[4]/div[1]/div[1]/div[2]/ul/li[7]/a")).click();
+        driver.findElement(By.linkText("$100 Physical Gift Card")).click();
+        driver.findElement(By.className("recipient-name")).sendKeys(recipientName);
+        driver.findElement(By.className("sender-name")).sendKeys(senderName);
+        driver.findElement(By.xpath("//*[@id=\"add-to-cart-button-4\"]")).click();
+        driver.findElement(By.cssSelector("#topcartlink > a")).click();
+
+        String productName = driver.findElement(By.className("product-name")).getText();
+        String price = driver.findElement(By.className("unit-price")).getText();
+
+        Assert.assertEquals(productName, "$100 Physical Gift Card");
+        Assert.assertEquals(price, "100.00");
+    }
 }
