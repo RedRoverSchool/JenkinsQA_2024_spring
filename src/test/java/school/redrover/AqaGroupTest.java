@@ -16,6 +16,7 @@ import org.testng.annotations.Test;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -39,6 +40,7 @@ public class AqaGroupTest extends AqaGroupBaseTest {
     private static final String INPUT_EMAIL = "//input[@class='ant-input primaryInput  not-entered']";
     private static final String BTN_PASSWORD = "//button[@class='ant-btn ant-btn-default authButton big colorPrimary ']";
     private static final By GET_ERROR = By.xpath("//div[@style='text-align: center; margin-bottom: 20px; color: rgb(255, 0, 0);']");
+    private static final By GET_POLITICA = By.xpath("//h1[@class='page-header-title clr']");
 
 
     private String calc(String x) {
@@ -937,7 +939,7 @@ public class AqaGroupTest extends AqaGroupBaseTest {
     }
 
     @Test
-    public void testRemovesPasword() {
+    public void testRemovesPassword() {
         url();
         getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys("yyyyyyyyyy@mail.xx");
         getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
@@ -945,5 +947,18 @@ public class AqaGroupTest extends AqaGroupBaseTest {
         String getError = getDriver().findElement(GET_ERROR).getText();
 
         Assert.assertEquals(getError, "Неправильный логин или пароль");
+    }
+
+    @Test
+    public void testHrefPolitic() {
+        url();
+        getDriver().findElement(By.xpath("//a[@href='https://vr-arsoft.com/personal-data-processing-policy/']")).click();
+
+        ArrayList<String> newTab = new ArrayList<>(getDriver().getWindowHandles());
+        getDriver().switchTo().window(newTab.get(1));
+
+        String getErr = getDriver().findElement(GET_POLITICA).getText();
+
+        Assert.assertEquals(getErr, "Политика обработки персональных данных");
     }
 }
