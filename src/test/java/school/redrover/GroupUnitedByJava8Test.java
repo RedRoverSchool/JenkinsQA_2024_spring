@@ -36,7 +36,6 @@ public class GroupUnitedByJava8Test extends BaseTest {
 
         WebElement doubleClickMeButton = getDriver().findElement(By.id("doubleClickBtn"));
         new Actions(getDriver())
-
                 .doubleClick(doubleClickMeButton)
                 .perform();
 
