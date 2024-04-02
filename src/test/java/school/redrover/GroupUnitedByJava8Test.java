@@ -259,4 +259,21 @@ public class GroupUnitedByJava8Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='app_logo']")).getText(), "Swag Labs");
     }
+
+    @Test
+    public void testClassifiedCheckbox(){
+        getDriver().get("https://demoqa.com");
+
+        getDriver().findElement(By.xpath("//h5[text()='Elements']")).click();
+
+        getDriver().findElement(By.id("item-1")).click();
+
+        getDriver().findElement(By.className("rct-option-expand-all")).click();
+
+        getDriver().findElement(By.xpath("//label[@for='tree-node-classified']")).click();
+
+        String value = getDriver().findElement(By.id("result")).getText();
+
+        Assert.assertEquals(value, "You have selected :\n" + "classified");
+    }
 }
