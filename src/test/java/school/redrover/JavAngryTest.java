@@ -39,23 +39,20 @@ public class JavAngryTest extends BaseTest {
 
     @Test
     void testDoubleClickButton() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://demoqa.com/");
+        getDriver().get("https://demoqa.com/");
 
         String expectedText = "You have done a double click";
 
-        driver.findElement(By.xpath("//h5[text()='Elements']")).click();
-        driver.findElement(By.xpath("//span[text() = 'Buttons']")).click();
-        WebElement clickable = driver.findElement(By.id("doubleClickBtn"));
-        new Actions(driver)
+        getDriver().findElement(By.xpath("//h5[text()='Elements']")).click();
+        getDriver().findElement(By.xpath("//span[text() = 'Buttons']")).click();
+        WebElement clickable = getDriver().findElement(By.id("doubleClickBtn"));
+        new Actions(getDriver())
                 .doubleClick(clickable)
                 .perform();
 
-        String actualText = driver.findElement(By.id("doubleClickMessage")).getText();
+        String actualText = getDriver().findElement(By.id("doubleClickMessage")).getText();
 
         Assert.assertEquals(actualText, expectedText);
-
-        driver.quit();
     }
 
     @Test
@@ -126,20 +123,19 @@ public class JavAngryTest extends BaseTest {
 
     @Test
     public void testInputAndPagination() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://portal.311.nyc.gov/");
-        driver.findElement(By.xpath("//input[@aria-label='Search']")).sendKeys("concerts");
-        driver.findElement(By.className("search-magnify")).click();
-        WebElement widgets = driver.findElement(By.xpath("//ul[@class='pagination']"));
+        getDriver().get("https://portal.311.nyc.gov/");
+        getDriver().findElement(By.xpath("//input[@aria-label='Search']")).sendKeys("concerts");
+        getDriver().findElement(By.className("search-magnify")).click();
+
+        WebElement widgets = getDriver().findElement(By.xpath("//ul[@class='pagination']"));
         int deltaY = widgets.getRect().y;
-        new Actions(driver)
+        new Actions(getDriver())
                 .scrollByAmount(0, deltaY)
                 .perform();
-        driver.findElement(By.xpath("//ul[@class='pagination']"));
-        driver.findElement(By.linkText("2")).click();
+        getDriver().findElement(By.xpath("//ul[@class='pagination']"));
+        getDriver().findElement(By.linkText("2")).click();
 
-        Assert.assertEquals(driver.getCurrentUrl(), "https://portal.311.nyc.gov/search/?q=concerts&page=2");
-        driver.quit();
+        Assert.assertEquals(getDriver().getCurrentUrl(), "https://portal.311.nyc.gov/search/?q=concerts&page=2");
     }
 
     @Test
@@ -203,7 +199,7 @@ public class JavAngryTest extends BaseTest {
     }
 
     @Test
-    public void registrationTest(){
+    public void registrationTest() {
         WebDriver driver = getDriver();
         driver.get("https://demoqa.com/webtables");
         driver.manage().window().maximize();

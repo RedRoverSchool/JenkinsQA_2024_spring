@@ -1,5 +1,4 @@
 package school.redrover;
-
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -177,7 +176,6 @@ public class GroupRedroverJava7Test extends BaseTest {
 
         WebElement text = getDriver().findElement(By.xpath("//h2[text()='Find Your Store']"));
         String value = text.getText();
-
         Assert.assertEquals(value,"FIND YOUR STORE");
     }
     @Test
@@ -194,6 +192,34 @@ public class GroupRedroverJava7Test extends BaseTest {
         WebElement text = getDriver().findElement(By.xpath("//h1[@class='program-hero__title']"));
         String value = text.getText();
         Assert.assertEquals(value, "SWIM LESSONS");
+    }
+
+    @Test
+    public void testRegistration() {
+        getDriver().get("https://ymcacapecod.org/");
+        getDriver().manage().window().maximize();
+
+        getDriver().findElement(By.xpath("//*[@href='/join/register/']")).click();
+        String originalWindow = getDriver().getWindowHandle();
+        Assert.assertEquals(getDriver().getWindowHandles().size(), 1);
+
+        getDriver().findElement(By.xpath("//*[@title='Register']")).click();
+        for (String windowHandle : getDriver().getWindowHandles()) {
+            if(!originalWindow.contentEquals(windowHandle)) {
+                getDriver().switchTo().window(windowHandle);
+                break;
+            }
+        }
+
+        getDriver().findElement(By.xpath("//a[contains(text(),'Login')]")).click();
+
+        WebElement username = getDriver().findElement(By.xpath("//input[@id='user_name']"));
+        username.sendKeys("1234@gmail.com");
+        getDriver().findElement(By.id("submit_button")).click();
+
+        String signup = getDriver().findElement(By.xpath("//h2")).getText();
+
+        Assert.assertEquals(signup,"Sign up for an account");
     }
 
     @Test
@@ -214,6 +240,22 @@ public class GroupRedroverJava7Test extends BaseTest {
         String value = text.getText();
 
         Assert.assertEquals(value, "Python");
+    }
+
+    @Test
+    public void testDatalist() {
+
+        getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
+
+        WebElement dataList = getDriver().findElement(By.name("my-datalist"));
+        dataList.click();
+
+        WebElement options = getDriver().findElement(By.cssSelector("datalist#my-options option:nth-child(2)"));
+        String optionValue = options.getAttribute("value");
+        dataList.sendKeys(optionValue);
+
+        Assert.assertEquals(optionValue,"New York");
+
     }
 }
 

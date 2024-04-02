@@ -245,4 +245,20 @@ public class UnderdogsGroupTest extends BaseTest {
 
         Assert.assertEquals(resultText, "Минимальный заказ в нашем магазине 10 000 руб.");
     }
+
+    @Test
+    public void testSauceDemo() throws InterruptedException {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().manage().window().maximize();
+
+        Assert.assertEquals ("Swag Labs", getDriver().findElement (By.className("login_logo")).getText());
+
+        getDriver().findElement(By.id("user-name")).sendKeys("standard_user");
+        getDriver().findElement(By.id("password")).sendKeys("secret_sauce");
+        getDriver().findElement(By.id("login-button")).click();
+
+        Thread.sleep(1000);
+
+        Assert.assertEquals ("Swag Labs", getDriver().findElement (By.className("app_logo")).getText());
+    }
 }
