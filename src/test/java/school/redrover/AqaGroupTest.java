@@ -47,7 +47,7 @@ public class AqaGroupTest extends AqaGroupBaseTest {
         return String.valueOf(Math.log(Math.abs(12 * Math.sin(Integer.parseInt(x)))));
     }
 
-    private void url() {
+    private void openBrauser() {
         getDriver().get(URL_MOB);
         getDriver().manage().window().setSize(new Dimension(1920, 1080));
         getDriver().manage().timeouts().pageLoadTimeout(25, TimeUnit.SECONDS);
@@ -940,7 +940,7 @@ public class AqaGroupTest extends AqaGroupBaseTest {
 
     @Test
     public void testRemovesPassword() {
-        url();
+        openBrauser();
         getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys("yyyyyyyyyy@mail.xx");
         getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
 
@@ -951,14 +951,14 @@ public class AqaGroupTest extends AqaGroupBaseTest {
 
     @Test
     public void testHrefPolitic() {
-        url();
+        openBrauser();
         getDriver().findElement(By.xpath("//a[@href='https://vr-arsoft.com/personal-data-processing-policy/']")).click();
 
         ArrayList<String> newTab = new ArrayList<>(getDriver().getWindowHandles());
         getDriver().switchTo().window(newTab.get(1));
 
-        String getErr = getDriver().findElement(GET_POLITICA).getText();
+        String HrefPolitic = getDriver().findElement(GET_POLITICA).getText();
 
-        Assert.assertEquals(getErr, "Политика обработки персональных данных");
+        Assert.assertEquals(HrefPolitic, "Политика обработки персональных данных");
     }
 }
