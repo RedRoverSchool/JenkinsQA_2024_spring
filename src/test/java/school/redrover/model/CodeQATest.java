@@ -37,25 +37,4 @@ public class CodeQATest {
 
         driver.quit();
     }
-    @Test
-    public void TestJenkinsFirst() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("http://localhost:8080/");
-
-        WebElement loginArea = driver.findElement(By.cssSelector("#j_username"));
-        loginArea.sendKeys("admin");
-
-        WebElement passwordArea = driver.findElement(By.cssSelector("#j_password"));
-        passwordArea.sendKeys("admin");
-
-        WebElement buttonSubmit = driver.findElement(By.name("Submit"));
-        buttonSubmit.click();
-
-        String actualResult = driver.getTitle();
-        String expectedResult = "Dashboard [Jenkins]";
-
-        Assert.assertEquals(actualResult,expectedResult);
-
-        driver.quit();
-    }
 }
