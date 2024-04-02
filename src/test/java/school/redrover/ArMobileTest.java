@@ -21,7 +21,6 @@ public class ArMobileTest extends BaseTest {
 
     private static final By GET_PASWORD = By.xpath("//h2[@class='ant-typography h2_m RestorePassword__sendSuccess-text'][contains(.,'Мы отправили по адресу')]");
     private static final By GET_EMAIL = By.xpath("//div[@class='ant-typography p_r RestorePassword__form-userNotFound']");
-
     private static final By GET_ERROR = By.xpath("//div[@style='text-align: center; margin-bottom: 20px; color: rgb(255, 0, 0);']");
     private static final By NEW_PROGECT_TEXT = By.xpath("//div[@class='Sidebar__project-name'][contains(.,'1Новый проект')]");
     private static final By GET_POLITICA = By.xpath("//h1[@class='page-header-title clr']");
