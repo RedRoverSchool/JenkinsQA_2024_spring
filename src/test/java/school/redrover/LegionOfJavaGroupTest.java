@@ -1,4 +1,5 @@
 package school.redrover;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -129,4 +130,72 @@ public class LegionOfJavaGroupTest extends BaseTest {
         assertTrue(homeWebElement.isEnabled());
     }
 
+    @Test
+
+    public void testLogin(){
+        getDriver().get("https://practicetestautomation.com/practice-test-login/");
+        WebElement userName = getDriver().findElement(By.name("username"));
+        userName.sendKeys("student");
+        WebElement password = getDriver().findElement(By.name("password"));
+        password.sendKeys("Password123");
+        WebElement submitButton = getDriver().findElement(By.id("submit"));
+        submitButton.click();
+        WebElement result = getDriver().findElement(By.xpath("//h1"));
+        String resultText = result.getText();
+        Assert.assertEquals("Logged In Successfully", resultText);
+    }
+
+    @Test
+    public void testAnimalplanetShows() {
+
+        getDriver().get("https://www.animalplanet.com/");
+        getDriver().manage().window().maximize();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+
+        WebElement aria_labelElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[@class='siteLogo-Sz8OyJHj']")));
+        assertTrue(aria_labelElement.isDisplayed());
+        assertTrue(aria_labelElement.isEnabled());
+
+        WebElement shows = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[contains(text(),'Shows')]")));
+        shows.click();
+
+        WebElement ClickWildLife = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'Wildlife')]")));
+        ClickWildLife.click();
+
+        WebElement listOfShows = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='subtabsWrapper-TXB_Y6RY']")));
+        assertTrue(listOfShows.isDisplayed());
+        assertTrue(listOfShows.isEnabled());
+    }
+
+    @Test
+    public void testSauseDemo() {
+        getDriver().get("https://www.saucedemo.com");
+
+        getDriver().findElement(By.id("user-name")).sendKeys("problem_user");
+        getDriver().findElement(By.id("password")).sendKeys("secret_sauce");
+        getDriver().findElement(By.id("login-button")).click();
+
+        String message = getDriver().findElement(By.xpath("//span[@class='title']")).getText();
+
+        Assert.assertEquals(message, "Products");
+    }
+
+    @Test
+    public void testLiveMomentousStore() {
+        WebDriver driver = getDriver();
+        driver.get("https://www.livemomentous.com/");
+
+        WebElement menuButton = driver.findElement(By.xpath("//button[contains(@class, 'mobile-menu-trigger')]"));
+        menuButton.click();
+
+        WebElement bestSellingItems = driver.findElement(By.xpath("//li[contains(@class, 'navigation-list')]/a[@href = '/collections/best-sellers']"));
+        bestSellingItems.click();
+
+        WebElement rejectCookiesButton = driver.findElement(By.xpath("//div[@aria-label='close']"));
+        rejectCookiesButton.click();
+
+        WebElement item = driver.findElement(By.xpath("//h3[text() = 'Creatine']"));
+        Assert.assertTrue(item.isDisplayed());
+    }
 }

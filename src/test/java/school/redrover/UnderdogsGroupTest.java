@@ -134,43 +134,38 @@ public class UnderdogsGroupTest extends BaseTest {
         driver.quit();
     }
 
-    @Ignore
     @Test
     public void testRightSideAdvertisement() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://demoqa.com/");
-        driver.findElement(By.xpath("//h5[contains(text(),'Elements')]")).click();
+        getDriver().get("https://demoqa.com/");
+        getDriver().manage().window().maximize();
 
-        Assert.assertTrue(driver.findElement(By.id("RightSide_Advertisement")).isDisplayed());
+        getDriver().findElement(By.xpath("//h5[contains(text(),'Elements')]")).click();
 
-        driver.quit();
+        Assert.assertTrue(getDriver().findElement(By.id("RightSide_Advertisement")).isDisplayed());
     }
 
-    @Ignore
+
     @Test
     public void testAddToCartButton() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://natr.com.tr/shop/?s=Vitamin&post_type=product&dgwt_wcas=1");
+        getDriver().get("https://natr.com.tr/shop/?s=Vitamin&post_type=product&dgwt_wcas=1");
+        getDriver().manage().window().maximize();
 
-        WebElement buttonAddToСart = driver.findElement(By.xpath("(//a[@class ='button product_type_simple add_to_cart_button ajax_add_to_cart'])[1]"));
+        WebElement buttonAddToСart = getDriver().findElement(By.xpath("(//a[@class ='button product_type_simple add_to_cart_button ajax_add_to_cart'])[1]"));
 
-        Actions actions = new Actions(driver);
+        Actions actions = new Actions(getDriver());
         actions.moveToElement(buttonAddToСart).click(buttonAddToСart).perform();
 
         String order = buttonAddToСart.getAttribute("aria-label").replaceAll(".*“(.*)”.*", "$1");
-
-        WebElement buttonShoppingBag = driver.findElement(By.xpath("(//span[@class = 'cart-items-count count header-icon-counter'])[1]"));
+        Thread.sleep(4000);
+        WebElement buttonShoppingBag = getDriver().findElement(By.xpath("(//span[@class = 'cart-items-count count header-icon-counter'])[1]"));
         buttonShoppingBag.click();
 
         Thread.sleep(4000);
 
-        String element = driver.findElement(By.xpath("(//li[@class='woocommerce-mini-cart-item mini_cart_item']/a)[2]")).getText();
+        String element = getDriver().findElement(By.xpath("(//li[@class='woocommerce-mini-cart-item mini_cart_item']/a)[2]")).getText();
 
         Assert.assertEquals(element.trim(), order);
-
-        driver.quit();
     }
-
     @Ignore
     @Test
     public  void testVerifyTitle() {

@@ -28,10 +28,10 @@ public class GroupUnitedByJava8Test extends BaseTest {
         WebElement buttons = getDriver().findElement(By.xpath("//span[@class='text' and text()='Buttons']"));
         buttons.click();
 
-        WebElement doubleClickMe = getDriver().findElement(By.id("doubleClickBtn"));
+        WebElement doubleClickMeButton = getDriver().findElement(By.id("doubleClickBtn"));
         new Actions(getDriver())
-            .doubleClick(doubleClickMe)
-            .perform();
+                .doubleClick(doubleClickMeButton)
+                .perform();
 
         String doubleClickMessageText = getDriver().findElement(By.id("doubleClickMessage")).getText();
 
@@ -86,7 +86,7 @@ public class GroupUnitedByJava8Test extends BaseTest {
     }
 
     @Test
-    public void happyPathLogin() {
+    public void testHappyPathLogin() {
         getDriver().get("https://www.saucedemo.com/");
 
         WebElement name = getDriver().findElement(By.xpath("//input[@id='user-name']"));
@@ -96,12 +96,11 @@ public class GroupUnitedByJava8Test extends BaseTest {
         password.sendKeys("secret_sauce");
 
         getDriver().findElement(By.id("login-button")).click();
+        String actualResult = getDriver().getCurrentUrl();
 
-        String expectedResult = getDriver().getCurrentUrl();
-
-        Assert.assertEquals("https://www.saucedemo.com/inventory.html", expectedResult);
-
+        Assert.assertEquals(actualResult, "https://www.saucedemo.com/inventory.html");
     }
+
     @Test
     public void testAlertAppearsAfterItemIsAddedToCart() {
 
@@ -157,6 +156,7 @@ public class GroupUnitedByJava8Test extends BaseTest {
 
         Assert.assertEquals(cartList.getText(), EXPECTED_TEXT);
     }
+
     @Test
     public void testAddingItemToCart() {
 
@@ -183,6 +183,7 @@ public class GroupUnitedByJava8Test extends BaseTest {
 
         Assert.assertEquals(resultText, "Sauce Labs Bike Light");
     }
+
     @Test
     public void testLogoutUser() throws InterruptedException {
 
@@ -208,5 +209,54 @@ public class GroupUnitedByJava8Test extends BaseTest {
 
         String textTitle = driver.getTitle();
         Assert.assertEquals(textTitle, "Swag Labs");
+    }
+
+    @Test
+    public void testDemoQARightClick() {
+        getDriver().get("https://demoqa.com/");
+
+        WebElement elementsPage = getDriver().findElement(By.xpath("//h5[text()='Elements']"));
+        elementsPage.click();
+        WebElement buttons = getDriver().findElement(By.xpath("//span[@class='text' and text()='Buttons']"));
+        buttons.click();
+
+        WebElement rightClickMeButton = getDriver().findElement(By.id("rightClickBtn"));
+        new Actions(getDriver())
+                .contextClick(rightClickMeButton)
+                .perform();
+
+        String contextClickMessageText = getDriver().findElement(By.id("rightClickMessage")).getText();
+
+        Assert.assertEquals(contextClickMessageText, "You have done a right click");
+    }
+
+    @Test
+    public void testPraktikum() throws InterruptedException {
+        getDriver().get("https://qa-mesto.praktikum-services.ru/signin");
+
+        WebElement eMail = getDriver().findElement(By.id("email"));
+        eMail.sendKeys("wovibic859@mnsaf.com");
+
+        WebElement password = getDriver().findElement(By.id("password"));
+        password.sendKeys("123");
+
+        WebElement LoginEnter = getDriver().findElement(By.className("auth-form__button"));
+        LoginEnter.click();
+
+        Thread.sleep(3000);
+        WebElement accountName = getDriver().findElement(By.className("profile__title"));
+        Assert.assertEquals(accountName.getText(), "Жак-Ив Кусто");
+    }
+
+    @Test
+    public void testSuccessLoginSaucedemo(){
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().manage().window().maximize();
+
+        getDriver().findElement(By.id("user-name")).sendKeys("standard_user");
+        getDriver().findElement(By.id("password")).sendKeys("secret_sauce");
+        getDriver().findElement(By.id("login-button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='app_logo']")).getText(), "Swag Labs");
     }
 }

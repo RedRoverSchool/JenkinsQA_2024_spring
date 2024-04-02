@@ -11,6 +11,9 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class CodeQAGroupTest extends BaseTest {
 
@@ -23,6 +26,7 @@ public class CodeQAGroupTest extends BaseTest {
         WebElement text = getDriver().findElement(By.xpath("//*[@id='range']"));
 
         double expectedValue = 0;
+
         Assert.assertEquals(Double.parseDouble(text.getText()), expectedValue);
 
         final double step = 0.5;
@@ -73,6 +77,7 @@ public class CodeQAGroupTest extends BaseTest {
 
         Assert.assertEquals(actualRes, "Project freestylePrTest39");
     }
+
     @Test
     public void testDropDownMenu() {
         getDriver().get("https://the-internet.herokuapp.com");
@@ -260,5 +265,123 @@ public class CodeQAGroupTest extends BaseTest {
                 By.xpath("//div [@id = 'menu']")).isDisplayed();
 
         Assert.assertTrue(menuIsDisplayed);
+    }
+
+    @Test
+    public void testFieldValidation() throws InterruptedException {
+
+        getDriver().get("http://allolosos.com.ua/ru/menu/pizza");
+
+        WebElement button = getDriver().findElement(By.xpath("//a[@href='/ru/director']"));
+        button.click();
+        Thread.sleep(1000);
+
+        WebElement textName = getDriver().findElement(By.id("feedbackdirector-name"));
+        textName.sendKeys("Miroslav");
+        String actualName = textName.getAttribute("value");
+        String expectedName = "Miroslav";
+
+        Assert.assertEquals(actualName, expectedName);
+
+        WebElement textPhone = getDriver().findElement(By.id("feedbackdirector-phone"));
+        textPhone.sendKeys("0502380088");
+        String actualPhone = textPhone.getAttribute("value");
+        String expectedPhone = "+38 (050) 238-00-88";
+
+        Assert.assertEquals(actualPhone, expectedPhone);
+
+        WebElement textMessage = getDriver().findElement(By.id("feedbackdirector-message"));
+        textMessage.sendKeys("Thank you very much");
+        String actualMessage = textMessage.getAttribute("value");
+        String expectedMessage = "Thank you very much";
+
+        Assert.assertEquals(actualMessage, expectedMessage);
+    }
+
+  @Test
+      public void testGoToAnotherPage() {
+
+        getDriver().get("https://the-internet.herokuapp.com/");
+        getDriver().findElement(By.cssSelector("a[href='/abtest']")).click();
+        String actualResult = getDriver().findElement(By.cssSelector("h3")).getText();
+
+        Assert.assertEquals(actualResult, "A/B Test Control");
+    }
+
+    @Test
+    public void testForConflict() {
+
+        getDriver().get("https://the-internet.herokuapp.com/");
+
+        WebDriverWait wait60 = new WebDriverWait(getDriver(), Duration.ofSeconds(60));
+
+        wait60.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//a [@href='/floating_menu']")));
+
+        WebElement linkToDynamicallyLoadedPageElementsPage = getDriver().findElement(
+                By.xpath("//a [@href='/exit_intent']"));
+        linkToDynamicallyLoadedPageElementsPage.click();
+
+        String expectedResult = "Exit Intent";
+
+        String actualResult = getDriver().findElement(
+                By.xpath("//h3")).getText();
+
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void testForConflict2() {
+
+        getDriver().get("https://the-internet.herokuapp.com/");
+
+        WebDriverWait wait60 = new WebDriverWait(getDriver(), Duration.ofSeconds(60));
+
+        wait60.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//a [@href='/floating_menu']")));
+
+        WebElement linkToDynamicallyLoadedPageElementsPage = getDriver().findElement(
+                By.xpath("//a [@href='/exit_intent']"));
+        linkToDynamicallyLoadedPageElementsPage.click();
+
+        String expectedResult = "This is a modal window";
+
+        wait60.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div [@class='modal-title']")));
+
+        String actualResult = getDriver().findElement(
+                By.xpath("//div [@class='modal-title']/h3")).getText();
+
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void testLoginFormWithEmptyFields() {
+        getDriver().get("https://the-internet.herokuapp.com/");
+
+        getDriver().findElement(By.cssSelector("a[href='/login']")).click();
+        getDriver().findElement(By.xpath("//*[@class='radius']")).click();
+        String actualResult = getDriver().findElement(By.id("flash")).getText();
+
+        Assert.assertTrue(actualResult.contains( "Your username is invalid!"));
+    }
+
+    @Test
+    public void testDropDown() {
+
+        getDriver().get("https://the-internet.herokuapp.com/");
+
+        WebElement atrValue = getDriver().findElement(By.xpath("//a[@href='/dropdown']"));
+        atrValue.click();
+        WebElement dropdown = getDriver().findElement(By.xpath("//*[@id='dropdown']"));
+        dropdown.click();
+        List<String> exResult = new ArrayList<>();
+        exResult.add("Option 1");
+        exResult.add("Option 2");
+        List<String> acResult = new ArrayList<>();
+        acResult.add(getDriver().findElement(By.cssSelector("#dropdown > option:nth-child(2)")).getText());
+        acResult.add(getDriver().findElement(By.cssSelector("#dropdown > option:nth-child(3)")).getText());
+
+        Assert.assertEquals(acResult, exResult);
     }
 }

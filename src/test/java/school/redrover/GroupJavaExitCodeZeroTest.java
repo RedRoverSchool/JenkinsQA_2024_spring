@@ -8,12 +8,14 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GroupJavaExitCodeZeroTest extends BaseTest {
     private static final String BASE_URL = "https://automationexercise.com";
@@ -375,5 +377,105 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
 
         Assert.assertEquals(getDriver().getCurrentUrl(), BASE_URL + "/view_cart");
         Assert.assertTrue(getDriver().findElement(By.xpath("//tr[@id='product-1']")).isDisplayed());
+    }
+
+    @Test
+    public void testForm() {
+        final String url = "https://demoqa.com/";
+        final String expectedTitleElementPage = "Please select an item from left to start practice.";
+        final String urlTextBoxPage = "https://demoqa.com/text-box";
+        final String userName = "Tom";
+        final String userEmail = "test@test.com";
+        final String expectedName = "Name:Tom";
+        final String expectedEmail = "Email:test@test.com";
+
+        getDriver().get(url);
+        getDriver().manage().window().maximize();
+        getDriver().findElement(By.xpath("//div[@class='card mt-4 top-card'][1]")).click();
+
+        String titleElementPage = getDriver().findElement(By.xpath("//div[@class='col-12 mt-4 col-md-6']"))
+                .getText()
+                .trim();
+
+        Assert.assertEquals(titleElementPage, expectedTitleElementPage);
+
+        getDriver().findElement(By.xpath("//ul//li[@id='item-0']/span[text()='Text Box']")).click();
+
+        Assert.assertEquals(getDriver().getCurrentUrl(),urlTextBoxPage);
+
+        getDriver().findElement(By.cssSelector("#userName")).sendKeys(userName);
+        getDriver().findElement(By.cssSelector("#userEmail")).sendKeys(userEmail);
+        getDriver().findElement(By.cssSelector("#submit")).click();
+        String nameInForm = getDriver().findElement(By.cssSelector("div>p#name")).getText().trim();
+        String emailInForm = getDriver().findElement(By.cssSelector("div>p#email")).getText().trim();
+
+        Assert.assertEquals(nameInForm, expectedName);
+        Assert.assertEquals(emailInForm,expectedEmail);
+    }
+
+     @Test
+    public void testVerifyProductInCart() throws InterruptedException {
+        final String expectVerifyHomePage = "FEATURES ITEMS";
+        final String expectVerifyProductDetail = "Availability:";
+
+        getDriver().get(BASE_URL);
+        getDriver().manage().window().maximize();
+
+        final String actualVerifyHomePage = getDriver().findElement(By.xpath("//h2[text()='Features Items']")).getText();
+
+        Assert.assertEquals(actualVerifyHomePage, expectVerifyHomePage);
+
+        List<WebElement> viewProductCards = getDriver().findElements(By.xpath("//a[text()='View Product']"));
+        final int randomElementIndex = ThreadLocalRandom.current().nextInt(viewProductCards.size());
+
+        WebElement randomViewProductCardButton = viewProductCards.get(randomElementIndex);
+
+        JavascriptExecutor jse = (JavascriptExecutor) getDriver();
+        jse.executeScript("arguments[0].scrollIntoView();", randomViewProductCardButton);
+        Thread.sleep(1000);
+
+        randomViewProductCardButton.click();
+        Thread.sleep(1000);
+        if (!getDriver().findElements(By.xpath("//ins[@class='adsbygoogle adsbygoogle-noablate']")).isEmpty()) {
+            JavascriptExecutor js = (JavascriptExecutor) getDriver();
+            js.executeScript(
+                    "const ads = document.getElementsByClassName('adsbygoogle adsbygoogle-noablate'); while (ads.length > 0) ads[0].remove();"
+            );
+
+            randomViewProductCardButton.click();
+        }
+
+        final String actualVerifyProductDetail = getDriver().findElement(By.xpath("//b[text()='Availability:']")).getText();
+
+        Assert.assertEquals(actualVerifyProductDetail, expectVerifyProductDetail);
+
+        Thread.sleep(1000);
+
+        final String actualProductIsDisplayed = getDriver().findElement(By.xpath("//div[@class = \"product-information\"]//h2")).getText();
+
+        getDriver().findElement(By.xpath("//button[@type = \"button\"]")).click();
+        Thread.sleep(1000);
+        if (!getDriver().findElements(By.xpath("//ins[@class='adsbygoogle adsbygoogle-noablate']")).isEmpty()) {
+            JavascriptExecutor js = (JavascriptExecutor) getDriver();
+            js.executeScript(
+                    "const ads = document.getElementsByClassName('adsbygoogle adsbygoogle-noablate'); while (ads.length > 0) ads[0].remove();"
+            );
+
+            getDriver().findElement(By.xpath("//button[@type = \"button\"]")).click();
+        }
+
+        getDriver().findElement(By.xpath("//a[@href = \"/view_cart\"]/u")).click();
+        Thread.sleep(1000);
+        if (!getDriver().findElements(By.xpath("//ins[@class='adsbygoogle adsbygoogle-noablate']")).isEmpty()) {
+            JavascriptExecutor js = (JavascriptExecutor) getDriver();
+            js.executeScript(
+                    "const ads = document.getElementsByClassName('adsbygoogle adsbygoogle-noablate'); while (ads.length > 0) ads[0].remove();"
+            );
+
+            getDriver().findElement(By.xpath("//a[@href = \"/view_cart\"]/u")).click();
+        }
+        final String expectedProductIsDisplayed = getDriver().findElement(By.xpath("//td//h4//a")).getText();
+
+        Assert.assertEquals(expectedProductIsDisplayed, actualProductIsDisplayed);
     }
 }
