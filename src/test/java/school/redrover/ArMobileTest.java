@@ -25,8 +25,7 @@ public class ArMobileTest extends BaseTest {
     private static final By GET_POLITICA_USER = By.xpath("//span[@style='font-size: 19px;'][contains(.,'Предмет пользовательского соглашения')]");
     private static final By GET_BOT = By.xpath("//span[@dir='auto']");
 
-    private void url() {
-
+    private void openBrauser() {
         getDriver().get(URL);
         getDriver().manage().window().setSize(new Dimension(1920,1080));
         getDriver().manage().timeouts().pageLoadTimeout(25, TimeUnit.SECONDS);
@@ -34,7 +33,6 @@ public class ArMobileTest extends BaseTest {
     }
 
     private void login() {
-
         getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
         getDriver().findElement(By.xpath(INPUT_PASSWORD)).sendKeys(PASSWORD);
         getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
@@ -42,52 +40,40 @@ public class ArMobileTest extends BaseTest {
 
     @Test
     public void testRemovePasword() {
-
-        url();
+        openBrauser();
         getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys("yyyyyyyyyy@mail.xx");
         getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
 
-        String getError = getDriver().findElement(GET_ERROR).getText();
-
-        Assert.assertEquals(getError,"Неправильный логин или пароль");
+        Assert.assertEquals(getDriver().findElement(GET_ERROR).getText(),"Неправильный логин или пароль");
     }
 
     @Test
     public void testRega() {
-
-        url();
-
+        openBrauser();
         getDriver().findElement(By.xpath("//h2[@class='ant-typography h2_m Login__restore-text']")).click();
 
         getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
         getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
 
-        String getPasError = getDriver().findElement(GET_PASWORD).getText();
-
-        Assert.assertEquals(getPasError,"Мы отправили по адресу n-k-65@list.ru ссылку для восстановления доступа");
+        Assert.assertEquals(getDriver().findElement(GET_PASWORD).getText(),"Мы отправили по адресу f.ff.1980@list.ru ссылку для восстановления доступа");
     }
 
     @Test
     public void testHrefPoluticUser() {
-
-        url();
-
+        openBrauser();
         getDriver().findElement(By.xpath("//a[@href='https://vr-arsoft.com/user-agreement-armobail/']")).click();
 
         ArrayList<String> newTab = new ArrayList<>(getDriver().getWindowHandles());
         getDriver().switchTo().window(newTab.get(1));
 
-        String getPoliticaUser = getDriver().findElement(GET_POLITICA_USER).getText();
-
-        Assert.assertEquals(getPoliticaUser, "Предмет пользовательского соглашения");
+        Assert.assertEquals(getDriver().findElement(GET_POLITICA_USER).getText(), "Предмет пользовательского соглашения");
     }
 
     @Ignore
     @Test
     public void testCreateProgect() {
-        url();
+        openBrauser();
         login();
-
         getDriver().findElement(By.xpath("//button[@class='ant-btn ant-btn-default primaryButton big colorPrimary ']")).click();
         getDriver().findElement(By.xpath("//input[@class='ant-input primaryInput  not-entered']")).sendKeys("1Новый проект");
         getDriver().findElement(By.xpath("//input[@id='CreateProjectForm_city']")).sendKeys("Самара");
@@ -119,7 +105,7 @@ public class ArMobileTest extends BaseTest {
     @Test
     public void testHrefPolitic() {
 
-        url();
+        openBrauser();
 
         getDriver().findElement(By.xpath("//a[@href='https://vr-arsoft.com/personal-data-processing-policy/']")).click();
 
@@ -133,7 +119,7 @@ public class ArMobileTest extends BaseTest {
     @Test
     public void testHrefBot() {
 
-        url();
+        openBrauser();
         login();
 
         getDriver().findElement(By.xpath("//a[@href='https://t.me/arsoft_support_bot']")).click();
@@ -149,7 +135,7 @@ public class ArMobileTest extends BaseTest {
     @Test
     public void testUserNab() {
 
-        url();
+        openBrauser();
         login();
 
         getDriver().findElement(By.xpath("//a[@href='/users']")).click();
@@ -175,7 +161,7 @@ public class ArMobileTest extends BaseTest {
     @Test
     public void testCreateUser() {
 
-        url();
+        openBrauser();
         login();
 
         getDriver().findElement(By.xpath("//a[@href='/users']")).click();
