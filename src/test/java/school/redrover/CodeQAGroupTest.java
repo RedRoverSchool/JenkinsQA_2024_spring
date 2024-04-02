@@ -7,7 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-public class CodeQAGroup extends BaseTest {
+public class CodeQAGroupTest extends BaseTest {
 
     @Test
     public void testSlider() {
