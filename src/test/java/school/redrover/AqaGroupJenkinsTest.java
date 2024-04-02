@@ -47,8 +47,7 @@ public class AqaGroupJenkinsTest extends AqaGroupBaseTest {
     public void testAuthJenkins() {
         login();
 
-        Assert.assertTrue(
-                getDriver().findElement(By.cssSelector("a[href = '/logout']")).isDisplayed());
+        Assert.assertTrue(getDriver().findElement(By.cssSelector("a[href = '/logout']")).isDisplayed());
     }
 
     @Test
@@ -57,39 +56,31 @@ public class AqaGroupJenkinsTest extends AqaGroupBaseTest {
 
         getDriver().findElement(By.cssSelector("a[href = '/logout']")).click();
 
-        Assert.assertEquals(
-                getDriver().findElement(By.tagName("h1")).getText(),
-                "Sign in to Jenkins");
+        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(),"Sign in to Jenkins");
     }
 
     @Test
     public void testNewItemJenkins() {
         login();
 
-        getDriver().findElement(By.cssSelector("#side-panel > div > div")).click();
-        getDriver().findElement(By.id("name")).sendKeys("my_number_one");
-        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        deleteItem("FP");
 
-        getDriver().findElement(By.cssSelector("a[href = '/']")).click();
+        createItem("FP", "hudson_model_FreeStyleProject");
 
-        Assert.assertTrue(
-                getDriver().findElement(By.cssSelector("a[href = 'job/my_number_one/']"))
-                        .isDisplayed());
+        returnToDashBoard();
+
+        Assert.assertTrue(getDriver().findElement(By.cssSelector("a[href = 'job/FP/']")).isDisplayed());
     }
 
     @Test
     public void testCreateMultiConfigurationProject() {
         login();
 
-        getDriver().findElement(By.cssSelector("#side-panel > div > div")).click();
-        getDriver().findElement(By.id("name")).sendKeys("mcp");
-        getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        createItem("MCP", "hudson_matrix_MatrixProject");
 
-        getDriver().findElement(By.cssSelector("a[href = '/']")).click();
+        returnToDashBoard();
 
-        Assert.assertTrue(getDriver().findElement(By.cssSelector("a[href = 'job/mcp/']")).isDisplayed());
+        Assert.assertTrue(getDriver().findElement(By.cssSelector("a[href = 'job/MCP/']")).isDisplayed());
     }
 
     @Test
