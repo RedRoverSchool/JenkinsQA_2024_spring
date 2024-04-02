@@ -295,13 +295,13 @@ public class CodeQAGroupTest extends BaseTest {
         Assert.assertEquals(actualMessage, expectedMessage);
     }
   @Test
-      public void testGoToAnotherPage25() {
+      public void testGoToAnotherPage() {
 
        getDriver().get("https://the-internet.herokuapp.com/");
        getDriver().findElement(By.cssSelector("a[href='/abtest']")).click();
        String actualResult = getDriver().findElement(By.cssSelector("h3")).getText();
 
-        Assert.assertEquals(actualResult, "A/B Test Control")
+        Assert.assertEquals(actualResult, "A/B Test Control");
   }
   
       @Test
@@ -324,5 +324,16 @@ public class CodeQAGroupTest extends BaseTest {
                 By.xpath("//h3")).getText();
 
         Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void testLoginFormWithEmptyFields() {
+        getDriver().get("https://the-internet.herokuapp.com/");
+
+        getDriver().findElement(By.cssSelector("a[href='/login']")).click();
+        getDriver().findElement(By.xpath("//*[@class='radius']")).click();
+        String actualResult = getDriver().findElement(By.id("flash")).getText();
+
+        Assert.assertTrue(actualResult.contains( "Your username is invalid!"));
     }
 }
