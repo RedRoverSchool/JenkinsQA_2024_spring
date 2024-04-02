@@ -299,7 +299,9 @@ public class CodeQAGroupTest extends BaseTest {
 
        getDriver().get("https://the-internet.herokuapp.com/");
         WebElement atrValue = getDriver().findElement(By.cssSelector("a[href='/abtest']"));
-        atrValue.click();
+        atrValue.click();///Conlict
+
+
         WebElement header3 = getDriver().findElement(By.cssSelector("h3"));
 
         Assert.assertEquals(header3.getText(), "A/B Test Control");
