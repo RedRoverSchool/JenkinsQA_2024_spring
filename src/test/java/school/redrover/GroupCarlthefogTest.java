@@ -188,4 +188,35 @@ public class GroupCarlthefogTest extends BaseTest {
 
         Assert.assertEquals(actual, "You logged into a secure area!");
     }
+
+    @Test
+
+    public void testLoginConduit() {
+        String userName ="Grechka"+ Math.random()*3 ;
+        String email = "Suyn@mail" + userName + ".ru";
+        String password = "W1234567" + Math.random()*3;
+
+        WebDriver driver = getDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        driver.get("https://demo.realworld.io/#/register");
+
+        WebElement textBoxUserName = driver.findElement(By.xpath("//input[ @ng-model='$ctrl.formData.username']"));
+        textBoxUserName.sendKeys(userName);
+
+        WebElement textBoxEmail = driver.findElement(By.xpath("//input[@ng-model=\"$ctrl.formData.email\"]"));
+        textBoxEmail.sendKeys(email);
+
+        WebElement textBoxPassword = driver.findElement(By.xpath("//input[@ng-model=\"$ctrl.formData.password\"]"));
+        textBoxPassword.sendKeys(password);
+
+        WebElement buttons = driver.findElement(By.xpath("//button[@ng-bind='$ctrl.title']"));
+        buttons.click();
+
+        String actualUrl = driver.getCurrentUrl();
+        String expectedUrl = "https://demo.realworld.io/#/register";
+
+        Assert.assertEquals(actualUrl, expectedUrl, "URL не совпадает");
+
+        driver.quit();
+    }
 }

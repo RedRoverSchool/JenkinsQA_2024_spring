@@ -5,7 +5,6 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -21,17 +20,18 @@ public class ByteBustersGroupTest extends BaseTest {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(15));
         getDriver().get("https://explorer.globe.engineer/");
 
-        wait.until((ExpectedCondition<Boolean>) webDriver ->
-                ((org.openqa.selenium.JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
-
-        WebElement textBox = getDriver().findElement(By.name("q"));
+        WebElement textBox = wait.until(ExpectedConditions.elementToBeClickable(By.name("q")));
 
         Assert.assertEquals(textBox.getAttribute("placeholder"), "I want to discover...");
 
-        textBox.sendKeys("IT");
+        String SearchWord = "IT";
+        textBox.sendKeys(SearchWord);
         textBox.sendKeys(Keys.ENTER);
 
-        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"IT\"]")));
+        WebElement searchForElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[span[contains(text(), 'Search for:')]]")));
+        String testWord = searchForElement.getText();
+        Assert.assertEquals(testWord, SearchWord);
+
     }
 
     @Test

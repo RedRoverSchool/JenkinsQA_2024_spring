@@ -16,7 +16,10 @@ import org.testng.annotations.Test;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.time.Duration;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 public class AqaGroupTest extends AqaGroupBaseTest {
 
@@ -928,6 +931,13 @@ public class AqaGroupTest extends AqaGroupBaseTest {
         Assert.assertEquals(getDriver().findElement(By.id("uploadedfilename")).getText(), "1.jpg");
     }
 
+    @Test
+    public void testIsEnabled2() {
+        getDriver().get(URL_LETCODE);
+
+        Assert.assertTrue(getDriver().findElement(By.id("dontwrite")).isEnabled());
+    }
+ 
     @Test
     public void testButtonChangeItsName() {
         getDriver().get("http://uitestingplayground.com/textinput");

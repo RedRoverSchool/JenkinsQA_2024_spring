@@ -166,7 +166,7 @@ public class GroupAqaQuaQuaTest extends BaseTest {
                 By.cssSelector("div.page-title>h1")).getText(), "Welcome, Please Sign In!");
     }
     @Test
-    public void testSearch() {
+    public void testAdvancedSearch() {
         getDriver().get("https://demowebshop.tricentis.com/");
 
         getDriver().findElement(By.linkText("Search")).click();
@@ -185,5 +185,39 @@ public class GroupAqaQuaQuaTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.cssSelector("h2 a[href^= '/corel']")).getText(),
                 "Corel Paint Shop Pro Photo X2");
+    }
+    @Test
+    public void testNewsletterPositive() throws InterruptedException {
+        getDriver().get("https://demowebshop.tricentis.com/");
+
+        getDriver().findElement(By.cssSelector("[name^='News']")).sendKeys("topperharley@hotmail.com");
+        getDriver().findElement(By.cssSelector("[value^='Sub']")).click();
+        Thread.sleep(500);
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("[class$='result-block']")).getText().substring(0,5),
+                "Thank");
+    }
+    @Test
+    public void testNewsletterNegative() throws InterruptedException {
+        getDriver().get("https://demowebshop.tricentis.com/");
+
+        getDriver().findElement(By.cssSelector("[name^='News']")).sendKeys("hotmail.com");
+        getDriver().findElement(By.cssSelector("[value^='Sub']")).click();
+        Thread.sleep(500);
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("[id$='result-block']")).getText(), "Enter valid email");
+    }
+    @Test
+    public void testLoginNegativePass() {
+        getDriver().get("https://demowebshop.tricentis.com/");
+
+        getDriver().findElement(By.className("ico-login")).click();
+        getDriver().findElement(By.id("Email")).sendKeys("topperharley@hotmail.com");
+        getDriver().findElement(By.id("Password")).sendKeys("Hot");
+        getDriver().findElement(By.id("RememberMe")).click();
+        getDriver().findElement(By.className("login-button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//form/div[1]/div/ul/li")).getText(),
+                "The credentials provided are incorrect");
     }
 }

@@ -27,7 +27,7 @@ public class GroupCompanionsTest extends BaseTest {
         Assert.assertEquals("* обязательные поля для заполнения", value);
     }
 
-    @Test
+        @Test
     public void testFindElement() {
 
         WebDriver driver = getDriver();
@@ -43,6 +43,21 @@ public class GroupCompanionsTest extends BaseTest {
         String result = string.getText();
 
         Assert.assertEquals("* обязательные поля для заполнения", result);
+
+    }
+
+    @Test
+    public void testKg312(){
+        WebDriver driver = getDriver();
+        driver.get("https://312.kg/");
+
+        WebElement buttonBlog = driver.findElement(By.linkText("Знаете ли Вы?"));
+        buttonBlog.click();
+
+        WebElement text = driver.findElement(By.xpath("/html/body/div[1]/div/div/div/section/h1"));
+        String value = text.getText();
+
+        Assert.assertEquals("Блог", value);
     }
 
 }

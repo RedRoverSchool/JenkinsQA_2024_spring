@@ -15,16 +15,16 @@ public class W3schoolsTest {
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.w3schools.com/");
 
-        WebElement link = driver.findElement(By.linkText("Java Tutorial")); //<a href="/java/default.asp" class="ga-nav" title="Java Tutorial">JAVA</a>
+        WebElement link = driver.findElement(By.linkText("Java Tutorial"));
         link.click();
 
-        WebElement menu = driver.findElement(By.cssSelector("#menubtn_container > span > a")); //бургер-меню
+        WebElement menu = driver.findElement(By.cssSelector("#menubtn_container > span > a"));
         menu.click();
 
-        WebElement link2 = driver.findElement(By.linkText("Java Variables")); //-XPath: //*[@id="leftmenuinnerinner"]/a[7]
+        WebElement link2 = driver.findElement(By.linkText("Java Variables"));
         link2.click();
 
-        WebElement text1 = driver.findElement(By.name("ex1")); // <input name="ex1" maxlength="6" style="width: 65px;">
+        WebElement text1 = driver.findElement(By.name("ex1"));
         text1.sendKeys("String");
 
         WebElement text2 = driver.findElement(By.name("ex2"));
