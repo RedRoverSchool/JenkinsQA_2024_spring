@@ -294,6 +294,7 @@ public class CodeQAGroupTest extends BaseTest {
 
         Assert.assertEquals(actualMessage, expectedMessage);
     }
+
     @Test
     public void testGoToAnotherPage() {
 

@@ -979,4 +979,22 @@ public class AqaGroupTest extends AqaGroupBaseTest {
 
         Assert.assertEquals(getDriver().findElement(GET_POLITICA).getText(), "Политика обработки персональных данных");
     }
+
+    @DataProvider(name = "visibilityDataProvider")
+    public Object[][] visibilityDataProvider() {
+        return new Object[][]{
+                {By.id("removedButton")}, {By.id("zeroWidthButton")}, {By.id("Overlapped")},
+                {By.id("transparentButton")}, {By.id("invisibleButton")}, {By.id("notdisplayedButton")},
+                {By.id("offscreenButton")}
+        };
+    }
+
+    @Test(dataProvider = "visibilityDataProvider")
+    public void testVisibility(By locator) {
+        getDriver().get("http://uitestingplayground.com/visibility");
+
+        getDriver().findElement(By.id("hideButton")).click();
+
+        Assert.assertTrue(getWait5().until(ExpectedConditions.invisibilityOfElementLocated(locator)));
+    }
 }

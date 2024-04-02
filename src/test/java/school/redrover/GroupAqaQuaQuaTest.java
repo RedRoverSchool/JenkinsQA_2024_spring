@@ -29,7 +29,6 @@ public class GroupAqaQuaQuaTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.className("product-name")).getText(), "Computing and Internet");
 
     }
-
     @Test
     public void testDropDownMenuGiftCards() {
         getDriver().get("https://demowebshop.tricentis.com/");
@@ -165,5 +164,26 @@ public class GroupAqaQuaQuaTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(
                 By.cssSelector("div.page-title>h1")).getText(), "Welcome, Please Sign In!");
+    }
+    @Test
+    public void testSearch() {
+        getDriver().get("https://demowebshop.tricentis.com/");
+
+        getDriver().findElement(By.linkText("Search")).click();
+
+        getDriver().findElement(By.cssSelector("[id= 'Q']")).sendKeys("corel");
+
+        getDriver().findElement(By.id("As")).click();
+        new Select(getDriver().findElement(By.id("Cid"))).selectByVisibleText("All");
+        getDriver().findElement(By.id("Isc")).click();
+        new Select(getDriver().findElement(By.id("Mid"))).selectByVisibleText("All");
+
+        getDriver().findElement(By.className("price-from")).sendKeys("0");
+        getDriver().findElement(By.className("price-to")).sendKeys("1000000");
+        getDriver().findElement(By.id("Sid")).click();
+        getDriver().findElement(By.cssSelector("[class^='search-i'] [type= 'submit']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("h2 a[href^= '/corel']")).getText(),
+                "Corel Paint Shop Pro Photo X2");
     }
 }
