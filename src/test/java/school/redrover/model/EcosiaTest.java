@@ -13,7 +13,7 @@ public class EcosiaTest {
         driver.get("https://www.ecosia.org/");
 
         WebElement form = driver.findElement(By.className("search-form__input"));
-        form.sendKeys("weather in Atlanta");
+        form.sendKeys("weather in Vero Beach");
 
         WebElement search = driver.findElement(By.xpath("//button[@data-test-id='search-form-submit']"));
         search.click();
