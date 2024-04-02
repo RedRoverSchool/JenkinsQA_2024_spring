@@ -2,6 +2,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -127,6 +128,21 @@ public class LegionOfJavaGroupTest extends BaseTest {
 
         assertTrue(homeWebElement.isDisplayed());
         assertTrue(homeWebElement.isEnabled());
+    }
+
+    @Test
+
+    public void testLogin(){
+        getDriver().get("https://practicetestautomation.com/practice-test-login/");
+        WebElement userName = getDriver().findElement(By.name("username"));
+        userName.sendKeys("student");
+        WebElement password = getDriver().findElement(By.name("password"));
+        password.sendKeys("Password123");
+        WebElement submitButton = getDriver().findElement(By.id("submit"));
+        submitButton.click();
+        WebElement result = getDriver().findElement(By.xpath("//h1"));
+        String resultText = result.getText();
+        Assert.assertEquals("Logged In Successfully", resultText);
     }
 
 }
