@@ -32,4 +32,17 @@ public class CodeQAGroup extends BaseTest {
             expectedValue -= step;
         }
     }
+    @Test
+    public void testDropDownMenu() {
+        getDriver().get("https://the-internet.herokuapp.com");
+
+        WebElement dropDown = getDriver().findElement(By.linkText("Dropdown"));
+        dropDown.click();
+        WebElement dropDownMenu = getDriver().findElement(By.xpath("//*[@id='dropdown']"));
+        dropDownMenu.click();
+        WebElement dropDownOption1 = getDriver().findElement(By.xpath("//*[@id='dropdown']/option[2]"));
+        dropDownOption1.click();
+
+        Assert.assertTrue(dropDownOption1.isDisplayed());
+    }
 }
