@@ -38,7 +38,7 @@ public class CodeQAGroupTest extends BaseTest {
 
         WebElement dropDown = getDriver().findElement(By.linkText("Dropdown"));
         dropDown.click();
-        WebElement dropDownMenu = getDriver().findElement(By.xpath("//*[@id='dropdown']"));
+        WebElement dropDownMenu = getDriver().findElement(By.id("dropdown"));
         dropDownMenu.click();
         WebElement dropDownOption1 = getDriver().findElement(By.xpath("//*[@id='dropdown']/option[2]"));
         dropDownOption1.click();
