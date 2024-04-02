@@ -176,7 +176,6 @@ public class GroupRedroverJava7Test extends BaseTest {
 
         WebElement text = getDriver().findElement(By.xpath("//h2[text()='Find Your Store']"));
         String value = text.getText();
-
         Assert.assertEquals(value,"FIND YOUR STORE");
     }
     @Test
@@ -193,6 +192,34 @@ public class GroupRedroverJava7Test extends BaseTest {
         WebElement text = getDriver().findElement(By.xpath("//h1[@class='program-hero__title']"));
         String value = text.getText();
         Assert.assertEquals(value, "SWIM LESSONS");
+    }
+
+    @Test
+    public void testRegistration() {
+        getDriver().get("https://ymcacapecod.org/");
+        getDriver().manage().window().maximize();
+
+        getDriver().findElement(By.xpath("//*[@href='/join/register/']")).click();
+        String originalWindow = getDriver().getWindowHandle();
+        Assert.assertEquals(getDriver().getWindowHandles().size(), 1);
+
+        getDriver().findElement(By.xpath("//*[@title='Register']")).click();
+        for (String windowHandle : getDriver().getWindowHandles()) {
+            if(!originalWindow.contentEquals(windowHandle)) {
+                getDriver().switchTo().window(windowHandle);
+                break;
+            }
+        }
+
+        getDriver().findElement(By.xpath("//a[contains(text(),'Login')]")).click();
+
+        WebElement username = getDriver().findElement(By.xpath("//input[@id='user_name']"));
+        username.sendKeys("1234@gmail.com");
+        getDriver().findElement(By.id("submit_button")).click();
+
+        String signup = getDriver().findElement(By.xpath("//h2")).getText();
+
+        Assert.assertEquals(signup,"Sign up for an account");
     }
 
     @Test
