@@ -16,11 +16,7 @@ import org.testng.annotations.Test;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
 
 public class AqaGroupTest extends AqaGroupBaseTest {
 
@@ -47,12 +43,6 @@ public class AqaGroupTest extends AqaGroupBaseTest {
         return String.valueOf(Math.log(Math.abs(12 * Math.sin(Integer.parseInt(x)))));
     }
 
-    private void openBrauser() {
-        getDriver().get(URL_MOB);
-        getDriver().manage().window().setSize(new Dimension(1920, 1080));
-        getDriver().manage().timeouts().pageLoadTimeout(25, TimeUnit.SECONDS);
-        getDriver().manage().timeouts().implicitlyWait(25, TimeUnit.SECONDS);
-    }
 
     @Test
     public void testAlert() {
@@ -940,25 +930,24 @@ public class AqaGroupTest extends AqaGroupBaseTest {
 
     @Test
     public void testRemovesPassword() {
-        openBrauser();
+        getDriver().get(URL_MOB);
+
         getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys("yyyyyyyyyy@mail.xx");
         getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
 
-        String getError = getDriver().findElement(GET_ERROR).getText();
-
-        Assert.assertEquals(getError, "Неправильный логин или пароль");
+        Assert.assertEquals(getDriver().findElement(GET_ERROR).getText(), "Неправильный логин или пароль");
     }
 
     @Test
     public void testHrefPolitic() {
-        openBrauser();
-        getDriver().findElement(By.xpath("//a[@href='https://vr-arsoft.com/personal-data-processing-policy/']")).click();
+        getDriver().get(URL_MOB);
 
-        ArrayList<String> newTab = new ArrayList<>(getDriver().getWindowHandles());
-        getDriver().switchTo().window(newTab.get(1));
+        getWait15().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='https://vr-arsoft.com/personal-data-processing-policy/']"))).click();
 
-        String HrefPolitic = getDriver().findElement(GET_POLITICA).getText();
+        Set<String> handles = getDriver().getWindowHandles();
+        handles.remove(getDriver().getWindowHandle());
+        getDriver().switchTo().window(handles.iterator().next());
 
-        Assert.assertEquals(HrefPolitic, "Политика обработки персональных данных");
+        Assert.assertEquals(getDriver().findElement(GET_POLITICA).getText(), "Политика обработки персональных данных");
     }
 }
