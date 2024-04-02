@@ -296,13 +296,12 @@ public class CodeQAGroupTest extends BaseTest {
     }
 
     @Test
-    public void testGoToAnotherPage() {
+    public void testGoToAnotherPage25() {
 
        getDriver().get("https://the-internet.herokuapp.com/");
-        WebElement atrValue = getDriver().findElement(By.cssSelector("a[href='/abtest']"));
-        atrValue.click();
-        WebElement header3 = getDriver().findElement(By.cssSelector("h3"));
+       getDriver().findElement(By.cssSelector("a[href='/abtest']")).click();
+       String actualResult = getDriver().findElement(By.cssSelector("h3")).getText();
 
-        Assert.assertEquals(header3.getText(), "A/B Test Control");
+        Assert.assertEquals(actualResult, "A/B Test Control");
     }
 }
