@@ -27,37 +27,37 @@ public class GroupUnitedByJava8Test extends BaseTest {
 
     @Test
     public void testDemoQADoubleClick() {
-        getDriver().get("https://demoqa.com/");
+        getWebDriver().get("https://demoqa.com/");
 
-        WebElement elementsPage = getDriver().findElement(By.xpath("//h5[text()='Elements']"));
+        WebElement elementsPage = getWebDriver().findElement(By.xpath("//h5[text()='Elements']"));
         elementsPage.click();
-        WebElement buttons = getDriver().findElement(By.xpath("//span[@class='text' and text()='Buttons']"));
+        WebElement buttons = getWebDriver().findElement(By.xpath("//span[@class='text' and text()='Buttons']"));
         buttons.click();
 
-        WebElement doubleClickMeButton = getDriver().findElement(By.id("doubleClickBtn"));
-        new Actions(getDriver())
+        WebElement doubleClickMeButton = getWebDriver().findElement(By.id("doubleClickBtn"));
+        new Actions(getWebDriver())
                 .doubleClick(doubleClickMeButton)
                 .perform();
 
-        String doubleClickMessageText = getDriver().findElement(By.id("doubleClickMessage")).getText();
+        String doubleClickMessageText = getWebDriver().findElement(By.id("doubleClickMessage")).getText();
 
         Assert.assertEquals(doubleClickMessageText, "You have done a double click");
     }
 
     @Test
     public void testLookingForTheSummer() {
-        WebDriverWait webDriverWait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        WebDriverWait webDriverWait = new WebDriverWait(getWebDriver(), Duration.ofSeconds(5));
 
-        getDriver().get("https://www.onlinetrade.ru/");
+        getWebDriver().get("https://www.onlinetrade.ru/");
         webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name = 'query']"))).sendKeys("лето");
-        getDriver().findElement(By.xpath("//input[@type = 'submit']")).click();
+        getWebDriver().findElement(By.xpath("//input[@type = 'submit']")).click();
 
-        Assert.assertTrue((getDriver().findElement(By.xpath("//h1[contains(text(), 'Найденные товары')]")).isDisplayed()));
+        Assert.assertTrue((getWebDriver().findElement(By.xpath("//h1[contains(text(), 'Найденные товары')]")).isDisplayed()));
     }
 
     @Test
     public void testCreateNewUserGlobalQAAsManager() {
-        WebDriver driver = getDriver();
+        WebDriver driver = getWebDriver();
         driver.get(GLOBALS_QA_LOGIN_LINKS);
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
@@ -93,16 +93,16 @@ public class GroupUnitedByJava8Test extends BaseTest {
 
     @Test
     public void testHappyPathLogin() {
-        getDriver().get("https://www.saucedemo.com/");
+        getWebDriver().get("https://www.saucedemo.com/");
 
-        WebElement name = getDriver().findElement(By.xpath("//input[@id='user-name']"));
+        WebElement name = getWebDriver().findElement(By.xpath("//input[@id='user-name']"));
         name.sendKeys("visual_user");
 
-        WebElement password = getDriver().findElement(By.xpath("//input[@id='password']"));
+        WebElement password = getWebDriver().findElement(By.xpath("//input[@id='password']"));
         password.sendKeys("secret_sauce");
 
-        getDriver().findElement(By.id("login-button")).click();
-        String actualResult = getDriver().getCurrentUrl();
+        getWebDriver().findElement(By.id("login-button")).click();
+        String actualResult = getWebDriver().getCurrentUrl();
 
         Assert.assertEquals(actualResult, "https://www.saucedemo.com/inventory.html");
     }
@@ -110,28 +110,28 @@ public class GroupUnitedByJava8Test extends BaseTest {
     @Test
     public void testAlertAppearsAfterItemIsAddedToCart() {
 
-        getDriver().get("https://magento.softwaretestingboard.com/");
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
+        getWebDriver().get("https://magento.softwaretestingboard.com/");
+        WebDriverWait wait = new WebDriverWait(getWebDriver(), Duration.ofSeconds(2));
 
-        WebElement searchField = getDriver().findElement(By.id("search"));
+        WebElement searchField = getWebDriver().findElement(By.id("search"));
         searchField.sendKeys("Pant");
 
-        WebElement submitButton = getDriver().findElement(By.xpath("//div[@class='actions']/button"));
+        WebElement submitButton = getWebDriver().findElement(By.xpath("//div[@class='actions']/button"));
         submitButton.click();
 
-        WebElement submitShortLink = getDriver().findElement(By.xpath("//a[contains(., 'Cronus')]"));
+        WebElement submitShortLink = getWebDriver().findElement(By.xpath("//a[contains(., 'Cronus')]"));
         submitShortLink.click();
 
-        WebElement submitSize = getDriver().findElement(By.xpath("//*[@id=\"option-label-size-143-item-175\"]"));
+        WebElement submitSize = getWebDriver().findElement(By.xpath("//*[@id=\"option-label-size-143-item-175\"]"));
         submitSize.click();
 
-        WebElement submitColor = getDriver().findElement(By.xpath("//div[@option-id ='49']"));
+        WebElement submitColor = getWebDriver().findElement(By.xpath("//div[@option-id ='49']"));
         submitColor.click();
 
-        WebElement submitQty = getDriver().findElement(By.id("qty"));
+        WebElement submitQty = getWebDriver().findElement(By.id("qty"));
         submitQty.sendKeys("12");
 
-        WebElement submitAddToCart = getDriver().findElement(By.id("product-addtocart-button"));
+        WebElement submitAddToCart = getWebDriver().findElement(By.id("product-addtocart-button"));
         submitAddToCart.click();
 
         WebElement alertShoppingCart = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@role='alert']")));
@@ -142,7 +142,7 @@ public class GroupUnitedByJava8Test extends BaseTest {
 
     @Test
     public void testCheckingAddingCart() {
-        WebDriver driver = getDriver();
+        WebDriver driver = getWebDriver();
 
         driver.get("https://www.saucedemo.com/");
 
@@ -166,7 +166,7 @@ public class GroupUnitedByJava8Test extends BaseTest {
     @Test
     public void testAddingItemToCart() {
 
-        WebDriver driver = getDriver();
+        WebDriver driver = getWebDriver();
         driver.get("https://www.saucedemo.com/");
 
         WebElement login = driver.findElement(By.id("user-name"));
@@ -193,7 +193,7 @@ public class GroupUnitedByJava8Test extends BaseTest {
     @Test
     public void testLogoutUser() throws InterruptedException {
 
-        WebDriver driver = getDriver();
+        WebDriver driver = getWebDriver();
         driver.get("https://www.saucedemo.com/");
 
         WebElement login = driver.findElement(By.id("user-name"));
@@ -219,78 +219,78 @@ public class GroupUnitedByJava8Test extends BaseTest {
 
     @Test
     public void testDemoQARightClick() {
-        getDriver().get("https://demoqa.com/");
+        getWebDriver().get("https://demoqa.com/");
 
-        WebElement elementsPage = getDriver().findElement(By.xpath("//h5[text()='Elements']"));
+        WebElement elementsPage = getWebDriver().findElement(By.xpath("//h5[text()='Elements']"));
         elementsPage.click();
-        WebElement buttons = getDriver().findElement(By.xpath("//span[@class='text' and text()='Buttons']"));
+        WebElement buttons = getWebDriver().findElement(By.xpath("//span[@class='text' and text()='Buttons']"));
         buttons.click();
 
-        WebElement rightClickMeButton = getDriver().findElement(By.id("rightClickBtn"));
-        new Actions(getDriver())
+        WebElement rightClickMeButton = getWebDriver().findElement(By.id("rightClickBtn"));
+        new Actions(getWebDriver())
                 .contextClick(rightClickMeButton)
                 .perform();
 
-        String contextClickMessageText = getDriver().findElement(By.id("rightClickMessage")).getText();
+        String contextClickMessageText = getWebDriver().findElement(By.id("rightClickMessage")).getText();
 
         Assert.assertEquals(contextClickMessageText, "You have done a right click");
     }
 
     @Test
     public void testPraktikum() throws InterruptedException {
-        getDriver().get("https://qa-mesto.praktikum-services.ru/signin");
+        getWebDriver().get("https://qa-mesto.praktikum-services.ru/signin");
 
-        WebElement eMail = getDriver().findElement(By.id("email"));
+        WebElement eMail = getWebDriver().findElement(By.id("email"));
         eMail.sendKeys("wovibic859@mnsaf.com");
 
-        WebElement password = getDriver().findElement(By.id("password"));
+        WebElement password = getWebDriver().findElement(By.id("password"));
         password.sendKeys("123");
 
-        WebElement LoginEnter = getDriver().findElement(By.className("auth-form__button"));
+        WebElement LoginEnter = getWebDriver().findElement(By.className("auth-form__button"));
         LoginEnter.click();
 
         Thread.sleep(3000);
-        WebElement accountName = getDriver().findElement(By.className("profile__title"));
+        WebElement accountName = getWebDriver().findElement(By.className("profile__title"));
         Assert.assertEquals(accountName.getText(), "Жак-Ив Кусто");
     }
 
     @Test
     public void testSuccessLoginSaucedemo() {
-        getDriver().get("https://www.saucedemo.com/");
-        getDriver().manage().window().maximize();
+        getWebDriver().get("https://www.saucedemo.com/");
+        getWebDriver().manage().window().maximize();
 
-        getDriver().findElement(By.id("user-name")).sendKeys("standard_user");
-        getDriver().findElement(By.id("password")).sendKeys("secret_sauce");
-        getDriver().findElement(By.id("login-button")).click();
+        getWebDriver().findElement(By.id("user-name")).sendKeys("standard_user");
+        getWebDriver().findElement(By.id("password")).sendKeys("secret_sauce");
+        getWebDriver().findElement(By.id("login-button")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='app_logo']")).getText(), "Swag Labs");
+        Assert.assertEquals(getWebDriver().findElement(By.xpath("//div[@class='app_logo']")).getText(), "Swag Labs");
     }
 
     @Test
     public void testClassifiedCheckbox() {
-        getDriver().get("https://demoqa.com");
+        getWebDriver().get("https://demoqa.com");
 
-        getDriver().findElement(By.xpath("//h5[text()='Elements']")).click();
-        getDriver().findElement(By.id("item-1")).click();
-        getDriver().findElement(By.className("rct-option-expand-all")).click();
-        getDriver().findElement(By.xpath("//label[@for='tree-node-classified']")).click();
-        String value = getDriver().findElement(By.id("result")).getText();
+        getWebDriver().findElement(By.xpath("//h5[text()='Elements']")).click();
+        getWebDriver().findElement(By.id("item-1")).click();
+        getWebDriver().findElement(By.className("rct-option-expand-all")).click();
+        getWebDriver().findElement(By.xpath("//label[@for='tree-node-classified']")).click();
+        String value = getWebDriver().findElement(By.id("result")).getText();
 
         Assert.assertEquals(value, "You have selected :\n" + "classified");
     }
 
     @Test
     public void testItemsSortedInReverseOrder() {
-        getDriver().get("https://www.saucedemo.com/");
-        getDriver().findElement(By.id("user-name")).sendKeys(STANDARD_USER_LOGIN);
-        getDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
-        getDriver().findElement(By.id("login-button")).click();
+        getWebDriver().get("https://www.saucedemo.com/");
+        getWebDriver().findElement(By.id("user-name")).sendKeys(STANDARD_USER_LOGIN);
+        getWebDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
+        getWebDriver().findElement(By.id("login-button")).click();
 
-        WebElement itemsSortingCriterion = getDriver().findElement(By.className("product_sort_container"));
+        WebElement itemsSortingCriterion = getWebDriver().findElement(By.className("product_sort_container"));
         Select select = new Select(itemsSortingCriterion);
         select.selectByVisibleText("Name (Z to A)");
 
-        List<WebElement> items = getDriver().findElements(By.xpath("//div[@class='inventory_item_name ']"));
+        List<WebElement> items = getWebDriver().findElements(By.xpath("//div[@class='inventory_item_name ']"));
 
         List<String> itemsNames = new ArrayList<>();
         for (WebElement itemName : items) {
@@ -306,42 +306,42 @@ public class GroupUnitedByJava8Test extends BaseTest {
 
     @Test
     public void testLoginAsCustomerHarryPotterGlobalsqa() throws InterruptedException {
-        getDriver().get("https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login");
+        getWebDriver().get("https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login");
 
         Thread.sleep(1500);
 
-        WebElement customerLoginButton = getDriver().findElement(By.xpath("//button[@ng-click='customer()']"));
+        WebElement customerLoginButton = getWebDriver().findElement(By.xpath("//button[@ng-click='customer()']"));
         customerLoginButton.click();
 
         Thread.sleep(1500);
 
-        Select select = new Select(getDriver().findElement(By.id("userSelect")));
+        Select select = new Select(getWebDriver().findElement(By.id("userSelect")));
         select.selectByIndex(2);
 
-        WebElement loginButton = getDriver().findElement(By.xpath("//button[@type = 'submit']"));
+        WebElement loginButton = getWebDriver().findElement(By.xpath("//button[@type = 'submit']"));
         loginButton.click();
 
         Thread.sleep(1500);
 
-        WebElement welcomeText = getDriver().findElement(By.xpath("//strong[text() = ' Welcome ']"));
+        WebElement welcomeText = getWebDriver().findElement(By.xpath("//strong[text() = ' Welcome ']"));
 
         Assert.assertEquals(welcomeText.getText(), "Welcome Harry Potter !!");
     }
 
     @Test
     public void testCartAddItemBikeLight() {
-        getDriver().get("https://www.saucedemo.com/");
-        getDriver().findElement(By.id("user-name")).sendKeys(STANDARD_USER_LOGIN);
-        getDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
-        getDriver().findElement(By.id("login-button")).click();
+        getWebDriver().get("https://www.saucedemo.com/");
+        getWebDriver().findElement(By.id("user-name")).sendKeys(STANDARD_USER_LOGIN);
+        getWebDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
+        getWebDriver().findElement(By.id("login-button")).click();
 
-        WebElement addBikeLightToCartButton = getDriver().findElement(By.id("add-to-cart-sauce-labs-bike-light"));
+        WebElement addBikeLightToCartButton = getWebDriver().findElement(By.id("add-to-cart-sauce-labs-bike-light"));
         addBikeLightToCartButton.click();
 
-        WebElement cartClickIcon = getDriver().findElement(By.className("shopping_cart_link"));
+        WebElement cartClickIcon = getWebDriver().findElement(By.className("shopping_cart_link"));
         cartClickIcon.click();
 
-        WebElement itemInCart = getDriver().findElement(By.id("item_0_title_link"));
+        WebElement itemInCart = getWebDriver().findElement(By.id("item_0_title_link"));
         itemInCart.getText();
 
         Assert.assertEquals(itemInCart.getText(), "Sauce Labs Bike Light", "Wrong item in the Cart");
@@ -349,12 +349,12 @@ public class GroupUnitedByJava8Test extends BaseTest {
 
     @Test
     public void testItemsSortedAlphabetically() {
-        getDriver().get("https://www.saucedemo.com/");
-        getDriver().findElement(By.id("user-name")).sendKeys(STANDARD_USER_LOGIN);
-        getDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
-        getDriver().findElement(By.id("login-button")).click();
+        getWebDriver().get("https://www.saucedemo.com/");
+        getWebDriver().findElement(By.id("user-name")).sendKeys(STANDARD_USER_LOGIN);
+        getWebDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
+        getWebDriver().findElement(By.id("login-button")).click();
 
-        List<WebElement> items = getDriver().findElements(By.cssSelector("[class^='inventory_item_name']"));
+        List<WebElement> items = getWebDriver().findElements(By.cssSelector("[class^='inventory_item_name']"));
 
         List<String> itemsNames = new ArrayList<>();
         for (WebElement itemName : items) {
@@ -370,15 +370,47 @@ public class GroupUnitedByJava8Test extends BaseTest {
 
     @Test
     public void testDefaultSortingCriterion() {
-        getDriver().get("https://www.saucedemo.com/");
-        getDriver().findElement(By.id("user-name")).sendKeys(STANDARD_USER_LOGIN);
-        getDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
-        getDriver().findElement(By.id("login-button")).click();
+        getWebDriver().get("https://www.saucedemo.com/");
+        getWebDriver().findElement(By.id("user-name")).sendKeys(STANDARD_USER_LOGIN);
+        getWebDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
+        getWebDriver().findElement(By.id("login-button")).click();
 
-        WebElement itemsSortingCriterion = getDriver().findElement(By.className("product_sort_container"));
+        WebElement itemsSortingCriterion = getWebDriver().findElement(By.className("product_sort_container"));
         String defaultSortingCriterion = new Select(itemsSortingCriterion).getFirstSelectedOption().getText();
 
         Assert.assertEquals(defaultSortingCriterion, "Name (A to Z)",
                 "Default sorting criterion is not alphabetical");
+    }
+    @Test
+    public void testCart() throws InterruptedException {
+
+        getWebDriver().get("https://magento.softwaretestingboard.com/");
+        getWebDriver().manage().window().maximize();
+
+        Thread.sleep(3000);
+        WebElement salePageButton = getWebDriver().findElement(By.id("ui-id-8"));
+        salePageButton.click();
+        WebElement shopWomanDealButton = getWebDriver().findElement(By.xpath("//span[@class = 'more button']"));
+        shopWomanDealButton.click();
+        WebElement bessYogaShortItemLink = getWebDriver().
+                findElement(By.xpath("//a[contains(., 'Bess')]"));
+        bessYogaShortItemLink.click();
+        Thread.sleep(2000);
+        WebElement sizeSelect = getWebDriver().findElement(By.xpath("//div[@option-id='171']"));
+        sizeSelect.click();
+        Thread.sleep(2000);
+        WebElement colorSelect = getWebDriver().findElement(By.xpath("//div[@option-id='50']"));
+        colorSelect.click();
+        WebElement addToCard = getWebDriver().findElement(By.id("product-addtocart-button"));
+        addToCard.click();
+        Thread.sleep(3000);
+        WebElement cartCounterNumber = getWebDriver().findElement(By.xpath("//span[@class ='counter-number']"));
+        cartCounterNumber.click();
+
+        Thread.sleep(3000);
+        Assert.assertEquals((getWebDriver().findElement(By
+                        .xpath("//strong[@class='product-item-name']/a")).getText()),
+                "Bess Yoga Short");
+        getWebDriver().quit();
     }
 }
