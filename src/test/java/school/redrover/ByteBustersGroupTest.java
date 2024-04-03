@@ -1,10 +1,6 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -132,7 +128,7 @@ public class ByteBustersGroupTest extends BaseTest {
     }
 
     @Test
-    public void googleTranslatorTest() throws InterruptedException {
+    public void googleTranslatorTest() {
 
         getDriver().get("https://translate.google.com/#");
         getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(2000));
@@ -148,29 +144,21 @@ public class ByteBustersGroupTest extends BaseTest {
     }
 
     @Test
-    public void testMarvel() throws InterruptedException {
+    public void testCounterStrike() {
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.marvel.com/");
+        WebDriver driver = getDriver();
+        driver.get("https://www.counter-strike.net/");
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        WebElement buttonSelectLanguage= driver.findElement(By.className("languageselector_LanguageIcon_yTASe"));
+        buttonSelectLanguage.click();
 
-        WebElement buttonAccept= driver.findElement(By.id("onetrust-accept-btn-handler"));
-        buttonAccept.click();
+        WebElement selectEnglish= driver.findElement(By.className("languageselector_LanguageOption_Kd1K6"));
+        selectEnglish.click();
 
-        WebElement buttonSearch= driver.findElement(By.id("search"));
-        buttonSearch.click();
+        WebElement languageElement = driver.findElement(By.xpath("//div[@class='languageselector_InnerWrapper_A5ZD2']//span"));
+        String languageText = languageElement.getText();
 
-        WebElement text = driver.findElement(By.className("typeahead__input"));
-        text.sendKeys("Deadpool");
-        text.sendKeys(Keys.ENTER);
-
-        Thread.sleep(1000);
-
-        WebElement link= driver.findElement(By.xpath ("//a[text()='Deadpool (Wade Wilson)'][@href='/characters/deadpool-wade-wilson']"));
-        String resultText = link.getText();
-
-        Assert.assertEquals(resultText, "Deadpool (Wade Wilson)");
+        Assert.assertEquals(languageText, "SELECT LANGUAGE");
 
         driver.quit();
     }
