@@ -348,14 +348,11 @@ public class GroupUnitedByJava8Test extends BaseTest {
     }
 
     @Test
-    public void testItemsSorted() {
+    public void testItemsSortedAlphabetically() {
         getDriver().get("https://www.saucedemo.com/");
         getDriver().findElement(By.id("user-name")).sendKeys(STANDARD_USER_LOGIN);
         getDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
         getDriver().findElement(By.id("login-button")).click();
-
-        WebElement itemsSortingCriterion = getDriver().findElement(By.className("product_sort_container"));
-        String defaultSortingCriterion = new Select(itemsSortingCriterion).getFirstSelectedOption().getText();
 
         List<WebElement> items = getDriver().findElements(By.cssSelector("[class^='inventory_item_name']"));
 
@@ -368,8 +365,20 @@ public class GroupUnitedByJava8Test extends BaseTest {
         List<String> expectedSortedNames = new ArrayList<>(itemsNames);
         Collections.sort(expectedSortedNames);
 
+        Assert.assertEquals(itemsNames, expectedSortedNames, "Items are not sorted alphabetically");
+    }
+
+    @Test
+    public void testDefaultSortingCriterion() {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.id("user-name")).sendKeys(STANDARD_USER_LOGIN);
+        getDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
+        getDriver().findElement(By.id("login-button")).click();
+
+        WebElement itemsSortingCriterion = getDriver().findElement(By.className("product_sort_container"));
+        String defaultSortingCriterion = new Select(itemsSortingCriterion).getFirstSelectedOption().getText();
+
         Assert.assertEquals(defaultSortingCriterion, "Name (A to Z)",
                 "Default sorting criterion is not alphabetical");
-        Assert.assertEquals(itemsNames, expectedSortedNames, "Items are not sorted alphabetically");
     }
 }
