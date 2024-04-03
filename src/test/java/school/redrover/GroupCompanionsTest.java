@@ -60,4 +60,23 @@ public class GroupCompanionsTest extends BaseTest {
         Assert.assertEquals("Блог", value);
     }
 
+    @Test
+    public void testDZ() throws InterruptedException {
+        WebDriver driver = getDriver();
+        driver.get("https://exp86.ru/");
+
+        WebElement text = driver.findElement(By.name("q"));
+        text.sendKeys("Hello world");
+
+
+        WebElement button = driver.findElement(By.name("Поиск"));
+        button.click();
+
+
+        WebElement linc = driver.findElement(By.className("notetext"));
+        String result = linc.getText();
+
+        Assert.assertEquals(result, "К сожалению, на ваш поисковый запрос ничего не найдено.");
+
+    }
 }

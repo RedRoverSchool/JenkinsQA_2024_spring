@@ -217,6 +217,5 @@ public class GroupCarlthefogTest extends BaseTest {
 
         Assert.assertEquals(actualUrl, expectedUrl, "URL не совпадает");
 
-        driver.quit();
     }
 }
