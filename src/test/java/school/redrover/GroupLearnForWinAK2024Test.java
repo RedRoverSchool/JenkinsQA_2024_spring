@@ -218,6 +218,36 @@ public class GroupLearnForWinAK2024Test extends BaseTest {
 
         Assert.assertEquals(getDriver().getTitle(), "HTML Tutorial");
     }
+
+    @Test
+    public void testAllGames() throws InterruptedException {
+
+        WebDriver driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
+
+        driver.get("https://pbskids.org/");
+
+        driver.findElement(By.xpath("//span[contains(.,'All Games')]")).click();
+
+        TimeUnit.SECONDS.sleep(1);
+
+        driver.findElement(By.xpath("//em[contains(@data-audio-type,'new')]")).click();
+
+        TimeUnit.SECONDS.sleep(1);
+
+        driver.findElement(By.xpath("//span[contains(.,'More Games')]")).click();
+
+        driver.findElement(By.xpath("(//img[@alt='Game icon for Karaoke Night.'])[1]")).click();
+
+        driver.findElement(By.xpath("//button[@class='game-player-btn close']")).click();
+
+        TimeUnit.SECONDS.sleep(3);
+
+        driver.navigate().back();
+
+        driver.quit();
+    }
+
 }
 
 
