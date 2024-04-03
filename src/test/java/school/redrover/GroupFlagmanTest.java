@@ -25,11 +25,6 @@ public class GroupFlagmanTest extends BaseTest {
         loginButton.click();
 
         Assert.assertEquals(getDriver().getCurrentUrl(), "https://www.saucedemo.com/inventory.html");
-
-
     }
-
-
-
 
 }
