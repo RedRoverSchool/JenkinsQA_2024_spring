@@ -53,7 +53,7 @@ public class ArMobileTest extends BaseTest {
     public Object[][] randomEmail() {
         return new Object[][]{
                 {"rrrrrrrrrrrrrr@mail.yy"}, {"NNNNNNNNNN@mail.xx"}, {"22222222222@mail.xx"},
-                {"ыыыыыыыыыыы@mail.xx"}, {"lllllllllly@mail.xx"}, {"wwww7777SSSФЫса@mail.xx"}
+                {"wmail@mail.xx"}, {"lllllllllly@mail.xx"}, {"wwww7777SSS@mail.xx"}
         };
     }
 
@@ -68,6 +68,15 @@ public class ArMobileTest extends BaseTest {
         getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
 
         Assert.assertEquals(getDriver().findElement(GET_EMAIL).getText(),"Пользователь не найден, попробуйте снова");
+    }
+
+    @Test(dataProvider = "randomEmail")
+    public void testRandomRemoveEmail(String name) {
+        openBrowser();
+        getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys(name);
+        getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
+
+        Assert.assertEquals(getDriver().findElement(GET_ERROR).getText(),"Неправильный логин или пароль");
     }
 
     @Test
