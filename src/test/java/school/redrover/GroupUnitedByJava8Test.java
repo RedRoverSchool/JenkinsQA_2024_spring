@@ -286,8 +286,8 @@ public class GroupUnitedByJava8Test extends BaseTest {
         getDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
         getDriver().findElement(By.id("login-button")).click();
 
-        WebElement selectItemsSortingCriterion = getDriver().findElement(By.className("product_sort_container"));
-        Select select = new Select(selectItemsSortingCriterion);
+        WebElement itemsSortingCriterion = getDriver().findElement(By.className("product_sort_container"));
+        Select select = new Select(itemsSortingCriterion);
         select.selectByVisibleText("Name (Z to A)");
 
         List<WebElement> items = getDriver().findElements(By.xpath("//div[@class='inventory_item_name ']"));
@@ -326,5 +326,31 @@ public class GroupUnitedByJava8Test extends BaseTest {
         WebElement welcomeText = getDriver().findElement(By.xpath("//strong[text() = ' Welcome ']"));
 
         Assert.assertEquals(welcomeText.getText(), "Welcome Harry Potter !!");
+    }
+
+    @Test
+    public void testItemsSorted() {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.id("user-name")).sendKeys(STANDARD_USER_LOGIN);
+        getDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
+        getDriver().findElement(By.id("login-button")).click();
+
+        WebElement itemsSortingCriterion = getDriver().findElement(By.className("product_sort_container"));
+        String defaultSortingCriterion = new Select(itemsSortingCriterion).getFirstSelectedOption().getText();
+
+        List<WebElement> items = getDriver().findElements(By.cssSelector("[class^='inventory_item_name']"));
+
+        List<String> itemsNames = new ArrayList<>();
+        for (WebElement itemName : items) {
+            String name = itemName.getText();
+            itemsNames.add(name);
+        }
+
+        List<String> expectedSortedNames = new ArrayList<>(itemsNames);
+        Collections.sort(expectedSortedNames);
+
+        Assert.assertEquals(defaultSortingCriterion, "Name (A to Z)",
+                "Default sorting criterion is not alphabetical");
+        Assert.assertEquals(itemsNames, expectedSortedNames, "Items are not sorted alphabetically");
     }
 }
