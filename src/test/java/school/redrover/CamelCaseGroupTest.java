@@ -20,4 +20,25 @@ public class CamelCaseGroupTest extends BaseTest {
         Assert.assertEquals(currentUrl, "https://www.fairfaxicearena.com/pro-shop.html");
         Assert.assertTrue(appointmentRequestForm.isDisplayed());
     }
+    @Test
+    public void testTools() throws InterruptedException {
+
+        getDriver().get("https://www.saucedemo.com/");
+
+        WebElement text = getDriver().findElement(By.id("user-name"));
+        text.sendKeys("standard_user");
+
+        WebElement text1 = getDriver().findElement(By.id("password"));
+        text1.sendKeys("secret_sauce");
+
+        WebElement button = getDriver().findElement(By.id("login-button"));
+        button.click();
+
+        Thread.sleep(1000);
+
+        WebElement link = getDriver().findElement(By.className("app_logo"));
+        String resultText = link.getText();
+
+        Assert.assertEquals(resultText, "Swag Labs");
+    }
 }

@@ -1,15 +1,21 @@
 package school.redrover;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
 import java.time.Duration;
 
 public class GroupUnitedByJava8Test extends BaseTest {
@@ -249,7 +255,7 @@ public class GroupUnitedByJava8Test extends BaseTest {
     }
 
     @Test
-    public void testSuccessLoginSaucedemo(){
+    public void testSuccessLoginSaucedemo() {
         getDriver().get("https://www.saucedemo.com/");
         getDriver().manage().window().maximize();
 
@@ -258,5 +264,121 @@ public class GroupUnitedByJava8Test extends BaseTest {
         getDriver().findElement(By.id("login-button")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='app_logo']")).getText(), "Swag Labs");
+    }
+
+    @Test
+    public void testClassifiedCheckbox() {
+        getDriver().get("https://demoqa.com");
+
+        getDriver().findElement(By.xpath("//h5[text()='Elements']")).click();
+        getDriver().findElement(By.id("item-1")).click();
+        getDriver().findElement(By.className("rct-option-expand-all")).click();
+        getDriver().findElement(By.xpath("//label[@for='tree-node-classified']")).click();
+        String value = getDriver().findElement(By.id("result")).getText();
+
+        Assert.assertEquals(value, "You have selected :\n" + "classified");
+    }
+
+    @Test
+    public void testItemsSortedInReverseOrder() {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.id("user-name")).sendKeys(STANDARD_USER_LOGIN);
+        getDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
+        getDriver().findElement(By.id("login-button")).click();
+
+        WebElement itemsSortingCriterion = getDriver().findElement(By.className("product_sort_container"));
+        Select select = new Select(itemsSortingCriterion);
+        select.selectByVisibleText("Name (Z to A)");
+
+        List<WebElement> items = getDriver().findElements(By.xpath("//div[@class='inventory_item_name ']"));
+
+        List<String> itemsNames = new ArrayList<>();
+        for (WebElement itemName : items) {
+            String name = itemName.getText();
+            itemsNames.add(name);
+        }
+
+        List<String> expectedSortedNames = new ArrayList<>(itemsNames);
+        expectedSortedNames.sort(Collections.reverseOrder());
+
+        Assert.assertEquals(itemsNames, expectedSortedNames);
+    }
+
+    @Test
+    public void testLoginAsCustomerHarryPotterGlobalsqa() throws InterruptedException {
+        getDriver().get("https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login");
+
+        Thread.sleep(1500);
+
+        WebElement customerLoginButton = getDriver().findElement(By.xpath("//button[@ng-click='customer()']"));
+        customerLoginButton.click();
+
+        Thread.sleep(1500);
+
+        Select select = new Select(getDriver().findElement(By.id("userSelect")));
+        select.selectByIndex(2);
+
+        WebElement loginButton = getDriver().findElement(By.xpath("//button[@type = 'submit']"));
+        loginButton.click();
+
+        Thread.sleep(1500);
+
+        WebElement welcomeText = getDriver().findElement(By.xpath("//strong[text() = ' Welcome ']"));
+
+        Assert.assertEquals(welcomeText.getText(), "Welcome Harry Potter !!");
+    }
+
+    @Test
+    public void testCartAddItemBikeLight() {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.id("user-name")).sendKeys(STANDARD_USER_LOGIN);
+        getDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
+        getDriver().findElement(By.id("login-button")).click();
+
+        WebElement addBikeLightToCartButton = getDriver().findElement(By.id("add-to-cart-sauce-labs-bike-light"));
+        addBikeLightToCartButton.click();
+
+        WebElement cartClickIcon = getDriver().findElement(By.className("shopping_cart_link"));
+        cartClickIcon.click();
+
+        WebElement itemInCart = getDriver().findElement(By.id("item_0_title_link"));
+        itemInCart.getText();
+
+        Assert.assertEquals(itemInCart.getText(), "Sauce Labs Bike Light", "Wrong item in the Cart");
+    }
+
+    @Test
+    public void testItemsSortedAlphabetically() {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.id("user-name")).sendKeys(STANDARD_USER_LOGIN);
+        getDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
+        getDriver().findElement(By.id("login-button")).click();
+
+        List<WebElement> items = getDriver().findElements(By.cssSelector("[class^='inventory_item_name']"));
+
+        List<String> itemsNames = new ArrayList<>();
+        for (WebElement itemName : items) {
+            String name = itemName.getText();
+            itemsNames.add(name);
+        }
+
+        List<String> expectedSortedNames = new ArrayList<>(itemsNames);
+        Collections.sort(expectedSortedNames);
+
+        Assert.assertEquals(itemsNames, expectedSortedNames, "Items are not sorted alphabetically");
+    }
+
+    @Test
+    public void testDefaultSortingCriterion() {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.id("user-name")).sendKeys(STANDARD_USER_LOGIN);
+        getDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
+        getDriver().findElement(By.id("login-button")).click();
+
+        WebElement itemsSortingCriterion = getDriver().findElement(By.className("product_sort_container"));
+        String defaultSortingCriterion = new Select(itemsSortingCriterion).getFirstSelectedOption().getText();
+
+        Assert.assertEquals(defaultSortingCriterion, "Name (A to Z)",
+                "Default sorting criterion is not alphabetical");
     }
 }

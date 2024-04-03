@@ -1,7 +1,10 @@
 package school.redrover;
+
 import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
 import java.awt.*;
 import java.awt.Dimension;
 import java.awt.event.InputEvent;
@@ -9,9 +12,11 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import school.redrover.runner.BaseTest;
+
 import static org.testng.Assert.assertTrue;
 
 public class GroupLearnForWinAK2024Test extends BaseTest {
@@ -22,7 +27,7 @@ public class GroupLearnForWinAK2024Test extends BaseTest {
     private static final String SECOND_URL = "https://demoqa.com/";
 
     @Test
-    public void testLoginSuccessful()  {
+    public void testLoginSuccessful() {
         WebDriver driver = getDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
 
@@ -40,7 +45,7 @@ public class GroupLearnForWinAK2024Test extends BaseTest {
         WebElement logout = driver.findElement(By.xpath("//a[@content='Log out']"));
         String actText = logout.getText();
         String expText = "Log out";
-        Assert.assertEquals(actText,expText);
+        Assert.assertEquals(actText, expText);
     }
 
     @Test
@@ -118,14 +123,14 @@ public class GroupLearnForWinAK2024Test extends BaseTest {
 
         WebElement practiceFormTitle = driver.findElement(By.xpath("//span[text()='Practice Form']"));
 
-        assertTrue( practiceFormTitle.isDisplayed());
+        assertTrue(practiceFormTitle.isDisplayed());
     }
 
     @Test
     public void testCheckDataInput() throws InterruptedException {
         WebDriver driver = getDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
-        String expectedText ="Thanks for submitting the form";
+        String expectedText = "Thanks for submitting the form";
 
         driver.get(SECOND_URL);
         driver.manage().window().maximize();
@@ -158,7 +163,7 @@ public class GroupLearnForWinAK2024Test extends BaseTest {
 
         WebElement thanks = driver.findElement(By.xpath("//div[text()='Thanks for submitting the form']"));
         thanks.getText();
-        assertTrue( thanks.isDisplayed());
+        assertTrue(thanks.isDisplayed());
 
         Assert.assertEquals(thanks.getText(), expectedText);
     }
@@ -170,7 +175,7 @@ public class GroupLearnForWinAK2024Test extends BaseTest {
 
         driver.get("https://www.google.com/");
         driver.manage().window().maximize();
-        WebElement search_field = driver.findElement(By.xpath( "//textarea[@class='gLFyf']"));
+        WebElement search_field = driver.findElement(By.xpath("//textarea[@class='gLFyf']"));
         search_field.sendKeys("Empire State Trail");
         search_field.sendKeys(Keys.ENTER);
         WebElement eST = driver.findElement(By.xpath("(//cite[text()='https://empiretrail.ny.gov'])[1]"));
@@ -193,7 +198,7 @@ public class GroupLearnForWinAK2024Test extends BaseTest {
         String textInSideBtoR = insideBtoR.getText();
         WebElement inSideECT = driver.findElement(By.xpath("//h4[contains(text(), 'Albany') and contains(text(), 'Whitehall')]"));
         String textInSideEct = inSideECT.getText();
-        List <WebElement> menuWays = driver.findElements(By.xpath("//div[@class='accordion']"));
+        List<WebElement> menuWays = driver.findElements(By.xpath("//div[@class='accordion']"));
         for (WebElement menu : menuWays) {
             boolean containsText = menu.getText().contains(textInSideNYCToP) ||
                     menu.getText().contains(textInSideBtoR) ||
@@ -201,5 +206,18 @@ public class GroupLearnForWinAK2024Test extends BaseTest {
             assertTrue(containsText, "Expected text not found in menu: " + menu.getText());
         }
     }
+    @Test
+    public void W3school1test() {
+        getDriver().get("https://www.w3schools.com/");
+
+        Assert.assertEquals(getDriver().getTitle(), "W3Schools Online Web Tutorials");
+
+        getDriver().findElement(By.id("search2")).sendKeys("HTML Tutorial");
+
+        getDriver().findElement(By.id("learntocode_searchbtn")).click();
+
+        Assert.assertEquals(getDriver().getTitle(), "HTML Tutorial");
+    }
 }
+
 

@@ -13,10 +13,14 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.io.File;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.time.Duration;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 public class AqaGroupTest extends AqaGroupBaseTest {
 
@@ -913,7 +917,7 @@ public class AqaGroupTest extends AqaGroupBaseTest {
         Assert.assertTrue(
                 getWait5().until(ExpectedConditions.invisibilityOfElementLocated(By.className("md-content"))));
     }
-  
+
     @Test
     public void testUploadFile() throws URISyntaxException {
         getDriver().get("https://testpages.eviltester.com/styled/file-upload-test.html");
@@ -926,6 +930,13 @@ public class AqaGroupTest extends AqaGroupBaseTest {
         getDriver().findElement(By.className("styled-click-button")).click();
 
         Assert.assertEquals(getDriver().findElement(By.id("uploadedfilename")).getText(), "1.jpg");
+    }
+
+    @Test
+    public void testIsEnabled2() {
+        getDriver().get(URL_LETCODE);
+
+        Assert.assertTrue(getDriver().findElement(By.id("dontwrite")).isEnabled());
     }
 
     @Test
@@ -956,7 +967,7 @@ public class AqaGroupTest extends AqaGroupBaseTest {
         getDriver().findElement(By.id("hideButton")).click();
 
         Assert.assertFalse(getDriver().findElement(By.xpath(xpath)).isDisplayed(), "Not all the buttons are hidden!");
-     }
+    }
 
     @Test
     public void testRemovesPassword() {
@@ -996,5 +1007,26 @@ public class AqaGroupTest extends AqaGroupBaseTest {
         getDriver().findElement(By.id("hideButton")).click();
 
         Assert.assertTrue(getWait5().until(ExpectedConditions.invisibilityOfElementLocated(locator)));
+    }
+
+    @Test
+    public void testFileUpload() {
+        getDriver().get("https://suninjuly.github.io/file_input.html");
+
+        getDriver().findElement(By.name("firstname")).sendKeys("first");
+        getDriver().findElement(By.name("lastname")).sendKeys("last");
+        getDriver().findElement(By.name("email")).sendKeys("this@fake.email");
+
+        final String absoluteFilePath = new File("").getAbsolutePath() + "\\src\\test\\resources\\1.jpg";
+        getDriver().findElement(By.id("file")).sendKeys(absoluteFilePath);
+
+        getDriver().findElement(By.cssSelector("button.btn")).click();
+
+        Assert.assertTrue(
+                getWait15()
+                        .until(ExpectedConditions.alertIsPresent())
+                        .getText()
+                        .startsWith("Congrats, you've passed the task!"),
+                "You shall not pass");
     }
 }
