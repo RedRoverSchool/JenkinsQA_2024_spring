@@ -219,4 +219,27 @@ public class GroupCarlthefogTest extends BaseTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testWikipediaSearch() throws InterruptedException {
+        WebDriver driver = getDriver();
+        driver.get("https://en.wikipedia.org");
+
+        WebElement searchBox = driver.findElement(By.id("searchInput"));
+        searchBox.sendKeys("Selenium (software)");
+
+        WebElement submitButton = driver.findElement(By.xpath("//button[contains(@class, 'search-input')]"));
+        submitButton.click();
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(3000));
+
+        String expectedTitle = "Selenium (software) - Wikipedia";
+        String actualTitle = driver.getTitle();
+        System.out.println("Page title is: " + actualTitle);
+
+        Assert.assertEquals(actualTitle, expectedTitle, "Page title doesn't match expected title");
+
+        driver.quit();
+    }
+
 }
