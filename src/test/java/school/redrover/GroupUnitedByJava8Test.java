@@ -327,4 +327,23 @@ public class GroupUnitedByJava8Test extends BaseTest {
 
         Assert.assertEquals(welcomeText.getText(), "Welcome Harry Potter !!");
     }
+
+    @Test
+    public void testCartAddItemBikeLight() {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.id("user-name")).sendKeys(STANDARD_USER_LOGIN);
+        getDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
+        getDriver().findElement(By.id("login-button")).click();
+
+        WebElement addBikeLightToCartButton = getDriver().findElement(By.id("add-to-cart-sauce-labs-bike-light"));
+        addBikeLightToCartButton.click();
+
+        WebElement cartClickIcon = getDriver().findElement(By.className("shopping_cart_link"));
+        cartClickIcon.click();
+
+        WebElement itemInCart = getDriver().findElement(By.id("item_0_title_link"));
+        itemInCart.getText();
+
+        Assert.assertEquals(itemInCart.getText(), "Sauce Labs Bike Light", "Wrong item in the Cart");
+    }
 }
