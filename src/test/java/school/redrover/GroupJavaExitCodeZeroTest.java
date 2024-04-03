@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -530,5 +531,35 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
         Assert.assertEquals(actualLink, BASE_URL);
         Assert.assertEquals(actualErrorText, expectedErrorText);
 
+    }
+
+    @Test
+    public void testNamesOfNavigationBar() throws InterruptedException {
+        final String url = "https://openweathermap.org/";
+        final List<String> expectedResult = List.of("Guide", "API", "Dashboard", "Marketplace", "Pricing",
+                "Maps", "Our Initiatives", "Partners", "Blog", "For Business", "Sign in", "Support", "FAQ", "How to start", "Ask a question");
+
+        getDriver().get(url);
+        getDriver().manage().window().maximize();
+
+        List<WebElement> listNamesOfNavbar = getDriver().findElements(By.xpath("//li[@id='desktop-menu']//li"));
+        List<String> namesOfNavbar = new ArrayList<>();
+
+        for (WebElement element : listNamesOfNavbar) {
+            String text = element.getText();
+            if (!text.isEmpty()) {
+                namesOfNavbar.add(element.getText());
+            }
+        }
+
+        getDriver().findElement(By.cssSelector("#support-dropdown")).click();
+        Thread.sleep(2000);
+        List<WebElement> supportMenu = getDriver().findElements(By.cssSelector("#support-dropdown-menu>li"));
+
+        for (WebElement element : supportMenu) {
+            namesOfNavbar.add(element.getText());
+        }
+
+        Assert.assertEquals(namesOfNavbar, expectedResult);
     }
 }
