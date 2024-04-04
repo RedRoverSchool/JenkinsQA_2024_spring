@@ -1,9 +1,7 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -13,6 +11,7 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -34,6 +33,25 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
             sb.append(AlphaNumericString.charAt(index));
         }
         return sb.toString() + "@gmail.com";
+    }
+
+    private int uniqueLetters(String word) {
+        String word2 = word.trim().toLowerCase();
+        String word3 = "";
+
+        HashMap<Character, Integer> charCountMap = new HashMap<>();
+
+        for (int i = 0; i < word2.length(); i++) {
+            char c = word2.charAt(i);
+            charCountMap.put(c, charCountMap.getOrDefault(c, 0) + 1);
+        }
+        for (char c : charCountMap.keySet()) {
+            if (charCountMap.get(c) == 1) {
+                word3 += c + "";
+            }
+
+        }
+        return word3.length();
     }
 
     @Test
@@ -477,5 +495,18 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
         final String expectedProductIsDisplayed = getDriver().findElement(By.xpath("//td//h4//a")).getText();
 
         Assert.assertEquals(expectedProductIsDisplayed, actualProductIsDisplayed);
+    }
+
+    @Test
+    public void testUniqueLetters() {
+
+        int expectedResult = 9;
+
+        getDriver().get("https://ru.wikipedia.org/wiki/%D0%94%D0%BE%D1%81%D1%82%D0%BE%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%87%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D1%81%D1%82%D1%8C");
+        WebElement heading = getDriver().findElement(By.xpath("//h1//span"));
+        int actualResult = uniqueLetters(heading.getText());
+
+        Assert.assertEquals(actualResult, expectedResult);
+
     }
 }
