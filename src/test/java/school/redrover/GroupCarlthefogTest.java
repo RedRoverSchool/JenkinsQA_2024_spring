@@ -220,7 +220,7 @@ public class GroupCarlthefogTest extends BaseTest {
 
     }
     @Test
-    public void testWikipediaSearch() throws InterruptedException {
+    public void testWikipediaSearch(){
 
         getDriver().get("https://en.wikipedia.org");
         getDriver().findElement(By.id("searchInput")).sendKeys("Selenium (software)");
