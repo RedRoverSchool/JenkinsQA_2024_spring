@@ -149,25 +149,18 @@ public class GroupHollyGuacamoleTest extends BaseTest {
 
 
     @Test
-
     public void testKohlsLogin() {
-
         getDriver().get("https://www.kohls.com/myaccount/signin.jsp");
 
         WebElement textBox = getDriver().findElement(By.xpath("//input[@data-testid='signin-email']"));
-        textBox.sendKeys("Margusha83");
+        textBox.sendKeys("example@example.com");
 
         WebElement continueButton = getDriver().findElement(By.xpath("//button[@data-testid='signin-continue-button']"));
         continueButton.click();
 
-        assertTrue(getDriver().getCurrentUrl().contains("some_expected_url_part"));
-
+        assertTrue(getDriver().getCurrentUrl().contains("expected_url_part_after_login"));
     }
 }
-
-
-
-
 
 
 
