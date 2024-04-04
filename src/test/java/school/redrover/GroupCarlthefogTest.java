@@ -253,7 +253,6 @@ public class GroupCarlthefogTest extends BaseTest {
 
         Assert.assertEquals(value, "Swag Labs");
 
-        getDriver().quit();
     }
 
 }
