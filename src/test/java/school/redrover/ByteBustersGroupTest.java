@@ -1,5 +1,6 @@
 package school.redrover;
 import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -309,6 +310,34 @@ public class ByteBustersGroupTest extends BaseTest {
             Assert.assertTrue(nextValue <= currentValue, "Error of Sort!!");
             currentValue = nextValue;
         }
+    }
+    @Test
+    public void testEmailForm() {
+
+        getDriver().get("http://www.cmz.sumy.ua/");
+        WebElement button = getDriver().findElement(By.
+                xpath("(//a[@href='contact_ua.html'][contains(text(),'Контакти')])[1]"));
+
+        button.click();
+
+        WebElement textName = getDriver().findElement(By.cssSelector("input[name='T3']"));
+        textName.sendKeys("Name");
+        WebElement textTel = getDriver().findElement(By.cssSelector("input[name='T4']"));
+        textTel.sendKeys("911");
+        WebElement textEmail = getDriver().findElement(By.cssSelector("input[name='T5']"));
+        textEmail.sendKeys("test@.com");
+        WebElement textTopic = getDriver().findElement(By.cssSelector("input[name='T6']"));
+        textTopic.sendKeys("Test");
+        WebElement textComment = getDriver().findElement(By.cssSelector("textarea[name='T7']"));
+        textComment.sendKeys("It is negative test");
+
+        WebElement buttonSend = getDriver().findElement(By.xpath("(//input[@name='B1'])[1]"));
+        buttonSend.click();
+
+        WebElement buttonResult = getDriver().findElement(By.xpath("//li[contains(text(),'Обчисліть ще раз.')]"));
+
+        Assert.assertEquals(buttonResult.getText(), "Обчисліть ще раз.");
+
     }
 
 }
