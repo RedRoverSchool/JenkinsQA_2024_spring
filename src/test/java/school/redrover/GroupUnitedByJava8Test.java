@@ -62,7 +62,7 @@ public class GroupUnitedByJava8Test extends BaseTest {
     }
 
     @Test
-    public void testCreateNewUserGlobalQAAsManager() {
+    public void testGlobalQACreateNewUserAsManager() {
         WebDriver driver = getDriver();
         driver.get(GLOBALS_QA_LOGIN_LINKS);
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
@@ -409,7 +409,6 @@ public class GroupUnitedByJava8Test extends BaseTest {
             "Default sorting criterion is not alphabetical");
     }
 
-
     @Test
     public void testAlertAppearsAfterRatingIsNotSelected() {
         getDriver().get("https://magento.softwaretestingboard.com");
@@ -464,7 +463,7 @@ public class GroupUnitedByJava8Test extends BaseTest {
     }
 
     @Test
-    public void testUsernameTextByDefault() {
+    public void testSaucedemoUsernameTextByDefault() {
         getDriver().get("https://www.saucedemo.com/");
 
         Assert.assertEquals(
@@ -475,7 +474,7 @@ public class GroupUnitedByJava8Test extends BaseTest {
     }
 
     @Test
-    public void testPasswordTextByDefault() {
+    public void testSaucedemoPasswordTextByDefault() {
         getDriver().get("https://www.saucedemo.com/");
 
         Assert.assertEquals(
@@ -486,7 +485,7 @@ public class GroupUnitedByJava8Test extends BaseTest {
     }
 
     @Test
-    public void testErrorLoginWithEmptyInputs() {
+    public void testSaucedemoErrorLoginWithEmptyInputs() {
         getDriver().get("https://www.saucedemo.com/");
         getDriver().findElement(By.id("login-button")).click();
         WebElement emptyLoginError = getDriver().findElement(
@@ -504,7 +503,7 @@ public class GroupUnitedByJava8Test extends BaseTest {
     }
 
     @Test
-    public void testErrorLoginCloseErrorMessage() {
+    public void testSaucedemoErrorLoginCloseErrorMessage() {
         getDriver().get("https://www.saucedemo.com/");
         getDriver().findElement(By.id("login-button")).click();
         getDriver().findElement(By.xpath("//div/h3[@data-test='error']")).isDisplayed();
@@ -516,7 +515,7 @@ public class GroupUnitedByJava8Test extends BaseTest {
     }
 
     @Test
-    public void testIncorrectDataLogin() {
+    public void testSaucedemoIncorrectDataLogin() {
         getDriver().get("https://www.saucedemo.com/");
         getDriver().findElement(By.name("user-name")).sendKeys("user");
         getDriver().findElement(By.name("password")).sendKeys("user");
@@ -525,10 +524,6 @@ public class GroupUnitedByJava8Test extends BaseTest {
         WebElement userUserLoginError = getDriver().findElement(
             By.xpath("//div/h3[@data-test='error']"));
         userUserLoginError.isDisplayed();
-        Assert.assertEquals(userUserLoginError.getText(),
-            Assert.assertEquals(userUserLoginError.getText(),
-                "Epic sadface: Username and password do not match any user in this service");
+        Assert.assertEquals(userUserLoginError.getText(),"Epic sadface: Username and password do not match any user in this service");
     }
 }
-
-
