@@ -70,6 +70,15 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
         getDriver().findElement(By.id("login-button")).click();
     }
 
+    private void loginToSauceDemo(String userName, String userPassword) {
+        WebElement username = getDriver().findElement(By.id("user-name"));
+        username.sendKeys(userName);
+        WebElement password = getDriver().findElement(By.id("password"));
+        password.sendKeys(userPassword);
+
+        getDriver().findElement(By.id("login-button")).click();
+    }
+
     private List<String> getTexts(List<WebElement> list) {
         List<String> texts = new ArrayList<>();
         for (WebElement element : list) {
@@ -692,5 +701,27 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
         Assert.assertEquals(actualLink, expectedLink);
         Assert.assertEquals(actualCartElement, expectedCartElement);
 
+    }
+
+//    login https://www.saucedemo.com/
+// Авторизация используя некорректные данные (user, user)
+    @Test
+    public void testIncorrectLoginToSauceDemo() {
+        String expectedResult = "Epic sadface: Username and password do not match any user in this service";
+
+        openSauceDemo();
+        loginToSauceDemo("user", "user");
+
+        WebElement  userNameErrorIcon = getDriver().findElement(By.xpath("//input[@id='user-name']/following-sibling::*"));
+        WebElement passwordErrorIcon = getDriver().findElement(By.xpath("//input[@id='password']/following-sibling::*"));
+        WebElement errorBanner = getDriver().findElement(By.xpath("//div[@class='error-message-container error']"));
+        WebElement errorMessage = getDriver().findElement(By.xpath("//h3"));
+        String errorMessageText = errorMessage.getText();
+
+        Assert.assertTrue(userNameErrorIcon.isDisplayed());
+        Assert.assertTrue(passwordErrorIcon.isDisplayed());
+        Assert.assertTrue(errorBanner.isDisplayed());
+        Assert.assertTrue(errorMessage.isDisplayed());
+        Assert.assertEquals(errorMessageText, expectedResult);
     }
 }
