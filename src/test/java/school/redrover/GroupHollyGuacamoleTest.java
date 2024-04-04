@@ -192,8 +192,6 @@ public class GroupHollyGuacamoleTest extends BaseTest {
             actualResult.add(productsPriceElements.get(i).getText());
         }
 
-        System.out.println(actualResult);
-        System.out.println(expected);
         Assert.assertEquals(actualResult, expected);
     }
 
@@ -223,8 +221,6 @@ public class GroupHollyGuacamoleTest extends BaseTest {
             actualResult.add(productsPriceElements.get(i).getText());
         }
 
-        System.out.println(actualResult);
-        System.out.println(expected);
         Assert.assertEquals(actualResult, expected);
     }
 }
