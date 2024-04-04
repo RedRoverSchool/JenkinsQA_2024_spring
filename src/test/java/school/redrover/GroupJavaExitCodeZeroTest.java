@@ -11,11 +11,8 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.ArrayList;
+import java.util.*;
 
-import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GroupJavaExitCodeZeroTest extends BaseTest {
@@ -54,6 +51,29 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
 
         }
         return word3.length();
+    }
+
+    private void openSauceDemo(){
+        getDriver().get("https://www.saucedemo.com/");
+    }
+    private void loginToSauceDemo() {
+        WebElement username = getDriver().findElement(By.id("user-name"));
+        username.sendKeys("standard_user");
+        WebElement password = getDriver().findElement(By.id("password"));
+        password.sendKeys("secret_sauce");
+
+        getDriver().findElement(By.id("login-button")).click();
+    }
+    private void clickFilterZtoA(){
+        getDriver().findElement(By.xpath("//option[@value='za']")).click();
+    }
+
+    private List<String> getTexts(List<WebElement> list){
+        List<String> texts = new ArrayList<>();
+        for(WebElement element : list) {
+            texts.add(element.getText());
+        }
+        return texts;
     }
 
     @Test
@@ -594,5 +614,24 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
         int actualResult = uniqueLetters(heading.getText());
 
         Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    //https://www.saucedemo.com/
+    //Проверка работоспособности фильтра (Z to A)
+    @Test
+    public void testFilterZtoA_ob() throws InterruptedException {
+        openSauceDemo();
+        loginToSauceDemo();
+        clickFilterZtoA();
+
+        List<WebElement> productsNamesElements = getDriver().findElements(By.xpath("//div[@class='inventory_item_name ']"));
+        List<String> productsNamesText = getTexts(productsNamesElements);
+
+        List<String> expectedResult = new ArrayList<>(productsNamesText);
+
+        expectedResult.sort(Collections.reverseOrder());
+
+        Assert.assertEquals(productsNamesText, expectedResult);
+
     }
 }
