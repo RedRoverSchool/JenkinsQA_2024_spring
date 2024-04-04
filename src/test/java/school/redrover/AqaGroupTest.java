@@ -236,7 +236,7 @@ public class AqaGroupTest extends AqaGroupBaseTest {
     public void testBrowserWindowOpen(String buttonId) {
         getDriver().get(BROWSER_WINDOWS_URL);
 
-        getDriver().findElement(By.id(buttonId)).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id(buttonId))).click();
 
         getWait5().until(ExpectedConditions.numberOfWindowsToBe(2));
 
