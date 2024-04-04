@@ -257,5 +257,37 @@ public class GroupRedroverJava7Test extends BaseTest {
         Assert.assertEquals(optionValue,"New York");
 
     }
-}
 
+    @Test
+    public void testPositiveLogin() throws InterruptedException {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().manage().window().maximize();
+        WebElement usernameField = getDriver().findElement(By.id("user-name"));
+        usernameField.sendKeys("standard_user");
+        WebElement passwordField = getDriver().findElement(By.id("password"));
+        passwordField.sendKeys("secret_sauce");
+
+        getDriver().findElement(By.id("login-button")).click();
+        String actualUrl="https://www.saucedemo.com/inventory.html";
+        String expectedUrl= getDriver().getCurrentUrl();
+        Assert.assertEquals(actualUrl, expectedUrl);
+    }
+
+    @Test
+    public  void testSwag() {
+        getDriver().get("https://www.saucedemo.com/v1/");
+        getDriver().manage().window().maximize();
+
+        WebElement userNameField = getDriver().findElement(By.id("user-name"));
+        userNameField.sendKeys("locked_out_user");
+
+        WebElement passwordField = getDriver().findElement(By.id("password"));
+        passwordField.sendKeys("secret_sauce");
+
+        getDriver().findElement(By.id("login-button")).click();
+
+        WebElement actualErrorMessage = getDriver().findElement(By.xpath("//h3[@data-test='error']"));
+
+        Assert.assertEquals(actualErrorMessage.getText(), "Epic sadface: Sorry, this user has been locked out.");
+    }
+}

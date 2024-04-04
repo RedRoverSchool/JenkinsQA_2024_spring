@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
@@ -56,7 +57,7 @@ public class AqaGroupJenkinsTest extends AqaGroupBaseTest {
 
         getDriver().findElement(By.cssSelector("a[href = '/logout']")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(),"Sign in to Jenkins");
+        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "Sign in to Jenkins");
     }
 
     @Test
@@ -96,5 +97,20 @@ public class AqaGroupJenkinsTest extends AqaGroupBaseTest {
         getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
 
         Assert.assertTrue(getDriver().findElement(By.cssSelector("div#description")).getText().startsWith("xxx"));
+    }
+
+    @Test
+    public void testPeople() {
+        login();
+        getDriver().findElement(By.xpath("//a[@href='/asynchPeople/']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='jenkins-app-bar__content']")).getText(), "People");
+    }
+
+    @Test
+    public void testTitleJenkins() {
+        login();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("div h1")).getText(), "Welcome to Jenkins!");
     }
 }

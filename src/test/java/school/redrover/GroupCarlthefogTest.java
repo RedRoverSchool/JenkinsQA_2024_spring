@@ -1,9 +1,8 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -15,6 +14,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GroupCarlthefogTest extends BaseTest {
+
+    private final static String FULL_NAME = "John Smith";
+    private final static String EMAIL = "john.smith@gmail.com";
+    private final static String ADDRESS = "5th Ave, New York";
+    private final static String PERM_ADDRESS = "5th Ave, New York";
 
     @Test
     public void testSaucedemo() {
@@ -216,7 +220,57 @@ public class GroupCarlthefogTest extends BaseTest {
         String expectedUrl = "https://demo.realworld.io/#/register";
 
         Assert.assertEquals(actualUrl, expectedUrl, "URL не совпадает");
+    }
+
+    @Test
+    public void testTexBoxUseForm() {
+
+        String expectedHeader = "Text Box";
+
+        WebDriver driver = getDriver();
+        driver.manage().window().maximize();
+        driver.get("https://demoqa.com/text-box");
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+        String actualHeader = driver.findElement(By.xpath("//div[@id='app']//h1")).getText();
+
+        driver.findElement(By.cssSelector("input#userName")).sendKeys(FULL_NAME);
+        driver.findElement(By.cssSelector("input#userEmail")).sendKeys(EMAIL);
+        driver.findElement(By.cssSelector("textarea#currentAddress")).sendKeys(ADDRESS);
+        driver.findElement(By.cssSelector("textarea#permanentAddress")).sendKeys(PERM_ADDRESS);
+
+        Actions act = new Actions(driver);
+        act.sendKeys(Keys.PAGE_DOWN).build().perform();
+        WebElement submitButton = driver.findElement(By.cssSelector("button#submit"));
+        submitButton.click();
+
+        WebElement expectedName = driver.findElement(By.cssSelector("p#name"));
+        WebElement expectedEmail = driver.findElement(By.cssSelector("p#email"));
+        WebElement expectedCurrentAddress = driver.findElement(By.cssSelector("p#currentAddress"));
+        WebElement expectedPermanentAddress = driver.findElement(By.cssSelector("p#permanentAddress"));
+
+        Assert.assertEquals(actualHeader, expectedHeader);
+        Assert.assertEquals(expectedName.getText(), "Name:" + FULL_NAME);
+        Assert.assertEquals(expectedEmail.getText(), "Email:" + EMAIL);
+        Assert.assertEquals(expectedCurrentAddress.getText(), "Current Address :" + ADDRESS);
+        Assert.assertEquals(expectedPermanentAddress.getText(), "Permananet Address :" + PERM_ADDRESS);
 
         driver.quit();
+    }
+    @Test
+    public void testWikipediaSearch() throws InterruptedException {
+
+        getDriver().get("https://en.wikipedia.org");
+        getDriver().findElement(By.id("searchInput")).sendKeys("Selenium (software)");
+        getDriver().findElement(By.xpath("//button[contains(@Class, 'search-input')]")).click();
+
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(3000));
+
+        String expectedTitle = "Selenium (software) - Wikipedia";
+
+        String actualTitle = getDriver().getTitle();
+
+        Assert.assertEquals(actualTitle, expectedTitle, "Page title doesn't match expected title");
     }
 }

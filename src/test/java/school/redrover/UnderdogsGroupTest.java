@@ -17,7 +17,7 @@ import java.time.Duration;
 import java.util.List;
 
 public class UnderdogsGroupTest extends BaseTest {
-    private  final static String URL_HOMEPAGE = "https://demoqa.com/";
+    private final static String URL_HOMEPAGE = "https://demoqa.com/";
     @Test
     public void testDemoQAInput() {
         getDriver().get("https://demoqa.com/");
@@ -32,44 +32,39 @@ public class UnderdogsGroupTest extends BaseTest {
         Assert.assertEquals(result, "Name:" + name);
     }
 
-    @Ignore
+
     @Test
     public void testElementsTextBox() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://demoqa.com/");
-        driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[1]")).click();
-        driver.findElement(By.xpath("(//*[@id=\"item-0\"])[1]")).click();
+        getDriver().get("https://demoqa.com/");
+        getDriver().findElement(By.xpath("//*[@Class=\"card mt-4 top-card\"]")).click();
+        getDriver().findElement(By.xpath("//*[contains(text(),'Text Box')]")).click();
         String email = "test@gmail.com";
 
-        driver.findElement(By.id("userEmail")).sendKeys(email);
-        driver.findElement(By.id("submit")).click();
-        String result = driver.findElement(By.id("email")).getText();
+        getDriver().findElement(By.id("userEmail")).sendKeys(email);
+        getDriver().findElement(By.id("submit")).click();
+        String result = getDriver().findElement(By.id("email")).getText();
 
         Assert.assertEquals(result, "Email:" + email);
-
-        driver.quit();
     }
-    @Ignore
+
     @Test
     public void testCheckTheQuantityInTheCart() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://natr.com.tr/en/");
-        driver.findElement(By.xpath("//li[@class='search']")).click();
+        getDriver().get("https://natr.com.tr/en/");
+        getDriver().findElement(By.xpath("//li[@class='search']")).click();
 
-        WebElement searchField = driver.findElement(By.xpath("//input[@id='dgwt-wcas-search-input-2']"));
+        WebElement searchField = getDriver().findElement(By.xpath("//input[@id='dgwt-wcas-search-input-2']"));
         searchField.sendKeys("Vitamin");
 
-        Actions actions = new Actions(driver);
+        Actions actions = new Actions(getDriver());
         actions.moveToElement(searchField).sendKeys(org.openqa.selenium.Keys.ENTER).perform();
 
-        driver.findElement(By.xpath("//span[@class='onsale']/following-sibling::img[@src='https://natr.com.tr/wp-content/uploads/Витамин-C1.jpg-300x300.png']")).click();
-        driver.findElement(By.xpath("//button[@name='add-to-cart']")).click();
-        driver.findElement(By.xpath("//a[@title='View your shopping cart']")).click();
+        getDriver().findElement(By.xpath("//span[@class='onsale']/following-sibling::img[@src='https://natr.com.tr/wp-content/uploads/Витамин-C1.jpg-300x300.png']")).click();
+        getDriver().findElement(By.xpath("//button[@name='add-to-cart']")).click();
+        getDriver().findElement(By.xpath("//a[@title='View your shopping cart']")).click();
 
-        String quantity = driver.findElement(By.xpath("//div[@class='quantity']//input[@value='1']")).getAttribute("value");
+        String quantity = getDriver().findElement(By.xpath("//div[@class='quantity']//input[@value='1']")).getAttribute("value");
+
         Assert.assertEquals(quantity, "1");
-
-        driver.quit();
     }
 
     @Test
@@ -173,19 +168,17 @@ public class UnderdogsGroupTest extends BaseTest {
         Assert.assertEquals(getDriver().getTitle(), "DEMOQA", "Not equal your message with title of page");
     }
 
-    @Ignore
     @Test
     public void testSearchByName() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://uk.coach.com/");
+        getDriver().get("https://uk.coach.com/");
 
-        driver.findElement(By.xpath("//p[contains(text(),'Women')]")).click();
+        getDriver().findElement(By.xpath("//p[contains(text(),'Women')]")).click();
         Thread.sleep(4000);
 
-        driver.findElement(By.xpath("//div[contains(text(),'Backpacks')]")).click();
+        getDriver().findElement(By.xpath("//div[contains(text(),'Backpacks')]")).click();
         Thread.sleep(4000);
 
-        WebElement actualText = driver.findElement(By.xpath("//h1[@class = 'chakra-text css-zy3pag']"));
+        WebElement actualText = getDriver().findElement(By.xpath("//h1[@class = 'chakra-text css-zy3pag']"));
 
         Assert.assertEquals(actualText.getText(), "WOMEN'S BACKPACKS");
     }
@@ -253,4 +246,15 @@ public class UnderdogsGroupTest extends BaseTest {
 
         Assert.assertEquals ("Swag Labs", getDriver().findElement (By.className("app_logo")).getText());
     }
+
+    @Test
+    public void testArticleTitle() {
+        getDriver().manage().window().maximize();
+        getDriver().get("https://en.wikipedia.org/wiki/Wikipedia");
+        WebElement articleTitleElement = getDriver().findElement(By.className("mw-page-title-main"));
+        String articleTitle = articleTitleElement.getText();
+        String expectedTitle = "Wikipedia";
+        Assert.assertEquals(articleTitle, expectedTitle, "Page title does not equals to the expected title");
+    }
+
 }

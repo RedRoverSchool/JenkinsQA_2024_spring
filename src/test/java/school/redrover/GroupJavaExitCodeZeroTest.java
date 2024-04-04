@@ -1,9 +1,7 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -13,6 +11,9 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -34,6 +35,25 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
             sb.append(AlphaNumericString.charAt(index));
         }
         return sb.toString() + "@gmail.com";
+    }
+
+    private int uniqueLetters(String word) {
+        String word2 = word.trim().toLowerCase();
+        String word3 = "";
+
+        HashMap<Character, Integer> charCountMap = new HashMap<>();
+
+        for (int i = 0; i < word2.length(); i++) {
+            char c = word2.charAt(i);
+            charCountMap.put(c, charCountMap.getOrDefault(c, 0) + 1);
+        }
+        for (char c : charCountMap.keySet()) {
+            if (charCountMap.get(c) == 1) {
+                word3 += c + "";
+            }
+
+        }
+        return word3.length();
     }
 
     @Test
@@ -477,5 +497,102 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
         final String expectedProductIsDisplayed = getDriver().findElement(By.xpath("//td//h4//a")).getText();
 
         Assert.assertEquals(expectedProductIsDisplayed, actualProductIsDisplayed);
+    }
+
+    @Test
+    public void testAuthorizationSaucedemoStandardUser() {
+        final String BASE_URL = "https://www.saucedemo.com/";
+        final String expectedLink = "https://www.saucedemo.com/inventory.html";
+        final String userName = "standard_user";
+        final String PASSWORD = "secret_sauce";
+        final String expectedLogoText = "Swag Labs";
+        final String expectedTitle = "Products";
+
+        getDriver().get(BASE_URL);
+        getDriver().manage().window().maximize();
+
+        WebElement buttonText = getDriver().findElement(By.xpath("//div/input[@type='text']"));
+        buttonText.sendKeys(userName);
+        WebElement buttonPassword = getDriver().findElement(By.xpath("//div/input[@type='password']"));
+        buttonPassword.sendKeys(PASSWORD);
+        WebElement buttonSubmit = getDriver().findElement(By.xpath("//input[@type='submit']"));
+        buttonSubmit.click();
+        WebElement logoText = getDriver().findElement(By.xpath("//div[@class='app_logo']"));
+        String actualLogoText = logoText.getText();
+        WebElement title = getDriver().findElement(By.xpath("//span[@class='title']"));
+        String actualTitle = title.getText();
+        String actualLink = getDriver().getCurrentUrl();
+
+        Assert.assertEquals(actualLink, expectedLink);
+        Assert.assertEquals(actualLogoText, expectedLogoText);
+        Assert.assertEquals(actualTitle, expectedTitle);
+
+    }
+
+    @Test
+    public void testAuthorizationSaucedemoLockedUser() {
+        final String BASE_URL = "https://www.saucedemo.com/";
+        final String userName = "locked_out_user";
+        final String PASSWORD = "secret_sauce";
+        final String expectedErrorText = "Epic sadface: Sorry, this user has been locked out.";
+
+        getDriver().get(BASE_URL);
+        getDriver().manage().window().maximize();
+
+        WebElement buttonText = getDriver().findElement(By.xpath("//div/input[@type='text']"));
+        buttonText.sendKeys(userName);
+        WebElement buttonPassword = getDriver().findElement(By.xpath("//div/input[@type='password']"));
+        buttonPassword.sendKeys(PASSWORD);
+        WebElement buttonSubmit = getDriver().findElement(By.xpath("//input[@type='submit']"));
+        buttonSubmit.click();
+        WebElement errorText = getDriver().findElement(By.xpath("//h3[contains(text(),'Epic sadface')]"));
+        String actualErrorText = errorText.getText();
+        String actualLink = getDriver().getCurrentUrl();
+
+        Assert.assertEquals(actualLink, BASE_URL);
+        Assert.assertEquals(actualErrorText, expectedErrorText);
+
+    }
+
+    @Test
+    public void testNamesOfNavigationBar() throws InterruptedException {
+        final String url = "https://openweathermap.org/";
+        final List<String> expectedResult = List.of("Guide", "API", "Dashboard", "Marketplace", "Pricing",
+                "Maps", "Our Initiatives", "Partners", "Blog", "For Business", "Sign in", "Support", "FAQ", "How to start", "Ask a question");
+
+        getDriver().get(url);
+        getDriver().manage().window().maximize();
+
+        List<WebElement> listNamesOfNavbar = getDriver().findElements(By.xpath("//li[@id='desktop-menu']//li"));
+        List<String> namesOfNavbar = new ArrayList<>();
+
+        for (WebElement element : listNamesOfNavbar) {
+            String text = element.getText();
+            if (!text.isEmpty()) {
+                namesOfNavbar.add(element.getText());
+            }
+        }
+
+        getDriver().findElement(By.cssSelector("#support-dropdown")).click();
+        Thread.sleep(2000);
+        List<WebElement> supportMenu = getDriver().findElements(By.cssSelector("#support-dropdown-menu>li"));
+
+        for (WebElement element : supportMenu) {
+            namesOfNavbar.add(element.getText());
+        }
+
+        Assert.assertEquals(namesOfNavbar, expectedResult);
+    }
+  
+     @Test
+     public void testUniqueLetters() {
+
+        int expectedResult = 9;
+
+        getDriver().get("https://ru.wikipedia.org/wiki/%D0%94%D0%BE%D1%81%D1%82%D0%BE%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%87%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D1%81%D1%82%D1%8C");
+        WebElement heading = getDriver().findElement(By.xpath("//h1//span"));
+        int actualResult = uniqueLetters(heading.getText());
+
+        Assert.assertEquals(actualResult, expectedResult);
     }
 }
