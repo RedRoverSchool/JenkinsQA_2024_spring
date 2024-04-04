@@ -390,6 +390,14 @@ public class CodeQAGroupTest extends BaseTest {
         Assert.assertEquals(acResult, exResult);
     }
     @Test
+    public void testAddElement() {
+        getDriver().get("https://the-internet.herokuapp.com/");
+        WebElement atrValue = getDriver().findElement(By.cssSelector("#content > ul > li:nth-child(2) > a"));
+        atrValue.click();
+        WebElement header3 = getDriver().findElement(By.xpath("/html/body/div[2]/div/div/button"));
+        Assert.assertEquals(header3.getText(), "Add Element");
+    }
+    @Test
     public void testDeleteBtn() {
 
         getDriver().get("https://the-internet.herokuapp.com/add_remove_elements/");
