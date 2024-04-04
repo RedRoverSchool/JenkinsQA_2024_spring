@@ -571,9 +571,15 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
         WebElement errorText = getDriver().findElement(By.xpath("//h3[contains(text(),'Epic sadface')]"));
         String actualErrorText = errorText.getText();
         String actualLink = getDriver().getCurrentUrl();
+        WebElement userNameErrorImage = getDriver().findElement(By.xpath("//input[@id='user-name']/following-sibling::*"));
+        WebElement userLoginErrorImage = getDriver().findElement(By.xpath("//input[@id='password']/following-sibling::*"));
+        WebElement errorBanner = getDriver().findElement(By.xpath("//h3[@data-test='error']"));
 
         Assert.assertEquals(actualLink, BASE_URL);
         Assert.assertEquals(actualErrorText, expectedErrorText);
+        Assert.assertTrue(userNameErrorImage.isDisplayed());
+        Assert.assertTrue(userLoginErrorImage.isDisplayed());
+        Assert.assertTrue(errorBanner.isDisplayed());
 
     }
 
