@@ -1,6 +1,8 @@
 package school.redrover;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -20,6 +22,7 @@ public class CamelCaseGroupTest extends BaseTest {
         Assert.assertEquals(currentUrl, "https://www.fairfaxicearena.com/pro-shop.html");
         Assert.assertTrue(appointmentRequestForm.isDisplayed());
     }
+
     @Test
     public void testTools() throws InterruptedException {
 
@@ -40,5 +43,22 @@ public class CamelCaseGroupTest extends BaseTest {
         String resultText = link.getText();
 
         Assert.assertEquals(resultText, "Swag Labs");
+    }
+
+    @Test
+    public void testWb() throws InterruptedException {
+
+        getDriver().get("https://www.wildberries.ru");
+
+        Thread.sleep(500);
+
+        WebElement searchInput = getDriver().findElement(By.id("searchInput"));
+        searchInput.sendKeys("177390212");
+
+        WebElement searchButton = getDriver().findElement(By.id("applySearchBtn"));
+        searchButton.click();
+
+        String currentURL = getDriver().getCurrentUrl();
+        Assert.assertEquals(currentURL, "https://www.wildberries.ru/catalog/0/search.aspx?search=177390212");
     }
 }

@@ -109,7 +109,7 @@ public class CrazyTestersTest extends BaseTest {
 
     }
     @Test
-    public void w3schoolTest() throws InterruptedException {
+    public void testW3schools() {
 
         WebDriver driver = getDriver();
         driver.get("https://www.w3schools.com/");

@@ -7,6 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 public class GroupAqaQuaQuaTest extends BaseTest {
+
     @Test
     public void testyAddingBookToCart() {
         getDriver().get("https://demowebshop.tricentis.com/");
@@ -145,7 +146,7 @@ public class GroupAqaQuaQuaTest extends BaseTest {
                         By.cssSelector("div.page-title>h1")).getText(), "Shopping cart");
         Assert.assertEquals(getDriver().findElement(
                         By.cssSelector("td.product>a.product-name")).getText(), "$5 Virtual Gift Card");
-
+        // как подцепить эл.адреса?
         Assert.assertEquals(getDriver().findElement(
                         By.cssSelector("td.unit-price.nobr>span.product-unit-price")).getText(), "5.00");
         Assert.assertEquals(getDriver().findElement(
@@ -165,7 +166,7 @@ public class GroupAqaQuaQuaTest extends BaseTest {
                 By.cssSelector("div.page-title>h1")).getText(), "Welcome, Please Sign In!");
     }
     @Test
-    public void testAdvancedSearch() {
+    public void testSearch() {
         getDriver().get("https://demowebshop.tricentis.com/");
 
         getDriver().findElement(By.linkText("Search")).click();
@@ -272,5 +273,14 @@ public class GroupAqaQuaQuaTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.cssSelector("[class='warning']")).getText().substring(12, 26),
                 "minimum length");
+    }
+    @Test
+    public void testOpeningComputersPage() throws InterruptedException {
+        getDriver().get("https://demowebshop.tricentis.com/");
+        getDriver().findElement(By.xpath("//a[@href = '/computers']")).click();
+        Thread.sleep(2000);
+        String resultText = getDriver().findElement(By.cssSelector(".page-title")).getText();
+
+        Assert.assertEquals(resultText, "Computers");
     }
 }

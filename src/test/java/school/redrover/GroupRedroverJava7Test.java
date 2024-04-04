@@ -1,6 +1,4 @@
 package school.redrover;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -269,12 +267,27 @@ public class GroupRedroverJava7Test extends BaseTest {
         WebElement passwordField = getDriver().findElement(By.id("password"));
         passwordField.sendKeys("secret_sauce");
 
-        WebElement button = getDriver().findElement(By.id("login-button"));
-        button.click();
+        getDriver().findElement(By.id("login-button")).click();
         String actualUrl="https://www.saucedemo.com/inventory.html";
         String expectedUrl= getDriver().getCurrentUrl();
         Assert.assertEquals(actualUrl, expectedUrl);
+    }
 
+    @Test
+    public  void testSwag() {
+        getDriver().get("https://www.saucedemo.com/v1/");
+        getDriver().manage().window().maximize();
+
+        WebElement userNameField = getDriver().findElement(By.id("user-name"));
+        userNameField.sendKeys("locked_out_user");
+
+        WebElement passwordField = getDriver().findElement(By.id("password"));
+        passwordField.sendKeys("secret_sauce");
+
+        getDriver().findElement(By.id("login-button")).click();
+
+        WebElement actualErrorMessage = getDriver().findElement(By.xpath("//h3[@data-test='error']"));
+
+        Assert.assertEquals(actualErrorMessage.getText(), "Epic sadface: Sorry, this user has been locked out.");
     }
 }
-
