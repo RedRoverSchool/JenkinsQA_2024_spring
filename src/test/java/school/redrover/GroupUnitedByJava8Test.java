@@ -487,4 +487,32 @@ public class GroupUnitedByJava8Test extends BaseTest {
         Assert.assertEquals(userLoginError.getText(),
             "Epic sadface: Username and password do not match any user in this service");
     }
+    @Test
+    public void testCart() throws InterruptedException {
+        getDriver().get("https://magento.softwaretestingboard.com/");
+        getDriver().manage().window().maximize();
+
+        WebElement salePageButton = getDriver().findElement(By.id("ui-id-8"));
+        salePageButton.click();
+        WebElement shopWomanDealButton = getDriver().findElement(By.xpath("//span[@class = 'more button']"));
+        shopWomanDealButton.click();
+        WebElement bessYogaShortItemLink = getDriver().
+                findElement(By.xpath("//a[contains(., 'Bess')]"));
+        bessYogaShortItemLink.click();
+        WebElement sizeSelect = getDriver().findElement(By.xpath("//div[@option-id='171']"));
+        sizeSelect.click();
+        Thread.sleep(1000);
+        WebElement colorSelect = getDriver().findElement(By.xpath("//div[@option-id='50']"));
+        colorSelect.click();
+        WebElement addToCard = getDriver().findElement(By.id("product-addtocart-button"));
+        addToCard.click();
+        Thread.sleep(3000);
+        WebElement cartCounterNumber = getDriver().findElement(By.xpath("//span[@class ='counter-number']"));
+        cartCounterNumber.click();
+
+        Thread.sleep(3000);
+        Assert.assertEquals((getDriver().findElement(By
+                        .xpath("//strong[@class='product-item-name']/a")).getText()),
+                "Bess Yoga Short");
+    }
 }

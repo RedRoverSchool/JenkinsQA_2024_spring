@@ -6,7 +6,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-import java.util.List;
+import java.util.*;
 
 public class GroupHollyGuacamoleTest extends BaseTest {
     private static final String BASE_URL = "https://www.saucedemo.com/";
@@ -18,6 +18,7 @@ public class GroupHollyGuacamoleTest extends BaseTest {
     private static final String PASSWORD = "secret_sauce";
     private static final String CART_PAGE = "//a[@class='shopping_cart_link']";
     private static final String BACKPACK_REMOVE_BUTTON = "//button[@id='remove-sauce-labs-backpack']";
+
     public void login(String login, String password){
         getDriver().get(BASE_URL);
         getDriver().findElement(By.xpath("//input[@id='user-name']")).sendKeys(login);
@@ -142,4 +143,84 @@ public class GroupHollyGuacamoleTest extends BaseTest {
         }
     }
 
+    @Test
+    public void testSortZtoA() {
+        login(STANDARD_USER, PASSWORD);
+
+        List<WebElement> productsNamesElements = getDriver().findElements(By.xpath("//div[@data-test='inventory-item-name']"));
+        List<String> namesText = new ArrayList<>();
+        for (int i = 0; i < productsNamesElements.size(); i++) {
+            namesText.add(productsNamesElements.get(i).getText());
+        }
+        Collections.sort(namesText, Collections.reverseOrder());
+        List<String> expected = new ArrayList<>(namesText);
+
+        getDriver().findElement(By.xpath("//option[@value='za']")).click();
+
+        productsNamesElements = getDriver().findElements(By.xpath("//div[@data-test='inventory-item-name']"));
+        List<String> actualResult = new ArrayList<>();
+        for (int i = 0; i < productsNamesElements.size(); i++) {
+            actualResult.add(productsNamesElements.get(i).getText());
+        }
+
+        Assert.assertEquals(actualResult, expected);
+    }
+
+    @Test
+    public void testSortPriceLowtoHigh() {
+        login(STANDARD_USER, PASSWORD);
+
+        List<WebElement> productsPriceElements = getDriver().findElements(By.xpath("//div[@data-test='inventory-item-price']"));
+        List<Double> pricesText = new ArrayList<>();
+        for (WebElement priceElement : productsPriceElements) {
+            String temp = priceElement.getText().substring(1);
+            pricesText.add(Double.parseDouble(temp));
+        }
+        Collections.sort(pricesText);
+
+        List<String> expected = new ArrayList<>(pricesText.size());
+        for (Double element: pricesText ) {
+            String temp = "$" + element;
+            expected.add(temp);
+        }
+
+        getDriver().findElement(By.xpath("//option[@value='lohi']")).click();
+
+        productsPriceElements = getDriver().findElements(By.xpath("//div[@data-test='inventory-item-price']"));
+        List<String> actualResult = new ArrayList<>();
+        for (int i = 0; i < productsPriceElements.size(); i++) {
+            actualResult.add(productsPriceElements.get(i).getText());
+        }
+
+        Assert.assertEquals(actualResult, expected);
+    }
+
+    @Test
+    public void testSortPriceHigToLow() {
+        login(STANDARD_USER, PASSWORD);
+
+        List<WebElement> productsPriceElements = getDriver().findElements(By.xpath("//div[@data-test='inventory-item-price']"));
+        List<Double> pricesText = new ArrayList<>();
+        for (WebElement priceElement : productsPriceElements) {
+            String temp = priceElement.getText().substring(1);
+            pricesText.add(Double.parseDouble(temp));
+        }
+        pricesText.sort(Collections.reverseOrder());
+
+        List<String> expected = new ArrayList<>(pricesText.size());
+        for (Double element: pricesText ) {
+            String temp = "$" + element;
+            expected.add(temp);
+        }
+
+        getDriver().findElement(By.xpath("//option[@value='hilo']")).click();
+
+        productsPriceElements = getDriver().findElements(By.xpath("//div[@data-test='inventory-item-price']"));
+        List<String> actualResult = new ArrayList<>();
+        for (int i = 0; i < productsPriceElements.size(); i++) {
+            actualResult.add(productsPriceElements.get(i).getText());
+        }
+
+        Assert.assertEquals(actualResult, expected);
+    }
 }

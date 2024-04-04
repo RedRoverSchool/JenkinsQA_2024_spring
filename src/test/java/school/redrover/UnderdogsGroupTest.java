@@ -46,27 +46,25 @@ public class UnderdogsGroupTest extends BaseTest {
 
         Assert.assertEquals(result, "Email:" + email);
     }
-    @Ignore
+
     @Test
     public void testCheckTheQuantityInTheCart() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://natr.com.tr/en/");
-        driver.findElement(By.xpath("//li[@class='search']")).click();
+        getDriver().get("https://natr.com.tr/en/");
+        getDriver().findElement(By.xpath("//li[@class='search']")).click();
 
-        WebElement searchField = driver.findElement(By.xpath("//input[@id='dgwt-wcas-search-input-2']"));
+        WebElement searchField = getDriver().findElement(By.xpath("//input[@id='dgwt-wcas-search-input-2']"));
         searchField.sendKeys("Vitamin");
 
-        Actions actions = new Actions(driver);
+        Actions actions = new Actions(getDriver());
         actions.moveToElement(searchField).sendKeys(org.openqa.selenium.Keys.ENTER).perform();
 
-        driver.findElement(By.xpath("//span[@class='onsale']/following-sibling::img[@src='https://natr.com.tr/wp-content/uploads/Витамин-C1.jpg-300x300.png']")).click();
-        driver.findElement(By.xpath("//button[@name='add-to-cart']")).click();
-        driver.findElement(By.xpath("//a[@title='View your shopping cart']")).click();
+        getDriver().findElement(By.xpath("//span[@class='onsale']/following-sibling::img[@src='https://natr.com.tr/wp-content/uploads/Витамин-C1.jpg-300x300.png']")).click();
+        getDriver().findElement(By.xpath("//button[@name='add-to-cart']")).click();
+        getDriver().findElement(By.xpath("//a[@title='View your shopping cart']")).click();
 
-        String quantity = driver.findElement(By.xpath("//div[@class='quantity']//input[@value='1']")).getAttribute("value");
+        String quantity = getDriver().findElement(By.xpath("//div[@class='quantity']//input[@value='1']")).getAttribute("value");
+
         Assert.assertEquals(quantity, "1");
-
-        driver.quit();
     }
 
     @Test

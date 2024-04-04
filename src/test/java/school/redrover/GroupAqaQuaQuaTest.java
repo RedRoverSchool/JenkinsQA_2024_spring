@@ -6,6 +6,8 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import java.util.List;
+
 public class GroupAqaQuaQuaTest extends BaseTest {
 
     @Test
@@ -282,5 +284,28 @@ public class GroupAqaQuaQuaTest extends BaseTest {
         String resultText = getDriver().findElement(By.cssSelector(".page-title")).getText();
 
         Assert.assertEquals(resultText, "Computers");
+    }
+    @Test
+    public void testDesktopSortByPriceLowToHigh() throws InterruptedException {
+        getDriver().get("https://demowebshop.tricentis.com/");
+        getDriver().findElement(By.xpath("//ul[@class='list' ]//li[@class='inactive']//a[@href='/computers']")).click();
+        Thread.sleep(2000);
+
+        getDriver().findElement(By.xpath("//ul[@class='sublist' ]//li[@class='inactive']//a[@href = '/desktops']")).click();
+        Thread.sleep(2000);
+
+        getDriver().findElement(By.id("products-orderby")).click();
+        getDriver().findElement(By.xpath("//option[text()='Price: Low to High']")).click();
+
+        List<WebElement> prices = getDriver().findElements(By.cssSelector(".prices .price"));
+        double prevPrice = Integer.MIN_VALUE;
+
+        for (WebElement priceElement : prices) {
+            String priceText = priceElement.getText().replace("$", "").replace(",", "");
+            double price = Double.parseDouble(priceText);
+
+            Assert.assertTrue(price >= prevPrice, "Prices are not sorted correctly");
+            prevPrice = price;
+        }
     }
 }
