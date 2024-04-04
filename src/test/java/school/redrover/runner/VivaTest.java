@@ -1,4 +1,4 @@
-package school.redrover.runner;
+package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
