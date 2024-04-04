@@ -1030,7 +1030,7 @@ public class AqaGroupTest extends AqaGroupBaseTest {
     }
 
     @Test
-    public void testWaitForElement2() throws InterruptedException {
+    public void testWaitForElement2() {
         getDriver().get("http://uitestingplayground.com/clientdelay");
 
         getDriver().findElement(By.id("ajaxButton")).click();
@@ -1041,7 +1041,7 @@ public class AqaGroupTest extends AqaGroupBaseTest {
     }
 
     @Test
-    public void testWaitForElement3() throws InterruptedException {
+    public void testWaitForElement3() {
         getDriver().get("http://uitestingplayground.com/clientdelay");
 
         getDriver().findElement(By.id("ajaxButton")).click();
