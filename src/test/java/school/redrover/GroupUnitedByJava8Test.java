@@ -481,8 +481,8 @@ public class GroupUnitedByJava8Test extends BaseTest {
         getDriver().get("https://www.saucedemo.com/");
         getDriver().findElement(By.id("login-button")).click();
         WebElement emptyLoginError = getDriver().findElement(By.xpath("//div/h3[@data-test='error']"));
-        WebElement errorUsernameCrossSVG =getDriver().findElement(By.xpath("(//div[@class='form_group']/*)[2]"));
-        WebElement errorUsernamePasswordSVG =getDriver().findElement(By.xpath("(//div[@class='form_group']/*)[4]"));
+        WebElement errorUsernameCrossSVG =getDriver().findElement(By.cssSelector("#user-name + .svg-inline--fa"));
+        WebElement errorUsernamePasswordSVG =getDriver().findElement(By.cssSelector("#password + .svg-inline--fa"));
 
         Assert.assertTrue(emptyLoginError.isDisplayed());
         Assert.assertEquals(emptyLoginError.getText(), "Epic sadface: Username is required");
