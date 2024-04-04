@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -219,4 +220,26 @@ public class GroupCarlthefogTest extends BaseTest {
 
         driver.quit();
     }
+
+    @Test
+    public void newTest(){
+        getDriver().get("https://www.saucedemo.com");
+
+        WebElement fieldLogin = getDriver().findElement(By.name("user-name"));
+        fieldLogin.sendKeys("standard_user");
+
+        WebElement fieldPassword = getDriver().findElement(By.name("password"));
+        fieldPassword.sendKeys("secret_sauce");
+
+        WebElement button = getDriver().findElement(By.id("login-button"));
+        button.sendKeys(Keys.ENTER);
+
+        WebElement message = getDriver().findElement(By.className("app_logo"));
+        String value = message.getText();
+
+        Assert.assertEquals(value, "Swag Labs");
+
+        getDriver().quit();
+    }
+
 }
