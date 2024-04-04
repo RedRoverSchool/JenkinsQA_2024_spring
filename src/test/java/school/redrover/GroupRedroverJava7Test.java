@@ -1,4 +1,6 @@
 package school.redrover;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -255,6 +257,23 @@ public class GroupRedroverJava7Test extends BaseTest {
         dataList.sendKeys(optionValue);
 
         Assert.assertEquals(optionValue,"New York");
+
+    }
+
+    @Test
+    public void testPositiveLogin() throws InterruptedException {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().manage().window().maximize();
+        WebElement usernameField = getDriver().findElement(By.id("user-name"));
+        usernameField.sendKeys("standard_user");
+        WebElement passwordField = getDriver().findElement(By.id("password"));
+        passwordField.sendKeys("secret_sauce");
+
+        WebElement button = getDriver().findElement(By.id("login-button"));
+        button.click();
+        String actualUrl="https://www.saucedemo.com/inventory.html";
+        String expectedUrl= getDriver().getCurrentUrl();
+        Assert.assertEquals(actualUrl, expectedUrl);
 
     }
 }
