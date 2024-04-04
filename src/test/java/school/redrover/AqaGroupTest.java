@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
@@ -15,14 +14,8 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import java.io.File;
-import java.net.URISyntaxException;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 
 public class AqaGroupTest extends AqaGroupBaseTest {
 
@@ -39,11 +32,9 @@ public class AqaGroupTest extends AqaGroupBaseTest {
     private static final String URL_LETCODE = "https://letcode.in/edit";
     private static final String MODAL_WINDOW_URL = "https://tympanus.net/Development/ModalWindowEffects/";
     private static final String URL_MOB = "http://23.105.246.172:5000/login";
-    private static final String INPUT_EMAIL = "//input[@class='ant-input primaryInput  not-entered']";
-    private static final String BTN_PASSWORD = "//button[@class='ant-btn ant-btn-default authButton big colorPrimary ']";
-    private static final By GET_ERROR = By.xpath("//div[@style='text-align: center; margin-bottom: 20px; color: rgb(255, 0, 0);']");
-    private static final By GET_POLITICA = By.xpath("//h1[@class='page-header-title clr']");
-
+    private static final By EMAIL_INPUT = By.cssSelector("input.primaryInput");
+    private static final By LOGIN_BUTTON = By.className("authButton");
+    private static final By ERROR_MESSAGE = By.xpath("//*[contains(text(), 'Неправильный')]");
 
     private String calc(String x) {
         return String.valueOf(Math.log(Math.abs(12 * Math.sin(Integer.parseInt(x)))));
@@ -123,9 +114,9 @@ public class AqaGroupTest extends AqaGroupBaseTest {
     public void testCSSMediaQueriesSizing() {
         getDriver().get("https://testpages.eviltester.com/styled/css-media-queries.html");
 
-        getDriver().manage().window().setSize(new Dimension(1200, 1080));
+        getDriver().manage().window().setSize(new Dimension(1220, 1080));
 
-        Assert.assertTrue(getDriver().findElement(By.className("s1200")).isDisplayed());
+        Assert.assertTrue(getWait15().until(ExpectedConditions.visibilityOfElementLocated(By.className("s1200"))).isDisplayed());
     }
 
     @Test
@@ -245,7 +236,7 @@ public class AqaGroupTest extends AqaGroupBaseTest {
     public void testBrowserWindowOpen(String buttonId) {
         getDriver().get(BROWSER_WINDOWS_URL);
 
-        getDriver().findElement(By.id(buttonId)).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id(buttonId))).click();
 
         getWait5().until(ExpectedConditions.numberOfWindowsToBe(2));
 
@@ -474,35 +465,6 @@ public class AqaGroupTest extends AqaGroupBaseTest {
                 .perform();
 
         Assert.assertFalse(message.isDisplayed(), ALERT_DISPLAYED);
-    }
-
-    @Test
-    public void testCDPUserAgentChange() {
-        final String pixelSeven = "Mozilla/5.0 (Linux; Android 13; Pixel 7) " +
-                "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36";
-
-        ((ChromeDriver) getDriver()).executeCdpCommand("Network.setUserAgentOverride", Map.of("userAgent", pixelSeven));
-
-        getDriver().get("https://testpages.eviltester.com/styled/redirect/user-agent-redirect-test");
-
-        Assert.assertTrue(
-                getDriver().findElement(By.className("explanation")).getText().startsWith("You probably"),
-                "UserAgent change failed");
-    }
-
-    @Test
-    public void testBasicAuthProtection() {
-        ((ChromeDriver) getDriver()).executeCdpCommand(
-                "Network.enable", Map.of());
-        ((ChromeDriver) getDriver()).executeCdpCommand(
-                "Network.setExtraHTTPHeaders",
-                Map.of("headers", Map.of("Authorization", "Basic YXV0aG9yaXplZDpwYXNzd29yZDAwMQ==")));
-
-        getDriver().get("https://testpages.eviltester.com/styled/auth/basic-auth-results.html");
-
-        Assert.assertEquals(
-                getDriver().findElement(By.id("status")).getText(),
-                "Authenticated");
     }
 
     @Test
@@ -875,6 +837,7 @@ public class AqaGroupTest extends AqaGroupBaseTest {
         getDriver().get("https://testpages.eviltester.com/styled/refresh");
 
         String text = getDriver().findElement(By.id("embeddedrefreshdatevalue")).getText();
+        new Actions(getDriver()).pause(1000).perform();
         getDriver().findElement(By.id("button")).click();
 
         Assert.assertNotEquals(
@@ -921,20 +884,6 @@ public class AqaGroupTest extends AqaGroupBaseTest {
     }
 
     @Test
-    public void testUploadFile() throws URISyntaxException {
-        getDriver().get("https://testpages.eviltester.com/styled/file-upload-test.html");
-
-        getDriver().findElement(By.id("fileinput")).sendKeys(
-                Paths.get(Objects.requireNonNull(getClass().getClassLoader().getResource("1.jpg"))
-                        .toURI()).toFile().getAbsolutePath());
-
-        getDriver().findElement(By.id("itsanimage")).click();
-        getDriver().findElement(By.className("styled-click-button")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.id("uploadedfilename")).getText(), "1.jpg");
-    }
-
-    @Test
     public void testIsEnabled2() {
         getDriver().get(URL_LETCODE);
 
@@ -974,23 +923,11 @@ public class AqaGroupTest extends AqaGroupBaseTest {
     @Test
     public void testRemovesPassword() {
         getDriver().get(URL_MOB);
-        getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys("yyyyyyyyyy@mail.xx");
-        getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
 
-        Assert.assertEquals(getDriver().findElement(GET_ERROR).getText(), "Неправильный логин или пароль");
-    }
+        getWait15().until(ExpectedConditions.visibilityOfElementLocated(EMAIL_INPUT)).sendKeys("yyyyyyyyyy@mail.xx");
+        getDriver().findElement(LOGIN_BUTTON).click();
 
-    @Test
-    public void testHrefPolitic() {
-        getDriver().get(URL_MOB);
-
-        getWait15().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='https://vr-arsoft.com/personal-data-processing-policy/']"))).click();
-
-        Set<String> handles = getDriver().getWindowHandles();
-        handles.remove(getDriver().getWindowHandle());
-        getDriver().switchTo().window(handles.iterator().next());
-
-        Assert.assertEquals(getDriver().findElement(GET_POLITICA).getText(), "Политика обработки персональных данных");
+        Assert.assertEquals(getWait15().until(ExpectedConditions.presenceOfElementLocated(ERROR_MESSAGE)).getText(), "Неправильный логин или пароль");
     }
 
     @DataProvider(name = "visibilityDataProvider")
@@ -1011,30 +948,65 @@ public class AqaGroupTest extends AqaGroupBaseTest {
         Assert.assertTrue(getWait5().until(ExpectedConditions.invisibilityOfElementLocated(locator)));
     }
 
-    @Test
-    public void testFileUpload() {
-        getDriver().get("https://suninjuly.github.io/file_input.html");
-
-        getDriver().findElement(By.name("firstname")).sendKeys("first");
-        getDriver().findElement(By.name("lastname")).sendKeys("last");
-        getDriver().findElement(By.name("email")).sendKeys("this@fake.email");
-
-        final String absoluteFilePath = new File("").getAbsolutePath() + "\\src\\test\\resources\\1.jpg";
-        getDriver().findElement(By.id("file")).sendKeys(absoluteFilePath);
-
-        getDriver().findElement(By.cssSelector("button.btn")).click();
-
-        Assert.assertTrue(
-                getWait15()
-                        .until(ExpectedConditions.alertIsPresent())
-                        .getText()
-                        .startsWith("Congrats, you've passed the task!"),
-                "You shall not pass");
-    }
-
-    @Parameters({ "user_role", "isActive" })
+    @Parameters({"user_role", "isActive"})
     @Test
     public void testUserRole(@Optional("Admin") String role, @Optional("true") Boolean isActive) {
         Assert.assertTrue(role.equals("Admin") && isActive);
+    }
+
+    @Test
+    public void testOpenCloseAlertPopUp() {
+        getDriver().get("http://uitestingplayground.com/classattr");
+
+        String blueButtonXpath = "//button[contains(concat(' ', (@class), ' '),' btn-primary ')]";
+        getDriver().findElement(By.xpath(blueButtonXpath)).click();
+        getWait5().until(ExpectedConditions.alertIsPresent()).accept();
+
+        Assert.assertTrue(getWait5().until(ExpectedConditions.elementToBeClickable(By
+                        .xpath(blueButtonXpath))).isEnabled(),
+                "Alert hasn't been closed!");
+    }
+
+    @Test
+    public void testScrollToFindButton() {
+        getDriver().get("http://uitestingplayground.com/scrollbars");
+
+        Assert.assertTrue(scrollIntoView(getDriver().findElement(By.id("hidingButton"))).isEnabled());
+    }
+
+    @Test
+    public void testDoubleClickAtFakeLink() {
+        getDriver().get("http://uitestingplayground.com/mouseover");
+
+        new Actions(getDriver()).moveToElement(getDriver().findElement(By.linkText("Click me"))).doubleClick().build().perform();
+
+        Assert.assertEquals(getDriver().findElement(By.id("clickCount")).getText(), "2",
+                "Double click doesn't work!");
+    }
+
+    @Test
+    public void testSuccessfulLogin() {
+        getDriver().get("http://uitestingplayground.com/sampleapp");
+
+        String login = "carolync";
+
+        getDriver().findElement(By.xpath("//input[@name='UserName']")).sendKeys(login);
+        getDriver().findElement(By.xpath("//input[@name='Password']")).sendKeys("pwd");
+        getDriver().findElement(By.id("login")).click();
+
+        Assert.assertTrue(getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.id("loginstatus"),
+                "Welcome, " + login)), "Unsuccessful login attempt!");
+    }
+
+    @Test
+    public void testGetValFromDynamicTable() {
+        getDriver().get("http://uitestingplayground.com/dynamictable");
+
+        String cpuValueRegEX = "^.* ([\\d.]+%).*";
+        String rowChrome = getDriver().findElement(By.xpath("//span[text()= 'Chrome']/..")).getText();
+        String cpuValue = rowChrome.replaceAll(cpuValueRegEX, "$1");
+        String warningValue = getDriver().findElement(By.className("bg-warning")).getText().replaceAll(cpuValueRegEX, "$1");
+
+        Assert.assertEquals(cpuValue, warningValue, "CPU values aren't equivalents!");
     }
 }

@@ -191,9 +191,23 @@ public class TestCraftersTest extends BaseTest {
         getDriver().get(url);
 
     }
+    @Test
+    public void testRegisterAccountWithErrorEmail() {
 
+        getDriver().get(URL);
 
+        getDriver().findElement(By.xpath("(//i[@class='fa fa-user'])")).click();
+        getDriver().findElement(By.xpath("(//a[normalize-space()='Register'])[1]")).click();
+        getDriver().findElement(By.name("firstname")).sendKeys("Anna");
+        getDriver().findElement(By.name("lastname")).sendKeys("La");
+        getDriver().findElement(By.name("email")).sendKeys("qwerty123@gmail");
+        getDriver().findElement(By.name("telephone")).sendKeys("6469043333");
+        getDriver().findElement(By.name("password")).sendKeys("qwerty123");
+        getDriver().findElement(By.name("confirm")).sendKeys("qwerty123");
+        getDriver().findElement(By.xpath("//input[@value='Continue']")).click();
 
+        WebElement errorAfterEmailField = getDriver().findElement(By.xpath("(//div[@class='text-danger'])[1]"));
+        String value = errorAfterEmailField.getText();
+        Assert.assertEquals(value, "E-Mail Address does not appear to be valid!");
+    }
 }
-
-

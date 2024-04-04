@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -380,5 +379,112 @@ public class GroupUnitedByJava8Test extends BaseTest {
 
         Assert.assertEquals(defaultSortingCriterion, "Name (A to Z)",
                 "Default sorting criterion is not alphabetical");
+    }
+    @Test
+    public void testAlertAppearsAfterRatingIsNotSelected() {
+        getDriver().get("https://magento.softwaretestingboard.com");
+        getDriver().findElement(By
+                .xpath("//span[contains (.,'Women')]")).click();
+        getDriver().findElement(By
+                .xpath("//div[contains(@class, 'categories')]//a[contains(., 'Hoodies')]")).click();
+        getDriver().findElement(By
+                .xpath("//a[contains(., 'Circe')]")).click();
+        getDriver().findElement(By
+                .xpath("//a[normalize-space(.) = 'Reviews']")).click();
+        getDriver().findElement(By.id("nickname_field")).sendKeys("Chubaka");
+        getDriver().findElement(By.id("summary_field")).sendKeys("My f***king sh**ty review");
+        getDriver().findElement(By.id("review_field")).sendKeys("bla bla bla");
+        getDriver().findElement(By
+                .xpath("//button[normalize-space(.) = 'Submit Review']")).click();
+        WebElement alert = getDriver().findElement(By.id("ratings[4]-error"));
+
+        Assert.assertTrue(alert.isDisplayed());
+        Assert.assertEquals(alert.getText(), "Please select one of each of the ratings above.");
+    }
+    @Test
+    public void testLoginInvalidUser() {
+
+        getDriver().manage().window().maximize();
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.id("user-name")).sendKeys("user");
+        getDriver().findElement(By.id("password")).sendKeys("user");
+        getDriver().findElement(By.id("login-button")).click();
+
+        WebElement errorText = getDriver().findElement(By.xpath("//h3[@data-test= 'error']"));
+        Assert.assertEquals(errorText.getText(), "Epic sadface: Username and password do not match any user in this service");
+    }
+
+    @Test
+    public void testRemoveItemFromCart() {
+
+        getDriver().manage().window().maximize();
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.id("user-name")).sendKeys(STANDARD_USER_LOGIN);
+        getDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
+        getDriver().findElement(By.id("login-button")).click();
+
+        WebElement addingButton = getDriver().findElement(By.id("add-to-cart-sauce-labs-backpack"));
+        addingButton.click();
+        WebElement cartIcon = getDriver().findElement(By.id("shopping_cart_container"));
+        cartIcon.click();
+        WebElement removeButton = getDriver().findElement(By.id("remove-sauce-labs-backpack"));
+        removeButton.click();
+
+        Assert.assertTrue(getDriver().findElements(By.id("item_4_title_link")).isEmpty());
+
+    }
+
+    @Test
+    public void testSaucedemoPlaceholderUsernameByDefault() {
+        getDriver().get("https://www.saucedemo.com/");
+
+        Assert.assertEquals(getDriver().findElement(By.name("user-name")).getAttribute("placeholder"), "Username");
+    }
+
+    @Test
+    public void testSaucedemoPasswordPlaceholderByDefault() {
+        getDriver().get("https://www.saucedemo.com/");
+
+        Assert.assertEquals(getDriver().findElement(By.name("password")).getAttribute("placeholder"), "Password");
+    }
+
+    @Test
+    public void testSaucedemoErrorLoginWithEmptyInputs() {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.id("login-button")).click();
+        WebElement emptyLoginError = getDriver().findElement(By.xpath("//div/h3[@data-test='error']"));
+        WebElement errorUsernameCrossSVG =getDriver().findElement(By.cssSelector("#user-name + .svg-inline--fa"));
+        WebElement errorPasswordCrossSVG =getDriver().findElement(By.cssSelector("#password + .svg-inline--fa"));
+
+        Assert.assertTrue(emptyLoginError.isDisplayed());
+        Assert.assertEquals(emptyLoginError.getText(), "Epic sadface: Username is required");
+        Assert.assertTrue(errorUsernameCrossSVG.isDisplayed());
+        Assert.assertTrue(errorPasswordCrossSVG.isDisplayed());
+    }
+
+    @Test
+    public void testSaucedemoErrorLoginCloseErrorMessage() {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.id("login-button")).click();
+        WebElement userLoginError = getDriver().findElement(By.xpath("//div/h3[@data-test='error']"));
+        userLoginError.isDisplayed();
+        getDriver().findElement(By.className("error-button")).click();
+        boolean result = getDriver().findElements(By.xpath("//div/h3[@data-test='error']")).isEmpty();
+
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testSaucedemoIncorrectDataLogin() {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.name("user-name")).sendKeys("user");
+        getDriver().findElement(By.name("password")).sendKeys("user");
+        getDriver().findElement(By.id("login-button")).click();
+        WebElement userLoginError = getDriver().findElement(
+            By.xpath("//div/h3[@data-test='error']"));
+
+        Assert.assertTrue(userLoginError.isDisplayed());
+        Assert.assertEquals(userLoginError.getText(),
+            "Epic sadface: Username and password do not match any user in this service");
     }
 }

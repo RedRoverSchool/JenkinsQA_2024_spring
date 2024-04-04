@@ -17,7 +17,7 @@ import java.time.Duration;
 import java.util.List;
 
 public class UnderdogsGroupTest extends BaseTest {
-    private  final static String URL_HOMEPAGE = "https://demoqa.com/";
+    private final static String URL_HOMEPAGE = "https://demoqa.com/";
     @Test
     public void testDemoQAInput() {
         getDriver().get("https://demoqa.com/");
@@ -248,4 +248,15 @@ public class UnderdogsGroupTest extends BaseTest {
 
         Assert.assertEquals ("Swag Labs", getDriver().findElement (By.className("app_logo")).getText());
     }
+
+    @Test
+    public void testArticleTitle() {
+        getDriver().manage().window().maximize();
+        getDriver().get("https://en.wikipedia.org/wiki/Wikipedia");
+        WebElement articleTitleElement = getDriver().findElement(By.className("mw-page-title-main"));
+        String articleTitle = articleTitleElement.getText();
+        String expectedTitle = "Wikipedia";
+        Assert.assertEquals(articleTitle, expectedTitle, "Page title does not equals to the expected title");
+    }
+
 }

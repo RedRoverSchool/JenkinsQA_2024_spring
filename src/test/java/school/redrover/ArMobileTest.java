@@ -29,9 +29,16 @@ public class ArMobileTest extends BaseTest {
 
     private void openBrowser() {
         getDriver().get(URL);
-        getDriver().manage().window().setSize(new Dimension(1920,1080));
+        getDriver().manage().window().setSize(new Dimension(1920, 1080));
         getDriver().manage().timeouts().pageLoadTimeout(25, TimeUnit.SECONDS);
         getDriver().manage().timeouts().implicitlyWait(25, TimeUnit.SECONDS);
+    }
+
+    private void loginJenkins() {
+        getDriver().get("http://localhost:8080/login");
+        getDriver().findElement(By.id("j_username")).sendKeys("admin");
+        getDriver().findElement(By.id("j_password")).sendKeys("admin");
+        getDriver().findElement(By.name("Submit")).click();
     }
 
     private void login() {
@@ -46,7 +53,7 @@ public class ArMobileTest extends BaseTest {
         getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys("yyyyyyyyyy@mail.xx");
         getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
 
-        Assert.assertEquals(getDriver().findElement(GET_ERROR).getText(),"Неправильный логин или пароль");
+        Assert.assertEquals(getDriver().findElement(GET_ERROR).getText(), "Неправильный логин или пароль");
     }
 
     @DataProvider(name = "randomEmail")
@@ -67,7 +74,7 @@ public class ArMobileTest extends BaseTest {
 
         getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
 
-        Assert.assertEquals(getDriver().findElement(GET_EMAIL).getText(),"Пользователь не найден, попробуйте снова");
+        Assert.assertEquals(getDriver().findElement(GET_EMAIL).getText(), "Пользователь не найден, попробуйте снова");
     }
 
     @Test(dataProvider = "randomEmail")
@@ -76,7 +83,7 @@ public class ArMobileTest extends BaseTest {
         getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys(name);
         getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
 
-        Assert.assertEquals(getDriver().findElement(GET_ERROR).getText(),"Неправильный логин или пароль");
+        Assert.assertEquals(getDriver().findElement(GET_ERROR).getText(), "Неправильный логин или пароль");
     }
 
     @Test
@@ -87,7 +94,7 @@ public class ArMobileTest extends BaseTest {
         getDriver().findElement(By.xpath(INPUT_EMAIL)).sendKeys(EMAIL);
         getDriver().findElement(By.xpath(BTN_PASSWORD)).click();
 
-        Assert.assertEquals(getDriver().findElement(GET_PASWORD).getText(),"Мы отправили по адресу f.ff.1980@list.ru ссылку для восстановления доступа");
+        Assert.assertEquals(getDriver().findElement(GET_PASWORD).getText(), "Мы отправили по адресу f.ff.1980@list.ru ссылку для восстановления доступа");
     }
 
     @Test
@@ -209,5 +216,19 @@ public class ArMobileTest extends BaseTest {
         String getTextD = getDriver().findElement(By.xpath("//span[@class='anticon anticon-close-circle']")).getText();
 
         Assert.assertEquals(getTextD, "Ошибка обращения к серверу");
+    }
+
+    @Test
+    public void testElementPeople() {
+        loginJenkins();
+        getDriver().findElement(By.xpath("//a[@href='/asynchPeople/']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='jenkins-app-bar__content']")).getText(), "People");
+    }
+
+    @Test
+    public void testElementWelcome() {
+        loginJenkins();
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("div h1")).getText(), "Welcome to Jenkins!");
     }
 }

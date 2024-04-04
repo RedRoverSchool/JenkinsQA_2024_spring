@@ -218,4 +218,19 @@ public class GroupCarlthefogTest extends BaseTest {
         Assert.assertEquals(actualUrl, expectedUrl, "URL не совпадает");
 
     }
+    @Test
+    public void testWikipediaSearch() throws InterruptedException {
+
+        getDriver().get("https://en.wikipedia.org");
+        getDriver().findElement(By.id("searchInput")).sendKeys("Selenium (software)");
+        getDriver().findElement(By.xpath("//button[contains(@Class, 'search-input')]")).click();
+
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(3000));
+
+        String expectedTitle = "Selenium (software) - Wikipedia";
+
+        String actualTitle = getDriver().getTitle();
+
+        Assert.assertEquals(actualTitle, expectedTitle, "Page title doesn't match expected title");
+    }
 }
