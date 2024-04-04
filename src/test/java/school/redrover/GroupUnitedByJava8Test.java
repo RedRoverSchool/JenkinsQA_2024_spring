@@ -30,14 +30,15 @@ public class GroupUnitedByJava8Test extends BaseTest {
 
         WebElement elementsPage = getDriver().findElement(By.xpath("//h5[text()='Elements']"));
         elementsPage.click();
-        WebElement buttons = getDriver().findElement(
-            By.xpath("//span[@class='text' and text()='Buttons']"));
+        WebElement buttons = getDriver().findElement(By.xpath("//span[@class='text' and text()='Buttons']"));
         buttons.click();
 
         WebElement doubleClickMeButton = getDriver().findElement(By.id("doubleClickBtn"));
-        new Actions(getDriver()).doubleClick(doubleClickMeButton).perform();
+        new Actions(getDriver()).doubleClick(doubleClickMeButton)
+            .perform();
 
-        String doubleClickMessageText = getDriver().findElement(By.id("doubleClickMessage")).getText();
+        String doubleClickMessageText = getDriver().findElement(By.id("doubleClickMessage"))
+            .getText();
 
         Assert.assertEquals(doubleClickMessageText, "You have done a double click");
     }
@@ -47,10 +48,12 @@ public class GroupUnitedByJava8Test extends BaseTest {
         WebDriverWait webDriverWait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
 
         getDriver().get("https://www.onlinetrade.ru/");
-        webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name = 'query']"))).sendKeys("лето");
+        webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name = 'query']")))
+            .sendKeys("лето");
         getDriver().findElement(By.xpath("//input[@type = 'submit']")).click();
 
-        Assert.assertTrue((getDriver().findElement(By.xpath("//h1[contains(text(), 'Найденные товары')]")).isDisplayed()));
+        Assert.assertTrue((getDriver().findElement(By.xpath("//h1[contains(text(), 'Найденные товары')]"))
+            .isDisplayed()));
     }
 
     @Test
@@ -74,8 +77,7 @@ public class GroupUnitedByJava8Test extends BaseTest {
         WebElement boxPCText = driver.findElement(By.xpath("//input[@ng-model='postCd']"));
         boxPCText.sendKeys(GLOBALS_QA_STRING_VALUE);
 
-        WebElement addCustomerSubmitButton = driver.findElement(
-            By.xpath("//button[@type='submit']"));
+        WebElement addCustomerSubmitButton = driver.findElement( By.xpath("//button[@type='submit']"));
         addCustomerSubmitButton.click();
 
         driver.switchTo().alert().accept();
@@ -115,13 +117,16 @@ public class GroupUnitedByJava8Test extends BaseTest {
         WebElement searchField = getDriver().findElement(By.id("search"));
         searchField.sendKeys("Pant");
 
-        WebElement submitButton = getDriver().findElement(By.xpath("//div[@class='actions']/button"));
+        WebElement submitButton = getDriver().findElement(
+            By.xpath("//div[@class='actions']/button"));
         submitButton.click();
 
-        WebElement submitShortLink = getDriver().findElement(By.xpath("//a[contains(., 'Cronus')]"));
+        WebElement submitShortLink = getDriver().findElement(
+            By.xpath("//a[contains(., 'Cronus')]"));
         submitShortLink.click();
 
-        WebElement submitSize = getDriver().findElement(By.xpath("//*[@id=\"option-label-size-143-item-175\"]"));
+        WebElement submitSize = getDriver().findElement(
+            By.xpath("//*[@id=\"option-label-size-143-item-175\"]"));
         submitSize.click();
 
         WebElement submitColor = getDriver().findElement(By.xpath("//div[@option-id ='49']"));
@@ -133,11 +138,11 @@ public class GroupUnitedByJava8Test extends BaseTest {
         WebElement submitAddToCart = getDriver().findElement(By.id("product-addtocart-button"));
         submitAddToCart.click();
 
-        WebElement alertShoppingCart = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@role='alert']")));
+        WebElement alertShoppingCart = wait.until(ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("//div[@role='alert']")));
 
         Assert.assertTrue(alertShoppingCart.isDisplayed());
-        Assert.assertEquals(alertShoppingCart.getText(),
-            "You added Cronus Yoga Pant to your shopping cart.");
+        Assert.assertEquals(alertShoppingCart.getText(),"You added Cronus Yoga Pant to your shopping cart.");
     }
 
     @Test
@@ -375,8 +380,10 @@ public class GroupUnitedByJava8Test extends BaseTest {
         getDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
         getDriver().findElement(By.id("login-button")).click();
 
-        WebElement itemsSortingCriterion = getDriver().findElement(By.className("product_sort_container"));
-        String defaultSortingCriterion = new Select(itemsSortingCriterion).getFirstSelectedOption().getText();
+        WebElement itemsSortingCriterion = getDriver().findElement(
+            By.className("product_sort_container"));
+        String defaultSortingCriterion = new Select(itemsSortingCriterion)
+            .getFirstSelectedOption().getText();
 
         Assert.assertEquals(defaultSortingCriterion, "Name (A to Z)",
             "Default sorting criterion is not alphabetical");
@@ -385,14 +392,19 @@ public class GroupUnitedByJava8Test extends BaseTest {
     @Test
     public void testAlertAppearsAfterRatingIsNotSelected() {
         getDriver().get("https://magento.softwaretestingboard.com");
-        getDriver().findElement(By.xpath("//span[contains (.,'Women')]")).click();
-        getDriver().findElement(By.xpath("//div[contains(@class, 'categories')]//a[contains(., 'Hoodies')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(., 'Circe')]")).click();
-        getDriver().findElement(By.xpath("//a[normalize-space(.) = 'Reviews']")).click();
+        getDriver().findElement(By.xpath("//span[contains (.,'Women')]"))
+            .click();
+        getDriver().findElement(By.xpath("//div[contains(@class, 'categories')]//a[contains(., 'Hoodies')]"))
+            .click();
+        getDriver().findElement(By.xpath("//a[contains(., 'Circe')]"))
+            .click();
+        getDriver().findElement(By.xpath("//a[normalize-space(.) = 'Reviews']"))
+            .click();
         getDriver().findElement(By.id("nickname_field")).sendKeys("Chubaka");
         getDriver().findElement(By.id("summary_field")).sendKeys("My f***king sh**ty review");
         getDriver().findElement(By.id("review_field")).sendKeys("bla bla bla");
-        getDriver().findElement(By.xpath("//button[normalize-space(.) = 'Submit Review']")).click();
+        getDriver().findElement(By.xpath("//button[normalize-space(.) = 'Submit Review']"))
+            .click();
         WebElement alert = getDriver().findElement(By.id("ratings[4]-error"));
 
         Assert.assertTrue(alert.isDisplayed());
