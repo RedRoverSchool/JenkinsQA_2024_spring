@@ -114,9 +114,9 @@ public class AqaGroupTest extends AqaGroupBaseTest {
     public void testCSSMediaQueriesSizing() {
         getDriver().get("https://testpages.eviltester.com/styled/css-media-queries.html");
 
-        getDriver().manage().window().setSize(new Dimension(1200, 1080));
+        getDriver().manage().window().setSize(new Dimension(1220, 1080));
 
-        Assert.assertTrue(getDriver().findElement(By.className("s1200")).isDisplayed());
+        Assert.assertTrue(getWait15().until(ExpectedConditions.visibilityOfElementLocated(By.className("s1200"))).isDisplayed());
     }
 
     @Test
