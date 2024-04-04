@@ -62,6 +62,7 @@ public class CamelCaseGroupTest extends BaseTest {
 
     @Test
     public void testOnliner() throws InterruptedException {
+
         getDriver().get("https://www.onliner.by/");
         getDriver().manage().window().maximize();
 
