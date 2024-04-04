@@ -11,11 +11,8 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.ArrayList;
+import java.util.*;
 
-import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GroupJavaExitCodeZeroTest extends BaseTest {
@@ -31,7 +28,7 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
         StringBuilder sb = new StringBuilder(n);
 
         for (int i = 0; i < n; i++) {
-            int index = (int)(AlphaNumericString.length() * Math.random());
+            int index = (int) (AlphaNumericString.length() * Math.random());
             sb.append(AlphaNumericString.charAt(index));
         }
         return sb.toString() + "@gmail.com";
@@ -54,6 +51,31 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
 
         }
         return word3.length();
+    }
+
+    private void openSauceDemo() {
+        getDriver().get(" https://www.saucedemo.com/");
+    }
+
+    private void clickFilterZtoA() {
+        getDriver().findElement(By.xpath("//option[@value='za']")).click();
+    }
+
+    private void loginToSauceDemo() {
+        WebElement username = getDriver().findElement(By.id("user-name"));
+        username.sendKeys("standard_user");
+        WebElement password = getDriver().findElement(By.id("password"));
+        password.sendKeys("secret_sauce");
+
+        getDriver().findElement(By.id("login-button")).click();
+    }
+
+    private List<String> getTexts(List<WebElement> list) {
+        List<String> texts = new ArrayList<>();
+        for (WebElement element : list) {
+            texts.add(element.getText());
+        }
+        return texts;
     }
 
     @Test
@@ -120,7 +142,7 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
     }
 
     @Test
-    public void testAllProductsNavigationYS() throws InterruptedException{
+    public void testAllProductsNavigationYS() throws InterruptedException {
         final String expectedProductsUrl = "https://automationexercise.com/products";
         final String expectedHeader = "ALL PRODUCTS";
 
@@ -158,7 +180,7 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
         getDriver().get(BASE_URL);
         getDriver().manage().window().maximize();
 
-        ((JavascriptExecutor)getDriver()).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+        ((JavascriptExecutor) getDriver()).executeScript("window.scrollTo(0, document.body.scrollHeight)");
         Thread.sleep(1000);
         WebElement subscription = getDriver().findElement(By.xpath("//h2[contains(text(), 'Subscription')]"));
 
@@ -190,7 +212,7 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[contains(text(), 'Cart')]")).click();
 
         Assert.assertEquals(getDriver().getCurrentUrl(), BASE_URL + "/view_cart");
-        ((JavascriptExecutor)getDriver()).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+        ((JavascriptExecutor) getDriver()).executeScript("window.scrollTo(0, document.body.scrollHeight)");
 
         Thread.sleep(1000);
         WebElement subscription = getDriver().findElement(By.xpath("//h2[contains(text(), 'Subscription')]"));
@@ -266,6 +288,7 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
         Assert.assertTrue(elementSelector.isDisplayed());
         Assert.assertEquals(elementSelector.getText(), reviewMessage);
     }
+
     @Test
     public void testContactUs() {
         final String expectedMessage = "Success! Your details have been submitted successfully.";
@@ -289,7 +312,7 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
     @Test
     public void testFindWomenBootsPage() throws InterruptedException {
         final String expectedElement = "Women'S Boots";
-        final  String BASE_URL = "https://www.6pm.com/";
+        final String BASE_URL = "https://www.6pm.com/";
 
         getDriver().get(BASE_URL);
         getDriver().manage().window().maximize();
@@ -421,7 +444,7 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//ul//li[@id='item-0']/span[text()='Text Box']")).click();
 
-        Assert.assertEquals(getDriver().getCurrentUrl(),urlTextBoxPage);
+        Assert.assertEquals(getDriver().getCurrentUrl(), urlTextBoxPage);
 
         getDriver().findElement(By.cssSelector("#userName")).sendKeys(userName);
         getDriver().findElement(By.cssSelector("#userEmail")).sendKeys(userEmail);
@@ -430,10 +453,10 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
         String emailInForm = getDriver().findElement(By.cssSelector("div>p#email")).getText().trim();
 
         Assert.assertEquals(nameInForm, expectedName);
-        Assert.assertEquals(emailInForm,expectedEmail);
+        Assert.assertEquals(emailInForm, expectedEmail);
     }
 
-     @Test
+    @Test
     public void testVerifyProductInCart() throws InterruptedException {
         final String expectVerifyHomePage = "FEATURES ITEMS";
         final String expectVerifyProductDetail = "Availability:";
@@ -583,9 +606,9 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
 
         Assert.assertEquals(namesOfNavbar, expectedResult);
     }
-  
-     @Test
-     public void testUniqueLetters() {
+
+    @Test
+    public void testUniqueLetters() {
 
         int expectedResult = 9;
 
@@ -594,5 +617,23 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
         int actualResult = uniqueLetters(heading.getText());
 
         Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void testFilterZtoA() {
+
+        openSauceDemo();
+
+        loginToSauceDemo();
+
+        clickFilterZtoA();
+        List<WebElement> productsNamesElements = getDriver().findElements(By.xpath("//div[@class='inventory_item_name '] "));
+        List<String> productsNamesText = getTexts(productsNamesElements);
+
+        List<String> expectedResult = new ArrayList<>(productsNamesText);
+
+        expectedResult.sort(Collections.reverseOrder());
+
+        Assert.assertEquals(productsNamesText, expectedResult);
     }
 }
