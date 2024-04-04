@@ -389,4 +389,16 @@ public class CodeQAGroupTest extends BaseTest {
 
         Assert.assertEquals(acResult, exResult);
     }
+    @Test
+    public void testDeleteBtn() {
+
+        getDriver().get("https://the-internet.herokuapp.com/add_remove_elements/");
+
+        WebElement addButton = getDriver().findElement(By.xpath("/html/body/div[2]/div/div/button"));
+        addButton.click();
+
+        boolean deleteButtonVisible = getDriver().findElement(By.xpath("/html/body/div[2]/div/div/div/button")).isDisplayed();
+
+        Assert.assertTrue(deleteButtonVisible);
+    }
 }
