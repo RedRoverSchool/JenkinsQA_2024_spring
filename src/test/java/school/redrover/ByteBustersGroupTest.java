@@ -1,17 +1,13 @@
 package school.redrover;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ByteBustersGroupTest extends BaseTest {
 
@@ -31,7 +27,6 @@ public class ByteBustersGroupTest extends BaseTest {
         WebElement searchForElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[span[contains(text(), 'Search for:')]]")));
         String testWord = searchForElement.getText();
         Assert.assertEquals(testWord, SearchWord);
-
     }
 
     @Test
@@ -85,7 +80,6 @@ public class ByteBustersGroupTest extends BaseTest {
         String value = getDriver().findElement(By.className("t_inline_en")).getText();
 
         Assert.assertEquals("яблоко, яблоня, чепуха, лесть, яблочный", value);
-
     }
 
     @Test
@@ -132,7 +126,7 @@ public class ByteBustersGroupTest extends BaseTest {
     }
 
     @Test
-    public void googleTranslatorTest() throws InterruptedException {
+    public void googleTranslatorTest() {
 
         getDriver().get("https://translate.google.com/#");
         getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(2000));
@@ -144,34 +138,114 @@ public class ByteBustersGroupTest extends BaseTest {
                 xpath("(//span[@class='ryNqvb'])[1]"));
 
         Assert.assertEquals(translationFieldText.getText(), "Привет, мир");
+    }
+
+    @Test
+    public void testCounterStrike() {
+
+        WebDriver driver = getDriver();
+        driver.get("https://www.counter-strike.net/");
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(7));
+
+        WebElement buttonSelectLanguage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".languageselector_InnerWrapper_A5ZD2 .languageselector_LanguageIcon_yTASe")));
+        buttonSelectLanguage.click();
+
+        WebElement selectEnglish= driver.findElement(By.className("languageselector_LanguageOption_Kd1K6"));
+        selectEnglish.click();
+
+        WebElement languageElement = driver.findElement(By.xpath("//div[@class='languageselector_InnerWrapper_A5ZD2']//span"));
+        String languageText = languageElement.getText();
+
+        Assert.assertEquals(languageText, "SELECT LANGUAGE");
 
     }
 
     @Test
-    public void testMarvel() throws InterruptedException {
+    public void testCheckITboxCart() throws InterruptedException {
+        int priceOfCurrentItem;
+        int currentValueOfCart = 0;
+        List<Integer> actualValueOfCart = new ArrayList<>();
+        List<Integer> expectedValueOfCart = new ArrayList<>();
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.marvel.com/");
+        getDriver().get("https://www.itbox.ua/");
+        getDriver().manage().window().maximize();
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        getDriver().findElement(By.xpath("//div[@class='center-part']//input[@name='q']")).sendKeys("SSD Samsung");
+        getDriver().findElement(By.xpath("//div[@class='center-part']//button[@class='search-submit center']")).click();
+        currentValueOfCart += getItemPrice(1);
 
-        WebElement buttonAccept= driver.findElement(By.id("onetrust-accept-btn-handler"));
-        buttonAccept.click();
+        addItemToCart();
+        expectedValueOfCart.add(currentValueOfCart);
+        actualValueOfCart.add(getCartValue());
 
-        WebElement buttonSearch= driver.findElement(By.id("search"));
-        buttonSearch.click();
+        getDriver().navigate().back();
+        currentValueOfCart += getItemPrice(2);
 
-        WebElement text = driver.findElement(By.className("typeahead__input"));
-        text.sendKeys("Deadpool");
-        text.sendKeys(Keys.ENTER);
+        addItemToCart();
+        expectedValueOfCart.add(currentValueOfCart);
+        actualValueOfCart.add(getCartValue());
+        Thread.sleep(200);
 
-        Thread.sleep(1000);
+        priceOfCurrentItem = Integer.parseInt(getDriver()
+                .findElement(By.xpath("//*[@class='stuff-price__row stuff-price__has-sale']//*[@class='stuff-price__digits scada']"))
+                .getText());
 
-        WebElement link= driver.findElement(By.xpath ("//a[text()='Deadpool (Wade Wilson)'][@href='/characters/deadpool-wade-wilson']"));
-        String resultText = link.getText();
+        getDriver().findElement(By.xpath("(//button[@class='plusmin plusmin-plus '])[2]")).click();
+        Thread.sleep(500);
 
-        Assert.assertEquals(resultText, "Deadpool (Wade Wilson)");
+        currentValueOfCart += priceOfCurrentItem;
+        expectedValueOfCart.add(currentValueOfCart);
+        actualValueOfCart.add(getCartValue());
 
-        driver.quit();
+        getDriver().findElement(By.xpath("(//a[@class='cart-rm js-cart-rm'])[2]")).click();
+        getDriver().findElement(By.xpath("(//a[contains(@class, '_remove')])[2]")).click();
+        Thread.sleep(500);
+
+        currentValueOfCart -= priceOfCurrentItem * 2;
+        expectedValueOfCart.add(currentValueOfCart);
+        actualValueOfCart.add(getCartValue());
+
+        getDriver().findElement(By.xpath("//a[contains(@class, 'empty')]")).click();
+
+        for (int i = 0; i < expectedValueOfCart.size(); i++) {
+            Assert.assertEquals(actualValueOfCart.get(i), expectedValueOfCart.get(i));
+        }
+        Assert.assertTrue(getDriver()
+                .findElement(By.xpath("//div[@class='not-found__content']"))
+                .isDisplayed());
     }
+
+    private void openCart(){
+        getDriver().findElement(By.xpath("//ul[contains(@class,'mobile')]//a[contains(@class,'cart')]")).click();
+    }
+    private int getCartValue(){
+        return Integer.parseInt(getDriver()
+                .findElement(By.xpath("//div[contains(@class, 'full')]//strong[contains(@class, 'price')]"))
+                .getText());
+    }
+
+    private void addItem(){
+        getDriver().findElement(By.xpath("(//a[@class='add add-cart'])[1]")).click();
+    }
+
+    private int getItemPrice(int itemNumber){
+        return Integer.parseInt(getDriver()
+                .findElement(By.xpath("(//*[@class='stuff-price__digits'])[" + itemNumber + "]"))
+                .getText());
+    }
+
+    private void pressTwiceEscape(){
+        getDriver().findElement(By.xpath("//body")).sendKeys(Keys.ESCAPE);
+        getDriver().findElement(By.xpath("//body")).sendKeys(Keys.ESCAPE);
+    }
+
+    private void addItemToCart() throws InterruptedException {
+        addItem();
+        pressTwiceEscape();
+        Thread.sleep(200);
+        openCart();
+    }
+
 }

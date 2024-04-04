@@ -170,19 +170,17 @@ public class UnderdogsGroupTest extends BaseTest {
         Assert.assertEquals(getDriver().getTitle(), "DEMOQA", "Not equal your message with title of page");
     }
 
-    @Ignore
     @Test
     public void testSearchByName() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://uk.coach.com/");
+        getDriver().get("https://uk.coach.com/");
 
-        driver.findElement(By.xpath("//p[contains(text(),'Women')]")).click();
+        getDriver().findElement(By.xpath("//p[contains(text(),'Women')]")).click();
         Thread.sleep(4000);
 
-        driver.findElement(By.xpath("//div[contains(text(),'Backpacks')]")).click();
+        getDriver().findElement(By.xpath("//div[contains(text(),'Backpacks')]")).click();
         Thread.sleep(4000);
 
-        WebElement actualText = driver.findElement(By.xpath("//h1[@class = 'chakra-text css-zy3pag']"));
+        WebElement actualText = getDriver().findElement(By.xpath("//h1[@class = 'chakra-text css-zy3pag']"));
 
         Assert.assertEquals(actualText.getText(), "WOMEN'S BACKPACKS");
     }
