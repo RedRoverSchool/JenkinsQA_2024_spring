@@ -124,8 +124,8 @@ public class TeaPartyGroupTest extends BaseTest {
 
         driver.findElement(By.xpath("//input[@data-component='SearchInputControlled']")).sendKeys("YSL Heels");
         driver.findElement(By.xpath("//input[@data-testid='search-input']")).click();
-
         driver.quit();
+
     }
 
 
@@ -145,6 +145,23 @@ public class TeaPartyGroupTest extends BaseTest {
 
     }
 
+    @Test
+    public void elenaTest() {
+
+        getDriver().get("https://www.saucedemo.com/");
+
+        WebElement login = getDriver().findElement(By.id("user-name"));
+        login.sendKeys("standard_user");
+        WebElement loginPassword = getDriver().findElement(By.name("password"));
+        loginPassword.sendKeys("secret_sauce");
+        WebElement loginButton = getDriver().findElement(By.id("login-button"));
+        loginButton.click();
+        WebElement menu = getDriver().findElement(By.id("react-burger-menu-btn"));
+        menu.click();
+        String allItemsText = menu.getText();
+        Assert.assertEquals(allItemsText, "Open Menu");
+
+    }
     }
 
 

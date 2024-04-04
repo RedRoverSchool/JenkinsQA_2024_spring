@@ -130,4 +130,16 @@ public class GroupHollyGuacamoleTest extends BaseTest {
         Assert.assertEquals(actualRes, expectedRes);
     }
 
+    @Test
+    public void testProductPrice() {
+        getDriver().get("https://academybugs.com/find-bugs/");
+        List<WebElement> allProducts = getDriver().findElements(By.xpath("//li[@class='ec_product_li']"));
+        for (int i = 0; i < allProducts.size(); i++) {
+            String id = allProducts.get(i).getAttribute("id");
+            boolean isVisible = allProducts.get(i).findElement(By.xpath("//li[@id='"+ id + "']//span[@class='ec_price_type1']")).isDisplayed();
+
+            Assert.assertTrue(isVisible);
+        }
+    }
+
 }

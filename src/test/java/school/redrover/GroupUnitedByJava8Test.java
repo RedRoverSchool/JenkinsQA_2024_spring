@@ -1,15 +1,20 @@
 package school.redrover;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
 import java.time.Duration;
 
 public class GroupUnitedByJava8Test extends BaseTest {
@@ -249,7 +254,7 @@ public class GroupUnitedByJava8Test extends BaseTest {
     }
 
     @Test
-    public void testSuccessLoginSaucedemo(){
+    public void testSuccessLoginSaucedemo() {
         getDriver().get("https://www.saucedemo.com/");
         getDriver().manage().window().maximize();
 
@@ -258,5 +263,228 @@ public class GroupUnitedByJava8Test extends BaseTest {
         getDriver().findElement(By.id("login-button")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='app_logo']")).getText(), "Swag Labs");
+    }
+
+    @Test
+    public void testClassifiedCheckbox() {
+        getDriver().get("https://demoqa.com");
+
+        getDriver().findElement(By.xpath("//h5[text()='Elements']")).click();
+        getDriver().findElement(By.id("item-1")).click();
+        getDriver().findElement(By.className("rct-option-expand-all")).click();
+        getDriver().findElement(By.xpath("//label[@for='tree-node-classified']")).click();
+        String value = getDriver().findElement(By.id("result")).getText();
+
+        Assert.assertEquals(value, "You have selected :\n" + "classified");
+    }
+
+    @Test
+    public void testItemsSortedInReverseOrder() {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.id("user-name")).sendKeys(STANDARD_USER_LOGIN);
+        getDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
+        getDriver().findElement(By.id("login-button")).click();
+
+        WebElement itemsSortingCriterion = getDriver().findElement(By.className("product_sort_container"));
+        Select select = new Select(itemsSortingCriterion);
+        select.selectByVisibleText("Name (Z to A)");
+
+        List<WebElement> items = getDriver().findElements(By.xpath("//div[@class='inventory_item_name ']"));
+
+        List<String> itemsNames = new ArrayList<>();
+        for (WebElement itemName : items) {
+            String name = itemName.getText();
+            itemsNames.add(name);
+        }
+
+        List<String> expectedSortedNames = new ArrayList<>(itemsNames);
+        expectedSortedNames.sort(Collections.reverseOrder());
+
+        Assert.assertEquals(itemsNames, expectedSortedNames);
+    }
+
+    @Test
+    public void testLoginAsCustomerHarryPotterGlobalsqa() throws InterruptedException {
+        getDriver().get("https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login");
+
+        Thread.sleep(1500);
+
+        WebElement customerLoginButton = getDriver().findElement(By.xpath("//button[@ng-click='customer()']"));
+        customerLoginButton.click();
+
+        Thread.sleep(1500);
+
+        Select select = new Select(getDriver().findElement(By.id("userSelect")));
+        select.selectByIndex(2);
+
+        WebElement loginButton = getDriver().findElement(By.xpath("//button[@type = 'submit']"));
+        loginButton.click();
+
+        Thread.sleep(1500);
+
+        WebElement welcomeText = getDriver().findElement(By.xpath("//strong[text() = ' Welcome ']"));
+
+        Assert.assertEquals(welcomeText.getText(), "Welcome Harry Potter !!");
+    }
+
+    @Test
+    public void testCartAddItemBikeLight() {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.id("user-name")).sendKeys(STANDARD_USER_LOGIN);
+        getDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
+        getDriver().findElement(By.id("login-button")).click();
+
+        WebElement addBikeLightToCartButton = getDriver().findElement(By.id("add-to-cart-sauce-labs-bike-light"));
+        addBikeLightToCartButton.click();
+
+        WebElement cartClickIcon = getDriver().findElement(By.className("shopping_cart_link"));
+        cartClickIcon.click();
+
+        WebElement itemInCart = getDriver().findElement(By.id("item_0_title_link"));
+        itemInCart.getText();
+
+        Assert.assertEquals(itemInCart.getText(), "Sauce Labs Bike Light", "Wrong item in the Cart");
+    }
+
+    @Test
+    public void testItemsSortedAlphabetically() {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.id("user-name")).sendKeys(STANDARD_USER_LOGIN);
+        getDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
+        getDriver().findElement(By.id("login-button")).click();
+
+        List<WebElement> items = getDriver().findElements(By.cssSelector("[class^='inventory_item_name']"));
+
+        List<String> itemsNames = new ArrayList<>();
+        for (WebElement itemName : items) {
+            String name = itemName.getText();
+            itemsNames.add(name);
+        }
+
+        List<String> expectedSortedNames = new ArrayList<>(itemsNames);
+        Collections.sort(expectedSortedNames);
+
+        Assert.assertEquals(itemsNames, expectedSortedNames, "Items are not sorted alphabetically");
+    }
+
+    @Test
+    public void testDefaultSortingCriterion() {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.id("user-name")).sendKeys(STANDARD_USER_LOGIN);
+        getDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
+        getDriver().findElement(By.id("login-button")).click();
+
+        WebElement itemsSortingCriterion = getDriver().findElement(By.className("product_sort_container"));
+        String defaultSortingCriterion = new Select(itemsSortingCriterion).getFirstSelectedOption().getText();
+
+        Assert.assertEquals(defaultSortingCriterion, "Name (A to Z)",
+                "Default sorting criterion is not alphabetical");
+    }
+    @Test
+    public void testAlertAppearsAfterRatingIsNotSelected() {
+        getDriver().get("https://magento.softwaretestingboard.com");
+        getDriver().findElement(By
+                .xpath("//span[contains (.,'Women')]")).click();
+        getDriver().findElement(By
+                .xpath("//div[contains(@class, 'categories')]//a[contains(., 'Hoodies')]")).click();
+        getDriver().findElement(By
+                .xpath("//a[contains(., 'Circe')]")).click();
+        getDriver().findElement(By
+                .xpath("//a[normalize-space(.) = 'Reviews']")).click();
+        getDriver().findElement(By.id("nickname_field")).sendKeys("Chubaka");
+        getDriver().findElement(By.id("summary_field")).sendKeys("My f***king sh**ty review");
+        getDriver().findElement(By.id("review_field")).sendKeys("bla bla bla");
+        getDriver().findElement(By
+                .xpath("//button[normalize-space(.) = 'Submit Review']")).click();
+        WebElement alert = getDriver().findElement(By.id("ratings[4]-error"));
+
+        Assert.assertTrue(alert.isDisplayed());
+        Assert.assertEquals(alert.getText(), "Please select one of each of the ratings above.");
+    }
+    @Test
+    public void testLoginInvalidUser() {
+
+        getDriver().manage().window().maximize();
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.id("user-name")).sendKeys("user");
+        getDriver().findElement(By.id("password")).sendKeys("user");
+        getDriver().findElement(By.id("login-button")).click();
+
+        WebElement errorText = getDriver().findElement(By.xpath("//h3[@data-test= 'error']"));
+        Assert.assertEquals(errorText.getText(), "Epic sadface: Username and password do not match any user in this service");
+    }
+
+    @Test
+    public void testRemoveItemFromCart() {
+
+        getDriver().manage().window().maximize();
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.id("user-name")).sendKeys(STANDARD_USER_LOGIN);
+        getDriver().findElement(By.id("password")).sendKeys(STANDARD_USER_PASSWORD);
+        getDriver().findElement(By.id("login-button")).click();
+
+        WebElement addingButton = getDriver().findElement(By.id("add-to-cart-sauce-labs-backpack"));
+        addingButton.click();
+        WebElement cartIcon = getDriver().findElement(By.id("shopping_cart_container"));
+        cartIcon.click();
+        WebElement removeButton = getDriver().findElement(By.id("remove-sauce-labs-backpack"));
+        removeButton.click();
+
+        Assert.assertTrue(getDriver().findElements(By.id("item_4_title_link")).isEmpty());
+
+    }
+
+    @Test
+    public void testSaucedemoPlaceholderUsernameByDefault() {
+        getDriver().get("https://www.saucedemo.com/");
+
+        Assert.assertEquals(getDriver().findElement(By.name("user-name")).getAttribute("placeholder"), "Username");
+    }
+
+    @Test
+    public void testSaucedemoPasswordPlaceholderByDefault() {
+        getDriver().get("https://www.saucedemo.com/");
+
+        Assert.assertEquals(getDriver().findElement(By.name("password")).getAttribute("placeholder"), "Password");
+    }
+
+    @Test
+    public void testSaucedemoErrorLoginWithEmptyInputs() {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.id("login-button")).click();
+        WebElement emptyLoginError = getDriver().findElement(By.xpath("//div/h3[@data-test='error']"));
+        WebElement errorUsernameCrossSVG =getDriver().findElement(By.cssSelector("#user-name + .svg-inline--fa"));
+        WebElement errorPasswordCrossSVG =getDriver().findElement(By.cssSelector("#password + .svg-inline--fa"));
+
+        Assert.assertTrue(emptyLoginError.isDisplayed());
+        Assert.assertEquals(emptyLoginError.getText(), "Epic sadface: Username is required");
+        Assert.assertTrue(errorUsernameCrossSVG.isDisplayed());
+        Assert.assertTrue(errorPasswordCrossSVG.isDisplayed());
+    }
+
+    @Test
+    public void testSaucedemoErrorLoginCloseErrorMessage() {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.id("login-button")).click();
+        WebElement userLoginError = getDriver().findElement(By.xpath("//div/h3[@data-test='error']"));
+        userLoginError.isDisplayed();
+        getDriver().findElement(By.className("error-button")).click();
+        boolean result = getDriver().findElements(By.xpath("//div/h3[@data-test='error']")).isEmpty();
+
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testSaucedemoIncorrectDataLogin() {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.name("user-name")).sendKeys("user");
+        getDriver().findElement(By.name("password")).sendKeys("user");
+        getDriver().findElement(By.id("login-button")).click();
+        WebElement userLoginError = getDriver().findElement(
+            By.xpath("//div/h3[@data-test='error']"));
+
+        Assert.assertTrue(userLoginError.isDisplayed());
+        Assert.assertEquals(userLoginError.getText(),
+            "Epic sadface: Username and password do not match any user in this service");
     }
 }
