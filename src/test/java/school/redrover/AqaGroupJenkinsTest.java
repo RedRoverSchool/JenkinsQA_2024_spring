@@ -57,7 +57,7 @@ public class AqaGroupJenkinsTest extends AqaGroupBaseTest {
 
         getDriver().findElement(By.cssSelector("a[href = '/logout']")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(),"Sign in to Jenkins");
+        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "Sign in to Jenkins");
     }
 
     @Test
@@ -105,5 +105,12 @@ public class AqaGroupJenkinsTest extends AqaGroupBaseTest {
         getDriver().findElement(By.xpath("//a[@href='/asynchPeople/']")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='jenkins-app-bar__content']")).getText(), "People");
+    }
+
+    @Test
+    public void testTitleJenkins() {
+        login();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("div h1")).getText(), "Welcome to Jenkins!");
     }
 }
