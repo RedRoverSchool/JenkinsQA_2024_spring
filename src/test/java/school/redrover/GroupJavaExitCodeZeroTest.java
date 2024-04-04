@@ -534,11 +534,11 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
         getDriver().get(BASE_URL);
         getDriver().manage().window().maximize();
 
-        WebElement buttonText = getDriver().findElement(By.xpath("//div/input[@type='text']"));
+        WebElement buttonText = getDriver().findElement(By.id("user-name"));
         buttonText.sendKeys(userName);
-        WebElement buttonPassword = getDriver().findElement(By.xpath("//div/input[@type='password']"));
+        WebElement buttonPassword = getDriver().findElement(By.id("password"));
         buttonPassword.sendKeys(PASSWORD);
-        WebElement buttonSubmit = getDriver().findElement(By.xpath("//input[@type='submit']"));
+        WebElement buttonSubmit = getDriver().findElement(By.id("login-button"));
         buttonSubmit.click();
         WebElement logoText = getDriver().findElement(By.xpath("//div[@class='app_logo']"));
         String actualLogoText = logoText.getText();
@@ -562,11 +562,11 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
         getDriver().get(BASE_URL);
         getDriver().manage().window().maximize();
 
-        WebElement buttonText = getDriver().findElement(By.xpath("//div/input[@type='text']"));
+        WebElement buttonText = getDriver().findElement(By.id("user-name"));
         buttonText.sendKeys(userName);
-        WebElement buttonPassword = getDriver().findElement(By.xpath("//div/input[@type='password']"));
+        WebElement buttonPassword = getDriver().findElement(By.id("password"));
         buttonPassword.sendKeys(PASSWORD);
-        WebElement buttonSubmit = getDriver().findElement(By.xpath("//input[@type='submit']"));
+        WebElement buttonSubmit = getDriver().findElement(By.id("login-button"));
         buttonSubmit.click();
         WebElement errorText = getDriver().findElement(By.xpath("//h3[contains(text(),'Epic sadface')]"));
         String actualErrorText = errorText.getText();
@@ -635,5 +635,62 @@ public class GroupJavaExitCodeZeroTest extends BaseTest {
         expectedResult.sort(Collections.reverseOrder());
 
         Assert.assertEquals(productsNamesText, expectedResult);
+    }
+
+    @Test
+    public void testImageClickToProductCard() {
+
+        final String BASE_URL = "https://www.saucedemo.com/";
+        final String userName = "standard_user";
+        final String PASSWORD = "secret_sauce";
+        final String expectedLink = "https://www.saucedemo.com/inventory-item.html?id=4";
+
+
+        getDriver().get(BASE_URL);
+        getDriver().manage().window().maximize();
+
+        WebElement buttonText = getDriver().findElement(By.id("user-name"));
+        buttonText.sendKeys(userName);
+        WebElement buttonPassword = getDriver().findElement(By.id("password"));
+        buttonPassword.sendKeys(PASSWORD);
+        WebElement buttonSubmit = getDriver().findElement(By.id("login-button"));
+        buttonSubmit.click();
+        WebElement image = getDriver().findElement(By.xpath("//div/a[@id=\"item_4_img_link\"]"));
+        image.click();
+        String actualLink = getDriver().getCurrentUrl();
+
+        Assert.assertEquals(actualLink, expectedLink);
+
+    }
+    @Test
+    public void testAddToCart() {
+
+        final String BASE_URL = "https://www.saucedemo.com/";
+        final String userName = "standard_user";
+        final String PASSWORD = "secret_sauce";
+        final String expectedLogoText = "Swag Labs";
+        final String expectedTitle = "Products";
+        final String expectedLink = "https://www.saucedemo.com/inventory-item.html?id=4";
+        final String expectedCartElement = "1";
+
+        getDriver().get(BASE_URL);
+        getDriver().manage().window().maximize();
+
+        WebElement buttonText = getDriver().findElement(By.id("user-name"));
+        buttonText.sendKeys(userName);
+        WebElement buttonPassword = getDriver().findElement(By.id("password"));
+        buttonPassword.sendKeys(PASSWORD);
+        WebElement buttonSubmit = getDriver().findElement(By.id("login-button"));
+        buttonSubmit.click();
+        WebElement image = getDriver().findElement(By.xpath("//div/a[@id=\"item_4_img_link\"]"));
+        image.click();
+        String actualLink = getDriver().getCurrentUrl();
+        getDriver().findElement(By.name("add-to-cart")).click();
+        WebElement cartElement = getDriver().findElement(By.xpath("//div[@id='shopping_cart_container']/a/span"));
+        String actualCartElement = cartElement.getText();
+
+        Assert.assertEquals(actualLink, expectedLink);
+        Assert.assertEquals(actualCartElement, expectedCartElement);
+
     }
 }
