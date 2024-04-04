@@ -124,7 +124,44 @@ public class TeaPartyGroupTest extends BaseTest {
 
         driver.findElement(By.xpath("//input[@data-component='SearchInputControlled']")).sendKeys("YSL Heels");
         driver.findElement(By.xpath("//input[@data-testid='search-input']")).click();
-
         driver.quit();
+
+    }
+
+
+    @Test // Testing that download button redirects user to App store preview, Lena's Test
+    public void downloadButtonTest()  {
+
+        getDriver().get("https://fyi.fyi/");
+
+        WebElement link = getDriver().findElement(By.xpath("//a[@href='https://fyi.me/app'] "));
+        link.click();
+
+        WebElement Appstore = getDriver().findElement(By.className("we-localnav__title__product"));
+        String value = Appstore.getText();
+        Assert.assertEquals(value,"Mac App Store" );
+        String currentURL = getDriver().getCurrentUrl();
+        Assert.assertEquals(currentURL, "https://apps.apple.com/us/app/fyi-ai-focus-your-ideas/id1554341467");
+
+    }
+
+    @Test
+    public void elenaTest() {
+
+        getDriver().get("https://www.saucedemo.com/");
+
+        WebElement login = getDriver().findElement(By.id("user-name"));
+        login.sendKeys("standard_user");
+        WebElement loginPassword = getDriver().findElement(By.name("password"));
+        loginPassword.sendKeys("secret_sauce");
+        WebElement loginButton = getDriver().findElement(By.id("login-button"));
+        loginButton.click();
+        WebElement menu = getDriver().findElement(By.id("react-burger-menu-btn"));
+        menu.click();
+        String allItemsText = menu.getText();
+        Assert.assertEquals(allItemsText, "Open Menu");
+
     }
     }
+
+

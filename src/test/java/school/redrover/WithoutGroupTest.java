@@ -3,18 +3,34 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
 
-public class TextBoxTest {
+public class WithoutGroupTest extends BaseTest {
+
+    @Test
+    public void testLogin() {
+        WebDriver driver = getDriver();
+        driver.get("https://www.saucedemo.com/");
+
+        driver.findElement(By.xpath("//input[@id='user-name']")).sendKeys("standard_user");
+        driver.findElement(By.xpath("//input[@id='password']")).sendKeys("secret_sauce");
+        driver.findElement(By.xpath("//*[@id='login-button']")).click();
+
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html",
+                "Url does not match expected");
+
+        Assert.assertEquals(driver.findElements(By.xpath("//div[@class='inventory_item']")).size(), 6,
+                "Count of cards is not as expected");
+    }
+
     @Test
     public void testTextBox() throws InterruptedException {
-
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = getDriver();
         driver.get("https://demoqa.com");
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
@@ -36,8 +52,5 @@ public class TextBoxTest {
 
         Assert.assertEquals(driver.findElement(By.id("name")).getText(), "Name:Lilia");
         Assert.assertEquals(driver.findElement(By.id("email")).getText(), "Email:test@gmail.com");
-
-        driver.quit();
-
     }
 }

@@ -31,4 +31,26 @@ public class JavaHashGroupTest extends BaseTest {
 
         Assert.assertEquals(actualTitle,expectedTitle);
     }
+
+    private static final String BAD_USERNAME = "username@gmail.com";
+    private static final String BAD_PASSWORD = "Password123";
+    @Test
+    public void testBadLogin() throws InterruptedException {
+        getDriver().get("https://www.sofa.com/gb");
+
+        WebElement loginButton = getDriver().findElement(By.xpath("//a[@href=\"/gb/login\"]"));
+        loginButton.click();
+        Thread.sleep(500);
+
+        WebElement inputEmail = getDriver().findElement(By.id("j_username"));
+        inputEmail.sendKeys(BAD_USERNAME);
+        WebElement inputPassword = getDriver().findElement(By.id("j_password"));
+        inputPassword.sendKeys(BAD_PASSWORD);
+        getDriver().findElement(By.id("loginBtn")).click();
+        Thread.sleep(600);
+
+        WebElement errorText = getDriver().findElement(By.xpath("//div[@class=\"alert alert-danger alert-dismissable\"]"));
+
+        Assert.assertEquals(errorText.getText(), "×\n" + "Your username or password was incorrect.");
+    }
 }
