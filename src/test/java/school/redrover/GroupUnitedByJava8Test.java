@@ -482,19 +482,20 @@ public class GroupUnitedByJava8Test extends BaseTest {
         getDriver().findElement(By.id("login-button")).click();
         WebElement emptyLoginError = getDriver().findElement(By.xpath("//div/h3[@data-test='error']"));
         WebElement errorUsernameCrossSVG =getDriver().findElement(By.cssSelector("#user-name + .svg-inline--fa"));
-        WebElement errorUsernamePasswordSVG =getDriver().findElement(By.cssSelector("#password + .svg-inline--fa"));
+        WebElement errorPasswordCrossSVG =getDriver().findElement(By.cssSelector("#password + .svg-inline--fa"));
 
         Assert.assertTrue(emptyLoginError.isDisplayed());
         Assert.assertEquals(emptyLoginError.getText(), "Epic sadface: Username is required");
         Assert.assertTrue(errorUsernameCrossSVG.isDisplayed());
-        Assert.assertTrue(errorUsernamePasswordSVG.isDisplayed());
+        Assert.assertTrue(errorPasswordCrossSVG.isDisplayed());
     }
 
     @Test
     public void testSaucedemoErrorLoginCloseErrorMessage() {
         getDriver().get("https://www.saucedemo.com/");
         getDriver().findElement(By.id("login-button")).click();
-        getDriver().findElement(By.xpath("//div/h3[@data-test='error']")).isDisplayed();
+        WebElement userUserLoginError = getDriver().findElement(By.xpath("//div/h3[@data-test='error']"));
+        userUserLoginError.isDisplayed();
         getDriver().findElement(By.className("error-button")).click();
         boolean result = getDriver().findElements(By.xpath("//div/h3[@data-test='error']")).isEmpty();
 
