@@ -1,7 +1,9 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -142,4 +144,14 @@ public class GroupHollyGuacamoleTest extends BaseTest {
         }
     }
 
+    @Test
+
+    public void testKohlsLogin() {
+
+        getDriver().get("https://www.kohls.com/myaccount/signin.jsp");
+
+        WebElement textBox = getDriver().findElement(By.xpath("//input[@data-testid='signin-email']"));
+        textBox.sendKeys("Margusha83");
+    }
 }
+
