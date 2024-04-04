@@ -17,7 +17,7 @@ import java.time.Duration;
 import java.util.List;
 
 public class UnderdogsGroupTest extends BaseTest {
-    private  final static String URL_HOMEPAGE = "https://demoqa.com/";
+    private final static String URL_HOMEPAGE = "https://demoqa.com/";
     @Test
     public void testDemoQAInput() {
         getDriver().get("https://demoqa.com/");
@@ -170,19 +170,17 @@ public class UnderdogsGroupTest extends BaseTest {
         Assert.assertEquals(getDriver().getTitle(), "DEMOQA", "Not equal your message with title of page");
     }
 
-    @Ignore
     @Test
     public void testSearchByName() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://uk.coach.com/");
+        getDriver().get("https://uk.coach.com/");
 
-        driver.findElement(By.xpath("//p[contains(text(),'Women')]")).click();
+        getDriver().findElement(By.xpath("//p[contains(text(),'Women')]")).click();
         Thread.sleep(4000);
 
-        driver.findElement(By.xpath("//div[contains(text(),'Backpacks')]")).click();
+        getDriver().findElement(By.xpath("//div[contains(text(),'Backpacks')]")).click();
         Thread.sleep(4000);
 
-        WebElement actualText = driver.findElement(By.xpath("//h1[@class = 'chakra-text css-zy3pag']"));
+        WebElement actualText = getDriver().findElement(By.xpath("//h1[@class = 'chakra-text css-zy3pag']"));
 
         Assert.assertEquals(actualText.getText(), "WOMEN'S BACKPACKS");
     }
@@ -250,4 +248,15 @@ public class UnderdogsGroupTest extends BaseTest {
 
         Assert.assertEquals ("Swag Labs", getDriver().findElement (By.className("app_logo")).getText());
     }
+
+    @Test
+    public void testArticleTitle() {
+        getDriver().manage().window().maximize();
+        getDriver().get("https://en.wikipedia.org/wiki/Wikipedia");
+        WebElement articleTitleElement = getDriver().findElement(By.className("mw-page-title-main"));
+        String articleTitle = articleTitleElement.getText();
+        String expectedTitle = "Wikipedia";
+        Assert.assertEquals(articleTitle, expectedTitle, "Page title does not equals to the expected title");
+    }
+
 }

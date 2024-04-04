@@ -9,7 +9,9 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
 import java.time.Duration;
+
 import static org.openqa.selenium.By.className;
 import static org.testng.Assert.assertTrue;
 
@@ -197,5 +199,18 @@ public class LegionOfJavaGroupTest extends BaseTest {
 
         WebElement item = driver.findElement(By.xpath("//h3[text() = 'Creatine']"));
         Assert.assertTrue(item.isDisplayed());
+    }
+    @Test
+    public void testFindItem() throws InterruptedException {
+        WebDriver driver = getDriver();
+        driver.get("https://www.demoblaze.com/");
+
+        driver.findElement(By.xpath("//a[text() = 'Laptops']")).click();
+
+        Thread.sleep(1500);
+
+        WebElement item = driver.findElement(By.xpath("//h4[@class = 'card-title']/a[@href = 'prod.html?idp_=11']"));
+
+        Assert.assertEquals(item.getText(), "MacBook air");
     }
 }
