@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -125,45 +124,39 @@ public class GroupCarlthefogTest extends BaseTest {
         String expectedHeader1 = "For Adults";
         String expectedHeader2 = "Kids Recommended";
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.olathelibrary.org/");
+        getDriver().get("https://www.olathelibrary.org/");
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
 
-        WebElement servicesTab = driver.findElement(By.xpath("//a[text()='Services']"));
-        Actions actions = new Actions(driver);
+        WebElement servicesTab = getDriver().findElement(By.xpath("//a[text()='Services']"));
+        Actions actions = new Actions(getDriver());
         actions.moveToElement(servicesTab).build().perform();
 
-        driver.findElement(By.xpath("//a[text()='Adult Book Recommendations']")).click();
-        WebElement header1 = driver.findElement(By.xpath("//header[@id='widget_6876_11653_2227']"));
+        getDriver().findElement(By.xpath("//a[text()='Adult Book Recommendations']")).click();
+        WebElement header1 = getDriver().findElement(By.xpath("//header[@id='widget_6876_11653_2227']"));
         String actualHeader1 = header1.getText();
 
         Assert.assertEquals(actualHeader1, expectedHeader1);
 
-        WebElement kidsTab = driver.findElement(By.xpath("//a[text()='Kids']"));
+        WebElement kidsTab = getDriver().findElement(By.xpath("//a[text()='Kids']"));
         actions.moveToElement(kidsTab).build().perform();
 
-        driver.findElement(By.xpath("//a[text()='Kids Recommended']")).click();
-        WebElement header2 = driver.findElement(By.xpath("//header[@id='widget_4280_11723_2315']"));
+        getDriver().findElement(By.xpath("//a[text()='Kids Recommended']")).click();
+        WebElement header2 = getDriver().findElement(By.xpath("//header[@id='widget_4280_11723_2315']"));
         String actualHeader2 = header2.getText();
 
         Assert.assertEquals(actualHeader2, expectedHeader2);
-
-        driver.quit();
     }
 
     @Test
     public void testMortgagePage() {
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.bankofamerica.com/");
+        getDriver().get("https://www.bankofamerica.com/");
 
-        driver.findElement(By.xpath("//a[@id='navHomeLoans']")).click();
-        driver.findElement(By.xpath("//a[@id='mortgage']")).click();
+        getDriver().findElement(By.xpath("//a[@id='navHomeLoans']")).click();
+        getDriver().findElement(By.xpath("//a[@id='mortgage']")).click();
 
-        Assert.assertTrue(driver.findElement(By.xpath("//h1[@id='skip-to-h1']")).getText().contains("Mortgage"));
-
-        driver.quit();
+        Assert.assertTrue(getDriver().findElement(By.xpath("//h1[@id='skip-to-h1']")).getText().contains("Mortgage"));
     }
 
     @Test

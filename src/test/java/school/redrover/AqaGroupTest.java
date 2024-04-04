@@ -1009,4 +1009,45 @@ public class AqaGroupTest extends AqaGroupBaseTest {
 
         Assert.assertEquals(cpuValue, warningValue, "CPU values aren't equivalents!");
     }
+
+    @Test
+    public void testNonBreakingSpace() {
+        getDriver().get("http://uitestingplayground.com/nbsp");
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//*[text() = 'My Button']")).isEnabled());
+    }
+
+    @Test
+    public void testWaitForElement() {
+        getDriver().get("http://uitestingplayground.com/clientdelay");
+
+        getDriver().findElement(By.id("ajaxButton")).click();
+
+        Assert.assertTrue(
+                getWait25().until(ExpectedConditions.textToBePresentInElementLocated(
+                        By.id("content"),
+                        "Data calculated on the client side.")));
+    }
+
+    @Test
+    public void testWaitForElement2() {
+        getDriver().get("http://uitestingplayground.com/clientdelay");
+
+        getDriver().findElement(By.id("ajaxButton")).click();
+
+        WebElement a = getWait25().until(ExpectedConditions.presenceOfElementLocated(By.className("bg-success")));
+
+        Assert.assertEquals(a.getText(), "Data calculated on the client side.");
+    }
+
+    @Test
+    public void testWaitForElement3() {
+        getDriver().get("http://uitestingplayground.com/clientdelay");
+
+        getDriver().findElement(By.id("ajaxButton")).click();
+
+        WebElement a = getWait25().until(ExpectedConditions.visibilityOfElementLocated(By.className("bg-success")));
+
+        Assert.assertEquals(a.getText(), "Data calculated on the client side.");
+    }
 }
