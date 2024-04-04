@@ -13,6 +13,7 @@ public class GuruTest extends BaseTest {
     public void testLoginGuru() {
 
         WebDriver driver = getDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
         getDriver().get("https://demo.guru99.com/test/login.html");
 
         getDriver().findElement(By.id("email")).sendKeys("abcd@gmail.com");
