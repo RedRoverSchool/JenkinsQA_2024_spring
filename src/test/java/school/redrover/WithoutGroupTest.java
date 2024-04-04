@@ -53,4 +53,15 @@ public class WithoutGroupTest extends BaseTest {
         Assert.assertEquals(driver.findElement(By.id("name")).getText(), "Name:Lilia");
         Assert.assertEquals(driver.findElement(By.id("email")).getText(), "Email:test@gmail.com");
     }
+
+    @Test
+    public void TestAliceAndCat() {
+        getDriver().get("https://aliceandcat.ru/");
+        WebElement harryPotterButton = getDriver().findElement(By.id("menu-item-1590"));
+        harryPotterButton.click();
+        WebElement wizardingBooksBuy = getDriver().findElement(By.xpath("//*[@data-productid='1460']"));
+        wizardingBooksBuy.click();
+        WebElement checkoutForm = getDriver().findElement(By.className("woocommerce"));
+        Assert.assertNotNull(checkoutForm, "Element Checkout Form is not found");
+    }
 }
