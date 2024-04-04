@@ -223,7 +223,7 @@ public class GroupCarlthefogTest extends BaseTest {
 
     @Test
     public void newTest(){
-        getDriver().get("https://www.saucedemo.com");
+        getDriver().get("https://www.saucedemo.com");// asd
 
         WebElement fieldLogin = getDriver().findElement(By.name("user-name"));
         fieldLogin.sendKeys("standard_user");
