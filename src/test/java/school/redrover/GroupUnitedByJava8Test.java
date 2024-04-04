@@ -481,11 +481,11 @@ public class GroupUnitedByJava8Test extends BaseTest {
         getDriver().get("https://www.saucedemo.com/");
         getDriver().findElement(By.id("login-button")).click();
         WebElement emptyLoginError = getDriver().findElement(By.xpath("//div/h3[@data-test='error']"));
-        emptyLoginError.isDisplayed();
-        Assert.assertEquals(emptyLoginError.getText(), "Epic sadface: Username is required");
 
-        getDriver().findElement(By.xpath("(//div[@class='form_group']/*)[2]")).isDisplayed();
-        getDriver().findElement(By.xpath("(//div[@class='form_group']/*)[4]")).isDisplayed();
+        Assert.assertTrue(emptyLoginError.isDisplayed());
+        Assert.assertEquals(emptyLoginError.getText(), "Epic sadface: Username is required");
+        Assert.assertTrue(getDriver().findElement(By.xpath("(//div[@class='form_group']/*)[2]")).isDisplayed());
+        Assert.assertTrue(getDriver().findElement(By.xpath("(//div[@class='form_group']/*)[4]")).isDisplayed());
     }
 
     @Test
@@ -494,8 +494,8 @@ public class GroupUnitedByJava8Test extends BaseTest {
         getDriver().findElement(By.id("login-button")).click();
         getDriver().findElement(By.xpath("//div/h3[@data-test='error']")).isDisplayed();
         getDriver().findElement(By.className("error-button")).click();
-
         boolean result = getDriver().findElements(By.xpath("//div/h3[@data-test='error']")).isEmpty();
+
         Assert.assertTrue(result);
     }
 
@@ -505,10 +505,11 @@ public class GroupUnitedByJava8Test extends BaseTest {
         getDriver().findElement(By.name("user-name")).sendKeys("user");
         getDriver().findElement(By.name("password")).sendKeys("user");
         getDriver().findElement(By.id("login-button")).click();
-
         WebElement userUserLoginError = getDriver().findElement(
             By.xpath("//div/h3[@data-test='error']"));
-        userUserLoginError.isDisplayed();
-        Assert.assertEquals(userUserLoginError.getText(),"Epic sadface: Username and password do not match any user in this service");
+
+        Assert.assertTrue(userUserLoginError.isDisplayed());
+        Assert.assertEquals(userUserLoginError.getText(),
+            "Epic sadface: Username and password do not match any user in this service");
     }
 }
