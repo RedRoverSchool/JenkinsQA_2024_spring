@@ -448,7 +448,6 @@ public class GroupUnitedByJava8Test extends BaseTest {
             "Epic sadface: Username and password do not match any user in this service");
 
     @Test
-
     public void testAlertAppearsAfterRatingIsNotSelected() {
         getDriver().get("https://magento.softwaretestingboard.com");
         getDriver().findElement(By
@@ -468,7 +467,8 @@ public class GroupUnitedByJava8Test extends BaseTest {
 
         Assert.assertTrue(alert.isDisplayed());
         Assert.assertEquals(alert.getText(), "Please select one of each of the ratings above.");
-      
+    }
+    @Test
     public void testLoginInvalidUser() {
 
         getDriver().manage().window().maximize();
