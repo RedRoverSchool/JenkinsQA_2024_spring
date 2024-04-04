@@ -10,6 +10,8 @@ import school.redrover.runner.BaseTest;
 
 import java.util.List;
 
+import static org.testng.AssertJUnit.assertTrue;
+
 public class GroupHollyGuacamoleTest extends BaseTest {
     private static final String BASE_URL = "https://www.saucedemo.com/";
     private static final String STANDARD_USER = "standard_user";
@@ -20,7 +22,8 @@ public class GroupHollyGuacamoleTest extends BaseTest {
     private static final String PASSWORD = "secret_sauce";
     private static final String CART_PAGE = "//a[@class='shopping_cart_link']";
     private static final String BACKPACK_REMOVE_BUTTON = "//button[@id='remove-sauce-labs-backpack']";
-    public void login(String login, String password){
+
+    public void login(String login, String password) {
         getDriver().get(BASE_URL);
         getDriver().findElement(By.xpath("//input[@id='user-name']")).sendKeys(login);
         getDriver().findElement(By.xpath("//input[@id='password']")).sendKeys(password);
@@ -28,7 +31,7 @@ public class GroupHollyGuacamoleTest extends BaseTest {
     }
 
     @Test
-    public void testLoginSuccess(){
+    public void testLoginSuccess() {
         String expectedResult = BASE_URL + "inventory.html";
         login(STANDARD_USER, PASSWORD);
         String actualResult = getDriver().getCurrentUrl();
@@ -48,7 +51,7 @@ public class GroupHollyGuacamoleTest extends BaseTest {
     }
 
     @Test
-    public void testAddItemToTheCard(){
+    public void testAddItemToTheCard() {
         boolean expectedResult = true;
         login(STANDARD_USER, PASSWORD);
         getDriver().findElement(By.xpath("//button[@id='add-to-cart-sauce-labs-bike-light']")).click();
@@ -59,7 +62,7 @@ public class GroupHollyGuacamoleTest extends BaseTest {
     }
 
     @Test
-    public void testRemoveItemFromTheCart(){
+    public void testRemoveItemFromTheCart() {
         login(STANDARD_USER, PASSWORD);
         getDriver().findElement(By.xpath("//button[@id='add-to-cart-sauce-labs-backpack']")).click();
         getDriver().findElement(By.xpath(CART_PAGE)).click();
@@ -72,7 +75,7 @@ public class GroupHollyGuacamoleTest extends BaseTest {
     }
 
     @Test
-    public void testLoginSaucedemo () {
+    public void testLoginSaucedemo() {
         getDriver().get(BASE_URL);
 
         getDriver().findElement(By.xpath("//input[@data-test='username']")).sendKeys("standard_user");
@@ -138,11 +141,12 @@ public class GroupHollyGuacamoleTest extends BaseTest {
         List<WebElement> allProducts = getDriver().findElements(By.xpath("//li[@class='ec_product_li']"));
         for (int i = 0; i < allProducts.size(); i++) {
             String id = allProducts.get(i).getAttribute("id");
-            boolean isVisible = allProducts.get(i).findElement(By.xpath("//li[@id='"+ id + "']//span[@class='ec_price_type1']")).isDisplayed();
+            boolean isVisible = allProducts.get(i).findElement(By.xpath("//li[@id='" + id + "']//span[@class='ec_price_type1']")).isDisplayed();
 
             Assert.assertTrue(isVisible);
         }
     }
+
 
     @Test
 
@@ -152,6 +156,19 @@ public class GroupHollyGuacamoleTest extends BaseTest {
 
         WebElement textBox = getDriver().findElement(By.xpath("//input[@data-testid='signin-email']"));
         textBox.sendKeys("Margusha83");
+
+        WebElement continueButton = getDriver().findElement(By.xpath("//button[@data-testid='signin-continue-button']"));
+        continueButton.click();
+
+        assertTrue(getDriver().getCurrentUrl().contains("some_expected_url_part"));
+
     }
 }
+
+
+
+
+
+
+
 
