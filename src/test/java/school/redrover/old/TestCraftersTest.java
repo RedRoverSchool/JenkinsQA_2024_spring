@@ -5,11 +5,13 @@ package school.redrover.old;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+@Ignore
 public class TestCraftersTest extends BaseTest {
     private final static String URL = "https://tutorialsninja.com/demo/";
 

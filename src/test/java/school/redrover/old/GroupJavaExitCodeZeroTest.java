@@ -15,6 +15,7 @@ import java.util.*;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+@Ignore
 public class GroupJavaExitCodeZeroTest extends BaseTest {
     private static final String BASE_URL = "https://automationexercise.com";
     private final static String HABR_URL = "https://habr.com/ru/search/";

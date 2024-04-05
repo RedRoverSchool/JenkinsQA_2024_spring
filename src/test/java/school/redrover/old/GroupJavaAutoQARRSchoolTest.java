@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -16,6 +17,7 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.time.Duration;
 
+@Ignore
 public class GroupJavaAutoQARRSchoolTest extends BaseTest {
     protected WebElement waitForElement(By locator) {
         return new WebDriverWait(getDriver(), Duration.ofSeconds(10))

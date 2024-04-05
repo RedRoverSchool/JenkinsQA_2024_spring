@@ -1,5 +1,8 @@
 package school.redrover.old;
 
+import org.testng.annotations.Ignore;
+
+@Ignore
 public class CountTotalNumber {
         public static void main (String[] args) {
             String str = "I enjoy coding and java is everything"; //7 words

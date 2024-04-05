@@ -3,6 +3,7 @@ package school.redrover.old;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.awt.*;
@@ -19,6 +20,7 @@ import school.redrover.runner.BaseTest;
 
 import static org.testng.Assert.assertTrue;
 
+@Ignore
 public class GroupLearnForWinAK2024Test extends BaseTest {
     private static final String LOGIN = "academic198405@gmail.com";
     private static final String MY_ACCOUNT = "[aria-label='person']";

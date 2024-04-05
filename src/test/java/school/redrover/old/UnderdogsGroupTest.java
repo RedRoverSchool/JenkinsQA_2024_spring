@@ -16,6 +16,7 @@ import school.redrover.runner.BaseTest;
 import java.time.Duration;
 import java.util.List;
 
+@Ignore
 public class UnderdogsGroupTest extends BaseTest {
     private final static String URL_HOMEPAGE = "https://demoqa.com/";
     @Test

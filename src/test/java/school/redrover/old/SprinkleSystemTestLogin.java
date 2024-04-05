@@ -8,11 +8,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.io.Console;
 import java.time.Duration;
 
+@Ignore
 public class SprinkleSystemTestLogin {
     @Test
     public void testGoogle() throws InterruptedException {

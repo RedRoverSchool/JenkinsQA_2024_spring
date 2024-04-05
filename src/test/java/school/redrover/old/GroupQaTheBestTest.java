@@ -1,12 +1,14 @@
 package school.redrover.old;
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import java.time.Duration;
 
 import school.redrover.runner.BaseTest;
 
 
+@Ignore
 public class GroupQaTheBestTest extends BaseTest {
     @Test
     public void kmFirstTest() {

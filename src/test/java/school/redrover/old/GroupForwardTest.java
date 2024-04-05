@@ -9,6 +9,7 @@ import school.redrover.runner.BaseTest;
 
 import java.util.concurrent.TimeUnit;
 
+@Ignore
 public class GroupForwardTest extends BaseTest {
 
     @Test

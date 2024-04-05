@@ -15,6 +15,7 @@ import java.time.Duration;
 import static org.openqa.selenium.By.className;
 import static org.testng.Assert.assertTrue;
 
+@Ignore
 public class LegionOfJavaGroupTest extends BaseTest {
 
     @Test

@@ -2,11 +2,13 @@ package school.redrover.old;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import java.time.Duration;
 import static org.testng.Assert.assertEquals;
 
+@Ignore
 public class WikiTest extends BaseTest {
 
     @Test

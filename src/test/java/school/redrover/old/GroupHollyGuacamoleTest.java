@@ -3,11 +3,13 @@ package school.redrover.old;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 import java.util.*;
 
+@Ignore
 public class GroupHollyGuacamoleTest extends BaseTest {
     private static final String BASE_URL = "https://www.saucedemo.com/";
     private static final String STANDARD_USER = "standard_user";

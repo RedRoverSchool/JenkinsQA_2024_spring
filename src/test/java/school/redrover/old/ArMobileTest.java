@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 
+@Ignore
 public class ArMobileTest extends BaseTest {
 
     private static final String URL = "http://23.105.246.172:5000/login";

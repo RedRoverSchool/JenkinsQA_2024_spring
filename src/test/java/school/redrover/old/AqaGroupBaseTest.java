@@ -4,10 +4,12 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Ignore;
 import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
 
+@Ignore
 public abstract class AqaGroupBaseTest extends BaseTest {
 
     private WebDriverWait wait5;
