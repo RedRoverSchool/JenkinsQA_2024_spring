@@ -1,5 +1,7 @@
 package school.redrover;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -7,7 +9,9 @@ import school.redrover.runner.BaseTest;
 public class SmokeTest extends BaseTest {
 
     @Test
-    public void test() {
-        Assert.assertEquals(1, 1);
+    public void testWelcome() {
+        WebElement welcomeText = getDriver().findElement(By.cssSelector(".empty-state-block > h1"));
+
+        Assert.assertEquals(welcomeText.getText(), "Welcome to Jenkins!");
     }
 }

@@ -1,14 +1,10 @@
 package school.redrover.runner;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 
 import java.lang.reflect.Method;
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 @Listeners({FilterForTests.class})
 public abstract class BaseTest {
@@ -70,7 +66,7 @@ public abstract class BaseTest {
 
     @AfterMethod
     protected void afterMethod(Method method, ITestResult testResult) {
-        if (!ProjectUtils.closeBrowserIfError()) {
+        if (testResult.isSuccess() || ProjectUtils.closeBrowserIfError()) {
             stopDriver();
         }
 

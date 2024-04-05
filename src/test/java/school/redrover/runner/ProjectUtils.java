@@ -82,7 +82,7 @@ public final class ProjectUtils {
     }
 
     static boolean closeBrowserIfError() {
-        return Boolean.getBoolean(properties.getProperty(CLOSE_BROWSER_IF_ERROR, "true"));
+        return Boolean.parseBoolean(properties.getProperty(CLOSE_BROWSER_IF_ERROR, "true"));
     }
 
     static String getUrl() {
@@ -99,10 +99,6 @@ public final class ProjectUtils {
         return properties.getProperty(PROP_ADMIN_PAS);
     }
 
-    public static void get(WebDriver driver) {
-        driver.get(getUrl());
-    }
-
     static void acceptAlert(WebDriver driver) {
         Alert alert = ExpectedConditions.alertIsPresent().apply(driver);
         if (alert != null) {
@@ -117,6 +113,10 @@ public final class ProjectUtils {
         return driver;
     }
 
+    public static void get(WebDriver driver) {
+        driver.get(getUrl());
+    }
+
     public static void log(String str) {
         System.out.println(str);
     }
@@ -124,15 +124,5 @@ public final class ProjectUtils {
     public static void logf(String str, Object... arr) {
         System.out.printf(str, arr);
         System.out.println();
-    }
-
-    static File takeScreenshot(WebDriver driver, String methodName, String className) {
-        File file = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-        try {
-            FileUtils.copyFile(file, new File(String.format("screenshots/%s.%s.png", className, methodName)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return file;
     }
 }
