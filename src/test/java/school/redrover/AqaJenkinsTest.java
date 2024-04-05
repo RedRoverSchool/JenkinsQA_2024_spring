@@ -71,8 +71,7 @@ public class AqaJenkinsTest extends AqaBaseTest {
     public void testAddDescription() {
         createItem("MCP", "hudson_matrix_MatrixProject");
 
-        getWait15().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//textarea[@name = 'description']")));
-        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).sendKeys("xxx");
+        getWait15().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name = 'description']"))).sendKeys("xxx");
         getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
 
         Assert.assertTrue(
