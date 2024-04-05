@@ -17,7 +17,7 @@ public class HomeDepotTest extends BaseTest {
         driver.get("https://www.homedepot.ca/en/home.html");
         driver.findElement(By.cssSelector("[data-title*='Account / Sign In']")).click();
 
-        //Waits for Login screen appearance
+        //Waits for login screen appearance
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class*='acl-display--flex acl-flex--column acl-mt--x-large acl-mx--medium acl-text-size--small']")));
 
