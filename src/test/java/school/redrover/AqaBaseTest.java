@@ -16,7 +16,7 @@ public class AqaBaseTest extends BaseTest {
     @Override
     protected void beforeMethod(Method method) {
         super.beforeMethod(method);
-        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(0));
+//        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(0));
     }
 
     protected WebDriverWait getWait15() {

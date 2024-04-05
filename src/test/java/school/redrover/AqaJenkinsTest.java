@@ -84,11 +84,14 @@ public class AqaJenkinsTest extends AqaBaseTest {
         getDriver().findElement(By.xpath("//a[@href='/asynchPeople/']")).click();
 
         Assert.assertEquals(
-                getDriver().findElement(By.xpath("//div[@class='jenkins-app-bar__content']")).getText(), "People");
+                getDriver().findElement(By.xpath("//div[@class='jenkins-app-bar__content']")).getText(),
+                "People");
     }
 
     @Test
     public void testTitleJenkins() {
-        Assert.assertEquals(getDriver().findElement(By.cssSelector("div h1")).getText(), "Welcome to Jenkins!");
+        Assert.assertEquals(
+                getWait15().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div h1"))).getText(),
+                "Welcome to Jenkins!");
     }
 }
