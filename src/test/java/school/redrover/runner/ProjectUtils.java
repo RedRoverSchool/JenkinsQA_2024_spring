@@ -1,16 +1,11 @@
 package school.redrover.runner;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.Alert;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
@@ -73,8 +68,6 @@ public final class ProjectUtils {
                 chromeOptions.addArguments(argument);
             }
         }
-
-        WebDriverManager.chromedriver().setup();
     }
 
     static boolean isServerRun() {
