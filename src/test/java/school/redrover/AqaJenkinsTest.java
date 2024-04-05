@@ -75,7 +75,8 @@ public class AqaJenkinsTest extends AqaBaseTest {
         getDriver().findElement(By.xpath("//textarea[@name = 'description']")).sendKeys("xxx");
         getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
 
-        Assert.assertTrue(getDriver().findElement(By.cssSelector("div#description")).getText().startsWith("xxx"));
+        Assert.assertTrue(
+                getWait15().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div#description"))).getText().startsWith("xxx"));
     }
 
     @Test
