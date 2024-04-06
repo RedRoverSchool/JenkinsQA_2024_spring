@@ -14,7 +14,6 @@ import org.testng.annotations.*;
 import java.time.Duration;
 import java.util.List;
 
-@Ignore
 public class AqaGroupTest extends AqaGroupBaseTest {
 
     private static final String URL = "https://demoqa.com/alerts";

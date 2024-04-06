@@ -9,7 +9,6 @@ import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
 
-@Ignore
 public abstract class AqaGroupBaseTest extends BaseTest {
 
     private WebDriverWait wait5;
