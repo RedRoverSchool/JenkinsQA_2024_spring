@@ -15,4 +15,10 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(jenkinsVersion.getText(), "Jenkins 2.440.2");
     }
 
+    @Test
+    public void testApiInfo() {
+        getDriver().findElement(By.xpath("//*[@class='jenkins-button jenkins-button--tertiary rest-api']")).click();
+
+        Assert.assertEquals(getDriver().getCurrentUrl(), "http://localhost:8080/api/");
+    }
 }
