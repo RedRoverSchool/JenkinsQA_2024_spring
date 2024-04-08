@@ -1,5 +1,4 @@
 package school.redrover;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.testng.Assert;
@@ -8,7 +7,6 @@ import school.redrover.runner.BaseTest;
 
 public class CrtPrjTest extends BaseTest {
     @Test
-
     public void testCrtProject() {
         String text;
 
