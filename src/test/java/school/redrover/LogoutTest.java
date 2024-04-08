@@ -8,7 +8,7 @@ import school.redrover.runner.BaseTest;
 public class LogoutTest extends BaseTest {
     @Test
     public void testLogout() {
-        getDriver().findElement(By.xpath("//*[text()='выход']")).click();
+        getDriver().findElement(By.xpath("//*[@href='/logout']")).click();
         String actual = getDriver().findElement(
                 By.xpath("//*[text()='Sign in to Jenkins']")).getText();
 
