@@ -17,6 +17,6 @@ public class DraftJenkinsTest extends BaseTest {
     @Test
     public void testElementWelcome() {
 
-        Assert.assertEquals(getDriver().findElement(By.cssSelector("div h1")).getText(), "Welcome to Jenkins!");
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[contains(.,'Welcome to Jenkins!')]")).getText(), "Welcome to Jenkins!");
     }
 }
