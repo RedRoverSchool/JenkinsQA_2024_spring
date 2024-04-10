@@ -1,8 +1,12 @@
 package school.redrover;
+import org.openqa.selenium.WebElement;
 import school.redrover.runner.BaseTest;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -20,7 +24,9 @@ public class FreestyleProjectMoveToFolderTest extends BaseTest {
 
         Actions actions = new Actions(getDriver());
         actions.moveToElement(getDriver().findElement(By.cssSelector("#job_"+projectName+" > td:nth-child(3) > a"))).build().perform();
-        getDriver().findElement(By.cssSelector("button.jenkins-menu-dropdown-chevron[data-href='http://localhost:8080/job/"+projectName+"/']")).click();
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        WebElement WebElement = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button.jenkins-menu-dropdown-chevron[data-href='http://localhost:8080/job/"+projectName+"/']") ));
+        WebElement.click();
         getDriver().findElement(By.xpath("//a[contains(., 'Move')]")).click();
 
         Select select = new Select(getDriver().findElement(By.className("select")));
