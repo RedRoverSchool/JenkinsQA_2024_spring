@@ -37,6 +37,7 @@ public class FreestyleProjectMoveToFolderTest extends BaseTest {
                 item + "is not created");
         getDriver().findElement(By.linkText("Dashboard")).click();
     }
+
     @Test
     public void testCreateFreestyleProjectAndMoveToFolder() {
         String projectName = "Freestyle-" + UUID.randomUUID();
