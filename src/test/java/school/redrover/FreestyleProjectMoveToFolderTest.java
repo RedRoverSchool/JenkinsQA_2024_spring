@@ -11,33 +11,6 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 
 public class FreestyleProjectMoveToFolderTest extends BaseTest {
-    public void createItem(String itemName, String item) {
-        try {
-            getDriver().findElement(By.linkText("New Item")).click();
-        } catch (NoSuchElementException e) {
-            getDriver().findElement(By.linkText("Create a job")).click();
-        }
-        getDriver().findElement(By.id("name")).sendKeys(itemName);
-        String itemClassName = switch (item) {
-            case "Freestyle project" -> "hudson_model_FreeStyleProject";
-            case "Pipeline" -> "org_jenkinsci_plugins_workflow_job_WorkflowJob";
-            case "Multi-configuration project" -> "hudson_matrix_MatrixProject";
-            case "Folder" -> "com_cloudbees_hudson_plugins_folder_Folder";
-            case "Multibranch Pipeline" -> "org_jenkinsci_plugins_workflow_multibranch_WorkflowMultiBranchProject";
-            case "Organization Folder" -> "jenkins_branch_OrganizationFolder";
-            default -> "";
-        };
-        getDriver().findElement(By.className(itemClassName)).click();
-        Assert. assertEquals(getDriver().findElement(By.className(itemClassName)).getAttribute("aria-checked"),
-                "true", item + "is not checked");
-
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-        Assert.assertEquals(getDriver().getCurrentUrl(), "http://localhost:8080/job/"+itemName+"/",
-                item + "is not created");
-        getDriver().findElement(By.linkText("Dashboard")).click();
-    }
-
     @Test
     public void testCreateFreestyleProjectAndMoveToFolder() {
         String projectName = "Freestyle-" + UUID.randomUUID();
@@ -63,5 +36,32 @@ public class FreestyleProjectMoveToFolderTest extends BaseTest {
         } catch (NoSuchElementException e) {
             Assert.fail("Freestyle project not found in folder");
         }
+    }
+
+    public void createItem(String itemName, String item) {
+        try {
+            getDriver().findElement(By.linkText("New Item")).click();
+        } catch (NoSuchElementException e) {
+            getDriver().findElement(By.linkText("Create a job")).click();
+        }
+        getDriver().findElement(By.id("name")).sendKeys(itemName);
+        String itemClassName = switch (item) {
+            case "Freestyle project" -> "hudson_model_FreeStyleProject";
+            case "Pipeline" -> "org_jenkinsci_plugins_workflow_job_WorkflowJob";
+            case "Multi-configuration project" -> "hudson_matrix_MatrixProject";
+            case "Folder" -> "com_cloudbees_hudson_plugins_folder_Folder";
+            case "Multibranch Pipeline" -> "org_jenkinsci_plugins_workflow_multibranch_WorkflowMultiBranchProject";
+            case "Organization Folder" -> "jenkins_branch_OrganizationFolder";
+            default -> "";
+        };
+        getDriver().findElement(By.className(itemClassName)).click();
+        Assert. assertEquals(getDriver().findElement(By.className(itemClassName)).getAttribute("aria-checked"),
+                "true", item + "is not checked");
+
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        Assert.assertEquals(getDriver().getCurrentUrl(), "http://localhost:8080/job/"+itemName+"/",
+                item + "is not created");
+        getDriver().findElement(By.linkText("Dashboard")).click();
     }
 }
