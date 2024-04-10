@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class PipelineTest extends BaseTest {
+    
     private static final String PIPELINE_NAME = "NewFirstPipeline";
     private static final String PIPELINE_DESCRIPTION = "Description added to my pipeline.";
     private static final String RENAMED_PIPELINE_NAME = "RenamedFirstPipeline";
