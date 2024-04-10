@@ -9,7 +9,7 @@ public class DashboardTest extends BaseTest {
     @Test
     public void  userIdTest (){
         getDriver().findElement(By.xpath("//div/a[@href and @class='model-link']"))
-                .click();
+                   .click();
         String idText = getDriver().findElement(By.xpath("//*[contains(text(), 'ID')]")).getText();
         Assert.assertTrue(idText.contains("Jenkins User ID"));
     }
