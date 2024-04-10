@@ -1,7 +1,6 @@
 package school.redrover;
 import school.redrover.runner.BaseTest;
 
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
