@@ -25,7 +25,7 @@ public class FreestyleProjectMoveToFolderTest extends BaseTest {
         Actions actions = new Actions(getDriver());
         actions.moveToElement(getDriver().findElement(By.cssSelector("#job_"+projectName+" > td:nth-child(3) > a"))).build().perform();
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-        WebElement WebElement = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button.jenkins-menu-dropdown-chevron[data-href='http://localhost:8080/job/"+projectName+"/']") ));
+        WebElement WebElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("button.jenkins-menu-dropdown-chevron[data-href='http://localhost:8080/job/"+projectName+"/']") ));
         WebElement.click();
         getDriver().findElement(By.xpath("//a[contains(., 'Move')]")).click();
 
