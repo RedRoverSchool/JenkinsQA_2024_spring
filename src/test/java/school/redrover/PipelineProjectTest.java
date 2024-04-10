@@ -9,7 +9,7 @@ public class PipelineProjectTest extends BaseTest {
 
     @Test
     public void testSameNamePipeline() {
-        final String PROJECT_NAME = "New Test Pipeline";
+        final String PROJECT_NAME = "Random pipeline";
 
         createNewJob(PROJECT_NAME);
 
@@ -17,6 +17,7 @@ public class PipelineProjectTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
         getDriver().findElement(By.id("jenkins-name-icon")).click();
+
         createNewJob(PROJECT_NAME);
 
         String warningMessage = getDriver().findElement(By.id("itemname-invalid")).getText();
