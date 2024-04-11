@@ -25,6 +25,7 @@ public class PipelineTest extends BaseTest {
     private void goToHomePage () {
         getDriver().findElement(By.cssSelector(".jenkins-breadcrumbs__list-item:nth-child(1)")).click();
     }
+    
     @Test
     public void testCreatePipeline() {
         createPipeline(PIPELINE_NAME);
@@ -34,6 +35,7 @@ public class PipelineTest extends BaseTest {
 
         Assert.assertEquals(actualPipelineName, PIPELINE_NAME);
     }
+    
     @Test
     public void testAddPipelineDescription() {
         createPipeline(PIPELINE_NAME);
