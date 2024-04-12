@@ -6,10 +6,10 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class CreateOrganizationFolderTest extends BaseTest {
-    public static final String name = "Test Organization Folder";
+    private static final String name = "Test Organization Folder";
 
     @Test
-    public void testCreateOrganizationFolder() {
+    private void testCreateOrganizationFolder() {
         createOrganizationFolder(name);
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), name);
