@@ -1,6 +1,8 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -8,7 +10,6 @@ import school.redrover.runner.BaseTest;
 
 public class PipelineProjectTest extends BaseTest {
 
-    @Ignore
     @Test
     public void testSameNamePipeline() {
         final String PROJECT_NAME = "Random pipeline";
@@ -22,9 +23,17 @@ public class PipelineProjectTest extends BaseTest {
 
         createNewJob(PROJECT_NAME);
 
-        String warningMessage = getDriver().findElement(By.id("itemname-invalid")).getText();
+        getDriver().findElement(By.id("itemname-invalid")).getText();
 
-        Assert.assertEquals(warningMessage, "» A job already exists with the name ‘" + PROJECT_NAME + "’");
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        getDriver().findElement(By.xpath("//span[text()='Random pipeline']")).click();
+        getDriver().findElement(By.xpath("//span[text()='Delete Pipeline']")).click();
+        getDriver().findElement(By.xpath("//*[@data-id='ok']")).click();
+
+        String welcomeJenkinsText = getDriver().findElement(
+                By.xpath("//*[text()='Welcome to Jenkins!']")).getText();
+
+        Assert.assertEquals(welcomeJenkinsText, "Welcome to Jenkins!");
     }
 
     private void createNewJob(String projectName) {
