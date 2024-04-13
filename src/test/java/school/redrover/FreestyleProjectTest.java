@@ -23,4 +23,21 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(newProjectName, expectedProjectName);
 
     }
-}
+
+    @Test
+    public void testCreateFreestyleProject2(){
+
+        final String EXPECTED_PROJECT_NAME = "new Freestyle project";
+
+        getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(EXPECTED_PROJECT_NAME);
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        boolean isJobCreated = getDriver().findElement(By.xpath("//h1[text()='new Freestyle project']")).isDisplayed();
+        Assert.assertTrue(isJobCreated, "FreestyleProject is not created.");
+    }
+
+    }
+

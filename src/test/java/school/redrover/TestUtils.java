@@ -4,12 +4,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public final class TestUtils {
+    private static final By BY_USER_ID = By.xpath("//a[contains(@href, 'user')]");
 
-    private static final By userID = By.xpath("(//body)[1]");
-
-    public static String getUserID (WebDriver driver) {
-        return driver.findElement(userID).getText();
-
+    public static String getUserID(WebDriver driver) {
+        return driver.findElement(BY_USER_ID).getText();
     }
-
 }
