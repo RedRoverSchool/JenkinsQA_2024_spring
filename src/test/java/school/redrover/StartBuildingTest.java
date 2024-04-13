@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class StartBuildingTest extends BaseTest {
+
     @Test
     public  void testStartBuilding() {
         WebElement startBuilding = getDriver().findElement(By.xpath("//h2[text()='Start building your software project']"));

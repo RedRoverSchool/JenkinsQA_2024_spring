@@ -27,5 +27,6 @@ public class GoogleTest extends BaseTest {
         String resultText = link.getText();
 
         Assert.assertEquals(resultText, "Selenium");
+
     }
 }

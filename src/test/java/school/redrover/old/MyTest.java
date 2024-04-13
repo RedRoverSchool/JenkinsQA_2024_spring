@@ -33,5 +33,6 @@ public class MyTest extends BaseTest {
         String resultText = shoppingCart.getText();
 
         Assert.assertEquals(resultText, "Shopping Cart");
+
     }
 }
