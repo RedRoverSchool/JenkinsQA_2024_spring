@@ -26,8 +26,8 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.cssSelector("[class$='_Folder']")).click();
         getDriver().findElement(By.id("name")).sendKeys("Folder.");
 
-        String dotAsFirstCharErrorMessage = getDriver().findElement(NAME_ERROR_MESSAGE_LOCATOR).getText();
-        Assert.assertEquals(dotAsFirstCharErrorMessage, "» A name cannot end with ‘.’",
+        String dotAsLastCharErrorMessage = getDriver().findElement(NAME_ERROR_MESSAGE_LOCATOR).getText();
+        Assert.assertEquals(dotAsLastCharErrorMessage, "» A name cannot end with ‘.’",
                 "The error message is different");
     }
 }
