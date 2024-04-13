@@ -11,7 +11,11 @@ public class Folder2Test extends BaseTest {
         getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(name);
         getDriver().findElement(By.cssSelector("[class$='" + job + "']")).click();
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-        getDriver().findElement(By.id("jenkins-home-link")).click();
+        openDashboard();
+    }
+
+    private void openDashboard() {
+        getDriver().findElement(By.id("jenkins-head-icon")).click();
     }
 
     @Test
@@ -32,4 +36,24 @@ public class Folder2Test extends BaseTest {
         Assert.assertEquals(actualFreestyleName, freestyleName);
     }
 
+    @Test
+    public void testRenameFolder(){
+        createFolder("_Folder", "MyFolder");
+
+        final String folderName = "NewProjectFolder";
+
+        getDriver().findElement(By.xpath("//span[text()='MyFolder']")).click();
+        getDriver().findElement(By.linkText("Rename")).click();
+
+        WebElement renameInput = getDriver().findElement((By.name("newName")));
+        renameInput.clear();
+        renameInput.sendKeys(folderName);
+        getDriver().findElement((By.name("Submit"))).click();
+
+        openDashboard();
+
+        final String actualFolderName = getDriver().findElement(By.xpath("//table//a[@href='job/NewProjectFolder/']")).getText();
+
+        Assert.assertEquals(actualFolderName, folderName);
+    }
 }
