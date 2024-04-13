@@ -6,6 +6,7 @@ import org.testng.annotations.*;
 import school.redrover.runner.*;
 
 public class FreestyleProjectTest extends BaseTest {
+
     @Test
     public void testCreateFreestyleProjectJob() {
         String expectedHeading = "My First Freestyle project";
@@ -21,4 +22,5 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(actualHeading, expectedHeading);
     }
+
 }
