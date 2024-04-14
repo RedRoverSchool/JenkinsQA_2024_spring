@@ -7,11 +7,11 @@ import school.redrover.runner.BaseTest;
 
 public class ProjectCreateTest extends BaseTest {
     @Test
-    public void testCreateProject() {
+    public void testCreateFreestyleProject() {
         String text;
 
         getDriver().findElement(By.xpath(
-                "//*[@id='side-panel']/div[1]/div[1]/span/a")).click();
+                "//*[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys("Test project");
         getDriver().findElement(By.xpath(
                 "//*[@class='hudson_model_FreeStyleProject']")).click();
