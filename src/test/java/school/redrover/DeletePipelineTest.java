@@ -59,23 +59,24 @@ public class DeletePipelineTest extends BaseTest {
                         .perform();
                 getDriver().findElement(By.xpath("//table//button[@class='jenkins-menu-dropdown-chevron']"))
                         .click();
+
+                getDriver().findElement(By.xpath("//button[normalize-space()='Delete Pipeline']")).click();
+                getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
                 break;
             } catch (Exception e) {
                 attempts++;
             }
         }
 
-        int attempt = 0;
-        while (attempt < 2) {
-            try {
-                getDriver().findElement(By.xpath("//button[normalize-space()='Delete Pipeline']")).click();
-                break;
-            } catch (Exception e) {
-                attempt++;
-            }
-        }
-
-        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+//        int attempt = 0;
+//        while (attempt < 2) {
+//            try {
+//                getDriver().findElement(By.xpath("//button[normalize-space()='Delete Pipeline']")).click();
+//                break;
+//            } catch (Exception e) {
+//                attempt++;
+//            }
+//        }
 
         List<WebElement> jobList = getDriver()
                 .findElements(By.xpath("//table//a[@href='job/" + pipelineName + "/']"));
