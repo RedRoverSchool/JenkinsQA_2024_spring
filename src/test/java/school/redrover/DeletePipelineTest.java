@@ -4,10 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -19,8 +16,10 @@ import java.util.List;
 public class DeletePipelineTest extends BaseTest {
     final String pipelineName = "DeletePipeline";
 
-    public void explicitWait(String locator) {
-        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
+    public void fluentWait(String locator) {
+        Wait<WebDriver> wait = new FluentWait<>(getDriver())
+                .withTimeout(Duration.ofSeconds(3))
+                .pollingEvery(Duration.ofSeconds(1));
         wait.until(ExpectedConditions.visibilityOf(getDriver().findElement(By.xpath(locator))));
     }
 
@@ -52,13 +51,14 @@ public class DeletePipelineTest extends BaseTest {
         createPipeline(pipelineName);
         Actions action = new Actions(getDriver());
 
+        fluentWait("//span[text()='" + pipelineName + "']");
         action.moveToElement(getDriver().findElement(By.xpath("//span[text()='" + pipelineName + "']")))
                 .perform();
-        explicitWait("//table//button[@class='jenkins-menu-dropdown-chevron']");
+        fluentWait("//table//button[@class='jenkins-menu-dropdown-chevron']");
         action.moveToElement(getDriver().findElement(By.xpath(
                 "//table//button[@class='jenkins-menu-dropdown-chevron']"))).click().perform();
 
-        explicitWait("//button[normalize-space()='Delete Pipeline']");
+        fluentWait("//button[normalize-space()='Delete Pipeline']");
         getDriver().findElement(By.xpath("//button[normalize-space()='Delete Pipeline']")).click();
         getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
 
