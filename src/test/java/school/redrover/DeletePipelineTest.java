@@ -43,19 +43,16 @@ public class DeletePipelineTest extends BaseTest {
     }
 
     @Test
-    public void testDeletePipelineDropdown() throws InterruptedException {
-        Actions action = new Actions(getDriver());
+    public void testDeletePipelineDropdown() {
         createPipeline(pipelineName);
+        Actions action = new Actions(getDriver());
 
-        action.moveToElement(getDriver()
-                .findElement(By.xpath("//table//a[@href='job/" + pipelineName + "/']"))).perform();
-        action.moveToElement(getDriver()
-                .findElement(By.cssSelector("[data-href$='/job/" + pipelineName + "/']")))
+        action.moveToElement(getDriver().findElement(By.xpath("//span[text()='" + pipelineName + "']")))
                 .perform();
+        action.moveToElement(getDriver().findElement(
+                By.xpath("//table//button[@class='jenkins-menu-dropdown-chevron']"))).click().perform();
+        getDriver().findElement(By.xpath("//button[normalize-space()='Delete Pipeline']")).click();
 
-        getDriver().findElement(By.cssSelector("[data-href$='/job/" + pipelineName + "/']")).click();
-
-        getDriver().findElement(By.xpath("//button[@href='/job/" + pipelineName + "/doDelete']")).click();
         getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
 
         List<WebElement> jobList = getDriver()
