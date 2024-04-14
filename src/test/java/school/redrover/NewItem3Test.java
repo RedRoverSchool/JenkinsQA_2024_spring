@@ -15,6 +15,6 @@ public class NewItem3Test extends BaseTest {
         getDriver().findElement(BUTTON_NEW_ITEM).click();
         WebElement title = getDriver().findElement(By.xpath("//*[text()='Enter an item name']"));
 
-        Assert.assertEquals(title.getText(), "Enter an item name");
+        Assert.assertTrue(title.isDisplayed());
     }
 }
