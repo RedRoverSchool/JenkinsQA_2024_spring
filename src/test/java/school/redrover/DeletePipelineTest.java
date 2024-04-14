@@ -53,7 +53,7 @@ public class DeletePipelineTest extends BaseTest {
         action.moveToElement(getDriver().findElement(By.xpath(
                 "//table//button[@class='jenkins-menu-dropdown-chevron']"))).click().perform();
 
-        wait.until(ExpectedConditions.visibilityOf(getDriver().findElement(By.id("tippy-5"))));
+        wait.until(ExpectedConditions.visibilityOf(getDriver().findElement(By.cssSelector(".jenkins-dropdown"))));
         getDriver().findElement(By.xpath("//button[normalize-space()='Delete Pipeline']")).click();
         getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
 
