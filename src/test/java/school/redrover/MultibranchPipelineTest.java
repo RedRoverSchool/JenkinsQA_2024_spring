@@ -3,6 +3,7 @@ package school.redrover;
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -91,5 +92,29 @@ public class MultibranchPipelineTest extends BaseTest {
             By.xpath("//form[contains(., 'This Multibranch Pipeline is currently disabled')]"));
 
         Assert.assertEquals(disabledMultPipelineMessage.size(), 0, "Disabled message is displayed!!!");
+    }
+
+    @Test
+    public void testVerifyStatusToSwitchingEnableMultibranchPipeline() {
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        getDriver().findElement(By.className("jenkins-input")).sendKeys("Muiltibranch Pipeline project");
+
+        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_multibranch_WorkflowMultiBranchProject")).click();
+
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.cssSelector("#toggle-switch-enable-disable-project > label")).click();
+
+        WebElement footer = getDriver().findElement(By.xpath("//*[@id='footer']"));
+        int deltaY = footer.getRect().y;
+        new Actions(getDriver()).scrollByAmount(0, deltaY).perform();
+
+        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]")).click();
+
+        getDriver().findElement(By.xpath("//*[@id='enable-project']/button")).click();
+
+        String foundText = getDriver().findElement(By.xpath("//*[@id='disable-project']/button")).getText();
+        Assert.assertEquals(foundText, "Disable Multibranch Pipeline");
     }
 }
