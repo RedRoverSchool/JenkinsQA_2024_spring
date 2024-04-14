@@ -26,13 +26,12 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    public void testAddDescription() throws InterruptedException {
+    public void testAddDescription() {
         createItem("MCProject", "hudson_matrix_MatrixProject");
         final String text = "❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F";
         returnToDashBoard();
 
         getDriver().findElement(By.cssSelector("[href = 'job/MCProject/']")).click();
-        Thread.sleep(5000);
         getWait15().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
         getDriver().findElement(By.name("description")).sendKeys(text);
         getDriver().findElement(By.name("Submit")).click();
