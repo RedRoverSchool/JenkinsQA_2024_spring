@@ -1,0 +1,37 @@
+package school.redrover;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
+
+public class FreestyleProject4Test extends BaseTest {
+
+    @Test
+    public void testCreateNewFreestyleProject() {
+
+        final String projectItemName = "JavaHashGroupProject";
+
+        WebElement newItemButton = getDriver().findElement(By.xpath("//a[@it='hudson.model.Hudson@1ed9aedd']"));
+        newItemButton.click();
+
+        WebElement inputNameField = getDriver().findElement(By.xpath("//input[@name='name']"));
+        inputNameField.sendKeys(projectItemName);
+
+        WebElement freestyleProjectButton = getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']"));
+        freestyleProjectButton.click();
+
+        WebElement okButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
+        okButton.click();
+
+        WebElement saveButton = getDriver().findElement(By.xpath("//button[@name='Submit']"));
+        saveButton.click();
+
+        WebElement newProjectHeader = getDriver().findElement(By.xpath("//div[@class='jenkins-app-bar__content jenkins-build-caption']"));
+
+        Assert.assertTrue(newProjectHeader.isDisplayed());
+        Assert.assertEquals(newProjectHeader.getText(),projectItemName);
+    }
+}
