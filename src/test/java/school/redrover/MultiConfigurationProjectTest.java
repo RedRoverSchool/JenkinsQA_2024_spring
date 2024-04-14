@@ -15,7 +15,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         return new WebDriverWait(getDriver(), Duration.ofSeconds(15));
     }
 
-    protected void createItem(String name, String itemClassName) {
+    private void createItem(String name, String itemClassName) {
 
         getDriver().findElement(By.cssSelector("#side-panel > div > div")).click();
         getWait15().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(name);
