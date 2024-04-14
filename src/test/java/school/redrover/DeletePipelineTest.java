@@ -17,8 +17,12 @@ import java.time.Duration;
 import java.util.List;
 
 public class DeletePipelineTest extends BaseTest {
-    Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
     final String pipelineName = "DeletePipeline";
+
+    public void explicitWait(String locator) {
+        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
+        wait.until(ExpectedConditions.visibilityOf(getDriver().findElement(By.xpath(locator))));
+    }
 
     public void createPipeline(String name) {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -50,10 +54,11 @@ public class DeletePipelineTest extends BaseTest {
 
         action.moveToElement(getDriver().findElement(By.xpath("//span[text()='" + pipelineName + "']")))
                 .perform();
+        explicitWait("//table//button[@class='jenkins-menu-dropdown-chevron']");
         action.moveToElement(getDriver().findElement(By.xpath(
                 "//table//button[@class='jenkins-menu-dropdown-chevron']"))).click().perform();
 
-        wait.until(ExpectedConditions.visibilityOf(getDriver().findElement(By.cssSelector(".jenkins-dropdown"))));
+        explicitWait("//button[normalize-space()='Delete Pipeline']");
         getDriver().findElement(By.xpath("//button[normalize-space()='Delete Pipeline']")).click();
         getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
 
