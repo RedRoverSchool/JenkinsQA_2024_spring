@@ -72,5 +72,6 @@ public class FreestyleProject4Test extends BaseTest {
 
         Assert.assertEquals(mainPageFreestyleProjectNameField.getText(),projectItemName);
 
+
     }
 }
