@@ -1,12 +1,17 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
+import java.time.Duration;
 
 public class FreestyleProject2Test extends BaseTest {
     private static final By NEW_ITEM = By.xpath("//a[.='New Item']");
@@ -48,20 +53,23 @@ public class FreestyleProject2Test extends BaseTest {
 
     @Test
     public void testProjectMovedToFolder() {
-       createFreestyleProject(PROJECT_NAME);
-       createFolder(FOLDER_NAME);
-       Actions action = new Actions(getDriver());
-       WebElement dropdownChevron = getDriver().findElement(By
-                .xpath("//a[.='" + PROJECT_NAME +"']//button[contains(@class, 'dropdown-chevron')]"));
-       action.moveToElement(getDriver().findElement(PROJECT_ITEM)).moveToElement(dropdownChevron).click().build().perform();
-       action.click(getDriver().findElement(By.xpath("//a[contains(@href, '/move')]"))).perform();
-       new Select(getDriver().findElement(By.name("destination"))).selectByValue("/Folder");
-       getDriver().findElement(By.name("Submit")).click();
-       getDriver().findElement(DASHBOARD_BUTTON).click();
-       action.click(getDriver().findElement(By.xpath("//td/a[@href='job/" + FOLDER_NAME+"/']"))).perform();
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
+        Actions action = new Actions(getDriver());
 
-       Assert.assertEquals(getDriver().findElement(By
-               .xpath("//h1/child::*")).getDomAttribute("title"), FOLDER_NAME);
-       Assert.assertTrue(getDriver().findElement(PROJECT_ITEM).isDisplayed());
+        createFreestyleProject(PROJECT_NAME);
+        createFolder(FOLDER_NAME);
+        WebElement dropdownChevron = getDriver().findElement(By
+                .xpath("//a[.='" + PROJECT_NAME + "']//button[contains(@class, 'dropdown-chevron')]"));
+        action.moveToElement(getDriver().findElement(PROJECT_ITEM)).moveToElement(dropdownChevron).click().build().perform();
+        wait.until(ExpectedConditions.elementToBeClickable(By
+                .xpath("//a[contains(@href, '/move')]"))).click();
+        new Select(getDriver().findElement(By.name("destination"))).selectByValue("/Folder");
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(DASHBOARD_BUTTON).click();
+        action.click(getDriver().findElement(By.xpath("//td/a[@href='job/" + FOLDER_NAME + "/']"))).perform();
+
+        Assert.assertEquals(getDriver().findElement(By
+                .xpath("//h1/child::*")).getDomAttribute("title"), FOLDER_NAME);
+        Assert.assertTrue(getDriver().findElement(PROJECT_ITEM).isDisplayed());
     }
 }
