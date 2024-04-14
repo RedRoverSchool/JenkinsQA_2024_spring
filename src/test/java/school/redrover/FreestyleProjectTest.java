@@ -24,7 +24,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testCreateFreestyleProject(){
+    public void testCreateFreestyleProject() {
         final String ExpectedProjectName = "Vika Freestyle project";
 
         getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
