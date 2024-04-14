@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -55,6 +56,9 @@ public class DeletePipelineTest extends BaseTest {
         action.moveToElement(getDriver().findElement(By.xpath("//span[text()='" + pipelineName + "']")))
                 .perform();
         fluentWait("//table//button[@class='jenkins-menu-dropdown-chevron']");
+        action.moveToElement(getDriver()
+                .findElement(By.xpath("//table//button[@class='jenkins-menu-dropdown-chevron']")))
+                .perform();
         getDriver().findElement(By.xpath("//table//button[@class='jenkins-menu-dropdown-chevron']"))
                 .click();
 
