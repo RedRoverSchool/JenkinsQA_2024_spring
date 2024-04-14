@@ -1,14 +1,19 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 import javax.swing.*;
+import java.time.Duration;
 import java.util.List;
 
 public class DeletePipelineTest extends BaseTest {
@@ -38,18 +43,18 @@ public class DeletePipelineTest extends BaseTest {
     }
 
     @Test
-    public void testDeletePipelineDropdown() {
+    public void testDeletePipelineDropdown() throws InterruptedException {
         Actions action = new Actions(getDriver());
         createPipeline(pipelineName);
 
         action.moveToElement(getDriver()
                 .findElement(By.xpath("//table//a[@href='job/" + pipelineName + "/']"))).perform();
         action.moveToElement(getDriver()
-                .findElement(By.xpath("//button[contains(@data-href, '/job/" + pipelineName + "/')]")))
+                .findElement(By.cssSelector("[data-href$='/job/" + pipelineName + "/']")))
                 .perform();
 
-        getDriver().findElement(By.xpath("//button[contains(@data-href, '/job/" + pipelineName + "/')]"))
-                .click();
+        getDriver().findElement(By.cssSelector("[data-href$='/job/" + pipelineName + "/']")).click();
+
         getDriver().findElement(By.xpath("//button[@href='/job/" + pipelineName + "/doDelete']")).click();
         getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
 
