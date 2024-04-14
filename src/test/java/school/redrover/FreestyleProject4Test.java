@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -20,7 +19,7 @@ public class FreestyleProject4Test extends BaseTest {
         WebElement inputNameField = getDriver().findElement(By.xpath("//input[@name='name']"));
         inputNameField.sendKeys(projectItemName);
 
-        WebElement freestyleProjectButton = getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']"));
+        WebElement freestyleProjectButton = getDriver().findElement(By.xpath("//span[contains(text(),'Freestyle project')]"));
         freestyleProjectButton.click();
 
         WebElement okButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
