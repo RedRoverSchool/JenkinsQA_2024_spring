@@ -17,7 +17,7 @@ public class FreestyleProject3Test extends BaseTest {
     private WebDriverWait wait;
     protected WebDriverWait getWait() {
         if (wait == null) {
-            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(0,500));
         }
         return wait;
     }
