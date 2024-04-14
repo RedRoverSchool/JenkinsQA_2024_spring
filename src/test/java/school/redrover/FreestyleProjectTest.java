@@ -23,4 +23,18 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(actualHeading, expectedHeading);
     }
 
+    @Test
+    public void testCreateFreestyleProject(){
+        final String ExpectedProjectName = "Vika Freestyle project";
+
+        getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(ExpectedProjectName);
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        String newName = getDriver().findElement(By.tagName("h1")).getText();
+
+        Assert.assertEquals(newName, ExpectedProjectName);
+    }
 }
