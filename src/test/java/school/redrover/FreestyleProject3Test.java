@@ -5,7 +5,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-public class CreateFreestyleProjectTest extends BaseTest {
+public class FreestyleProject3Test extends BaseTest {
 
     @Test
     public void testCreateFreestyleProject() {
@@ -21,7 +21,6 @@ public class CreateFreestyleProjectTest extends BaseTest {
         String newProjectName = getDriver().findElement(By.tagName("h1")).getText();
 
         Assert.assertEquals(newProjectName, expectedProjectName);
-
     }
 
     @Test
@@ -38,6 +37,5 @@ public class CreateFreestyleProjectTest extends BaseTest {
         boolean isJobCreated = getDriver().findElement(By.xpath("//h1[text()='new Freestyle project']")).isDisplayed();
         Assert.assertTrue(isJobCreated, "FreestyleProject is not created.");
     }
-
-    }
+}
 

@@ -12,7 +12,7 @@ public class CreateFolderTest extends BaseTest {
     private static final String ANOTHER_FOLDER_NAME = "Another Inner Folder";
 
     @Test
-    public void testCreateFolder(){
+    public void testCreateFolder() {
         createFolder(FIRST_FOLDER_NAME);
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), FIRST_FOLDER_NAME);
@@ -30,7 +30,7 @@ public class CreateFolderTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//a[.='New Item']")).isDisplayed());
     }
 
-    private void createFolder(String name){
+    private void createFolder(String name) {
         getDriver().findElement(By.xpath("//a[.='New Item']")).click();
         getDriver().findElement(By.id("name")).sendKeys(name);
         getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
@@ -38,7 +38,7 @@ public class CreateFolderTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[contains(text(), 'Save')]")).click();
     }
 
-    private WebElement getLinkToFolder(String folderName){
+    private WebElement getLinkToFolder(String folderName) {
         return getDriver().findElement(By.xpath("//a[.='" + folderName + "']"));
     }
 }
