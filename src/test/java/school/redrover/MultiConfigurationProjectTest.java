@@ -44,17 +44,18 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testEditDescriptionWithoutDelete() {
-        createItem("MCP", "hudson_matrix_MatrixProject");
+        createItem("MCProject", "hudson_matrix_MatrixProject");
         returnToDashBoard();
 
         final String text = "qwerty123";
 
-        getDriver().findElement(By.cssSelector("[href = 'job/MCP/']")).click();
+        getDriver().findElement(By.cssSelector("[href = 'job/MCProject/']")).click();
         getWait15().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
         getDriver().findElement(By.name("description")).sendKeys(text);
         getDriver().findElement(By.name("Submit")).click();
         returnToDashBoard();
 
+        getDriver().findElement(By.cssSelector("[href = 'job/MCProject/']")).click();
         getDriver().findElement(By.id("description-link")).click();
         getDriver().findElement(By.name("description")).sendKeys("AAA");
         getDriver().findElement(By.name("Submit")).click();
