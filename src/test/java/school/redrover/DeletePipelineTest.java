@@ -52,16 +52,20 @@ public class DeletePipelineTest extends BaseTest {
         createPipeline(pipelineName);
         Actions action = new Actions(getDriver());
 
-        fluentWait("//span[text()='" + pipelineName + "']");
-        action.moveToElement(getDriver().findElement(By.xpath("//span[text()='" + pipelineName + "']")))
-                .perform();
-        fluentWait("//table//button[@class='jenkins-menu-dropdown-chevron']");
-        action.moveToElement(getDriver()
-                .findElement(By.xpath("//table//button[@class='jenkins-menu-dropdown-chevron']")))
-                .perform();
-        getDriver().findElement(By.xpath("//table//button[@class='jenkins-menu-dropdown-chevron']"))
-                .click();
+        int attempts = 0;
+        while (attempts < 2) {
+            try {
+                action.moveToElement(getDriver().findElement(By.xpath("//span[text()='" + pipelineName + "']")))
+                        .perform();
+                getDriver().findElement(By.xpath("//table//button[@class='jenkins-menu-dropdown-chevron']"))
+                        .click();
+                break;
+            } catch (Exception e) {
+                attempts++;
+            }
+        }
 
+        fluentWait("//div[@id='tippy-5']");
         getDriver().findElement(By.xpath("//button[normalize-space()='Delete Pipeline']")).click();
         getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
 
