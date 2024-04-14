@@ -6,7 +6,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-public class FreestyleProject2Test extends BaseTest {
+public class FreestyleProject4Test extends BaseTest {
     public WebElement okButton(){
         return getDriver().findElement(By.id("ok-button"));
     }
