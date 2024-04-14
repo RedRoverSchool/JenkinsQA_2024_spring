@@ -22,5 +22,3 @@ import school.redrover.runner.BaseTest;
                     "» This field cannot be empty, please enter a valid name");
         }
     }
-
-
