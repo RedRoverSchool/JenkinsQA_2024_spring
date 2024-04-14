@@ -17,6 +17,7 @@ import java.time.Duration;
 import java.util.List;
 
 public class DeletePipelineTest extends BaseTest {
+    Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
     final String pipelineName = "DeletePipeline";
 
     public void createPipeline(String name) {
@@ -49,10 +50,12 @@ public class DeletePipelineTest extends BaseTest {
 
         action.moveToElement(getDriver().findElement(By.xpath("//span[text()='" + pipelineName + "']")))
                 .perform();
-        action.moveToElement(getDriver().findElement(
-                By.xpath("//table//button[@class='jenkins-menu-dropdown-chevron']"))).click().perform();
-        getDriver().findElement(By.xpath("//button[normalize-space()='Delete Pipeline']")).click();
+        action.moveToElement(getDriver().findElement(By.xpath(
+                "//table//button[@class='jenkins-menu-dropdown-chevron']"))).click().perform();
 
+        wait.until(ExpectedConditions.elementToBeClickable(
+                getDriver().findElement(By.xpath("//button[normalize-space()='Delete Pipeline']"))));
+        getDriver().findElement(By.xpath("//button[normalize-space()='Delete Pipeline']")).click();
         getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
 
         List<WebElement> jobList = getDriver()
