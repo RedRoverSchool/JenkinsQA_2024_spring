@@ -1,0 +1,30 @@
+package school.redrover;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
+
+public class ProjectCreateTest extends BaseTest {
+    @Test
+    public void testCreateProject() {
+        String text;
+
+        getDriver().findElement(By.xpath(
+                "//*[@id='side-panel']/div[1]/div[1]/span/a")).click();
+        getDriver().findElement(By.id("name")).sendKeys("Test project");
+        getDriver().findElement(By.xpath(
+                "//*[@class='hudson_model_FreeStyleProject']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        getDriver().findElement(By.id("jenkins-home-link")).click();
+        getDriver().findElement(By.id("search-box")).sendKeys(
+                "Test project", Keys.ENTER);
+
+        text = getDriver().findElement(By.xpath("//h1")).getText();
+
+        Assert.assertEquals(text,"Test project");
+
+    }
+}
