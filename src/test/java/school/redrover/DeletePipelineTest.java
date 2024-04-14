@@ -47,7 +47,7 @@ public class DeletePipelineTest extends BaseTest {
     }
 
     @Test
-    public void testDeletePipelineDropdown() {
+    public void testDeletePipelineDropdown() throws InterruptedException {
         createPipeline(pipelineName);
         Actions action = new Actions(getDriver());
 
@@ -55,10 +55,9 @@ public class DeletePipelineTest extends BaseTest {
         action.moveToElement(getDriver().findElement(By.xpath("//span[text()='" + pipelineName + "']")))
                 .perform();
         fluentWait("//table//button[@class='jenkins-menu-dropdown-chevron']");
-        action.moveToElement(getDriver().findElement(By.xpath(
-                "//table//button[@class='jenkins-menu-dropdown-chevron']"))).click().perform();
+        getDriver().findElement(By.xpath("//table//button[@class='jenkins-menu-dropdown-chevron']"))
+                .click();
 
-        fluentWait("//button[normalize-space()='Delete Pipeline']");
         getDriver().findElement(By.xpath("//button[normalize-space()='Delete Pipeline']")).click();
         getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
 
