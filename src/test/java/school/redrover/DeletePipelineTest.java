@@ -65,8 +65,16 @@ public class DeletePipelineTest extends BaseTest {
             }
         }
 
-        fluentWait("//div[@id='tippy-5']");
-        getDriver().findElement(By.xpath("//button[normalize-space()='Delete Pipeline']")).click();
+        int attempt = 0;
+        while (attempt < 2) {
+            try {
+                getDriver().findElement(By.xpath("//button[normalize-space()='Delete Pipeline']")).click();
+                break;
+            } catch (Exception e) {
+                attempt++;
+            }
+        }
+
         getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
 
         List<WebElement> jobList = getDriver()
