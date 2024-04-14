@@ -26,7 +26,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Test
     public void testAddDescription() {
         createItem("MCP", "hudson_matrix_MatrixProject");
-        final String text = "xxx";
+        final String text = "❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F";
 
         getWait15().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name = 'description']")))
                 .sendKeys(text);
@@ -34,5 +34,24 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         Assert.assertTrue(
                 getWait15().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div#description"))).getText().startsWith(text));
+    }
+
+    @Test
+    public void testEditDescriptionWithoutDelete() {
+        createItem("MCP", "hudson_matrix_MatrixProject");
+        final String text = "qwerty123";
+
+        getWait15().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name = 'description']")))
+                .sendKeys(text);
+        getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
+
+        getDriver().findElement(By.id("description-link")).click();
+        getWait15().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name = 'description']")))
+                .sendKeys("aaa");
+        getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
+
+        Assert.assertTrue(
+                getWait15().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div#description")))
+                        .getText().contains("aaa" + text));
     }
 }
