@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -37,6 +38,11 @@ public class FreestyleProject2Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
 
         getDriver().findElement(By.xpath("//ol/li/a[@href='/']")).click();
-        getDriver().findElement(By.xpath("//td/a[@href='job/Folder/']")).click();
+        getDriver().findElement(By.xpath("//a[.='" + "Folder" + "']")).click();
+
+        WebElement projectName = getDriver().findElement(By.xpath("//a/span[text()='FreestyleProject']"));
+        String projectNameText = projectName.getText();
+        String expectedNameText = "FreestyleProject";
+        Assert.assertEquals(expectedNameText, projectNameText);
     }
 }
