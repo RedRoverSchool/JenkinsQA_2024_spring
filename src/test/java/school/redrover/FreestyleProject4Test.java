@@ -71,5 +71,6 @@ public class FreestyleProject4Test extends BaseTest {
         WebElement mainPageFreestyleProjectNameField = getDriver().findElement(By.xpath("//td/a[@href='job/"+projectItemName+"/']"));
 
         Assert.assertEquals(mainPageFreestyleProjectNameField.getText(),projectItemName);
+
     }
 }
