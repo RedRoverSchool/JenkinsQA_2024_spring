@@ -16,42 +16,50 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     private void createItem(String name, String itemClassName) {
-
         getDriver().findElement(By.cssSelector("#side-panel > div > div")).click();
         getWait15().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(name);
         getDriver().findElement(By.className(itemClassName)).click();
         getDriver().findElement(By.id("ok-button")).click();
+    }
+    private void returnToDashBoard() {
+        getDriver().findElement(By.cssSelector("a[href = '/']")).click();
     }
 
     @Test
     public void testAddDescription() {
         createItem("MCP", "hudson_matrix_MatrixProject");
         final String text = "❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F";
+        returnToDashBoard();
 
-        getWait15().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name = 'description']")))
-                .sendKeys(text);
-        getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
+        getDriver().findElement(By.cssSelector("[href = 'job/MCP/']")).click();
+        getWait15().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
+        getDriver().findElement(By.name("description")).sendKeys(text);
+        getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertTrue(
-                getWait15().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div#description"))).getText().startsWith(text));
+                getWait15().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div#description")))
+                        .getText().startsWith(text));
     }
 
     @Test
     public void testEditDescriptionWithoutDelete() {
         createItem("MCP", "hudson_matrix_MatrixProject");
+        returnToDashBoard();
+
         final String text = "qwerty123";
 
-        getWait15().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name = 'description']")))
-                .sendKeys(text);
-        getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
+        getDriver().findElement(By.cssSelector("[href = 'job/MCP/']")).click();
+        getWait15().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
+        getDriver().findElement(By.name("description")).sendKeys(text);
+        getDriver().findElement(By.name("Submit")).click();
+        returnToDashBoard();
 
         getDriver().findElement(By.id("description-link")).click();
-        getWait15().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name = 'description']")))
-                .sendKeys("aaa");
-        getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
+        getDriver().findElement(By.name("description")).sendKeys("AAA");
+        getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertTrue(
                 getWait15().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div#description")))
-                        .getText().contains("aaa" + text));
+                        .getText().contains("AAA" + text));
     }
 }
