@@ -20,7 +20,7 @@ public class DeletePipelineTest extends BaseTest {
         Wait<WebDriver> wait = new FluentWait<>(getDriver())
                 .withTimeout(Duration.ofSeconds(3))
                 .pollingEvery(Duration.ofSeconds(1));
-        wait.until(ExpectedConditions.visibilityOf(getDriver().findElement(By.xpath(locator))));
+        wait.until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.xpath(locator))));
     }
 
     public void createPipeline(String name) {
