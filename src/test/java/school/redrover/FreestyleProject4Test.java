@@ -65,14 +65,11 @@ public class FreestyleProject4Test extends BaseTest {
         Assert.assertTrue(newProjectDescription.isDisplayed());
         Assert.assertEquals(newProjectDescription.getText(),projectItemDescription);
 
-        WebElement mainPageJenkinsButton = getDriver().findElement(By.xpath("//img[@src='/static/7550e5ad/images/title.svg']"));
+        WebElement mainPageJenkinsButton = getDriver().findElement(By.xpath("//img[@id='jenkins-head-icon']"));
         mainPageJenkinsButton.click();
 
         WebElement mainPageFreestyleProjectNameField = getDriver().findElement(By.xpath("//td/a[@href='job/"+projectItemName+"/']"));
 
         Assert.assertEquals(mainPageFreestyleProjectNameField.getText(),projectItemName);
-
-
-
     }
 }
