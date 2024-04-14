@@ -62,6 +62,11 @@ public class DeletePipelineTest extends BaseTest {
 
                 getDriver().findElement(By.xpath("//button[normalize-space()='Delete Pipeline']")).click();
                 getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+
+                List<WebElement> jobList = getDriver()
+                        .findElements(By.xpath("//table//a[@href='job/" + pipelineName + "/']"));
+
+                Assert.assertTrue(jobList.isEmpty());
                 break;
             } catch (Exception e) {
                 attempts++;
@@ -77,10 +82,5 @@ public class DeletePipelineTest extends BaseTest {
 //                attempt++;
 //            }
 //        }
-
-        List<WebElement> jobList = getDriver()
-                .findElements(By.xpath("//table//a[@href='job/" + pipelineName + "/']"));
-
-        Assert.assertTrue(jobList.isEmpty());
     }
 }
