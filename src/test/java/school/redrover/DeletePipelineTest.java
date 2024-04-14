@@ -17,13 +17,6 @@ import java.util.List;
 public class DeletePipelineTest extends BaseTest {
     final String pipelineName = "DeletePipeline";
 
-    public void fluentWait(String locator) {
-        Wait<WebDriver> wait = new FluentWait<>(getDriver())
-                .withTimeout(Duration.ofSeconds(3))
-                .pollingEvery(Duration.ofSeconds(1));
-        wait.until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.xpath(locator))));
-    }
-
     public void createPipeline(String name) {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(name);
@@ -55,10 +48,10 @@ public class DeletePipelineTest extends BaseTest {
         int attempts = 0;
         while (attempts < 2) {
             try {
-                action.moveToElement(getDriver().findElement(By.xpath("//span[text()='" + pipelineName + "']")))
-                        .perform();
-                getDriver().findElement(By.xpath("//table//button[@class='jenkins-menu-dropdown-chevron']"))
-                        .click();
+                action.moveToElement(getDriver().findElement(By.xpath(
+                        "//span[text()='" + pipelineName + "']"))).perform();
+                getDriver().findElement(By.xpath(
+                        "//table//button[@class='jenkins-menu-dropdown-chevron']")).click();
 
                 getDriver().findElement(By.xpath("//button[normalize-space()='Delete Pipeline']")).click();
                 getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
@@ -72,15 +65,5 @@ public class DeletePipelineTest extends BaseTest {
                 attempts++;
             }
         }
-
-//        int attempt = 0;
-//        while (attempt < 2) {
-//            try {
-//                getDriver().findElement(By.xpath("//button[normalize-space()='Delete Pipeline']")).click();
-//                break;
-//            } catch (Exception e) {
-//                attempt++;
-//            }
-//        }
     }
 }
