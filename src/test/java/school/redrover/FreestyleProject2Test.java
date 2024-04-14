@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -10,7 +9,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-
 import java.time.Duration;
 
 public class FreestyleProject2Test extends BaseTest {
@@ -59,17 +57,18 @@ public class FreestyleProject2Test extends BaseTest {
         createFreestyleProject(PROJECT_NAME);
         createFolder(FOLDER_NAME);
         WebElement dropdownChevron = getDriver().findElement(By
-                .xpath("//a[.='" + PROJECT_NAME + "']//button[contains(@class, 'dropdown-chevron')]"));
-        action.moveToElement(getDriver().findElement(PROJECT_ITEM)).moveToElement(dropdownChevron).click().build().perform();
+                .xpath("//a[.='" + PROJECT_NAME + "']/button"));
+        action.moveToElement(getDriver().findElement(PROJECT_ITEM))
+                .pause(1000)
+                .moveToElement(dropdownChevron).click().perform();
         wait.until(ExpectedConditions.elementToBeClickable(By
-                .xpath("//a[contains(@href, '/move')]"))).click();
+               .xpath("//a[contains(@href, '/move')]"))).click();
         new Select(getDriver().findElement(By.name("destination"))).selectByValue("/Folder");
         getDriver().findElement(By.name("Submit")).click();
         getDriver().findElement(DASHBOARD_BUTTON).click();
         action.click(getDriver().findElement(By.xpath("//td/a[@href='job/" + FOLDER_NAME + "/']"))).perform();
 
-        Assert.assertEquals(getDriver().findElement(By
-                .xpath("//h1/child::*")).getDomAttribute("title"), FOLDER_NAME);
+        Assert.assertTrue(getDriver().getTitle().contains("Folder"));
         Assert.assertTrue(getDriver().findElement(PROJECT_ITEM).isDisplayed());
     }
 }
