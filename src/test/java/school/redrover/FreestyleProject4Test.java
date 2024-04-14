@@ -13,7 +13,7 @@ public class FreestyleProject4Test extends BaseTest {
 
         final String projectItemName = "JavaHashGroupProject";
 
-        WebElement newItemButton = getDriver().findElement(By.xpath("//a[@it='hudson.model.Hudson@1ed9aedd']"));
+        WebElement newItemButton = getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']"));
         newItemButton.click();
 
         WebElement inputNameField = getDriver().findElement(By.xpath("//input[@name='name']"));
