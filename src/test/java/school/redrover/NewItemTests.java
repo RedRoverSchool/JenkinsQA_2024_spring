@@ -6,8 +6,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-public class CreateProjectTest extends BaseTest {
-    private static final By OK_BUTTON = By.xpath("//button[@class='jenkins-button jenkins-button--primary jenkins-buttons-row--equal-width']");
+public class NewItemTests extends BaseTest {
+    private static final By OK_BUTTON = By.xpath("//*[@id='ok-button']");
     private static final By MAIN_PAGE = By.xpath("//a[@it]");
     private static final By SAVE_BUTTON = By.xpath("//button[@formnovalidate]");
     private static final By JENKINS_INPUT = By.cssSelector("#name");
