@@ -30,7 +30,7 @@ public class Nodes1Test extends BaseTest {
 
         Assert.assertEquals(actualResult, expectedResult);
     }
-    @Ignore
+
     @Test
     public void testCreateNewNodeWithInvalidData() {
 
