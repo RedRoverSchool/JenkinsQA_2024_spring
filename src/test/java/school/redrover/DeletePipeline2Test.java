@@ -31,7 +31,6 @@ public class DeletePipeline2Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@data-id='cancel']")).click();
         getDriver().findElement(By.linkText("Pipeline1")).isDisplayed();
     }
-
     @Test
     public void testDeletePipeline() {
         createPipeline();
