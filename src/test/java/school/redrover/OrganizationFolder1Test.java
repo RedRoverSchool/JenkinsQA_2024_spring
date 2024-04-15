@@ -17,10 +17,12 @@ public class OrganizationFolder1Test extends BaseTest {
         getDriver().findElement(By.className("jenkins_branch_OrganizationFolder")).click();
         getDriver().findElement(By.id("ok-button")).click();
     }
+
     private final List<String> getExpectedList = List.of("Back", "Snippet Generator", "Declarative Directive Generator",
             "Declarative Online Documentation", "Steps Reference",
             "Global Variables Reference", "Online Documentation", "Examples Reference",
             "IntelliJ IDEA GDSL");
+
     private List<String> getActualList(){
         List<String> actualList = new ArrayList<>();
         for (int i=1; i<=9; i++){
@@ -29,6 +31,7 @@ public class OrganizationFolder1Test extends BaseTest {
         }
         return actualList;
     }
+
     @Test
     public void testPipelineSyntaxMenuList() throws InterruptedException {
         String setOrganizationFolder = "TestOrganizationFolder";
@@ -39,10 +42,10 @@ public class OrganizationFolder1Test extends BaseTest {
         WebElement currentOrganizationFolder = getDriver().
                 findElement(By.xpath("//*[text()='" + setOrganizationFolder + "']")) ;
         new Actions(getDriver()).moveToElement(currentOrganizationFolder).perform();
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         WebElement menuForCurrentOrganizationFolder = getDriver().
                 findElement(By.xpath("//*[text()='" + setOrganizationFolder + "']/following-sibling::*[1]"));
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         menuForCurrentOrganizationFolder.click();
         WebElement pipelineSyntaxMenu = getDriver().
                 findElement(By.xpath("//*[@href='/job/"+ setOrganizationFolder +"/pipeline-syntax']"));
