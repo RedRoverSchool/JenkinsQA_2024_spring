@@ -25,7 +25,7 @@ public class NodesTest extends BaseTest {
 
     @Test
     public void testBuiltInNodeMonitoringDataList() {
-        final List<String> expectedMonitoringDataValues = List.of("Architecture", "Clock Difference", "Response Time",
+        final List<String> expectedMonitoringDataValues = List.of("Architecture", "Response Time", "Clock Difference",
                 "Free Temp Space", "Free Disk Space", "Free Swap Space");
 
         getDriver().findElement(By.cssSelector("[href='/computer/']")).click();
@@ -33,7 +33,7 @@ public class NodesTest extends BaseTest {
         getDriver().findElement(By.className("advancedButton")).click();
 
         List<WebElement> monitoringDataElements = getDriver()
-                .findElements(By.cssSelector("[class*='dropdown'] td:nth-of-type(odd)"));
+                .findElements(By.cssSelector("[class*='jenkins-table'] td:nth-of-type(odd)"));
         List<String> actualMonitoringDataValues = new ArrayList<>();
         for (WebElement element : monitoringDataElements) {
             actualMonitoringDataValues.add(element.getText());
