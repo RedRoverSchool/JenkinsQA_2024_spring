@@ -10,7 +10,7 @@ public class NewItem1Test extends BaseTest {
     @Test
     public void testNewItemWithoutType() {
         getDriver().findElement(
-                By.cssSelector("div#side-panel a[it='hudson.model.Hudson@19c58a75']"))
+                By.xpath("//a[@href='newJob']"))
                 .click();
         getDriver().findElement(
                 By.cssSelector("div.add-item-name > input#name"))
