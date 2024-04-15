@@ -1,5 +1,6 @@
 package school.redrover;
 
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -8,22 +9,16 @@ import school.redrover.runner.BaseTest;
 
 import java.util.List;
 
-import static java.sql.DriverManager.getDriver;
-
 public class Folder5Test extends BaseTest {
-
-
-
-    public static void createFolder(String name) {
+    public void createFolder(String folderName) {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys("DeleteFolder");
+        getDriver().findElement(By.id("name")).sendKeys(folderName);
         getDriver().findElement(By.xpath("//li[@class='com_cloudbees_hudson_plugins_folder_Folder']")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.id("jenkins-home-link")).click();
     }
-
     @Test
-    public static void deleteFolderTest() {
+    public void deleteFolderTest() {
         String folderName = "DeleteFolder";
 
         createFolder(folderName);
