@@ -15,9 +15,10 @@ public class FreestyleProject3Test extends BaseTest {
     private final static String FREESTYLE_PROJECT_NAME = "new Freestyle project";
     private final static String RENAMED_PROJECT_NAME = "old Freestyle project";
     private WebDriverWait wait;
+
     protected WebDriverWait getWait() {
         if (wait == null) {
-            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(0,500));
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(1));
         }
         return wait;
     }
@@ -58,7 +59,7 @@ public class FreestyleProject3Test extends BaseTest {
     }
 
     @Test
-    public void testCreateFreestyleProject2(){
+    public void testCreateFreestyleProject2() {
 
         final String EXPECTED_PROJECT_NAME = "new Freestyle project";
 
