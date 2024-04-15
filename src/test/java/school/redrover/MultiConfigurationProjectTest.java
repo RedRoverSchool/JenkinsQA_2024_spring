@@ -42,4 +42,17 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 getWait15(this).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div#description")))
                         .getText().contains(additionText + text));
     }
+
+    @Test
+    public void testDescriptionPreview() {
+        createNewItemAndReturnToDashboard(this,projectName, Item.MULTI_CONFIGURATION_PROJECT);
+
+        String text = "I want to see preview";
+        getDriver().findElement(By.id("job_" + projectName)).click();
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.name("description")).sendKeys(text);
+        getDriver().findElement(By.className("textarea-show-preview")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.className("textarea-preview")).getText().equals(text));
+    }
 }
