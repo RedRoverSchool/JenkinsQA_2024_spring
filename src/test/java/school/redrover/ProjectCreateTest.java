@@ -17,11 +17,6 @@ public class ProjectCreateTest extends BaseTest {
                 "//*[@class='hudson_model_FreeStyleProject']")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
-
-        getDriver().findElement(By.id("jenkins-home-link")).click();
-        getDriver().findElement(By.id("search-box")).sendKeys(
-                "Test project", Keys.ENTER);
-
         text = getDriver().findElement(By.xpath("//h1")).getText();
 
         Assert.assertEquals(text,"Test project");
