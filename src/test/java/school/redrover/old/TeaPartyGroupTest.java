@@ -44,9 +44,10 @@ public class TeaPartyGroupTest extends BaseTest {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@role='status']")));
         String resultText = element.getText();
-        Assert.assertEquals(resultText,"server_errors.UserNotFound");
+        Assert.assertEquals(resultText, "server_errors.UserNotFound");
         driver.quit();
     }
+
     @Test
     public void tgDemoTest() {
         WebDriver driver = new ChromeDriver();
@@ -63,7 +64,7 @@ public class TeaPartyGroupTest extends BaseTest {
         String allItemsText = menu.getText();
         Assert.assertEquals(allItemsText, "Open Menu");
         driver.quit();
-        }
+    }
 
     @Test
     public void testTest() {
@@ -79,10 +80,10 @@ public class TeaPartyGroupTest extends BaseTest {
         String nMenu = menu.getText();
         assert menu.getText().equals(nMenu) : "All Items";
         menu.click();
-        }
+    }
 
     @Test
-    public void alenaTest(){
+    public void alenaTest() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.saucedemo.com/");
         WebElement login = driver.findElement(By.id("user-name"));
@@ -95,26 +96,27 @@ public class TeaPartyGroupTest extends BaseTest {
         String nMenu = menu.getText();
         assert menu.getText().equals(nMenu) : "All Items";
         menu.click();
-        }
-        @Test
-        public void natashaTest(){
+    }
 
-        WebDriver driver =new ChromeDriver();
+    @Test
+    public void natashaTest() {
+
+        WebDriver driver = new ChromeDriver();
         driver.get("https://www.saucedemo.com/");
 
         WebElement login = driver.findElement(By.id("user-name"));
         login.sendKeys("standard_user");
 
-        WebElement loginPassword= driver.findElement(By.name("password"));
+        WebElement loginPassword = driver.findElement(By.name("password"));
         loginPassword.sendKeys("secret_sauce");
 
-        WebElement loginButton=driver.findElement(By.id("login-button"));
+        WebElement loginButton = driver.findElement(By.id("login-button"));
         loginButton.click();
         driver.quit();
     }
 
-        @Test
-        public void natashaFarfetchTest () {
+    @Test
+    public void natashaFarfetchTest() {
 
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.farfetch.com/designers/women");
@@ -132,7 +134,7 @@ public class TeaPartyGroupTest extends BaseTest {
 
 
     @Test // Testing that download button redirects user to App store preview, Lena's Test
-    public void downloadButtonTest()  {
+    public void downloadButtonTest() {
 
         getDriver().get("https://fyi.fyi/");
 
@@ -141,7 +143,7 @@ public class TeaPartyGroupTest extends BaseTest {
 
         WebElement Appstore = getDriver().findElement(By.className("we-localnav__title__product"));
         String value = Appstore.getText();
-        Assert.assertEquals(value,"Mac App Store" );
+        Assert.assertEquals(value, "Mac App Store");
         String currentURL = getDriver().getCurrentUrl();
         Assert.assertEquals(currentURL, "https://apps.apple.com/us/app/fyi-ai-focus-your-ideas/id1554341467");
 
@@ -164,6 +166,22 @@ public class TeaPartyGroupTest extends BaseTest {
         Assert.assertEquals(allItemsText, "Open Menu");
 
     }
-    }
 
+    @Test
+    public void miaTest() {
+
+        getDriver().get("https://www.saucedemo.com/");
+
+        WebElement login = getDriver().findElement(By.id("user-name"));
+        login.sendKeys("standard_user");
+        WebElement loginPassword = getDriver().findElement(By.name("password"));
+        loginPassword.sendKeys("secret_sauce");
+        WebElement loginButton = getDriver().findElement(By.id("login-button"));
+        loginButton.click();
+        WebElement menu = getDriver().findElement(By.id("react-burger-menu-btn"));
+        menu.click();
+        String allItemsText = menu.getText();
+        Assert.assertEquals(allItemsText, "Open Menu");
+    }
+}
 
