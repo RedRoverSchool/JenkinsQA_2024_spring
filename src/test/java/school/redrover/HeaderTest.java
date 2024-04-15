@@ -44,10 +44,10 @@ public class HeaderTest extends BaseTest {
                 headerSearchLine.sendKeys(searchText);
                 headerSearchLine.sendKeys(Keys.ENTER);
 
-                String actualSearchResult = getDriver().findElement(By.xpath("//h1")).getText();
-                String expectedSearchResult = "Search for '%s'".formatted(searchText);
+        String actualSearchResult = getDriver().findElement(By.xpath("//h1")).getText();
+        String expectedSearchResult = "Search for '%s'".formatted(searchText);
 
-                Assert.assertEquals(actualSearchResult, expectedSearchResult);
+        Assert.assertEquals(actualSearchResult, expectedSearchResult);
     }
     }
 
