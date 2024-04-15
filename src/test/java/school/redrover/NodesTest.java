@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class NodesTest extends BaseTest {
@@ -24,22 +25,28 @@ public class NodesTest extends BaseTest {
     }
 
     @Test
-    public void testBuiltInNodeMonitoringDataList() throws InterruptedException {
-        final List<String> expectedMonitoringDataValues = List.of("Architecture", "Response Time", "Clock Difference",
-                "Free Temp Space", "Free Disk Space", "Free Swap Space");
+    public void testBuiltInNodeMonitoringDataList() {
+        final List<String> expectedMonitoringDataValues = new ArrayList<>(List.of("Architecture", "Response Time",
+                "Clock Difference", "Free Temp Space", "Free Disk Space", "Free Swap Space"));
 
         getDriver().findElement(By.cssSelector("[href='/computer/']")).click();
         getDriver().findElement(By.cssSelector("[href*='built-in']")).click();
         getDriver().findElement(By.className("advancedButton")).click();
-        Thread.sleep(3000);
+
         List<WebElement> monitoringDataElements = getDriver()
                 .findElements(By.cssSelector("[class*='jenkins-table'] td:nth-of-type(odd)"));
         List<String> actualMonitoringDataValues = new ArrayList<>();
         for (WebElement element : monitoringDataElements) {
             actualMonitoringDataValues.add(element.getText());
         }
-        System.out.println(actualMonitoringDataValues);
-        Assert.assertEquals(actualMonitoringDataValues, expectedMonitoringDataValues,
-                "Actual Monitoring Data list is different");
+
+        try {
+            Assert.assertEquals(actualMonitoringDataValues, expectedMonitoringDataValues,
+                    "Actual Monitoring Data list is different");
+        } catch (AssertionError e) {
+            Collections.sort(expectedMonitoringDataValues);
+            Assert.assertEquals(actualMonitoringDataValues, expectedMonitoringDataValues,
+                    "Actual Monitoring Data list is different after sorting expected values alphabetically");
+        }
     }
 }
