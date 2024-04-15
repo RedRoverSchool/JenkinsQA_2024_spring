@@ -12,7 +12,7 @@ import java.util.Random;
 public class NewItem2Test extends BaseTest {
 
     public void enterToNewItemPage() {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();;
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
     }
 
     public void enterProjectName(String projectName) {
@@ -93,7 +93,7 @@ public class NewItem2Test extends BaseTest {
         char restrictedChar = generateRandomRestrictedChar();
 
         enterToNewItemPage();
-        enterProjectName(String.valueOf(restrictedChar) + PROJECT_NAME);
+        enterProjectName(restrictedChar + PROJECT_NAME);
         verifyHintForInvalidProjectName(String.format("» ‘%s’ is an unsafe character", restrictedChar));
     }
 
