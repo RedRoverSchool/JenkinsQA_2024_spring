@@ -24,14 +24,14 @@ public class NodesTest extends BaseTest {
     }
 
     @Test
-    public void testBuiltInNodeMonitoringDataList() {
+    public void testBuiltInNodeMonitoringDataList() throws InterruptedException {
         final List<String> expectedMonitoringDataValues = List.of("Architecture", "Response Time", "Clock Difference",
                 "Free Temp Space", "Free Disk Space", "Free Swap Space");
 
         getDriver().findElement(By.cssSelector("[href='/computer/']")).click();
         getDriver().findElement(By.cssSelector("[href*='built-in']")).click();
         getDriver().findElement(By.className("advancedButton")).click();
-
+        Thread.sleep(3000);
         List<WebElement> monitoringDataElements = getDriver()
                 .findElements(By.cssSelector("[class*='jenkins-table'] td:nth-of-type(odd)"));
         List<String> actualMonitoringDataValues = new ArrayList<>();
