@@ -25,7 +25,7 @@ public class NodesTest extends BaseTest {
 
     @Test
     public void testBuiltInNodeMonitoringDataList() {
-        final List<String> expectedMonitoringDataValues = List.of("Architecture", "Clock Difference",
+        final List<String> expectedMonitoringDataValues = List.of("Architecture", "Clock Difference", "Response Time",
                 "Free Temp Space", "Free Disk Space", "Free Swap Space");
 
         getDriver().findElement(By.cssSelector("[href='/computer/']")).click();
