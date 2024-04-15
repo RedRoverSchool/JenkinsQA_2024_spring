@@ -42,4 +42,19 @@ public class CreateProjectTest extends BaseTest {
 
         Assert.assertEquals(pipeLine.getText(),"Pipeline");
     }
+
+    @Test
+    public void testCreateNewFolder() {
+        getDriver().findElement(MAIN_PAGE).click();
+
+        getDriver().findElement(JENKINS_INPUT).sendKeys("NewFolder");
+        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+
+        getDriver().findElement(OK_BUTTON).click();
+
+        getDriver().findElement(By.className("jenkins-breadcrumbs__list-item")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//td/*[@href='job/NewFolder/']")).getText(),
+                "NewFolder");
+    }
 }
