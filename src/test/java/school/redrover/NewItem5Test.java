@@ -9,7 +9,7 @@ import school.redrover.runner.BaseTest;
 public class NewItem5Test extends BaseTest {
     @Test
     public void testCreateItemWithEmptyName() {
-        getDriver().findElement(By.xpath("(//span[@class='task-link-wrapper '])[1]")).click();
+        getDriver().findElement(By.xpath("//a[@href=\"/view/all/newJob\"]")).click();
         getDriver().findElement(By.id("name")).clear();
         WebElement submitButton = getDriver().findElement(By.id("ok-button"));
         submitButton.click();
