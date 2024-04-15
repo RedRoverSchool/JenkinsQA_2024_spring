@@ -5,7 +5,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-public class AddDescriptionFreestyleProject extends BaseTest {
+public class AddDescriptionFreestyleProjectTest extends BaseTest {
     private void createFreestyleProject() {
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.name("name")).sendKeys("freestyleProjectName");
@@ -22,9 +22,6 @@ public class AddDescriptionFreestyleProject extends BaseTest {
         final String expectedAddedDescription = "It is a new description";
         final String expectedMessage = "Edit description";
 
-        createFreestyleProject();
-        openDashboard();
-
         getDriver().findElement(By.id("description-link")).click();
         getDriver().findElement(By.name("description")).sendKeys(expectedAddedDescription);
         getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
@@ -34,7 +31,5 @@ public class AddDescriptionFreestyleProject extends BaseTest {
 
         Assert.assertEquals(actualAddedDescription, expectedAddedDescription);
         Assert.assertEquals(actualMessage, expectedMessage);
-
     }
-
 }
