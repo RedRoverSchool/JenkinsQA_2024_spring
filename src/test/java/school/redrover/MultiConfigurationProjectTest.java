@@ -55,4 +55,20 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(By.className("textarea-preview")).getText().equals(text));
     }
+
+    @Test
+    public void testReplacingProjectDescription() {
+        String oldText = "The text to be replaced";
+        String newText = "Replacement text";
+
+        createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
+        addProjectDescription(this, projectName, oldText);
+
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.name("description")).clear();
+        getDriver().findElement(By.name("description")).sendKeys(newText);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.id("description")).getText().contains(newText));
+    }
 }
