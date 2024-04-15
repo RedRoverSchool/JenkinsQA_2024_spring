@@ -117,4 +117,24 @@ public class MultibranchPipelineTest extends BaseTest {
         String foundText = getDriver().findElement(By.xpath("//*[@id='disable-project']/button")).getText();
         Assert.assertEquals(foundText, "Disable Multibranch Pipeline");
     }
+
+    @Test
+    public void testDisabledMultPipelineTextInTooltipWhenUponHovering() {
+        final String multPipelineName = "Multibranch Pipeline";
+        final String tooltipText = "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
+
+        createNewMultPipeline(multPipelineName);
+        disableCreatedMultPipeline(multPipelineName);
+
+        getDriver().findElement(By.xpath("//span[text()='" + multPipelineName + "']")).click();
+        getDriver().findElement(By.cssSelector("[href $='Pipeline/configure']")).click();
+        Actions action = new Actions(getDriver());
+        WebElement disabledSpan = getDriver().findElement(By.cssSelector("[data-title*='Disabled']"));
+        action.moveToElement(disabledSpan);
+        action.perform();
+        WebElement toolTip = getDriver().findElement(By.id("toggle-switch-enable-disable-project"));
+
+        toolTip.isDisplayed();
+        Assert.assertEquals(toolTip.getAttribute("tooltip"),tooltipText,"Text in the tooltip is different");
+    }
 }
