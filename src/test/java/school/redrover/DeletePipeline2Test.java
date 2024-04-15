@@ -27,7 +27,7 @@ public class DeletePipeline2Test extends BaseTest {
 
         Assert.assertEquals("Delete the Pipeline ‘Pipeline1’?", "Delete the Pipeline ‘Pipeline1’?");
 
-        getDriver().findElement(By.xpath("//button[normalize-space()='Cancel']")).click();
+        getDriver().findElement(By.xpath("(//button[normalize-space()='Cancel'])[1]")).click();
         getDriver().findElement(By.linkText("Pipeline1")).isDisplayed();
     }
 
