@@ -1,6 +1,8 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -70,5 +72,29 @@ public class MultiConfigurationProjectTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertTrue(getDriver().findElement(By.id("description")).getText().contains(newText));
+    }
+
+    @Test
+    public void testMakeCopyMultiConfigurationProject() {
+        String newProjectName = "MCProject copy";
+        createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
+
+        getDriver().findElement(By.cssSelector("[href $= 'newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(newProjectName);
+
+        WebElement copyFrom = getDriver().findElement(By.id("from"));
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "return arguments[0].scrollIntoView(true);",
+                copyFrom);
+        copyFrom.sendKeys(projectName);
+
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.id("jenkins-home-link")).click();
+
+        Assert.assertEquals(
+                getDriver().findElements(By.className("jenkins-table__link")).size(),
+                2,
+                "Copy of the project does not created");
     }
 }
