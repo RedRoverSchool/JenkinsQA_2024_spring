@@ -98,4 +98,10 @@ public final class TestUtils {
         getWait15(baseTest).until(ExpectedConditions.elementToBeClickable(DIALOG_DEFAULT_BUTTON)).click();
     }
 
+    public static void addProjectDescription(BaseTest baseTest, String projectName, String description) {
+        baseTest.getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
+        getWait15(baseTest).until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
+        baseTest.getDriver().findElement(By.name("description")).sendKeys(description);
+        baseTest.getDriver().findElement(By.name("Submit")).click();
+    }
 }
