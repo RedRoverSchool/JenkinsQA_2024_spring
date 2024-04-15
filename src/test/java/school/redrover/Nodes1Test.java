@@ -30,9 +30,9 @@ public class Nodes1Test extends BaseTest {
 
         Assert.assertEquals(actualResult, expectedResult);
     }
-    @Ignore
+
     @Test
-    public void testCreateNewNodeWithInvalidData() {
+    public void testCreateNewNodeWithInvalidData() throws InterruptedException {
 
         final String expectedResult = "‘!’ is an unsafe character";
 
@@ -41,12 +41,14 @@ public class Nodes1Test extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href='new']")).click();
 
         getDriver().findElement(By.id("name")).sendKeys("!");
-        getDriver().findElement(By.xpath("//label[@for='hudson.slaves.DumbSlave']")).click();
 
+
+        getDriver().findElement(By.xpath("//label[@for='hudson.slaves.DumbSlave']")).click();
+        Thread.sleep(500);
         String actualResult = getDriver().findElement(By.className("error")).getText();
 
-        System.out.println("actualResult: " + actualResult);
-        System.out.println("expectedResult: " + expectedResult);
-        //Assert.assertEquals(actualResult, expectedResult);
+        //System.out.println("actualResult: " + actualResult);
+        //System.out.println("expectedResult: " + expectedResult);
+        Assert.assertEquals(actualResult, expectedResult);
     }
 }
