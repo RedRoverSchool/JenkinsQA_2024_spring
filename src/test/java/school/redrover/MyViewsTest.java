@@ -1,10 +1,11 @@
-package school.redrover.runner;
+package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
-public class MyViewsTest extends BaseTest{
+public class MyViewsTest extends BaseTest {
     @Test
     public void testCreateNewView() {
 
