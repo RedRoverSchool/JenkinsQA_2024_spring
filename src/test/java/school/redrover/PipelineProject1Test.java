@@ -11,6 +11,7 @@ public class PipelineProject1Test extends BaseTest {
     private static final String PIPELINE_NAME = "NewFirstPipeline";
     private static final String PIPELINE_DESCRIPTION = "Description added to my pipeline.";
     private static final String RENAMED_PIPELINE_NAME = "RenamedFirstPipeline";
+    private static final By BUILD_TRIANGLE_BUTTON = By.xpath("//td[@class='jenkins-table__cell--tight']/div/a");
 
     private void createPipeline(String name) {
         getDriver().findElement(By.xpath("//div[@class='task '][1]")).click();
@@ -108,10 +109,26 @@ public class PipelineProject1Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         returnToHomePage();
 
-        WebElement greenBuildArrow = getDriver().findElement(By.xpath("//td[@class='jenkins-table__cell--tight']/div/a"));
+        WebElement greenBuildArrow = getDriver().findElement(BUILD_TRIANGLE_BUTTON);
         String buildStatus = greenBuildArrow.getAttribute("tooltip");
 
         Assert.assertEquals(buildStatus, "Schedule a Build for " + PIPELINE_NAME);
+    }
+
+    @Test
+    public void testPipelineBuildSuccessFromConsole() {
+        createPipeline(PIPELINE_NAME);
+        returnToHomePage();
+
+        getDriver().findElement(BUILD_TRIANGLE_BUTTON).click();
+        clickOnCreatedJobOnDashboardPage(PIPELINE_NAME);
+
+        getDriver().findElement(By.xpath("//a[text()='#1']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/1/console']")).click();
+
+        WebElement consoleOutput = getDriver().findElement(By.xpath("//pre[@class='console-output']"));
+
+        Assert.assertTrue(consoleOutput.getText().contains("Finished: SUCCESS"));
     }
 }
 
