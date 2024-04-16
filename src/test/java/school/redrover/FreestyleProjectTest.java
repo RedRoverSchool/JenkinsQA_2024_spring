@@ -191,14 +191,10 @@ public class FreestyleProjectTest extends BaseTest {
 //                By.xpath("//a [@href='job/" + projectName.replaceAll(" ", "%20")
 //                        + "/']/button [@class='jenkins-menu-dropdown-chevron']")).click();
 
-        WebDriverWait wait60 = new WebDriverWait(getDriver(), Duration.ofSeconds(60));
-
-        wait60.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a [@href='/job/" + projectName.replaceAll(" ", "%20")
-                        + "/move']")));
-
-        getDriver().findElement(By.xpath("//a [@href='/job/"
-                + projectName.replaceAll(" ", "%20") + "/move']")).click();
+        moveMouseTo.moveToElement(getDriver().findElement(By.xpath("//a [@href='/job/"
+                + projectName.replaceAll(" ", "%20") + "/move']")))
+                .click()
+                .perform();
 
         getDriver().findElement(By.xpath("//option [@value='/" + folderName + "']")).click();
 
