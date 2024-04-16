@@ -18,4 +18,3 @@ public class NewItem4Test extends BaseTest {
         Assert.assertTrue(title.isDisplayed());
     }
 }
-

@@ -5,8 +5,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
+
+import static school.redrover.runner.TestUtils.*;
 
 public class MultibranchPipelineTest extends BaseTest {
 
@@ -116,5 +120,41 @@ public class MultibranchPipelineTest extends BaseTest {
 
         String foundText = getDriver().findElement(By.xpath("//*[@id='disable-project']/button")).getText();
         Assert.assertEquals(foundText, "Disable Multibranch Pipeline");
+    }
+
+    @Ignore
+    @Test
+    public void testDisabledMultPipelineTooltip() {
+        final String multPipelineName = "Multibranch Pipeline";
+        final String tooltipText = "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
+
+        createNewMultPipeline(multPipelineName);
+        disableCreatedMultPipeline(multPipelineName);
+
+        getDriver().findElement(By.xpath("//span[text()='" + multPipelineName + "']")).click();
+        getDriver().findElement(By.cssSelector("[href$='Pipeline/configure']")).click();
+        WebElement disabledSpan = getDriver().findElement(By.cssSelector("[data-title*='Disabled']"));
+        new Actions(getDriver()).moveToElement(disabledSpan).perform();
+        WebElement tooltip = getDriver().findElement(By.className("tippy-box"));
+
+        Assert.assertTrue(tooltip.isDisplayed());
+        Assert.assertEquals(tooltip.getText(),tooltipText);
+    }
+
+    @Test
+    public void testRenameMultibranchPipelineWithNameSameAsCurrent() {
+
+        final String MULTIBRANCH_PIPELINE_NAME = "First Multibranch Pipeline project";
+        final String expectedErrorMessage = "The new name is the same as the current name.";
+
+        TestUtils.createJob(this, Job.MULTI_BRUNCH_PIPELINE, MULTIBRANCH_PIPELINE_NAME);
+
+        getDriver().findElement(By.cssSelector("#breadcrumbs > li:nth-child(3")).click();
+        getDriver().findElement(By.cssSelector("#tasks > div:nth-child(8) > span > a")).click();
+        getDriver().findElement(By.xpath("//div[@id='bottom-sticker']//button")).click();
+
+        WebElement actualErrorMessage = getDriver().findElement(By.xpath("//div[@id='main-panel']/p"));
+
+        Assert.assertEquals(actualErrorMessage.getText(), expectedErrorMessage);
     }
 }
