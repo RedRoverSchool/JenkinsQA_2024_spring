@@ -2,9 +2,13 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.*;
 import org.testng.annotations.*;
 import school.redrover.runner.*;
+
+import java.time.Duration;
 
 public class FreestyleProjectTest extends BaseTest {
     private static final String FREESTYLE_PROJECT_NAME = "Freestyle Project Name";
@@ -30,12 +34,13 @@ public class FreestyleProjectTest extends BaseTest {
         submitButton().click();
     }
 
-    public void freestyleProjectCreateFolder(String folderName) {
+    public void createFolderfreestyleProject(String folderName) {
         getDriver().findElement(By.xpath("//a [@href='/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//input [@name='name']")).sendKeys(folderName);
         getDriver().findElement(By.xpath("//span [@class='label'] [text() = 'Folder']")).click();
         getDriver().findElement(By.xpath("//button [@id='ok-button']")).click();
         submitButton().click();
+
     }
 
     @Test
@@ -165,7 +170,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         String expectedResult = "Full project name: " + folderName + "/" + projectName;
 
-        freestyleProjectCreateFolder(folderName);
+        createFolderfreestyleProject(folderName);
         jenkinsHomeLink().click();
         freestyleProjectCreate(projectName);
         jenkinsHomeLink().click();
@@ -175,6 +180,12 @@ public class FreestyleProjectTest extends BaseTest {
         moveMouseTo.moveToElement(getDriver().findElement(
                         By.xpath("//span [text() = '" + projectName + "']")))
                 .perform();
+
+        WebDriverWait wait60 = new WebDriverWait(getDriver(), Duration.ofSeconds(60));
+
+        wait60.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//a [@href='job/" + projectName.replaceAll(" ", "%20")
+                        + "/']/button [@class='jenkins-menu-dropdown-chevron']")));
 
         getDriver().findElement(
                 By.xpath("//a [@href='job/" + projectName.replaceAll(" ", "%20")
@@ -190,6 +201,5 @@ public class FreestyleProjectTest extends BaseTest {
         String actualResult = getDriver().findElement(By.xpath("//div [@id='main-panel']")).getText();
 
         Assert.assertTrue(actualResult.contains(expectedResult));
-
     }
 }
