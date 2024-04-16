@@ -130,9 +130,9 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.cssSelector("[href$='Pipeline/configure']")).click();
         WebElement disabledSpan = getDriver().findElement(By.cssSelector("[data-title*='Disabled']"));
         new Actions(getDriver()).moveToElement(disabledSpan).perform();
-        WebElement toolTip = getDriver().findElement(By.id("toggle-switch-enable-disable-project"));
+        WebElement tooltip = getDriver().findElement(By.className("tippy-box"));
 
-        Assert.assertTrue(toolTip.isDisplayed());
-        Assert.assertEquals(toolTip.getAttribute("tooltip"),tooltipText,"Text in the tooltip is different");
+        Assert.assertTrue(tooltip.isDisplayed());
+        Assert.assertEquals(tooltip.getText(),tooltipText);
     }
 }
