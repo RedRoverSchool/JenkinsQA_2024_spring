@@ -43,6 +43,13 @@ public class FreestyleProjectTest extends BaseTest {
 
     }
 
+    public void openElementDropdown(WebElement element) {
+        JavascriptExecutor openElementDropdown = (JavascriptExecutor) getDriver();
+
+        openElementDropdown.executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", element);
+        openElementDropdown.executeScript("arguments[0].dispatchEvent(new Event('click'));", element);
+    }
+
     @Test
     public void testCreateFreestyleProjectJob() {
         String expectedHeading = "My First Freestyle project";
@@ -175,12 +182,7 @@ public class FreestyleProjectTest extends BaseTest {
         freestyleProjectCreate(projectName);
         jenkinsHomeLink().click();
 
-        JavascriptExecutor openElementDropdown = (JavascriptExecutor) getDriver();
-
-        openElementDropdown.executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", getDriver().findElement(
-                By.xpath("//a [@href='job/" + projectName.replaceAll(" ", "%20")
-                        + "/']/button [@class='jenkins-menu-dropdown-chevron']")));
-        openElementDropdown.executeScript("arguments[0].dispatchEvent(new Event('click'));", getDriver().findElement(
+        openElementDropdown(getDriver().findElement(
                 By.xpath("//a [@href='job/" + projectName.replaceAll(" ", "%20")
                         + "/']/button [@class='jenkins-menu-dropdown-chevron']")));
 
