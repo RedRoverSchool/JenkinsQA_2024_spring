@@ -2,13 +2,9 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.*;
 import org.testng.annotations.*;
 import school.redrover.runner.*;
-
-import java.time.Duration;
 
 public class FreestyleProjectTest extends BaseTest {
     private static final String FREESTYLE_PROJECT_NAME = "Freestyle Project Name";
@@ -34,7 +30,7 @@ public class FreestyleProjectTest extends BaseTest {
         submitButton().click();
     }
 
-    public void createFolderfreestyleProject(String folderName) {
+    public void createFolder(String folderName) {
         getDriver().findElement(By.xpath("//a [@href='/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//input [@name='name']")).sendKeys(folderName);
         getDriver().findElement(By.xpath("//span [@class='label'] [text() = 'Folder']")).click();
@@ -170,7 +166,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         String expectedResult = "Full project name: " + folderName + "/" + projectName;
 
-        createFolderfreestyleProject(folderName);
+        createFolder(folderName);
         jenkinsHomeLink().click();
         freestyleProjectCreate(projectName);
         jenkinsHomeLink().click();
@@ -179,13 +175,8 @@ public class FreestyleProjectTest extends BaseTest {
 
         moveMouseTo.moveToElement(getDriver().findElement(
                         By.xpath("//span [text() = '" + projectName + "']")))
+                .build()
                 .perform();
-
-        WebDriverWait wait60 = new WebDriverWait(getDriver(), Duration.ofSeconds(60));
-
-        wait60.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a [@href='job/" + projectName.replaceAll(" ", "%20")
-                        + "/']/button [@class='jenkins-menu-dropdown-chevron']")));
 
         getDriver().findElement(
                 By.xpath("//a [@href='job/" + projectName.replaceAll(" ", "%20")
