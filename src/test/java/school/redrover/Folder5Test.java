@@ -3,6 +3,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -36,6 +37,30 @@ public class Folder5Test extends BaseTest {
 
         List<WebElement> jobList = getDriver().findElements(
                 By.xpath("//table//a[@href='job/" + folderName +"/']"));
+
+        Assert.assertTrue(jobList.isEmpty());
+    }
+    @Test
+    public void deleteFolderFromDropDownTest() throws InterruptedException {
+        final String folderName = "DeleteFolderFromDropDown";
+
+        createFolder(folderName);
+
+        getDriver().findElement(By.xpath("//table//a[@href='job/" + folderName + "/']"));
+
+        WebElement button = getDriver().findElement(By.xpath("//table//button[@class='jenkins-menu-dropdown-chevron']"));
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(button).build().perform();
+        button.click();
+
+        WebElement menuContainer = getDriver().findElement(By.xpath("//div[@id='tippy-5']"));
+        WebElement targetLine = getDriver().findElement(By.xpath("//body//button[@class='jenkins-dropdown__item']"));
+        targetLine.click();
+
+        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+
+        List<WebElement> jobList = getDriver()
+                .findElements(By.xpath("//table//a[@href='job/" + folderName +"/']"));
 
         Assert.assertTrue(jobList.isEmpty());
     }
