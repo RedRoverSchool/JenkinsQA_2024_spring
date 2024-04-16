@@ -5,7 +5,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-public class FreestyleProject8Test extends BaseTest {
+public class FreestyleProject10Test extends BaseTest {
     private static final String NEW_PROJECT_NAME = "New freestyle project";
     private static final String PROJECT_DESCRIPTION = "This is project description";
 

@@ -19,3 +19,4 @@ public class FreestyleCreateTest extends BaseTest {
                 .xpath("//*[@id='breadcrumbs']/li[3]/a")).getText(), "project1");
     }
 }
+

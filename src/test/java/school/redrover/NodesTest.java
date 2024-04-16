@@ -12,6 +12,17 @@ import java.util.List;
 
 public class NodesTest extends BaseTest {
 
+    private static final String NODE_NAME = "FirstNode";
+
+    private void createNodeViaMainPage() {
+        getDriver().findElement(By.cssSelector("[href='/computer/']")).click();
+        getDriver().findElement(By.cssSelector("[href='new']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(NODE_NAME);
+        getDriver().findElement(By.cssSelector("[class$=radio__label]")).click();
+        getDriver().findElement(By.id("ok")).click();
+        getDriver().findElement(By.name("Submit")).click();
+    }
+
     @Test
     public void testAddNode() {
         String text;
@@ -21,7 +32,7 @@ public class NodesTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@href='new']")).click();
         text = getDriver().findElement(By.xpath("//h1")).getText();
 
-        Assert.assertEquals(text,"New node");
+        Assert.assertEquals(text, "New node");
     }
 
     @Test
@@ -48,5 +59,15 @@ public class NodesTest extends BaseTest {
             Assert.assertEquals(actualMonitoringDataValues, expectedMonitoringDataValues,
                     "Actual Monitoring Data list is different after sorting expected values alphabetically");
         }
+    }
+
+    @Test
+    public void testCreatedNodeIsOnMainPage() {
+        createNodeViaMainPage();
+        getDriver().findElement(By.id("jenkins-home-link")).click();
+        WebElement createdNode = getDriver().findElement(By.cssSelector("[href='/computer/" + NODE_NAME + "/']"));
+
+        Assert.assertTrue(createdNode.isDisplayed());
+        Assert.assertEquals(createdNode.getText(), NODE_NAME, "The created node name is not " + NODE_NAME);
     }
 }
