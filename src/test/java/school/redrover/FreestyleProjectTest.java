@@ -1,11 +1,10 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
-import org.testng.Assert;
-import org.testng.annotations.Test;
-import school.redrover.runner.BaseTest;
+import org.testng.*;
+import org.testng.annotations.*;
+import school.redrover.runner.*;
 
 public class FreestyleProjectTest extends BaseTest {
     private static final String FREESTYLE_PROJECT_NAME = "Freestyle Project Name";
@@ -139,6 +138,26 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    public void testAddDescription() {
+        final String projectName = "New Freestyle project";
+        final String description = "Text description of the project";
+
+        getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        getDriver().findElement((By.id("description-link"))).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertTrue(
+                getDriver().findElement(By.xpath("//div[text()='" + description + "']")).isDisplayed(),
+                description);
+    }
+
+    @Test
     public void testMoveToFolder() {
 
         String folderName = "Classic Models";
@@ -173,4 +192,3 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(actualResult.contains(expectedResult));
     }
 }
-

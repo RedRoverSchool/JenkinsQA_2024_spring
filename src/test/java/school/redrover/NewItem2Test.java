@@ -9,6 +9,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class NewItem2Test extends BaseTest {
@@ -73,7 +74,7 @@ public class NewItem2Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
         WebElement pageHeadline = getDriver().findElement(By.cssSelector("h1"));
 
-        if (itemOptionIndex == 3) {
+        if (Objects.equals(projectType, "standalone-projects") && itemOptionIndex == 3) {
             Assert.assertEquals(pageHeadline.getText(), "Project " + PROJECT_NAME);
         } else {
             Assert.assertEquals(pageHeadline.getText(), PROJECT_NAME);
