@@ -7,23 +7,6 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class FreestyleProjectTest extends BaseTest {
-    @Test
-    public void testFreestyleProjectCreate() {
-        String newName = "Project8";
-        getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(newName);
-        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-
-        WebElement nameOfProject = getDriver().findElement(
-                By.xpath("//h1[@class='job-index-headline page-headline']"));
-
-        String actualResult = nameOfProject.getText();
-
-        Assert.assertEquals(actualResult, newName);
-    }
-
     private static final String FREESTYLE_PROJECT_NAME = "Freestyle Project Name";
     private static final String NEW_FREESTYLE_PROJECT_NAME = "New Freestyle Project Name";
 
@@ -120,7 +103,7 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.xpath("//li/a[@href='/']")).click();
         getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/" +
-                FREESTYLE_PROJECT_NAME.replaceAll(" ","%20") + "/confirm-rename']")).click();
+                FREESTYLE_PROJECT_NAME.replaceAll(" ", "%20") + "/confirm-rename']")).click();
         getDriver().findElement(By.xpath("//input[@checkdependson='newName']")).clear();
         getDriver().findElement(By.xpath("//input[@checkdependson='newName']"))
                 .sendKeys(NEW_FREESTYLE_PROJECT_NAME);
@@ -132,6 +115,18 @@ public class FreestyleProjectTest extends BaseTest {
                 (By.xpath("//a[@class='jenkins-table__link model-link inside']")).getText();
 
         Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void testFreestyleProjectCreate() {
+        freestyleProjectCreate(FREESTYLE_PROJECT_NAME);
+
+        WebElement nameOfProject = getDriver().findElement(
+                By.xpath("//h1[@class='job-index-headline page-headline']"));
+
+        String actualResult = nameOfProject.getText();
+
+        Assert.assertEquals(actualResult, FREESTYLE_PROJECT_NAME);
     }
 }
 
