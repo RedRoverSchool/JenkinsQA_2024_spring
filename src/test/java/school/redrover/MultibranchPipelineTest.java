@@ -1,9 +1,13 @@
 package school.redrover;
 
+import java.time.Duration;
 import java.util.List;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -122,9 +126,10 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(foundText, "Disable Multibranch Pipeline");
     }
 
-    @Ignore
+
     @Test
     public void testDisabledMultPipelineTooltip() {
+        WebDriverWait webDriverWait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
         final String multPipelineName = "Multibranch Pipeline";
         final String tooltipText = "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
 
@@ -135,7 +140,7 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.cssSelector("[href$='Pipeline/configure']")).click();
         WebElement disabledSpan = getDriver().findElement(By.cssSelector("[data-title*='Disabled']"));
         new Actions(getDriver()).moveToElement(disabledSpan).perform();
-        WebElement tooltip = getDriver().findElement(By.className("tippy-box"));
+        WebElement tooltip = webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-box")));
 
         Assert.assertTrue(tooltip.isDisplayed());
         Assert.assertEquals(tooltip.getText(),tooltipText);
