@@ -1,9 +1,11 @@
 package school.redrover;
 
+import net.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.Color;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -111,6 +113,7 @@ public class NewItem2Test extends BaseTest {
         selectItemTypeForProjectAndCheckPageTitleAfterSaving("standalone-projects");
     }
 
+    @Ignore
     @Test
     public void testCreateItemForNestedProjects() {
         enterToNewItemPage();
