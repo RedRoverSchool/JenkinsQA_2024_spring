@@ -17,7 +17,6 @@ public class CreateNewProjectTest extends BaseTest {
     private WebElement newItemButton() {
 
         return getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]"));
-
     }
 
     private WebElement itemName() {
@@ -54,7 +53,7 @@ public class CreateNewProjectTest extends BaseTest {
 
     private WebElement createdProjectName() {
 
-        return getDriver().findElement(By.cssSelector("#main-panel>h1"));
+        return getDriver().findElement(By.xpath("//div[@id='main-panel']/h1"));
     }
     public WebElement chooseTypeOfProject(WebElement element) {
 
