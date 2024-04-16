@@ -15,4 +15,16 @@ public class NewItem7Test extends BaseTest {
 
         Assert.assertEquals(actualResult, "Enter an item name");
     }
+
+    @Test
+    public void testCreateNewItemWithEmptyName() {
+        getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
+
+        getDriver().findElement(By.tagName("body")).click();
+
+        WebElement hintElement = getDriver().findElement(By.id("itemname-required"));
+
+        Assert.assertEquals(hintElement.getText(),"» This field cannot be empty, please enter a valid name");
+        Assert.assertEquals(hintElement.getCssValue("color"), "rgba(255, 0, 0, 1)");
+    }
 }
