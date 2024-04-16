@@ -157,4 +157,20 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertEquals(actualErrorMessage.getText(), expectedErrorMessage);
     }
+
+    @Test
+    public void testEnabledMultibranchPipelineOnConfigPage() {
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("New Multibranch Pipeline");
+        getDriver().findElement(By.cssSelector("[class*=MultiBranchProject]")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.cssSelector("label[class*=toggle-switch__label]")).click();
+        getDriver().findElement(By.cssSelector("[class*=jenkins-button--primary]")).click();
+        getDriver().findElement(By.cssSelector("[href*='Pipeline/configure']")).click();
+        getDriver().findElement(By.cssSelector("label[class*=toggle-switch__label]")).click();
+
+        String statusToggle = getDriver().findElement(By.id("enable-disable-project")).getDomProperty("checked");
+
+        Assert.assertEquals(statusToggle,"true");
+    }
 }
