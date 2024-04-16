@@ -53,7 +53,7 @@ public class ExistingPipelineConfigTest extends BaseTest  {
 
         getDriver().findElement(By.xpath("//button[@data-section-id='pipeline']")).click();
 
-        Thread.sleep(1000);
+        Thread.sleep(3000);
         boolean resultAfterButtonClick = position("pipeline");
         Assert.assertTrue(resultAfterButtonClick);
     }
