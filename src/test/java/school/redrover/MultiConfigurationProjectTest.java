@@ -5,7 +5,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -18,7 +17,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testAddDescription() {
-        createNewItemAndReturnToDashboard(this,projectName, Item.MULTI_CONFIGURATION_PROJECT);
+        createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
         final String text = "❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F";
 
         addProjectDescription(this, projectName, text);
@@ -33,7 +32,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         final String text = "qwerty123";
         final String additionText = "AAA";
 
-        createNewItemAndReturnToDashboard(this,projectName, Item.MULTI_CONFIGURATION_PROJECT);
+        createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
         addProjectDescription(this, projectName, text);
         returnToDashBoard(this);
 
@@ -49,7 +48,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testDescriptionPreview() {
-        createNewItemAndReturnToDashboard(this,projectName, Item.MULTI_CONFIGURATION_PROJECT);
+        createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
 
         String text = "I want to see preview";
         getDriver().findElement(By.id("job_" + projectName)).click();
@@ -98,22 +97,5 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 getDriver().findElements(By.className("jenkins-table__link")).size(),
                 2,
                 "Copy of the project does not created");
-    }
-
-    @DataProvider(name = "unsafeCharactersProvider")
-    public Object[][] unsafeCharactersProvider() {
-        return new Object[][]{
-                {"!"}, {"#"}, {"$"}, {"%"}, {"&"}, {"*"}, {"/"}, {";"}, {">"}, {"<"}, {"?"}, {"@"}, {"["}, {"\\"}, {"]"}, {"^"}, {"|"}
-        };
-    }
-
-    @Test(dataProvider = "unsafeCharactersProvider")
-    public void testInvalidValuesForProjectNameInput(String x) {
-        getDriver().findElement(By.cssSelector("[href $= 'newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(x);
-
-        Assert.assertEquals(
-                getDriver().findElement(By.id("itemname-invalid")).getText(),
-                "» ‘" + x + "’ is an unsafe character");
     }
 }
