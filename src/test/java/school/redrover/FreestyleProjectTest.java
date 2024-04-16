@@ -176,7 +176,6 @@ public class FreestyleProjectTest extends BaseTest {
         moveMouseTo.moveToElement(getDriver().findElement(
                         By.xpath("//a [@href='job/" + projectName.replaceAll(" ", "%20")
                                 + "/']/button [@class='jenkins-menu-dropdown-chevron']")))
-                .click()
                 .perform();
 
         getDriver().findElement(
