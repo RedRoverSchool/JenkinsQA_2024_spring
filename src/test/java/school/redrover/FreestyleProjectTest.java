@@ -175,26 +175,17 @@ public class FreestyleProjectTest extends BaseTest {
         freestyleProjectCreate(projectName);
         jenkinsHomeLink().click();
 
-        Actions moveMouseTo = new Actions(getDriver());
+        JavascriptExecutor openElementDropdown = (JavascriptExecutor) getDriver();
 
-        moveMouseTo.moveToElement(getDriver().findElement(
-                        By.xpath("//a/span [text() = '" + projectName + "']")))
-                .perform();
+        openElementDropdown.executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", getDriver().findElement(
+                By.xpath("//a [@href='job/" + projectName.replaceAll(" ", "%20")
+                        + "/']/button [@class='jenkins-menu-dropdown-chevron']")));
+        openElementDropdown.executeScript("arguments[0].dispatchEvent(new Event('click'));", getDriver().findElement(
+                By.xpath("//a [@href='job/" + projectName.replaceAll(" ", "%20")
+                        + "/']/button [@class='jenkins-menu-dropdown-chevron']")));
 
-        moveMouseTo.moveToElement(getDriver().findElement(
-                        By.xpath("//a [@href='job/" + projectName.replaceAll(" ", "%20")
-                                + "/']/button [@class='jenkins-menu-dropdown-chevron']")))
-                .click()
-                .perform();
-
-//        getDriver().findElement(
-//                By.xpath("//a [@href='job/" + projectName.replaceAll(" ", "%20")
-//                        + "/']/button [@class='jenkins-menu-dropdown-chevron']")).click();
-
-        moveMouseTo.moveToElement(getDriver().findElement(By.xpath("//a [@href='/job/"
-                + projectName.replaceAll(" ", "%20") + "/move']")))
-                .click()
-                .perform();
+        getDriver().findElement(By.xpath("//a [@href='/job/"
+                + projectName.replaceAll(" ", "%20") + "/move']")).click();
 
         getDriver().findElement(By.xpath("//option [@value='/" + folderName + "']")).click();
 
