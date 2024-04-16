@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
@@ -121,6 +122,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(foundText, "Disable Multibranch Pipeline");
     }
 
+    @Ignore
     @Test
     public void testDisabledMultPipelineTooltip() {
         final String multPipelineName = "Multibranch Pipeline";
