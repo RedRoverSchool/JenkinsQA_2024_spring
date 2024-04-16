@@ -15,7 +15,10 @@ public class FreestyleProject99Test extends BaseTest {
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.xpath("//*[@id=\"bottom-sticker\"]/div/button[1]")).click();
+        getDriver().findElement(By.linkText("Dashboard")).click();
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.className("jenkins-input")).sendKeys("FreestyleProject");
 
-        Assert.assertEquals(getDriver().findElement(By.linkText("FreestyleProject")).getText(), "FreestyleProject");
+        Assert.assertTrue(getDriver().findElement(By.id("itemname-invalid")).isDisplayed());
     }
 }
