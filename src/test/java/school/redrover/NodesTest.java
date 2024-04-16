@@ -70,4 +70,14 @@ public class NodesTest extends BaseTest {
         Assert.assertTrue(createdNode.isDisplayed());
         Assert.assertEquals(createdNode.getText(), NODE_NAME, "The created node name is not " + NODE_NAME);
     }
+
+    @Test
+    public void testCreatedNodeIsInNodesTable() {
+        createNodeViaMainPage();
+        WebElement createdNodeInNodesTable = getDriver().findElement(By.cssSelector("[href='../computer/" + NODE_NAME + "/']"));
+
+        Assert.assertTrue(createdNodeInNodesTable.isDisplayed());
+        Assert.assertEquals(createdNodeInNodesTable.getText(), NODE_NAME,
+                "The created node '" + NODE_NAME + "' is not in the Nodes table");
+    }
 }
