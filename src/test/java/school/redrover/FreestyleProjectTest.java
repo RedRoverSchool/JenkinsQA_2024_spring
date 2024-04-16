@@ -1,11 +1,28 @@
 package school.redrover;
 
-import org.openqa.selenium.*;
-import org.testng.*;
-import org.testng.annotations.*;
-import school.redrover.runner.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 public class FreestyleProjectTest extends BaseTest {
+    @Test
+    public void testFreestyleProjectCreate() {
+        String newName = "Project8";
+        getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(newName);
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        WebElement nameOfProject = getDriver().findElement(
+                By.xpath("//h1[@class='job-index-headline page-headline']"));
+
+        String actualResult = nameOfProject.getText();
+
+        Assert.assertEquals(actualResult, newName);
+    }
 
     private static final String FREESTYLE_PROJECT_NAME = "Freestyle Project Name";
     private static final String NEW_FREESTYLE_PROJECT_NAME = "New Freestyle Project Name";
@@ -39,20 +56,6 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testCreateFreestyleProject() {
-        final String ExpectedProjectName = "Vika Freestyle project";
-
-        getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(ExpectedProjectName);
-        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-
-        String newName = getDriver().findElement(By.tagName("h1")).getText();
-
-        Assert.assertEquals(newName, ExpectedProjectName);
-    }
-    @Test
     public void testRenameFreestyleProjectFromConfigurationPage() {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
         getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
@@ -78,5 +81,25 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(resultHeader, NEW_FREESTYLE_PROJECT_NAME);
         Assert.assertEquals(resultName, NEW_FREESTYLE_PROJECT_NAME);
+    }
+    @Test
+    public void testCreatingFreestyleInvalidChar() {
+
+        String[] invalidCharacters = {"!", "@", "#", "$", "%", "^", "&", "*", "?", "|", "/", "["};
+
+        getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
+
+        for (String invalidChar : invalidCharacters) {
+            getDriver().findElement(By.xpath("//*[@class='jenkins-input']")).clear();
+            getDriver().findElement(By.xpath("//*[@class='jenkins-input']")).sendKeys(invalidChar);
+
+            String actualResult = getDriver().findElement(By.xpath("//div[@id='itemname-invalid']"))
+                    .getText();
+            String expectedResult = "» ‘" + invalidChar + "’ is an unsafe character";
+            Assert.assertEquals(actualResult, expectedResult);
+
+            boolean okButton = getDriver().findElement(By.xpath("//button[@type='submit']")).isEnabled();
+            Assert.assertFalse(okButton);
+        }
     }
 }
