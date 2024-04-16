@@ -53,7 +53,7 @@ public class CreateNewProjectTest extends BaseTest {
 
     private WebElement createdProjectName() {
 
-        return getDriver().findElement(By.xpath("//div[@id='main-panel']/h1"));
+        return getDriver().findElement(By.xpath("//div[@id='main-panel']/div/div/h1"));
     }
     public WebElement chooseTypeOfProject(WebElement element) {
 
@@ -101,7 +101,7 @@ public class CreateNewProjectTest extends BaseTest {
         addDescriptionToProject("Project Freestyle");
         submitConfiguration();
 
-        Assert.assertEquals(getNameOfCreatedProject(), "Project FreestyleProject Name");
+        Assert.assertEquals(getNameOfCreatedProject(), "FreestyleProject Name");
 
     }
     @Test
@@ -111,7 +111,7 @@ public class CreateNewProjectTest extends BaseTest {
         addDescriptionToProject("Project Pipeline");
         submitConfiguration();
 
-        Assert.assertEquals(getNameOfCreatedProject(), "Pipeline PipelineProject Name");
+        Assert.assertEquals(getNameOfCreatedProject(), "PipelineProject Name");
 
     }
 }
