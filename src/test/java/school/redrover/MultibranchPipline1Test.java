@@ -14,7 +14,7 @@ public class MultibranchPipline1Test extends BaseTest {
 
         getDriver().findElement(By.xpath("//span[contains(text(),'Create')]")).click();
         getDriver().findElement(By.id("name")).sendKeys(MULTIBRANCH_NAME);
-        getDriver().findElement(By.xpath("//li[contains(@class, 'WorkflowMultiBranchProject')]")).click();
+        getDriver().findElement(By.xpath("//li[contains(@class,'WorkflowMultiBranchProject')]")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
 
