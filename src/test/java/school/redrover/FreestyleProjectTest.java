@@ -27,19 +27,27 @@ public class FreestyleProjectTest extends BaseTest {
     private static final String FREESTYLE_PROJECT_NAME = "Freestyle Project Name";
     private static final String NEW_FREESTYLE_PROJECT_NAME = "New Freestyle Project Name";
 
-    private WebElement okButton(){
+    private WebElement okButton() {
         return getDriver().findElement(By.id("ok-button"));
     }
 
-    private WebElement submitButton(){
+    private WebElement submitButton() {
         return getDriver().findElement(By.xpath("//button[@name = 'Submit']"));
     }
 
-    private WebElement jenkinsHomeLink(){
+    private WebElement jenkinsHomeLink() {
         return getDriver().findElement(By.id("jenkins-home-link"));
     }
 
-     @Test
+    public void freestyleProjectCreate(String newName) {
+        getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(newName);
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        submitButton().click();
+    }
+
+    @Test
     public void testCreateFreestyleProjectJob() {
         String expectedHeading = "My First Freestyle project";
 
@@ -82,8 +90,9 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(resultHeader, NEW_FREESTYLE_PROJECT_NAME);
         Assert.assertEquals(resultName, NEW_FREESTYLE_PROJECT_NAME);
     }
+
     @Test
-    public void testCreatingFreestyleInvalidChar() {
+    public void testCreateFreestyleProjectInvalidChar() {
 
         String[] invalidCharacters = {"!", "@", "#", "$", "%", "^", "&", "*", "?", "|", "/", "["};
 
@@ -102,4 +111,27 @@ public class FreestyleProjectTest extends BaseTest {
             Assert.assertFalse(okButton);
         }
     }
+
+    @Test
+    public void testRenameProject() {
+
+        freestyleProjectCreate(FREESTYLE_PROJECT_NAME);
+
+        getDriver().findElement(By.xpath("//li/a[@href='/']")).click();
+        getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" +
+                FREESTYLE_PROJECT_NAME.replaceAll(" ","%20") + "/confirm-rename']")).click();
+        getDriver().findElement(By.xpath("//input[@checkdependson='newName']")).clear();
+        getDriver().findElement(By.xpath("//input[@checkdependson='newName']"))
+                .sendKeys(NEW_FREESTYLE_PROJECT_NAME);
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//li/a[@href='/']")).click();
+
+        String expectedResult = NEW_FREESTYLE_PROJECT_NAME;
+        String actualResult = getDriver().findElement
+                (By.xpath("//a[@class='jenkins-table__link model-link inside']")).getText();
+
+        Assert.assertEquals(actualResult, expectedResult);
+    }
 }
+
