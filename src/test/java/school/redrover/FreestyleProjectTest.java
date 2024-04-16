@@ -174,10 +174,11 @@ public class FreestyleProjectTest extends BaseTest {
         Actions moveMouseTo = new Actions(getDriver());
 
         moveMouseTo.moveToElement(getDriver().findElement(
+                        By.xpath("//a/span [text() = '" + projectName + "']")))
+                .moveToElement(getDriver().findElement(
                         By.xpath("//a [@href='job/" + projectName.replaceAll(" ", "%20")
                                 + "/']/button [@class='jenkins-menu-dropdown-chevron']")))
                 .perform();
-        moveMouseTo.click();
 
         getDriver().findElement(
                 By.xpath("//a [@href='job/" + projectName.replaceAll(" ", "%20")
