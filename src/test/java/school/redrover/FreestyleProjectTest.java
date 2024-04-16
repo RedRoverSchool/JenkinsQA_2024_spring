@@ -190,5 +190,6 @@ public class FreestyleProjectTest extends BaseTest {
         String actualResult = getDriver().findElement(By.xpath("//div [@id='main-panel']")).getText();
 
         Assert.assertTrue(actualResult.contains(expectedResult));
+
     }
 }
