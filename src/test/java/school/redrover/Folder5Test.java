@@ -41,7 +41,7 @@ public class Folder5Test extends BaseTest {
         Assert.assertTrue(jobList.isEmpty());
     }
     @Test
-    public void deleteFolderFromDropDownTest() throws InterruptedException {
+    public void deleteFolderFromDropDownTest() {
         final String folderName = "DeleteFolderFromDropDown";
 
         createFolder(folderName);
@@ -49,12 +49,15 @@ public class Folder5Test extends BaseTest {
         getDriver().findElement(By.xpath("//table//a[@href='job/" + folderName + "/']"));
 
         WebElement button = getDriver().findElement(By.xpath("//table//button[@class='jenkins-menu-dropdown-chevron']"));
+        // Thread.sleep(200);
+        //button.click();
         Actions actions = new Actions(getDriver());
         actions.moveToElement(button).build().perform();
         button.click();
 
         WebElement menuContainer = getDriver().findElement(By.xpath("//div[@id='tippy-5']"));
         WebElement targetLine = getDriver().findElement(By.xpath("//body//button[@class='jenkins-dropdown__item']"));
+        actions.moveToElement(menuContainer).moveToElement(targetLine).build().perform();
         targetLine.click();
 
         getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
