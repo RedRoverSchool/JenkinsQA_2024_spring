@@ -5,8 +5,10 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
 import static school.redrover.runner.TestUtils.*;
 
 
@@ -96,5 +98,22 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 getDriver().findElements(By.className("jenkins-table__link")).size(),
                 2,
                 "Copy of the project does not created");
+    }
+
+    @DataProvider(name = "unsafeCharactersProvider")
+    public Object[][] unsafeCharactersProvider() {
+        return new Object[][]{
+                {"!"}, {"#"}, {"$"}, {"%"}, {"&"}, {"*"}, {"/"}, {";"}, {">"}, {"<"}, {"?"}, {"@"}, {"["}, {"\\"}, {"]"}, {"^"}, {"|"}
+        };
+    }
+
+    @Test(dataProvider = "unsafeCharactersProvider")
+    public void testInvalidValuesForProjectNameInput(String x) {
+        getDriver().findElement(By.cssSelector("[href $= 'newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(x);
+
+        Assert.assertEquals(
+                getDriver().findElement(By.id("itemname-invalid")).getText(),
+                "» ‘" + x + "’ is an unsafe character");
     }
 }
