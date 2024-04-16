@@ -2,9 +2,13 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.*;
 import org.testng.annotations.*;
 import school.redrover.runner.*;
+
+import java.time.Duration;
 
 public class FreestyleProjectTest extends BaseTest {
     private static final String FREESTYLE_PROJECT_NAME = "Freestyle Project Name";
@@ -186,6 +190,12 @@ public class FreestyleProjectTest extends BaseTest {
 //        getDriver().findElement(
 //                By.xpath("//a [@href='job/" + projectName.replaceAll(" ", "%20")
 //                        + "/']/button [@class='jenkins-menu-dropdown-chevron']")).click();
+
+        WebDriverWait wait60 = new WebDriverWait(getDriver(), Duration.ofSeconds(60));
+
+        wait60.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//a [@href='/job/" + projectName.replaceAll(" ", "%20")
+                        + "/move']")));
 
         getDriver().findElement(By.xpath("//a [@href='/job/"
                 + projectName.replaceAll(" ", "%20") + "/move']")).click();
