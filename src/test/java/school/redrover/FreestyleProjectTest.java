@@ -175,14 +175,17 @@ public class FreestyleProjectTest extends BaseTest {
 
         moveMouseTo.moveToElement(getDriver().findElement(
                         By.xpath("//a/span [text() = '" + projectName + "']")))
-                .moveToElement(getDriver().findElement(
-                        By.xpath("//a [@href='job/" + projectName.replaceAll(" ", "%20")
-                                + "/']/button [@class='jenkins-menu-dropdown-chevron']")))
                 .perform();
 
-        getDriver().findElement(
-                By.xpath("//a [@href='job/" + projectName.replaceAll(" ", "%20")
-                        + "/']/button [@class='jenkins-menu-dropdown-chevron']")).click();
+        moveMouseTo.moveToElement(getDriver().findElement(
+                        By.xpath("//a [@href='job/" + projectName.replaceAll(" ", "%20")
+                                + "/']/button [@class='jenkins-menu-dropdown-chevron']")))
+                .click()
+                .perform();
+
+//        getDriver().findElement(
+//                By.xpath("//a [@href='job/" + projectName.replaceAll(" ", "%20")
+//                        + "/']/button [@class='jenkins-menu-dropdown-chevron']")).click();
 
         getDriver().findElement(By.xpath("//a [@href='/job/"
                 + projectName.replaceAll(" ", "%20") + "/move']")).click();
