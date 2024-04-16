@@ -19,7 +19,6 @@ public class NewItem7Test extends BaseTest {
     @Test
     public void testCreateNewItemWithEmptyName() {
         getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
-
         getDriver().findElement(By.tagName("body")).click();
 
         WebElement hintElement = getDriver().findElement(By.id("itemname-required"));
