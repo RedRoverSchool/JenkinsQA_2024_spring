@@ -23,7 +23,7 @@ public class ExistingPipelineConfigTest extends BaseTest  {
 
     public boolean position(String menuOption) {
         // Find the menu option element based on its text
-        WebElement menuElement = getDriver().findElement(By.xpath("//a[contains(text(), '" + menuOption + "')]"));
+        WebElement menuElement = getDriver().findElement(By.xpath("//div[@id='" + menuOption + "']"));
 
         // Initialize JavaScript executor
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
@@ -34,7 +34,7 @@ public class ExistingPipelineConfigTest extends BaseTest  {
                 "rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && " +
                 "rect.right <= (window.innerWidth || document.documentElement.clientWidth));", menuElement);
 
-        return result != null && result;
+        return result;
     }
 
     @Test
@@ -48,14 +48,13 @@ public class ExistingPipelineConfigTest extends BaseTest  {
         Assert.assertEquals(configTitle, "Configure");
 
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        boolean resultBeforeButtonClick = position("Pipeline");
-        Assert.assertTrue(resultBeforeButtonClick);
+        boolean resultBeforeButtonClick = position("pipeline");
+        Assert.assertFalse(resultBeforeButtonClick);
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10)); // Specify the timeout duration as a Duration object
-        WebElement button = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-section-id='pipeline']")));
-        button.click();
+        getDriver().findElement(By.xpath("//button[@data-section-id='pipeline']")).click();
 
-        boolean resultAfterButtonClick = position("Pipeline");
+        Thread.sleep(1000);
+        boolean resultAfterButtonClick = position("pipeline");
         Assert.assertTrue(resultAfterButtonClick);
     }
 }
