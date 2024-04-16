@@ -11,7 +11,7 @@ public class NodeStatusSwitchTest extends BaseTest {
     }
 
     @Test
-    public void switchToOfflineStatus() {
+    public void testSwitchToOfflineStatus() {
         clickOn("//a[normalize-space()='Build Executor Status']");
         clickOn("//a[@href='../computer/(built-in)/']");
         clickOn("//div[@class='jenkins-app-bar__controls']");
