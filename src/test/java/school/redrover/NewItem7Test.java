@@ -8,7 +8,7 @@ import school.redrover.runner.BaseTest;
 
 public class NewItem7Test extends BaseTest {
     @Test
-    public void testNavigateToCreateNewItemPage() {
+    public void testVerifyCreateNewItemPage() {
         getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
 
         String actualResult = getDriver().findElement(By.xpath("//*[@class='h3']")).getText();
