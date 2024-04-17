@@ -21,4 +21,24 @@ public class NewItem5Test extends BaseTest {
                 "» This field cannot be empty, please enter a valid name");
         Assert.assertEquals(validationMessage.getCssValue("color"), "rgba(255, 0, 0, 1)");
     }
+
+    @Test
+    public void testEmptyField() {
+        getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
+        WebElement name = getDriver().findElement(By.id("name"));
+        name.click();
+
+        if (!name.getAttribute("value").isEmpty()) {
+            name.clear();
+        } else {
+            WebElement okButton = getDriver().findElement(By.id("ok-button"));
+            okButton.click();
+            Assert.assertFalse(okButton.isEnabled());
+        }
+
+        WebElement validationMessage = getDriver().findElement(By.id("itemname-required"));
+        Assert.assertEquals(validationMessage.getText(), "» This field cannot be empty, please enter a valid name");
+    }
 }
+
+
