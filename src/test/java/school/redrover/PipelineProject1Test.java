@@ -48,6 +48,18 @@ public class PipelineProject1Test extends BaseTest {
     }
 
     @Test
+    public void testCreatePipelineWithEmptyName() {
+        getDriver().findElement(By.xpath("//div[@class='task '][1]")).click();
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+
+        String warningMassage = getDriver().findElement(By.id("itemname-required")).getText();
+        WebElement okButton = getDriver().findElement(By.id("ok-button"));
+
+        Assert.assertEquals(warningMassage, "» This field cannot be empty, please enter a valid name");
+        Assert.assertFalse(okButton.isEnabled());
+    }
+
+    @Test
     public void testAddPipelineDescription() {
         createPipeline(PIPELINE_NAME);
         returnToHomePage();
