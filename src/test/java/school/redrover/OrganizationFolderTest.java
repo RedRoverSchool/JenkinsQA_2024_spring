@@ -33,6 +33,7 @@ public class OrganizationFolderTest extends BaseTest {
         getDriver().findElement(By.id("name")).sendKeys(ORGANIZATION_FOLDER_NAME);
         getDriver().findElement(By.cssSelector("[class$='OrganizationFolder']")).click();
         getDriver().findElement(By.id("ok-button")).click();
+
         new Select(getDriver().findElement(By.xpath("(//select[contains(@class, 'dropdownList')])[2]")))
                 .selectByVisibleText("Default Icon");
         getDriver().findElement(By.name("Submit")).click();
