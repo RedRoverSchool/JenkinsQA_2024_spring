@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrganizationFolder4Test extends BaseTest {
+
     public void createOrganizationFolder(String name){
         getDriver().findElement(By.className("task-icon-link")).click();
         getDriver().findElement(By.className("jenkins-input")).sendKeys(name);
