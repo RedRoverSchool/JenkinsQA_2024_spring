@@ -1,7 +1,10 @@
 package school.redrover;
 
+import java.time.Duration;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -21,6 +24,14 @@ public class NodesTest extends BaseTest {
         getDriver().findElement(By.cssSelector("[class$=radio__label]")).click();
         getDriver().findElement(By.id("ok")).click();
         getDriver().findElement(By.name("Submit")).click();
+    }
+
+    private void deleteNodeViaNodesTable() {
+        WebElement createdNode = getDriver().findElement(By.cssSelector("a[href='../computer/FirstNode/']"));
+        new Actions(getDriver()).moveToElement(createdNode).perform();
+        getDriver().findElement(By.cssSelector("#node_FirstNode > td:nth-child(2) > a > button")).click();
+        getDriver().findElement(By.cssSelector("button[href$='doDelete']")).click();
+        getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
     }
 
     @Test
@@ -79,5 +90,13 @@ public class NodesTest extends BaseTest {
         Assert.assertTrue(createdNodeInNodesTable.isDisplayed());
         Assert.assertEquals(createdNodeInNodesTable.getText(), NODE_NAME,
                 "The created node '" + NODE_NAME + "' is not in the Nodes table");
+    }
+
+    @Test
+    public void testDeletedNodeNotDisplayedInNodesTable() throws InterruptedException {
+        createNodeViaMainPage();
+        deleteNodeViaNodesTable();
+
+        Assert.assertEquals(getDriver().findElements(By.id("computers")).size(),1);
     }
 }
