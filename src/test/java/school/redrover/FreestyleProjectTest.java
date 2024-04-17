@@ -1,9 +1,14 @@
 package school.redrover;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.*;
 import org.testng.annotations.*;
 import school.redrover.runner.*;
+
+import java.time.Duration;
 
 public class FreestyleProjectTest extends BaseTest {
     private static final String FREESTYLE_PROJECT_NAME = "Freestyle Project Name";
@@ -27,6 +32,22 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
         getDriver().findElement(By.id("ok-button")).click();
         submitButton().click();
+    }
+
+    public void createFolder(String folderName) {
+        getDriver().findElement(By.xpath("//a [@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input [@name='name']")).sendKeys(folderName);
+        getDriver().findElement(By.xpath("//span [@class='label'] [text() = 'Folder']")).click();
+        getDriver().findElement(By.xpath("//button [@id='ok-button']")).click();
+        submitButton().click();
+
+    }
+
+    public void openElementDropdown(WebElement element) {
+        JavascriptExecutor openElementDropdown = (JavascriptExecutor) getDriver();
+
+        openElementDropdown.executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", element);
+        openElementDropdown.executeScript("arguments[0].dispatchEvent(new Event('click'));", element);
     }
 
     @Test
@@ -146,5 +167,34 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(
                 getDriver().findElement(By.xpath("//div[text()='" + description + "']")).isDisplayed(),
                 description);
+    }
+
+    @Test
+    public void testMoveToFolder() {
+
+        String folderName = "Classic Models";
+        String projectName = "Race Cars";
+
+        String expectedResult = "Full project name: " + folderName + "/" + projectName;
+
+        createFolder(folderName);
+        jenkinsHomeLink().click();
+        freestyleProjectCreate(projectName);
+        jenkinsHomeLink().click();
+
+        openElementDropdown(getDriver().findElement(
+                By.xpath("//a [@href='job/" + projectName.replaceAll(" ", "%20")
+                        + "/']/button [@class='jenkins-menu-dropdown-chevron']")));
+
+        getDriver().findElement(By.xpath("//a [@href='/job/"
+                + projectName.replaceAll(" ", "%20") + "/move']")).click();
+
+        getDriver().findElement(By.xpath("//option [@value='/" + folderName + "']")).click();
+
+        submitButton().click();
+
+        String actualResult = getDriver().findElement(By.xpath("//div [@id='main-panel']")).getText();
+
+        Assert.assertTrue(actualResult.contains(expectedResult));
     }
 }
