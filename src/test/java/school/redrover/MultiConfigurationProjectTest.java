@@ -2,7 +2,9 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -14,6 +16,24 @@ import static school.redrover.runner.TestUtils.*;
 public class MultiConfigurationProjectTest extends BaseTest {
 
     private final String projectName = "MCProject";
+
+    @Test
+    public void testRenameProjectViaMainPageDropdown() {
+        createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
+
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.linkText(projectName)))
+                .pause(1000)
+                .moveToElement(getDriver().findElement(By.cssSelector(String.format("[data-href*='/job/%s/']", projectName))))
+                .click()
+                .perform();
+
+        getDriver().findElement(By.linkText("Rename")).click();
+        getDriver().findElement(By.name("newName")).sendKeys("New");
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.linkText(projectName + "New")).isDisplayed());
+    }
 
     @Test
     public void testAddDescription() {
