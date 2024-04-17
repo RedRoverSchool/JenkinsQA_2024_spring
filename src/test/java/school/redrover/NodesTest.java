@@ -1,18 +1,15 @@
 package school.redrover;
 
-import java.time.Duration;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
-import org.testng.annotations.Test;
-import school.redrover.runner.BaseTest;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 public class NodesTest extends BaseTest {
 
@@ -28,11 +25,11 @@ public class NodesTest extends BaseTest {
     }
 
     private void deleteNodeViaNodesTable() {
-        WebDriverWait webDriverWait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
         WebElement createdNode = getDriver().findElement(By.cssSelector("a[href='../computer/FirstNode/']"));
         new Actions(getDriver()).moveToElement(createdNode).perform();
-        WebElement jenkinsMenuDropdownChevron = webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#node_FirstNode > td:nth-child(2) > a > button")));
-        jenkinsMenuDropdownChevron.click();
+        WebElement dropdownChevron =getDriver().findElement(By.cssSelector("#node_FirstNode > td:nth-child(2) > a > button"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
+            "arguments[0].dispatchEvent(new Event('click'));", dropdownChevron);
         getDriver().findElement(By.cssSelector("button[href$='doDelete']")).click();
         getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
     }
@@ -96,7 +93,7 @@ public class NodesTest extends BaseTest {
     }
 
     @Test
-    public void testDeletedNodeNotDisplayedInNodesTable() throws InterruptedException {
+    public void testDeletedNodeNotDisplayedInNodesTable() {
         createNodeViaMainPage();
         deleteNodeViaNodesTable();
 
