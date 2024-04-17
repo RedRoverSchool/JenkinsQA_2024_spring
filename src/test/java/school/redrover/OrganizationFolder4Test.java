@@ -32,7 +32,7 @@ public class OrganizationFolder4Test extends BaseTest {
     }
 
     @Test
-    public void testPipelineSyntaxMenuList() throws InterruptedException {
+    public void testPipelineSyntaxMenuList(){
         String setOrganizationFolder = "TestOrganizationFolder";
         createOrganizationFolder(setOrganizationFolder);
 
@@ -42,9 +42,8 @@ public class OrganizationFolder4Test extends BaseTest {
                 findElement(By.xpath("//*[text()='" + setOrganizationFolder + "']")) ;
         new Actions(getDriver()).moveToElement(currentOrganizationFolder).perform();
 
-        Thread.sleep(2000);
         WebElement menuForCurrentOrganizationFolder = getDriver().
-                findElement(By.xpath("//span[text()='TestOrganizationFolder']/../button"));
+                findElement(By.xpath("//span[text()='" + setOrganizationFolder + "']/../button"));
         menuForCurrentOrganizationFolder.click();
 
         WebElement pipelineSyntaxMenu = getDriver().
