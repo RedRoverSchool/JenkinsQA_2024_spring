@@ -5,7 +5,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-public class OrganizationFolder1Test extends BaseTest {
+public class OrganizationFolder3Test extends BaseTest {
 
     final String ORGANIZATION_FOLDER_NAME = "NewOrgFolder";
 
