@@ -43,7 +43,7 @@ public class OrganizationFolder4Test extends BaseTest {
         new Actions(getDriver()).moveToElement(currentOrganizationFolder).perform();
 
         WebElement menuForCurrentOrganizationFolder = getDriver().
-                findElement(By.xpath("//span[text()='" + setOrganizationFolder + "']/../button"));
+                findElement(By.xpath("//*[@data-href='http://localhost:8080/job/TestOrganizationFolder/']"));
         menuForCurrentOrganizationFolder.click();
 
         WebElement pipelineSyntaxMenu = getDriver().
