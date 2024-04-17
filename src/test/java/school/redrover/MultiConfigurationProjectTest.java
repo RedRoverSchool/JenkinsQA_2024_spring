@@ -25,6 +25,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .pause(1000)
                 .moveToElement(getDriver().findElement(By.cssSelector(String.format("[data-href*='/job/%s/']", projectName))))
                 .click()
+                .pause(1000)
                 .perform();
 
         getDriver().findElement(By.linkText("Rename")).click();
