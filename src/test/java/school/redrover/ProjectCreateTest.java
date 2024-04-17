@@ -28,10 +28,10 @@ public class ProjectCreateTest extends BaseTest {
     }
 
     public void projectActions(String projectName) {
-        projectName = "Freestyle project";
+        String projectNameLocal = "Freestyle project";
         driver.findElement(By.xpath(
                 "//*[@href='/view/all/newJob']")).click();
-        driver.findElement(By.id("name")).sendKeys(projectName);
+        driver.findElement(By.id("name")).sendKeys(projectNameLocal);
         driver.findElement(By.xpath(
                 "//*[@class='hudson_model_FreeStyleProject']")).click();
         driver.findElement(By.id("ok-button")).click();
