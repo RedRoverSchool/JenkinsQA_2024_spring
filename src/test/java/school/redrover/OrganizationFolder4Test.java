@@ -3,9 +3,13 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +36,7 @@ public class OrganizationFolder4Test extends BaseTest {
     }
 
     @Test
-    public void testPipelineSyntaxMenuList() throws InterruptedException {
+    public void testPipelineSyntaxMenuList(){
         String setOrganizationFolder = "TestOrganizationFolder";
         createOrganizationFolder(setOrganizationFolder);
 
@@ -41,10 +45,11 @@ public class OrganizationFolder4Test extends BaseTest {
         WebElement currentOrganizationFolder = getDriver().
                 findElement(By.xpath("//span[text()='" + setOrganizationFolder + "']/..")) ;
         new Actions(getDriver()).moveToElement(currentOrganizationFolder).perform();
-        Thread.sleep(3000);
 
         WebElement menuForCurrentOrganizationFolder = getDriver().
                 findElement(By.xpath("//*[@data-href='http://localhost:8080/job/TestOrganizationFolder/']"));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(15));
+        wait.until(ExpectedConditions.elementToBeClickable(menuForCurrentOrganizationFolder));
         menuForCurrentOrganizationFolder.click();
 
         WebElement pipelineSyntaxMenu = getDriver().
