@@ -85,6 +85,11 @@ public class FolderTest extends BaseTest {
         createFolderViaCreateAJob();
         getDriver().findElement(By.id("jenkins-home-link")).click();
 
+        WebElement dashboardFolderName = getDriver().findElement(By.cssSelector("td>[href^='job']"));
+        new Actions(getDriver())
+                .moveToElement(dashboardFolderName)
+                .perform();
+
         clickOnDropdownArrow(By.cssSelector("[href^='job'] [class$='dropdown-chevron']"));
         getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='rename']")).click();
         getDriver().findElement(By.name("newName")).clear();
