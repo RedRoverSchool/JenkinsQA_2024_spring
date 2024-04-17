@@ -172,9 +172,8 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.id("jenkins-home-link")).click();
 
         WebElement projectName = getDriver().findElement(
-                By.xpath("//span[text()='"+ FREESTYLE_PROJECT_NAME +"']/following-sibling::button[@class='jenkins-menu-dropdown-chevron']"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", projectName);
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", projectName);
+                By.xpath("(//a[@href='job/" + FREESTYLE_PROJECT_NAME.replaceAll(" ", "%20") + "/'])[1]"));
+        TestUtils.openElementDropdown(this, projectName);
 
         getDriver().findElement(By.xpath("//a[contains(@href,'rename')]")).click();
 

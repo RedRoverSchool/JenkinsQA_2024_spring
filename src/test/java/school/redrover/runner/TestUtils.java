@@ -87,7 +87,7 @@ public final class TestUtils {
     }
 
     public static void openElementDropdown(BaseTest baseTest, WebElement element) {
-        WebElement chevron = element.findElement(By.className("jenkins-menu-dropdown-chevron"));
+        WebElement chevron = element.findElement(By.xpath(".//*[@class = 'jenkins-menu-dropdown-chevron']"));
 
         ((JavascriptExecutor) baseTest.getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", chevron);
         ((JavascriptExecutor) baseTest.getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
