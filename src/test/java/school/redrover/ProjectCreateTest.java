@@ -20,7 +20,6 @@ public class ProjectCreateTest extends BaseTest {
         text = getDriver().findElement(By.xpath("//h1")).getText();
 
         Assert.assertEquals(text, "Test project");
-
     }
     private final WebDriver driver;
 
