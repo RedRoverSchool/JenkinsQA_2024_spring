@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.*;
@@ -9,6 +8,8 @@ import org.testng.annotations.*;
 import school.redrover.runner.*;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FreestyleProjectTest extends BaseTest {
     private static final String FREESTYLE_PROJECT_NAME = "Freestyle Project Name";
@@ -196,5 +197,71 @@ public class FreestyleProjectTest extends BaseTest {
         String actualResult = getDriver().findElement(By.xpath("//div [@id='main-panel']")).getText();
 
         Assert.assertTrue(actualResult.contains(expectedResult));
+    }
+
+    @Test
+    public void testCreateNewItemFromOtherExisting() {
+
+        String projectName1 = "Race Cars";
+        String projectName2 = "Vintage Cars";
+
+        freestyleProjectCreate(projectName1);
+        jenkinsHomeLink().click();
+
+        getDriver().findElement(By.xpath("//a [@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input [@name='name']")).sendKeys(projectName2);
+        getDriver().findElement(
+                By.xpath("//input [@name='from']")).sendKeys(projectName1.substring(0, 1));
+
+        WebDriverWait wait60 = new WebDriverWait(getDriver(), Duration.ofSeconds(60));
+
+        wait60.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div [@class='item-copy']//li")));
+
+        List<WebElement> elements = getDriver().findElements(
+                By.xpath("//div [@class='item-copy']//li"));
+
+        List<String> elementsList = new ArrayList<>();
+        for (int i = 0; i < elements.size(); i++) {
+            elementsList.add(elements.get(i).getText());
+        }
+
+        Assert.assertTrue(elementsList.contains(projectName1));
+
+        getDriver().findElement(
+                By.xpath("//li [text() = '" + projectName1 + "']")).click();
+        okButton().click();
+        submitButton().click();
+        jenkinsHomeLink().click();
+
+        elements = getDriver().findElements(
+                By.xpath("//td/a [contains(@href, 'job/')]/span"));
+
+        elementsList.clear();
+
+        for (int i = 0; i < elements.size(); i++) {
+            elementsList.add(elements.get(i).getText());
+        }
+
+        Assert.assertTrue(elementsList.contains(projectName1));
+        Assert.assertTrue(elementsList.contains(projectName2));
+
+        getDriver().findElement(By.xpath("//td/a [@href='job/"
+                + projectName2.replaceAll(" ", "%20") + "/']")).click();
+
+        String actualResultByClick = getDriver().findElement(
+                By.xpath("//h1 [@class='job-index-headline page-headline']")).getText();
+
+        Assert.assertEquals(actualResultByClick, projectName2);
+
+        jenkinsHomeLink().click();
+
+        getDriver().findElement(By.xpath("//input [@role='searchbox']")).sendKeys(projectName2);
+        getDriver().findElement(By.xpath("//input [@role='searchbox']")).submit();
+
+        String actualResultBySearch = getDriver().findElement(
+                By.xpath("//h1 [@class='job-index-headline page-headline']")).getText();
+
+        Assert.assertEquals(actualResultBySearch, projectName2);
     }
 }
