@@ -40,21 +40,13 @@ public class OrganizationFolder4Test extends BaseTest {
 
         WebElement currentOrganizationFolder = getDriver().
                 findElement(By.xpath("//span[text()='" + setOrganizationFolder + "']/..")) ;
-        int attempts =0;
-        while (attempts < 2) {
-            try {
-                Actions action = new Actions(getDriver());
-                action.moveToElement(currentOrganizationFolder).perform();
 
-                WebElement menuForCurrentOrganizationFolder = getDriver().
-                        findElement(By.xpath("//*[@id='job_TestOrganizationFolder']/td[3]/a/button"));
-                menuForCurrentOrganizationFolder.click();
-                break;
-            } catch (Exception e) {
-                attempts++;
-                throw new RuntimeException(e);
-            }
-        }
+        Actions action = new Actions(getDriver());
+        action.moveToElement(currentOrganizationFolder).pause(2000).perform();
+
+        WebElement menuForCurrentOrganizationFolder = getDriver().
+                findElement(By.xpath("//*[@id='job_TestOrganizationFolder']/td[3]/a/button"));
+        menuForCurrentOrganizationFolder.click();
 
         WebElement pipelineSyntaxMenu = getDriver().
                 findElement(By.xpath("//*[@href='/job/"+ setOrganizationFolder +"/pipeline-syntax']"));
