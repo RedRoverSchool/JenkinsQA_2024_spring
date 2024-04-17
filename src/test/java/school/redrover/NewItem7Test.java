@@ -1,5 +1,6 @@
 package school.redrover;
 
+import org.checkerframework.checker.units.qual.A;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -7,6 +8,10 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class NewItem7Test extends BaseTest {
+
+    public WebElement okButton() {
+        return getDriver().findElement(By.id("ok-button"));
+    }
 
     public void enterToNewItemPage() {
         getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
@@ -30,5 +35,14 @@ public class NewItem7Test extends BaseTest {
 
         Assert.assertEquals(hintElement.getText(),"» This field cannot be empty, please enter a valid name");
         Assert.assertEquals(hintElement.getCssValue("color"), "rgba(255, 0, 0, 1)");
+    }
+
+    @Test
+    public void testVerifyOkButtonUnavailableWithNameWithoutType() {
+        enterToNewItemPage();
+        getDriver().findElement(By.id("name")).sendKeys("NewProject");
+
+        Assert.assertTrue(okButton().isDisplayed());
+        Assert.assertFalse(okButton().isEnabled());
     }
 }
