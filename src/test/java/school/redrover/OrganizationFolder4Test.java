@@ -32,15 +32,16 @@ public class OrganizationFolder4Test extends BaseTest {
     }
 
     @Test
-    public void testPipelineSyntaxMenuList(){
+    public void testPipelineSyntaxMenuList() throws InterruptedException {
         String setOrganizationFolder = "TestOrganizationFolder";
         createOrganizationFolder(setOrganizationFolder);
 
         getDriver().findElement(By.id("jenkins-name-icon")).click();
 
         WebElement currentOrganizationFolder = getDriver().
-                findElement(By.xpath("//span[text()='" + setOrganizationFolder + "']/../..")) ;
+                findElement(By.xpath("//span[text()='" + setOrganizationFolder + "']/..")) ;
         new Actions(getDriver()).moveToElement(currentOrganizationFolder).perform();
+        Thread.sleep(3000);
 
         WebElement menuForCurrentOrganizationFolder = getDriver().
                 findElement(By.xpath("//*[@data-href='http://localhost:8080/job/TestOrganizationFolder/']"));
