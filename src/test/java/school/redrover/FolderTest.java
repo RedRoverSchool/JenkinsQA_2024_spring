@@ -62,18 +62,19 @@ public class FolderTest extends BaseTest {
                 .moveToElement(breadcrumbFolderName)
                 .perform();
 
-        WebElement chevron = getDriver().findElement(By.cssSelector("[href^='/job'] [class='jenkins-menu-dropdown-chevron']"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", chevron);
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
-//        chevron.click();
+        WebElement breadcrumbChevron = getDriver().findElement(
+                By.cssSelector("[href^='/job'] [class='jenkins-menu-dropdown-chevron']"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
+                "arguments[0].dispatchEvent(new Event('click'));", breadcrumbChevron);
+
         getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='rename']")).click();
         getDriver().findElement(By.name("newName")).clear();
         getDriver().findElement(By.name("newName")).sendKeys(NEW_FOLDER_NAME);
         getDriver().findElement(By.name("Submit")).click();
 
         String folderPageHeading = getDriver().findElement(By.tagName("h1")).getText();
+
         Assert.assertEquals(folderPageHeading, NEW_FOLDER_NAME,
                 "The Folder name is not equal to " + NEW_FOLDER_NAME);
-
     }
 }
