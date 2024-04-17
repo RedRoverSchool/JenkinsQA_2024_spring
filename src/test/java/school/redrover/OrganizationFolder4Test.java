@@ -47,7 +47,7 @@ public class OrganizationFolder4Test extends BaseTest {
         new Actions(getDriver()).moveToElement(currentOrganizationFolder).perform();
 
         WebElement menuForCurrentOrganizationFolder = getDriver().
-                findElement(By.xpath("//*[@data-href='http://localhost:8080/job/TestOrganizationFolder/']"));
+                findElement(By.xpath("//*[@id='job_TestOrganizationFolder']/td[3]/a/button"));
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(15));
         wait.until(ExpectedConditions.elementToBeClickable(menuForCurrentOrganizationFolder));
         menuForCurrentOrganizationFolder.click();
