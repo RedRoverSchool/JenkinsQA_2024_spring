@@ -7,11 +7,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import school.redrover.PipelineProjectTest;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class TestUtils {
 
@@ -107,6 +108,15 @@ public final class TestUtils {
         baseTest.getDriver().findElement(By.name("Submit")).click();
     }
 
+    public static List<String> getTexts(List<WebElement> elementList) {
+        List<String> stringList = new ArrayList<>();
+        for (WebElement element : elementList) {
+            stringList.add(element.getText());
+        }
+
+        return stringList;
+    }
+
     public static void goToJobPageAndEnterJobName(BaseTest baseTest, String jobName) {
         baseTest.getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         baseTest.getDriver().findElement(By.id("name")).sendKeys(jobName);
@@ -116,6 +126,13 @@ public final class TestUtils {
         goToJobPageAndEnterJobName(baseTest, jobName);
         baseTest.getDriver().findElement(By.xpath(JOB_XPATH.formatted(job))).click();
         baseTest.getDriver().findElement(By.id("ok-button")).click();
+    }
+    public static void createNewJob(BaseTest baseTest, Job job, String jobName) {
+        goToJobPageAndEnterJobName(baseTest, jobName);
+        baseTest.getDriver().findElement(By.xpath(JOB_XPATH.formatted(job))).click();
+        baseTest.getDriver().findElement(By.id("ok-button")).click();
+        baseTest.getDriver().findElement(By.id("jenkins-home-link")).click();
+
     }
 
     public enum Job {

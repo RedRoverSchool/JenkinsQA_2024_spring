@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
 import static school.redrover.runner.TestUtils.*;
 
 
@@ -16,7 +17,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testAddDescription() {
-        createNewItemAndReturnToDashboard(this,projectName, Item.MULTI_CONFIGURATION_PROJECT);
+        createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
         final String text = "❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F";
 
         addProjectDescription(this, projectName, text);
@@ -31,7 +32,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         final String text = "qwerty123";
         final String additionText = "AAA";
 
-        createNewItemAndReturnToDashboard(this,projectName, Item.MULTI_CONFIGURATION_PROJECT);
+        createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
         addProjectDescription(this, projectName, text);
         returnToDashBoard(this);
 
@@ -47,7 +48,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testDescriptionPreview() {
-        createNewItemAndReturnToDashboard(this,projectName, Item.MULTI_CONFIGURATION_PROJECT);
+        createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
 
         String text = "I want to see preview";
         getDriver().findElement(By.id("job_" + projectName)).click();
