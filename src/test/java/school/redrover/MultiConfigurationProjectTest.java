@@ -23,11 +23,12 @@ public class MultiConfigurationProjectTest extends BaseTest {
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(By.linkText(projectName)))
                 .pause(1000)
-                .moveToElement(getDriver().findElement(By.cssSelector(String.format("[data-href*='/job/%s/']", projectName))))
-                .click()
-                .pause(1000)
+//                .moveToElement(getDriver().findElement(By.cssSelector(String.format("[data-href*='/job/%s/']", projectName))))
+//                .click()
+//                .pause(1000)
                 .perform();
 
+        getDriver().findElement(By.cssSelector(String.format("[data-href*='/job/%s/']", projectName))).click();
         getDriver().findElement(By.linkText("Rename")).click();
         getDriver().findElement(By.name("newName")).sendKeys("New");
         getDriver().findElement(By.name("Submit")).click();
