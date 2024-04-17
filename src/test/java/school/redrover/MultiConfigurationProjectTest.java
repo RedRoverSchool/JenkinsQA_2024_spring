@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -76,7 +75,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         getDriver().findElement(By.name("description")).sendKeys(text);
         getDriver().findElement(By.className("textarea-show-preview")).click();
 
-        Assert.assertTrue(getDriver().findElement(By.className("textarea-preview")).getText().equals(text));
+        Assert.assertEquals(text, getDriver().findElement(By.className("textarea-preview")).getText());
     }
 
     @Test
