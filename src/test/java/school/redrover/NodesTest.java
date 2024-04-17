@@ -4,6 +4,7 @@ import java.time.Duration;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -27,9 +28,11 @@ public class NodesTest extends BaseTest {
     }
 
     private void deleteNodeViaNodesTable() {
+        WebDriverWait webDriverWait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
         WebElement createdNode = getDriver().findElement(By.cssSelector("a[href='../computer/FirstNode/']"));
         new Actions(getDriver()).moveToElement(createdNode).perform();
-        getDriver().findElement(By.cssSelector("#node_FirstNode > td:nth-child(2) > a > button")).click();
+        WebElement jenkinsMenuDropdownChevron = webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#node_FirstNode > td:nth-child(2) > a > button")));
+        jenkinsMenuDropdownChevron.click();
         getDriver().findElement(By.cssSelector("button[href$='doDelete']")).click();
         getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
     }
