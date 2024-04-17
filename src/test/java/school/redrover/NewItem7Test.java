@@ -7,9 +7,14 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class NewItem7Test extends BaseTest {
+
+    public void enterToNewItemPage() {
+        getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
+    }
+
     @Test
     public void testVerifyCreateNewItemPage() {
-        getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
+        enterToNewItemPage();
 
         String actualResult = getDriver().findElement(By.xpath("//*[@class='h3']")).getText();
 
@@ -18,7 +23,7 @@ public class NewItem7Test extends BaseTest {
 
     @Test
     public void testCheckHintToCreateNewItemWithoutName() {
-        getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
+        enterToNewItemPage();
         getDriver().findElement(By.tagName("body")).click();
 
         WebElement hintElement = getDriver().findElement(By.id("itemname-required"));
