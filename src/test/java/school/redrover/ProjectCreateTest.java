@@ -21,21 +21,5 @@ public class ProjectCreateTest extends BaseTest {
 
         Assert.assertEquals(text, "Test project");
     }
-    private final WebDriver driver;
-
-    public ProjectCreateTest(WebDriver driver) {
-        this.driver = driver;
-    }
-
-    public void projectActions(String projectName) {
-        String projectNameLocal = "Freestyle project";
-        driver.findElement(By.xpath(
-                "//*[@href='/view/all/newJob']")).click();
-        driver.findElement(By.id("name")).sendKeys(projectNameLocal);
-        driver.findElement(By.xpath(
-                "//*[@class='hudson_model_FreeStyleProject']")).click();
-        driver.findElement(By.id("ok-button")).click();
-        driver.findElement(By.name("Submit")).click();
-    }
 
 }
