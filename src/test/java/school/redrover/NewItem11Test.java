@@ -36,6 +36,6 @@ public class NewItem11Test extends BaseTest {
 
         Assert.assertTrue(
                 errorMessage.getCssValue("color").equals("rgba(255, 0, 0, 1)") &&
-                        errorMessage.getText().equals("» This field cannot be empty, please enter a valid name"));
+                errorMessage.getText().equals("» This field cannot be empty, please enter a valid name"));
     }
 }
