@@ -60,4 +60,19 @@ public class FreestyleProject2Test extends BaseTest {
         Assert.assertTrue(getDriver().getTitle().contains("Folder"));
         Assert.assertTrue(getDriver().findElement(PROJECT_ITEM).isDisplayed());
     }
+
+    @Test
+    private void testMakeCopyFreestyleProject(){
+        final String name_item = "SecondProject";
+
+        createFreestyleProject(PROJECT_NAME);
+        getDriver().findElement(NEW_ITEM).click();
+        getDriver().findElement(ITEM_NAME_INPUT_FIELD).sendKeys(name_item);
+        getDriver().findElement(By.id("from")).sendKeys(PROJECT_NAME);
+        getDriver().findElement(OK_BUTTON).click();
+        getDriver().findElement(DASHBOARD_BUTTON).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@href=\"job/"+PROJECT_NAME.replaceAll(" ", "%20")+"/\"]/span")).getText(), PROJECT_NAME);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@href=\"job/"+name_item.replaceAll(" ", "%20")+"/\"]/span")).getText(), name_item);
+    }
 }
