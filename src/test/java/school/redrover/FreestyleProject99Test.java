@@ -1,15 +1,10 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-
-import java.time.Duration;
+import static school.redrover.runner.TestUtils.*;
 
 import static org.testng.Assert.assertTrue;
 
@@ -24,8 +19,7 @@ public class FreestyleProject99Test extends BaseTest {
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.xpath("//*[@id=\"bottom-sticker\"]/div/button[1]")).click();
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-        Actions action = new Actions(getDriver());
+
     }
 
     @Test
@@ -58,18 +52,14 @@ public class FreestyleProject99Test extends BaseTest {
     @Test
     public void testRenameProjectToSameName() {
 
-        createNewProject(PROJECT_NAME);
+        createNewItemAndReturnToDashboard(this, PROJECT_NAME, Item.FREESTYLE_PROJECT);
 
-        getDriver().findElement(By.linkText("Dashboard")).click();
-
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
         Actions action = new Actions(getDriver());
-        action.moveToElement(getDriver().findElement(By.linkText(PROJECT_NAME))).perform();
 
-        WebElement clickButton = wait.until(ExpectedConditions.visibilityOfElementLocated((By.xpath("//*[@id=\"job_FreestyleProject\"]/td[3]/a/button"))));
-        clickButton.click();
+        getDriver().findElement(By.linkText(PROJECT_NAME)).click();
         getDriver().findElement(By.xpath("//a[contains(., 'Rename')]")).click();
-        action.doubleClick(getDriver().findElement(By.name("newName"))).perform();;
+
+        action.doubleClick(getDriver().findElement(By.name("newName"))).perform();
         getDriver().findElement(By.name("newName")).sendKeys(PROJECT_NAME);
         getDriver().findElement(By.name("Submit")).click();
 
