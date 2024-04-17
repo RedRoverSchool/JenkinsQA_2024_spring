@@ -63,7 +63,7 @@ public class FolderTest extends BaseTest {
                 .perform();
 
         WebElement chevron = getDriver().findElement(By.cssSelector("[href^='/job'] [class='jenkins-menu-dropdown-chevron']"));
-//        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", chevron);
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", chevron);
 //        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
         chevron.click();
         getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='rename']")).click();
