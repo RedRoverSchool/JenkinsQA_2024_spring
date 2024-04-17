@@ -213,4 +213,16 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertTrue(actualResult.contains(expectedResult));
     }
+
+    @Test
+    public void testBuildNowFreestyleProject() {
+        freestyleProjectCreate(FREESTYLE_PROJECT_NAME);
+
+        getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
+        getDriver().findElement(By.xpath("//span[@class='task-link-text' and text()='Status']/parent::a")).click();
+        String actualResult = getDriver().findElement(By.xpath("//a[@href='lastBuild/']")).getText();
+
+        Assert.assertTrue(actualResult.contains("Last build (#1)"));
+    }
+
 }
