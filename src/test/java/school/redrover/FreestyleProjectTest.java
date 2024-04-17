@@ -2,13 +2,10 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.*;
 import org.testng.annotations.*;
 import school.redrover.runner.*;
 
-import java.time.Duration;
 
 public class FreestyleProjectTest extends BaseTest {
     private static final String FREESTYLE_PROJECT_NAME = "Freestyle Project Name";
@@ -167,6 +164,25 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(
                 getDriver().findElement(By.xpath("//div[text()='" + description + "']")).isDisplayed(),
                 description);
+    }
+
+    @Test
+    public void testRenameWithEmptyName() {
+        freestyleProjectCreate(FREESTYLE_PROJECT_NAME);
+        getDriver().findElement(By.id("jenkins-home-link")).click();
+
+        WebElement projectName = getDriver().findElement(
+                By.xpath("//span[text()='"+ FREESTYLE_PROJECT_NAME +"']/following-sibling::button[@class='jenkins-menu-dropdown-chevron']"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", projectName);
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", projectName);
+
+        getDriver().findElement(By.xpath("//a[contains(@href,'rename')]")).click();
+
+        getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
+
+        getDriver().findElement(By.xpath("//button[contains(text(),'Rename')]")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//p[text()='No name is specified']")).getText(), "No name is specified");
     }
 
     @Test
