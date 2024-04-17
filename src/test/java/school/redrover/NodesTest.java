@@ -25,9 +25,9 @@ public class NodesTest extends BaseTest {
     }
 
     private void deleteNodeViaNodesTable() {
-        WebElement createdNode = getDriver().findElement(By.cssSelector("a[href='../computer/FirstNode/']"));
+        WebElement createdNode = getDriver().findElement(By.cssSelector("a[href='../computer/" + NODE_NAME + "/']"));
         new Actions(getDriver()).moveToElement(createdNode).perform();
-        WebElement dropdownChevron =getDriver().findElement(By.cssSelector("#node_FirstNode > td:nth-child(2) > a > button"));
+        WebElement dropdownChevron =getDriver().findElement(By.cssSelector("#node_" + NODE_NAME + " > td:nth-child(2) > a > button"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
             "arguments[0].dispatchEvent(new Event('click'));", dropdownChevron);
         getDriver().findElement(By.cssSelector("button[href$='doDelete']")).click();
