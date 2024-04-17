@@ -64,8 +64,8 @@ public class FolderTest extends BaseTest {
 
         WebElement chevron = getDriver().findElement(By.cssSelector("[href^='/job'] [class='jenkins-menu-dropdown-chevron']"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", chevron);
-//        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
-        chevron.click();
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
+//        chevron.click();
         getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='rename']")).click();
         getDriver().findElement(By.name("newName")).clear();
         getDriver().findElement(By.name("newName")).sendKeys(NEW_FOLDER_NAME);
