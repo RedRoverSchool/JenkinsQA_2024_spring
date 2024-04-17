@@ -42,7 +42,7 @@ public class OrganizationFolder4Test extends BaseTest {
                 findElement(By.xpath("//*[text()='" + setOrganizationFolder + "']")) ;
         new Actions(getDriver()).moveToElement(currentOrganizationFolder).perform();
 
-        Thread.sleep(200);
+        Thread.sleep(2000);
         WebElement menuForCurrentOrganizationFolder = getDriver().
                 findElement(By.xpath("//span[text()='TestOrganizationFolder']/../button"));
         menuForCurrentOrganizationFolder.click();
