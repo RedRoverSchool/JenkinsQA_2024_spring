@@ -31,7 +31,7 @@ public class NewItem11Test extends BaseTest {
     public void testEmptyProjectNameInputField() {
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.cssSelector("[class *= 'MatrixProject']")).click();
-        System.out.println(getDriver().findElement(By.id("itemname-required")).getCssValue("color"));
+
         WebElement errorMessage = getDriver().findElement(By.id("itemname-required"));
 
         Assert.assertTrue(
