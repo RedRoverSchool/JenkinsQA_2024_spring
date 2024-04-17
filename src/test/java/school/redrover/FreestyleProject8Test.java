@@ -20,6 +20,7 @@ public class FreestyleProject8Test extends BaseTest {
         getDriver().findElement(By.xpath("//*[@name = 'Submit']")).click();
         text = getDriver().findElement(By.xpath("//h1")).getText();
 
-        Assert.assertEquals(text,"New name");
+        Assert.assertEquals(text, "New name");
     }
+
 }
