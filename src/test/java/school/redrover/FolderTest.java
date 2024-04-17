@@ -62,10 +62,10 @@ public class FolderTest extends BaseTest {
                 .moveToElement(breadcrumbFolderName)
                 .perform();
 
-        WebElement breadcrumbChevron = getDriver().findElement(
+        WebElement breadcrumbDropdownArrow = getDriver().findElement(
                 By.cssSelector("[href^='/job'] [class='jenkins-menu-dropdown-chevron']"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
-                "arguments[0].dispatchEvent(new Event('click'));", breadcrumbChevron);
+                "arguments[0].dispatchEvent(new Event('click'));", breadcrumbDropdownArrow);
 
         getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='rename']")).click();
         getDriver().findElement(By.name("newName")).clear();
