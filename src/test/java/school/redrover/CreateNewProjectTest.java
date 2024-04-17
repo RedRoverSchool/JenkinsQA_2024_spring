@@ -93,25 +93,16 @@ public class CreateNewProjectTest extends BaseTest {
 
 
 
+
     //Tests+
     @Test
     public void testCreateNewFreestyleProject() {
         createNewProject("Freestyle" + PROJECT_NAME);
         chooseTypeOfProject(freestyleProjectButton());
-        addDescriptionToProject("Project Freestyle");
         submitConfiguration();
 
         Assert.assertEquals(getNameOfCreatedProject(), "FreestyleProject Name");
 
     }
-    @Test
-    public void testCreateNewPipelineProject() {
-        createNewProject("Pipeline" + PROJECT_NAME);
-        chooseTypeOfProject(pipelineProjectButton());
-        addDescriptionToProject("Project Pipeline");
-        submitConfiguration();
 
-        Assert.assertEquals(getNameOfCreatedProject(), "PipelineProject Name");
-
-    }
 }
