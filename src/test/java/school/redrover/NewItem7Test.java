@@ -1,6 +1,5 @@
 package school.redrover;
 
-import org.checkerframework.checker.units.qual.A;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -9,7 +8,7 @@ import school.redrover.runner.BaseTest;
 
 public class NewItem7Test extends BaseTest {
 
-    public WebElement okButton() {
+    public WebElement getOkButton() {
         return getDriver().findElement(By.id("ok-button"));
     }
 
@@ -42,7 +41,7 @@ public class NewItem7Test extends BaseTest {
         enterToNewItemPage();
         getDriver().findElement(By.id("name")).sendKeys("NewProject");
 
-        Assert.assertTrue(okButton().isDisplayed());
-        Assert.assertFalse(okButton().isEnabled());
+        Assert.assertTrue(getOkButton().isDisplayed());
+        Assert.assertFalse(getOkButton().isEnabled());
     }
 }
