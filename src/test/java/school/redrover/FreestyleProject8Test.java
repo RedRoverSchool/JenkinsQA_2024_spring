@@ -68,4 +68,24 @@ public class FreestyleProject8Test extends BaseTest {
         String expectedNameText = "FreestyleProject";
         Assert.assertEquals(expectedNameText, projectNameText);
     }
+
+    @Test
+    public void testAddDescriptionInFreestyleProjectFromDashboardWithDropdown() {
+        String description = "Testing adding a project description from Dashboard.";
+
+        TestUtils.createItem("Freestyle project", "Freestyle project test 2", getDriver());
+        TestUtils.returnToDashBoard(this);
+
+        WebElement elementDropdown = getDriver().findElement(By.xpath("//span[text()='Freestyle project test 2']/ancestor::a"));
+
+        TestUtils.openElementDropdown(this, elementDropdown);
+
+        getDriver().findElement(By.xpath("//*[contains(@href, 'configure')]")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//*[@id='description']/div")).getText(),
+                description);
+    }
 }

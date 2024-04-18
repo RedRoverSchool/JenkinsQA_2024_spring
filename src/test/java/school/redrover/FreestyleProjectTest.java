@@ -76,12 +76,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testRenameFreestyleProjectFromConfigurationPage() {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
-                .sendKeys(FREESTYLE_PROJECT_NAME);
-        getDriver().findElement(By.xpath("//span[contains(text(),  'Freestyle project')]")).click();
-        okButton().click();
-        submitButton().click();
+        freestyleProjectCreate(FREESTYLE_PROJECT_NAME);
         jenkinsHomeLink().click();
 
         getDriver().findElement(By.xpath("//a[@class= 'jenkins-table__link model-link inside']")).click();
@@ -230,10 +225,24 @@ public class FreestyleProjectTest extends BaseTest {
         freestyleProjectCreate(FREESTYLE_PROJECT_NAME);
 
         getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
-        getDriver().findElement(By.xpath("//span[@class='task-link-text' and text()='Status']/parent::a")).click();
-        String actualResult = getDriver().findElement(By.xpath("//a[@href='lastBuild/']")).getText();
+        String actualResult = getDriver().findElement(By.xpath("//*[@href='/job/"
+                                + FREESTYLE_PROJECT_NAME.replaceAll(" ", "%20") + "/1/']")).getText();
 
-        Assert.assertTrue(actualResult.contains("Last build (#1)"));
+        Assert.assertEquals(actualResult, "#1");
+    }
+
+    @Test
+    public void testDeleteFreestyleProjectFromConfigurationPage() {
+        freestyleProjectCreate(FREESTYLE_PROJECT_NAME);
+        jenkinsHomeLink().click();
+
+        getDriver().findElement(By.xpath("//a[@class= 'jenkins-table__link model-link inside']")).click();
+        getDriver().findElement(By.xpath("//*[@id='tasks']/div[6]/span")).click();
+        getDriver().findElement(By.xpath("//button[@data-id = 'ok']")).click();
+        String resultHeader = getDriver().findElement(By.xpath("//h1")).getText();
+
+        Assert.assertEquals(resultHeader, "Welcome to Jenkins!");
+
     }
 
     @Test

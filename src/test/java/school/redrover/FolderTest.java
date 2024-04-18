@@ -23,6 +23,13 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
+    private void clickOnDropdownArrow(By locator) {
+        WebElement itemDropdownArrow = getDriver().findElement(locator);
+
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
+                "arguments[0].dispatchEvent(new Event('click'));", itemDropdownArrow);
+    }
+
     @Test
     public void testDotAsFirstFolderNameCharErrorMessage() {
         getDriver().findElement(By.cssSelector("[href$='/newJob']")).click();
@@ -62,18 +69,34 @@ public class FolderTest extends BaseTest {
                 .moveToElement(breadcrumbFolderName)
                 .perform();
 
-        WebElement breadcrumbDropdownArrow = getDriver().findElement(
-                By.cssSelector("[href^='/job'] [class='jenkins-menu-dropdown-chevron']"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
-                "arguments[0].dispatchEvent(new Event('click'));", breadcrumbDropdownArrow);
-
+        clickOnDropdownArrow(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']"));
         getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='rename']")).click();
         getDriver().findElement(By.name("newName")).clear();
         getDriver().findElement(By.name("newName")).sendKeys(NEW_FOLDER_NAME);
         getDriver().findElement(By.name("Submit")).click();
 
         String folderPageHeading = getDriver().findElement(By.tagName("h1")).getText();
+        Assert.assertEquals(folderPageHeading, NEW_FOLDER_NAME,
+                "The Folder name is not equal to " + NEW_FOLDER_NAME);
+    }
 
+    @Test
+    public void testRenameFolderViaMainPageDropdownMenu() {
+        createFolderViaCreateAJob();
+        getDriver().findElement(By.id("jenkins-home-link")).click();
+
+        WebElement dashboardFolderName = getDriver().findElement(By.cssSelector("td>[href^='job']"));
+        new Actions(getDriver())
+                .moveToElement(dashboardFolderName)
+                .perform();
+
+        clickOnDropdownArrow(By.cssSelector("[href^='job'] [class$='dropdown-chevron']"));
+        getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='rename']")).click();
+        getDriver().findElement(By.name("newName")).clear();
+        getDriver().findElement(By.name("newName")).sendKeys(NEW_FOLDER_NAME);
+        getDriver().findElement(By.name("Submit")).click();
+
+        String folderPageHeading = getDriver().findElement(By.tagName("h1")).getText();
         Assert.assertEquals(folderPageHeading, NEW_FOLDER_NAME,
                 "The Folder name is not equal to " + NEW_FOLDER_NAME);
     }
