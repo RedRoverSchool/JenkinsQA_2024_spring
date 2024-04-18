@@ -20,9 +20,9 @@ public class ManageAppearanceTest extends BaseTest {
                 .moveToElement(dashboard)
                 .pause(1000)
                 .moveToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
-//                .scrollToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
+                .scrollToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
                 .click()
-                .pause(1000)
+                .pause(1500)
                 .perform();
 
           getDriver().findElement(By.cssSelector("[class='tippy-box'] [href='/manage']")).click();
