@@ -11,7 +11,6 @@ import school.redrover.runner.BaseTest;
 
 import static school.redrover.runner.TestUtils.*;
 
-
 public class MultiConfigurationProjectTest extends BaseTest {
 
     private final String projectName = "MCProject";
@@ -24,8 +23,9 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .moveToElement(getDriver().findElement(By.linkText(projectName)))
                 .pause(1000)
                 .moveToElement(getDriver().findElement(By.cssSelector(String.format("[data-href*='/job/%s/']", projectName))))
-                .click()
-//                .pause(1000)
+                .clickAndHold()
+                .pause(1000)
+                .release()
 //                .moveToElement(getDriver().findElement(By.linkText("Rename")))
                 .perform();
 
@@ -39,7 +39,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Test
     public void testAddDescription() {
         createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
-        final String text = "❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F";
+        final String text = "❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
 
         addProjectDescription(this, projectName, text);
 
@@ -57,7 +57,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         addProjectDescription(this, projectName, text);
         returnToDashBoard(this);
 
-        getDriver().findElement(By.cssSelector("[href = 'job/MCProject/']")).click();
+        getDriver().findElement(By.cssSelector("[href = 'job/" + projectName+ "/']")).click();
         getDriver().findElement(By.id("description-link")).click();
         getDriver().findElement(By.name("description")).sendKeys(additionText);
         getDriver().findElement(By.name("Submit")).click();
@@ -71,7 +71,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     public void testDescriptionPreview() {
         createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
 
-        String text = "I want to see preview";
+        final String text = "I want to see preview";
         getDriver().findElement(By.id("job_" + projectName)).click();
         getDriver().findElement(By.id("description-link")).click();
         getDriver().findElement(By.name("description")).sendKeys(text);
@@ -82,8 +82,8 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testReplacingProjectDescription() {
-        String oldText = "The text to be replaced";
-        String newText = "Replacement text";
+        final String oldText = "The text to be replaced";
+        final String newText = "Replacement text";
 
         createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
         addProjectDescription(this, projectName, oldText);
@@ -98,7 +98,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testMakeCopyMultiConfigurationProject() {
-        String newProjectName = "MCProject copy";
+        final String newProjectName = "MCProject copy";
         createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
 
         getDriver().findElement(By.cssSelector("[href $= 'newJob']")).click();
