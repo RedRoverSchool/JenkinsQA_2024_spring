@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -22,10 +23,9 @@ public class ManageAppearanceTest extends BaseTest {
 //                .moveToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
                 .scrollToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
                 .click(dashboard.findElement(By.cssSelector("[class$='chevron']")))
-                .pause(1500)
                 .perform();
 
-          getDriver().findElement(By.cssSelector("[class='tippy-box'] [href='/manage']")).click();
+          getWait15(this).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class='tippy-box'] [href='/manage']"))).click();
           getDriver().findElement(By.cssSelector("[href=\"appearance\"]")).click();
 
 //          sleep(this, 3);
