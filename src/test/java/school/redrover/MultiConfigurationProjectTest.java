@@ -8,6 +8,11 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 import static school.redrover.runner.TestUtils.*;
 
 
@@ -97,5 +102,23 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 getDriver().findElements(By.className("jenkins-table__link")).size(),
                 2,
                 "Copy of the project does not created");
+    }
+
+    @Test
+    public void testnewItemMulticonfigurationProgect(){
+
+
+        getDriver().findElement(By.xpath("//a[@it='hudson.model.Hudson@74dc2aed']")).click();
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(projectName);
+        getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Project "+projectName);
+
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//span[text()='MCProject']")).getText(), projectName );
+
     }
 }
