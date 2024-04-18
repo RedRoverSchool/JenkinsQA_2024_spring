@@ -21,6 +21,7 @@ public class ManageAppearanceTest extends BaseTest {
                 .scrollToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
                 .click()
                 .pause(1000)
+                .build()
                 .perform();
 
         new Actions(getDriver())
