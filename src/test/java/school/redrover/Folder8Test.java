@@ -6,8 +6,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-import java.time.Duration;
-
 public class Folder8Test extends BaseTest {
     public void createFolder() {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
@@ -23,8 +21,7 @@ public class Folder8Test extends BaseTest {
         createFolder();
         Actions actions = new Actions(getDriver());
 
-        actions.moveToElement(getDriver().findElement(By.xpath("//a[@href='job/Folder/']"))).pause(Duration.ofSeconds(3)).perform();
-        getDriver().findElement(By.xpath("//a[@href='job/Folder/']/button[@class='jenkins-menu-dropdown-chevron']")).click();
+        getDriver().findElement(By.xpath("//td/a[@href='job/Folder/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/Folder/confirm-rename']")).click();
         getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
         getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys("NewFolder");
