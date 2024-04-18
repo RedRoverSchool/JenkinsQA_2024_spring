@@ -1,8 +1,9 @@
-package school.redrover.runner;
+package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 public class Folder7Test extends BaseTest {
 
