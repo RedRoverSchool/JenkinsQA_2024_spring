@@ -17,6 +17,19 @@ public class NewItem1Test extends BaseTest {
         Assert.assertFalse(getDriver().findElement(By.cssSelector("div.btn-decorator > button#ok-button")).isEnabled());
     }
     @Test
+    public void testNewItemWithoutNameAndType() {
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        Assert.assertFalse(getDriver().findElement(By.cssSelector("div.btn-decorator > button#ok-button")).isEnabled());
+    }
+    @Test
+    public void testNewItemWithoutName() {
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.cssSelector("li.org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
+
+        Assert.assertFalse(getDriver().findElement(By.cssSelector("div.btn-decorator > button#ok-button")).isEnabled());
+    }
+    @Test
     public void testTextMessageNewItemUnsafeCharInName() {
         String unsafeSymbol = "#";
 
