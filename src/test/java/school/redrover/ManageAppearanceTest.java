@@ -8,6 +8,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import static school.redrover.runner.TestUtils.*;
+
 public class ManageAppearanceTest extends BaseTest {
 
     @Test
@@ -23,12 +25,18 @@ public class ManageAppearanceTest extends BaseTest {
                 .pause(1000)
                 .perform();
 
-        new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.cssSelector("[class='tippy-box'] [href='/manage']")))
-                .sendKeys(Keys.ARROW_RIGHT, Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN,
-                        Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ENTER)
-                .perform();
+          getDriver().findElement(By.cssSelector("[class='tippy-box'] [href='/manage']")).click();
+          getDriver().findElement(By.cssSelector("[href=\"appearance\"]")).click();
 
+//          sleep(this, 3);
+
+//        new Actions(getDriver())
+//                .moveToElement(getDriver().findElement(By.cssSelector("[class='tippy-box'] [href='/manage']")))
+//                .sendKeys(Keys.ARROW_RIGHT, Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN,
+//                        Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ENTER)
+//                .perform();
+//
         Assert.assertEquals(getDriver().findElements(By.className("app-theme-picker__item")).size(), 3);
+
     }
 }
