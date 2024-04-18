@@ -1,0 +1,33 @@
+package school.redrover;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
+
+public class ManageAppearanceTest extends BaseTest {
+
+    @Test
+    public void test() {
+        WebElement dashboard = getDriver().findElement(By.linkText("Dashboard"));
+
+        new Actions(getDriver())
+                .moveToElement(dashboard)
+                .pause(1000)
+                .scrollToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
+                .moveToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
+                .click()
+                .perform();
+
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.cssSelector("[class='tippy-box'] [href='/manage']")))
+                .sendKeys(Keys.ARROW_RIGHT, Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN,
+                        Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ENTER)
+                .perform();
+
+        Assert.assertEquals(getDriver().findElements(By.className("app-theme-picker__item")).size(), 3);
+    }
+}
