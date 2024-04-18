@@ -18,7 +18,7 @@ public class ManageAppearanceTest extends BaseTest {
                 .moveToElement(dashboard)
                 .pause(1000)
                 .scrollToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
-                .moveToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
+//                .moveToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
                 .click()
                 .perform();
 
