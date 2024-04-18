@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.*;
 import org.testng.annotations.*;
 import school.redrover.runner.*;
@@ -10,10 +9,6 @@ import school.redrover.runner.*;
 public class FreestyleProjectTest extends BaseTest {
     private static final String FREESTYLE_PROJECT_NAME = "Freestyle Project Name";
     private static final String NEW_FREESTYLE_PROJECT_NAME = "New Freestyle Project Name";
-
-    private WebElement okButton() {
-        return getDriver().findElement(By.id("ok-button"));
-    }
 
     private WebElement submitButton() {
         return getDriver().findElement(By.xpath("//button[@name = 'Submit']"));
@@ -65,12 +60,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testRenameFreestyleProjectFromConfigurationPage() {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
-                .sendKeys(FREESTYLE_PROJECT_NAME);
-        getDriver().findElement(By.xpath("//span[contains(text(),  'Freestyle project')]")).click();
-        okButton().click();
-        submitButton().click();
+        freestyleProjectCreate(FREESTYLE_PROJECT_NAME);
         jenkinsHomeLink().click();
 
         getDriver().findElement(By.xpath("//a[@class= 'jenkins-table__link model-link inside']")).click();
@@ -213,4 +203,31 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertTrue(actualResult.contains(expectedResult));
     }
+
+    @Ignore
+    @Test
+    public void testBuildNowFreestyleProject() {
+        freestyleProjectCreate(FREESTYLE_PROJECT_NAME);
+
+        getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
+        getDriver().findElement(By.xpath("//span[@class='task-link-text' and text()='Status']/parent::a")).click();
+        String actualResult = getDriver().findElement(By.xpath("//a[@href='lastBuild/']")).getText();
+
+        Assert.assertTrue(actualResult.contains("Last build (#1)"));
+    }
+
+    @Test
+    public void testDeleteFreestyleProjectFromConfigurationPage() {
+        freestyleProjectCreate(FREESTYLE_PROJECT_NAME);
+        jenkinsHomeLink().click();
+
+        getDriver().findElement(By.xpath("//a[@class= 'jenkins-table__link model-link inside']")).click();
+        getDriver().findElement(By.xpath("//*[@id='tasks']/div[6]/span")).click();
+        getDriver().findElement(By.xpath("//button[@data-id = 'ok']")).click();
+        String resultHeader = getDriver().findElement(By.xpath("//h1")).getText();
+
+        Assert.assertEquals(resultHeader, "Welcome to Jenkins!");
+
+    }
+
 }
