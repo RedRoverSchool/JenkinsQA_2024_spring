@@ -23,7 +23,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .moveToElement(getDriver().findElement(By.linkText(projectName)))
                 .pause(1000)
                 .scrollToElement(getDriver().findElement(By.cssSelector(String.format("[data-href*='/job/%s/']", projectName))))
-//                .moveToElement(getDriver().findElement(By.cssSelector(String.format("[data-href*='/job/%s/']", projectName))))
+                .moveToElement(getDriver().findElement(By.cssSelector(String.format("[data-href*='/job/%s/']", projectName))))
                 .click()
                 .perform();
 
