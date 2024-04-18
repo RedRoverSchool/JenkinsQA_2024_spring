@@ -226,7 +226,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
         String actualResult = getDriver().findElement(By.xpath("//*[@href='/job/"
-                                + FREESTYLE_PROJECT_NAME.replaceAll(" ", "%20") + "/1/']")).getText();
+                + FREESTYLE_PROJECT_NAME.replaceAll(" ", "%20") + "/1/']")).getText();
 
         Assert.assertEquals(actualResult, "#1");
     }
@@ -242,7 +242,6 @@ public class FreestyleProjectTest extends BaseTest {
         String resultHeader = getDriver().findElement(By.xpath("//h1")).getText();
 
         Assert.assertEquals(resultHeader, "Welcome to Jenkins!");
-
     }
 
     @Test
@@ -273,5 +272,29 @@ public class FreestyleProjectTest extends BaseTest {
         }
 
         Assert.assertTrue(elementsList.contains(projectName1));
+    }
+
+    @Test
+    public void testCreateNewItemFromOtherExisting() {
+
+        String projectName1 = "Race Cars";
+        String projectName2 = "Vintage Cars";
+
+        freestyleProjectCreate(projectName1);
+        jenkinsHomeLink().click();
+
+        createNewItemFromOtherExisting(projectName2, projectName1);
+        jenkinsHomeLink().click();
+
+        List<WebElement> elements = getDriver().findElements(
+                By.xpath("//td/a[contains(@href, 'job/')]/span"));
+
+        List<String> elementsList = new ArrayList<>();
+
+        for (int i = 0; i < elements.size(); i++) {
+            elementsList.add(elements.get(i).getText());
+        }
+
+        Assert.assertTrue(elementsList.contains(projectName2));
     }
 }
