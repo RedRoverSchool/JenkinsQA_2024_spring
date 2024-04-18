@@ -23,10 +23,9 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .moveToElement(getDriver().findElement(By.linkText(projectName)))
                 .pause(1000)
                 .moveToElement(getDriver().findElement(By.cssSelector(String.format("[data-href*='/job/%s/']", projectName))))
-                .clickAndHold()
-                .pause(1000)
-                .release()
-//                .moveToElement(getDriver().findElement(By.linkText("Rename")))
+                .click()
+//                .pause(1000)
+                .build()
                 .perform();
 
         getWait15(this).until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Rename"))).click();
