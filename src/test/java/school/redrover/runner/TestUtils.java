@@ -135,6 +135,21 @@ public final class TestUtils {
 
     }
 
+    public static void renameItem(BaseTest baseTest, String currentName, String newName) {
+        Actions action = new Actions(baseTest.getDriver());
+        baseTest.getDriver().findElement(By.linkText(currentName)).click();
+        baseTest.getDriver().findElement(By.xpath("//a[contains(., 'Rename')]")).click();
+        action.doubleClick(baseTest.getDriver().findElement(By.name("newName"))).perform();
+        baseTest.getDriver().findElement(By.name("newName")).sendKeys(newName);
+        baseTest.getDriver().findElement(By.name("Submit")).click();
+    }
+
+    public static void deleteItem(BaseTest baseTest, String itemName) {
+        baseTest.getDriver().findElement(By.linkText(itemName)).click();
+        baseTest.getDriver().findElement(By.xpath("//a[contains(., 'Delete')]")).click();
+        baseTest.getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+    }
+
     public enum Job {
         FREESTYLE("Freestyle project"),
         PIPELINE("Pipeline"),

@@ -1,22 +1,14 @@
 package school.redrover;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.*;
 import org.testng.annotations.*;
 import school.redrover.runner.*;
 
-import java.time.Duration;
 
 public class FreestyleProjectTest extends BaseTest {
     private static final String FREESTYLE_PROJECT_NAME = "Freestyle Project Name";
     private static final String NEW_FREESTYLE_PROJECT_NAME = "New Freestyle Project Name";
-
-    private WebElement okButton() {
-        return getDriver().findElement(By.id("ok-button"));
-    }
 
     private WebElement submitButton() {
         return getDriver().findElement(By.xpath("//button[@name = 'Submit']"));
@@ -68,12 +60,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testRenameFreestyleProjectFromConfigurationPage() {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
-                .sendKeys(FREESTYLE_PROJECT_NAME);
-        getDriver().findElement(By.xpath("//span[contains(text(),  'Freestyle project')]")).click();
-        okButton().click();
-        submitButton().click();
+        freestyleProjectCreate(FREESTYLE_PROJECT_NAME);
         jenkinsHomeLink().click();
 
         getDriver().findElement(By.xpath("//a[@class= 'jenkins-table__link model-link inside']")).click();
@@ -170,6 +157,25 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    public void testRenameWithEmptyName() {
+        freestyleProjectCreate(FREESTYLE_PROJECT_NAME);
+        getDriver().findElement(By.id("jenkins-home-link")).click();
+
+        WebElement projectName = getDriver().findElement(
+                By.xpath("//span[text()='"+ FREESTYLE_PROJECT_NAME +"']/following-sibling::button[@class='jenkins-menu-dropdown-chevron']"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", projectName);
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", projectName);
+
+        getDriver().findElement(By.xpath("//a[contains(@href,'rename')]")).click();
+
+        getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
+
+        getDriver().findElement(By.xpath("//button[contains(text(),'Rename')]")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//p[text()='No name is specified']")).getText(), "No name is specified");
+    }
+
+    @Test
     public void testMoveToFolder() {
 
         String folderName = "Classic Models";
@@ -197,4 +203,31 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertTrue(actualResult.contains(expectedResult));
     }
+
+    @Ignore
+    @Test
+    public void testBuildNowFreestyleProject() {
+        freestyleProjectCreate(FREESTYLE_PROJECT_NAME);
+
+        getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
+        String actualResult = getDriver().findElement(By.xpath("//*[@href='/job/"
+                                + FREESTYLE_PROJECT_NAME.replaceAll(" ", "%20") + "/1/']")).getText();
+
+        Assert.assertEquals(actualResult, "#1");
+    }
+
+    @Test
+    public void testDeleteFreestyleProjectFromConfigurationPage() {
+        freestyleProjectCreate(FREESTYLE_PROJECT_NAME);
+        jenkinsHomeLink().click();
+
+        getDriver().findElement(By.xpath("//a[@class= 'jenkins-table__link model-link inside']")).click();
+        getDriver().findElement(By.xpath("//*[@id='tasks']/div[6]/span")).click();
+        getDriver().findElement(By.xpath("//button[@data-id = 'ok']")).click();
+        String resultHeader = getDriver().findElement(By.xpath("//h1")).getText();
+
+        Assert.assertEquals(resultHeader, "Welcome to Jenkins!");
+
+    }
+
 }

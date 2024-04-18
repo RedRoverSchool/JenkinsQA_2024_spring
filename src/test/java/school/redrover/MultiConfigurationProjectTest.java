@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -10,15 +11,32 @@ import school.redrover.runner.BaseTest;
 
 import static school.redrover.runner.TestUtils.*;
 
-
 public class MultiConfigurationProjectTest extends BaseTest {
 
     private final String projectName = "MCProject";
 
     @Test
+    public void testRenameProjectViaMainPageDropdown() {
+        createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
+
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.linkText(projectName)))
+                .pause(1000)
+                .scrollToElement(getDriver().findElement(By.cssSelector(String.format("[data-href*='/job/%s/']", projectName))))
+                .click()
+                .perform();
+
+        getWait15(this).until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Rename"))).click();
+        getDriver().findElement(By.name("newName")).sendKeys("New");
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.linkText(projectName + "New")).isDisplayed());
+    }
+
+    @Test
     public void testAddDescription() {
         createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
-        final String text = "❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F❤\uFE0F";
+        final String text = "❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
 
         addProjectDescription(this, projectName, text);
 
@@ -36,7 +54,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         addProjectDescription(this, projectName, text);
         returnToDashBoard(this);
 
-        getDriver().findElement(By.cssSelector("[href = 'job/MCProject/']")).click();
+        getDriver().findElement(By.cssSelector("[href = 'job/" + projectName+ "/']")).click();
         getDriver().findElement(By.id("description-link")).click();
         getDriver().findElement(By.name("description")).sendKeys(additionText);
         getDriver().findElement(By.name("Submit")).click();
@@ -50,19 +68,19 @@ public class MultiConfigurationProjectTest extends BaseTest {
     public void testDescriptionPreview() {
         createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
 
-        String text = "I want to see preview";
+        final String text = "I want to see preview";
         getDriver().findElement(By.id("job_" + projectName)).click();
         getDriver().findElement(By.id("description-link")).click();
         getDriver().findElement(By.name("description")).sendKeys(text);
         getDriver().findElement(By.className("textarea-show-preview")).click();
 
-        Assert.assertTrue(getDriver().findElement(By.className("textarea-preview")).getText().equals(text));
+        Assert.assertEquals(text, getDriver().findElement(By.className("textarea-preview")).getText());
     }
 
     @Test
     public void testReplacingProjectDescription() {
-        String oldText = "The text to be replaced";
-        String newText = "Replacement text";
+        final String oldText = "The text to be replaced";
+        final String newText = "Replacement text";
 
         createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
         addProjectDescription(this, projectName, oldText);
@@ -77,7 +95,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testMakeCopyMultiConfigurationProject() {
-        String newProjectName = "MCProject copy";
+        final String newProjectName = "MCProject copy";
         createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
 
         getDriver().findElement(By.cssSelector("[href $= 'newJob']")).click();

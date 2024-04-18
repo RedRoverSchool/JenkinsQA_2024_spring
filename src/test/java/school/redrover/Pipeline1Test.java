@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 public class Pipeline1Test extends BaseTest {
     private static final String PIPELINE_NAME = "NewPipeline";
@@ -38,6 +39,19 @@ public class Pipeline1Test extends BaseTest {
                 getDriver().findElement(By.id("itemname-invalid")).getText(),
                 "» A job already exists with the name ‘NewPipeline’");
 
+    }
+    @Test
+    public void testVisibilityDisableButton() {
+        TestUtils.createNewJob(this, TestUtils.Job.PIPELINE, "Pipeline1");
+        getDriver().findElement(By.xpath("//table//a[@href='job/Pipeline1/']")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.name("Submit")).isDisplayed());
+
+        getDriver().findElement(By.name("Submit")).click();
+
+        String actualStatusMessage = getDriver().findElement(By.id("enable-project")).getAttribute("innerText");
+
+        Assert.assertTrue(actualStatusMessage.contains("This project is currently disabled"));
     }
 }
 
