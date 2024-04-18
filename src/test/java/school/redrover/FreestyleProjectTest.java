@@ -212,7 +212,7 @@ public class FreestyleProjectTest extends BaseTest {
         String actualResult = getDriver().findElement(By.xpath("//*[@href='/job/"
                                 + FREESTYLE_PROJECT_NAME.replaceAll(" ", "%20") + "/1/']")).getText();
 
-        Assert.assertEquals(actualResult, "#1");
+        Assert.assertEquals(actualResult, "#1 ");
     }
 
     @Test
