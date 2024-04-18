@@ -5,7 +5,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-public class PipelineConfiguration extends BaseTest {
+public class PipelineConfigurationTest extends BaseTest {
     public void createPipline() {
         getDriver().findElement(By.xpath("//span[contains(text(),'Create')]")).click();
         getDriver().findElement(By.id("name")).sendKeys("TestCrazyTesters");
