@@ -72,7 +72,7 @@ public class NewItem1Test extends BaseTest {
         getDriver().findElement(By.cssSelector("[href='newJob']")).click();
         getDriver().findElement(By.cssSelector("[class$=FreeStyleProject]")).click();
 
-        boolean okButton = getDriver().findElement(By.id("ok-button")).isEnabled();
-        Assert.assertFalse(okButton);
+        boolean isOkButtonEnabled = getDriver().findElement(By.id("ok-button")).isEnabled();
+        Assert.assertFalse(isOkButtonEnabled);
     }
 }
