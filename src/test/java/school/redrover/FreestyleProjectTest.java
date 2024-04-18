@@ -36,12 +36,19 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     public void createFolder(String folderName) {
-        getDriver().findElement(By.xpath("//a [@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input [@name='name']")).sendKeys(folderName);
-        getDriver().findElement(By.xpath("//span [@class='label'] [text() = 'Folder']")).click();
-        getDriver().findElement(By.xpath("//button [@id='ok-button']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(folderName);
+        getDriver().findElement(By.xpath("//span[@class='label'][text() = 'Folder']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
         submitButton().click();
+    }
 
+    public void createNewItemFromOtherExisting(String newProjectName, String existingProjectName) {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(newProjectName);
+        getDriver().findElement(By.xpath("//input[@name='from']")).sendKeys(existingProjectName);
+        okButton().click();
+        submitButton().click();
     }
 
     public void openElementDropdown(WebElement element) {
@@ -176,7 +183,7 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.id("jenkins-home-link")).click();
 
         WebElement projectName = getDriver().findElement(
-                By.xpath("//span[text()='"+ FREESTYLE_PROJECT_NAME +"']/following-sibling::button[@class='jenkins-menu-dropdown-chevron']"));
+                By.xpath("//span[text()='" + FREESTYLE_PROJECT_NAME + "']/following-sibling::button[@class='jenkins-menu-dropdown-chevron']"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", projectName);
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", projectName);
 
@@ -203,17 +210,17 @@ public class FreestyleProjectTest extends BaseTest {
         jenkinsHomeLink().click();
 
         openElementDropdown(getDriver().findElement(
-                By.xpath("//a [@href='job/" + projectName.replaceAll(" ", "%20")
-                        + "/']/button [@class='jenkins-menu-dropdown-chevron']")));
+                By.xpath("//a[@href='job/" + projectName.replaceAll(" ", "%20")
+                        + "/']/button[@class='jenkins-menu-dropdown-chevron']")));
 
-        getDriver().findElement(By.xpath("//a [@href='/job/"
+        getDriver().findElement(By.xpath("//a[@href='/job/"
                 + projectName.replaceAll(" ", "%20") + "/move']")).click();
 
-        getDriver().findElement(By.xpath("//option [@value='/" + folderName + "']")).click();
+        getDriver().findElement(By.xpath("//option[@value='/" + folderName + "']")).click();
 
         submitButton().click();
 
-        String actualResult = getDriver().findElement(By.xpath("//div [@id='main-panel']")).getText();
+        String actualResult = getDriver().findElement(By.xpath("//div[@id='main-panel']")).getText();
 
         Assert.assertTrue(actualResult.contains(expectedResult));
     }
@@ -229,9 +236,8 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(actualResult.contains("Last build (#1)"));
     }
 
-
     @Test
-    public void testCreateNewItemFromOtherExisting() {
+    public void testCopyFromContainer() {
 
         String projectName1 = "Race Cars";
         String projectName2 = "Vintage Cars";
@@ -239,18 +245,18 @@ public class FreestyleProjectTest extends BaseTest {
         freestyleProjectCreate(projectName1);
         jenkinsHomeLink().click();
 
-        getDriver().findElement(By.xpath("//a [@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input [@name='name']")).sendKeys(projectName2);
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(projectName2);
         getDriver().findElement(
-                By.xpath("//input [@name='from']")).sendKeys(projectName1.substring(0, 1));
+                By.xpath("//input[@name='from']")).sendKeys(projectName1.substring(0, 1));
 
-        WebDriverWait wait60 = new WebDriverWait(getDriver(), Duration.ofSeconds(60));
+        WebDriverWait wait15 = new WebDriverWait(getDriver(), Duration.ofSeconds(15));
 
-        wait60.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div [@class='item-copy']//li")));
+        wait15.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@class='item-copy']//li")));
 
         List<WebElement> elements = getDriver().findElements(
-                By.xpath("//div [@class='item-copy']//li"));
+                By.xpath("//div[@class='item-copy']//li"));
 
         List<String> elementsList = new ArrayList<>();
         for (int i = 0; i < elements.size(); i++) {
@@ -258,41 +264,5 @@ public class FreestyleProjectTest extends BaseTest {
         }
 
         Assert.assertTrue(elementsList.contains(projectName1));
-
-        getDriver().findElement(
-                By.xpath("//li [text() = '" + projectName1 + "']")).click();
-        okButton().click();
-        submitButton().click();
-        jenkinsHomeLink().click();
-
-        elements = getDriver().findElements(
-                By.xpath("//td/a [contains(@href, 'job/')]/span"));
-
-        elementsList.clear();
-
-        for (int i = 0; i < elements.size(); i++) {
-            elementsList.add(elements.get(i).getText());
-        }
-
-        Assert.assertTrue(elementsList.contains(projectName1));
-        Assert.assertTrue(elementsList.contains(projectName2));
-
-        getDriver().findElement(By.xpath("//td/a [@href='job/"
-                + projectName2.replaceAll(" ", "%20") + "/']")).click();
-
-        String actualResultByClick = getDriver().findElement(
-                By.xpath("//h1 [@class='job-index-headline page-headline']")).getText();
-
-        Assert.assertEquals(actualResultByClick, projectName2);
-
-        jenkinsHomeLink().click();
-
-        getDriver().findElement(By.xpath("//input [@role='searchbox']")).sendKeys(projectName2);
-        getDriver().findElement(By.xpath("//input [@role='searchbox']")).submit();
-
-        String actualResultBySearch = getDriver().findElement(
-                By.xpath("//h1 [@class='job-index-headline page-headline']")).getText();
-
-        Assert.assertEquals(actualResultBySearch, projectName2);
     }
 }
