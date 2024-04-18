@@ -20,4 +20,18 @@ public class PipelineConfigurationTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[@data-section-id='pipeline']")).click();
         Assert.assertTrue(getDriver().findElement(By.id("bottom-sticker")).isDisplayed(), "Pipeline");
     }
+
+    @Test
+    public void testAddDescriptionInConfigureMenu() {
+        final String pipelineDescription = "This description was added for testing purposes";
+
+        createPipline();
+
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(pipelineDescription);
+        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
+
+        Assert.assertTrue(
+                getDriver().findElement(By.xpath("//div[text()='" + pipelineDescription + "']")).isDisplayed(),
+                "Something went wrong with the description");
+    }
 }
