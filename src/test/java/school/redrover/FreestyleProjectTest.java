@@ -296,5 +296,6 @@ public class FreestyleProjectTest extends BaseTest {
         }
 
         Assert.assertTrue(elementsList.contains(projectName2));
+
     }
 }
