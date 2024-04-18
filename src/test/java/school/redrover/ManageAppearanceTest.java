@@ -11,14 +11,14 @@ import school.redrover.runner.BaseTest;
 public class ManageAppearanceTest extends BaseTest {
 
     @Test
-    public void test() {
+    public void testAppearanceQuantityOfThemesViaDashboardDropDown() {
         WebElement dashboard = getDriver().findElement(By.linkText("Dashboard"));
 
         new Actions(getDriver())
                 .moveToElement(dashboard)
                 .pause(1000)
+                .moveToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
                 .scrollToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
-//                .moveToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
                 .click()
                 .perform();
 
