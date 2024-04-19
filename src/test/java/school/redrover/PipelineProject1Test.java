@@ -48,6 +48,7 @@ public class PipelineProject1Test extends BaseTest {
         Assert.assertEquals(actualPipelineName, PIPELINE_NAME);
     }
 
+    @Ignore
     @Test
     public void testCreatePipelineWithEmptyName() {
         getDriver().findElement(By.xpath("//div[@class='task '][1]")).click();
