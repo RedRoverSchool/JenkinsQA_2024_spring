@@ -9,7 +9,6 @@ import school.redrover.runner.*;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class FreestyleProjectTest extends BaseTest {
@@ -32,7 +31,11 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(newName);
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+
+        WebDriverWait wait5 = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+
+        wait5.until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.id("ok-button")))).click();
+
         submitButton().click();
     }
 
@@ -264,25 +267,16 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(
                 By.xpath("//input[@name='from']")).sendKeys(oldProjectName1.substring(0, 1));
 
-//        openElementDropdown(getDriver().findElement(
-//                By.xpath("//div[@class='add-item-copy yui-ac']//div[@class='yui-ac-content']")));
-
         WebDriverWait wait15 = new WebDriverWait(getDriver(), Duration.ofSeconds(15));
 
-//        wait15.until(ExpectedConditions.visibilityOfElementLocated(
-//                By.xpath("//div[@class='item-copy']//li")));
-//
-//        List<WebElement> elements = getDriver().findElements(
-//                By.xpath("//div[@class='item-copy']//li"));
-
-         List<WebElement> elements = wait15.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
-                By.xpath("//div[@class='item-copy']//li")));
+        List<WebElement> elements = wait15.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+                By.xpath("//div[@class='item-copy']//li[not(@style='display: none;')]")));
 
         List<String> elementsList = new ArrayList<>();
-        for (int i = 0; i < elements.size(); i++) {
-            elementsList.add(elements.get(i).getText());
+        for (WebElement element : elements) {
+            elementsList.add(element.getText());
         }
-        String stop = "stop";
+
         Assert.assertTrue(elementsList.contains(oldProjectName1));
     }
 }
