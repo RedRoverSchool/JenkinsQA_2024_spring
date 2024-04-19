@@ -249,6 +249,7 @@ public class FreestyleProjectTest extends BaseTest {
         String resultHeader = getDriver().findElement(By.xpath("//h1")).getText();
 
         Assert.assertEquals(resultHeader, "Welcome to Jenkins!");
+
     }
 
     @Test

@@ -22,7 +22,10 @@ public final class TestUtils {
     public static final String FOLDER = "Folder";
     public static final String MULTIBRANCH_PIPELINE = "Multibranch Pipeline";
     public static final String ORGANIZATION_FOLDER = "Organization Folder";
+
     public static final By DROPDOWN_DELETE = By.cssSelector("button[href $= '/doDelete']");
+    public static final By DROPDOWN_RENAME = By.cssSelector("a[href $= '/confirm-rename']");
+
     public static final By DIALOG_DEFAULT_BUTTON = By.cssSelector("dialog .jenkins-button--primary");
     public static final By EMPTY_STATE_BLOCK = By.cssSelector("div.empty-state-block");
     public static final String JOB_XPATH = "//*[text()='%s']";
