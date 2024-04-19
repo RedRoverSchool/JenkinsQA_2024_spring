@@ -38,7 +38,6 @@ public class Folder7Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.linkText(NEW_NAME)).getText(), "Renamed Folder");
     }
-}
 
     @Ignore
     @Test
