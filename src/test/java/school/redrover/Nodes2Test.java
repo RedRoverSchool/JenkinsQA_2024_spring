@@ -11,7 +11,7 @@ public class Nodes2Test extends BaseTest {
 
     @Test
     public void testCreateNewNodeWithDescription() {
-        String description = "Description for user in node is correct and useful for next step";
+        String description = "Description ";
 
         getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
         getDriver().findElement(By.xpath("//dt[text()='Nodes']")).click();
@@ -25,9 +25,8 @@ public class Nodes2Test extends BaseTest {
                         NODE_NAME.replaceAll(" ", "%20")+"/']")).click();
 
         String actualResult = getDriver().findElement(By.id("description")).getText();
-        String expectedResult = description.substring(0, 30);
 
-        Assert.assertTrue(actualResult.contains(expectedResult));
+        Assert.assertTrue(actualResult.contains(description));
     }
 
 }
