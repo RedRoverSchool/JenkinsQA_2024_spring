@@ -113,7 +113,7 @@ public final class TestUtils {
         baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(dropdownChevron));
         int chevronHeight = baseTest.getDriver().findElement(dropdownChevron).getSize().getHeight();
         int chevronWidth = baseTest.getDriver().findElement(dropdownChevron).getSize().getWidth();
-        action.moveToElement(baseTest.getDriver().findElement(dropdownChevron), chevronHeight, chevronWidth).click()
+        action.moveToElement(baseTest.getDriver().findElement(dropdownChevron), chevronWidth, chevronHeight).click()
                 .perform();
 
         baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(DROPDOWN_DELETE));
