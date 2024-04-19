@@ -9,7 +9,7 @@ import school.redrover.runner.TestUtils;
 public class FreestyleProject21Test extends BaseTest {
 
     @Test
-    public void testRenameFreestyleProject() {
+    public void testRenameFreestyleProjectDropdownMenu() {
         TestUtils.createItem(TestUtils.FREESTYLE_PROJECT, "test", getDriver());
         TestUtils.returnToDashBoard(this);
         getDriver().findElement(By.xpath("//a[@href='job/test/']")).click();
