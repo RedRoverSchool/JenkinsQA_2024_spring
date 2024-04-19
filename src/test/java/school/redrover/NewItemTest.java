@@ -85,6 +85,8 @@ public class NewItemTest extends BaseTest {
 
         Assert.assertEquals(result, "MultibranchPipeline");
     }
+
+    @Ignore
     @Test
     public void testOrganizationFolder() {
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();

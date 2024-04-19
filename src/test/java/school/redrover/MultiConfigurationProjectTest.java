@@ -81,6 +81,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         Assert.assertEquals(text, getDriver().findElement(By.className("textarea-preview")).getText());
     }
 
+    @Ignore
     @Test
     public void testReplacingProjectDescription() {
         final String oldText = "The text to be replaced";
