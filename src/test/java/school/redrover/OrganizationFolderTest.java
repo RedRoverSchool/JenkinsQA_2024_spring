@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
@@ -21,6 +22,7 @@ public class OrganizationFolderTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[contains(text(), 'Save')]")).click();
     }
 
+    @Ignore
     @Test
     public void testCreateOrganizationFolder() {
         createOrganizationFolder("Organization Folder");

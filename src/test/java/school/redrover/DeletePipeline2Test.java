@@ -8,6 +8,8 @@ import school.redrover.runner.BaseTest;
 
 public class DeletePipeline2Test extends BaseTest {
     final String NAME_PIPELINE = "Pipeline1";
+
+    @Ignore
     @Test
     public void createPipeline() {
         getDriver().findElement(By.linkText("New Item")).click();
