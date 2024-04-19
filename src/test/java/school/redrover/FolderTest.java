@@ -54,7 +54,6 @@ public class FolderTest extends BaseTest {
                 "The error message is different");
     }
 
-    @Ignore
     @Test
     public void testCreateFolderViaCreateAJob() {
         createFolderViaCreateAJob();
