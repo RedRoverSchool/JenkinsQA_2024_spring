@@ -39,7 +39,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(String.format("[href = 'job/%s/']", projectName)))).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).sendKeys(text);
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).sendKeys(text);
         getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertTrue(
@@ -53,7 +53,12 @@ public class MultiConfigurationProjectTest extends BaseTest {
         final String additionText = "AAA";
 
         TestUtils.createNewItemAndReturnToDashboard(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
-        TestUtils.addProjectDescription(this, projectName, text);
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(String.format("[href = 'job/%s/']", projectName)))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).sendKeys(text);
+        getDriver().findElement(By.name("Submit")).click();
+
         TestUtils.returnToDashBoard(this);
 
         getDriver().findElement(By.cssSelector("[href = 'job/" + projectName+ "/']")).click();
@@ -85,7 +90,11 @@ public class MultiConfigurationProjectTest extends BaseTest {
         final String newText = "Replacement text";
 
         TestUtils.createNewItemAndReturnToDashboard(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
-        TestUtils.addProjectDescription(this, projectName, oldText);
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(String.format("[href = 'job/%s/']", projectName)))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).sendKeys(oldText);
+        getDriver().findElement(By.name("Submit")).click();
 
         getDriver().findElement(By.id("description-link")).click();
         getDriver().findElement(By.name("description")).clear();
