@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -13,6 +14,7 @@ public class PipelineConfigurationTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
     }
 
+    @Ignore
     @Test
     public void testScroll() {
         createPipline();

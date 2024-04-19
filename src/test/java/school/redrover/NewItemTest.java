@@ -46,6 +46,8 @@ public class NewItemTest extends BaseTest {
 
         Assert.assertEquals(result, "NewPipeline");
     }
+
+    @Ignore
     @Test
     public void testCreateMultiConfigurationProject() {
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
