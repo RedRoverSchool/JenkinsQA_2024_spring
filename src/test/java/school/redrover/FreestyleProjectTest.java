@@ -200,10 +200,10 @@ public class FreestyleProjectTest extends BaseTest {
     @Test
     public void testMoveToFolder() {
 
-        String folderName = "Classic Models";
-        String projectName = "Race Cars";
+        final String folderName = "Classic Models";
+        final String projectName = "Race Cars";
 
-        String expectedResult = "Full project name: " + folderName + "/" + projectName;
+        final String expectedResult = "Full project name: " + folderName + "/" + projectName;
 
         createFolder(folderName);
         jenkinsHomeLink().click();
