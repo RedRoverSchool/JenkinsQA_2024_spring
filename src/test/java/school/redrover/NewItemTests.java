@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -16,15 +17,13 @@ public class NewItemTests extends BaseTest {
     public void testCreateFreestyleProject() {
         getDriver().findElement(MAIN_PAGE).click();
 
-        getDriver().findElement(JENKINS_INPUT).sendKeys("new Freestyle project");
+        getDriver().findElement(JENKINS_INPUT).sendKeys("newFreestyleProject");
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
         getDriver().findElement(OK_BUTTON).click();
 
         getDriver().findElement(SAVE_BUTTON).click();
 
-        WebElement newFreestyle = getDriver().findElement(By.xpath("//h1"));
-
-        Assert.assertEquals(newFreestyle.getText(),"new Freestyle project");
+        Assert.assertEquals((getDriver().findElement(By.xpath("//h1")).getText()),"newFreestyleProject");
     }
 
     @Test
@@ -56,5 +55,28 @@ public class NewItemTests extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//td/*[@href='job/NewFolder/']")).getText(),
                 "NewFolder");
+    }
+
+    @Test
+    public void testFreestyleMovetoFolder() {
+        testCreateFreestyleProject();
+
+        getDriver().findElement(By.xpath("//li/*[@href='/']")).click();
+
+        testCreateNewFolder();
+
+        getDriver().findElement(By.className("jenkins-breadcrumbs__list-item")).click();
+
+        getDriver().findElement(By.id("job_newFreestyleProject")).click();
+
+        getDriver().findElement(By.xpath("//td/a[@href='job/newFreestyleProject/']")).click();
+
+        getDriver().findElement(By.xpath("//*[@href='/job/newFreestyleProject/move']")).click();
+
+        WebElement element = getDriver().findElement(By.name("destination"));
+        Select select = new Select(element);
+        select.selectByValue("/NewFolder");
+
+        Assert.assertEquals("/NewFolder", element.getAttribute("value"));
     }
 }
