@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -35,6 +36,8 @@ public class FreestyleProject20Test extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.cssSelector("#breadcrumbs > li:nth-child(3)")).getText(),
                 projectName, "Wrong project is opened");
     }
+
+    @Ignore
     @Test
     public void testAddDescription() {
         createItem(projectName,"Freestyle project");

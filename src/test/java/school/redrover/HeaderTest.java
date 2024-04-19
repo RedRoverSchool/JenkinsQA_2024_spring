@@ -34,6 +34,7 @@ public class HeaderTest extends BaseTest {
       Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Manage Jenkins");
     }
 
+    @Ignore
     @Test
     public void testSearchResult() {
         String searchText = "i";

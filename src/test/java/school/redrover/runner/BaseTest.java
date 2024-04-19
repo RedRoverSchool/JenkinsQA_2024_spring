@@ -4,11 +4,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
+import school.redrover.runner.order.OrderForTests;
+import school.redrover.runner.order.OrderUtils;
 
 import java.lang.reflect.Method;
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
-@Listeners({FilterForTests.class})
+@Listeners({FilterForTests.class, OrderForTests.class})
 public abstract class BaseTest {
 
     private WebDriver driver;
@@ -20,6 +24,8 @@ public abstract class BaseTest {
     private WebDriverWait wait10;
 
     private WebDriverWait wait60;
+
+    private OrderUtils.MethodsOrder<Method> methodsOrder;
 
     private void startDriver() {
         ProjectUtils.log("Browser open");
@@ -65,23 +71,44 @@ public abstract class BaseTest {
         }
     }
 
+    private void acceptAlert() {
+        ProjectUtils.acceptAlert(getDriver());
+    }
+
+    @BeforeClass
+    protected void beforeClass() {
+        methodsOrder = OrderUtils.createMethodsOrder(
+                Arrays.stream(this.getClass().getMethods())
+                        .filter(m -> m.getAnnotation(Test.class) != null && m.getAnnotation(Ignore.class) == null)
+                        .collect(Collectors.toList()),
+                m -> m.getName(),
+                m -> m.getAnnotation(Test.class).dependsOnMethods());
+    }
+
     @BeforeMethod
     protected void beforeMethod(Method method) {
         ProjectUtils.logf("Run %s.%s", this.getClass().getName(), method.getName());
         try {
-            clearData();
-            startDriver();
-            getWeb();
-            loginWeb();
+            if (!methodsOrder.isGroupStarted(method) || methodsOrder.isGroupFinished(method)) {
+                clearData();
+                startDriver();
+                getWeb();
+                loginWeb();
+            } else {
+                getWeb();
+                acceptAlert();
+            }
         } catch (Exception e) {
             closeDriver();
             throw new RuntimeException(e);
+        } finally {
+            methodsOrder.markAsInvoked(method);
         }
     }
 
     @AfterMethod
     protected void afterMethod(Method method, ITestResult testResult) {
-        if (testResult.isSuccess() || ProjectUtils.closeBrowserIfError()) {
+        if (methodsOrder.isGroupFinished(method) && !(!ProjectUtils.isServerRun() && !testResult.isSuccess() && !ProjectUtils.closeBrowserIfError())) {
             stopDriver();
         }
 

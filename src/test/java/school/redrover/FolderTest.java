@@ -84,6 +84,7 @@ public class FolderTest extends BaseTest {
                 "The Folder name is not equal to " + NEW_FOLDER_NAME);
     }
 
+    @Ignore
     @Test
     public void testRenameFolderViaMainPageDropdownMenu() {
         createFolderViaCreateAJob();

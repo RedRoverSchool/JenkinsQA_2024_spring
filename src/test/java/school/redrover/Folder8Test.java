@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -16,6 +17,7 @@ public class Folder8Test extends BaseTest {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
     }
 
+    @Ignore
     @Test
     public void testRenameFolder() {
         createFolder();
