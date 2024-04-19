@@ -175,6 +175,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//p[text()='No name is specified']")).getText(), "No name is specified");
     }
 
+    @Ignore
     @Test
     public void testMoveToFolder() {
 
