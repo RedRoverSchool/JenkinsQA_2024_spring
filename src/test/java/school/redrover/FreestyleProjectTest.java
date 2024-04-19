@@ -9,6 +9,7 @@ import school.redrover.runner.*;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FreestyleProjectTest extends BaseTest {
@@ -226,7 +227,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
         String actualResult = getDriver().findElement(By.xpath("//*[@href='/job/"
-                                + FREESTYLE_PROJECT_NAME.replaceAll(" ", "%20") + "/1/']")).getText();
+                + FREESTYLE_PROJECT_NAME.replaceAll(" ", "%20") + "/1/']")).getText();
 
         Assert.assertEquals(actualResult, "#1");
     }
@@ -248,30 +249,40 @@ public class FreestyleProjectTest extends BaseTest {
     @Test
     public void testCopyFromContainer() {
 
-        String projectName1 = "Race Cars";
-        String projectName2 = "Vintage Cars";
+        String oldProjectName1 = "Race Cars";
+        String oldProjectName2 = "Race Bikes";
+        String newProjectName = "Vintage Cars";
 
-        freestyleProjectCreate(projectName1);
+        freestyleProjectCreate(oldProjectName1);
+        jenkinsHomeLink().click();
+
+        freestyleProjectCreate(oldProjectName2);
         jenkinsHomeLink().click();
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(projectName2);
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(newProjectName);
         getDriver().findElement(
-                By.xpath("//input[@name='from']")).sendKeys(projectName1.substring(0, 1));
+                By.xpath("//input[@name='from']")).sendKeys(oldProjectName1.substring(0, 1));
+
+//        openElementDropdown(getDriver().findElement(
+//                By.xpath("//div[@class='add-item-copy yui-ac']//div[@class='yui-ac-content']")));
 
         WebDriverWait wait15 = new WebDriverWait(getDriver(), Duration.ofSeconds(15));
 
-        wait15.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[@class='item-copy']//li")));
+//        wait15.until(ExpectedConditions.visibilityOfElementLocated(
+//                By.xpath("//div[@class='item-copy']//li")));
+//
+//        List<WebElement> elements = getDriver().findElements(
+//                By.xpath("//div[@class='item-copy']//li"));
 
-        List<WebElement> elements = getDriver().findElements(
-                By.xpath("//div[@class='item-copy']//li"));
+         List<WebElement> elements = wait15.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+                By.xpath("//div[@class='item-copy']//li")));
 
         List<String> elementsList = new ArrayList<>();
         for (int i = 0; i < elements.size(); i++) {
             elementsList.add(elements.get(i).getText());
         }
-
-        Assert.assertTrue(elementsList.contains(projectName1));
+        String stop = "stop";
+        Assert.assertTrue(elementsList.contains(oldProjectName1));
     }
 }
