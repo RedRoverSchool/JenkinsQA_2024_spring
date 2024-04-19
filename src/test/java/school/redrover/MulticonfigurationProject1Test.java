@@ -93,4 +93,15 @@ public class MulticonfigurationProject1Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("(//*[@id='description']/div)[1]")).getText(), randomText);
     }
+
+    @Test
+    public void testVerifyThatDisabledIconIsDisplayedOnDashboard(){
+        createMulticonfigurationProject();
+
+        getDriver().findElement(By.xpath("//*[@href='/job/" + PROJECT_NAME + "/']")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"disable-project\"]/button")).click();
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//*[@tooltip='Disabled']")).isDisplayed());
+    }
 }
