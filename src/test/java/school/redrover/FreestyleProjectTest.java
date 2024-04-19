@@ -284,8 +284,8 @@ public class FreestyleProjectTest extends BaseTest {
     @Test
     public void testCreateNewItemFromOtherExisting() {
 
-        String projectName1 = "Race Cars";
-        String projectName2 = "Vintage Cars";
+        final String projectName1 = "Race Cars";
+        final String projectName2 = "Vintage Cars";
 
         createFreestyleProject(projectName1);
         jenkinsHomeLink().click();
