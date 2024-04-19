@@ -95,7 +95,6 @@ public class NodesTest extends BaseTest {
                 "The created node '" + NODE_NAME + "' is not in the Nodes table");
     }
 
-
     @Test
     public void testDeletedNodeNotDisplayedInNodesTable() {
         createNodeViaMainPage();
