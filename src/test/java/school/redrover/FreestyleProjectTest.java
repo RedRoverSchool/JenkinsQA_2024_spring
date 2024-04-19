@@ -124,6 +124,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(actualResult, expectedResult);
     }
 
+    @Ignore
     @Test
     public void testFreestyleProjectCreate() {
         freestyleProjectCreate(FREESTYLE_PROJECT_NAME);

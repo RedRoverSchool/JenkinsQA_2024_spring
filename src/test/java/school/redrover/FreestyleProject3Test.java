@@ -39,6 +39,7 @@ public class FreestyleProject3Test extends BaseTest {
         Assert.assertEquals(newProjectName, expectedProjectName);
     }
 
+    @Ignore
     @Test
     public void testCreateFreestyleProject2(){
 

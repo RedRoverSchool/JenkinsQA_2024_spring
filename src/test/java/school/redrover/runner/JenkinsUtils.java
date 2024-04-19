@@ -196,6 +196,8 @@ public class JenkinsUtils {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.name("j_password"))).sendKeys(ProjectUtils.getPassword());
 
         driver.findElement(By.name("Submit")).click();
+
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@href='/me/my-views']")));
     }
 
     static void logout(WebDriver driver) {

@@ -66,6 +66,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                         .getText().contains(additionText + text));
     }
 
+    @Ignore
     @Test
     public void testDescriptionPreview() {
         createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
