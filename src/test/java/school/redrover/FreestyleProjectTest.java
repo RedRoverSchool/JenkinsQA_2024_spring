@@ -28,14 +28,13 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     public void freestyleProjectCreate(String newName) {
-        getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(newName);
-        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-
         WebDriverWait wait5 = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
 
+        getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(newName);
+        wait5.until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
+                By.className("hudson_model_FreeStyleProject")))).click();
         wait5.until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.id("ok-button")))).click();
-
         submitButton().click();
     }
 
