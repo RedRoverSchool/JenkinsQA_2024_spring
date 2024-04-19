@@ -40,9 +40,10 @@ public class FreestyleProjectTest extends BaseTest {
 
     public void createFolder(String folderName) {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(folderName);
-        getDriver().findElement(By.xpath("//span[@class='label'][text() = 'Folder']")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(
+                By.xpath("//input[@name='name']")))).sendKeys(folderName);
+        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.id("ok-button")))).click();
         submitButton().click();
     }
 
@@ -196,7 +197,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//p[text()='No name is specified']")).getText(), "No name is specified");
     }
 
-    @Ignore
     @Test
     public void testMoveToFolder() {
 
@@ -214,8 +214,8 @@ public class FreestyleProjectTest extends BaseTest {
                 By.xpath("//a[@href='job/" + projectName.replaceAll(" ", "%20")
                         + "/']/button[@class='jenkins-menu-dropdown-chevron']")));
 
-        getDriver().findElement(By.xpath("//a[@href='/job/"
-                + projectName.replaceAll(" ", "%20") + "/move']")).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/"
+                + projectName.replaceAll(" ", "%20") + "/move']"))).click();
 
         getDriver().findElement(By.xpath("//option[@value='/" + folderName + "']")).click();
 
