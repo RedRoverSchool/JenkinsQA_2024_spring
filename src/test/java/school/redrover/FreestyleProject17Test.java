@@ -6,6 +6,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+
 public class FreestyleProject17Test extends BaseTest {
 
     private final String JOB_NAME = "YS_jenkins_ui";
