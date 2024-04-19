@@ -62,7 +62,6 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(breadcrumbFolderName, FOLDER_NAME, "Breadcrumb name doesn't match " + FOLDER_NAME);
     }
 
-    @Ignore
     @Test
     public void testRenameFolderViaFolderBreadcrumbsDropdownMenu() {
         createFolderViaCreateAJob();
@@ -83,7 +82,6 @@ public class FolderTest extends BaseTest {
                 "The Folder name is not equal to " + NEW_FOLDER_NAME);
     }
 
-    @Ignore
     @Test
     public void testRenameFolderViaMainPageDropdownMenu() {
         createFolderViaCreateAJob();
