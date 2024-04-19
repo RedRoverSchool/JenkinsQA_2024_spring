@@ -39,7 +39,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(String.format("[href = 'job/%s/']", projectName)))).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).sendKeys(text);
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).sendKeys(text);
         getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertTrue(
