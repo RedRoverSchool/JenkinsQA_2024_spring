@@ -106,8 +106,6 @@ public final class TestUtils {
         baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
         baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).sendKeys(description);
         baseTest.getDriver().findElement(By.name("Submit")).click();
-
-
     }
 
     public static List<String> getTexts(List<WebElement> elementList) {
