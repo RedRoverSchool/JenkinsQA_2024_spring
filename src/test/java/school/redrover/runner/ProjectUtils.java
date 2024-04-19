@@ -100,7 +100,10 @@ public final class ProjectUtils {
     }
 
     static WebDriver createDriver() {
-        return new ChromeDriver(ProjectUtils.chromeOptions);
+        WebDriver driver = new ChromeDriver(ProjectUtils.chromeOptions);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+
+        return driver;
     }
 
     public static void get(WebDriver driver) {
