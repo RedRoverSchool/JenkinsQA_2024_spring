@@ -109,12 +109,7 @@ public final class TestUtils {
     }
 
     public static List<String> getTexts(List<WebElement> elementList) {
-        List<String> stringList = new ArrayList<>();
-        for (WebElement element : elementList) {
-            stringList.add(element.getText());
-        }
-
-        return stringList;
+        return elementList.stream().map(WebElement::getText).toList();
     }
 
     public static void goToJobPageAndEnterJobName(BaseTest baseTest, String jobName) {

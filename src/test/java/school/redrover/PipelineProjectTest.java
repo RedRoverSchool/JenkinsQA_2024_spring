@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -37,10 +38,10 @@ public class PipelineProjectTest extends BaseTest {
         getDriver().findElement(By.linkText("Create a job")).click();
         String newJobUrl = getDriver().getCurrentUrl();
         Assert.assertTrue(newJobUrl.endsWith("/newJob"));
-        Thread.sleep(500);
-        Assert.assertTrue(getDriver().findElement(By.cssSelector("div#add-item-panel .h3")).isDisplayed());
 
-        getDriver().findElement(By.id("name")).sendKeys("firstPipeline");
+        WebElement inputElement = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("name")));
+        inputElement.sendKeys("firstPipeline");
+
         getDriver().findElement(By.xpath("//*[text()='Pipeline']")).click();
         getDriver().findElement(By.id("ok-button")).click();
         newJobUrl = getDriver().getCurrentUrl();
