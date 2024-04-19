@@ -103,9 +103,11 @@ public final class TestUtils {
 
     public static void addProjectDescription(BaseTest baseTest, String projectName, String description) {
         baseTest.getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
-        getWait15(baseTest).until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
-        baseTest.getDriver().findElement(By.name("description")).sendKeys(description);
+        baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
+        baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).sendKeys(description);
         baseTest.getDriver().findElement(By.name("Submit")).click();
+
+
     }
 
     public static List<String> getTexts(List<WebElement> elementList) {
