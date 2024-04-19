@@ -10,11 +10,11 @@ import java.util.Random;
 
 
 public class MulticonfigurationProject1Test extends BaseTest {
-    final String projectName = "NewMulticonfigurationProject";
+    final String PROJECT_NAME = "NewMulticonfigurationProject";
 
     private void createMulticonfigurationProject(){
         getDriver().findElement(By.xpath("//*[@href='newJob']")).click();
-        getDriver().findElement(By.xpath("//*[@class='jenkins-input']")).sendKeys(projectName);
+        getDriver().findElement(By.xpath("//*[@class='jenkins-input']")).sendKeys(PROJECT_NAME);
         getDriver().findElement(By.xpath("//*[@class='hudson_matrix_MatrixProject']")).click();
         getDriver().findElement(By.xpath("//*[@type='submit']")).click();
     }
@@ -30,14 +30,14 @@ public class MulticonfigurationProject1Test extends BaseTest {
         createMulticonfigurationProject();
 
         getDriver().findElement(By.id("jenkins-name-icon")).click();
-        getDriver().findElement(By.id("search-box")).sendKeys(projectName);
+        getDriver().findElement(By.id("search-box")).sendKeys(PROJECT_NAME);
         getDriver().findElement(By.id("search-box")).sendKeys(Keys.ENTER);
 
-        Assert.assertTrue(getDriver().getCurrentUrl().contains("/job/" + projectName + "/"));
+        Assert.assertTrue(getDriver().getCurrentUrl().contains("/job/" + PROJECT_NAME + "/"));
     }
 
     @Test
-    public void testAddConfigurationsToProject(){
+    public void testAddDiscardOldBuildsConfigurationsToProject(){
         final String daysToKeep = generateRandomNumber();
         final String numToKeep = generateRandomNumber();
         final String artifactDaysToKeep = generateRandomNumber();
