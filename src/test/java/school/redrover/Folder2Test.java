@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.*;
 import org.testng.annotations.*;
 import school.redrover.runner.*;
@@ -15,7 +16,7 @@ public class Folder2Test extends BaseTest {
         getDriver().findElement(By.xpath("//input[@id=\"name\"]")).sendKeys(folderName);
         getDriver().findElement(By.xpath("//*[text()='Folder']/ancestor::li")).click();
         getDriver().findElement(By.xpath("//*[@id=\"ok-button\"]")).click();
-        getDriver().findElement(By.xpath("//*[@name=\"Submit\"]")).click();
+        getWait2().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@name=\"Submit\"]"))).click();
 
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/h1")).getText(),

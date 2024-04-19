@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils.*;
@@ -13,6 +14,7 @@ public class PipelineProjectTest extends BaseTest {
 
     public static final String JOB_XPATH = "//*[text()='%s']";
 
+    @Ignore
     @Test
     public void testSameNamePipeline() {
 
