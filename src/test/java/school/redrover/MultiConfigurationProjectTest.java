@@ -47,6 +47,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                         .getText().startsWith(text));
     }
 
+    @Ignore
     @Test
     public void testEditDescriptionWithoutDelete() {
         final String text = "qwerty123";

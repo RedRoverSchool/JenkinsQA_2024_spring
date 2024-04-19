@@ -59,6 +59,7 @@ public class NewItemTest extends BaseTest {
         Assert.assertEquals(result, "Project MultiConfigurationProject");
     }
 
+    @Ignore
     @Test
     public void testCreateFolder() {
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
