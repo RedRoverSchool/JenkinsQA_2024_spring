@@ -54,6 +54,16 @@ public class OrganizationFolderTest extends BaseTest {
 
         Assert.assertTrue(getDriver().getCurrentUrl().contains("/pipeline/"));
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='pipeline-syntax']")).getText(), "Pipeline Syntax");
+    }
+    @Test
+    public void testPipelineSyntaxExamplesAccess() {
+        createNewItemAndReturnToDashboard(this, ORGANIZATION_FOLDER_NAME, TestUtils.Item.ORGANIZATION_FOLDER);
 
+        getDriver().findElement(By.xpath("//span[contains(text(), '"+ ORGANIZATION_FOLDER_NAME +"')]")).click();
+        getDriver().findElement(By.xpath("//a[contains(@href,'pipeline-syntax')]")).click();
+        getDriver().findElement(By.xpath("//a[contains(@href,'examples')]")).click();
+
+        Assert.assertTrue(getDriver().getCurrentUrl().contains("/examples/"));
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[contains(@id,'examples')]")).getText(), "Pipeline Examples");
     }
 }
