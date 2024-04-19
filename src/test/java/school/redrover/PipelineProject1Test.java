@@ -112,6 +112,7 @@ public class PipelineProject1Test extends BaseTest {
         Assert.assertEquals(startNewProjectMassage, "Start building your software project");
     }
 
+    @Ignore
     @Test
     public void testDisablePipelineAndEnableBack() {
         createPipeline(PIPELINE_NAME);

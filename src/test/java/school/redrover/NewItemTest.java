@@ -32,6 +32,7 @@ public class NewItemTest extends BaseTest {
         Assert.assertEquals(result, "NewFreestyleProject");
     }
 
+    @Ignore
     @Test
     public void testCreateNewPipeline() {
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();

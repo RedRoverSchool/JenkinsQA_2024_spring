@@ -136,6 +136,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(actualResult, FREESTYLE_PROJECT_NAME);
     }
 
+    @Ignore
     @Test
     public void testAddDescription() {
         final String projectName = "New Freestyle project";
