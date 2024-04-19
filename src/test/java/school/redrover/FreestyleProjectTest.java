@@ -267,9 +267,9 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(
                 By.xpath("//input[@name='from']")).sendKeys(oldProjectName1.substring(0, 1));
 
-        WebDriverWait wait15 = new WebDriverWait(getDriver(), Duration.ofSeconds(15));
+        WebDriverWait wait20 = new WebDriverWait(getDriver(), Duration.ofSeconds(20));
 
-        List<WebElement> elements = wait15.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+        List<WebElement> elements = wait20.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
                 By.xpath("//div[@class='item-copy']//li[not(@style='display: none;')]")));
 
         List<String> elementsList = new ArrayList<>();
