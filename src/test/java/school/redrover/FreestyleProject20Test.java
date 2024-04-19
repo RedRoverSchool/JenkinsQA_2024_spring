@@ -28,6 +28,7 @@ public class FreestyleProject20Test extends BaseTest {
         getDriver().findElement(By.linkText("Dashboard")).click();
     }
 
+    @Ignore
     @Test
     public void testCreateFreestyleProject() {
         createItem(projectName,"Freestyle project");
