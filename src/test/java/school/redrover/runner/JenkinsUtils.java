@@ -2,6 +2,8 @@ package school.redrover.runner;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URI;
 import java.net.URLEncoder;
@@ -9,6 +11,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -187,9 +190,14 @@ public class JenkinsUtils {
     }
 
     static void login(WebDriver driver) {
-        driver.findElement(By.name("j_username")).sendKeys(ProjectUtils.getUserName());
-        driver.findElement(By.name("j_password")).sendKeys(ProjectUtils.getPassword());
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.name("j_username"))).sendKeys(ProjectUtils.getUserName());
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.name("j_password"))).sendKeys(ProjectUtils.getPassword());
+
         driver.findElement(By.name("Submit")).click();
+
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@href='/me/my-views']")));
     }
 
     static void logout(WebDriver driver) {
