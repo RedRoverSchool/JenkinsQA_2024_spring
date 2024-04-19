@@ -6,7 +6,6 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class Nodes2Test extends BaseTest {
-
     public final String NODE_NAME = "New node";
 
     @Test
