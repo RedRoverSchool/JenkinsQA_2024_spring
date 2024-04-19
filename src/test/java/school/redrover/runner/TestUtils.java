@@ -59,10 +59,6 @@ public final class TestUtils {
         new Actions(baseTest.getDriver()).pause(seconds * 1000).perform();
     }
 
-    public static WebDriverWait getWait15(BaseTest baseTest) {
-        return new WebDriverWait(baseTest.getDriver(), Duration.ofSeconds(15));
-    }
-
     public static String asURL(String str) {
         return URLEncoder.encode(str.trim(), StandardCharsets.UTF_8)
                 .replaceAll("\\+", "%20")
@@ -75,7 +71,7 @@ public final class TestUtils {
 
     public static void createNewItem(BaseTest baseTest, String name, String itemClassName) {
         baseTest.getDriver().findElement(By.cssSelector("#side-panel > div > div")).click();
-        getWait15(baseTest).until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(name);
+        baseTest.getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(name);
         baseTest.getDriver().findElement(By.className(itemClassName)).click();
         baseTest.getDriver().findElement(By.id("ok-button")).click();
     }
@@ -101,12 +97,12 @@ public final class TestUtils {
                 By.cssSelector(String.format("td a[href = 'job/%s/']", asURL(name)))));
 
         baseTest.getDriver().findElement(DROPDOWN_DELETE).click();
-        getWait15(baseTest).until(ExpectedConditions.elementToBeClickable(DIALOG_DEFAULT_BUTTON)).click();
+        baseTest.getWait10().until(ExpectedConditions.elementToBeClickable(DIALOG_DEFAULT_BUTTON)).click();
     }
 
     public static void addProjectDescription(BaseTest baseTest, String projectName, String description) {
         baseTest.getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
-        getWait15(baseTest).until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
+        baseTest.getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
         baseTest.getDriver().findElement(By.name("description")).sendKeys(description);
         baseTest.getDriver().findElement(By.name("Submit")).click();
     }
