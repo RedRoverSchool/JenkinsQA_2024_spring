@@ -66,4 +66,13 @@ public class NewItem1Test extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(By.cssSelector("tr#job_" + nameProject)).isDisplayed());
     }
+
+    @Test
+    public void testDisabledOkButtonWhenItemNameIsEmpty() {
+        getDriver().findElement(By.cssSelector("[href='newJob']")).click();
+        getDriver().findElement(By.cssSelector("[class$=FreeStyleProject]")).click();
+
+        boolean isOkButtonEnabled = getDriver().findElement(By.id("ok-button")).isEnabled();
+        Assert.assertFalse(isOkButtonEnabled);
+    }
 }

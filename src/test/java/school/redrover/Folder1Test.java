@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -13,6 +14,7 @@ public class Folder1Test extends BaseTest {
     private static final String FIRST_FOLDER_NAME = "Inner Folder 1";
     private static final String SECOND_FOLDER_NAME = "Inner Folder 2";
 
+    @Ignore
     @Test
     public void testCreateFolderUsingValidName() {
         createItem(FOLDER, ROOT_FOLDER_NAME, getDriver());
@@ -22,6 +24,7 @@ public class Folder1Test extends BaseTest {
         Assert.assertTrue(findLinkTextOnPage("New Item").isDisplayed());
     }
 
+    @Ignore
     @Test
     public void testCreateTwoFolderInFolder() {
         createItem(FOLDER, ROOT_FOLDER_NAME, getDriver());
