@@ -11,7 +11,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 
 public final class TestUtils {
@@ -102,6 +101,30 @@ public final class TestUtils {
 
         baseTest.getDriver().findElement(DROPDOWN_DELETE).click();
         getWait15(baseTest).until(ExpectedConditions.elementToBeClickable(DIALOG_DEFAULT_BUTTON)).click();
+    }
+
+    public static void openJobDropdown(BaseTest baseTest, String jobName) {
+        By dropdownChevron = By.xpath("//table//button[@class='jenkins-menu-dropdown-chevron']");
+
+        Actions action = new Actions(baseTest.getDriver());
+        action.moveToElement(baseTest.getDriver().findElement(
+                By.xpath("//table//a[@href='job/" + jobName + "/']"))).perform();
+
+        baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(dropdownChevron));
+        int chevronHeight = baseTest.getDriver().findElement(dropdownChevron).getSize().getHeight();
+        int chevronWidth = baseTest.getDriver().findElement(dropdownChevron).getSize().getWidth();
+        action.moveToElement(baseTest.getDriver().findElement(dropdownChevron), chevronHeight, chevronWidth).click()
+                .perform();
+
+        baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(DROPDOWN_DELETE));
+    }
+
+    public static void deleteJobViaDropdowm(BaseTest baseTest, String jobName) {
+        openJobDropdown(baseTest, jobName);
+
+        baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(DROPDOWN_DELETE)).click();
+
+        baseTest.getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
     }
 
     public static void addProjectDescription(BaseTest baseTest, String projectName, String description) {
