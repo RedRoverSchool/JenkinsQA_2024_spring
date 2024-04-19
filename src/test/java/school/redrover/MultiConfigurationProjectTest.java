@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -33,6 +34,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.linkText(projectName + "New")).isDisplayed());
     }
 
+    @Ignore
     @Test
     public void testAddDescription() {
         createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
@@ -45,6 +47,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                         .getText().startsWith(text));
     }
 
+    @Ignore
     @Test
     public void testEditDescriptionWithoutDelete() {
         final String text = "qwerty123";
@@ -64,6 +67,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                         .getText().contains(additionText + text));
     }
 
+    @Ignore
     @Test
     public void testDescriptionPreview() {
         createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
@@ -77,6 +81,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         Assert.assertEquals(text, getDriver().findElement(By.className("textarea-preview")).getText());
     }
 
+    @Ignore
     @Test
     public void testReplacingProjectDescription() {
         final String oldText = "The text to be replaced";

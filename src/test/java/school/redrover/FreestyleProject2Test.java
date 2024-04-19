@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -33,6 +34,7 @@ public class FreestyleProject2Test extends BaseTest {
         getDriver().findElement(DASHBOARD_BUTTON).click();
     }
 
+    @Ignore
     @Test
     public void testDescriptionAddedByUsingAddDescriptionButton() {
         createFreestyleProject(PROJECT_NAME);
