@@ -11,7 +11,7 @@ public class Nodes2Test extends BaseTest {
 
     @Test
     public void testCreateNewNodeWithDescription() {
-        String description = "Description ";
+        String description = "Description for user in node is correct and useful for next step";
 
         getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
         getDriver().findElement(By.xpath("//dt[text()='Nodes']")).click();
@@ -28,5 +28,4 @@ public class Nodes2Test extends BaseTest {
 
         Assert.assertTrue(actualResult.contains(description));
     }
-
 }
