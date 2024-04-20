@@ -42,7 +42,7 @@ public class FreestyleProject4Test extends BaseTest {
     @Test
     public void testCreateNewFreestyleProjectThrowTheDashboard() {
 
-        WebElement dashBoardButton = getDriver().findElement(By.xpath("//*[@href='/'][contains(text(),'Dashboard')]"));
+        WebElement dashBoardButton = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@href='/'][contains(text(),'Dashboard')]")));
 
         Actions actions = new Actions(getDriver());
 
@@ -56,19 +56,19 @@ public class FreestyleProject4Test extends BaseTest {
                 .click()
                 .perform();
 
-        WebElement inputNameField = getDriver().findElement(By.xpath("//input[@name='name']"));
+        WebElement inputNameField = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='name']")));
         inputNameField.sendKeys("Simple project");
 
-        WebElement freestyleProjectButton = getDriver().findElement(By.xpath("//span[contains(text(),'Freestyle project')]"));
+        WebElement freestyleProjectButton = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'Freestyle project')]")));
         freestyleProjectButton.click();
 
-        WebElement okButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
+        WebElement okButton = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@type='submit']")));
         okButton.click();
 
-        WebElement saveButton = getDriver().findElement(By.xpath("//button[@name='Submit']"));
+        WebElement saveButton = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@name='Submit']")));
         saveButton.click();
 
-        WebElement newProjectHeader = getDriver().findElement(By.xpath("//div[@class='jenkins-app-bar__content jenkins-build-caption']"));
+        WebElement newProjectHeader = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-app-bar__content jenkins-build-caption']")));
 
         Assert.assertTrue(newProjectHeader.isDisplayed());
         Assert.assertEquals(newProjectHeader.getText(),"Simple project");
