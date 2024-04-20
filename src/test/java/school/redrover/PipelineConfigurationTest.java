@@ -36,4 +36,17 @@ public class PipelineConfigurationTest extends BaseTest {
                 getDriver().findElement(By.xpath("//div[text()='" + pipelineDescription + "']")).isDisplayed(),
                 "Something went wrong with the description");
     }
+
+    @Test
+    public void testDisableProjectInConfigureMenu() {
+        final String expectedMessageForDisabledProject = "This project is currently disabled";
+
+        createPipline();
+
+        getDriver().findElement(By.xpath("//label[@data-title='Disabled']")).click();
+        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
+
+        Assert.assertTrue(
+                getDriver().findElement(By.id("enable-project")).getText().contains(expectedMessageForDisabledProject));
+    }
 }

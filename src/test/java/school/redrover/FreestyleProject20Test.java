@@ -1,8 +1,8 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -10,6 +10,7 @@ import java.util.UUID;
 
 public class FreestyleProject20Test extends BaseTest {
     final String projectName = "Freestyle-" + UUID.randomUUID();
+    final String newProjectName = "New" + projectName;
 
     public void createItem(String itemName, String item) {
         getDriver().findElement(By.linkText("New Item")).click();
@@ -22,13 +23,12 @@ public class FreestyleProject20Test extends BaseTest {
                 item + "is not checked");
 
         getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
         Assert.assertEquals(getDriver().getCurrentUrl(), "http://localhost:8080/job/"+itemName+"/",
                 item + "is not created");
         getDriver().findElement(By.linkText("Dashboard")).click();
     }
 
-    @Ignore
     @Test
     public void testCreateFreestyleProject() {
         createItem(projectName,"Freestyle project");
@@ -38,18 +38,30 @@ public class FreestyleProject20Test extends BaseTest {
                 projectName, "Wrong project is opened");
     }
 
-    @Ignore
-    @Test
+    @Test(dependsOnMethods = "testCreateFreestyleProject")
     public void testAddDescription() {
-        createItem(projectName,"Freestyle project");
+        getDriver().findElement(By.linkText("Dashboard")).click();
         getDriver().findElement(By.linkText(projectName)).click();
 
         getDriver().findElement(By.linkText("Add description")).click();
-        getDriver().findElement(By.name("description")).clear();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).clear();
         getDriver().findElement(By.name("description")).sendKeys("Description for "+projectName);
         getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='description']/div[1]")).getText(),
                 "Description for "+projectName);
+    }
+
+    @Test(dependsOnMethods = "testAddDescription")
+    public void testRenameProject() {
+        getDriver().findElement(By.linkText("Dashboard")).click();
+        getDriver().findElement(By.linkText(projectName)).click();
+
+        getDriver().findElement(By.linkText("Rename")).click();
+        getDriver().findElement(By.name("newName")).clear();
+        getDriver().findElement(By.name("newName")).sendKeys(newProjectName);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.className("job-index-headline")).getText(), newProjectName);
     }
 }

@@ -25,7 +25,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .click()
                 .perform();
 
-        TestUtils.getWait15(this).until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Rename"))).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Rename"))).click();
         getDriver().findElement(By.name("newName")).sendKeys("New");
         getDriver().findElement(By.name("Submit")).click();
 
@@ -43,7 +43,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertTrue(
-                TestUtils.getWait15(this).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div#description")))
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div#description")))
                         .getText().startsWith(text));
     }
 
@@ -67,7 +67,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertTrue(
-                TestUtils.getWait15(this).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div#description")))
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div#description")))
                         .getText().contains(additionText + text));
     }
 
@@ -126,5 +126,26 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 getDriver().findElements(By.className("jenkins-table__link")).size(),
                 2,
                 "Copy of the project does not created");
+    }
+
+    @Test
+    public void testDeleteProjectDescription() {
+        final String description = "This is project description";
+        TestUtils.createNewItemAndReturnToDashboard(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(String.format("[href = 'job/%s/']", projectName)))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).sendKeys(description);
+        getDriver().findElement(By.name("Submit")).click();
+
+        TestUtils.returnToDashBoard(this);
+
+        getDriver().findElement(By.cssSelector("[href = 'job/" + projectName+ "/']")).click();
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.name("description")).clear();
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertTrue(
+                getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div#description>div"))));
     }
 }

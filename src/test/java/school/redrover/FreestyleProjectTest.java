@@ -27,22 +27,21 @@ public class FreestyleProjectTest extends BaseTest {
         return getDriver().findElement(By.id("jenkins-home-link"));
     }
 
-    public void freestyleProjectCreate(String newName) {
-        WebDriverWait wait5 = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-
+    public void createFreestyleProject(String newName) {
         getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(newName);
-        wait5.until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
+        getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.id("name")))).sendKeys(newName);
+        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
                 By.className("hudson_model_FreeStyleProject")))).click();
-        wait5.until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.id("ok-button")))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.id("ok-button")))).click();
         submitButton().click();
     }
 
     public void createFolder(String folderName) {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(folderName);
-        getDriver().findElement(By.xpath("//span[@class='label'][text() = 'Folder']")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(
+                By.xpath("//input[@name='name']")))).sendKeys(folderName);
+        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.id("ok-button")))).click();
         submitButton().click();
     }
 
@@ -79,7 +78,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testRenameFreestyleProjectFromConfigurationPage() {
-        freestyleProjectCreate(FREESTYLE_PROJECT_NAME);
+        createFreestyleProject(FREESTYLE_PROJECT_NAME);
         jenkinsHomeLink().click();
 
         getDriver().findElement(By.xpath("//a[@class= 'jenkins-table__link model-link inside']")).click();
@@ -124,7 +123,7 @@ public class FreestyleProjectTest extends BaseTest {
     @Test
     public void testRenameProject() {
 
-        freestyleProjectCreate(FREESTYLE_PROJECT_NAME);
+        createFreestyleProject(FREESTYLE_PROJECT_NAME);
 
         getDriver().findElement(By.xpath("//li/a[@href='/']")).click();
         getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).click();
@@ -143,10 +142,10 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(actualResult, expectedResult);
     }
 
-    @Ignore
+
     @Test
     public void testFreestyleProjectCreate() {
-        freestyleProjectCreate(FREESTYLE_PROJECT_NAME);
+        createFreestyleProject(FREESTYLE_PROJECT_NAME);
 
         WebElement nameOfProject = getDriver().findElement(
                 By.xpath("//h1[@class='job-index-headline page-headline']"));
@@ -179,7 +178,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testRenameWithEmptyName() {
-        freestyleProjectCreate(FREESTYLE_PROJECT_NAME);
+        createFreestyleProject(FREESTYLE_PROJECT_NAME);
         getDriver().findElement(By.id("jenkins-home-link")).click();
 
         WebElement projectName = getDriver().findElement(
@@ -196,26 +195,25 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//p[text()='No name is specified']")).getText(), "No name is specified");
     }
 
-    @Ignore
     @Test
     public void testMoveToFolder() {
 
-        String folderName = "Classic Models";
-        String projectName = "Race Cars";
+        final String folderName = "Classic Models";
+        final String projectName = "Race Cars";
 
-        String expectedResult = "Full project name: " + folderName + "/" + projectName;
+        final String expectedResult = "Full project name: " + folderName + "/" + projectName;
 
         createFolder(folderName);
         jenkinsHomeLink().click();
-        freestyleProjectCreate(projectName);
+        createFreestyleProject(projectName);
         jenkinsHomeLink().click();
 
         openElementDropdown(getDriver().findElement(
                 By.xpath("//a[@href='job/" + projectName.replaceAll(" ", "%20")
                         + "/']/button[@class='jenkins-menu-dropdown-chevron']")));
 
-        getDriver().findElement(By.xpath("//a[@href='/job/"
-                + projectName.replaceAll(" ", "%20") + "/move']")).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/"
+                + projectName.replaceAll(" ", "%20") + "/move']"))).click();
 
         getDriver().findElement(By.xpath("//option[@value='/" + folderName + "']")).click();
 
@@ -229,7 +227,7 @@ public class FreestyleProjectTest extends BaseTest {
     @Ignore
     @Test
     public void testBuildNowFreestyleProject() {
-        freestyleProjectCreate(FREESTYLE_PROJECT_NAME);
+        createFreestyleProject(FREESTYLE_PROJECT_NAME);
 
         getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
         String actualResult = getDriver().findElement(By.xpath("//*[@href='/job/"
@@ -240,7 +238,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testDeleteFreestyleProjectFromConfigurationPage() {
-        freestyleProjectCreate(FREESTYLE_PROJECT_NAME);
+        createFreestyleProject(FREESTYLE_PROJECT_NAME);
         jenkinsHomeLink().click();
 
         getDriver().findElement(By.xpath("//a[@class= 'jenkins-table__link model-link inside']")).click();
@@ -259,10 +257,10 @@ public class FreestyleProjectTest extends BaseTest {
         String oldProjectName2 = "Race Bikes";
         String newProjectName = "Vintage Cars";
 
-        freestyleProjectCreate(oldProjectName1);
+        createFreestyleProject(oldProjectName1);
         jenkinsHomeLink().click();
 
-        freestyleProjectCreate(oldProjectName2);
+        createFreestyleProject(oldProjectName2);
         jenkinsHomeLink().click();
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -281,5 +279,25 @@ public class FreestyleProjectTest extends BaseTest {
         }
 
         Assert.assertTrue(elementsList.contains(oldProjectName1));
+    }
+
+    @Test
+    public void testCreateNewItemFromOtherExisting() {
+
+        final String projectName1 = "Race Cars";
+        final String projectName2 = "Vintage Cars";
+
+        createFreestyleProject(projectName1);
+        jenkinsHomeLink().click();
+
+        createNewItemFromOtherExisting(projectName2, projectName1);
+        jenkinsHomeLink().click();
+
+        List<WebElement> elementsList = getDriver().findElements(
+                By.xpath("//td/a[contains(@href, 'job/')]/span"));
+
+        List<String> stringList = TestUtils.getTexts(elementsList);
+
+        Assert.assertTrue(stringList.contains(projectName2));
     }
 }
