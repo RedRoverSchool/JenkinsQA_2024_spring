@@ -15,8 +15,7 @@ public class PipelineProject4Test extends BaseTest {
     public void testVerifyNewPPCreatedNewItem() {
         final String nameProject = "PPProject";
 
-        WebElement buttonNewItem = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@it='hudson.model.Hudson@4149531c']")));
-        buttonNewItem.click();
+        getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
         getDriver().findElement(By.cssSelector("div.add-item-name > input#name")).sendKeys(nameProject);
         getDriver().findElement(By.cssSelector(".org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
         getDriver().findElement(By.cssSelector("button#ok-button")).click();
