@@ -103,10 +103,12 @@ public final class TestUtils {
         By dropdownChevron = By.xpath("//table//button[@class='jenkins-menu-dropdown-chevron']");
 
         Actions action = new Actions(baseTest.getDriver());
+        baseTest.getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table//a[@href='job/" + jobName + "/']")));
         action.moveToElement(baseTest.getDriver().findElement(
                 By.xpath("//table//a[@href='job/" + jobName + "/']"))).perform();
 
-        baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(dropdownChevron));
+        action.moveToElement(baseTest.getDriver().findElement(dropdownChevron)).perform();
+        baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(dropdownChevron));
         int chevronHeight = baseTest.getDriver().findElement(dropdownChevron).getSize().getHeight();
         int chevronWidth = baseTest.getDriver().findElement(dropdownChevron).getSize().getWidth();
         action.moveToElement(baseTest.getDriver().findElement(dropdownChevron), chevronWidth, chevronHeight).click()
