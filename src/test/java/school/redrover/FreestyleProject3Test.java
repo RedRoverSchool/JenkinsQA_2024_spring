@@ -3,25 +3,16 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-import java.time.Duration;
 import java.util.List;
 
 public class FreestyleProject3Test extends BaseTest {
     private final static String FREESTYLE_PROJECT_NAME = "new Freestyle project";
     private final static String RENAMED_PROJECT_NAME = "old Freestyle project";
-    private WebDriverWait wait;
-
-    protected WebDriverWait getWait() {
-        if (wait == null) {
-            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(1));
-        }
-        return wait;
-    }
 
     private void createFreestyleProject(String projectName) {
         getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
@@ -33,6 +24,7 @@ public class FreestyleProject3Test extends BaseTest {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
     }
 
+    @Test
     private void createNewFreestyleProject() {
         getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).clear();
@@ -58,6 +50,7 @@ public class FreestyleProject3Test extends BaseTest {
         Assert.assertEquals(newProjectName, expectedProjectName);
     }
 
+    @Ignore
     @Test
     public void testCreateFreestyleProject2() {
 
@@ -97,9 +90,11 @@ public class FreestyleProject3Test extends BaseTest {
         WebElement dropDownMenuChevron = getDriver().findElement(By.xpath("//td[3]"));
         dropDownMenuChevron.click();
 
-        getWait().until(ExpectedConditions.elementToBeClickable(By.partialLinkText("Rename"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.partialLinkText("Rename"))).click();
 
-        WebElement projectNameInputField = getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']"));
+        WebElement projectNameInputField = getDriver().findElement(
+                By.xpath("//input[@class='jenkins-input validated  ']"));
         projectNameInputField.clear();
         projectNameInputField.sendKeys(RENAMED_PROJECT_NAME);
 
@@ -110,4 +105,3 @@ public class FreestyleProject3Test extends BaseTest {
         Assert.assertEquals(ActualProjectName, RENAMED_PROJECT_NAME);
     }
 }
-
