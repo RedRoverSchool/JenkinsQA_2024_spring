@@ -30,6 +30,6 @@ public class PipelineTest extends BaseTest {
                 getCssValue("box-shadow").split(" 0px")[0];
 
         Assert.assertEquals(currentTextAreaBorderBacklightColor, "rgba(11, 106, 162, 0.25)",
-                "Text area RGBA is not equal to " + currentTextAreaBorderBacklightColor);
+                "Text area RGBA is not equal to rgba(11, 106, 162, 0.25)");
     }
 }
