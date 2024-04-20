@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -18,10 +19,15 @@ public class ManageAppearanceTest extends BaseTest{
             new Actions(getDriver())
                     .moveToElement(dashboard)
                     .pause(1000)
-//                .moveToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
-                    .scrollToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
-                    .click(dashboard.findElement(By.cssSelector("[class$='chevron']")))
+                    .moveToLocation(96, 72)
+                    .click()
+//                    .moveToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
+//                    .scrollToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
+//                    .click(dashboard.findElement(By.cssSelector("[class$='chevron']")))
                     .perform();
+
+            Point g = dashboard.findElement(By.cssSelector("[class$='chevron']")).getLocation();
+            System.out.println(g);
 
             TestUtils.sleep(this, 2);
             getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class='tippy-box'] [href='/manage']"))).click();
