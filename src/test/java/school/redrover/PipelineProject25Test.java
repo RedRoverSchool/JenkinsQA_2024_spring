@@ -8,7 +8,7 @@ import school.redrover.runner.BaseTest;
 
 public class PipelineProject25Test extends BaseTest {
     @Test
-    public void testCreatePipeline(){
+    public void testCreatePipeline() {
         String text;
         getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys("New Pipeline");
@@ -19,3 +19,4 @@ public class PipelineProject25Test extends BaseTest {
 
         Assert.assertEquals(text, "New Pipeline");
     }
+}
