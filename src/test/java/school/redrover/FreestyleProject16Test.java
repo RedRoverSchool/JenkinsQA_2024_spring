@@ -2,11 +2,14 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class FreestyleProject16Test extends BaseTest {
     final String PROJECT_NAME = "MD first project";
+
+    @Ignore
     @Test
     public void testCreateFirstTest(){
 

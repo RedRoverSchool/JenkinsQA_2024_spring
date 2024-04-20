@@ -11,7 +11,7 @@ import school.redrover.runner.BaseTest;
         private static final By NEW_NODE_NAME = By.xpath("//input[@id='name']");
 
         @Test
-        public void testRenameFolder() {
+        public void testCreateNewNode() {
             getDriver().findElement(By.xpath("//a[contains(.,'Manage Jenkins')]")).click();
 
             getDriver().findElement(By.xpath("//dt[.='Nodes']")).click();

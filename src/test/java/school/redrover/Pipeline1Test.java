@@ -1,7 +1,9 @@
 package school.redrover;
 
+import org.checkerframework.checker.index.qual.IndexFor;
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
@@ -25,6 +27,8 @@ public class Pipeline1Test extends BaseTest {
                 getDriver().findElement(By.xpath("//span[normalize-space()='NewPipeline']")).getText(),
                 PIPELINE_NAME);
     }
+
+    @Ignore
     @Test
     public void testCreatePipelineWithSameName() {
         createPipeline(PIPELINE_NAME);

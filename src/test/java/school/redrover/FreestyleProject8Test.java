@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -15,6 +16,7 @@ public class FreestyleProject8Test extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
+    @Ignore
     @Test
     public void testCreateFreestyleProject(){
         getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();

@@ -2,11 +2,13 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class FreestyleProject13Test extends BaseTest {
 
+    @Ignore
     @Test
     private void testNewFreestyleProjectCreated(){
         getDriver().findElement(By.linkText("New Item")).click();

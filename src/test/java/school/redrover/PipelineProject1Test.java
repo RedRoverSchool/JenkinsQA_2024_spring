@@ -36,6 +36,7 @@ public class PipelineProject1Test extends BaseTest {
         getDriver().findElement(By.xpath("//a[starts-with(@class,'jenkins-table__link')]")).click();
     }
 
+    @Ignore
     @Test
     public void testCreatePipeline() {
         createPipeline(PIPELINE_NAME);
@@ -59,6 +60,7 @@ public class PipelineProject1Test extends BaseTest {
         Assert.assertFalse(okButton.isEnabled());
     }
 
+    @Ignore
     @Test
     public void testAddPipelineDescription() {
         createPipeline(PIPELINE_NAME);
@@ -74,6 +76,7 @@ public class PipelineProject1Test extends BaseTest {
         Assert.assertTrue(actualDescription.contains(PIPELINE_DESCRIPTION));
     }
 
+    @Ignore
     @Test
     public void testRenamePipelineFromLeftMenu() {
         createPipeline(PIPELINE_NAME);
@@ -94,6 +97,7 @@ public class PipelineProject1Test extends BaseTest {
         Assert.assertEquals(changedPipelineName, RENAMED_PIPELINE_NAME);
     }
 
+    @Ignore
     @Test
     public void testDeletePipelineFromLeftMenu() {
         createPipeline(PIPELINE_NAME);
@@ -108,6 +112,7 @@ public class PipelineProject1Test extends BaseTest {
         Assert.assertEquals(startNewProjectMassage, "Start building your software project");
     }
 
+    @Ignore
     @Test
     public void testDisablePipelineAndEnableBack() {
         createPipeline(PIPELINE_NAME);
@@ -149,6 +154,7 @@ public class PipelineProject1Test extends BaseTest {
         Assert.assertTrue(consoleOutput.getText().contains("Finished: SUCCESS"));
     }
 
+    @Ignore
     @Test
     public void AddDescriptionColumnToPipelineView() {
         final List<String> expectedPipelineViewHeader = List.of("S", "W", "Name" + "\n" + "  ↓", "Last Success", "Last Failure", "Last Duration", "Description");

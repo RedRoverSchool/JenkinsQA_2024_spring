@@ -6,12 +6,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 
 public final class TestUtils {
@@ -22,7 +19,10 @@ public final class TestUtils {
     public static final String FOLDER = "Folder";
     public static final String MULTIBRANCH_PIPELINE = "Multibranch Pipeline";
     public static final String ORGANIZATION_FOLDER = "Organization Folder";
+
     public static final By DROPDOWN_DELETE = By.cssSelector("button[href $= '/doDelete']");
+    public static final By DROPDOWN_RENAME = By.cssSelector("a[href $= '/confirm-rename']");
+
     public static final By DIALOG_DEFAULT_BUTTON = By.cssSelector("dialog .jenkins-button--primary");
     public static final By EMPTY_STATE_BLOCK = By.cssSelector("div.empty-state-block");
     public static final String JOB_XPATH = "//*[text()='%s']";
@@ -56,10 +56,6 @@ public final class TestUtils {
         new Actions(baseTest.getDriver()).pause(seconds * 1000).perform();
     }
 
-    public static WebDriverWait getWait15(BaseTest baseTest) {
-        return new WebDriverWait(baseTest.getDriver(), Duration.ofSeconds(15));
-    }
-
     public static String asURL(String str) {
         return URLEncoder.encode(str.trim(), StandardCharsets.UTF_8)
                 .replaceAll("\\+", "%20")
@@ -72,7 +68,7 @@ public final class TestUtils {
 
     public static void createNewItem(BaseTest baseTest, String name, String itemClassName) {
         baseTest.getDriver().findElement(By.cssSelector("#side-panel > div > div")).click();
-        getWait15(baseTest).until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(name);
+        baseTest.getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(name);
         baseTest.getDriver().findElement(By.className(itemClassName)).click();
         baseTest.getDriver().findElement(By.id("ok-button")).click();
     }
@@ -98,23 +94,18 @@ public final class TestUtils {
                 By.cssSelector(String.format("td a[href = 'job/%s/']", asURL(name)))));
 
         baseTest.getDriver().findElement(DROPDOWN_DELETE).click();
-        getWait15(baseTest).until(ExpectedConditions.elementToBeClickable(DIALOG_DEFAULT_BUTTON)).click();
+        baseTest.getWait10().until(ExpectedConditions.elementToBeClickable(DIALOG_DEFAULT_BUTTON)).click();
     }
 
     public static void addProjectDescription(BaseTest baseTest, String projectName, String description) {
         baseTest.getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
-        getWait15(baseTest).until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
+        baseTest.getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
         baseTest.getDriver().findElement(By.name("description")).sendKeys(description);
         baseTest.getDriver().findElement(By.name("Submit")).click();
     }
 
     public static List<String> getTexts(List<WebElement> elementList) {
-        List<String> stringList = new ArrayList<>();
-        for (WebElement element : elementList) {
-            stringList.add(element.getText());
-        }
-
-        return stringList;
+        return elementList.stream().map(WebElement::getText).toList();
     }
 
     public static void goToJobPageAndEnterJobName(BaseTest baseTest, String jobName) {
@@ -127,6 +118,7 @@ public final class TestUtils {
         baseTest.getDriver().findElement(By.xpath(JOB_XPATH.formatted(job))).click();
         baseTest.getDriver().findElement(By.id("ok-button")).click();
     }
+
     public static void createNewJob(BaseTest baseTest, Job job, String jobName) {
         goToJobPageAndEnterJobName(baseTest, jobName);
         baseTest.getDriver().findElement(By.xpath(JOB_XPATH.formatted(job))).click();

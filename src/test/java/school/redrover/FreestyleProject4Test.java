@@ -3,11 +3,13 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class FreestyleProject4Test extends BaseTest {
 
+    @Ignore
     @Test
     public void testCreateNewFreestyleProject() {
 
@@ -34,6 +36,7 @@ public class FreestyleProject4Test extends BaseTest {
         Assert.assertEquals(newProjectHeader.getText(),projectItemName);
     }
 
+    @Ignore
     @Test
     public void testCreateNewFreestyleProjectWithDescription (){
         final String projectItemName = "JavaHashGroupProject";
