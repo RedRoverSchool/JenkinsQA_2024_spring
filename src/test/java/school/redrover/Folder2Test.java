@@ -65,6 +65,7 @@ public class Folder2Test extends BaseTest {
         Actions actions=new Actions(getDriver());
         WebElement element = getDriver().findElement(By.xpath("//table//a[contains(@href,'job/')]"));
         actions.moveToElement(element).perform();
+
         getDriver().findElement(By.xpath("//table//button[@class='jenkins-menu-dropdown-chevron']")).click();
         getDriver().findElement(By.xpath("//a[contains(@href,'/confirm-rename')]")).click();
         WebElement input = getDriver().findElement(By.xpath("//input[@name='newName']"));
