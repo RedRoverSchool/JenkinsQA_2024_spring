@@ -190,14 +190,9 @@ public class JenkinsUtils {
     }
 
     static void login(WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.name("j_username"))).sendKeys(ProjectUtils.getUserName());
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.name("j_password"))).sendKeys(ProjectUtils.getPassword());
-
+        driver.findElement(By.name("j_username")).sendKeys(ProjectUtils.getUserName());
+        driver.findElement(By.name("j_password")).sendKeys(ProjectUtils.getPassword());
         driver.findElement(By.name("Submit")).click();
-
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@href='/me/my-views']")));
     }
 
     static void logout(WebDriver driver) {

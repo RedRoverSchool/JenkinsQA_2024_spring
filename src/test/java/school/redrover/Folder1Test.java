@@ -3,43 +3,43 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-
-import static school.redrover.runner.TestUtils.*;
+import school.redrover.runner.TestUtils;
 
 public class Folder1Test extends BaseTest {
     private static final String ROOT_FOLDER_NAME = "Root Folder";
     private static final String FIRST_FOLDER_NAME = "Inner Folder 1";
     private static final String SECOND_FOLDER_NAME = "Inner Folder 2";
 
-    @Ignore
     @Test
-    public void testCreateFolderUsingValidName() {
-        createItem(FOLDER, ROOT_FOLDER_NAME, getDriver());
+    public void testCreate() {
+        TestUtils.createItem(TestUtils.FOLDER, ROOT_FOLDER_NAME, this);
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), ROOT_FOLDER_NAME);
+    }
+
+    @Test(dependsOnMethods = "testCreate")
+    public void testCheckNewFolderIsEmpty() {
+        findLinkByText(ROOT_FOLDER_NAME).click();
         Assert.assertTrue(getDriver().findElement(By.className("empty-state-section")).isDisplayed());
-        Assert.assertTrue(findLinkTextOnPage("New Item").isDisplayed());
     }
 
-    @Ignore
-    @Test
-    public void testCreateTwoFolderInFolder() {
-        createItem(FOLDER, ROOT_FOLDER_NAME, getDriver());
-        createItem(FOLDER, FIRST_FOLDER_NAME, getDriver());
-        goToMainPage(getDriver());
-        findLinkTextOnPage(ROOT_FOLDER_NAME).click();
-        createItem(FOLDER, SECOND_FOLDER_NAME, getDriver());
-        goToMainPage(getDriver());
-        findLinkTextOnPage(ROOT_FOLDER_NAME).click();
+    @Test(dependsOnMethods = "testCheckNewFolderIsEmpty")
+    public void testCreateTwoInnerFolder() {
+        findLinkByText(ROOT_FOLDER_NAME).click();
+        TestUtils.createItem(TestUtils.FOLDER, FIRST_FOLDER_NAME, this);
+        TestUtils.goToMainPage(getDriver());
+        findLinkByText(ROOT_FOLDER_NAME).click();
+        TestUtils.createItem(TestUtils.FOLDER, SECOND_FOLDER_NAME, this);
+        TestUtils.goToMainPage(getDriver());
+        findLinkByText(ROOT_FOLDER_NAME).click();
 
-        Assert.assertTrue(findLinkTextOnPage(FIRST_FOLDER_NAME).isDisplayed());
-        Assert.assertTrue(findLinkTextOnPage(SECOND_FOLDER_NAME).isDisplayed());
+        Assert.assertTrue(findLinkByText(FIRST_FOLDER_NAME).isDisplayed()
+                && findLinkByText(SECOND_FOLDER_NAME).isDisplayed());
     }
 
-    private WebElement findLinkTextOnPage(String text) {
+    private WebElement findLinkByText(String text) {
         return getDriver().findElement(By.xpath("//a[.='" + text + "']"));
     }
 }
