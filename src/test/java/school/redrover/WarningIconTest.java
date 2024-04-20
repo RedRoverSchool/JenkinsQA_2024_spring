@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class WarningIconTest extends BaseTest {
+
     @Test
     public void testTooltipAccessible() {
         getDriver().findElement(By.cssSelector("[class$='am-button security-am']")).click();
