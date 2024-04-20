@@ -5,7 +5,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-public class PipelineProject4Test extends BaseTest {
+public class PipelineProject25Test extends BaseTest {
     @Test
     public void testCreatePipeline(){
         String text;
