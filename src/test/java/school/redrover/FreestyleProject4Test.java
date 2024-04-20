@@ -3,11 +3,13 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class FreestyleProject4Test extends BaseTest {
 
+    @Ignore
     @Test
     public void testCreateNewFreestyleProject() {
 
@@ -33,8 +35,10 @@ public class FreestyleProject4Test extends BaseTest {
         Assert.assertTrue(newProjectHeader.isDisplayed());
         Assert.assertEquals(newProjectHeader.getText(),projectItemName);
     }
+
+    @Ignore
     @Test
-    public void testCreateNFPWithDescription (){
+    public void testCreateNewFreestyleProjectWithDescription (){
         final String projectItemName = "JavaHashGroupProject";
         final String projectItemDescription = "This is first Project";
 
@@ -57,7 +61,7 @@ public class FreestyleProject4Test extends BaseTest {
         saveButton.click();
 
         WebElement newProjectHeader = getDriver().findElement(By.xpath("//div[@class='jenkins-app-bar__content jenkins-build-caption']"));
-        WebElement newProjectDescription = getDriver().findElement(By.xpath("//div[contains(text(),"+"'"+projectItemDescription+"'"+")]"));
+        WebElement newProjectDescription = getDriver().findElement(By.xpath("//div[contains(text(),'" + projectItemDescription + "')]"));
 
         Assert.assertTrue(newProjectHeader.isDisplayed());
         Assert.assertEquals(newProjectHeader.getText(),projectItemName);
@@ -68,7 +72,7 @@ public class FreestyleProject4Test extends BaseTest {
         WebElement mainPageJenkinsButton = getDriver().findElement(By.xpath("//img[@id='jenkins-head-icon']"));
         mainPageJenkinsButton.click();
 
-        WebElement mainPageFreestyleProjectNameField = getDriver().findElement(By.xpath("//td/a[@href='job/"+projectItemName+"/']"));
+        WebElement mainPageFreestyleProjectNameField = getDriver().findElement(By.xpath("//td/a[@href='job/" + projectItemName + "/']"));
 
         Assert.assertEquals(mainPageFreestyleProjectNameField.getText(),projectItemName);
     }

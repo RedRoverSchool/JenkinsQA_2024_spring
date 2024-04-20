@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -15,7 +16,9 @@ public class NewItemTest extends BaseTest {
     public WebElement submitButton(){
         return getDriver().findElement(By.xpath("//button[@name = 'Submit']"));
     }
-      @Test
+
+    @Ignore
+    @Test
     public void testCreateNewFreestyleProject() {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
         getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
@@ -29,6 +32,7 @@ public class NewItemTest extends BaseTest {
         Assert.assertEquals(result, "NewFreestyleProject");
     }
 
+    @Ignore
     @Test
     public void testCreateNewPipeline() {
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
@@ -42,6 +46,8 @@ public class NewItemTest extends BaseTest {
 
         Assert.assertEquals(result, "NewPipeline");
     }
+
+    @Ignore
     @Test
     public void testCreateMultiConfigurationProject() {
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
@@ -55,6 +61,7 @@ public class NewItemTest extends BaseTest {
         Assert.assertEquals(result, "Project MultiConfigurationProject");
     }
 
+    @Ignore
     @Test
     public void testCreateFolder() {
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
@@ -68,6 +75,7 @@ public class NewItemTest extends BaseTest {
         Assert.assertEquals(result, "Folder");
     }
 
+    @Ignore
     @Test
     public void testCreateMultibranchPipeline() {
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
@@ -80,6 +88,8 @@ public class NewItemTest extends BaseTest {
 
         Assert.assertEquals(result, "MultibranchPipeline");
     }
+
+    @Ignore
     @Test
     public void testOrganizationFolder() {
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();

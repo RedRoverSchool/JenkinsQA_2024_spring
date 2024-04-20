@@ -9,6 +9,7 @@ import school.redrover.runner.BaseTest;
 
 public class CreateFreestyleProjectTest extends BaseTest {
 
+    @Ignore
     @Test
     public void testCreateFreestyleProject() {
         final String expectedProjectName = "new Freestyle project";

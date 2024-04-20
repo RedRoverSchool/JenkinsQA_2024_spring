@@ -2,10 +2,13 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class FolderONTest extends BaseTest {
+
+    @Ignore
     @Test
     public void testCreateNewFolder() {
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();

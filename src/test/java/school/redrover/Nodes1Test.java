@@ -48,4 +48,23 @@ public class Nodes1Test extends BaseTest {
 
         Assert.assertEquals(actualResult, expectedResult);
     }
+
+    @Test
+    public void testCreateNodeFromManageJenkins() {
+        String nodeName = "NewNode";
+        getDriver().findElement(By.xpath("//*[@href='/manage']")).click();
+        getDriver().findElement(By.xpath("//dt[text() ='Nodes']")).click();
+        getDriver().findElement(By.xpath("//a[@href='new']")).click();
+        getDriver().findElement(By.xpath("//input[@ id='name']")).sendKeys(nodeName);
+        getDriver().findElement(By.xpath("//label[@for='hudson.slaves.DumbSlave' and contains(@class, 'jenkins-radio__label')]")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok' and contains(@class, 'jenkins-button--primary')]")).click();
+        getDriver().findElement(By.xpath("//button[normalize-space(text())='Save']")).click();
+
+        String actualResult = getDriver().findElement(By.xpath("//a[normalize-space(text())='" + nodeName + "']")).getText();
+        String expectedResult = "NewNode";
+
+        Assert.assertEquals(actualResult, expectedResult);
+    }
 }
+
+
