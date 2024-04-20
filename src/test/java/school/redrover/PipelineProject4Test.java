@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -18,4 +19,3 @@ public class PipelineProject4Test extends BaseTest {
 
         Assert.assertEquals(text, "New Pipeline");
     }
-}
