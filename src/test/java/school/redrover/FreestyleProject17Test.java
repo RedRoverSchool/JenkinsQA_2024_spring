@@ -19,6 +19,17 @@ public class FreestyleProject17Test extends BaseTest{
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='main-panel']/div/div/h1")).getText(), "FreestyleProject Name");
     }
 
+    @Test(dependsOnMethods = "testCreateNewFreestyleProject")
+    public  void testAddDescription() {
+
+        getDriver().findElement(By.xpath("//a[@href='job/FreestyleProject%20Name/']/span")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/FreestyleProject%20Name/configure']")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("Description of " + PROJECT_NAME);
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("#description>:first-child")).getText(),"Description of " + PROJECT_NAME);
+    }
+
 }
 
 
