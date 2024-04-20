@@ -3,9 +3,9 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
@@ -13,30 +13,18 @@ public class FreestyleProject1Test extends BaseTest {
 
     final String FREESTYLE_PROJECT_NAME = "Freestyle project";
 
-    private void createFreestyleProject(){
-        getDriver().findElement(By.xpath("//div[@id='tasks']/descendant::div[1]")).click();
-        getDriver().findElement(By.id("name")).sendKeys(FREESTYLE_PROJECT_NAME);
-        getDriver().findElement(
-                By.xpath("//div[@id='items']//*[text()='Freestyle project']//ancestor::li")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).submit();
-    }
-
-    @Ignore
     @Test
     public void testAddFreestyleProject() {
-        createFreestyleProject();
+        TestUtils.createItem(TestUtils.FREESTYLE_PROJECT, FREESTYLE_PROJECT_NAME, this);
 
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//h1[text()='" + FREESTYLE_PROJECT_NAME + "']")).getText(),
                 FREESTYLE_PROJECT_NAME);
     }
 
-    @Test
+    @Test (dependsOnMethods = "testAddFreestyleProject")
     public void testAddedProjectIsDisplayedOnTheDashboardPanel() {
-        createFreestyleProject();
-
-        getDriver().findElement(By.xpath("//*[@id='breadcrumbBar']//a[@class='model-link']")).click();
+        TestUtils.goToMainPage(getDriver());
 
         List<WebElement> displayedProjects = getDriver().findElements(
                 By.xpath("//table[@id='projectstatus']//button/preceding-sibling::span"));
@@ -55,9 +43,9 @@ public class FreestyleProject1Test extends BaseTest {
                 "Project with '" + FREESTYLE_PROJECT_NAME + "' name is not in the list");
     }
 
-    @Test
+    @Test (dependsOnMethods = "testAddFreestyleProject")
     public void testOpenConfigurePageOfProject(){
-        createFreestyleProject();
+        getDriver().findElement(By.xpath("//span[text()=('Freestyle project')]")).click();
 
         getDriver().findElement(
                 By.xpath("//*[@id='side-panel']//*[text()='Configure']//ancestor::a")).click();
