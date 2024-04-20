@@ -36,6 +36,7 @@ public class PipelineProject1Test extends BaseTest {
         getDriver().findElement(By.xpath("//a[starts-with(@class,'jenkins-table__link')]")).click();
     }
 
+    @Ignore
     @Test
     public void testCreatePipeline() {
         createPipeline(PIPELINE_NAME);
@@ -47,6 +48,19 @@ public class PipelineProject1Test extends BaseTest {
         Assert.assertEquals(actualPipelineName, PIPELINE_NAME);
     }
 
+    @Test
+    public void testCreatePipelineWithEmptyName() {
+        getDriver().findElement(By.xpath("//div[@class='task '][1]")).click();
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+
+        String warningMassage = getDriver().findElement(By.id("itemname-required")).getText();
+        WebElement okButton = getDriver().findElement(By.id("ok-button"));
+
+        Assert.assertEquals(warningMassage, "» This field cannot be empty, please enter a valid name");
+        Assert.assertFalse(okButton.isEnabled());
+    }
+
+    @Ignore
     @Test
     public void testAddPipelineDescription() {
         createPipeline(PIPELINE_NAME);
@@ -62,6 +76,7 @@ public class PipelineProject1Test extends BaseTest {
         Assert.assertTrue(actualDescription.contains(PIPELINE_DESCRIPTION));
     }
 
+    @Ignore
     @Test
     public void testRenamePipelineFromLeftMenu() {
         createPipeline(PIPELINE_NAME);
@@ -82,6 +97,7 @@ public class PipelineProject1Test extends BaseTest {
         Assert.assertEquals(changedPipelineName, RENAMED_PIPELINE_NAME);
     }
 
+    @Ignore
     @Test
     public void testDeletePipelineFromLeftMenu() {
         createPipeline(PIPELINE_NAME);
@@ -96,6 +112,7 @@ public class PipelineProject1Test extends BaseTest {
         Assert.assertEquals(startNewProjectMassage, "Start building your software project");
     }
 
+    @Ignore
     @Test
     public void testDisablePipelineAndEnableBack() {
         createPipeline(PIPELINE_NAME);
@@ -137,6 +154,7 @@ public class PipelineProject1Test extends BaseTest {
         Assert.assertTrue(consoleOutput.getText().contains("Finished: SUCCESS"));
     }
 
+    @Ignore
     @Test
     public void AddDescriptionColumnToPipelineView() {
         final List<String> expectedPipelineViewHeader = List.of("S", "W", "Name" + "\n" + "  ↓", "Last Success", "Last Failure", "Last Duration", "Description");

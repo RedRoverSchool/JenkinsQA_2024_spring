@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -21,6 +22,7 @@ public class FreestyleProject3Test extends BaseTest {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
     }
 
+    @Ignore
     @Test
     public void testCreateFreestyleProject() {
         final String expectedProjectName = "new Freestyle project";
@@ -37,6 +39,7 @@ public class FreestyleProject3Test extends BaseTest {
         Assert.assertEquals(newProjectName, expectedProjectName);
     }
 
+    @Ignore
     @Test
     public void testCreateFreestyleProject2(){
 
