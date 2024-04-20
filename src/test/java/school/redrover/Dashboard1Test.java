@@ -12,9 +12,10 @@ import school.redrover.runner.TestUtils;
 import java.util.*;
 
 public class Dashboard1Test extends BaseTest {
-
+    private final String VIEW_NAME = "Classic";
     private final String SELECTED_NAME1 = "Vivaldi";
     private final String SELECTED_NAME2 = "Nic";
+    private List<String> projectsNames = getNamesList();
 
     private List<String> getNamesList() {
         List<String> names = new ArrayList<>();
@@ -48,26 +49,35 @@ public class Dashboard1Test extends BaseTest {
     }
 
     @Test
-    public void testSortItemsByName() {
-        List<String> names = getNamesList();
-        createItemsFromList(names);
-        Collections.sort(names);
-        Collections.reverse(names);
-        boolean isDescendingSortingOk = getItemNamesFromColumnAfterSortingByName().equals(names);
+    public void testCreateView() {
+        createItemsFromList(projectsNames);
 
-        Collections.reverse(names);
-        boolean isAscendingSortingOk = getItemNamesFromColumnAfterSortingByName().equals(names);
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@title='New View']"))).click();
+        getDriver().findElement(By.id("name")).sendKeys(VIEW_NAME);
+        getDriver().findElement(By.xpath("//label[@for='hudson.model.ListView']")).click();
+        getDriver().findElement(By.id("ok")).click();
+        clickElement(getDriver().findElement(By.name("Submit")));
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='tab active']")).getText(), VIEW_NAME);
+    }
+
+
+    @Test(dependsOnMethods = "testCreateView")
+    public void testSortItemsByName() {
+        Collections.sort(projectsNames);
+        Collections.reverse(projectsNames);
+        boolean isDescendingSortingOk = getItemNamesFromColumnAfterSortingByName().equals(projectsNames);
+
+        Collections.reverse(projectsNames);
+        boolean isAscendingSortingOk = getItemNamesFromColumnAfterSortingByName().equals(projectsNames);
 
         Assert.assertTrue(isAscendingSortingOk && isDescendingSortingOk);
     }
 
     @Test(dependsOnMethods = "testSortItemsByName")
-    public void testCreateViewWithSelectedItems() {
-
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@title='New View']"))).click();
-        getDriver().findElement(By.id("name")).sendKeys("Classic");
-        getDriver().findElement(By.xpath("//label[@for='hudson.model.ListView']")).click();
-        getDriver().findElement(By.id("ok")).click();
+    public void testAddItemsToView() {
+        getDriver().findElement(By.linkText(VIEW_NAME)).click();
+        getDriver().findElement(By.linkText("Edit View")).click();
 
         WebElement selectedProject1 = getDriver().findElement(
                 By.xpath("//label[contains(@title, '" + SELECTED_NAME1 + "')]"));
@@ -89,5 +99,4 @@ public class Dashboard1Test extends BaseTest {
 
         Assert.assertTrue(namesFromNewView.size() == 2 && isName1InView && isName2InView);
     }
-
 }
