@@ -8,8 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-
-import static school.redrover.runner.TestUtils.*;
+import school.redrover.runner.TestUtils;
 
 public class MultiConfigurationProjectTest extends BaseTest {
 
@@ -17,7 +16,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testRenameProjectViaMainPageDropdown() {
-        createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
+        TestUtils.createNewItemAndReturnToDashboard(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
 
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(By.linkText(projectName)))
@@ -26,7 +25,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .click()
                 .perform();
 
-        getWait15(this).until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Rename"))).click();
+        TestUtils.getWait15(this).until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Rename"))).click();
         getDriver().findElement(By.name("newName")).sendKeys("New");
         getDriver().findElement(By.name("Submit")).click();
 
@@ -35,13 +34,16 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testAddDescription() {
-        createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
+        TestUtils.createNewItemAndReturnToDashboard(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
         final String text = "❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
 
-        addProjectDescription(this, projectName, text);
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(String.format("[href = 'job/%s/']", projectName)))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).sendKeys(text);
+        getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertTrue(
-                getWait15(this).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div#description")))
+                TestUtils.getWait15(this).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div#description")))
                         .getText().startsWith(text));
     }
 
@@ -50,9 +52,14 @@ public class MultiConfigurationProjectTest extends BaseTest {
         final String text = "qwerty123";
         final String additionText = "AAA";
 
-        createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
-        addProjectDescription(this, projectName, text);
-        returnToDashBoard(this);
+        TestUtils.createNewItemAndReturnToDashboard(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(String.format("[href = 'job/%s/']", projectName)))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).sendKeys(text);
+        getDriver().findElement(By.name("Submit")).click();
+
+        TestUtils.returnToDashBoard(this);
 
         getDriver().findElement(By.cssSelector("[href = 'job/" + projectName+ "/']")).click();
         getDriver().findElement(By.id("description-link")).click();
@@ -60,13 +67,13 @@ public class MultiConfigurationProjectTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertTrue(
-                getWait15(this).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div#description")))
+                TestUtils.getWait15(this).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div#description")))
                         .getText().contains(additionText + text));
     }
 
     @Test
     public void testDescriptionPreview() {
-        createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
+        TestUtils.createNewItemAndReturnToDashboard(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
 
         final String text = "I want to see preview";
         getDriver().findElement(By.id("job_" + projectName)).click();
@@ -82,8 +89,12 @@ public class MultiConfigurationProjectTest extends BaseTest {
         final String oldText = "The text to be replaced";
         final String newText = "Replacement text";
 
-        createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
-        addProjectDescription(this, projectName, oldText);
+        TestUtils.createNewItemAndReturnToDashboard(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(String.format("[href = 'job/%s/']", projectName)))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).sendKeys(oldText);
+        getDriver().findElement(By.name("Submit")).click();
 
         getDriver().findElement(By.id("description-link")).click();
         getDriver().findElement(By.name("description")).clear();
@@ -96,7 +107,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Test
     public void testMakeCopyMultiConfigurationProject() {
         final String newProjectName = "MCProject copy";
-        createNewItemAndReturnToDashboard(this, projectName, Item.MULTI_CONFIGURATION_PROJECT);
+        TestUtils.createNewItemAndReturnToDashboard(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
 
         getDriver().findElement(By.cssSelector("[href $= 'newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(newProjectName);

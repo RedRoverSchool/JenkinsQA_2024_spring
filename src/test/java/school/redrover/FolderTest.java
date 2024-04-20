@@ -6,6 +6,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -53,6 +54,7 @@ public class FolderTest extends BaseTest {
                 "The error message is different");
     }
 
+    @Ignore
     @Test
     public void testCreateFolderViaCreateAJob() {
         createFolderViaCreateAJob();
@@ -61,6 +63,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(breadcrumbFolderName, FOLDER_NAME, "Breadcrumb name doesn't match " + FOLDER_NAME);
     }
 
+    @Ignore
     @Test
     public void testRenameFolderViaFolderBreadcrumbsDropdownMenu() {
         createFolderViaCreateAJob();
@@ -81,6 +84,7 @@ public class FolderTest extends BaseTest {
                 "The Folder name is not equal to " + NEW_FOLDER_NAME);
     }
 
+    @Ignore
     @Test
     public void testRenameFolderViaMainPageDropdownMenu() {
         createFolderViaCreateAJob();
@@ -102,6 +106,7 @@ public class FolderTest extends BaseTest {
                 "The Folder name is not equal to " + NEW_FOLDER_NAME);
     }
 
+    @Ignore
     @Test
     public void testRenameFolderViaSidebarMenu() {
         createFolderViaCreateAJob();

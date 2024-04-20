@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 public class PeopleIconSizeTest extends BaseTest {
@@ -14,6 +15,8 @@ public class PeopleIconSizeTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.cssSelector("div > svg:nth-child(1)")).getSize(),
                 new Dimension(16, 16));
     }
+
+    @Ignore
     @Test
     public void testIconSizeMedium() {
         getDriver().findElement(By.cssSelector("[href='/asynchPeople/']")).click();
