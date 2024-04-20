@@ -105,7 +105,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    public void testnewItemMulticonfigurationProgect(){
+    public void testNewItemMulticonfigurationProgect(){
 
 
         getDriver().findElement(By.xpath("//a[@it='hudson.model.Hudson@74dc2aed']")).click();
