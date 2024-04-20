@@ -10,6 +10,8 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
+import java.awt.*;
+
 public class ManageAppearanceTest extends BaseTest{
 
         @Test
@@ -19,12 +21,15 @@ public class ManageAppearanceTest extends BaseTest{
             new Actions(getDriver())
                     .moveToElement(dashboard)
                     .pause(1000)
-                    .moveToLocation(96, 72)
+                    .moveToLocation(98, 72)
+                    .pause(1000)
                     .click()
 //                    .moveToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
 //                    .scrollToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
 //                    .click(dashboard.findElement(By.cssSelector("[class$='chevron']")))
                     .perform();
+
+            java.awt.Point loc = MouseInfo.getPointerInfo().getLocation();
 
             Point g = dashboard.findElement(By.cssSelector("[class$='chevron']")).getLocation();
             System.out.println(g);
