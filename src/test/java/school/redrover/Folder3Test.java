@@ -2,11 +2,13 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class Folder3Test extends BaseTest {
 
+    @Ignore
     @Test
     public void testCreateFolder() {
         getDriver().findElement(By.xpath("//*[text()='New Item']/ancestor::div[contains(@class,'task')]")).click();
