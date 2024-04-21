@@ -2,7 +2,6 @@ package school.redrover;
 
 import java.time.Duration;
 import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -11,9 +10,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
+
 import static school.redrover.runner.TestUtils.Job;
 
 public class MultibranchPipelineTest extends BaseTest {
@@ -177,6 +176,24 @@ public class MultibranchPipelineTest extends BaseTest {
 
         String statusToggle = getDriver().findElement(By.id("enable-disable-project")).getDomProperty("checked");
         Assert.assertEquals(statusToggle,"true");
+    }
+
+    @Test
+    public void testRenameMultibranchPipelineOnTheSidebar() {
+        final String multiPipelineName = "MultibranchPipeline";
+        final String newMultiPipelineName = "newMultibranchPipeline";
+
+        createNewMultiPipeline(multiPipelineName);
+
+        getDriver().findElement(By.xpath("//span[text()='" + multiPipelineName + "']")).click();
+        getDriver().findElement(By.cssSelector("[href $='rename']")).click();
+        WebElement renameInput = getDriver().findElement(By.xpath("//input[@name='newName']"));
+        renameInput.clear();
+        renameInput.sendKeys(newMultiPipelineName);
+        getDriver().findElement(By.name("Submit")).click();
+        String multiPipelinePageHeading = getDriver().findElement(By.tagName("h1")).getText();
+
+        Assert.assertEquals(multiPipelinePageHeading, newMultiPipelineName, "Wrong name");
     }
 
     @Test
