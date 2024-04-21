@@ -138,7 +138,8 @@ public class MulticonfigurationProject1Test extends BaseTest {
                 .perform();
 
         getActions()
-                .moveToElement(getDriver().findElement(By.xpath("//*[contains(@href, '/move')]")))
+                .moveToElement(getDriver().findElement(By.linkText("Move")))
+                .pause(1000)
                 .click()
                 .perform();
 
