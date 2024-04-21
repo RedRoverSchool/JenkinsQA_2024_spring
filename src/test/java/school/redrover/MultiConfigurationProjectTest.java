@@ -155,8 +155,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//input[@id = 'name']")).sendKeys(NAME_OF_PROJECT);
         getDriver().findElement(By.xpath("//*[@class='hudson_matrix_MatrixProject']")).click();
-        getWait5();
-        getDriver().findElement(By.xpath("//*[@type='submit']")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@type='submit']"))).click();
         getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(),"Project " +  NAME_OF_PROJECT);
