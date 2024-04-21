@@ -130,12 +130,13 @@ public class MulticonfigurationProject1Test extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
 
         getDriver().findElement(By.id("jenkins-name-icon")).click();
+
         getActions().
                 moveToElement(getDriver().findElement(By.xpath("//*[@id='job_" + PROJECT_NAME + "']//*[@class='jenkins-menu-dropdown-chevron']"))).
                 click().
                 perform();
 
-        getDriver().findElement(By.xpath("//*[contains(@href, '/move')]")).click();
+        getActions().click(getDriver().findElement(By.xpath("//*[contains(@href, '/move')]"))).perform();
 
         final WebElement selectFolder = getDriver().findElement(By.xpath("//*[@class='select setting-input']"));
         Select dropDown = new Select(selectFolder);
