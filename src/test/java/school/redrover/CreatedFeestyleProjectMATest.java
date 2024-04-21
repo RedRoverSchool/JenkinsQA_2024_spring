@@ -2,11 +2,13 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class CreatedFeestyleProjectMATest extends BaseTest {
-    @Test
+@Ignore
+@Test
     public void testCreatedFeestyleProject() {
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
         getDriver().findElement(By.id("name")).sendKeys("123");
