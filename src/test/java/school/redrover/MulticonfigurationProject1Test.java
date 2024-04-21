@@ -135,7 +135,7 @@ public class MulticonfigurationProject1Test extends BaseTest {
                 click().
                 perform();
 
-        getDriver().findElement(By.xpath("//a[normalize-space()='Move']")).click();
+        getDriver().findElement(By.xpath("//*[contains(@href, '/move')]")).click();
 
         final WebElement selectFolder = getDriver().findElement(By.xpath("//*[@class='select setting-input']"));
         Select dropDown = new Select(selectFolder);
