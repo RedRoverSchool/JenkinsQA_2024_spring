@@ -76,6 +76,7 @@ public class EditFolderDescriptionAndDeleteTest extends BaseTest {
                 By.xpath("//table//a[@href='job/" + NAME_FOLDER + "/']")).click();
         getDriver().findElement(By.xpath("//a[@data-title='Delete Folder']")).click();
         getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+
         List<WebElement> jobList = getDriver().findElements(
                 By.xpath("//table//a[@href='job/" + NAME_FOLDER +"/']"));
 
