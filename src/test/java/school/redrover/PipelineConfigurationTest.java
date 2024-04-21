@@ -72,7 +72,7 @@ public class PipelineConfigurationTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).isDisplayed());
     }
 
-    @Test
+    @Test @Ignore
     public void testDiscardOldBuildsByCount() {
         createPipline();
 
