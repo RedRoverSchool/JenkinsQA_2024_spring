@@ -1,10 +1,9 @@
 package school.redrover;
 
-import org.checkerframework.checker.index.qual.IndexFor;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -112,7 +111,7 @@ public class Pipeline1Test extends BaseTest {
     }
 
     @Test
-    public void testFullStageViewButton2() {
+    public void testFullStageViewButtonInDropDown() {
         TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
         TestUtils.goToMainPage(getDriver());
 
