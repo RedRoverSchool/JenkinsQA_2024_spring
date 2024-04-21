@@ -41,9 +41,8 @@ public class PipelineProject1Test extends BaseTest {
         createPipeline(PIPELINE_NAME);
         returnToHomePage();
 
-        String actualPipelineName = getDriver().findElement(By.xpath("(//table[@id='projectstatus']/tbody//a)[1]")).getText();
-
-        Assert.assertEquals(actualPipelineName, PIPELINE_NAME);
+        Assert.assertTrue(getDriver().findElement(
+                By.xpath("//td/a[@href='job/" + PIPELINE_NAME.replaceAll(" ", "%20") + "/']")).isDisplayed());
     }
 
     @Test
