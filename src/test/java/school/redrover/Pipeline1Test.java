@@ -32,25 +32,6 @@ public class Pipeline1Test extends BaseTest {
         return getDriver().findElement(By.xpath("//h2")).getText();
     }
 
-    private void callElementDropDownMenu(String projectName) {
-
-        WebElement element = getDriver().findElement(By.xpath("//td/a[@href='job/"
-                + projectName.replaceAll(" ", "%20") + "/']"));
-        WebElement elementChevron = getDriver().findElement(By.xpath("//button[contains(@data-href, '/job/"
-                + projectName.replaceAll(" ", "%20") + "/')]"));
-
-        Actions mouse = new Actions(getDriver());
-
-        int xOffset = element.getLocation().getX() + (element.getSize().getWidth() / 2);
-        int yOffset = element.getLocation().getY() + (element.getSize().getHeight() / 2);
-        int xOffsetChevron = (element.getSize().getWidth() / 2) + (elementChevron.getSize().getWidth() / 2);
-
-        mouse.moveByOffset(xOffset, yOffset).perform();
-        mouse.moveByOffset(xOffsetChevron, 0)
-                .click()
-                .perform();
-    }
-
     @Test
     public void testCreatePipeline() {
         createPipeline(PIPELINE_NAME);
@@ -103,7 +84,6 @@ public class Pipeline1Test extends BaseTest {
         String expectedResult = PIPELINE_NAME + " - Stage View";
 
         chooseProjectAndClick(PIPELINE_NAME);
-
         clickFullStageViewButton();
 
         Assert.assertEquals(getH2HeaderText(), expectedResult);
@@ -116,8 +96,8 @@ public class Pipeline1Test extends BaseTest {
 
         String expectedResult = PIPELINE_NAME + " - Stage View";
 
-        callElementDropDownMenu(PIPELINE_NAME);
-
+        TestUtils.openElementDropdown(this, getDriver().findElement(
+                By.cssSelector(String.format("td a[href = 'job/%s/']", TestUtils.asURL(PIPELINE_NAME)))));
         clickFullStageViewButton();
 
         Assert.assertEquals(getH2HeaderText(), expectedResult);
