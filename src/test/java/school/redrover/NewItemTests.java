@@ -60,6 +60,7 @@ public class NewItemTests extends BaseTest {
 
     @Test
     public void testFreestyleMovetoFolder() {
+
         testCreateFreestyleProject();
 
         getDriver().findElement(By.xpath("//li/*[@href='/']")).click();
