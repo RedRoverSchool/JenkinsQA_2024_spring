@@ -15,7 +15,7 @@ public class NewItem3Test extends BaseTest {
     @Test
     public void createItemEmptyNameNegativeTest() {
         try {
-            TestUtils.createItem(TestUtils.FREESTYLE_PROJECT, "", getDriver());
+            TestUtils.createItem(TestUtils.FREESTYLE_PROJECT, "", this);
         } catch (NoSuchElementException e) {
             this.isException = true;
         }
@@ -37,7 +37,7 @@ public class NewItem3Test extends BaseTest {
 
     @Test
     public void createNewFolderTest() {
-        TestUtils.createItem(TestUtils.FOLDER, "New Folder", getDriver());
+        TestUtils.createItem(TestUtils.FOLDER, "New Folder", this);
         TestUtils.goToMainPage(getDriver());
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//span[.='New Folder']")).isDisplayed());

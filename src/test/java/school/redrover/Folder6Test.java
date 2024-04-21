@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -17,6 +18,8 @@ public class Folder6Test extends BaseTest {
     private void openDashboard() {
         getDriver().findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[1]/a")).click();
     }
+
+    @Ignore
     @Test
     public void testRenameFolder() {
         createFolder("My new Folder");

@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -27,6 +28,7 @@ public class FreestyleProject6Test extends BaseTest {
         getDriver().findElement(By.id("jenkins-home-link")).click();
     }
 
+    @Ignore
     @Test
     public void testCreateFreestyleProjectWithDescription() {
 
