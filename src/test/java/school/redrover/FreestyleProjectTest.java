@@ -224,12 +224,12 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(actualResult.contains(expectedResult));
     }
 
-    @Ignore
     @Test
     public void testBuildNowFreestyleProject() {
         createFreestyleProject(FREESTYLE_PROJECT_NAME);
 
         getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
+        getDriver().navigate().refresh();
         String actualResult = getDriver().findElement(By.xpath("//*[@href='/job/"
                 + FREESTYLE_PROJECT_NAME.replaceAll(" ", "%20") + "/1/']")).getText();
 
