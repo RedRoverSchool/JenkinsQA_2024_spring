@@ -27,9 +27,11 @@ public class ManageAppearanceTest extends BaseTest{
 //                    .pause(2000)
 //                    .click()
 //                    .click(dashboard.findElement(By.cssSelector("[class$='chevron']")))
+                    .scrollByAmount(-16, 0)
+                    .click()
                     .perform();
 
-            getWait5().until(ExpectedConditions.elementToBeClickable(dashboard.findElement(By.cssSelector("[class$='chevron']")))).click();
+//            getWait5().until(ExpectedConditions.elementToBeClickable(dashboard.findElement(By.cssSelector("[class$='chevron']")))).click();
 //            TestUtils.sleep(this, 2);
 
 //            java.awt.Point loc = MouseInfo.getPointerInfo().getLocation();
