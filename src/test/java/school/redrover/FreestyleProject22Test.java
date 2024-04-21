@@ -1,6 +1,8 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -13,8 +15,12 @@ public class FreestyleProject22Test extends BaseTest {
     public void testRenameFreestyleProjectFromDropdownMenu() {
         TestUtils.createItem(TestUtils.FREESTYLE_PROJECT, "test", this);
         TestUtils.returnToDashBoard(this);
-        getDriver().findElement(By.xpath("//a[@href='job/test/']")).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-dropdown']//a[@href='/job/test/confirm-rename']"))).click();
+        //getDriver().findElement(By.xpath("//a[@href='job/test/']")).click();
+        Actions actions = new Actions(getDriver());
+        WebElement element = getDriver().findElement(By.xpath("//tr[@id='job_test']//button[@class='jenkins-menu-dropdown-chevron']"));
+        actions.moveToElement(element).perform();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tr[@id='job_test']//button[@class='jenkins-menu-dropdown-chevron']"))).click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-dropdown']//a[@href='/job/test/confirm-rename']"))).click();
         getDriver().findElement(By.xpath("//input[@checkdependson='newName']")).clear();
         getDriver().findElement(By.xpath("//input[@checkdependson='newName']")).sendKeys("newtest");
         getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
