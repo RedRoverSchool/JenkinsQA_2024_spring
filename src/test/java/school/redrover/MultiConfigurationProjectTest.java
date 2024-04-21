@@ -151,7 +151,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     private  static final String NAME_OF_PROJECT = "The name of Multi-configuration project";
     @Test
-    public void createMultiConfigurationProject() {
+    public void testCreateMultiConfigurationProject() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//input[@id = 'name']")).sendKeys(NAME_OF_PROJECT);
         getDriver().findElement(By.xpath("//*[@class='hudson_matrix_MatrixProject']")).click();
