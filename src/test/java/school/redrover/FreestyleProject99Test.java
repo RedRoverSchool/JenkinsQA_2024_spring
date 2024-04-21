@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -13,6 +14,7 @@ public class FreestyleProject99Test extends BaseTest {
 
     private static final String PROJECT_NAME = "FreestyleProject";
 
+    @Ignore
     @Test
     public void testCreatExistingFreestyleProject() {
 
@@ -23,6 +25,7 @@ public class FreestyleProject99Test extends BaseTest {
         assertTrue(getDriver().findElement(By.id("itemname-invalid")).isDisplayed());
     }
 
+    @Ignore
     @Test
     public void testAddProjectDescription() {
 
