@@ -17,6 +17,9 @@ import static school.redrover.runner.TestUtils.Job;
 
 public class MultibranchPipelineTest extends BaseTest {
 
+    private final String multiPipelineName = "MultibranchPipeline";
+    private final String newMultiPipelineName = "NewMultibranchPipelineName";
+
     private void disableCreatedMultiPipeline(String multiPipelineName) {
         getDriver().findElement(By.xpath("//span[text()='" + multiPipelineName + "']")).click();
         WebElement configureLink = getDriver().findElement(By.cssSelector(".task-link-wrapper [href$='configure']"));
@@ -88,7 +91,6 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testChangeMultiPipelineFromDisabledToEnabledOnStatusPage() {
-        final String multiPipelineName = "Multibranch Pipeline";
 
         createNewMultiPipeline(multiPipelineName);
         disableCreatedMultiPipeline(multiPipelineName);
@@ -129,7 +131,6 @@ public class MultibranchPipelineTest extends BaseTest {
     @Test
     public void testDisabledMultiPipelineTooltip() {
         WebDriverWait webDriverWait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
-        final String multiPipelineName = "Multibranch Pipeline";
         final String tooltipText = "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
 
         createNewMultiPipeline(multiPipelineName);
@@ -180,9 +181,6 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testRenameMultibranchPipelineOnTheSidebar() {
-        final String multiPipelineName = "MultibranchPipeline";
-        final String newMultiPipelineName = "newMultibranchPipeline";
-
         createNewMultiPipeline(multiPipelineName);
 
         getDriver().findElement(By.xpath("//span[text()='" + multiPipelineName + "']")).click();
@@ -198,9 +196,6 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testRenameMultibranchPipelineViaMainPageDropdownMenu() {
-        final String multiPipelineName = "MultibranchPipeline";
-        final String newMultiPipelineName = "NewMultibranchPipelineName";
-
         createNewMultiPipeline(multiPipelineName);
 
         getDriver().findElement(By.id("jenkins-head-icon")).click();
