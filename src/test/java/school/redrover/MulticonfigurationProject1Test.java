@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -132,13 +131,20 @@ public class MulticonfigurationProject1Test extends BaseTest {
 
         getDriver().findElement(By.id("jenkins-name-icon")).click();
 
-        getActions().
-                moveToElement(getDriver().findElement(By.xpath("//*[@id='job_" + PROJECT_NAME + "']//*[@class='jenkins-menu-dropdown-chevron']"))).
-                click().
-                perform();
+        getActions()
+                .moveToElement(getDriver().findElement(By.xpath("//*[@id='job_" + PROJECT_NAME + "']//*[@class='jenkins-menu-dropdown-chevron']")))
+                .click()
+                .pause(1000)
+                .perform();
 
-        WebElement moveOption = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Move")));
-        moveOption.click();
+        getActions()
+                .moveToElement(getDriver().findElement(By.xpath("//*[contains(@href, '/move')]")))
+                .click()
+                .perform();
+
+//        WebElement moveOption = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Move")));
+//        moveOption.click();
+
 //        getDriver().findElement(By.xpath("//*[contains(@href, '/move')]")).click();
 
         final WebElement selectFolder = getDriver().findElement(By.xpath("//*[@class='select setting-input']"));
