@@ -148,4 +148,17 @@ public class MultiConfigurationProjectTest extends BaseTest {
         Assert.assertTrue(
                 getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div#description>div"))));
     }
+
+    private  static final String NAME_OF_PROJECT = "The name of Multi-configuration project";
+
+    @Test
+    public void testCreateMultiConfigurationProject() {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@id = 'name']")).sendKeys(NAME_OF_PROJECT);
+        getDriver().findElement(By.xpath("//*[@class='hudson_matrix_MatrixProject']")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@type='submit']"))).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(),"Project " +  NAME_OF_PROJECT);
+    }
 }

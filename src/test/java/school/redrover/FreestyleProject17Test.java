@@ -2,6 +2,7 @@ package school.redrover;
 
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -22,5 +23,19 @@ public class FreestyleProject17Test extends BaseTest {
         getDriver().findElement(By.cssSelector("[name='Submit']")).click();
 
         Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), JOB_NAME);
+    }
+
+    @Test
+    public void testAddDescriptionOfConfiguration() {
+        createNewFreestyleProjectTest();
+        getDriver().findElement(By.xpath("//a[@id = 'jenkins-home-link']")).click();
+        getDriver().findElement(By.xpath("//td/a[@href='job/" + JOB_NAME + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + JOB_NAME + "/configure']")).click();
+        WebElement textarea = getDriver().findElement(By.xpath("//textarea[@name='description']"));
+        textarea.clear();
+        textarea.sendKeys("Description of " + JOB_NAME);
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("#description>:first-child")).getText(), "Description of " + JOB_NAME);
     }
 }
