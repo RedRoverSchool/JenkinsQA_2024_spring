@@ -14,6 +14,7 @@ import java.util.Random;
 
 public class MulticonfigurationProject1Test extends BaseTest {
     final String PROJECT_NAME = generateRandomText(20);
+    final String FOLDER_NAME = generateRandomText(10);
 
     private Actions actions;
 
@@ -25,9 +26,16 @@ public class MulticonfigurationProject1Test extends BaseTest {
     }
 
     private void createMulticonfigurationProject(){
-        getDriver().findElement(By.xpath("//*[@href='newJob']")).click();
+        getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//*[@class='jenkins-input']")).sendKeys(PROJECT_NAME);
         getDriver().findElement(By.xpath("//*[@class='hudson_matrix_MatrixProject']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+    }
+
+    private void createFolder(){
+        getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(FOLDER_NAME);
+        getDriver().findElement(By.xpath("//*[@class='com_cloudbees_hudson_plugins_folder_Folder']")).click();
         getDriver().findElement(By.id("ok-button")).click();
     }
 
@@ -37,7 +45,7 @@ public class MulticonfigurationProject1Test extends BaseTest {
         return String.valueOf(randomNumber);
     }
 
-    private static String generateRandomText(int length){
+    private String generateRandomText(int length){
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         StringBuilder sb = new StringBuilder(length);
         Random random = new Random();
@@ -119,16 +127,10 @@ public class MulticonfigurationProject1Test extends BaseTest {
 
     @Test
     public void testMoveProjectToFolderFromDashboardPage(){
-        final String folderName = generateRandomText(10);
+        createFolder();
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
 
         createMulticonfigurationProject();
-
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
-        getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(folderName);
-        getDriver().findElement(By.xpath("//*[@class='com_cloudbees_hudson_plugins_folder_Folder']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
         getDriver().findElement(By.id("jenkins-name-icon")).click();
 
         getActions()
@@ -150,11 +152,11 @@ public class MulticonfigurationProject1Test extends BaseTest {
 
         final WebElement selectFolder = getDriver().findElement(By.xpath("//*[@class='select setting-input']"));
         Select dropDown = new Select(selectFolder);
-        dropDown.selectByValue("/" + folderName);
+        dropDown.selectByValue("/" + FOLDER_NAME);
         getDriver().findElement(By.name("Submit")).click();
 
         getDriver().findElement(By.id("jenkins-name-icon")).click();
-        getDriver().findElement(By.xpath("//*[@href='job/" + folderName + "/']/span")).click();
+        getDriver().findElement(By.xpath("//*[@href='job/" + FOLDER_NAME + "/']/span")).click();
 
         Assert.assertTrue(getDriver().findElement(By.id("job_" + PROJECT_NAME)).isDisplayed());
     }
