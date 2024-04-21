@@ -10,10 +10,18 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-import java.time.Duration;
 import java.util.List;
 
 public final class TestUtils {
+
+    public static class Item {
+        public static final String FREESTYLE_PROJECT = "hudson_model_FreeStyleProject";
+        public static final String PIPELINE = "org_jenkinsci_plugins_workflow_job_WorkflowJob";
+        public static final String MULTI_CONFIGURATION_PROJECT = "hudson_matrix_MatrixProject";
+        public static final String FOLDER = "com_cloudbees_hudson_plugins_folder_Folder";
+        public static final String MULTI_BRANCH_PIPELINE = "org_jenkinsci_plugins_workflow_multibranch_WorkflowMultiBranchProject";
+        public static final String ORGANIZATION_FOLDER = "jenkins_branch_OrganizationFolder";
+    }
 
     public static final String FREESTYLE_PROJECT = "Freestyle project";
     public static final String PIPELINE = "Pipeline";
@@ -45,15 +53,6 @@ public final class TestUtils {
         driver.findElement(By.id("jenkins-name-icon")).click();
     }
 
-    public static class Item {
-        public static final String FREESTYLE_PROJECT = "hudson_model_FreeStyleProject";
-        public static final String PIPELINE = "org_jenkinsci_plugins_workflow_job_WorkflowJob";
-        public static final String MULTI_CONFIGURATION_PROJECT = "hudson_matrix_MatrixProject";
-        public static final String FOLDER = "com_cloudbees_hudson_plugins_folder_Folder";
-        public static final String MULTI_BRANCH_PIPELINE = "org_jenkinsci_plugins_workflow_multibranch_WorkflowMultiBranchProject";
-        public static final String ORGANIZATION_FOLDER = "jenkins_branch_OrganizationFolder";
-    }
-
     public static void sleep(BaseTest baseTest, long seconds) {
         new Actions(baseTest.getDriver()).pause(seconds * 1000).perform();
     }
@@ -76,7 +75,7 @@ public final class TestUtils {
     }
 
     public static void returnToDashBoard(BaseTest baseTest) {
-        baseTest.getDriver().findElement(By.cssSelector("a[href = '/']")).click();
+        baseTest.getDriver().findElement(By.cssSelector("a#jenkins-home-link")).click();
     }
 
     public static void createNewItemAndReturnToDashboard(BaseTest baseTest, String name, String itemClassName) {
@@ -85,7 +84,7 @@ public final class TestUtils {
     }
 
     public static void openElementDropdown(BaseTest baseTest, WebElement element) {
-        WebElement chevron = element.findElement(By.className("jenkins-menu-dropdown-chevron"));
+        WebElement chevron = element.findElement(By.cssSelector("[class $= 'chevron']"));
 
         ((JavascriptExecutor) baseTest.getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", chevron);
         ((JavascriptExecutor) baseTest.getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);

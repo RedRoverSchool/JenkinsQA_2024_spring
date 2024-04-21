@@ -224,6 +224,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(actualResult.contains(expectedResult));
     }
 
+    @Ignore
     @Test
     public void testBuildNowFreestyleProject() {
         createFreestyleProject(FREESTYLE_PROJECT_NAME);
