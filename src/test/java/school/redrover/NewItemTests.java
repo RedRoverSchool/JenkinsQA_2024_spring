@@ -18,7 +18,7 @@ public class NewItemTests extends BaseTest {
     public void testCreateFreestyleProject() {
         getDriver().findElement(MAIN_PAGE).click();
 
-        getDriver().findElement(JENKINS_INPUT).sendKeys("new Freestyle project");
+        getDriver().findElement(JENKINS_INPUT).sendKeys("newFreestyleProject");
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
         getDriver().findElement(OK_BUTTON).click();
 
