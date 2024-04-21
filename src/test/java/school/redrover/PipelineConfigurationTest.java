@@ -87,11 +87,11 @@ public class PipelineConfigurationTest extends BaseTest {
         WebElement buildButton = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@data-build-success = 'Build scheduled']")));
         buildButton.click();
         buildButton.click();
-        getWait5().until(ExpectedConditions.numberOfElementsToBeMoreThan(By.xpath("//div[@id = 'buildHistoryPage']//tr"), 1));
         getWait2().until(ExpectedConditions.invisibilityOfAllElements(getDriver().findElements(By.xpath("//td[contains(@class, 'progress-bar')]"))));
         getDriver().navigate().refresh();
         WebElement secondBuild = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[@class = 'build-row-cell']//a[text() = '#2']")));
 
         Assert.assertTrue(secondBuild.getAttribute("href").contains("/job/" + JOB_NAME.replaceAll(" ", "%20") + "/2/"), "there is no second build");
+        Assert.assertEquals(getDriver().findElements(By.xpath("//div[@id = 'buildHistoryPage']//tr")).size(), 2);
     }
 }
