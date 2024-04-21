@@ -16,4 +16,14 @@ public class WarningIconTest extends BaseTest {
 
         Assert.assertTrue(warningTooltip.getText().contains("Warnings"));
     }
+
+    @Test
+    public void testWarningsSettingPage() {
+        getDriver().findElement(By.cssSelector("[class$='am-button security-am']")).click();
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@name='configure']"))).click();
+
+        WebElement pageTitle = getDriver().findElement(By.xpath("//h1"));
+
+        Assert.assertTrue(pageTitle.getText().contains("Security"));
+    }
 }
