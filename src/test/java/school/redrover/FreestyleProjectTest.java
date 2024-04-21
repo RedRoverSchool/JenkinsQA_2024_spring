@@ -232,7 +232,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testCreateFreestyleProject() {
-        String expectedHeading = "New project";
+        String expectedHeading = "new project";
 
         getDriver().findElement(By.xpath("//a[@href = 'newJob']")).click();
         getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys(expectedHeading);
