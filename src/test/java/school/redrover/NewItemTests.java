@@ -52,7 +52,7 @@ public class NewItemTests extends BaseTest {
 
         getDriver().findElement(OK_BUTTON).click();
 
-        getDriver().findElement(JENKINS_DASHBOARD).click();
+        getDriver().findElement(By.className("jenkins-breadcrumbs__list-item")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//td/*[@href='job/NewFolder/']")).getText(),
                 "NewFolder");
