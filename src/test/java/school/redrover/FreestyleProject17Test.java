@@ -26,7 +26,7 @@ public class FreestyleProject17Test extends BaseTest {
     }
 
     @Test
-    public void testAddDescription() {
+    public void testAddDescriptionOfConfiguration() {
         createNewFreestyleProjectTest();
         getDriver().findElement(By.xpath("//a[@id = 'jenkins-home-link']")).click();
         getDriver().findElement(By.xpath("//td/a[@href='job/" + JOB_NAME + "/']")).click();
