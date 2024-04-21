@@ -187,9 +187,9 @@ public class MultibranchPipelineTest extends BaseTest {
         createNewMultiPipeline(multiPipelineName);
 
         getDriver().findElement(By.id("jenkins-head-icon")).click();
-        WebElement createdMultibranchPipeline = getDriver().findElement(By.xpath("//span[text()='MultibranchPipeline']"));
+        WebElement createdMultibranchPipeline = getDriver().findElement(By.xpath("//span[text()='" + multiPipelineName + "']"));
         new Actions(getDriver()).moveToElement(createdMultibranchPipeline).perform();
-        WebElement dropdownChevron = getDriver().findElement(By.cssSelector("#job_MultibranchPipeline > td:nth-child(3) > a > button"));
+        WebElement dropdownChevron = getDriver().findElement(By.cssSelector("#job_" + multiPipelineName + " > td:nth-child(3) > a > button"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
             "arguments[0].dispatchEvent(new Event('click'));", dropdownChevron);
         getDriver().findElement(By.cssSelector("[href $='rename']")).click();
