@@ -2,6 +2,8 @@ package school.redrover;
 
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
@@ -29,6 +31,26 @@ public class Pipeline1Test extends BaseTest {
 
     private String getH2HeaderText() {
         return getDriver().findElement(By.xpath("//h2")).getText();
+    }
+
+    private void mouseMoveToCenterOfElement(WebElement element) {
+
+        Actions mouse = new Actions(getDriver());
+
+        int xOffset = element.getSize().getWidth() / 2;
+        int yOffset = element.getSize().getHeight() / 2;
+
+        mouse.moveToElement(element, xOffset, yOffset).perform();
+    }
+
+    private void mouseMoveToCenterOfElementAndClick(WebElement element) {
+
+        Actions mouse = new Actions(getDriver());
+
+        int xOffset = element.getSize().getWidth() / 2;
+        int yOffset = element.getSize().getHeight() / 2;
+
+        mouse.moveToElement(element, xOffset, yOffset).click().perform();
     }
 
     @Test
@@ -83,6 +105,23 @@ public class Pipeline1Test extends BaseTest {
         String expectedResult = PIPELINE_NAME + " - Stage View";
 
         chooseProjectAndClick(PIPELINE_NAME);
+
+        clickFullStageViewButton();
+
+        Assert.assertEquals(getH2HeaderText(), expectedResult);
+    }
+
+    @Test
+    public void testFullStageViewButton2() {
+        TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
+        TestUtils.goToMainPage(getDriver());
+
+        String expectedResult = PIPELINE_NAME + " - Stage View";
+
+        mouseMoveToCenterOfElement(getDriver().findElement(By.xpath("//td/a[@href='job/"
+                + PIPELINE_NAME.replaceAll(" ", "%20") + "/']")));
+        mouseMoveToCenterOfElementAndClick(getDriver().findElement(By.xpath("//button[contains(@data-href, '/job/"
+                + PIPELINE_NAME.replaceAll(" ", "%20") + "/')]")));
 
         clickFullStageViewButton();
 
