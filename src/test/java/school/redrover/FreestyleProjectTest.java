@@ -230,4 +230,21 @@ public class FreestyleProjectTest extends BaseTest {
 
     }
 
+    @Test
+    public void testCreateFreestyleProject() {
+        String expectedHeading = "New project";
+
+        getDriver().findElement(By.xpath("//a[@href = 'newJob']")).click();
+        getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys(expectedHeading);
+        getDriver().findElement(By.xpath("//*[@class = 'hudson_model_FreeStyleProject']")).click();
+        getDriver().findElement(By.xpath("//*[@id = 'ok-button']")).click();
+        getDriver().findElement(By.xpath("//*[@name = 'Submit']")).click();
+        getDriver().findElement(By.xpath("//*[@id = 'jenkins-name-icon']")).click();
+
+        String actualHeading = getDriver().findElement(By.xpath("//table//a[@href = 'job/New%20project/']")).getText();
+
+        Assert.assertEquals(actualHeading, expectedHeading);
+    }
+
+
 }
