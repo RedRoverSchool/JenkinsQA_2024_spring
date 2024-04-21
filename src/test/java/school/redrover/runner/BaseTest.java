@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
 @Listeners({FilterForTests.class})
 public abstract class BaseTest {
 
-    private WebDriver driver;
+    private static WebDriver driver;
 
     private void startDriver() {
         ProjectUtils.log("Browser open");
@@ -73,7 +73,7 @@ public abstract class BaseTest {
         ProjectUtils.logf("Execution time is %o sec\n\n", (testResult.getEndMillis() - testResult.getStartMillis()) / 1000);
     }
 
-    protected WebDriver getDriver() {
+    protected static WebDriver getDriver() {
         return driver;
     }
 }
