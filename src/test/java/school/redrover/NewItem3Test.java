@@ -58,7 +58,9 @@ public class NewItem3Test extends BaseTest {
         TestUtils.goToMainPage(getDriver());
 
         getActions().moveToElement(getDriver().findElement(nameUpItem)).perform();
+        getWait5();
         getDriver().findElement(By.xpath("(//button[@class='jenkins-menu-dropdown-chevron'])[3]")).click();
+        getWait5();
         getDriver().findElement(By.xpath("//a[normalize-space()='Rename']")).click();
         getDriver().findElement(renameTextField).clear();
         getDriver().findElement(renameTextField).sendKeys("New Name");
