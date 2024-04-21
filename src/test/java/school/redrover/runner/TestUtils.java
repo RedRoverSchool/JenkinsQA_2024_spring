@@ -10,7 +10,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-import java.time.Duration;
 import java.util.List;
 
 public final class TestUtils {
