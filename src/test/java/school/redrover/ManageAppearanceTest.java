@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -10,8 +9,6 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
-import java.awt.*;
-
 public class ManageAppearanceTest extends BaseTest{
 
         @Test
@@ -19,17 +16,21 @@ public class ManageAppearanceTest extends BaseTest{
             WebElement dashboard = getDriver().findElement(By.linkText("Dashboard"));
 
             new Actions(getDriver())
-//                    .moveToElement(dashboard)
-//                    .pause(1000)
+                    .moveToElement(dashboard)
+                    .pause(1000)
 //                    .moveToLocation(98, 72)
 //                    .pause(1000)
 //                    .click()
 //                    .moveToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
-//                    .scrollToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
-                    .scrollToElement(getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[1]/a/button")))
-                    .pause(2000)
-                    .click(dashboard.findElement(By.cssSelector("[class$='chevron']")))
+                    .scrollToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
+//                    .scrollToElement(getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[1]/a/button")))
+//                    .pause(2000)
+//                    .click()
+//                    .click(dashboard.findElement(By.cssSelector("[class$='chevron']")))
                     .perform();
+
+            getWait5().until(ExpectedConditions.elementToBeClickable(dashboard.findElement(By.cssSelector("[class$='chevron']")))).click();
+//            TestUtils.sleep(this, 2);
 
 //            java.awt.Point loc = MouseInfo.getPointerInfo().getLocation();
 
