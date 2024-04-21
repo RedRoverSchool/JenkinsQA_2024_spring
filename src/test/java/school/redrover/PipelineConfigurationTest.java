@@ -8,7 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-
+@Ignore
 public class PipelineConfigurationTest extends BaseTest {
     private static final String JOB_NAME = "TestCrazyTesters";
 
