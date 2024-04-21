@@ -2,6 +2,9 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -12,11 +15,20 @@ import java.util.Random;
 public class MulticonfigurationProject1Test extends BaseTest {
     final String PROJECT_NAME = generateRandomText(20);
 
+    private Actions actions;
+
+    private Actions getActions() {
+        if (actions == null) {
+            actions = new Actions(getDriver());
+        }
+        return actions;
+    }
+
     private void createMulticonfigurationProject(){
         getDriver().findElement(By.xpath("//*[@href='newJob']")).click();
         getDriver().findElement(By.xpath("//*[@class='jenkins-input']")).sendKeys(PROJECT_NAME);
         getDriver().findElement(By.xpath("//*[@class='hudson_matrix_MatrixProject']")).click();
-        getDriver().findElement(By.xpath("//*[@type='submit']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
     }
 
     private String generateRandomNumber(){
@@ -25,7 +37,7 @@ public class MulticonfigurationProject1Test extends BaseTest {
         return String.valueOf(randomNumber);
     }
 
-    private String generateRandomText(int length){
+    private static String generateRandomText(int length){
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         StringBuilder sb = new StringBuilder(length);
         Random random = new Random();
@@ -103,5 +115,36 @@ public class MulticonfigurationProject1Test extends BaseTest {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//*[@tooltip='Disabled']")).isDisplayed());
+    }
+
+    @Test
+    public void testMoveProjectToFolderFromDashboardPage(){
+        final String folderName = generateRandomText(10);
+
+        createMulticonfigurationProject();
+
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(folderName);
+        getDriver().findElement(By.xpath("//*[@class='com_cloudbees_hudson_plugins_folder_Folder']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        getActions().
+                moveToElement(getDriver().findElement(By.xpath("//*[@id='job_" + PROJECT_NAME + "']//*[@class='jenkins-menu-dropdown-chevron']"))).
+                click().
+                perform();
+
+        getDriver().findElement(By.xpath("//a[normalize-space()='Move']")).click();
+
+        final WebElement selectFolder = getDriver().findElement(By.xpath("//*[@class='select setting-input']"));
+        Select dropDown = new Select(selectFolder);
+        dropDown.selectByValue("/" + folderName);
+        getDriver().findElement(By.name("Submit")).click();
+
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        getDriver().findElement(By.xpath("//*[@href='job/" + folderName + "/']/span")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.id("job_" + PROJECT_NAME)).isDisplayed());
     }
 }
