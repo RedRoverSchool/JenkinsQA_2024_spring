@@ -32,24 +32,23 @@ public class Pipeline1Test extends BaseTest {
         return getDriver().findElement(By.xpath("//h2")).getText();
     }
 
-    private void mouseMoveToCenterOfElement(WebElement element) {
+    private void callElementDropDownMenu(String projectName) {
+
+        WebElement element = getDriver().findElement(By.xpath("//td/a[@href='job/"
+                + projectName.replaceAll(" ", "%20") + "/']"));
+        WebElement elementChevron = getDriver().findElement(By.xpath("//button[contains(@data-href, '/job/"
+                + projectName.replaceAll(" ", "%20") + "/')]"));
 
         Actions mouse = new Actions(getDriver());
 
-        int xOffset = element.getSize().getWidth() / 2;
-        int yOffset = element.getSize().getHeight() / 2;
+        int xOffset = element.getLocation().getX() + (element.getSize().getWidth() / 2);
+        int yOffset = element.getLocation().getY() + (element.getSize().getHeight() / 2);
+        int xOffsetChevron = (element.getSize().getWidth() / 2) + (elementChevron.getSize().getWidth() / 2);
 
-        mouse.moveToElement(element, xOffset, yOffset).perform();
-    }
-
-    private void mouseMoveToCenterOfElementAndClick(WebElement element) {
-
-        Actions mouse = new Actions(getDriver());
-
-        int xOffset = element.getSize().getWidth() / 2;
-        int yOffset = element.getSize().getHeight() / 2;
-
-        mouse.moveToElement(element, xOffset, yOffset).click().perform();
+        mouse.moveByOffset(xOffset, yOffset).perform();
+        mouse.moveByOffset(xOffsetChevron, 0)
+                .click()
+                .perform();
     }
 
     @Test
@@ -117,10 +116,7 @@ public class Pipeline1Test extends BaseTest {
 
         String expectedResult = PIPELINE_NAME + " - Stage View";
 
-        mouseMoveToCenterOfElement(getDriver().findElement(By.xpath("//td/a[@href='job/"
-                + PIPELINE_NAME.replaceAll(" ", "%20") + "/']")));
-        mouseMoveToCenterOfElementAndClick(getDriver().findElement(By.xpath("//button[contains(@data-href, '/job/"
-                + PIPELINE_NAME.replaceAll(" ", "%20") + "/')]")));
+        callElementDropDownMenu(PIPELINE_NAME);
 
         clickFullStageViewButton();
 
