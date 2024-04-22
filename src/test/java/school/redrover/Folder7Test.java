@@ -64,7 +64,7 @@ public class Folder7Test extends BaseTest {
                         "//tr//button[@class='jenkins-menu-dropdown-chevron']"))).click()
                 .perform();
 
-        getDriver().findElement(By.xpath("//button[@class='jenkins-dropdown__item']")).click();
+        getDriver().findElement(By.xpath("//*[@id='tippy-5']//button")).click();
         getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']"))
                 .click();
 
