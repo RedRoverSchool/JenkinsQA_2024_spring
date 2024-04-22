@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
@@ -27,17 +28,10 @@ public class PipelineProject4Test extends BaseTest {
     @Test(dependsOnMethods = "testVerifyNewPPCreatedByCreateJob")
     public void testVerifyNewPPCreatedNewItem() {
 
-        getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
-        getDriver().findElement(By.cssSelector("div.add-item-name > input#name")).sendKeys(nameProjects.get(1));
-        getDriver().findElement(By.cssSelector(".org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
-        getDriver().findElement(By.cssSelector("button#ok-button")).click();
+        TestUtils.createNewItemAndReturnToDashboard(this, nameProjects.get(1), TestUtils.Item.PIPELINE);
 
-        getDriver().findElement(By.cssSelector("button.jenkins-button--primary")).click();
-
-        getDriver().findElement(By.cssSelector("li.jenkins-breadcrumbs__list-item > a[href='/']")).click();
-
-        for (int i=0; i < nameProjects.size(); i++) {
-        Assert.assertTrue(getDriver().findElement(By.cssSelector("tr#job_" + nameProjects.get(i))).isDisplayed());
+        for (String nameProject : nameProjects) {
+            Assert.assertTrue(getDriver().findElement(By.cssSelector("tr#job_" + nameProject)).isDisplayed());
         }
     }
 
