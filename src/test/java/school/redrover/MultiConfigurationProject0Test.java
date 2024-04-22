@@ -187,4 +187,18 @@ public class MultiConfigurationProject0Test extends BaseTest {
 
         Assert.assertFalse(getDriver().findElement(By.id("enable-disable-project")).isSelected());
     }
+
+    @Test (dependsOnMethods = "testMCPDisableByToggle")
+    public void testCheckTooltipEnablingMCP() {
+        getDriver().findElement(By.linkText(projectName)).click();
+        getDriver().findElement(By.linkText("Configure")).click();
+
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.className("jenkins-toggle-switch__label")))
+                .perform();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.cssSelector("[id^='toggle-switch']")).getAttribute("tooltip"),
+                "Enable or disable the current project");
+    }
 }
