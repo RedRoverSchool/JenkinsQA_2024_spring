@@ -10,6 +10,11 @@ import school.redrover.runner.BaseTest;
 
 public class ManageAppearanceTest extends BaseTest{
 
+    void goToManageAppearance() {
+        getDriver().findElement(By.linkText("Manage Jenkins")).click();
+        getDriver().findElement(By.cssSelector("[href=\"appearance\"]")).click();
+    }
+
         @Test
         public void testAppearanceQuantityOfThemesViaDashboardDropDown() {
             WebElement dashboard = getDriver().findElement(By.cssSelector("div#breadcrumbBar a[href = '/']"));
@@ -26,13 +31,26 @@ public class ManageAppearanceTest extends BaseTest{
 
     @Test
         public void testDarkThemeSwitchNotification() {
-            getDriver().findElement(By.linkText("Manage Jenkins")).click();
-            getDriver().findElement(By.cssSelector("[href=\"appearance\"]")).click();
+            goToManageAppearance();
+
             getDriver().findElement(By.cssSelector("[for='radio-block-0']")).click();
             getDriver().findElement(By.name("Apply")).click();
 
             Assert.assertEquals(
                     getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("notification-bar"))).getText(),
                     "Saved");
+        }
+
+        @Test
+        public void testDarkThemeSwitchColor() {
+            goToManageAppearance();
+
+            getDriver().findElement(By.cssSelector("[for='radio-block-0']")).click();
+            getDriver().findElement(By.name("Apply")).click();
+
+            Assert.assertEquals(
+                    getDriver().findElement(By.tagName("body")).getCssValue("background-color"),
+                    "rgba(31, 31, 35, 1)",
+                    "The background color doesn't match the theme");
         }
     }
