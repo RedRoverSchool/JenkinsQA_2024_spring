@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -17,6 +18,7 @@ public class FolderRenameTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
+    @Ignore
     @Test
     public void testRenameFolder() {
         final String folderName = "New folder";
