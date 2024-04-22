@@ -49,7 +49,7 @@ public class FreestyleProject1Test extends BaseTest {
         new Actions(getDriver()).moveToElement(
                 getWait10().until(
                         ExpectedConditions.visibilityOfElementLocated(
-                                By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]"))
+                                By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]/following-sibling::button"))
                 )
         ).perform();
 
