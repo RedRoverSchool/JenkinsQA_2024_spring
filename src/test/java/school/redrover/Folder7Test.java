@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -65,7 +66,8 @@ public class Folder7Test extends BaseTest {
                 .pause(1000)
                 .perform();
 
-        getDriver().findElement(By.xpath("//*[@id='tippy-5']//button")).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='tippy-5']//button")))
+                .click();
         getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']"))
                 .click();
 
