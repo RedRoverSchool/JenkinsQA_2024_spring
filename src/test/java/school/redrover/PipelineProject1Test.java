@@ -16,9 +16,11 @@ public class PipelineProject1Test extends BaseTest {
     private static final String PIPELINE_NAME = "New First Pipeline";
     private static final String RENAMED_PIPELINE = "RenamedFirstPipeline";
     private static final String PIPELINE_DESCRIPTION = "Description added to my pipeline.";
-    private static final By BUILD_TRIANGLE_BUTTON = By.xpath("//td[@class='jenkins-table__cell--tight']/div/a");
+    private static final By BUILD_TRIANGLE_BUTTON_XPATH = By.xpath("//td[@class='jenkins-table__cell--tight']/div/a");
+    private static final By DESCRIPTION_XPATH = By.xpath("//div[@id='description']/div[not(contains(@class, 'jenkins-buttons-row'))]");
 
     private void createPipeline(String name) {
+
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
         getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("#name"))).sendKeys(name);
@@ -67,7 +69,7 @@ public class PipelineProject1Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
         String actualDescription = getWait5().until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//div[@id='description']/div[not(contains(@class, 'jenkins-buttons-row'))]"))).getText();
+                DESCRIPTION_XPATH)).getText();
 
         Assert.assertTrue(actualDescription.contains(PIPELINE_DESCRIPTION));
     }
@@ -82,7 +84,7 @@ public class PipelineProject1Test extends BaseTest {
         getWait2().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//textarea[@name='description']"))).sendKeys(updatedDescription);
         getDriver().findElement(By.xpath("//div/button[@name='Submit']")).click();
 
-        Assert.assertTrue(getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText().contains(updatedDescription));
+        Assert.assertTrue(getDriver().findElement(DESCRIPTION_XPATH).getText().contains(updatedDescription));
     }
 
     @Test(dependsOnMethods = "testEditPipelineDescription")
@@ -120,7 +122,7 @@ public class PipelineProject1Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         returnToHomePage();
 
-        WebElement greenBuildArrow = getDriver().findElement(BUILD_TRIANGLE_BUTTON);
+        WebElement greenBuildArrow = getDriver().findElement(BUILD_TRIANGLE_BUTTON_XPATH);
         String buildStatus = greenBuildArrow.getAttribute("tooltip");
 
         Assert.assertEquals(buildStatus, "Schedule a Build for " + RENAMED_PIPELINE);
@@ -167,7 +169,7 @@ public class PipelineProject1Test extends BaseTest {
 
     @Test(dependsOnMethods = "testAddDescriptionColumnToPipelineView")
     public void testPipelineBuildSuccessFromConsole() {
-        getDriver().findElement(BUILD_TRIANGLE_BUTTON).click();
+        getDriver().findElement(BUILD_TRIANGLE_BUTTON_XPATH).click();
         clickOnCreatedJobOnDashboardPage(PIPELINE_NAME);
 
         getWait60().until(ExpectedConditions.attributeToBe(
