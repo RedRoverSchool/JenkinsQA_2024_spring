@@ -49,4 +49,18 @@ public class PipelineTest extends BaseTest {
 
         Assert.assertEquals(defaultTextAreaBorderBacklightColor, "rgba(11,106,162,.25)");
     }
+
+    @Test
+    public void testYesButtonColorDeletingPipelineInSidebar() {
+        createPipelineWithCreateAJob();
+
+        getDriver().findElement(By.cssSelector("[data-title='Delete Pipeline']")).click();
+
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        String okButtonHexColor = (String) js.executeScript(
+                "return window.getComputedStyle(arguments[0]).getPropertyValue('--color');",
+                getDriver().findElement(By.xpath("//button[@data-id='ok']")));
+
+        Assert.assertEquals(okButtonHexColor, "#e6001f", "The confirmation button color is not red");
+    }
 }
