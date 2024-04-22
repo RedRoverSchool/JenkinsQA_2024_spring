@@ -5,6 +5,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import static school.redrover.runner.TestUtils.*;
+
 public class Folder7Test extends BaseTest {
     @Test
     public void testCreateNewFolder() {
@@ -17,5 +19,18 @@ public class Folder7Test extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertEquals(getDriver().findElement(By.cssSelector("#main-panel h1")).getText(), name);
+    }
+
+    @Test
+    public void testAddFolderDescription() {
+        final String name = "19 April";
+        final String newText = "Hello";
+
+        createNewItemAndReturnToDashboard(this, name , Item.FOLDER);
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.id("description")).sendKeys(newText);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.id("description")).getText().contains(newText));
     }
 }
