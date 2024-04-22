@@ -94,9 +94,9 @@ public class Pipeline1Test extends BaseTest {
         final String expectedProjectName = "Pipeline1";
         TestUtils.returnToDashBoard(this);
 
-        boolean isPresent = !getDriver()
+        boolean isNotPresent = getDriver()
                 .findElements(By.xpath("//table//a[contains(@title, 'Schedule a Build for')]")).isEmpty();
-        Assert.assertFalse(isPresent, "Schedule a Build for is present");
+        Assert.assertTrue(isNotPresent, "Schedule a Build for is present");
 
         String actualProjectName = getDriver().findElement(By.xpath("//tbody//a/span")).getText();
         Assert.assertEquals(actualProjectName, expectedProjectName);
