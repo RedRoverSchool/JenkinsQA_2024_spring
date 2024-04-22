@@ -60,14 +60,16 @@ public class Folder7Test extends BaseTest {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
 
         Actions actions = new Actions(getDriver());
+
         actions
                 .moveToElement(getDriver().findElement(By.xpath(
                         "//tr//button[@class='jenkins-menu-dropdown-chevron']"))).click()
+                .perform();
+        actions
                 .pause(1000)
+                .moveToElement(getDriver().findElement(By.xpath("//button[@class='jenkins-dropdown__item']"))).click()
                 .perform();
 
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='tippy-5']//button")))
-                .click();
         getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']"))
                 .click();
 
