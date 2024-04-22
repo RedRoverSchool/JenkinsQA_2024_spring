@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -54,7 +53,7 @@ public class Folder7Test extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.linkText(NEW_NAME)).getText(), "Renamed Folder");
     }
 
-    @Test(dependsOnMethods = "testRenameFolder")
+    @Test(dependsOnMethods = "testCreateFolderUsingName")
     public void testDeleteFolderViaDropdown() {
 
         getDriver().findElement(By.id("jenkins-name-icon")).click();
@@ -65,10 +64,9 @@ public class Folder7Test extends BaseTest {
                         "//tr//button[@class='jenkins-menu-dropdown-chevron']"))).click()
                 .perform();
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-                "//button[@class='jenkins-dropdown__item']"))).click();
-        getDriver().findElement(By.xpath(
-                "//button[@class='jenkins-button jenkins-button--primary ']")).click();
+        getDriver().findElement(By.xpath("//button[@class='jenkins-dropdown__item']")).click();
+        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']"))
+                .click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath(
                 "//h1[text()='Welcome to Jenkins!']")).getText(), "Welcome to Jenkins!");
