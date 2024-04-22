@@ -77,7 +77,7 @@ public class FreestyleProject3Test extends BaseTest {
     }
 
     @Test
-    public void renameFreestyleProjectFromDropdown() {
+    public void testRenameFreestyleProjectFromDropdown() {
 
         createFreestyleProject(FREESTYLE_PROJECT_NAME);
         clickJenkinsHomePage();
