@@ -62,6 +62,7 @@ public class Folder7Test extends BaseTest {
         actions
                 .moveToElement(getDriver().findElement(By.xpath(
                         "//tr//button[@class='jenkins-menu-dropdown-chevron']"))).click()
+                .pause(1000)
                 .perform();
 
         getDriver().findElement(By.xpath("//*[@id='tippy-5']//button")).click();
