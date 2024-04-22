@@ -177,4 +177,14 @@ public class MultiConfigurationProject0Test extends BaseTest {
                 description,
                 "Project description is not displayed" );
     }
+
+    @Test
+    public void testMCPDisableByToggle() {
+        TestUtils.createNewItem(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+
+        getDriver().findElement(By.className("jenkins-toggle-switch__label")).click();
+        getDriver().findElement(By.name("Apply")).click();
+
+        Assert.assertFalse(getDriver().findElement(By.id("enable-disable-project")).isSelected());
+    }
 }
