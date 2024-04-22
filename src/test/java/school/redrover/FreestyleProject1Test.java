@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -48,10 +49,13 @@ public class FreestyleProject1Test extends BaseTest {
         new Actions(getDriver()).moveToElement(
                 getDriver().findElement(By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]"))
         ).perform();
-
-        getDriver().findElement(
-                        By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]/following-sibling::button"))
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]/following-sibling::button")))
                 .click();
+
+//        getDriver().findElement(
+//                        By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]/following-sibling::button"))
+//                .click();
 
         getDriver().findElement(By.xpath("//div[@class='jenkins-dropdown']//descendant::a[4]")).click();
 
