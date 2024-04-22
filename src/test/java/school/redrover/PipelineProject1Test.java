@@ -29,7 +29,7 @@ public class PipelineProject1Test extends BaseTest {
     }
 
     private void returnToHomePage() {
-        getDriver().findElement(By.cssSelector(".jenkins-breadcrumbs__list-item:nth-child(1)")).click();
+        getDriver().findElement(By.id("jenkins-head-icon")).click();
     }
 
     private void clickOnCreatedJobOnDashboardPage(String name) {
@@ -73,7 +73,20 @@ public class PipelineProject1Test extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testAddPipelineDescription")
-    public void testRenamePipelineFromLeftMenu() {
+    public void testEditPipelineDescription() {
+        final String updatedDescription = "Description update in my pipeline.";
+
+        clickOnCreatedJobOnDashboardPage(PIPELINE_NAME);
+
+        getDriver().findElement(By.id("description-link")).click();
+        getWait2().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//textarea[@name='description']"))).sendKeys(updatedDescription);
+        getDriver().findElement(By.xpath("//div/button[@name='Submit']")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText().contains(updatedDescription));
+    }
+
+    @Test(dependsOnMethods = "testEditPipelineDescription")
+    public void testRenamePipelineUsingSidebar() {
         clickOnCreatedJobOnDashboardPage(PIPELINE_NAME);
 
         getWait2().until(ExpectedConditions.elementToBeClickable(
@@ -90,7 +103,7 @@ public class PipelineProject1Test extends BaseTest {
                 By.xpath("//div[@id='main-panel']//h1"))).getText(), RENAMED_PIPELINE);
     }
 
-    @Test(dependsOnMethods = "testRenamePipelineFromLeftMenu")
+    @Test(dependsOnMethods = "testRenamePipelineUsingSidebar")
     public void testDisablePipelineAndEnableBack() {
         clickOnCreatedJobOnDashboardPage(RENAMED_PIPELINE);
 
