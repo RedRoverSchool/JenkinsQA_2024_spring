@@ -141,8 +141,8 @@ public class MulticonfigurationProject1Test extends BaseTest {
 
         getActions()
                 .moveToElement(getDriver().findElement(By.xpath("//*[@id='job_" + PROJECT_NAME + "']//*[@class='jenkins-menu-dropdown-chevron']")))
-                .pause(3000)
                 .click()
+                .pause(3000)
                 .perform();
 
         getWait5().until(ExpectedConditions.elementToBeClickable(By.partialLinkText("Move"))).click();
