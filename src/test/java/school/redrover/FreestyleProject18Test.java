@@ -1,7 +1,6 @@
 package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.annotations.Test;
 import org.testng.Assert;
@@ -20,30 +19,7 @@ public class FreestyleProject18Test extends BaseTest {
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href = '/']"))).click();
     }
-    private Actions actions;
-    private Actions getActions() {
-        if (actions == null) {
-            actions = new Actions(getDriver());
-        }
-    return actions;
-    }
-    @Test
-    public void testDeleteProject() {
 
-        testPreconditionCreateProject();
-
-        WebElement findProject = getDriver().findElement(By.xpath("//span[normalize-space()='JavaHashGroupProject']"));
-        Assert.assertEquals(projectItemName,findProject.getText());
-
-        getActions().moveToElement(findProject).perform();
-
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='jenkins-table__link model-link inside']//button[@class='jenkins-menu-dropdown-chevron']"))).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[normalize-space()='Delete Project']"))).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[normalize-space()='Yes']"))).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href = '/']"))).click();
-
-        Assert.assertTrue(getWait2().until(ExpectedConditions.visibilityOfElementLocated(EMPTY_STATE_BLOCK)).isDisplayed());
-    }
 
     @Test
     public void testDeleteProjectAnother(){
