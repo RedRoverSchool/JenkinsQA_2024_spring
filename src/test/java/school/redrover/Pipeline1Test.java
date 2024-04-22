@@ -88,5 +88,18 @@ public class Pipeline1Test extends BaseTest {
 
         Assert.assertEquals(getH2HeaderText(), expectedResult);
     }
+
+    @Test(dependsOnMethods = "testVisibilityDisableButton")
+    public void testPipelineNotActive() {
+        final String expectedProjectName = "Pipeline1";
+        TestUtils.returnToDashBoard(this);
+
+        boolean isPresent = !getDriver()
+                .findElements(By.xpath("//table//a[contains(@title, 'Schedule a Build for')]")).isEmpty();
+        Assert.assertFalse(isPresent);
+
+        String actualProjectName = getDriver().findElement(By.xpath("//tbody//a/span")).getText();
+        Assert.assertEquals(actualProjectName, expectedProjectName);
+    }
 }
 
