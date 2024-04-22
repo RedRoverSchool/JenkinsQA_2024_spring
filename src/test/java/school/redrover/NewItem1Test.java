@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.Color;
 import org.testng.Assert;
@@ -74,5 +75,18 @@ public class NewItem1Test extends BaseTest {
 
         boolean isOkButtonEnabled = getDriver().findElement(By.id("ok-button")).isEnabled();
         Assert.assertFalse(isOkButtonEnabled);
+    }
+    @Test
+    public void testEmptyNameFieldHints() {
+        getDriver().findElement(By.linkText("New Item")).click();
+
+        String hintText = getDriver().findElement(By.cssSelector("[class='input-help']")).getText();
+        String hintColor = getDriver().findElement(By.cssSelector("[class='input-help']")).getCssValue("color");
+
+        getDriver().findElement(By.id("name")).sendKeys("a");
+        getDriver().findElement(By.id("name")).sendKeys(Keys.BACK_SPACE);
+
+        Assert.assertNotSame(hintText, getDriver().findElement(By.id("itemname-required")).getText());
+        Assert.assertNotSame(hintColor, getDriver().findElement(By.id("itemname-required")).getCssValue("color"));
     }
 }

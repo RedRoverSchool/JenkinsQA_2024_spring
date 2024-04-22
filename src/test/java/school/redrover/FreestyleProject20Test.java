@@ -93,4 +93,16 @@ public class FreestyleProject20Test extends BaseTest {
             Assert.fail("Freestyle project not found in folder");
         }
     }
+
+    @Test(dependsOnMethods = "testMoveToFolder")
+    public void testDeleteProject() {
+        getDriver().findElement(By.linkText(folderName)).click();
+        getDriver().findElement(By.linkText(newProjectName)).click();
+
+        getDriver().findElement(By.linkText("Delete Project")).click();
+        getDriver().findElement(By.className("jenkins-!-destructive-color")).click();
+
+        getDriver().get("http://localhost:8080/job/"+folderName+"/job/"+newProjectName);
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("#error-description > h2")).getText(), "Not Found");
+    }
 }

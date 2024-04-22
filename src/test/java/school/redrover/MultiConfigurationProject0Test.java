@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
-public class MultiConfigurationProjectTest extends BaseTest {
+public class MultiConfigurationProject0Test extends BaseTest {
 
     private final String projectName = "MCProject";
 
@@ -35,16 +35,16 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Test
     public void testAddDescription() {
         TestUtils.createNewItemAndReturnToDashboard(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
-        final String text = "❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
+        final String text = "❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(String.format("[href = 'job/%s/']", projectName)))).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).sendKeys(text);
         getDriver().findElement(By.name("Submit")).click();
 
-        Assert.assertTrue(
-                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div#description")))
-                        .getText().startsWith(text));
+        Assert.assertEquals(
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#description>div:first-child"))).getText(),
+                text);
     }
 
     @Test
@@ -67,8 +67,8 @@ public class MultiConfigurationProjectTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertTrue(
-                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div#description")))
-                        .getText().contains(additionText + text));
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#description div:not([class])")))
+                        .getText().equals(additionText + text));
     }
 
     @Test
@@ -101,7 +101,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         getDriver().findElement(By.name("description")).sendKeys(newText);
         getDriver().findElement(By.name("Submit")).click();
 
-        Assert.assertTrue(getDriver().findElement(By.id("description")).getText().contains(newText));
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("#description div:not([class])")).getText(), newText);
     }
 
     @Test
@@ -160,5 +160,45 @@ public class MultiConfigurationProjectTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(),"Project " +  NAME_OF_PROJECT);
+    }
+
+    @Test
+    public void testAddDescriptionOnConfigurationPage() {
+        final String description = "This is project description";
+        TestUtils.createNewItemAndReturnToDashboard(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+
+        getDriver().findElement(By.linkText(projectName)).click();
+        getDriver().findElement(By.linkText("Configure")).click();
+        getDriver().findElement(By.name("description")).sendKeys(description);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.cssSelector("#description>div:first-child")).getText(),
+                description,
+                "Project description is not displayed" );
+    }
+
+    @Test
+    public void testMCPDisableByToggle() {
+        TestUtils.createNewItem(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+
+        getDriver().findElement(By.className("jenkins-toggle-switch__label")).click();
+        getDriver().findElement(By.name("Apply")).click();
+
+        Assert.assertFalse(getDriver().findElement(By.id("enable-disable-project")).isSelected());
+    }
+
+    @Test (dependsOnMethods = "testMCPDisableByToggle")
+    public void testCheckTooltipEnablingMCP() {
+        getDriver().findElement(By.linkText(projectName)).click();
+        getDriver().findElement(By.linkText("Configure")).click();
+
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.className("jenkins-toggle-switch__label")))
+                .perform();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.cssSelector("[id^='toggle-switch']")).getAttribute("tooltip"),
+                "Enable or disable the current project");
     }
 }
