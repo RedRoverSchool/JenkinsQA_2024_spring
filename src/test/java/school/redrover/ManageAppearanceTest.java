@@ -18,27 +18,30 @@ public class ManageAppearanceTest extends BaseTest{
 
             new Actions(getDriver())
                     .moveToElement(dashboard)
+//                    .scrollToElement(dashboard)
                     .pause(1000)
 //                    .moveToLocation(98, 72)
 //                    .pause(1000)
 //                    .click()
-//                    .moveToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
+                    .moveToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
                     .scrollToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
 //                    .scrollToElement(getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[1]/a/button")))
                     .pause(2000)
 //                    .click()
 //                    .click(dashboard.findElement(By.cssSelector("[class$='chevron']")))
-//                    .scrollByAmount(-16, 0)
-//                    .click()
-                    .perform();
-
-
-            Point g = dashboard.findElement(By.cssSelector("[class$='chevron']")).getLocation();
-
-            new Actions(getDriver())
-                    .moveToLocation(g.getX() - 10, g.getY())
+//                    .scrollByAmount(-3, 0)
+//                    .pause(2000)
                     .click()
                     .perform();
+
+
+//            Point g = dashboard.findElement(By.cssSelector("[class$='chevron']")).getLocation();
+
+//            new Actions(getDriver())
+//                    .moveToLocation(g.getX() - 10, g.getY())
+//
+//                    .click()
+//                    .perform();
 
 //            getWait5().until(ExpectedConditions.elementToBeClickable(dashboard.findElement(By.cssSelector("[class$='chevron']")))).click();
 //            TestUtils.sleep(this, 2);
