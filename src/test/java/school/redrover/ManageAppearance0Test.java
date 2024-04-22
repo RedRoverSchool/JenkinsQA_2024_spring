@@ -8,7 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-public class ManageAppearanceTest extends BaseTest{
+public class ManageAppearance0Test extends BaseTest{
 
     void goToManageAppearance() {
         getDriver().findElement(By.linkText("Manage Jenkins")).click();

@@ -7,7 +7,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-public class NewItem11Test extends BaseTest {
+public class NewItem0Test extends BaseTest {
 
     @DataProvider(name = "unsafeCharactersProvider")
     public Object[][] unsafeCharactersProvider() {
