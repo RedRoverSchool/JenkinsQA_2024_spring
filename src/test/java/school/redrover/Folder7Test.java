@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -25,19 +26,18 @@ public class Folder7Test extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.cssSelector("#main-panel h1")).getText(), name);
     }
 
-    public void createFolderUsingName(String name) {
+    @Test
+    public void testCreateFolderUsingName() {
 
         getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.id("name")).sendKeys(name);
+        getDriver().findElement(By.id("name")).sendKeys(OLD_NAME);
         getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
     }
 
-    @Test
-    public void renameFolderNameViaDropdown() {
-
-        createFolderUsingName(OLD_NAME);
+    @Test(dependsOnMethods = "testCreateFolderUsingName")
+    public void testRenameFolder() {
 
         getDriver().findElement(By.id("jenkins-name-icon")).click();
         getDriver().findElement(By.linkText(OLD_NAME)).click();
@@ -51,5 +51,25 @@ public class Folder7Test extends BaseTest {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
 
         Assert.assertEquals(getDriver().findElement(By.linkText(NEW_NAME)).getText(), "Renamed Folder");
+    }
+
+    @Test(dependsOnMethods = "testRenameFolder")
+    public void testDeleteFolderViaDropdown() {
+
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+        Actions actions = new Actions(getDriver());
+
+        actions
+                .moveToElement(getDriver().findElement(By.xpath(
+                        "//tr//button[@class='jenkins-menu-dropdown-chevron']"))).click()
+                .perform();
+
+        getDriver().findElement(By.xpath("//button[@class='jenkins-dropdown__item']")).click();
+        getDriver().findElement(By.xpath(
+                "//button[@class='jenkins-button jenkins-button--primary ']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath(
+                "//h1[text()='Welcome to Jenkins!']")).getText(), "Welcome to Jenkins!");
     }
 }
