@@ -2,16 +2,17 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
+
+import static school.redrover.runner.TestUtils.createNewItemAndReturnToDashboard;
 
 public class Folder7Test extends BaseTest {
 
     final String OLD_NAME = "Random Folder";
     final String NEW_NAME = "Renamed Folder";
 
-    @Ignore
     @Test
     public void testCreateNewFolder() {
         final String name = "19 April";
@@ -23,6 +24,20 @@ public class Folder7Test extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertEquals(getDriver().findElement(By.cssSelector("#main-panel h1")).getText(), name);
+    }
+    @Test
+    public void testAddFolderDescription() {
+        final String name = "19 April";
+        final String newText = "Hello";
+
+        TestUtils.createNewItemAndReturnToDashboard(this, name, TestUtils.Item.FOLDER);
+
+        getDriver().findElement(By.cssSelector("td>a[href= 'job/19%20April/']")).click();
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.name("description")).sendKeys(newText);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.id("description")).getText().contains(newText));
     }
 
     public void createFolderUsingName(String name) {
