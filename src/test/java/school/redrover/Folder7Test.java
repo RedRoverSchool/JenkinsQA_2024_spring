@@ -7,6 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 public class Folder7Test extends BaseTest {
 
@@ -67,7 +68,8 @@ public class Folder7Test extends BaseTest {
                 .perform();
         actions
                 .pause(1000)
-                .moveToElement(getDriver().findElement(By.xpath("//button[@class='jenkins-dropdown__item']"))).click()
+                .moveToElement(getDriver().findElement(By.xpath(
+                        "//button[@href='/job/" + TestUtils.asURL(OLD_NAME) + "/doDelete']"))).click()
                 .perform();
 
         getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']"))
