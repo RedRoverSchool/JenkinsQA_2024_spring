@@ -20,6 +20,13 @@ public class FreestyleProject18Test extends BaseTest {
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href = '/']"))).click();
     }
+    private Actions actions;
+    private Actions getActions() {
+        if (actions == null) {
+            actions = new Actions(getDriver());
+        }
+    return actions;
+    }
     @Test
     public void testDeleteProject() {
 
@@ -28,8 +35,7 @@ public class FreestyleProject18Test extends BaseTest {
         WebElement findProject = getDriver().findElement(By.xpath("//span[normalize-space()='JavaHashGroupProject']"));
         Assert.assertEquals(projectItemName,findProject.getText());
 
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(findProject).perform();
+        getActions().moveToElement(findProject).perform();
 
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='jenkins-table__link model-link inside']//button[@class='jenkins-menu-dropdown-chevron']"))).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[normalize-space()='Delete Project']"))).click();
