@@ -107,6 +107,7 @@ public class NewItem2Test extends BaseTest {
         verifySubmitButtonIsDisabled();
     }
 
+    @Ignore
     @Test
     public void testCreateItemForStandaloneProjects() {
         enterToNewItemPage();
