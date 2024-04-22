@@ -14,7 +14,7 @@ public class ManageAppearanceTest extends BaseTest{
 
         @Test
         public void testAppearanceQuantityOfThemesViaDashboardDropDown() {
-            WebElement dashboard = getDriver().findElement(By.linkText("Dashboard"));
+            WebElement dashboard = getDriver().findElement(By.cssSelector("div#breadcrumbBar a[href = '/']"));
 
             new Actions(getDriver())
                     .moveToElement(dashboard)
@@ -25,7 +25,7 @@ public class ManageAppearanceTest extends BaseTest{
 //                    .click()
 //                    .moveToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
                     .scrollToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
-                    .moveToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
+//                    .moveToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
 //                    .scrollToElement(getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[1]/a/button")))
                     .pause(3000)
 //                    .click()
