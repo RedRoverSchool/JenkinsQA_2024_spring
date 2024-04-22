@@ -47,15 +47,15 @@ public class FreestyleProject1Test extends BaseTest {
     public void testRenameProjectFromTheBoard() {
         TestUtils.goToMainPage(getDriver());
         new Actions(getDriver()).moveToElement(
-                getDriver().findElement(By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]"))
+                getWait10().until(
+                        ExpectedConditions.visibilityOfElementLocated(
+                                By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]"))
+                )
         ).perform();
+
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]/following-sibling::button")))
                 .click();
-
-//        getDriver().findElement(
-//                        By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]/following-sibling::button"))
-//                .click();
 
         getDriver().findElement(By.xpath("//div[@class='jenkins-dropdown']//descendant::a[4]")).click();
 
