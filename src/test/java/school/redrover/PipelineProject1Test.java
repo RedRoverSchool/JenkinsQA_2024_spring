@@ -67,7 +67,7 @@ public class PipelineProject1Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
         String actualDescription = getWait5().until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//div[@id='description']//div[1]"))).getText();
+                By.xpath("//div[@id='description']/div[not(contains(@class, 'jenkins-buttons-row'))]"))).getText();
 
         Assert.assertTrue(actualDescription.contains(PIPELINE_DESCRIPTION));
     }
