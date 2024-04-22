@@ -145,7 +145,7 @@ public class MulticonfigurationProject1Test extends BaseTest {
                 .pause(3000)
                 .perform();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.partialLinkText("Move"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("(//a[@class='jenkins-dropdown__item'])[4]"))).click();
 //
 //        getDriver().findElement(By.xpath("//*[@href='/job/" +  PROJECT_NAME + "/confirm-rename']")).click();
 //
