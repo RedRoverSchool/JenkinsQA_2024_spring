@@ -27,12 +27,12 @@ public class ManageAppearanceTest extends BaseTest{
                     .scrollToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
                     .moveToElement(dashboard.findElement(By.cssSelector("[class$='chevron']")))
 //                    .scrollToElement(getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[1]/a/button")))
-                    .pause(2000)
+                    .pause(3000)
 //                    .click()
-//                    .click(dashboard.findElement(By.cssSelector("[class$='chevron']")))
+                    .click(dashboard.findElement(By.cssSelector("[class$='chevron']")))
 //                    .scrollByAmount(-3, 0)
 //                    .pause(2000)
-                    .click()
+//                    .click()
                     .perform();
 
 
