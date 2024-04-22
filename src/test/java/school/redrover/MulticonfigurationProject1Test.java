@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -145,7 +144,8 @@ public class MulticonfigurationProject1Test extends BaseTest {
                 .pause(3000)
                 .perform();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("(//a[@class='jenkins-dropdown__item'])[4]"))).click();
+        getDriver().findElement(By.xpath("(//a[@class='jenkins-dropdown__item'])[4]")).click();
+//        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("(//a[@class='jenkins-dropdown__item'])[4]"))).click();
 //
 //        getDriver().findElement(By.xpath("//*[@href='/job/" +  PROJECT_NAME + "/confirm-rename']")).click();
 //
