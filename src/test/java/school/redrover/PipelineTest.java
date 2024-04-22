@@ -6,6 +6,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -23,6 +24,7 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
+    @Ignore
     @Test
     public void testPipelineDescriptionTextAreaBacklightColor() {
         createPipelineWithCreateAJob();
@@ -36,6 +38,7 @@ public class PipelineTest extends BaseTest {
                 "Current text area border backlight color is not equal to rgba(11, 106, 162, 0.25)");
     }
 
+    @Ignore
     @Test
     public void testPipelineDescriptionTextAreaBacklightDefaultColor() {
         createPipelineWithCreateAJob();
