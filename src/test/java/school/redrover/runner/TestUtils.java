@@ -1,9 +1,6 @@
 package school.redrover.runner;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -30,6 +27,7 @@ public final class TestUtils {
     public static final String MULTIBRANCH_PIPELINE = "Multibranch Pipeline";
     public static final String ORGANIZATION_FOLDER = "Organization Folder";
 
+    public static final By SIDE_PANEL_DELETE = By.cssSelector("[data-url $= '/doDelete']");
     public static final By DROPDOWN_DELETE = By.cssSelector("button[href $= '/doDelete']");
     public static final By DROPDOWN_RENAME = By.cssSelector("a[href $= '/confirm-rename']");
 
@@ -69,7 +67,7 @@ public final class TestUtils {
 
     public static void createNewItem(BaseTest baseTest, String name, String itemClassName) {
         baseTest.getDriver().findElement(By.cssSelector("#side-panel > div > div")).click();
-        baseTest.getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(name);
+        baseTest.getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(name.trim());
         baseTest.getDriver().findElement(By.className(itemClassName)).click();
         baseTest.getDriver().findElement(By.id("ok-button")).click();
     }
@@ -83,19 +81,23 @@ public final class TestUtils {
         returnToDashBoard(baseTest);
     }
 
+    public static WebElement getViewItemElement(BaseTest baseTest, String name) {
+        return baseTest.getDriver().findElement(By.cssSelector(String.format("td>a[href = 'job/%s/']", asURL(name))));
+    }
+
+    public static void clickAtBeginOfElement(BaseTest baseTest, WebElement element) {
+        Point itemPoint = baseTest.getWait10().until(ExpectedConditions.elementToBeClickable(element)).getLocation();
+        new Actions(baseTest.getDriver())
+                .moveToLocation(itemPoint.getX(), itemPoint.getY())
+                .click()
+                .perform();
+    }
+
     public static void openElementDropdown(BaseTest baseTest, WebElement element) {
         WebElement chevron = element.findElement(By.cssSelector("[class $= 'chevron']"));
 
         ((JavascriptExecutor) baseTest.getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", chevron);
         ((JavascriptExecutor) baseTest.getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
-    }
-
-    public static void deleteUsingDropdown(BaseTest baseTest, String name) {
-        openElementDropdown(baseTest, baseTest.getDriver().findElement(
-                By.cssSelector(String.format("td a[href = 'job/%s/']", asURL(name)))));
-
-        baseTest.getDriver().findElement(DROPDOWN_DELETE).click();
-        baseTest.getWait10().until(ExpectedConditions.elementToBeClickable(DIALOG_DEFAULT_BUTTON)).click();
     }
 
     public static void openJobDropdown(BaseTest baseTest, String jobName) {
