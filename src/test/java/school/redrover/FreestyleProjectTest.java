@@ -242,7 +242,6 @@ public class FreestyleProjectTest extends BaseTest {
 
         String actualHeading = getDriver().findElement(By.xpath("//table//a[@href = 'job/new%20project/']")).getText();
 
-
         Assert.assertEquals(actualHeading, expectedHeading1);
     }
 
