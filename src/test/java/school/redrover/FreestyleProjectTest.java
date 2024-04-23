@@ -232,10 +232,10 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testCreateFreestyleProject() {
-        String expectedHeading = "new project";
+        String expectedHeading1 = "new project";
 
         getDriver().findElement(By.xpath("//a[@href = 'newJob']")).click();
-        getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys(expectedHeading);
+        getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys(expectedHeading1);
         getDriver().findElement(By.xpath("//*[@class = 'hudson_model_FreeStyleProject']")).click();
         getDriver().findElement(By.xpath("//*[@id = 'ok-button']")).click();
         getDriver().findElement(By.xpath("//*[@name = 'Submit']")).click();
@@ -244,7 +244,7 @@ public class FreestyleProjectTest extends BaseTest {
         String actualHeading = getDriver().findElement(By.xpath("//table//a[@href = 'job/new%20project/']")).getText();
 
 
-        Assert.assertEquals(actualHeading, expectedHeading);
+        Assert.assertEquals(actualHeading, expectedHeading1);
     }
 
 
