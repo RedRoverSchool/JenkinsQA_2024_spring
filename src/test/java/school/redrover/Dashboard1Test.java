@@ -101,8 +101,14 @@ public class Dashboard1Test extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateView")
-    public void testUseJobChevron() {
-        String jobName = getNamesList().get( (int) ( Math.random() * getNamesList().size() ));
+    public void testDisplayMenuUsingJobChevron() {
+
+        List<String> menu = List.of(
+            "Configure",
+                "Scan Multibranch Pipeline Log"
+        );
+
+        String jobName = getNamesList().get((int) (Math.random() * getNamesList().size()));
 
         TestUtils.clickJobChevron(this, jobName);
 
