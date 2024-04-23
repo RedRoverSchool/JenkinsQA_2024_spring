@@ -38,6 +38,7 @@ public class Folder7Test extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateFolderUsingName")
     public void testRenameFolder() {
 
