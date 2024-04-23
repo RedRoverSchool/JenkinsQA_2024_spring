@@ -31,7 +31,7 @@ public class NewItem7Test extends BaseTest {
         enterToNewItemPage();
         getDriver().findElement(By.tagName("body")).click();
 
-        WebElement hintElement = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-required")));
+        WebElement hintElement = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-required")));
 
         Assert.assertEquals(hintElement.getText(),"» This field cannot be empty, please enter a valid name");
         Assert.assertEquals(hintElement.getCssValue("color"), "rgba(255, 0, 0, 1)");
