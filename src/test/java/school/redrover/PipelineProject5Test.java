@@ -20,5 +20,14 @@ public class PipelineProject5Test extends BaseTest {
 
     }
 
+    @Test
+    public void createProjectWithEmptyName(){
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.id("itemname-required")).isDisplayed());
+
+    }
+
 
 }
