@@ -15,6 +15,7 @@ public class NewItem23Test extends BaseTest {
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
+
         Assert.assertEquals(getDriver().findElement(By.className("page-headline")).getText(), "Test project");
     }
 }
