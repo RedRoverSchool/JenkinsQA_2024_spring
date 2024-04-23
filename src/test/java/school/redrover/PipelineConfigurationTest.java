@@ -9,7 +9,10 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.util.List;
+
 public class PipelineConfigurationTest extends BaseTest {
+
     private static final String JOB_NAME = "TestCrazyTesters";
 
     public static final By SAVE_BUTTON_CONFIGURATION = By.xpath("//button[@formnovalidate='formNoValidate']");
@@ -21,6 +24,11 @@ public class PipelineConfigurationTest extends BaseTest {
         getDriver().findElement(By.id("name")).sendKeys(JOB_NAME);
         getDriver().findElement(By.xpath("//li[contains(@class,'WorkflowJob')]")).click();
         getDriver().findElement(By.id("ok-button")).click();
+    }
+
+    public void navigateToConfigurePageFromDashboard() {
+        getDriver().findElement(By.xpath("//a[contains(@href, '" + JOB_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
     }
 
     @Ignore
@@ -95,5 +103,28 @@ public class PipelineConfigurationTest extends BaseTest {
         WebElement secondBuild = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[@class = 'build-row-cell']//a[text() = '#2']")));
 
         Assert.assertTrue(secondBuild.getAttribute("href").contains("/job/" + JOB_NAME.replaceAll(" ", "%20") + "/2/"), "there is no second build");
+    }
+
+    @Test
+    public void testSectionsOfSidePanelAreVisible() {
+
+        createPipline();
+
+        navigateToConfigurePageFromDashboard();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[contains(text(), 'Configure')]")));
+
+        List<WebElement> sections = List.of(
+                getDriver().findElement(
+                        By.xpath("//div[@id='side-panel']//descendant::button[contains(@data-section-id, 'general')]")),
+                getDriver().findElement(
+                        By.xpath("//div[@id='side-panel']//descendant::button[contains(@data-section-id, 'advanced-project-options')]")),
+                getDriver().findElement(
+                        By.xpath("//div[@id='side-panel']//descendant::button[contains(@data-section-id, 'pipeline')]")));
+
+        for (WebElement section : sections) {
+            Assert.assertTrue(section.isDisplayed(),
+                    "The requested section is not found in Configure side-panel");
+        }
     }
 }
