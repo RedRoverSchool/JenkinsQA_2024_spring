@@ -40,4 +40,22 @@ public class CreateFolder1Test extends BaseTest {
         Assert.assertEquals(actualNewJobLinkText, createAJobLinkText);
         Assert.assertTrue(newJobLink.isDisplayed(), "newJobLink is NOT displayed");
     }
+
+    @Test
+    public void createNewFolder8() {
+        String folderName = "New folder";
+
+        getDriver().findElement(By.xpath("//a[@href = 'newJob']")).click();
+        getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys(folderName);
+        getDriver().findElement(By.xpath("//label/span[text() ='Folder']")).click();
+        getDriver().findElement(By.xpath("//*[@id = 'ok-button']")).click();
+        getDriver().findElement(By.xpath("//*[@name = 'Submit']")).click();
+        getDriver().findElement(By.xpath("//*[@id = 'jenkins-name-icon']")).click();
+
+        String actualFolderName = getDriver().findElement(By.xpath("//a/span[text() = 'New folder']")).getText();
+
+        Assert.assertEquals(actualFolderName, folderName);
+
+
+    }
 }

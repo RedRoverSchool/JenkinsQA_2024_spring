@@ -241,7 +241,7 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@name = 'Submit']")).click();
         getDriver().findElement(By.xpath("//*[@id = 'jenkins-name-icon']")).click();
 
-        String actualHeading = getDriver().findElement(By.xpath("//table//a[@href = 'job/New%20project/']")).getText();
+        String actualHeading = getDriver().findElement(By.xpath("//table//a[@href = 'job/new%20project/']")).getText();
 
         Assert.assertEquals(actualHeading, expectedHeading);
     }
