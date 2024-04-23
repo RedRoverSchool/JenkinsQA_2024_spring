@@ -217,9 +217,8 @@ public class MultiConfigurationProject0Test extends BaseTest {
 
         if (getDriver().findElement(By.tagName("html")).getAttribute("data-theme").equals("none")) {
             Assert.assertEquals(expectedColorNone, actualColor);
-        } else if
-            (getDriver().findElement(By.tagName("html")).getAttribute("data-theme").equals("dark")) {
-                Assert.assertEquals(expectedColorDark, actualColor);
+        } else if (getDriver().findElement(By.tagName("html")).getAttribute("data-theme").equals("dark")) {
+            Assert.assertEquals(expectedColorDark, actualColor);
         }
     }
 }
