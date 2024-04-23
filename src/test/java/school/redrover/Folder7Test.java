@@ -13,27 +13,27 @@ import static school.redrover.runner.TestUtils.createNewItemAndReturnToDashboard
 
 public class Folder7Test extends BaseTest {
 
+    private final String NAME = "19 April";
     final String OLD_NAME = "Random Folder";
     final String NEW_NAME = "Renamed Folder";
 
     @Test
     public void testCreateNewFolder() {
-        final String name = "19 April";
 
         getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.id("name")).sendKeys(name);
+        getDriver().findElement(By.id("name")).sendKeys(NAME);
         getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.cssSelector("#main-panel h1")).getText(), name);
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("#main-panel h1")).getText(), NAME);
     }
     @Test
     public void testAddFolderDescription() {
-        final String name = "19 April";
+
         final String newText = "Hello";
 
-        TestUtils.createNewItemAndReturnToDashboard(this, name, TestUtils.Item.FOLDER);
+        TestUtils.createNewItemAndReturnToDashboard(this, NAME, TestUtils.Item.FOLDER);
 
         getDriver().findElement(By.cssSelector("td>a[href= 'job/19%20April/']")).click();
         getDriver().findElement(By.id("description-link")).click();
@@ -90,5 +90,21 @@ public class Folder7Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath(
                 "//h1[text()='Welcome to Jenkins!']")).getText(), "Welcome to Jenkins!");
+    }
+
+    @Test (dependsOnMethods = "testCreateNewFolder")
+    public void testCreateFreestyleProjectInsideFolder() {
+        final String freeStyleProjectName = "23 april";
+
+        TestUtils.clickAtBeginOfElement(this, TestUtils.getViewItemElement(this, NAME));
+
+        getDriver().findElement(By.cssSelector("[href='newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(freeStyleProjectName);
+        getDriver().findElement(By.className(TestUtils.Item.FREESTYLE_PROJECT)).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertTrue(getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("main-panel")))
+              .getText().contains(NAME + "/" + freeStyleProjectName));
     }
 }
