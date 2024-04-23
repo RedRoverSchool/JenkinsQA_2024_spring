@@ -117,7 +117,7 @@ public abstract class BaseTest {
             TakesScreenshot ts=(TakesScreenshot)getDriver();
             File source=ts.getScreenshotAs(OutputType.FILE);
             try {
-                FileHandler.copy(source, new File( "./Screenshots/" + testResult.getTestClass() + testResult.getName()+".png"));
+                FileHandler.copy(source, new File( "Screenshots/" + testResult.getTestClass() + testResult.getName()+".png"));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
