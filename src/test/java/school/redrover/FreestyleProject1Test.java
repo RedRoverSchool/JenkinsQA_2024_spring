@@ -1,8 +1,9 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -45,15 +46,14 @@ public class FreestyleProject1Test extends BaseTest {
 
     @Test(dependsOnMethods = {"testOpenConfigurePageOfProject", "testAddedProjectIsDisplayedOnTheDashboardPanel"})
     public void testRenameProjectFromTheBoard() {
-        new Actions(getDriver()).moveToElement(getWait2().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]"))))
-                .pause(500)
-                .moveToElement(getDriver().findElement(
-                        By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]/following-sibling::button")))
-                .click().perform();
+        new Actions(getDriver()).moveToElement(getDriver().findElement(
+                By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]"))).perform();
 
-//        getDriver().findElement(By.partialLinkText("Rename")).click();
-        getDriver().findElement(By.xpath("//div[@class='jenkins-dropdown']//descendant::a[4]")).click();
+        WebElement dropdownChevron =getDriver().findElement(
+                By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]/following-sibling::button"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
+                "arguments[0].dispatchEvent(new Event('click'));", dropdownChevron);
+        getDriver().findElement(By.partialLinkText("Rename")).click();
 
         getDriver().findElement(nameInputField).clear();
         getDriver().findElement(nameInputField).sendKeys(NEW_FREESTYLE_PROJECT_NAME);
