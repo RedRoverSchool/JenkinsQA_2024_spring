@@ -3,7 +3,6 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -16,7 +15,7 @@ public class FreestyleProject3Test extends BaseTest {
     private final static String FREESTYLE_PROJECT_NAME = "new Freestyle project";
     private final static String RENAMED_PROJECT_NAME = "old Freestyle project";
 
-    public void clickJenkinsHomePage() {
+    public void clickJenkinsLogo() {
         getDriver().findElement(By.id("jenkins-home-link")).click();
     }
 
@@ -71,16 +70,15 @@ public class FreestyleProject3Test extends BaseTest {
         Assert.assertTrue(projectList.isEmpty());
     }
 
-    @Test
+    @Test (dependsOnMethods = "testCreateFreestyleProject")
     public void testRenameFreestyleProjectFromDropdown() {
 
-        createFreestyleProject(FREESTYLE_PROJECT_NAME);
-        clickJenkinsHomePage();
+        clickJenkinsLogo();
 
         WebElement dropdownChevron  = getDriver().findElement(By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]/following-sibling::button"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", dropdownChevron);
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", dropdownChevron);
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.partialLinkText("Rename"))).click();
+        getDriver().findElement((By.partialLinkText("Rename"))).click();
 
         WebElement projectNameInputField = getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']"));
         projectNameInputField.clear();
