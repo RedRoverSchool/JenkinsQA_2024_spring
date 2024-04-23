@@ -176,16 +176,10 @@ public final class TestUtils {
         List<WebElement> displayedProjects = driver.findElements(
                 By.xpath("//table[@id='projectstatus']//button/preceding-sibling::span"));
 
-        boolean projectIsDisplayed = false;
+        boolean isDisplayed = displayedProjects.stream()
+                .anyMatch(el -> el.getText().equals(projectName));
 
-        for (WebElement el : displayedProjects) {
-            if (el.getText().equals(projectName)) {
-                projectIsDisplayed = true;
-                break;
-            }
-        }
-
-        return projectIsDisplayed;
+        return isDisplayed;
     }
 
     public enum Job {
