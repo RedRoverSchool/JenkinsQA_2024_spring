@@ -52,7 +52,8 @@ public class FreestyleProject1Test extends BaseTest {
                         By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]/following-sibling::button")))
                 .click().perform();
 
-        getDriver().findElement(By.partialLinkText("Rename")).click();
+//        getDriver().findElement(By.partialLinkText("Rename")).click();
+        getDriver().findElement(By.xpath("//div[@class='jenkins-dropdown']//descendant::a[4]")).click();
 
         getDriver().findElement(nameInputField).clear();
         getDriver().findElement(nameInputField).sendKeys(NEW_FREESTYLE_PROJECT_NAME);
