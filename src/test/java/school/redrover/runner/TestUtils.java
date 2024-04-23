@@ -195,7 +195,7 @@ public final class TestUtils {
         baseTest.getDriver().findElement(By.cssSelector("[href='/manage']")).click();
         baseTest.getDriver().findElement(By.cssSelector("[href='appearance']")).click();
 
-        WebElement defaultThemeButton = baseTest.getDriver().findElement(By.id("radio-block-2"));
+        WebElement defaultThemeButton = baseTest.getDriver().findElement(By.cssSelector("[for='radio-block-2']"));
         if (!defaultThemeButton.isSelected()) {
             defaultThemeButton.click();
             baseTest.getDriver().findElement(By.name("Apply")).click();
