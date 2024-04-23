@@ -198,7 +198,7 @@ public class MultiConfigurationProject0Test extends BaseTest {
                 .perform();
 
         Assert.assertEquals(
-                getDriver().findElement(By.cssSelector("[id^='toggle-switch']")).getAttribute("tooltip"),
+                getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.tippy-box>div"))).getText(),
                 "Enable or disable the current project");
     }
 
