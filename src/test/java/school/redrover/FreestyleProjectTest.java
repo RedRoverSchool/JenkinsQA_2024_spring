@@ -117,11 +117,10 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         getDriver().findElement(By.xpath("//li/a[@href='/']")).click();
 
-        String expectedResult = NEW_FREESTYLE_PROJECT_NAME;
         String actualResult = getDriver().findElement
                 (By.xpath("//a[@class='jenkins-table__link model-link inside']")).getText();
 
-        Assert.assertEquals(actualResult, expectedResult);
+        Assert.assertEquals(actualResult, NEW_FREESTYLE_PROJECT_NAME);
     }
 
     @Test
