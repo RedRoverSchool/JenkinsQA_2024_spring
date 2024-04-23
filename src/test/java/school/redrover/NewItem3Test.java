@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -71,5 +72,26 @@ public class NewItem3Test extends BaseTest {
     public void renameFolderShortTest() {
         TestUtils.renameItem(this, "New Folder", "New Name");
         Assert.assertTrue(getDriver().findElement(By.xpath("//h1[contains(.,'New Name')]")).isDisplayed());
+    }
+
+    @Test
+    public void createMulticonfigurationProjectNegativeTest() {
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.xpath("//span[text()='" + TestUtils.MULTI_CONFIGURATION_PROJECT + "']")).click();
+
+        Assert.assertEquals(getDriver().findElement
+                (By.id("itemname-required")).getText(), "» This field cannot be empty, please enter a valid name");
+    }
+
+    @Test
+    public void createMulticonfigurationProjectTest() {
+        getDriver().findElement(By.linkText("New Item")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys("New Folder");
+        getDriver().findElement(By.xpath("//span[text()='" + TestUtils.MULTI_CONFIGURATION_PROJECT + "']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//h1[normalize-space()='Configure']")).isDisplayed());
+        TestUtils.goToMainPage(getDriver());
+        Assert.assertTrue(getDriver().findElement(nameUpItem).isDisplayed());
     }
 }
