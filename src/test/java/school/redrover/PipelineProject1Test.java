@@ -16,9 +16,11 @@ public class PipelineProject1Test extends BaseTest {
     private static final String PIPELINE_NAME = "New First Pipeline";
     private static final String RENAMED_PIPELINE = "RenamedFirstPipeline";
     private static final String PIPELINE_DESCRIPTION = "Description added to my pipeline.";
-    private static final By BUILD_TRIANGLE_BUTTON = By.xpath("//td[@class='jenkins-table__cell--tight']/div/a");
+    private static final By BUILD_TRIANGLE_BUTTON_XPATH = By.xpath("//td[@class='jenkins-table__cell--tight']/div/a");
+    private static final By DESCRIPTION_XPATH = By.xpath("//div[@id='description']/div[not(contains(@class, 'jenkins-buttons-row'))]");
 
     private void createPipeline(String name) {
+
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
         getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("#name"))).sendKeys(name);
@@ -29,7 +31,7 @@ public class PipelineProject1Test extends BaseTest {
     }
 
     private void returnToHomePage() {
-        getDriver().findElement(By.cssSelector(".jenkins-breadcrumbs__list-item:nth-child(1)")).click();
+        getDriver().findElement(By.id("jenkins-head-icon")).click();
     }
 
     private void clickOnCreatedJobOnDashboardPage(String name) {
@@ -67,13 +69,26 @@ public class PipelineProject1Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
         String actualDescription = getWait5().until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//div[@id='description']//div[1]"))).getText();
+                DESCRIPTION_XPATH)).getText();
 
         Assert.assertTrue(actualDescription.contains(PIPELINE_DESCRIPTION));
     }
 
     @Test(dependsOnMethods = "testAddPipelineDescription")
-    public void testRenamePipelineFromLeftMenu() {
+    public void testEditPipelineDescription() {
+        final String updatedDescription = "Description update in my pipeline.";
+
+        clickOnCreatedJobOnDashboardPage(PIPELINE_NAME);
+
+        getDriver().findElement(By.id("description-link")).click();
+        getWait2().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//textarea[@name='description']"))).sendKeys(updatedDescription);
+        getDriver().findElement(By.xpath("//div/button[@name='Submit']")).click();
+
+        Assert.assertTrue(getDriver().findElement(DESCRIPTION_XPATH).getText().contains(updatedDescription));
+    }
+
+    @Test(dependsOnMethods = "testEditPipelineDescription")
+    public void testRenamePipelineUsingSidebar() {
         clickOnCreatedJobOnDashboardPage(PIPELINE_NAME);
 
         getWait2().until(ExpectedConditions.elementToBeClickable(
@@ -90,7 +105,7 @@ public class PipelineProject1Test extends BaseTest {
                 By.xpath("//div[@id='main-panel']//h1"))).getText(), RENAMED_PIPELINE);
     }
 
-    @Test(dependsOnMethods = "testRenamePipelineFromLeftMenu")
+    @Test(dependsOnMethods = "testRenamePipelineUsingSidebar")
     public void testDisablePipelineAndEnableBack() {
         clickOnCreatedJobOnDashboardPage(RENAMED_PIPELINE);
 
@@ -107,7 +122,7 @@ public class PipelineProject1Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         returnToHomePage();
 
-        WebElement greenBuildArrow = getDriver().findElement(BUILD_TRIANGLE_BUTTON);
+        WebElement greenBuildArrow = getDriver().findElement(BUILD_TRIANGLE_BUTTON_XPATH);
         String buildStatus = greenBuildArrow.getAttribute("tooltip");
 
         Assert.assertEquals(buildStatus, "Schedule a Build for " + RENAMED_PIPELINE);
@@ -154,7 +169,7 @@ public class PipelineProject1Test extends BaseTest {
 
     @Test(dependsOnMethods = "testAddDescriptionColumnToPipelineView")
     public void testPipelineBuildSuccessFromConsole() {
-        getDriver().findElement(BUILD_TRIANGLE_BUTTON).click();
+        getDriver().findElement(BUILD_TRIANGLE_BUTTON_XPATH).click();
         clickOnCreatedJobOnDashboardPage(PIPELINE_NAME);
 
         getWait60().until(ExpectedConditions.attributeToBe(

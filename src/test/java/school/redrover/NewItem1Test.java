@@ -7,6 +7,7 @@ import org.openqa.selenium.support.Color;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 public class NewItem1Test extends BaseTest {
 
@@ -56,15 +57,7 @@ public class NewItem1Test extends BaseTest {
     public void testNewItemIsDisplayedOnMainPage() {
        final String nameProject = "firstProjectPipline";
 
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.cssSelector("div.add-item-name > input#name")).sendKeys(nameProject);
-        getDriver().findElement(By.cssSelector("li.org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
-        getDriver().findElement(By.cssSelector("button#ok-button")).click();
-
-        getDriver().findElement(By.cssSelector("button.jenkins-button--primary ")).click();
-
-        getDriver().findElement(By.cssSelector("li.jenkins-breadcrumbs__list-item > a[href='/']")).click();
-
+        TestUtils.createNewItemAndReturnToDashboard(this, nameProject, TestUtils.Item.PIPELINE);
         Assert.assertTrue(getDriver().findElement(By.cssSelector("tr#job_" + nameProject)).isDisplayed());
     }
 

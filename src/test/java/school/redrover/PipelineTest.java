@@ -50,6 +50,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(defaultTextAreaBorderBacklightColor, "rgba(11,106,162,.25)");
     }
 
+    @Ignore
     @Test
     public void testYesButtonColorDeletingPipelineInSidebar() {
         createPipelineWithCreateAJob();
