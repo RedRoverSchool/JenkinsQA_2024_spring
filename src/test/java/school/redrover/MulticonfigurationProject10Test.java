@@ -12,7 +12,7 @@ public class MulticonfigurationProject10Test extends BaseTest {
         getDriver().findElement(By.id("name")).sendKeys("New MultiProject");
         getDriver().findElement(By.xpath("//*[contains(@class,'MatrixProject')]")).click();
         getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("description")).sendKeys("test");
+        getDriver().findElement(By.name("description")).clear();
         getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertTrue(getDriver().findElement(By.xpath
