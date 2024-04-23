@@ -45,24 +45,12 @@ public class FreestyleProject1Test extends BaseTest {
 
     @Test(dependsOnMethods = {"testOpenConfigurePageOfProject", "testAddedProjectIsDisplayedOnTheDashboardPanel"})
     public void testRenameProjectFromTheBoard() {
-        TestUtils.goToMainPage(getDriver());
-        new Actions(getDriver()).moveToElement(
-                getWait10().until(
-                        ExpectedConditions.visibilityOfElementLocated(
-                                By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]"))
-                )
-        ).perform();
-
-        new Actions(getDriver()).moveToElement(
-                getWait10().until(
-                        ExpectedConditions.visibilityOfElementLocated(
-                                By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]/following-sibling::button"))
-                )
-        ).perform();
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]/following-sibling::button")))
-                .click();
+        new Actions(getDriver()).moveToElement(getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]"))))
+                .pause(500)
+                .moveToElement(getDriver().findElement(
+                        By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]/following-sibling::button")))
+                .click().perform();
 
         getDriver().findElement(By.partialLinkText("Rename")).click();
 

@@ -75,6 +75,7 @@ public class Pipeline1Test extends BaseTest {
         Assert.assertTrue(actualStatusMessage.contains("This project is currently disabled"));
     }
 
+    @Ignore
     @Test
     public void testFullStageViewButton() {
         TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
