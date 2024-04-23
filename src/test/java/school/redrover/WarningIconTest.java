@@ -26,4 +26,15 @@ public class WarningIconTest extends BaseTest {
 
         Assert.assertTrue(pageTitle.getText().contains("Security"));
     }
+
+    @Test
+    public void testAccessToManageJenkinsPage() {
+        getDriver().findElement(By.cssSelector("[class$='am-button security-am']")).click();
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[contains(text(),'Manage Jenkins')]"))).click();
+
+        WebElement pageTitle = getDriver().findElement(By.xpath("//h1"));
+
+        Assert.assertTrue(pageTitle.getText().contains("Manage Jenkins"));
+        Assert.assertTrue(getDriver().getCurrentUrl().contains("/manage/"));
+    }
 }
