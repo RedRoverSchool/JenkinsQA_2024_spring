@@ -52,8 +52,9 @@ public class PipelineConfigurationTest extends BaseTest {
 
         createPipline();
 
-        getDriver().findElement(By.xpath("//label[@data-title='Disabled']")).click();
-        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(TOGGLE_SWITCH_ENABLE_DISABLE));
+        getDriver().findElement(TOGGLE_SWITCH_ENABLE_DISABLE).click();
+        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
 
         Assert.assertTrue(
                 getDriver().findElement(By.id("enable-project")).getText().contains(expectedMessageForDisabledProject));

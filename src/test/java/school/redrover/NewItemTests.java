@@ -2,6 +2,8 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -24,10 +26,10 @@ public class NewItemTests extends BaseTest {
 
         getDriver().findElement(SAVE_BUTTON).click();
 
-        Assert.assertEquals((getDriver().findElement(By.xpath("//h1")).getText()),"newFreestyleProject");
+        Assert.assertEquals((getDriver().findElement(By.xpath("//h1")).getText()), "newFreestyleProject");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateFreestyleProject")
     public void testCreatePipelineProject() {
 
         getDriver().findElement(MAIN_PAGE).click();
@@ -40,10 +42,10 @@ public class NewItemTests extends BaseTest {
 
         WebElement pipeLine = getDriver().findElement(By.xpath("//div[@class='jenkins-app-bar__content jenkins-build-caption']"));
 
-        Assert.assertEquals(pipeLine.getText(),"Pipeline");
+        Assert.assertEquals(pipeLine.getText(), "Pipeline");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreatePipelineProject")
     public void testCreateNewFolder() {
         getDriver().findElement(MAIN_PAGE).click();
 
@@ -58,25 +60,21 @@ public class NewItemTests extends BaseTest {
                 "NewFolder");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateNewFolder")
     public void testFreestyleMovetoFolder() {
-
-        testCreateFreestyleProject();
-
-        getDriver().findElement(By.xpath("//li/*[@href='/']")).click();
-
-        testCreateNewFolder();
-
         getDriver().findElement(JENKINS_DASHBOARD).click();
 
         getDriver().findElement(By.id("job_newFreestyleProject")).click();
 
-        getDriver().findElement(By.xpath("//td/a[@href='job/newFreestyleProject/']")).click();
+        WebElement element = getDriver().findElement(By.xpath("//tr//*[@data-href='http://localhost:8080/job/newFreestyleProject/']"));
+        Actions action = new Actions(getDriver());
+        action.moveToElement(element).perform();
+        element.click();
 
-        getDriver().findElement(By.xpath("//*[@href='/job/newFreestyleProject/move']")).click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@href='/job/newFreestyleProject/move']"))).click();
 
-        WebElement element = getDriver().findElement(By.name("destination"));
-        Select select = new Select(element);
+        WebElement element1 = getDriver().findElement(By.name("destination"));
+        Select select = new Select(element1);
         select.selectByValue("/NewFolder");
         getDriver().findElement(By.name("Submit")).click();
 

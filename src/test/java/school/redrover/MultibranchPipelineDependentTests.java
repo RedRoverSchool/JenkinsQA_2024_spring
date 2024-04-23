@@ -60,4 +60,14 @@ public class MultibranchPipelineDependentTests extends BaseTest {
 
         Assert.assertEquals(multiPipelinePageHeading, NEW_MULTI_PIPELINE_NAME, "Wrong name");
     }
+
+    @Test(dependsOnMethods = "testCreate")
+    public void  testVerifyMpDisabledOnStatusPage() {
+        getDriver().findElement(By.cssSelector("[href='job/" + MULTI_PIPELINE_NAME + "/']")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        String disabledMpMessage = getDriver().findElement(By.id("enable-project"))
+                .getDomProperty("innerText").split(" Enable")[0];
+        Assert.assertEquals(disabledMpMessage,"This Multibranch Pipeline is currently disabled");
+    }
 }

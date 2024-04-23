@@ -171,6 +171,17 @@ public final class TestUtils {
         baseTest.getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
     }
 
+    public static boolean checkIfProjectIsOnTheBoard(WebDriver driver, String projectName){
+        goToMainPage(driver);
+        List<WebElement> displayedProjects = driver.findElements(
+                By.xpath("//table[@id='projectstatus']//button/preceding-sibling::span"));
+
+        boolean isDisplayed = displayedProjects.stream()
+                .anyMatch(el -> el.getText().equals(projectName));
+
+        return isDisplayed;
+    }
+
     public enum Job {
         FREESTYLE("Freestyle project"),
         PIPELINE("Pipeline"),
@@ -188,6 +199,17 @@ public final class TestUtils {
         @Override
         public String toString() {
             return jobName;
+        }
+    }
+
+    public static void resetJenkinsTheme(BaseTest baseTest) {
+        baseTest.getDriver().findElement(By.cssSelector("[href='/manage']")).click();
+        baseTest.getDriver().findElement(By.cssSelector("[href='appearance']")).click();
+
+        WebElement defaultThemeButton = baseTest.getDriver().findElement(By.cssSelector("[for='radio-block-2']"));
+        if (!defaultThemeButton.isSelected()) {
+            defaultThemeButton.click();
+            baseTest.getDriver().findElement(By.name("Apply")).click();
         }
     }
 }
