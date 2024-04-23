@@ -29,7 +29,8 @@ public class Pipeline1Test extends BaseTest {
     }
 
     private String getH2HeaderText() {
-        return getDriver().findElement(By.xpath("//h2")).getText();
+        return getWait5().until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//h2"))).getText();
     }
 
     @Test
