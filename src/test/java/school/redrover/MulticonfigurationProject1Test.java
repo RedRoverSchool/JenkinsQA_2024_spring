@@ -3,7 +3,6 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -16,15 +15,6 @@ import java.util.Random;
 public class MulticonfigurationProject1Test extends BaseTest {
     final String PROJECT_NAME = generateRandomText(20);
     final String FOLDER_NAME = generateRandomText(10);
-
-    private Actions actions;
-
-    private Actions getActions() {
-        if (actions == null) {
-            actions = new Actions(getDriver());
-        }
-        return actions;
-    }
 
     private void createMulticonfigurationProject(){
         getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
@@ -134,40 +124,15 @@ public class MulticonfigurationProject1Test extends BaseTest {
         createMulticonfigurationProject();
         TestUtils.returnToDashBoard(this);
 
-//        WebElement dropdownChevron  = getDriver().findElement(By.xpath("//*[@id='job_" + PROJECT_NAME + "']//*[@class='jenkins-menu-dropdown-chevron']"));
-//        TestUtils.openElementDropdown(this, dropdownChevron);
-//        getWait5().until(ExpectedConditions.elementToBeClickable(By.partialLinkText("Move"))).click();
-
-        getActions()
-                .moveToElement(getDriver().findElement(By.xpath("//*[@id='job_" + PROJECT_NAME + "']//*[@class='jenkins-menu-dropdown-chevron']")))
-                .click()
-                .pause(3000)
-                .perform();
-
-        getDriver().findElement(By.xpath("(//a[@class='jenkins-dropdown__item'])[4]")).click();
-//        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("(//a[@class='jenkins-dropdown__item'])[4]"))).click();
-//
-//        getDriver().findElement(By.xpath("//*[@href='/job/" +  PROJECT_NAME + "/confirm-rename']")).click();
-//
-//        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Rename Multi-configuration project " + PROJECT_NAME);
-
-//        getActions()
-//                .moveToElement(getDriver().findElement(By.linkText("Move")))
-//                .perform();
-
-//        getDriver().findElement(By.linkText("move")).click();
-
-//        WebElement moveOption = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Move")));
-//        moveOption.click();
-
-//        getDriver().findElement(By.xpath("//*[contains(@href, '/move')]")).click();
+        getDriver().findElement(By.xpath("//*[@href='job/" + PROJECT_NAME + "/']")).click();
+        getDriver().findElement(By.linkText("Move")).click();
 
         final WebElement selectFolder = getDriver().findElement(By.xpath("//*[@class='select setting-input']"));
         Select dropDown = new Select(selectFolder);
         dropDown.selectByValue("/" + FOLDER_NAME);
         getDriver().findElement(By.name("Submit")).click();
 
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        TestUtils.returnToDashBoard(this);
         getDriver().findElement(By.xpath("//*[@href='job/" + FOLDER_NAME + "/']/span")).click();
 
         Assert.assertTrue(getDriver().findElement(By.id("job_" + PROJECT_NAME)).isDisplayed());
