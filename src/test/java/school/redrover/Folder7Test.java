@@ -1,13 +1,13 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.TestUtils;
 
 public class Folder7Test extends BaseTest {
 
@@ -60,17 +60,15 @@ public class Folder7Test extends BaseTest {
 
         getDriver().findElement(By.id("jenkins-name-icon")).click();
 
-        Actions actions = new Actions(getDriver());
+        WebElement dropdownChevron = getDriver().findElement(By.xpath(
+                "//tr//button[@class='jenkins-menu-dropdown-chevron']"));
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].dispatchEvent(new Event('mouseenter'));", dropdownChevron);
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].dispatchEvent(new Event('click'));", dropdownChevron);
 
-        actions
-                .moveToElement(getDriver().findElement(By.xpath(
-                        "//tr//button[@class='jenkins-menu-dropdown-chevron']"))).click()
-                .perform();
-        actions
-                .pause(1000)
-                .moveToElement(getDriver().findElement(By.xpath(
-                        "//button[@href='/job/" + TestUtils.asURL(OLD_NAME) + "/doDelete']"))).click()
-                .perform();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath(
+                        "//*[@id='tippy-5']//button"))).click();
 
         getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']"))
                 .click();
