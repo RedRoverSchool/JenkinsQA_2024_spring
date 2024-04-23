@@ -99,4 +99,12 @@ public class Dashboard1Test extends BaseTest {
 
         Assert.assertTrue(namesFromNewView.size() == 2 && isName1InView && isName2InView);
     }
+
+    @Test(dependsOnMethods = "testCreateView")
+    public void testUseJobChevron() {
+        String jobName = getNamesList().get( (int) ( Math.random() * getNamesList().size() ));
+
+        TestUtils.clickJobChevron(this, jobName);
+
+    }
 }
