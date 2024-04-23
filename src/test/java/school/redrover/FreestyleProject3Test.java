@@ -82,7 +82,7 @@ public class FreestyleProject3Test extends BaseTest {
         createFreestyleProject(FREESTYLE_PROJECT_NAME);
         clickJenkinsHomePage();
 
-        WebElement dropdownChevron  = getDriver().findElement(By.xpath("//td[3]"));
+        WebElement dropdownChevron  = getDriver().findElement(By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]/following-sibling::button"));
         TestUtils.openElementDropdown(this, dropdownChevron);
         getWait5().until(ExpectedConditions.elementToBeClickable(By.partialLinkText("Rename"))).click();
 
