@@ -10,16 +10,16 @@ import school.redrover.runner.BaseTest;
 
 public class FreestyleProject4Test extends BaseTest {
 
+    private static final String PROJECT_NAME = "JavaHashGroupProject";
+
     @Test
     public void testCreateNewFreestyleProject() {
-
-        final String projectItemName = "JavaHashGroupProject";
 
         WebElement newItemButton = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@href='/view/all/newJob']")));
         newItemButton.click();
 
         WebElement inputNameField = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='name']")));
-        inputNameField.sendKeys(projectItemName);
+        inputNameField.sendKeys(PROJECT_NAME);
 
         WebElement freestyleProjectButton = getWait2().until(
                 ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'Freestyle project')]")));
@@ -35,7 +35,45 @@ public class FreestyleProject4Test extends BaseTest {
                 ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-app-bar__content jenkins-build-caption']")));
 
         Assert.assertTrue(newProjectHeader.isDisplayed());
-        Assert.assertEquals(newProjectHeader.getText(),projectItemName);
+        Assert.assertEquals(newProjectHeader.getText(),PROJECT_NAME);
+    }
+
+    @Test
+    public void testDeleteNewFreestyleProject() {
+
+        WebElement newItemButton = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@href='/view/all/newJob']")));
+        newItemButton.click();
+
+        WebElement inputNameField = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='name']")));
+        inputNameField.sendKeys(PROJECT_NAME);
+
+        WebElement freestyleProjectButton = getWait2().until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'Freestyle project')]")));
+        freestyleProjectButton.click();
+
+        WebElement okButton = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@type='submit']")));
+        okButton.click();
+
+        WebElement saveButton = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@name='Submit']")));
+        saveButton.click();
+
+        WebElement dashboardButton = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(text(),'Dashboard')]")));
+        dashboardButton.click();
+
+        WebElement ourProjectIntheListOfprojects = getWait2().until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")));
+        ourProjectIntheListOfprojects.click();
+
+        WebElement deleteProjectButton = getWait2().until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'Delete Project')]")));
+        deleteProjectButton.click();
+
+        WebElement yesButton = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@data-id='ok']")));
+        yesButton.click();
+
+        WebElement welcomeToJenkinsTitle = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[contains(text(),'Welcome to Jenkins')]")));
+
+        Assert.assertTrue(welcomeToJenkinsTitle.isDisplayed());
     }
 
     @Ignore

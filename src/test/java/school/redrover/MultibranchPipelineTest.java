@@ -17,8 +17,8 @@ import static school.redrover.runner.TestUtils.Job;
 
 public class MultibranchPipelineTest extends BaseTest {
 
-    private final String multiPipelineName = "MultibranchPipeline";
-    private final String newMultiPipelineName = "NewMultibranchPipelineName";
+    private final static String MULTI_PIPELINE_NAME = "MultibranchPipeline";
+    private final static String RENAMED_MULTI_PIPELINE = "NewMultibranchPipelineName";
 
     private void disableCreatedMultiPipeline(String multiPipelineName) {
         getDriver().findElement(By.xpath("//span[text()='" + multiPipelineName + "']")).click();
@@ -92,10 +92,10 @@ public class MultibranchPipelineTest extends BaseTest {
     @Test
     public void testChangeMultiPipelineFromDisabledToEnabledOnStatusPage() {
 
-        createNewMultiPipeline(multiPipelineName);
-        disableCreatedMultiPipeline(multiPipelineName);
+        createNewMultiPipeline(MULTI_PIPELINE_NAME);
+        disableCreatedMultiPipeline(MULTI_PIPELINE_NAME);
 
-        getDriver().findElement(By.xpath("//span[text()='" + multiPipelineName + "']")).click();
+        getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']")).click();
         getDriver().findElement(By.xpath("//button[contains(., 'Enable')]")).click();
         List<WebElement> disabledMultiPipelineMessage = getDriver().findElements(
             By.xpath("//form[contains(., 'This Multibranch Pipeline is currently disabled')]"));
@@ -133,10 +133,10 @@ public class MultibranchPipelineTest extends BaseTest {
         WebDriverWait webDriverWait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
         final String tooltipText = "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
 
-        createNewMultiPipeline(multiPipelineName);
-        disableCreatedMultiPipeline(multiPipelineName);
+        createNewMultiPipeline(MULTI_PIPELINE_NAME);
+        disableCreatedMultiPipeline(MULTI_PIPELINE_NAME);
 
-        getDriver().findElement(By.xpath("//span[text()='" + multiPipelineName + "']")).click();
+        getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']")).click();
         getDriver().findElement(By.cssSelector("[href$='Pipeline/configure']")).click();
         WebElement disabledSpan = getDriver().findElement(By.cssSelector("[data-title*='Disabled']"));
         new Actions(getDriver()).moveToElement(disabledSpan).perform();
@@ -181,38 +181,54 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testRenameMultibranchPipelineOnTheSidebar() {
-        createNewMultiPipeline(multiPipelineName);
+        createNewMultiPipeline(MULTI_PIPELINE_NAME);
 
-        getDriver().findElement(By.xpath("//span[text()='" + multiPipelineName + "']")).click();
+        getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']")).click();
         getDriver().findElement(By.cssSelector("[href $='rename']")).click();
         WebElement renameInput = getDriver().findElement(By.xpath("//input[@name='newName']"));
         renameInput.clear();
-        renameInput.sendKeys(newMultiPipelineName);
+        renameInput.sendKeys(RENAMED_MULTI_PIPELINE);
         getDriver().findElement(By.name("Submit")).click();
         String multiPipelinePageHeading = getDriver().findElement(By.tagName("h1")).getText();
 
-        Assert.assertEquals(multiPipelinePageHeading, newMultiPipelineName, "Wrong name");
+        Assert.assertEquals(multiPipelinePageHeading, RENAMED_MULTI_PIPELINE, "Wrong name");
     }
 
     @Test
     public void testRenameMultibranchPipelineViaMainPageDropdownMenu() {
-        createNewMultiPipeline(multiPipelineName);
+        createNewMultiPipeline(MULTI_PIPELINE_NAME);
 
         getDriver().findElement(By.id("jenkins-head-icon")).click();
-        WebElement createdMultibranchPipeline = getDriver().findElement(By.xpath("//span[text()='" + multiPipelineName + "']"));
+        WebElement createdMultibranchPipeline = getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']"));
         new Actions(getDriver()).moveToElement(createdMultibranchPipeline).perform();
-        WebElement dropdownChevron = getDriver().findElement(By.cssSelector("#job_" + multiPipelineName + " > td:nth-child(3) > a > button"));
+        WebElement dropdownChevron = getDriver().findElement(By.cssSelector("#job_" + MULTI_PIPELINE_NAME + " > td:nth-child(3) > a > button"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
             "arguments[0].dispatchEvent(new Event('click'));", dropdownChevron);
         getDriver().findElement(By.cssSelector("[href $='rename']")).click();
 
         WebElement renameInput = getDriver().findElement(By.xpath("//input[@checkdependson='newName']"));
         renameInput.clear();
-        renameInput.sendKeys(newMultiPipelineName);
+        renameInput.sendKeys(RENAMED_MULTI_PIPELINE);
         getDriver().findElement(By.name("Submit")).click();
 
         String multiPipelinePageHeading = getDriver().findElement(By.tagName("h1")).getText();
-        Assert.assertEquals(multiPipelinePageHeading, newMultiPipelineName,
-            "The Multi Pipeline name is not equal to " + newMultiPipelineName);
+        Assert.assertEquals(multiPipelinePageHeading, RENAMED_MULTI_PIPELINE,
+            "The Multi Pipeline name is not equal to " + RENAMED_MULTI_PIPELINE);
+    }
+
+    @Test
+    public void testRenamedMultibranchPipelineSeenInBreadcrumbs() {
+        createNewMultiPipeline(MULTI_PIPELINE_NAME);
+
+        getDriver().findElement(By.linkText(MULTI_PIPELINE_NAME)).click();
+        getDriver().findElement(By.cssSelector("[href$='rename']")).click();
+        getDriver().findElement(By.name("newName")).clear();
+        getDriver().findElement(By.name("newName")).sendKeys(RENAMED_MULTI_PIPELINE);
+        getDriver().findElement(By.name("Submit")).click();
+
+        String multiPipelineBreadcrumbName = getDriver().findElement(By.cssSelector("[class*='breadcrumbs'] [href^='/job']")).getText();
+
+        Assert.assertEquals(multiPipelineBreadcrumbName, RENAMED_MULTI_PIPELINE,
+                "Actual multibranch breadcrumb name is not " + RENAMED_MULTI_PIPELINE);
     }
 }
