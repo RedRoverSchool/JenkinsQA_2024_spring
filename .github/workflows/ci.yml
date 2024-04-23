@@ -53,7 +53,7 @@ jobs:
 
       - name: Upload screenshots
         uses: actions/upload-artifact@v4
-        if: failer()
+        if: failure()
         with:
           name: screenshot
           path: Screenshots
