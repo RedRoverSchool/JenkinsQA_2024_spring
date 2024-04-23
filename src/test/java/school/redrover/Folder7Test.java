@@ -42,7 +42,7 @@ public class Folder7Test extends BaseTest {
     public void testRenameFolder() {
 
         getDriver().findElement(By.id("jenkins-name-icon")).click();
-        getDriver().findElement(By.linkText(OLD_NAME)).click();
+        getDriver().findElement(By.xpath("//*[span='" + OLD_NAME + "']")).click();
         getDriver().findElement(By.linkText("Rename")).click();
 
         getDriver().findElement(By.xpath("//*[@class='setting-main']/input")).clear();
@@ -55,7 +55,7 @@ public class Folder7Test extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.linkText(NEW_NAME)).getText(), "Renamed Folder");
     }
 
-    @Test(dependsOnMethods = "testCreateFolderUsingName")
+    @Test(dependsOnMethods = "testRenameFolder")
     public void testDeleteFolderViaDropdown() {
 
         getDriver().findElement(By.id("jenkins-name-icon")).click();
@@ -68,7 +68,7 @@ public class Folder7Test extends BaseTest {
                 "arguments[0].dispatchEvent(new Event('click'));", dropdownChevron);
 
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath(
-                        "//*[@id='tippy-5']//button"))).click();
+                "//*[@id='tippy-5']//button"))).click();
 
         getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']"))
                 .click();
