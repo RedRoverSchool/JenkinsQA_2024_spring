@@ -118,6 +118,17 @@ public final class TestUtils {
         baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(DROPDOWN_DELETE));
     }
 
+    public static void clickJobChevron(BaseTest baseTest, String jobName) {
+        WebElement jobLinkText = baseTest.getDriver().findElement(By.linkText(jobName));
+        int offsetX = jobLinkText.getSize().getWidth() / 2 + 17;
+
+        new Actions(baseTest.getDriver())
+                .moveToElement(jobLinkText)
+                .pause(500)
+                .moveByOffset(offsetX, 0)
+                .click().perform();
+    }
+
     public static void deleteJobViaDropdowm(BaseTest baseTest, String jobName) {
         openJobDropdown(baseTest, jobName);
 
