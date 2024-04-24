@@ -1,6 +1,5 @@
 package school.redrover.runner;
 
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
@@ -8,7 +7,6 @@ import org.testng.annotations.*;
 import school.redrover.runner.order.OrderForTests;
 import school.redrover.runner.order.OrderUtils;
 
-import java.io.File;
 import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.Arrays;
