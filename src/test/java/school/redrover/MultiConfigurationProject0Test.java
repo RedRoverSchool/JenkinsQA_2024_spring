@@ -198,7 +198,27 @@ public class MultiConfigurationProject0Test extends BaseTest {
                 .perform();
 
         Assert.assertEquals(
-                getDriver().findElement(By.cssSelector("[id^='toggle-switch']")).getAttribute("tooltip"),
+                getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.tippy-box>div"))).getText(),
                 "Enable or disable the current project");
+    }
+
+    @Test
+    public void testYesButtonColorDeletingMCPInSidebar() {
+        TestUtils.createNewItemAndReturnToDashboard(this,projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+        getDriver().findElement(By.linkText(projectName)).click();
+        getDriver().findElement(By.cssSelector("[data-message^='Delete']")).click();
+
+        String script = "return window.getComputedStyle(arguments[0]).getPropertyValue('--color')";
+        String actualColor = (String)(((JavascriptExecutor) getDriver()).executeScript(
+                script,
+                getDriver().findElement(By.cssSelector("[data-id='ok']"))));
+        String expectedColorNone = "#e6001f";
+        String expectedColorDark = "hsl(5, 100%, 60%)";
+
+        if (getDriver().findElement(By.tagName("html")).getAttribute("data-theme").equals("none")) {
+            Assert.assertEquals(expectedColorNone, actualColor);
+        } else if (getDriver().findElement(By.tagName("html")).getAttribute("data-theme").equals("dark")) {
+            Assert.assertEquals(expectedColorDark, actualColor);
+        }
     }
 }

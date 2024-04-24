@@ -231,4 +231,18 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(multiPipelineBreadcrumbName, RENAMED_MULTI_PIPELINE,
                 "Actual multibranch breadcrumb name is not " + RENAMED_MULTI_PIPELINE);
     }
+
+    @Test
+    public void testCreatePipelineUsingCreateAJobOnHomePage(){
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("MyPipeline");
+        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+        String namePipelineProject = getDriver()
+                .findElement(By.xpath("//a[@href='job/MyPipeline/']/span")).getText();
+        Assert.assertEquals(namePipelineProject, "MyPipeline");
+    }
 }
