@@ -74,6 +74,22 @@ public class Nodes2Test extends BaseTest {
 
         Assert.assertTrue(actualResult.contains(labelName));
     }
+
+    @Test
+    public void testCreateNewNodeWithName() {
+
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+        getDriver().findElement(By.xpath("//dt[text()='Nodes']")).click();
+        getDriver().findElement(By.xpath("//a[@href='new']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(NODE_NAME);
+        getDriver().findElement(By.xpath("//label[text()='Permanent Agent']")).click();
+        getDriver().findElement(By.id("ok")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        String actualResult = getDriver().findElement(By.xpath("//a[@href='../computer/" + NODE_NAME.replaceAll(" ", "%20") + "/']")).getText();
+
+        Assert.assertTrue(actualResult.contains(NODE_NAME));
+    }
 }
 
 
