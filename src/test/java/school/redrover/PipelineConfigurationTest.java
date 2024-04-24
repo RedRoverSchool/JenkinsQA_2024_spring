@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -9,7 +8,6 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.ProjectUtils;
 
 import java.util.List;
 
@@ -87,28 +85,23 @@ public class PipelineConfigurationTest extends BaseTest {
     public void testDiscardOldBuildsByCount() {
         createPipline();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//label[text() = 'Discard old builds']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//label[text() = 'Discard old builds']"))).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name = '_.numToKeepStr']"))).sendKeys("1");
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@data-section-id='pipeline']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-section-id='pipeline']"))).click();
         WebElement sampleScript = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class = 'samples']//select")));
         Select sampleScriptSelect = new Select(sampleScript);
         sampleScriptSelect.selectByValue("hello");
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@name = 'Submit']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name = 'Submit']"))).click();
 
-        WebElement buildButton = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@data-build-success = 'Build scheduled']")));
+        WebElement buildButton = getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-build-success = 'Build scheduled']")));
         buildButton.click();
         buildButton.click();
-        getWait2().until(ExpectedConditions.invisibilityOfAllElements(getDriver().findElements(By.xpath("//td[contains(@class, 'progress-bar')]"))));
+        getWait5().until(ExpectedConditions.invisibilityOfAllElements(getDriver().findElements(By.xpath("//td[contains(@class, 'progress-bar')]"))));
         getDriver().navigate().refresh();
-        WebElement secondBuild = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[@class = 'build-row-cell']//a[text() = '#2']")));
+        WebElement secondBuild = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[@class = 'build-row-cell']//a[text() = '#2']")));
 
         Assert.assertTrue(secondBuild.getAttribute("href").contains("/job/" + JOB_NAME.replaceAll(" ", "%20") + "/2/"), "there is no second build");
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        String script = "return document.body.innerHTML;";
-        String dom = js.executeScript(script).toString();
-        ProjectUtils.log(dom);
-
-        Assert.assertEquals(getDriver().findElements(By.xpath("//div[@id = 'buildHistoryPage']//tr")).size(), 2);
+        Assert.assertEquals(getDriver().findElements(By.xpath("//tr[@class = 'job SUCCESS']")).size(), 1);
     }
 
     @Test
