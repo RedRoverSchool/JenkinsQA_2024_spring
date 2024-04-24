@@ -157,7 +157,6 @@ public class PipelineProject1Test extends BaseTest {
         }
 
         List<String> expectedBuildOrder = new ArrayList<>(actualBuildsOrder);
-
         expectedBuildOrder.sort(Collections.reverseOrder());
 
         Assert.assertEquals(actualBuildsOrder, expectedBuildOrder, "Elements are not in descending order");
