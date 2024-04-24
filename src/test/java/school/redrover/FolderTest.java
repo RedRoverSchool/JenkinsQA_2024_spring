@@ -148,13 +148,14 @@ public class FolderTest extends BaseTest {
                 .perform();
 
 //        WebElement dropdownArrow = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']")));
+//        WebElement dropdownArrow = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class*='breadcrumbs']>[href*='job']")));
                 new Actions(getDriver())
-                        .moveToElement(getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job']")), 90, 7)
+                        .moveToElement(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class*='breadcrumbs']>[href*='job']"))), 90, 0)
+//                        .moveToElement(dropdownArrow, 90, 0)
 //                .moveToElement(dropdownArrow, 5, 13)
 //                .moveToElement(dropdownArrow)
 //                .scrollByAmount(deltaXX, deltaYY)
                 .click()
-                .pause(1000)
                 .perform();
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class*='dropdown'] [href$='move']"))).click();
