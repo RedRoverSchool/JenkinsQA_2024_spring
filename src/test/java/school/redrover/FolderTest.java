@@ -155,7 +155,7 @@ public class FolderTest extends BaseTest {
 //                .moveToElement(dropdownArrow, 5, 13)
 //                .moveToElement(dropdownArrow)
 //                .scrollByAmount(deltaXX, deltaYY)
-                        .pause(1000)
+                        .pause(5000)
                 .click()
                 .perform();
 
