@@ -30,4 +30,26 @@ public class ViewsTest extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(By.cssSelector("[href$='my-views/']")).isDisplayed());
     }
+
+    @Test
+    public void testDisplayViewWithListViewConstraints() {
+        final String VISIBLE = "visible";
+        final String INVISIBLE = "invisible";
+        final String VIEW_NAME = "in progress";
+
+        TestUtils.createNewItemAndReturnToDashboard(this,VISIBLE, TestUtils.Item.FOLDER);
+        TestUtils.createNewItemAndReturnToDashboard(this,INVISIBLE, TestUtils.Item.PIPELINE);
+
+        getDriver().findElement(By.cssSelector("[tooltip='New View']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(VIEW_NAME);
+        getDriver().findElement(By.cssSelector("[for$='ListView']")).click();
+        getDriver().findElement(By.id("ok")).click();
+        getDriver().findElement(By.cssSelector("label[title=" + VISIBLE + "]")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertTrue(
+                getDriver().findElements(By.cssSelector("[id^='job']")).size() == 1 &&
+                        getDriver().findElement(By.cssSelector(String.format("tr [href='job/%s/']", VISIBLE))).getText().equals(VISIBLE),
+                "Error displaying projects in View");
+    }
 }
