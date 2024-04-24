@@ -65,39 +65,24 @@ public class ViewsTest extends BaseTest {
     }
 
     @Test
-    public void testAddColumnIntoView() {
+    public void testAddColumnIntoListView() {
         TestUtils.createNewItemAndReturnToDashboard(this,VISIBLE, TestUtils.Item.FOLDER);
         createView(VIEW_NAME);
 
         getDriver().findElement(By.linkText("Edit View")).click();
 
-        WebElement AddColumn = getDriver().findElement(By.cssSelector("[suffix='columns']>svg"));
-        ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView(true);", AddColumn);
-        AddColumn.click();
-
-//        getDriver().findElement(By.cssSelector("[class$=filter-input]")).sendKeys("de");
+        WebElement addColumn = getDriver().findElement(By.cssSelector("[suffix='columns']>svg"));
+        ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView(true);", addColumn);
+        addColumn.click();
 
         getDriver().findElement(By.xpath("//*[@id='tippy-2']/div/div/div/div[2]/button[11]")).click();
         getDriver().findElement(By.name("Submit")).click();
         getDriver().findElement(By.id("jenkins-home-link")).click();
         getDriver().findElement(By.linkText(VIEW_NAME)).click();
 
-        Assert.assertEquals(getDriver().findElements(By.className("sortheader")).size(), 7);
-
-//        WebElement addDesc = getDriver().findElement(By.xpath("//*[@id="tippy-2"]/div/div/div/div[2]/button[11]"));
-//        ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView(true);", addDesc);
-//        addDesc.click();
-
-//        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Project description"))).click();
-//        getWait2().until(ExpectedConditions.elementToBeClickable(By.cssSelector("[suffix='columns']>svg"))).click();
-
-//        new Actions(getDriver())
-//                .moveToElement(getDriver().findElement(By.xpath("//*[@id='tippy-2']/div/div/div/div[2]/button[11]/text()")))
-//                .click()
-//                .pause(1000)
-//                .perform();
-//
-//        getDriver().findElement(By.name("Submit"));
-//        TestUtils.sleep(this,3);
+        Assert.assertEquals(
+                getDriver().findElements(By.className("sortheader")).size(),
+                7,
+                "Description column is not added");
     }
 }
