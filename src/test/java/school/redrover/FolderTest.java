@@ -146,13 +146,19 @@ public class FolderTest extends BaseTest {
         new Actions(getDriver())
                 .moveToElement(breadcrumbFolderName)
                 .scrollByAmount(deltaX, deltaY)
+                .pause(1000)
+                .perform();
+
+        getWait10().until(ExpectedConditions.visibilityOf(dropdownArrow));
+
+        new Actions(getDriver())
                 .moveToElement(dropdownArrow)
                 .scrollByAmount(deltaXX, deltaYY)
                 .click()
                 .pause(1000)
                 .perform();
 
-        getWait60().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class*='dropdown'] [href$='move']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("[class*='dropdown'] [href$='move']"))).click();
 
         new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" + FOLDER_NAME);
         getDriver().findElement(By.name("Submit")).click();
