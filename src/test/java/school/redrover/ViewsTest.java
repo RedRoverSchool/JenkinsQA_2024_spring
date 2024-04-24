@@ -31,6 +31,16 @@ public class ViewsTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.cssSelector("[href$='my-views/']")).isDisplayed());
     }
 
+    final String VIEW_NAME = "in progress";
+
+    public void createView(String VIEW_NAME) {
+        getDriver().findElement(By.cssSelector("[tooltip='New View']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(VIEW_NAME);
+        getDriver().findElement(By.cssSelector("[for$='ListView']")).click();
+        getDriver().findElement(By.id("ok")).click();
+        getDriver().findElement(By.name("Submit")).click();
+    }
+
     @Test
     public void testDisplayViewWithListViewConstraints() {
         final String VISIBLE = "visible";
