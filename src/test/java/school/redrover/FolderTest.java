@@ -129,14 +129,29 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         WebElement breadcrumbFolderName = getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job']"));
-        new Actions(getDriver())
-                .moveToElement(breadcrumbFolderName)
-                .pause(1000)
-                .moveToElement(getDriver().findElement(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']")))
-                .click()
-                .perform();
+//        new Actions(getDriver())
+//                .moveToElement(breadcrumbFolderName)
+//                .pause(1000)
+//                .moveToElement(getDriver().findElement(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']")))
+//                .click()
+//                .perform();
 
 //        clickOnDropdownArrow(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']"));
+        int deltaX = breadcrumbFolderName.getSize().getWidth()/2;
+        int deltaY = breadcrumbFolderName.getSize().getHeight()/2;
+        WebElement dropdownArrow = getDriver().findElement(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']"));
+        int deltaXX = dropdownArrow.getSize().getWidth()/3*2;
+        int deltaYY = dropdownArrow.getSize().getHeight()/3;
+
+        new Actions(getDriver())
+                .moveToElement(breadcrumbFolderName)
+                .scrollByAmount(deltaX, deltaY)
+                .moveToElement(dropdownArrow)
+                .scrollByAmount(deltaXX, deltaYY)
+                .click()
+                .pause(1000)
+                .perform();
+
         getWait10().until(ExpectedConditions.elementToBeClickable(By.cssSelector("[class*='dropdown'] [href$='move']"))).click();
 
         new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" + FOLDER_NAME);
