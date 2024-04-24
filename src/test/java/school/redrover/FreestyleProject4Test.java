@@ -77,7 +77,6 @@ public class FreestyleProject4Test extends BaseTest {
 
     @Test
     public void testCreateNewFreestyleProjectWithDescription (){
-        final String projectItemName = "JavaHashGroupProject";
         final String projectItemDescription = "This is first Project";
 
         WebElement newItemButton = getWait2().until(
@@ -86,7 +85,7 @@ public class FreestyleProject4Test extends BaseTest {
 
         WebElement inputNameField = getWait2().until(
                 ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='name']")));
-        inputNameField.sendKeys(projectItemName);
+        inputNameField.sendKeys(PROJECT_NAME);
 
         WebElement freestyleProjectButton = getWait2().until(
                 ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'Freestyle project')]")));
@@ -110,7 +109,7 @@ public class FreestyleProject4Test extends BaseTest {
                 ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(text(),'" + projectItemDescription + "')]")));
 
         Assert.assertTrue(newProjectHeader.isDisplayed());
-        Assert.assertEquals(newProjectHeader.getText(),projectItemName);
+        Assert.assertEquals(newProjectHeader.getText(),PROJECT_NAME);
 
         Assert.assertTrue(newProjectDescription.isDisplayed());
         Assert.assertEquals(newProjectDescription.getText(),projectItemDescription);
@@ -120,8 +119,8 @@ public class FreestyleProject4Test extends BaseTest {
         mainPageJenkinsButton.click();
 
         WebElement mainPageFreestyleProjectNameField = getWait2().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//td/a[@href='job/" + projectItemName + "/']")));
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//td/a[@href='job/" + PROJECT_NAME + "/']")));
 
-        Assert.assertEquals(mainPageFreestyleProjectNameField.getText(),projectItemName);
+        Assert.assertEquals(mainPageFreestyleProjectNameField.getText(),PROJECT_NAME);
     }
 }
