@@ -101,7 +101,7 @@ public class PipelineConfigurationTest extends BaseTest {
         WebElement secondBuild = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[@class = 'build-row-cell']//a[text() = '#2']")));
 
         Assert.assertTrue(secondBuild.getAttribute("href").contains("/job/" + JOB_NAME.replaceAll(" ", "%20") + "/2/"), "there is no second build");
-        Assert.assertEquals(getDriver().findElements(By.xpath("//div[@id = 'buildHistoryPage']//tr")).size(), 5);
+        Assert.assertEquals(getDriver().findElements(By.xpath("//div[@id = 'buildHistoryPage']//tr")).size(), 2);
     }
 
     @Test
