@@ -15,6 +15,7 @@ public class Dashboard1Test extends BaseTest {
     private final String VIEW_NAME = "Classic";
     private final String SELECTED_NAME1 = "Vivaldi";
     private final String SELECTED_NAME2 = "Nic";
+    private final String ITEM_NAME = "Item Name";
     private List<String> projectsNames = getNamesList();
 
     private List<String> getNamesList() {
@@ -25,6 +26,78 @@ public class Dashboard1Test extends BaseTest {
         names.add("Antonio Vivaldi");
         names.add("Niccolo Paganini");
         return names;
+    }
+
+    private List<String> getFreestyleProjectMenu() {
+        List<String> menu = new ArrayList<>();
+        menu.add("Changes");
+        menu.add("Workspace");
+        menu.add("Build Now");
+        menu.add("Configure");
+        menu.add("Delete Project");
+        menu.add("Rename");
+        return menu;
+    }
+
+    private List<String> getPipelineMenu() {
+        List<String> menu = new ArrayList<>();
+        menu.add("Changes");
+        menu.add("Build Now");
+        menu.add("Configure");
+        menu.add("Delete Pipeline");
+        menu.add("Full Stage Review");
+        menu.add("Rename");
+        menu.add("Pipeline Syntax");
+        return menu;
+    }
+
+    private List<String> getMultiConfigurationProjectMenu() {
+        List<String> menu = new ArrayList<>();
+        menu.add("Changes");
+        menu.add("Workspace");
+        menu.add("Build Now");
+        menu.add("Configure");
+        menu.add("Delete Multi-configuration Project");
+        menu.add("Rename");
+        return menu;
+    }
+
+    private List<String> getFolderMenu() {
+        List<String> menu = new ArrayList<>();
+        menu.add("Configure");
+        menu.add("NewItem");
+        menu.add("Delete Folder");
+        menu.add("People");
+        menu.add("Build History");
+        menu.add("Rename");
+        menu.add("Credentials");
+        return menu;
+    }
+
+    private List<String> getMultibranchPipelineMenu() {
+        List<String> menu = new ArrayList<>();
+        menu.add("Configure");
+        menu.add("Scan Multibranch Pipeline Log");
+        menu.add("Delete Multibranch Pipeline");
+        menu.add("People");
+        menu.add("Build History");
+        menu.add("Rename");
+        menu.add("Pipeline Syntax");
+        menu.add("Credentials");
+        return menu;
+    }
+
+    private List<String> getOrganizationFolderMenu() {
+        List<String> menu = new ArrayList<>();
+        menu.add("Configure");
+        menu.add("Scan Organization Folder Log");
+        menu.add("Delete Organization Folder");
+        menu.add("People");
+        menu.add("Build History");
+        menu.add("Rename");
+        menu.add("Pipeline Syntax");
+        menu.add("Credentials");
+        return menu;
     }
 
     private void createItemsFromList(List<String> list) {
@@ -100,7 +173,7 @@ public class Dashboard1Test extends BaseTest {
         Assert.assertTrue(namesFromNewView.size() == 2 && isName1InView && isName2InView);
     }
 
-    @Test(dependsOnMethods = "testCreateView")
+    @Test
     public void testDisplayMenuUsingJobChevron() {
 
         List<String> menu = List.of(
