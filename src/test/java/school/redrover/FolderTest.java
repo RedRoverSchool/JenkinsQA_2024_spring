@@ -152,7 +152,7 @@ public class FolderTest extends BaseTest {
         getWait10().until(ExpectedConditions.visibilityOf(dropdownArrow));
 
         new Actions(getDriver())
-                .scrollToElement()ToElement(dropdownArrow)
+                .scrollToElement(dropdownArrow)
                 .scrollByAmount(deltaXX, deltaYY)
                 .click()
                 .pause(1000)
