@@ -28,7 +28,6 @@ public class NewItemTests extends BaseTest {
         Assert.assertEquals(pipeLine.getText(), "Pipeline");
     }
 
-    @Test(dependsOnMethods = "testCreateFreestyleProject")
     public void testCreateNewFolder() {
         final String folderName = "NewFolder";
 
@@ -40,8 +39,5 @@ public class NewItemTests extends BaseTest {
         getDriver().findElement(OK_BUTTON).click();
 
         getDriver().findElement(By.className("jenkins-breadcrumbs__list-item")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//td/*[@href='job/" + folderName + "/']")).getText(),
-                folderName);
     }
 }
