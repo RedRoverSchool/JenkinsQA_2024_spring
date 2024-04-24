@@ -157,7 +157,7 @@ public class FolderTest extends BaseTest {
                 .click()
                 .pause(1000)
                 .perform();
-
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class='tippy-content']")));
         getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("[class*='dropdown'] [href$='move']"))).click();
 
         new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" + FOLDER_NAME);
