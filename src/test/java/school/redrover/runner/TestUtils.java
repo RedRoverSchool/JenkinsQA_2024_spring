@@ -118,7 +118,7 @@ public final class TestUtils {
         baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(DROPDOWN_DELETE));
     }
 
-    public static void clickJobChevron(BaseTest baseTest, String jobName) {
+    public static void clickJobChevronOnDashboard(BaseTest baseTest, String jobName) {
         WebElement jobLinkText = baseTest.getDriver().findElement(By.linkText(jobName));
         int offsetX = jobLinkText.getSize().getWidth() / 2 + 17;
 
