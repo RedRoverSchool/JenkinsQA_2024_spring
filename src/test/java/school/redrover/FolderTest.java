@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
@@ -126,48 +125,18 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         WebElement breadcrumbFolderName = getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job']"));
-//        new Actions(getDriver())
-//                .moveToElement(breadcrumbFolderName)
-//                .pause(1000)
-//                .moveToElement(getDriver().findElement(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']")))
-//                .click()
-//                .perform();
-
-//        clickOnDropdownArrow(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']"));
-        int deltaX = breadcrumbFolderName.getSize().getWidth()/2;
-        int deltaY = breadcrumbFolderName.getSize().getHeight()/2;
-
-//        int deltaXX = dropdownArrow.getSize().getWidth()/3*2;
-//        int deltaYY = dropdownArrow.getSize().getHeight()/3;
-
         new Actions(getDriver())
-                .moveToElement(breadcrumbFolderName, deltaX, deltaY)
-//                .moveToElement(breadcrumbFolderName)
-//                .scrollByAmount(deltaX, deltaY)
-                .pause(1000)
+                .moveToElement(breadcrumbFolderName)
+                .click()
                 .perform();
-
-//        WebElement dropdownArrow = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']")));
-//        WebElement dropdownArrow = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class*='breadcrumbs']>[href*='job']")));
-                new Actions(getDriver())
-                        .moveToElement(getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job']")), 89, -3)
-//                        .moveToElement(dropdownArrow, 90, 0)
-//                .moveToElement(dropdownArrow, 5, 13)
-//                .moveToElement(dropdownArrow)
-//                .scrollByAmount(deltaXX, deltaYY)
-                        .clickAndHold()
-                        .pause(3000)
-                        .release()
-                .perform();
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class*='dropdown'] [href$='move']"))).click();
+        clickOnDropdownArrow(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']"));
+        getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='move']")).click();
 
         new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" + FOLDER_NAME);
         getDriver().findElement(By.name("Submit")).click();
         getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job/" + FOLDER_NAME + "']")).click();
 
         String nestedFolder = getDriver().findElement(By.cssSelector("td [href*='job']:first-child")).getText();
-
         Assert.assertEquals(nestedFolder, FOLDER_TO_MOVE, FOLDER_TO_MOVE + " is not in " + FOLDER_NAME);
     }
 }
