@@ -10,6 +10,7 @@ import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PipelineProject1Test extends BaseTest {
@@ -123,7 +124,7 @@ public class PipelineProject1Test extends BaseTest {
 
     @Test(dependsOnMethods = "testPipelineBuildSuccessFromConsole")
     public void testSetPipelineNumberBuildsToKeep() {
-        final String maxNumberBuildsToKeep = "1";
+        final String maxNumberBuildsToKeep = "2";
 
         clickOnCreatedJobOnDashboardPage(PIPELINE_NAME);
         getDriver().findElement(By.xpath("//a[@href='/job/" + PIPELINE_NAME.replaceAll(" ", "%20") + "/configure']")).click();
@@ -142,7 +143,24 @@ public class PipelineProject1Test extends BaseTest {
         List<WebElement> numberBuilds = getDriver().findElements(By.xpath("//td[contains(text(),'stable')]"));
 
         Assert.assertEquals(String.valueOf(numberBuilds.size()), maxNumberBuildsToKeep);
+    }
 
+    @Test(dependsOnMethods = "testSetPipelineNumberBuildsToKeep")
+    public void testCheckBuildsHistoryDescendingOrder() {
+        clickOnCreatedJobOnDashboardPage(PIPELINE_NAME);
+
+        List<WebElement> builds = getDriver().findElements(By.xpath("//div[@class='pane-content']//a[contains(text(),'#')]"));
+
+        List<String> actualBuildsOrder = new ArrayList<>();
+        for (WebElement element : builds) {
+            actualBuildsOrder.add(element.getText());
+        }
+
+        List<String> expectedBuildOrder = new ArrayList<>(actualBuildsOrder);
+
+        expectedBuildOrder.sort(Collections.reverseOrder());
+
+        Assert.assertEquals(actualBuildsOrder, expectedBuildOrder, "Elements are not in descending order");
     }
 
     @Test
@@ -185,7 +203,7 @@ public class PipelineProject1Test extends BaseTest {
         Assert.assertEquals(actualPipelineViewHeader, expectedPipelineViewHeader);
     }
 
-    @Test(dependsOnMethods = "testSetPipelineNumberBuildsToKeep")
+    @Test(dependsOnMethods = "testCheckBuildsHistoryDescendingOrder")
     public void testRenamePipelineUsingSidebar() {
         clickOnCreatedJobOnDashboardPage(PIPELINE_NAME);
 
