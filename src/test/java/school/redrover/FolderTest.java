@@ -150,11 +150,12 @@ public class FolderTest extends BaseTest {
 //        WebElement dropdownArrow = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']")));
 //        WebElement dropdownArrow = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class*='breadcrumbs']>[href*='job']")));
                 new Actions(getDriver())
-                        .moveToElement(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class*='breadcrumbs']>[href*='job']"))), 90, 0)
+                        .moveToElement(getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job']")), 89, -3)
 //                        .moveToElement(dropdownArrow, 90, 0)
 //                .moveToElement(dropdownArrow, 5, 13)
 //                .moveToElement(dropdownArrow)
 //                .scrollByAmount(deltaXX, deltaYY)
+                        .pause(1000)
                 .click()
                 .perform();
 
