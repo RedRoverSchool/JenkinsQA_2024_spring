@@ -1,9 +1,6 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -140,24 +137,20 @@ public class FolderTest extends BaseTest {
         int deltaX = breadcrumbFolderName.getSize().getWidth()/2;
         int deltaY = breadcrumbFolderName.getSize().getHeight()/2;
         WebElement dropdownArrow = getDriver().findElement(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']"));
-        int deltaXX = dropdownArrow.getSize().getWidth()/3*2;
-        int deltaYY = dropdownArrow.getSize().getHeight()/3;
+//        int deltaXX = dropdownArrow.getSize().getWidth()/3*2;
+//        int deltaYY = dropdownArrow.getSize().getHeight()/3;
 
         new Actions(getDriver())
-                .moveToElement(breadcrumbFolderName)
-                .scrollByAmount(deltaX, deltaY)
+                .moveToElement(breadcrumbFolderName, deltaX, deltaY)
+//                .scrollByAmount(deltaX, deltaY)
                 .pause(1000)
-                .perform();
-
-        getWait10().until(ExpectedConditions.visibilityOf(dropdownArrow));
-
-        new Actions(getDriver())
-                .scrollToElement(dropdownArrow)
-                .scrollByAmount(deltaXX, deltaYY)
+                .moveToElement(dropdownArrow, 7, 14)
+//                .moveToElement(dropdownArrow)
+//                .scrollByAmount(deltaXX, deltaYY)
                 .click()
                 .pause(1000)
                 .perform();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class='tippy-content']")));
+
         getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("[class*='dropdown'] [href$='move']"))).click();
 
         new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" + FOLDER_NAME);
