@@ -155,8 +155,9 @@ public class FolderTest extends BaseTest {
 //                .moveToElement(dropdownArrow, 5, 13)
 //                .moveToElement(dropdownArrow)
 //                .scrollByAmount(deltaXX, deltaYY)
-                        .pause(5000)
-                .click()
+                        .clickAndHold()
+                        .pause(3000)
+                        .release()
                 .perform();
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class*='dropdown'] [href$='move']"))).click();
