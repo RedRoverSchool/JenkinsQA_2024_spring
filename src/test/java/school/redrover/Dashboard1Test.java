@@ -202,8 +202,7 @@ public class Dashboard1Test extends BaseTest {
         WebElement selectedProject2 = getDriver().findElement(
                 By.xpath("//label[contains(@title, '" + SELECTED_NAME2 + "')]"));
 
-        WebElement okButton = getDriver().findElement(
-                By.name("Submit"));
+        WebElement okButton = getDriver().findElement(By.name("Submit"));
 
         clickElement(selectedProject1);
         clickElement(selectedProject2);
