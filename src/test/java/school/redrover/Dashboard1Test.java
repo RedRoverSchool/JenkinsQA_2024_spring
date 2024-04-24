@@ -15,7 +15,6 @@ public class Dashboard1Test extends BaseTest {
     private final String VIEW_NAME = "Classic";
     private final String SELECTED_NAME1 = "Vivaldi";
     private final String SELECTED_NAME2 = "Nic";
-    private final String ITEM_NAME = "Item Name";
     private List<String> projectsNames = getNamesList();
 
     private List<String> getNamesList() {
@@ -45,7 +44,7 @@ public class Dashboard1Test extends BaseTest {
         menu.add("Build Now");
         menu.add("Configure");
         menu.add("Delete Pipeline");
-        menu.add("Full Stage Review");
+        menu.add("Full Stage View");
         menu.add("Rename");
         menu.add("Pipeline Syntax");
         return menu;
@@ -121,7 +120,52 @@ public class Dashboard1Test extends BaseTest {
                 .perform();
     }
 
+    private boolean isItemMenuCorrect(List<String> menu, String itemType) {
+        TestUtils.createItem(itemType, itemType, this);
+        TestUtils.goToMainPage(getDriver());
+        TestUtils.clickJobChevronOnDashboard(this, itemType);
+        List<String> chevronMenu = TestUtils.getTexts(getDriver().findElements
+                (By.xpath("//*[@class='jenkins-dropdown__item']")));
+//        getDriver().findElement(By.xpath("//button[contains(@href, 'Delete')]")).click();
+        System.out.println(menu);
+//        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+
+        System.out.println(chevronMenu);
+        System.out.println(menu);
+        return chevronMenu.equals(menu);
+    }
+
     @Test
+    public void testFreestyleProjectChevronMenu() {
+        Assert.assertTrue(isItemMenuCorrect(getFreestyleProjectMenu(), TestUtils.FREESTYLE_PROJECT));
+    }
+
+    @Test(dependsOnMethods = "testFreestyleProjectChevronMenu")
+    public void testPipelineChevronMenu() {
+        Assert.assertTrue(isItemMenuCorrect(getPipelineMenu(), TestUtils.PIPELINE));
+    }
+
+    @Test(dependsOnMethods = "testPipelineChevronMenu")
+    public void testMultiConfigurationProjectChevronMenu() {
+        Assert.assertTrue(isItemMenuCorrect(getMultiConfigurationProjectMenu(), TestUtils.MULTI_CONFIGURATION_PROJECT));
+    }
+
+    @Test(dependsOnMethods = "testMultiConfigurationProjectChevronMenu")
+    public void testFolderChevronMenu() {
+        Assert.assertTrue(isItemMenuCorrect(getFolderMenu(), TestUtils.FOLDER));
+    }
+
+    @Test(dependsOnMethods = "testFolderChevronMenu")
+    public void testMultibranchPipelineChevronMenu() {
+        Assert.assertTrue(isItemMenuCorrect(getMultibranchPipelineMenu(), TestUtils.MULTIBRANCH_PIPELINE));
+    }
+
+    @Test(dependsOnMethods = "testMultibranchPipelineChevronMenu")
+    public void testOrganizationChevronMenu() {
+        Assert.assertTrue(isItemMenuCorrect(getOrganizationFolderMenu(), TestUtils.ORGANIZATION_FOLDER));
+    }
+
+    @Test(dependsOnMethods = "testOrganizationChevronMenu")
     public void testCreateView() {
         createItemsFromList(projectsNames);
 
@@ -171,19 +215,5 @@ public class Dashboard1Test extends BaseTest {
         boolean isName2InView = namesFromNewView.stream().anyMatch(s -> s.contains(SELECTED_NAME2));
 
         Assert.assertTrue(namesFromNewView.size() == 2 && isName1InView && isName2InView);
-    }
-
-    @Test
-    public void testDisplayMenuUsingJobChevron() {
-
-        List<String> menu = List.of(
-            "Configure",
-                "Scan Multibranch Pipeline Log"
-        );
-
-        String jobName = getNamesList().get((int) (Math.random() * getNamesList().size()));
-
-        TestUtils.clickJobChevron(this, jobName);
-
     }
 }
