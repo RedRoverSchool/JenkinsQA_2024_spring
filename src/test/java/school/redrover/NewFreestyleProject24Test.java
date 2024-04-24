@@ -57,13 +57,12 @@ public class NewFreestyleProject24Test extends BaseTest {
 
     @Test(dependsOnMethods = "testFreestyleMoveToFolder")
     public void testCheckFreestyleProjectViaBreadcrumb() {
-        WebElement jenkinsDropdown = getDriver().findElement(By.xpath("//ol//a//button[@class='jenkins-menu-dropdown-chevron']"));
-
+        WebElement jenkinsDropdown = getDriver().findElement(By.xpath("//ol//button[@class='jenkins-menu-dropdown-chevron']"));
         Actions action = new Actions(getDriver());
         action.moveToElement(jenkinsDropdown).perform();
         jenkinsDropdown.click();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class = 'jenkins-dropdown__item'][contains(@href, 'views')]"))).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class = 'jenkins-dropdown__item'][contains(@href, 'views')]"))).click();
 
         getDriver().findElement(By.xpath("//li[@class='children'][2]")).click();
 
