@@ -242,7 +242,7 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
 
         String namePipelineProject = getDriver()
-                .findElement(By.xpath("//a[@href='job/MyPipline/']/span")).getText();
+                .findElement(By.xpath("//a[@href='job/MyPipeline/']/span")).getText();
         Assert.assertEquals(namePipelineProject, "MyPipeline");
     }
 }
