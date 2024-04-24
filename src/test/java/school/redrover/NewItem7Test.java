@@ -46,4 +46,15 @@ public class NewItem7Test extends BaseTest {
         Assert.assertTrue(getOkButton().isDisplayed());
         Assert.assertFalse(getOkButton().isEnabled());
     }
+
+    @Test
+    public void testVerifyOkButtonUnavailableNameIsEmpty() {
+        enterToNewItemPage();
+        getDriver().findElement(By.id("name")).clear();
+        getDriver().findElement(By.id("items")).click();
+
+        Assert.assertTrue(getOkButton().isDisplayed());
+        Assert.assertFalse(getOkButton().isEnabled());
+    }
+
 }
