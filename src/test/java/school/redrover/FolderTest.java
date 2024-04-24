@@ -151,7 +151,7 @@ public class FolderTest extends BaseTest {
                 .pause(1000)
                 .perform();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("[class*='dropdown'] [href$='move']"))).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class*='dropdown'] [href$='move']"))).click();
 
         new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" + FOLDER_NAME);
         getDriver().findElement(By.name("Submit")).click();
