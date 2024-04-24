@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -32,20 +33,20 @@ public class ViewsTest extends BaseTest {
     }
 
     final String VIEW_NAME = "in progress";
+    final String VISIBLE = "visible";
 
     public void createView(String VIEW_NAME) {
         getDriver().findElement(By.cssSelector("[tooltip='New View']")).click();
         getDriver().findElement(By.id("name")).sendKeys(VIEW_NAME);
         getDriver().findElement(By.cssSelector("[for$='ListView']")).click();
         getDriver().findElement(By.id("ok")).click();
+        getDriver().findElement(By.cssSelector("label[title=" + VISIBLE + "]")).click();
         getDriver().findElement(By.name("Submit")).click();
     }
 
     @Test
     public void testDisplayViewWithListViewConstraints() {
-        final String VISIBLE = "visible";
         final String INVISIBLE = "invisible";
-        final String VIEW_NAME = "in progress";
 
         TestUtils.createNewItemAndReturnToDashboard(this,VISIBLE, TestUtils.Item.FOLDER);
         TestUtils.createNewItemAndReturnToDashboard(this,INVISIBLE, TestUtils.Item.PIPELINE);
@@ -61,5 +62,42 @@ public class ViewsTest extends BaseTest {
                 getDriver().findElements(By.cssSelector("[id^='job']")).size() == 1 &&
                          getDriver().findElement(By.cssSelector(String.format("tr [href='job/%s/']", VISIBLE))).getText().equals(VISIBLE),
                 "Error displaying projects in View");
+    }
+
+    @Test
+    public void testAddColumnIntoView() {
+        TestUtils.createNewItemAndReturnToDashboard(this,VISIBLE, TestUtils.Item.FOLDER);
+        createView(VIEW_NAME);
+
+        getDriver().findElement(By.linkText("Edit View")).click();
+
+        WebElement AddColumn = getDriver().findElement(By.cssSelector("[suffix='columns']>svg"));
+        ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView(true);", AddColumn);
+        AddColumn.click();
+
+//        getDriver().findElement(By.cssSelector("[class$=filter-input]")).sendKeys("de");
+
+        getDriver().findElement(By.xpath("//*[@id='tippy-2']/div/div/div/div[2]/button[11]")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.id("jenkins-home-link")).click();
+        getDriver().findElement(By.linkText(VIEW_NAME)).click();
+
+        Assert.assertEquals(getDriver().findElements(By.className("sortheader")).size(), 7);
+
+//        WebElement addDesc = getDriver().findElement(By.xpath("//*[@id="tippy-2"]/div/div/div/div[2]/button[11]"));
+//        ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView(true);", addDesc);
+//        addDesc.click();
+
+//        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Project description"))).click();
+//        getWait2().until(ExpectedConditions.elementToBeClickable(By.cssSelector("[suffix='columns']>svg"))).click();
+
+//        new Actions(getDriver())
+//                .moveToElement(getDriver().findElement(By.xpath("//*[@id='tippy-2']/div/div/div/div[2]/button[11]/text()")))
+//                .click()
+//                .pause(1000)
+//                .perform();
+//
+//        getDriver().findElement(By.name("Submit"));
+//        TestUtils.sleep(this,3);
     }
 }
