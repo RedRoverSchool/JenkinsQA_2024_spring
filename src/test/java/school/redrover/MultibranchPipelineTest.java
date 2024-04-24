@@ -176,4 +176,18 @@ public class MultibranchPipelineTest extends BaseTest {
         String statusToggle = getDriver().findElement(By.id("enable-disable-project")).getDomProperty("checked");
         Assert.assertEquals(statusToggle,"true");
     }
+
+    @Test
+    public void testCreatePipelineUsingCreateAJobOnHomePage(){
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("MyPipeline");
+        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+        String namePipelineProject = getDriver()
+                .findElement(By.xpath("//a[@href='job/MyPipline/']/span")).getText();
+        Assert.assertEquals(namePipelineProject, "MyPipeline");
+    }
 }
