@@ -49,7 +49,7 @@ public class ViewsTest extends BaseTest {
 
         Assert.assertTrue(
                 getDriver().findElements(By.cssSelector("[id^='job']")).size() == 1 &&
-                        getDriver().findElement(By.cssSelector(String.format("tr [href='job/%s/']", VISIBLE))).getText().equals(VISIBLE),
+                         getDriver().findElement(By.cssSelector(String.format("tr [href='job/%s/']", VISIBLE))).getText().equals(VISIBLE),
                 "Error displaying projects in View");
     }
 }
