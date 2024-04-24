@@ -142,20 +142,22 @@ public class FolderTest extends BaseTest {
 
         new Actions(getDriver())
                 .moveToElement(breadcrumbFolderName, deltaX, deltaY)
+//                .moveToElement(breadcrumbFolderName)
 //                .scrollByAmount(deltaX, deltaY)
                 .pause(1000)
                 .perform();
 
-        WebElement dropdownArrow = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']")));
+//        WebElement dropdownArrow = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']")));
                 new Actions(getDriver())
-                .moveToElement(dropdownArrow, 5, 13)
+                        .moveToElement(getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job']")), 90, 7)
+//                .moveToElement(dropdownArrow, 5, 13)
 //                .moveToElement(dropdownArrow)
 //                .scrollByAmount(deltaXX, deltaYY)
                 .click()
                 .pause(1000)
                 .perform();
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class*='dropdown'] [href$='move']"))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class*='dropdown'] [href$='move']"))).click();
 
         new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" + FOLDER_NAME);
         getDriver().findElement(By.name("Submit")).click();
