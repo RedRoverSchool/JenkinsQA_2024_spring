@@ -56,7 +56,7 @@ public class Dashboard1Test extends BaseTest {
         menu.add("Workspace");
         menu.add("Build Now");
         menu.add("Configure");
-        menu.add("Delete Multi-configuration Project");
+        menu.add("Delete Multi-configuration project");
         menu.add("Rename");
         return menu;
     }
@@ -64,7 +64,7 @@ public class Dashboard1Test extends BaseTest {
     private List<String> getFolderMenu() {
         List<String> menu = new ArrayList<>();
         menu.add("Configure");
-        menu.add("NewItem");
+        menu.add("New Item");
         menu.add("Delete Folder");
         menu.add("People");
         menu.add("Build History");
@@ -77,9 +77,11 @@ public class Dashboard1Test extends BaseTest {
         List<String> menu = new ArrayList<>();
         menu.add("Configure");
         menu.add("Scan Multibranch Pipeline Log");
+        menu.add("Multibranch Pipeline Events");
         menu.add("Delete Multibranch Pipeline");
         menu.add("People");
         menu.add("Build History");
+//        menu.add("Move");
         menu.add("Rename");
         menu.add("Pipeline Syntax");
         menu.add("Credentials");
@@ -90,9 +92,11 @@ public class Dashboard1Test extends BaseTest {
         List<String> menu = new ArrayList<>();
         menu.add("Configure");
         menu.add("Scan Organization Folder Log");
+        menu.add("Organization Folder Events");
         menu.add("Delete Organization Folder");
         menu.add("People");
         menu.add("Build History");
+//        menu.add("Move");
         menu.add("Rename");
         menu.add("Pipeline Syntax");
         menu.add("Credentials");
@@ -124,14 +128,15 @@ public class Dashboard1Test extends BaseTest {
         TestUtils.createItem(itemType, itemType, this);
         TestUtils.goToMainPage(getDriver());
         TestUtils.clickJobChevronOnDashboard(this, itemType);
-        List<String> chevronMenu = TestUtils.getTexts(getDriver().findElements
-                (By.xpath("//*[@class='jenkins-dropdown__item']")));
-//        getDriver().findElement(By.xpath("//button[contains(@href, 'Delete')]")).click();
-        System.out.println(menu);
-//        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+        List<String> chevronMenu = TestUtils.getTexts(getWait2().until
+                (ExpectedConditions.visibilityOfAllElementsLocatedBy
+                        (By.xpath("//*[@class='jenkins-dropdown__item']"))));
+        getDriver().findElement(By.xpath("//button[contains(@href, 'Delete')]")).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-id='ok']"))).click();
 
-        System.out.println(chevronMenu);
         System.out.println(menu);
+        System.out.println(chevronMenu);
+
         return chevronMenu.equals(menu);
     }
 
