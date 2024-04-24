@@ -15,7 +15,7 @@ import school.redrover.runner.BaseTest;
 public class FolderTest extends BaseTest {
 
     private static final By NAME_ERROR_MESSAGE_LOCATOR = By.id("itemname-invalid");
-    private static final String FOLDER_NAME = "First_Folder_LongerTitle";
+    private static final String FOLDER_NAME = "First_Folder";
     private static final String NEW_FOLDER_NAME = "Renamed_First_Folder";
     private static final String THIRD_FOLDER_NAME = "Dependant_Test_Folder";
     private static final String FOLDER_TO_MOVE = "Folder_to_move_into_the_first";
@@ -152,7 +152,7 @@ public class FolderTest extends BaseTest {
                 .pause(1000)
                 .perform();
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class*='dropdown'] [href$='move']"))).click();
+        getWait60().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class*='dropdown'] [href$='move']"))).click();
 
         new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" + FOLDER_NAME);
         getDriver().findElement(By.name("Submit")).click();
