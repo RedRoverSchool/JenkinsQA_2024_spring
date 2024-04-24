@@ -15,6 +15,7 @@ public class FolderTest extends BaseTest {
     private static final By NAME_ERROR_MESSAGE_LOCATOR = By.id("itemname-invalid");
     private static final String FOLDER_NAME = "First_Folder";
     private static final String NEW_FOLDER_NAME = "Renamed_First_Folder";
+    private static final String THIRD_FOLDER_NAME = "Dependant_Test_Folder";
     private static final By NEW_NAME = By.name("newName");
 
     private void createFolderViaCreateAJob() {
@@ -54,7 +55,6 @@ public class FolderTest extends BaseTest {
                 "The error message is different");
     }
 
-    @Ignore
     @Test
     public void testCreateFolderViaCreateAJob() {
         createFolderViaCreateAJob();
@@ -63,10 +63,9 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(breadcrumbFolderName, FOLDER_NAME, "Breadcrumb name doesn't match " + FOLDER_NAME);
     }
 
-    @Ignore
-    @Test
+    @Test(dependsOnMethods = "testCreateFolderViaCreateAJob")
     public void testRenameFolderViaFolderBreadcrumbsDropdownMenu() {
-        createFolderViaCreateAJob();
+        getDriver().findElement(By.cssSelector("td>[href^='job']")).click();
 
         WebElement breadcrumbFolderName = getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job']"));
         new Actions(getDriver())
@@ -84,12 +83,8 @@ public class FolderTest extends BaseTest {
                 "The Folder name is not equal to " + NEW_FOLDER_NAME);
     }
 
-    @Ignore
-    @Test
+    @Test(dependsOnMethods = "testCreateFolderViaCreateAJob")
     public void testRenameFolderViaMainPageDropdownMenu() {
-        createFolderViaCreateAJob();
-        getDriver().findElement(By.id("jenkins-home-link")).click();
-
         WebElement dashboardFolderName = getDriver().findElement(By.cssSelector("td>[href^='job']"));
         new Actions(getDriver())
                 .moveToElement(dashboardFolderName)
@@ -98,12 +93,12 @@ public class FolderTest extends BaseTest {
         clickOnDropdownArrow(By.cssSelector("[href^='job'] [class$='dropdown-chevron']"));
         getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='rename']")).click();
         getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys(NEW_FOLDER_NAME);
+        getDriver().findElement(By.name("newName")).sendKeys(THIRD_FOLDER_NAME);
         getDriver().findElement(By.name("Submit")).click();
 
         String folderPageHeading = getDriver().findElement(By.tagName("h1")).getText();
-        Assert.assertEquals(folderPageHeading, NEW_FOLDER_NAME,
-                "The Folder name is not equal to " + NEW_FOLDER_NAME);
+        Assert.assertEquals(folderPageHeading, THIRD_FOLDER_NAME,
+                "The Folder name is not equal to " + THIRD_FOLDER_NAME);
     }
 
     @Ignore

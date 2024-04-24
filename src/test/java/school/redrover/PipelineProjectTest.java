@@ -10,6 +10,10 @@ import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils.*;
 import school.redrover.runner.TestUtils;
 
+import java.util.List;
+
+import static school.redrover.runner.TestUtils.getTexts;
+
 public class PipelineProjectTest extends BaseTest {
 
     public static final String JOB_XPATH = "//*[text()='%s']";
@@ -55,5 +59,36 @@ public class PipelineProjectTest extends BaseTest {
 
         WebElement jobInTableName = getDriver().findElement(By.cssSelector("a[href='job/firstPipeline/']"));
         Assert.assertEquals(jobInTableName.getText(), "firstPipeline");
+    }
+
+    @Test
+    public void testAddDescriptionPreview(){
+
+        TestUtils.createJob(this, Job.PIPELINE, "Pipeline project");
+        
+        getDriver().findElement(By.xpath("//*[text()='Pipeline project']")).click();
+        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("First");
+        getDriver().findElement(By.xpath("//a[@class='textarea-show-preview']")).click();
+
+        WebElement previewDescription = getDriver().findElement(By.xpath("//div[@class='textarea-preview']"));
+
+        Assert.assertEquals(previewDescription.getText(),"First");
+    }
+
+    @Test
+    public void testBreadcrumbTrailsContainsPipelineName() {
+
+        TestUtils.createJob(this, Job.PIPELINE, "Pipeline project");
+
+        List<WebElement> breadcrumbBarElements = List.of(
+                getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[1]")),
+                getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[2]")),
+                getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[3]/a")),
+                getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[4]")));
+
+        for (WebElement element : breadcrumbBarElements) {
+            Assert.assertTrue(element.isDisplayed(), "Pipeline project");
+        }
     }
 }

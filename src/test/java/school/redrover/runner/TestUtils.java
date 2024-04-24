@@ -1,47 +1,15 @@
 package school.redrover.runner;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.util.ArrayList;
+
 import java.util.List;
 
 public final class TestUtils {
-
-    public static final String FREESTYLE_PROJECT = "Freestyle project";
-    public static final String PIPELINE = "Pipeline";
-    public static final String MULTI_CONFIGURATION_PROJECT = "Multi-configuration project";
-    public static final String FOLDER = "Folder";
-    public static final String MULTIBRANCH_PIPELINE = "Multibranch Pipeline";
-    public static final String ORGANIZATION_FOLDER = "Organization Folder";
-    public static final By DROPDOWN_DELETE = By.cssSelector("button[href $= '/doDelete']");
-    public static final By DIALOG_DEFAULT_BUTTON = By.cssSelector("dialog .jenkins-button--primary");
-    public static final By EMPTY_STATE_BLOCK = By.cssSelector("div.empty-state-block");
-    public static final String JOB_XPATH = "//*[text()='%s']";
-
-    public static String getUserID(WebDriver driver) {
-        return driver.findElement(By.xpath("//a[contains(@href, 'user')]")).getText();
-    }
-
-    public static void createItem(String type, String name, WebDriver driver) {
-        driver.findElement(By.linkText("New Item")).click();
-        driver.findElement(By.id("name")).sendKeys(name);
-        driver.findElement(By.xpath("//span[text()='" + type + "']")).click();
-        driver.findElement(By.id("ok-button")).click();
-        driver.findElement(By.xpath("//button[contains(text(), 'Save')]")).click();
-    }
-
-    public static void goToMainPage(WebDriver driver) {
-        driver.findElement(By.id("jenkins-name-icon")).click();
-    }
 
     public static class Item {
         public static final String FREESTYLE_PROJECT = "hudson_model_FreeStyleProject";
@@ -52,12 +20,39 @@ public final class TestUtils {
         public static final String ORGANIZATION_FOLDER = "jenkins_branch_OrganizationFolder";
     }
 
-    public static void sleep(BaseTest baseTest, long seconds) {
-        new Actions(baseTest.getDriver()).pause(seconds * 1000).perform();
+    public static final String FREESTYLE_PROJECT = "Freestyle project";
+    public static final String PIPELINE = "Pipeline";
+    public static final String MULTI_CONFIGURATION_PROJECT = "Multi-configuration project";
+    public static final String FOLDER = "Folder";
+    public static final String MULTIBRANCH_PIPELINE = "Multibranch Pipeline";
+    public static final String ORGANIZATION_FOLDER = "Organization Folder";
+
+    public static final By SIDE_PANEL_DELETE = By.cssSelector("[data-url $= '/doDelete']");
+    public static final By DROPDOWN_DELETE = By.cssSelector("button[href $= '/doDelete']");
+    public static final By DROPDOWN_RENAME = By.cssSelector("a[href $= '/confirm-rename']");
+
+    public static final By DIALOG_DEFAULT_BUTTON = By.cssSelector("dialog .jenkins-button--primary");
+    public static final By EMPTY_STATE_BLOCK = By.cssSelector("div.empty-state-block");
+    public static final String JOB_XPATH = "//*[text()='%s']";
+
+    public static String getUserID(WebDriver driver) {
+        return driver.findElement(By.xpath("//a[contains(@href, 'user')]")).getText();
     }
 
-    public static WebDriverWait getWait15(BaseTest baseTest) {
-        return new WebDriverWait(baseTest.getDriver(), Duration.ofSeconds(15));
+    public static void createItem(String type, String name, BaseTest baseTest) {
+        baseTest.getDriver().findElement(By.linkText("New Item")).click();
+        baseTest.getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(name);
+        baseTest.getDriver().findElement(By.xpath("//span[text()='" + type + "']")).click();
+        baseTest.getDriver().findElement(By.id("ok-button")).click();
+        baseTest.getDriver().findElement(By.xpath("//button[contains(text(), 'Save')]")).click();
+    }
+
+    public static void goToMainPage(WebDriver driver) {
+        driver.findElement(By.id("jenkins-name-icon")).click();
+    }
+
+    public static void sleep(BaseTest baseTest, long seconds) {
+        new Actions(baseTest.getDriver()).pause(seconds * 1000).perform();
     }
 
     public static String asURL(String str) {
@@ -72,13 +67,13 @@ public final class TestUtils {
 
     public static void createNewItem(BaseTest baseTest, String name, String itemClassName) {
         baseTest.getDriver().findElement(By.cssSelector("#side-panel > div > div")).click();
-        getWait15(baseTest).until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(name);
+        baseTest.getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(name.trim());
         baseTest.getDriver().findElement(By.className(itemClassName)).click();
         baseTest.getDriver().findElement(By.id("ok-button")).click();
     }
 
     public static void returnToDashBoard(BaseTest baseTest) {
-        baseTest.getDriver().findElement(By.cssSelector("a[href = '/']")).click();
+        baseTest.getDriver().findElement(By.cssSelector("a#jenkins-home-link")).click();
     }
 
     public static void createNewItemAndReturnToDashboard(BaseTest baseTest, String name, String itemClassName) {
@@ -86,24 +81,54 @@ public final class TestUtils {
         returnToDashBoard(baseTest);
     }
 
+    public static WebElement getViewItemElement(BaseTest baseTest, String name) {
+        return baseTest.getDriver().findElement(By.cssSelector(String.format("td>a[href = 'job/%s/']", asURL(name))));
+    }
+
+    public static void clickAtBeginOfElement(BaseTest baseTest, WebElement element) {
+        Point itemPoint = baseTest.getWait10().until(ExpectedConditions.elementToBeClickable(element)).getLocation();
+        new Actions(baseTest.getDriver())
+                .moveToLocation(itemPoint.getX(), itemPoint.getY())
+                .click()
+                .perform();
+    }
+
     public static void openElementDropdown(BaseTest baseTest, WebElement element) {
-        WebElement chevron = element.findElement(By.className("jenkins-menu-dropdown-chevron"));
+        WebElement chevron = element.findElement(By.cssSelector("[class $= 'chevron']"));
 
         ((JavascriptExecutor) baseTest.getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", chevron);
         ((JavascriptExecutor) baseTest.getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
     }
 
-    public static void deleteUsingDropdown(BaseTest baseTest, String name) {
-        openElementDropdown(baseTest, baseTest.getDriver().findElement(
-                By.cssSelector(String.format("td a[href = 'job/%s/']", asURL(name)))));
+    public static void openJobDropdown(BaseTest baseTest, String jobName) {
+        By dropdownChevron = By.xpath("//table//button[@class='jenkins-menu-dropdown-chevron']");
 
-        baseTest.getDriver().findElement(DROPDOWN_DELETE).click();
-        getWait15(baseTest).until(ExpectedConditions.elementToBeClickable(DIALOG_DEFAULT_BUTTON)).click();
+        Actions action = new Actions(baseTest.getDriver());
+        baseTest.getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table//a[@href='job/" + jobName + "/']")));
+        action.moveToElement(baseTest.getDriver().findElement(
+                By.xpath("//table//a[@href='job/" + jobName + "/']"))).perform();
+
+        action.moveToElement(baseTest.getDriver().findElement(dropdownChevron)).perform();
+        baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(dropdownChevron));
+        int chevronHeight = baseTest.getDriver().findElement(dropdownChevron).getSize().getHeight();
+        int chevronWidth = baseTest.getDriver().findElement(dropdownChevron).getSize().getWidth();
+        action.moveToElement(baseTest.getDriver().findElement(dropdownChevron), chevronWidth, chevronHeight).click()
+                .perform();
+
+        baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(DROPDOWN_DELETE));
+    }
+
+    public static void deleteJobViaDropdowm(BaseTest baseTest, String jobName) {
+        openJobDropdown(baseTest, jobName);
+
+        baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(DROPDOWN_DELETE)).click();
+
+        baseTest.getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
     }
 
     public static void addProjectDescription(BaseTest baseTest, String projectName, String description) {
         baseTest.getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
-        getWait15(baseTest).until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
+        baseTest.getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
         baseTest.getDriver().findElement(By.name("description")).sendKeys(description);
         baseTest.getDriver().findElement(By.name("Submit")).click();
     }
@@ -122,6 +147,7 @@ public final class TestUtils {
         baseTest.getDriver().findElement(By.xpath(JOB_XPATH.formatted(job))).click();
         baseTest.getDriver().findElement(By.id("ok-button")).click();
     }
+
     public static void createNewJob(BaseTest baseTest, Job job, String jobName) {
         goToJobPageAndEnterJobName(baseTest, jobName);
         baseTest.getDriver().findElement(By.xpath(JOB_XPATH.formatted(job))).click();
@@ -145,6 +171,17 @@ public final class TestUtils {
         baseTest.getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
     }
 
+    public static boolean checkIfProjectIsOnTheBoard(WebDriver driver, String projectName){
+        goToMainPage(driver);
+        List<WebElement> displayedProjects = driver.findElements(
+                By.xpath("//table[@id='projectstatus']//button/preceding-sibling::span"));
+
+        boolean isDisplayed = displayedProjects.stream()
+                .anyMatch(el -> el.getText().equals(projectName));
+
+        return isDisplayed;
+    }
+
     public enum Job {
         FREESTYLE("Freestyle project"),
         PIPELINE("Pipeline"),
@@ -162,6 +199,17 @@ public final class TestUtils {
         @Override
         public String toString() {
             return jobName;
+        }
+    }
+
+    public static void resetJenkinsTheme(BaseTest baseTest) {
+        baseTest.getDriver().findElement(By.cssSelector("[href='/manage']")).click();
+        baseTest.getDriver().findElement(By.cssSelector("[href='appearance']")).click();
+
+        WebElement defaultThemeButton = baseTest.getDriver().findElement(By.cssSelector("[for='radio-block-2']"));
+        if (!defaultThemeButton.isSelected()) {
+            defaultThemeButton.click();
+            baseTest.getDriver().findElement(By.name("Apply")).click();
         }
     }
 }
