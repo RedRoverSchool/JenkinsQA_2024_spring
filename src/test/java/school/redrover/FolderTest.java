@@ -136,14 +136,18 @@ public class FolderTest extends BaseTest {
 //        clickOnDropdownArrow(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']"));
         int deltaX = breadcrumbFolderName.getSize().getWidth()/2;
         int deltaY = breadcrumbFolderName.getSize().getHeight()/2;
-        WebElement dropdownArrow = getDriver().findElement(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']"));
+
 //        int deltaXX = dropdownArrow.getSize().getWidth()/3*2;
 //        int deltaYY = dropdownArrow.getSize().getHeight()/3;
 
         new Actions(getDriver())
                 .moveToElement(breadcrumbFolderName, deltaX, deltaY)
 //                .scrollByAmount(deltaX, deltaY)
-                .pause(10000)
+                .pause(1000)
+                .perform();
+
+        WebElement dropdownArrow = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']")));
+                new Actions(getDriver())
                 .moveToElement(dropdownArrow, 5, 13)
 //                .moveToElement(dropdownArrow)
 //                .scrollByAmount(deltaXX, deltaYY)
