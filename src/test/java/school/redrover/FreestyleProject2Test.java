@@ -65,7 +65,7 @@ public class FreestyleProject2Test extends BaseTest {
                 .click(projectItem.findElement(By.cssSelector("[class$='chevron']")))
                 .perform();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//a[contains(@href, '/move')]"))).click();
 
         new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" +  FOLDER_NAME);
