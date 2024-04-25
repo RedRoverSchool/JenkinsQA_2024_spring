@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -47,13 +48,11 @@ public class NewFreestyleProject24Test extends BaseTest {
     public void testFreestyleMoveToFolder() {
         TestUtils.createNewJob(this, TestUtils.Job.FOLDER,FOLDER);
 
-        WebElement dropdownChevron = getDriver().findElement(By.xpath("//td//button[@class='jenkins-menu-dropdown-chevron'][contains(@data-href,'" + FREESTYLE_NAME + "')]"));
+        WebElement dropdownChevron = getDriver().findElement(By.xpath("//tr//button[@class='jenkins-menu-dropdown-chevron']"));
         Actions action = new Actions(getDriver());
         action.moveToElement(dropdownChevron).perform();
         getWait10().until(ExpectedConditions.elementToBeClickable(dropdownChevron));
-        int chevronHeight = getDriver().findElement(By.xpath("//td//button[@class='jenkins-menu-dropdown-chevron'][contains(@data-href,'" + FREESTYLE_NAME + "')]")).getSize().getHeight();
-        int chevronWidth = getDriver().findElement(By.xpath("//td//button[@class='jenkins-menu-dropdown-chevron'][contains(@data-href,'" + FREESTYLE_NAME + "')]")).getSize().getWidth();
-        action.moveToElement(getDriver().findElement(By.xpath("//td//button[@class='jenkins-menu-dropdown-chevron'][contains(@data-href,'" + FREESTYLE_NAME + "')]")), chevronWidth, chevronHeight).click().perform();
+        action.moveToElement(getDriver().findElement(By.xpath("//td//button[@class='jenkins-menu-dropdown-chevron'][contains(@data-href,'" + FREESTYLE_NAME + "')]"))).click().perform();
         //dropdownChevron.click();
 
         //getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='jenkins-dropdown__item'][contains(@href,'move')]"))).click();
