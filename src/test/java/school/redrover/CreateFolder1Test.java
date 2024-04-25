@@ -3,7 +3,6 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -45,11 +44,9 @@ public class CreateFolder1Test extends BaseTest {
     }
 
     @Test
-    public void testRenameFolder() throws InterruptedException {
+    public void testRenameFolder() {
         final String folderName = "ProjectFolder";
         final String newFolderName = "NewProjectFolder";
-        final String thisFolderIsEmptyMessage = "This folder is empty";
-        final String createAJobLinkText = "Create a job";
 
         createNewFolder(folderName);
         openDashboard();
