@@ -57,16 +57,16 @@ public class NewFreestyleProject24Test extends BaseTest {
 
     @Test(dependsOnMethods = "testFreestyleMoveToFolder")
     public void testCheckFreestyleProjectViaBreadcrumb() {
-        WebElement jenkinsDropdown = getDriver().findElement(By.xpath("//ol//button[@class='jenkins-menu-dropdown-chevron']"));
+        WebElement jenkinsDropdown = getDriver().findElement(By.xpath("//button[@data-href='http://localhost:8080/']"));
         Actions action = new Actions(getDriver());
         action.moveToElement(jenkinsDropdown).perform();
         jenkinsDropdown.click();
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class = 'jenkins-dropdown__item'][contains(@href, 'views')]"))).click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class = 'jenkins-dropdown__item'][contains(@href, 'views')]"))).click();
 
         getDriver().findElement(By.xpath("//li[@class='children'][2]")).click();
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class = 'jenkins-dropdown__item'][contains(@href, 'Folder')]"))).click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class = 'jenkins-dropdown__item'][contains(@href, 'Folder')]"))).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//td//a[@href='job/" + FREESTYLE_NAME + "/']")).getText(),
                 FREESTYLE_NAME);
