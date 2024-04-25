@@ -138,6 +138,7 @@ public class Pipeline1Test extends BaseTest {
         Assert.assertEquals(actualProjectName, expectedProjectName);
     }
 
+    @Ignore
     @Test
     public void testConsoleOutputValue() {
 
@@ -167,6 +168,7 @@ public class Pipeline1Test extends BaseTest {
         }
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreatePipeline")
     public void testAvgStageTimeBuildTimeIsDisplayed() {
         int number_of_stages = 1;

@@ -1,12 +1,9 @@
 package school.redrover;
-
 import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import school.redrover.runner.BaseTest;
 
 public class MultibranchPipelineDependentTests extends BaseTest {
@@ -28,7 +25,7 @@ public class MultibranchPipelineDependentTests extends BaseTest {
         getDriver().findElement(By.id("jenkins-head-icon")).click();
     }
 
-    @Test(dependsOnMethods = "testCreate")
+    @Test(dependsOnMethods = "testVerifyMpDisabledMessageColorOnStatusPage")
     public void testChangeFromDisableOnStatusPage() {
         getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']")).click();
         WebElement configureLink = getDriver().findElement(By.cssSelector(".task-link-wrapper [href$='configure']"));
@@ -48,7 +45,7 @@ public class MultibranchPipelineDependentTests extends BaseTest {
         Assert.assertEquals(disabledMultiPipelineMessage.size(), 0, "Disabled message is displayed!!!");
     }
 
-    @Test(dependsOnMethods = {"testCreate", "testVerifyMpDisabledOnStatusPage"})
+    @Test(dependsOnMethods = {"testCreate", "testVerifyMpDisabledOnStatusPage", "testVerifyMpDisabledMessageColorOnStatusPage"})
     public void testRenameOnTheSidebar() {
         getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']")).click();
         getDriver().findElement(By.cssSelector("[href $='rename']")).click();
@@ -69,5 +66,13 @@ public class MultibranchPipelineDependentTests extends BaseTest {
         String disabledMpMessage = getDriver().findElement(By.id("enable-project"))
                 .getDomProperty("innerText").split(" Enable")[0];
         Assert.assertEquals(disabledMpMessage,"This Multibranch Pipeline is currently disabled");
+    }
+
+    @Test (dependsOnMethods = {"testCreate", "testVerifyMpDisabledOnStatusPage"})
+    public void testVerifyMpDisabledMessageColorOnStatusPage() {
+        getDriver().findElement(By.cssSelector("[href='job/" + MULTI_PIPELINE_NAME + "/']")).click();
+
+        String messageColor = getDriver().findElement(By.id("enable-project")).getCssValue("color");
+        Assert.assertEquals(messageColor, "rgba(254, 130, 10, 1)");
     }
 }
