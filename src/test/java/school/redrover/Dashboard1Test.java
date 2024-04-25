@@ -128,12 +128,24 @@ public class Dashboard1Test extends BaseTest {
                 .perform();
     }
 
-    private boolean isItemMenuCorrect(List<String> menu, String itemType) {
-        TestUtils.clickJobChevronOnDashboard(this, itemType);
-        List<String> chevronMenu = Arrays.stream(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dropdown"))).getText().split("\\r?\\n")).toList();
+    public void clickJobChevronOnDashboard(String jobName) {
+        WebElement jobLinkText = getDriver().findElement(By.linkText(jobName));
+        int offsetX = jobLinkText.getSize().getWidth() / 2 + 25;
 
-        System.out.println(chevronMenu.size() + " " + chevronMenu);
-        System.out.println(menu.size() + " " + menu);
+        new Actions(getDriver())
+                .moveToElement(jobLinkText)
+                .pause(500)
+                .moveByOffset(offsetX, 0)
+                .click()
+                .perform();
+    }
+
+    private boolean isItemMenuCorrect(List<String> menu, String itemType) {
+        clickJobChevronOnDashboard(itemType);
+        List<String> chevronMenu = Arrays.stream(getWait10().until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-dropdown']")))
+                .getText().split("\\r?\\n")).toList();
+
         return chevronMenu.equals(menu);
     }
 
