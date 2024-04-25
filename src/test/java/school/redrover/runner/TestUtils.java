@@ -127,7 +127,7 @@ public final class TestUtils {
                 .pause(500)
                 .moveByOffset(offsetX, 0)
                 .click()
-                .moveByOffset(0, -50)
+                .pause(500)
                 .perform();
     }
 
