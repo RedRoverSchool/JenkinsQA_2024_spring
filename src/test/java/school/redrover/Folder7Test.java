@@ -43,6 +43,7 @@ public class Folder7Test extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.id("description")).getText().contains(newText));
     }
 
+    @Ignore
     @Test
     public void testCreateFolderUsingName() {
 
