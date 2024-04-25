@@ -173,7 +173,7 @@ public class Pipeline1Test extends BaseTest {
     }
 
     @Test
-    public void createPipelineProject() {
+    public void testCreatePipelineProject() {
         TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
 
         getH1HeaderText();
