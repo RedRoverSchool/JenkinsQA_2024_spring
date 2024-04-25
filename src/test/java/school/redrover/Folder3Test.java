@@ -12,26 +12,38 @@ public class Folder3Test extends BaseTest {
     private static final String FOLDER_NAME_NEW = "Folder_1_New";
     private static final String FOLDER_DESCRIPTION_FIRST = "Some description of the folder.";
 
+
+    private void clickSaveButton() {
+        getDriver().findElement(By.xpath("//*[@name='Submit']")).click();
+    }
+
+    private void clickFolderName(String folderName) {
+        getDriver().findElement(By.xpath("//td/a[@href='job/" + folderName + "/']")).click();
+    }
+    
+    private boolean isFolderExists(String folderName) {
+        return !getDriver().findElements(By.xpath("//*[@id='job_" + folderName + "']")).isEmpty();
+    }
+
     @Test
     public void testCreate() {
         getDriver().findElement(By.xpath("//*[text()='New Item']/ancestor::div[contains(@class,'task')]")).click();
         getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(FOLDER_NAME_FIRST);
         getDriver().findElement(By.xpath("//*[text()='Folder']/ancestor::li")).click();
         getDriver().findElement(By.xpath("//*[@id='ok-button']")).click();
-        getDriver().findElement(By.xpath("//*[@name='Submit']")).click();
+        clickSaveButton();
 
         TestUtils.returnToDashBoard(this);
-        boolean isFolderExists = !getDriver().findElements(By.xpath("//*[@id='job_" + FOLDER_NAME_FIRST + "']")).isEmpty();
 
-        Assert.assertTrue(isFolderExists);
+        Assert.assertTrue(isFolderExists(FOLDER_NAME_FIRST));
     }
 
     @Test (dependsOnMethods = "testCreate")
     public void testAddDescription() {
-        getDriver().findElement(By.xpath("//a[@href='job/" + FOLDER_NAME_FIRST + "/' and span]/span")).click();
+        clickFolderName(FOLDER_NAME_FIRST);
         getDriver().findElement(By.xpath("//*[@id='description-link']")).click();
         getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(FOLDER_DESCRIPTION_FIRST);
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        clickSaveButton();
 
         String textInDescription = getDriver().findElement(By.xpath("//*[@id='description']/div")).getText();
 
@@ -41,20 +53,17 @@ public class Folder3Test extends BaseTest {
     @Test (dependsOnMethods = "testAddDescription")
     public void testRename() {
 
-        getDriver().findElement(By.xpath("//a[@href='job/" + FOLDER_NAME_FIRST + "/' and span]/span")).click();
+        clickFolderName(FOLDER_NAME_FIRST);
         getDriver().findElement(By.xpath("//*[text()='Rename']/parent::a")).click();
 
         getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
         getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys(FOLDER_NAME_NEW);
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        clickSaveButton();
 
         TestUtils.returnToDashBoard(this);
 
-        boolean isFolderWithNewNameExists =
-                !getDriver().findElements(By.xpath("//*[@id='job_" + FOLDER_NAME_NEW + "']")).isEmpty();
-
-        boolean isFolderWithOldNameNotExists =
-                getDriver().findElements(By.xpath("//*[@id='job_" + FOLDER_NAME_FIRST + "']")).isEmpty();
+        boolean isFolderWithNewNameExists = isFolderExists(FOLDER_NAME_NEW);
+        boolean isFolderWithOldNameNotExists = !isFolderExists(FOLDER_NAME_FIRST);
 
         Assert.assertTrue(isFolderWithNewNameExists && isFolderWithOldNameNotExists);
     }
