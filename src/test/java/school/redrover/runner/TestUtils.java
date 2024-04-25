@@ -3,10 +3,12 @@ package school.redrover.runner;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import com.github.javafaker.Faker;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
+import java.util.Arrays;
 import java.util.List;
 
 public final class TestUtils {
@@ -211,5 +213,23 @@ public final class TestUtils {
             defaultThemeButton.click();
             baseTest.getDriver().findElement(By.name("Apply")).click();
         }
+    }
+
+    public static void createPeople(BaseTest baseTest){
+        Faker faker = new Faker();
+        baseTest.getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+        baseTest.getDriver().findElement(By.xpath("//dt[text()='Users']")).click();
+        baseTest.getDriver().findElement(By.xpath("//a[@href='addUser']")).click();
+
+        baseTest.getDriver().findElement(By.xpath("//input[@name='username']"))
+                .sendKeys(faker.name().firstName());
+        String pw = faker.internet().password();
+        baseTest.getDriver().findElement(By.xpath("//input[@name='password1']")).sendKeys(pw);
+        baseTest.getDriver().findElement(By.xpath("//input[@name='password2']")).sendKeys(pw);
+        baseTest.getDriver().findElement(By.xpath("//input[@name='fullname']"))
+                .sendKeys(faker.name().fullName());
+        baseTest.getDriver().findElement(By.xpath("//input[@name='email']"))
+                .sendKeys(faker.internet().emailAddress());
+        baseTest.getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
     }
 }
