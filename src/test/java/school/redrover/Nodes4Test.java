@@ -7,9 +7,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-public class DeleteNodeTest extends BaseTest {
+public class Nodes4Test extends BaseTest {
 
-    public void testCreateNode() {
+    public void createNode() {
 
         final String nodName = "TestNode";
 
@@ -27,7 +27,7 @@ public class DeleteNodeTest extends BaseTest {
 
         final String searchNode = "TestNode";
 
-        testCreateNode();
+        createNode();
 
         getDriver().findElement(By.linkText(searchNode)).click();
         getDriver().findElement(By.xpath("//a[.='Delete Agent']")).click();
