@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 public class MultibranchPipelineDependentTests extends BaseTest {
 
@@ -28,7 +29,7 @@ public class MultibranchPipelineDependentTests extends BaseTest {
         getDriver().findElement(By.id("jenkins-head-icon")).click();
     }
 
-    @Test(dependsOnMethods = "testCreate")
+    @Test(dependsOnMethods = "testVerifyColorMessageMpDisabledOnStatusPage")
     public void testChangeFromDisableOnStatusPage() {
         getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']")).click();
         WebElement configureLink = getDriver().findElement(By.cssSelector(".task-link-wrapper [href$='configure']"));
@@ -48,7 +49,7 @@ public class MultibranchPipelineDependentTests extends BaseTest {
         Assert.assertEquals(disabledMultiPipelineMessage.size(), 0, "Disabled message is displayed!!!");
     }
 
-    @Test(dependsOnMethods = {"testCreate", "testVerifyMpDisabledOnStatusPage"})
+    @Test(dependsOnMethods = {"testCreate", "testVerifyMpDisabledOnStatusPage", "testVerifyColorMessageMpDisabledOnStatusPage"})
     public void testRenameOnTheSidebar() {
         getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']")).click();
         getDriver().findElement(By.cssSelector("[href $='rename']")).click();
@@ -69,5 +70,13 @@ public class MultibranchPipelineDependentTests extends BaseTest {
         String disabledMpMessage = getDriver().findElement(By.id("enable-project"))
                 .getDomProperty("innerText").split(" Enable")[0];
         Assert.assertEquals(disabledMpMessage,"This Multibranch Pipeline is currently disabled");
+    }
+
+    @Test (dependsOnMethods = {"testCreate", "testVerifyMpDisabledOnStatusPage"})
+    public void testVerifyColorMessageMpDisabledOnStatusPage() {
+        getDriver().findElement(By.cssSelector("[href='job/" + MULTI_PIPELINE_NAME + "/']")).click();
+
+        String colorMessage = getDriver().findElement(By.id("enable-project")).getCssValue("color");
+        Assert.assertEquals(colorMessage, "rgba(254, 130, 10, 1)");
     }
 }
