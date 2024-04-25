@@ -19,6 +19,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
     private final static String MULTI_PIPELINE_NAME = "MultibranchPipeline";
     private final static String RENAMED_MULTI_PIPELINE = "NewMultibranchPipelineName";
+    private final static String NESTED_TESTS_FOLDER_NAME = "NestedTestsFolder";
 
     private final static List <String> PIPELINE_MENU =
             List.of("Status", "Configure", "Scan Multibranch Pipeline Log", "Multibranch Pipeline Events",
@@ -42,6 +43,22 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.cssSelector("[class*='WorkflowMultiBranchProject']")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.id("jenkins-home-link")).click();
+    }
+
+    private void createFolderForNestedTests() {
+        getDriver().findElement(By.linkText("Create a job")).click();
+        getDriver().findElement(By.id("name")).sendKeys(NESTED_TESTS_FOLDER_NAME);
+        getDriver().findElement(By.cssSelector("[class$='_Folder']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+    }
+
+    private void createMultibranchViaFolderSidebar() {
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(MULTI_PIPELINE_NAME);
+        getDriver().findElement(By.cssSelector("[class*='MultiBranch']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
     }
 
     @Test
@@ -249,6 +266,23 @@ public class MultibranchPipelineTest extends BaseTest {
                 .findElement(By.xpath("//a[@href='job/MyPipeline/']/span")).getText();
         Assert.assertEquals(namePipelineProject, "MyPipeline");
     }
+
+    @Test
+    public void testMultibranchSidebarTasksUponCreatingViaFolder() {
+        final List<String> sidebarTasks = List.of("Status", "Configure", "Scan Multibranch Pipeline Log",
+                "Multibranch Pipeline Events", "Delete Multibranch Pipeline", "People", "Build History", "Move",
+                "Rename", "Pipeline Syntax", "Credentials");
+
+        createFolderForNestedTests();
+        createMultibranchViaFolderSidebar();
+
+        List<String> actualSidebarTexts = TestUtils.getTexts(
+                getDriver().findElements(By.cssSelector("[class^='task-link-wrapper']")));
+
+        Assert.assertEquals(actualSidebarTexts.size(), 11);
+        Assert.assertEquals(actualSidebarTexts, sidebarTasks);
+    }
+
     @Test
     public void testVerifyPipelineSidebarMenu() {
         createNewMultiPipeline(MULTI_PIPELINE_NAME);
