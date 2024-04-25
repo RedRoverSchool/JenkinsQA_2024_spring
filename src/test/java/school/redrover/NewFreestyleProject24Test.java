@@ -17,11 +17,13 @@ public class NewFreestyleProject24Test extends BaseTest {
     private static final By JENKINS_INPUT = By.cssSelector("#name");
     private static final By JENKINS_DASHBOARD = By.className("jenkins-breadcrumbs__list-item");
     private static final String FREESTYLE_NAME = "newFreestyleProject";
+    private static final String FOLDER = "NewFolder";
+
     private void dropDown() {
         By dropdownChevron = By.xpath("(//li//button[@class='jenkins-menu-dropdown-chevron'])[1]");
 
         Actions action = new Actions(getDriver());
-        action.moveToElement(getDriver().findElement(dropdownChevron)).perform();
+        action.moveToElement(getDriver().findElement(dropdownChevron)).pause(3000).perform();
         getWait5().until(ExpectedConditions.elementToBeClickable(dropdownChevron));
         int chevronHeight = getDriver().findElement(dropdownChevron).getSize().getHeight();
         int chevronWidth = getDriver().findElement(dropdownChevron).getSize().getWidth();
@@ -44,7 +46,7 @@ public class NewFreestyleProject24Test extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateFreestyleProject")
     public void testFreestyleMoveToFolder() {
-        TestUtils.createNewJob(this, TestUtils.Job.FOLDER,"NewFolder");
+        TestUtils.createNewJob(this, TestUtils.Job.FOLDER,FOLDER);
 
         WebElement element = getDriver().findElement(By.xpath("//td//a[@href='job/" + FREESTYLE_NAME + "/']"));
         Actions action = new Actions(getDriver());
@@ -55,7 +57,7 @@ public class NewFreestyleProject24Test extends BaseTest {
 
         WebElement move = getDriver().findElement(By.name("destination"));
         Select select = new Select(move);
-        select.selectByValue("/NewFolder");
+        select.selectByValue("/" + FOLDER);
         getDriver().findElement(By.name("Submit")).click();
 
         getDriver().findElement(JENKINS_DASHBOARD).click();
@@ -75,7 +77,7 @@ public class NewFreestyleProject24Test extends BaseTest {
 
         getDriver().findElement(By.xpath("//li[@class='children'][2]")).click();
 
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class = 'jenkins-dropdown__item'][contains(@href, 'Folder')]"))).click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class = 'jenkins-dropdown__item'][contains(@href," + FOLDER + ")]"))).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//td//a[@href='job/" + FREESTYLE_NAME + "/']")).getText(),
                 FREESTYLE_NAME);
