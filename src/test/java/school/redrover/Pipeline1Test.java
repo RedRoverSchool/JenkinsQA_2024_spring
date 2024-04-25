@@ -1,6 +1,8 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -31,6 +33,24 @@ public class Pipeline1Test extends BaseTest {
     private String getH2HeaderText() {
         return getWait5().until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//h2"))).getText();
+    }
+
+    private void sendScript(int number_of_stages) {
+        String pipelineScript = "pipeline {\n" +
+                "agent any\n\n" +
+                "stages {\n";
+
+        getDriver().findElement(By.className("ace_text-input")).sendKeys(pipelineScript);
+
+        for (int i = 1; i <= number_of_stages; i++) {
+
+            String stage = "\nstage(\'stage " + i + "\') {\n" +
+                    "steps {\n" +
+                    "echo \'test " + i + "\'\n";
+            getDriver().findElement(By.className("ace_text-input")).sendKeys(stage);
+            getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
+            getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
+        }
     }
 
     @Test
@@ -117,6 +137,35 @@ public class Pipeline1Test extends BaseTest {
 
         String actualProjectName = getDriver().findElement(By.xpath("//tbody//a/span")).getText();
         Assert.assertEquals(actualProjectName, expectedProjectName);
+    }
+
+    @Test
+    public void testConsoleOutputValue() {
+
+        int number_of_stages = 8;
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.name("name")).sendKeys(PIPELINE_NAME);
+        getDriver().findElement(By.cssSelector("[class$='WorkflowJob']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        sendScript(number_of_stages);
+
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/build?delay=0sec']")).click();
+
+        for (int i = 1; i <= number_of_stages; i++) {
+
+            getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("td[class='stage-cell stage-cell-" + (i - 1) + " SUCCESS']"))).click();
+            getDriver().findElement(By.cssSelector("span[class='glyphicon glyphicon-stats']")).click();
+
+            String actualRes = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("pre[class='console-output']"))).getText();
+            String expectedResult = "test " + i;
+
+            getDriver().findElement(By.cssSelector("span[class='glyphicon glyphicon-remove']")).click();
+            getWait2().until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("span[class='glyphicon glyphicon-remove']")));
+            Assert.assertEquals(actualRes, expectedResult);
+        }
     }
 }
 
