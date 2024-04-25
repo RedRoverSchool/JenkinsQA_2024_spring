@@ -130,8 +130,10 @@ public class Dashboard1Test extends BaseTest {
 
     private boolean isItemMenuCorrect(List<String> menu, String itemType) {
         TestUtils.clickJobChevronOnDashboard(this, itemType);
-        List<String> chevronMenu = TestUtils.getTexts(
-                getDriver().findElements(By.xpath("//*[@class='jenkins-dropdown__item']")));
+        List<String> chevronMenu = Arrays.stream(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dropdown"))).getText().split("\\r?\\n")).toList();
+
+        System.out.println(chevronMenu.size() + " " + chevronMenu);
+        System.out.println(menu.size() + " " + menu);
         return chevronMenu.equals(menu);
     }
 
