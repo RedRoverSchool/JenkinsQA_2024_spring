@@ -66,7 +66,8 @@ public class FreestyleProject2Test extends BaseTest {
                 .perform();
 
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
-                .xpath("//a[contains(@href, '/move')]"))).click();
+                .xpath("//div[@class ='tippy-box']")));
+        action.moveToElement(getDriver().findElement(By.xpath("//a[contains(@href, '/move')]"))).click();
 
         new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" +  FOLDER_NAME);
         getDriver().findElement(By.name("Submit")).click();
