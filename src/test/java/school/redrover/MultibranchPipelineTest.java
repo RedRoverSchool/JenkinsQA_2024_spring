@@ -20,12 +20,16 @@ public class MultibranchPipelineTest extends BaseTest {
     private final static String MULTI_PIPELINE_NAME = "MultibranchPipeline";
     private final static String RENAMED_MULTI_PIPELINE = "NewMultibranchPipelineName";
 
+    private final static List <String> PIPELINE_MENU =
+            List.of("Status", "Configure", "Scan Multibranch Pipeline Log", "Multibranch Pipeline Events",
+                    "Delete Multibranch Pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
+
     private void disableCreatedMultiPipeline(String multiPipelineName) {
         getDriver().findElement(By.xpath("//span[text()='" + multiPipelineName + "']")).click();
         WebElement configureLink = getDriver().findElement(By.cssSelector(".task-link-wrapper [href$='configure']"));
         configureLink.click();
         if (getDriver().findElement(By.className("jenkins-toggle-switch__label__checked-title"))
-            .isDisplayed()) {
+                .isDisplayed()) {
             getDriver().findElement(By.cssSelector("[data-title*='Disabled']")).click();
         }
         getDriver().findElement(By.cssSelector("[name*='Submit']")).click();
@@ -44,14 +48,14 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testCreateMultibranchPipeline() {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
         getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
-                   .sendKeys("First Multibranch Pipeline project");
+                .sendKeys("First Multibranch Pipeline project");
         getDriver().findElement(By.xpath("//div[@id='j-add-item-type-standalone-projects']/ul/li[3]"))
-                   .click();
+                .click();
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
 
         WebElement actualMultibranchPipelineName = getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//li[3]"));
 
-        Assert.assertEquals(actualMultibranchPipelineName.getText(),"First Multibranch Pipeline project");
+        Assert.assertEquals(actualMultibranchPipelineName.getText(), "First Multibranch Pipeline project");
     }
 
     @Test
@@ -60,28 +64,28 @@ public class MultibranchPipelineTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
         getDriver().findElement(By.xpath("//div[@id='j-add-item-type-standalone-projects']/ul/li[3]"))
-                   .click();
+                .click();
         WebElement okButton = getDriver().findElement(By.xpath("//button[@id='ok-button']"));
         WebElement actualErrorMessage = getDriver().findElement(By.xpath("//div[@id='itemname-required']"));
 
         Assert.assertFalse(okButton.isEnabled());
         Assert.assertTrue(actualErrorMessage.isDisplayed());
-        Assert.assertEquals(actualErrorMessage.getText(),expectedErrorMessage);
+        Assert.assertEquals(actualErrorMessage.getText(), expectedErrorMessage);
     }
 
     @Test
     public void testRenameMultibranchPipeline() {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
         getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
-                   .sendKeys("First Multibranch Pipeline project");
+                .sendKeys("First Multibranch Pipeline project");
         getDriver().findElement(By.xpath("//div[@id='j-add-item-type-standalone-projects']/ul/li[3]"))
-                   .click();
+                .click();
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
         getDriver().findElement(By.cssSelector("#breadcrumbs > li:nth-child(3")).click();
         getDriver().findElement(By.cssSelector("#tasks > div:nth-child(8) > span > a")).click();
         getDriver().findElement(By.cssSelector("input.jenkins-input.validated")).clear();
         getDriver().findElement(By.cssSelector("input.jenkins-input.validated"))
-                   .sendKeys("New Multibranch Pipeline project");
+                .sendKeys("New Multibranch Pipeline project");
         getDriver().findElement(By.xpath("//div[@id='bottom-sticker']//button")).click();
 
         WebElement newName = getDriver().findElement(By.xpath("//div[@id='main-panel']/h1"));
@@ -98,7 +102,7 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']")).click();
         getDriver().findElement(By.xpath("//button[contains(., 'Enable')]")).click();
         List<WebElement> disabledMultiPipelineMessage = getDriver().findElements(
-            By.xpath("//form[contains(., 'This Multibranch Pipeline is currently disabled')]"));
+                By.xpath("//form[contains(., 'This Multibranch Pipeline is currently disabled')]"));
 
         Assert.assertEquals(disabledMultiPipelineMessage.size(), 0, "Disabled message is displayed!!!");
     }
@@ -143,7 +147,7 @@ public class MultibranchPipelineTest extends BaseTest {
         WebElement tooltip = webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-box")));
 
         Assert.assertTrue(tooltip.isDisplayed());
-        Assert.assertEquals(tooltip.getText(),tooltipText);
+        Assert.assertEquals(tooltip.getText(), tooltipText);
     }
 
     @Test
@@ -176,7 +180,7 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.cssSelector("[class*=toggle-switch__label]")).click();
 
         String statusToggle = getDriver().findElement(By.id("enable-disable-project")).getDomProperty("checked");
-        Assert.assertEquals(statusToggle,"true");
+        Assert.assertEquals(statusToggle, "true");
     }
 
     @Test
@@ -203,7 +207,7 @@ public class MultibranchPipelineTest extends BaseTest {
         new Actions(getDriver()).moveToElement(createdMultibranchPipeline).perform();
         WebElement dropdownChevron = getDriver().findElement(By.cssSelector("#job_" + MULTI_PIPELINE_NAME + " > td:nth-child(3) > a > button"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
-            "arguments[0].dispatchEvent(new Event('click'));", dropdownChevron);
+                "arguments[0].dispatchEvent(new Event('click'));", dropdownChevron);
         getDriver().findElement(By.cssSelector("[href $='rename']")).click();
 
         WebElement renameInput = getDriver().findElement(By.xpath("//input[@checkdependson='newName']"));
@@ -213,7 +217,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         String multiPipelinePageHeading = getDriver().findElement(By.tagName("h1")).getText();
         Assert.assertEquals(multiPipelinePageHeading, RENAMED_MULTI_PIPELINE,
-            "The Multi Pipeline name is not equal to " + RENAMED_MULTI_PIPELINE);
+                "The Multi Pipeline name is not equal to " + RENAMED_MULTI_PIPELINE);
     }
 
     @Test
@@ -233,7 +237,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testCreatePipelineUsingCreateAJobOnHomePage(){
+    public void testCreatePipelineUsingCreateAJobOnHomePage() {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys("MyPipeline");
         getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
@@ -245,4 +249,17 @@ public class MultibranchPipelineTest extends BaseTest {
                 .findElement(By.xpath("//a[@href='job/MyPipeline/']/span")).getText();
         Assert.assertEquals(namePipelineProject, "MyPipeline");
     }
+
+    @Test
+    public void testVerifyPipelineSidebarMenu() {
+        createNewMultiPipeline(MULTI_PIPELINE_NAME);
+
+        getDriver().findElement(By.xpath("//span[text() = '"+ MULTI_PIPELINE_NAME + "']")).click();
+        List<String> pipelineSideMenu = TestUtils.getTexts(getDriver()
+                .findElements(By.xpath("//span[@class='task-link-text']")));
+
+        Assert.assertTrue(pipelineSideMenu.size() == 10 && pipelineSideMenu.equals(PIPELINE_MENU));
+    }
 }
+
+
