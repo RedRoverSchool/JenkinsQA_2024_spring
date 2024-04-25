@@ -51,6 +51,9 @@ public class CreateFolder1Test extends BaseTest {
         createNewFolder(folderName);
         openDashboard();
 
+        WebElement projectElement = getDriver().findElement(By.xpath("//span[text()='" + folderName + "']"));
+        new Actions(getDriver()).moveToElement(projectElement).perform();
+        
         WebElement projectName = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tr[@id='job_" + folderName + "']/td[3]/a/button")));
         new Actions(getDriver()).moveToElement(projectName).click().perform();
 
