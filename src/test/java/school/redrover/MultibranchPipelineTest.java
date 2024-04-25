@@ -260,6 +260,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertTrue(pipelineSideMenu.size() == 10 && pipelineSideMenu.equals(PIPELINE_MENU));
     }
+
 }
 
 
