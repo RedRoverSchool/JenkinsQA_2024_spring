@@ -42,12 +42,12 @@ public class PipelineConfigurationTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
     }
 
-    @Ignore
     @Test
     public void testScroll() {
         createPipeline();
 
-        getDriver().findElement(By.xpath("//button[@data-section-id='pipeline']")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@data-section-id='pipeline']"))).click();
+
         Assert.assertTrue(getDriver().findElement(By.id("bottom-sticker")).isDisplayed(), "Pipeline");
     }
 
