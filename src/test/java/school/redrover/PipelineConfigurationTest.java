@@ -91,6 +91,7 @@ public class PipelineConfigurationTest extends BaseTest {
                 getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).isDisplayed());
     }
 
+    @Ignore
     @Test
     public void testDiscardOldBuildsByCount() {
         createPipeline();

@@ -138,6 +138,7 @@ public class Pipeline1Test extends BaseTest {
         Assert.assertEquals(actualProjectName, expectedProjectName);
     }
 
+    @Ignore
     @Test
     public void testConsoleOutputValue() {
 

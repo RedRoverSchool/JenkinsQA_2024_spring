@@ -47,7 +47,7 @@ public class MultibranchPipelineDependentTests extends BaseTest {
         Assert.assertEquals(disabledMultiPipelineMessage.size(), 0, "Disabled message is displayed!!!");
     }
 
-    @Test(dependsOnMethods = {"testCreate", "testVerifyMpDisabledOnStatusPage", "testVerifyColorMessageMpDisabledOnStatusPage"})
+    @Test(dependsOnMethods = {"testCreate", "testVerifyMpDisabledOnStatusPage", "testVerifyMpDisabledMessageColorOnStatusPage"})
     public void testRenameOnTheSidebar() {
         getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']")).click();
         getDriver().findElement(By.cssSelector("[href $='rename']")).click();
@@ -71,10 +71,10 @@ public class MultibranchPipelineDependentTests extends BaseTest {
     }
 
     @Test (dependsOnMethods = {"testCreate", "testVerifyMpDisabledOnStatusPage"})
-    public void testVerifyColorMessageMpDisabledOnStatusPage() {
+    public void testVerifyMpDisabledMessageColorOnStatusPage() {
         getDriver().findElement(By.cssSelector("[href='job/" + MULTI_PIPELINE_NAME + "/']")).click();
 
-        String colorMessage = getDriver().findElement(By.id("enable-project")).getCssValue("color");
-        Assert.assertEquals(colorMessage, "rgba(254, 130, 10, 1)");
+        String messageColor = getDriver().findElement(By.id("enable-project")).getCssValue("color");
+        Assert.assertEquals(messageColor, "rgba(254, 130, 10, 1)");
     }
 }
