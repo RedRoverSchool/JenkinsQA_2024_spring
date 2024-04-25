@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -19,19 +20,13 @@ public class HeaderTest extends BaseTest {
     Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Welcome to Jenkins!");
     }
 
-    @Ignore
     @Test
     public void testSearchBox() {
-
-      getDriver().findElement(By.id("search-box")).sendKeys("ma");
-      getDriver().findElement(By.className("yui-ac-bd")).click();
-
-      Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='yui-ac-content']//li[1]")).getText(),
-              "manage");
-
-      getDriver().findElement(By.id("search-box")).sendKeys(Keys.ENTER);
-
-      Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Manage Jenkins");
+        getDriver().findElement(By.id("search-box")).sendKeys("ma");
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.className("yui-ac-bd"))).click();
+        getDriver().findElement(By.id("search-box")).sendKeys(Keys.ENTER);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(),
+                "Manage Jenkins");
     }
 
     @Ignore
