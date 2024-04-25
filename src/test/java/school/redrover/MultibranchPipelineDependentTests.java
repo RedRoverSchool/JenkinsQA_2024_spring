@@ -27,7 +27,7 @@ public class MultibranchPipelineDependentTests extends BaseTest {
         getDriver().findElement(By.id("jenkins-head-icon")).click();
     }
 
-    @Test(dependsOnMethods = "testVerifyColorMessageMpDisabledOnStatusPage")
+    @Test(dependsOnMethods = "testVerifyMpDisabledMessageColorOnStatusPage")
     public void testChangeFromDisableOnStatusPage() {
         getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']")).click();
         WebElement configureLink = getDriver().findElement(By.cssSelector(".task-link-wrapper [href$='configure']"));
