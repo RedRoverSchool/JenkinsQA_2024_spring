@@ -124,7 +124,7 @@ public final class TestUtils {
 
         new Actions(baseTest.getDriver())
                 .moveToElement(jobLinkText)
-                .pause(500)
+                .pause(1000)
                 .moveByOffset(offsetX, 0)
                 .click()
                 .perform();
