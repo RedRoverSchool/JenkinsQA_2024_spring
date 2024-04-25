@@ -275,6 +275,6 @@ public class MultibranchPipelineTest extends BaseTest {
         List<String> actualSidebarTexts = TestUtils.getTexts(
                 getDriver().findElements(By.cssSelector("[class^='task-link-wrapper']")));
 
-        Assert.assertEquals(actualSidebarTexts, sidebarTasks);
+        Assert.assertTrue(actualSidebarTexts.size() == 11 && actualSidebarTexts.equals(sidebarTasks));
     }
 }
