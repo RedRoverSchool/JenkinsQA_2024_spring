@@ -134,12 +134,13 @@ public class Dashboard1Test extends BaseTest {
 
         new Actions(getDriver())
                 .moveToElement(jobLinkText)
-                .pause(500)
+                .pause(200)
                 .moveByOffset(offsetX, 0)
+                .pause(200)
                 .click()
                 .perform();
 
-        WebElement dropdownMenu = getWait10().until(ExpectedConditions.presenceOfElementLocated(
+        WebElement dropdownMenu = getWait2().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[@class='jenkins-dropdown']")));
 
         new Actions(getDriver())
