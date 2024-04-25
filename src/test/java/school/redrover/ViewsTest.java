@@ -75,7 +75,7 @@ public class ViewsTest extends BaseTest {
         ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView(true);", addColumn);
         addColumn.click();
 
-        getDriver().findElement(By.xpath("//*[@id='tippy-2']/div/div/div/div[2]/button[11]")).click();
+        getDriver().findElement(By.cssSelector("div.jenkins-dropdown button:last-child")).click();
         getDriver().findElement(By.name("Submit")).click();
         getDriver().findElement(By.id("jenkins-home-link")).click();
         getDriver().findElement(By.linkText(VIEW_NAME)).click();
