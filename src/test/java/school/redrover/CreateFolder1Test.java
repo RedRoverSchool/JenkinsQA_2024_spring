@@ -57,7 +57,7 @@ public class CreateFolder1Test extends BaseTest {
         WebElement projectName = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tr[@id='job_" + folderName + "']/td[3]/a/button")));
         new Actions(getDriver()).moveToElement(projectName).click().perform();
 
-        WebElement renameElement = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='tippy-5']//div/a[6]")));
+        WebElement renameElement = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@href, '/confirm-rename')]")));
         new Actions(getDriver()).moveToElement(renameElement).click().perform();
 
         WebElement newName = getDriver().findElement(By.xpath("//div[@class='setting-main']/input"));
