@@ -23,7 +23,7 @@ public class NewFreestyleProject24Test extends BaseTest {
         By dropdownChevron = By.xpath("(//li//button[@class='jenkins-menu-dropdown-chevron'])[1]");
 
         Actions action = new Actions(getDriver());
-        action.moveToElement(getDriver().findElement(dropdownChevron)).pause(2000).perform();
+        action.moveToElement(getDriver().findElement(dropdownChevron)).perform();
         getWait10().until(ExpectedConditions.elementToBeClickable(dropdownChevron));
         int chevronHeight = getDriver().findElement(dropdownChevron).getSize().getHeight();
         int chevronWidth = getDriver().findElement(dropdownChevron).getSize().getWidth();
@@ -50,9 +50,14 @@ public class NewFreestyleProject24Test extends BaseTest {
         WebElement dropdownChevron = getDriver().findElement(By.xpath("//td//button[@class='jenkins-menu-dropdown-chevron'][contains(@data-href,'" + FREESTYLE_NAME + "')]"));
         Actions action = new Actions(getDriver());
         action.moveToElement(dropdownChevron).perform();
-        dropdownChevron.click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(dropdownChevron));
+        int chevronHeight = getDriver().findElement(By.xpath("//td//button[@class='jenkins-menu-dropdown-chevron'][contains(@data-href,'" + FREESTYLE_NAME + "')]")).getSize().getHeight();
+        int chevronWidth = getDriver().findElement(By.xpath("//td//button[@class='jenkins-menu-dropdown-chevron'][contains(@data-href,'" + FREESTYLE_NAME + "')]")).getSize().getWidth();
+        action.moveToElement(getDriver().findElement(By.xpath("//td//button[@class='jenkins-menu-dropdown-chevron'][contains(@data-href,'" + FREESTYLE_NAME + "')]")), chevronWidth, chevronHeight).click().perform();
+        //dropdownChevron.click();
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='jenkins-dropdown__item'][contains(@href,'move')]"))).click();
+        //getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='jenkins-dropdown__item'][contains(@href,'move')]"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@class='jenkins-dropdown__item'][contains(@href,'move')]"))).click();
 
         WebElement move = getDriver().findElement(By.name("destination"));
         Select select = new Select(move);
