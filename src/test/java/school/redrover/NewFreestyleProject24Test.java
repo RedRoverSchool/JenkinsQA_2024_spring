@@ -23,12 +23,11 @@ public class NewFreestyleProject24Test extends BaseTest {
         By dropdownChevron = By.xpath("(//li//button[@class='jenkins-menu-dropdown-chevron'])[1]");
 
         Actions action = new Actions(getDriver());
-        action.moveToElement(getDriver().findElement(dropdownChevron)).pause(3000).perform();
-        getWait5().until(ExpectedConditions.elementToBeClickable(dropdownChevron));
+        action.moveToElement(getDriver().findElement(dropdownChevron)).pause(2000).perform();
+        getWait10().until(ExpectedConditions.elementToBeClickable(dropdownChevron));
         int chevronHeight = getDriver().findElement(dropdownChevron).getSize().getHeight();
         int chevronWidth = getDriver().findElement(dropdownChevron).getSize().getWidth();
-        action.moveToElement(getDriver().findElement(dropdownChevron), chevronWidth, chevronHeight).click()
-                .perform();
+        action.moveToElement(getDriver().findElement(dropdownChevron), chevronWidth, chevronHeight).click().perform();
     }
 
    @Test
@@ -70,6 +69,7 @@ public class NewFreestyleProject24Test extends BaseTest {
 
     @Test(dependsOnMethods = "testFreestyleMoveToFolder")
     public void testCheckFreestyleProjectViaBreadcrumb() {
+        getDriver().findElement(By.xpath("//div[@class='logo']")).click();
 
         dropDown();
 
