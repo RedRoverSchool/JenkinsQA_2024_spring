@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -58,6 +59,10 @@ public class FreestyleProject2Test extends BaseTest {
         createFolder(FOLDER_NAME);
 
         WebElement projectItem = getDriver().findElement(PROJECT_ITEM_ON_PROJECTSTATUS_TABLE);
+        WebElement chevron = projectItem.findElement(By.cssSelector("[class $= 'chevron']"));
+
+
+
         action.moveToElement(projectItem)
                 .pause(1000)
                 .moveToElement(projectItem.findElement(By.cssSelector("[class$='chevron']")))
@@ -65,10 +70,14 @@ public class FreestyleProject2Test extends BaseTest {
                 .click(projectItem.findElement(By.cssSelector("[class$='chevron']")))
                 .perform();
 
+        WebElement dropdown = getDriver().findElement(By.xpath("//div[@class = 'jenkins-dropdown']"));
+
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
-                .xpath("//div[@class ='tippy-box']")));
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
-                .xpath("//a[contains(@href, '/move')]"))).click();
+                .xpath("//div[@class = 'jenkins-dropdown']")));
+
+        action.moveToElement(dropdown).pause(1000)
+                .moveToElement(dropdown.findElement(By.xpath("//a[contains(@href, '/move')]")))
+                .click().perform();
 
         new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" +  FOLDER_NAME);
         getDriver().findElement(By.name("Submit")).click();
