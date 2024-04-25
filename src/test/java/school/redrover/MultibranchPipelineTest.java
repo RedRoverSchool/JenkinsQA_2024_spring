@@ -249,4 +249,14 @@ public class MultibranchPipelineTest extends BaseTest {
                 .findElement(By.xpath("//a[@href='job/MyPipeline/']/span")).getText();
         Assert.assertEquals(namePipelineProject, "MyPipeline");
     }
+    @Test
+    public void testVerifyPipelineSidebarMenu() {
+        createNewMultiPipeline(MULTI_PIPELINE_NAME);
+
+        getDriver().findElement(By.xpath("//span[text() = '"+ MULTI_PIPELINE_NAME + "']")).click();
+        List<String> pipelineSideMenu = TestUtils.getTexts(getDriver()
+                .findElements(By.xpath("//span[@class='task-link-text']")));
+
+        Assert.assertTrue(pipelineSideMenu.size() == 10 && pipelineSideMenu.equals(PIPELINE_MENU));
+    }
 }
