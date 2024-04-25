@@ -24,6 +24,7 @@ public class SearchBoxTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         openDashboard();
     }
+
     @Ignore
     @Test
     public void testFindFolderByOneLetter() {
