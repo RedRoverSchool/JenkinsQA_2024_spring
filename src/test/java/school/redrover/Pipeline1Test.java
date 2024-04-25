@@ -30,6 +30,11 @@ public class Pipeline1Test extends BaseTest {
                 By.xpath("//a[contains(@href, 'workflow-stage')]")))).click();
     }
 
+    private String getH1HeaderText() {
+        return getWait5().until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//h1"))).getText();
+    }
+
     private String getH2HeaderText() {
         return getWait5().until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//h2"))).getText();
@@ -165,6 +170,15 @@ public class Pipeline1Test extends BaseTest {
             getWait2().until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("span[class='glyphicon glyphicon-remove']")));
             Assert.assertEquals(actualRes, expectedResult);
         }
+    }
+
+    @Test
+    public void createPipelineProject() {
+        TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
+
+        getH1HeaderText();
+
+        Assert.assertEquals(getH1HeaderText(), PIPELINE_NAME);
     }
 }
 
