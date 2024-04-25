@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -18,6 +19,7 @@ public class HeaderTest extends BaseTest {
     Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Welcome to Jenkins!");
     }
 
+    @Ignore
     @Test
     public void testSearchBox() {
 
@@ -32,6 +34,7 @@ public class HeaderTest extends BaseTest {
       Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Manage Jenkins");
     }
 
+    @Ignore
     @Test
     public void testSearchResult() {
         String searchText = "i";

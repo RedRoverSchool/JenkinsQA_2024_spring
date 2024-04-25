@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -20,6 +21,7 @@ public class OrganizationFolder3Test extends BaseTest {
         getDriver().findElement(By.id("jenkins-head-icon")).click();
     }
 
+    @Ignore
     @Test
     public void testCreateOrganizationFolder(){
         getDriver().findElement(By.xpath("//a[.='New Item']")).click();

@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class NewItem9Test extends BaseTest {
-
+    
     @Ignore
     @Test
     public void testGoToNewJobPage() {

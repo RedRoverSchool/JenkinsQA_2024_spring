@@ -3,6 +3,7 @@ package school.redrover;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -14,6 +15,8 @@ import school.redrover.runner.BaseTest;
 public class NodesTest extends BaseTest {
 
     private static final String NODE_NAME = "FirstNode";
+    public static final By NODE_TABLE_LOCATOR = By.cssSelector(
+        "a[href='../computer/" + NODE_NAME + "/']");
 
     private void createNodeViaMainPage() {
         getDriver().findElement(By.cssSelector("[href='/computer/']")).click();
@@ -24,8 +27,8 @@ public class NodesTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
-    private void deleteNodeViaNodesTable() {
-        WebElement createdNode = getDriver().findElement(By.cssSelector("a[href='../computer/" + NODE_NAME + "/']"));
+    private void deleteNodeViaNodesTable(By nodeTableLocator) {
+        WebElement createdNode = getDriver().findElement(nodeTableLocator);
         new Actions(getDriver()).moveToElement(createdNode).perform();
         WebElement dropdownChevron =getDriver().findElement(By.cssSelector("#node_" + NODE_NAME + " > td:nth-child(2) > a > button"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
@@ -95,8 +98,8 @@ public class NodesTest extends BaseTest {
     @Test
     public void testDeletedNodeNotDisplayedInNodesTable() {
         createNodeViaMainPage();
-        deleteNodeViaNodesTable();
-
-        Assert.assertEquals(getDriver().findElements(By.id("computers")).size(),1);
+        deleteNodeViaNodesTable(NODE_TABLE_LOCATOR);
+        
+        Assert.assertTrue(getDriver().findElements(NODE_TABLE_LOCATOR).isEmpty());
     }
 }

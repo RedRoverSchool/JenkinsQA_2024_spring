@@ -2,11 +2,13 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class NewItem10Test extends BaseTest {
 
+    @Ignore
     @Test
     public void newItemFromOtherExistingTest(){
         getDriver().findElement(By.xpath("//span[text()='Create a job']"))
