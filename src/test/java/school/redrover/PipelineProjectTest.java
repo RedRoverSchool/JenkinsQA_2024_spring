@@ -10,6 +10,10 @@ import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils.*;
 import school.redrover.runner.TestUtils;
 
+import java.util.List;
+
+import static school.redrover.runner.TestUtils.getTexts;
+
 public class PipelineProjectTest extends BaseTest {
 
     public static final String JOB_XPATH = "//*[text()='%s']";
@@ -70,5 +74,21 @@ public class PipelineProjectTest extends BaseTest {
         WebElement previewDescription = getDriver().findElement(By.xpath("//div[@class='textarea-preview']"));
 
         Assert.assertEquals(previewDescription.getText(),"First");
+    }
+
+    @Test
+    public void testBreadcrumbTrailsContainsPipelineName() {
+
+        TestUtils.createJob(this, Job.PIPELINE, "Pipeline project");
+
+        List<WebElement> breadcrumbBarElements = List.of(
+                getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[1]")),
+                getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[2]")),
+                getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[3]/a")),
+                getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[4]")));
+
+        for (WebElement element : breadcrumbBarElements) {
+            Assert.assertTrue(element.isDisplayed(), "Pipeline project");
+        }
     }
 }

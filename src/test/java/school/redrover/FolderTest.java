@@ -5,6 +5,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -16,6 +17,7 @@ public class FolderTest extends BaseTest {
     private static final String FOLDER_NAME = "First_Folder";
     private static final String NEW_FOLDER_NAME = "Renamed_First_Folder";
     private static final String THIRD_FOLDER_NAME = "Dependant_Test_Folder";
+    private static final String FOLDER_TO_MOVE = "Folder_to_move_into_the_first";
     private static final By NEW_NAME = By.name("newName");
 
     private void createFolderViaCreateAJob() {
@@ -112,5 +114,32 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), NEW_FOLDER_NAME);
+    }
+
+    @Test
+    public void testFolderMovedIntoAnotherFolderViaBreadcrumbs() {
+        createFolderViaCreateAJob();
+        getDriver().findElement(By.id("jenkins-home-link")).click();
+
+        getDriver().findElement(By.cssSelector("[href$='newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(FOLDER_TO_MOVE);
+        getDriver().findElement(By.cssSelector("[class$='_Folder']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        WebElement breadcrumbFolderName = getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job']"));
+        new Actions(getDriver())
+                .moveToElement(breadcrumbFolderName)
+                .click()
+                .perform();
+        clickOnDropdownArrow(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']"));
+        getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='move']")).click();
+
+        new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" + FOLDER_NAME);
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job/" + FOLDER_NAME + "']")).click();
+
+        String nestedFolder = getDriver().findElement(By.cssSelector("td [href*='job']:first-child")).getText();
+        Assert.assertEquals(nestedFolder, FOLDER_TO_MOVE, FOLDER_TO_MOVE + " is not in " + FOLDER_NAME);
     }
 }
