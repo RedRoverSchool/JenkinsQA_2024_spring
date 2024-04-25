@@ -54,13 +54,22 @@ public class NewFreestyleProject24Test extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//span[text()='" + FREESTYLE_NAME + "']")).getText(),
                 FREESTYLE_NAME);
     }
+    private void dropDown() {
+        By dropdownChevron = By.xpath("(//li//button[@class='jenkins-menu-dropdown-chevron'])[1]");
+
+        Actions action = new Actions(getDriver());
+        action.moveToElement(getDriver().findElement(dropdownChevron)).perform();
+        getWait5().until(ExpectedConditions.elementToBeClickable(dropdownChevron));
+        int chevronHeight = getDriver().findElement(dropdownChevron).getSize().getHeight();
+        int chevronWidth = getDriver().findElement(dropdownChevron).getSize().getWidth();
+        action.moveToElement(getDriver().findElement(dropdownChevron), chevronWidth, chevronHeight).click()
+                .perform();
+    }
 
     @Test(dependsOnMethods = "testFreestyleMoveToFolder")
     public void testCheckFreestyleProjectViaBreadcrumb() {
-        WebElement jenkinsDropdown = getDriver().findElement(By.xpath("//button[@data-href='http://localhost:8080/']"));
-        Actions action = new Actions(getDriver());
-        action.moveToElement(jenkinsDropdown).perform();
-        jenkinsDropdown.click();
+
+        dropDown();
 
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class = 'jenkins-dropdown__item'][contains(@href, 'views')]"))).click();
 
