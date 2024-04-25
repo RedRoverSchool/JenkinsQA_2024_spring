@@ -126,7 +126,9 @@ public final class TestUtils {
                 .moveToElement(jobLinkText)
                 .pause(500)
                 .moveByOffset(offsetX, 0)
-                .click().perform();
+                .click()
+                .moveByOffset(0, -50)
+                .perform();
     }
 
     public static void deleteJobViaDropdowm(BaseTest baseTest, String jobName) {
