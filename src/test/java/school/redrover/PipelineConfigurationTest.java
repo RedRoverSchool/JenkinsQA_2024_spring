@@ -2,11 +2,12 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -19,6 +20,15 @@ public class PipelineConfigurationTest extends BaseTest {
     public static final By SAVE_BUTTON_CONFIGURATION = By.xpath("//button[@formnovalidate='formNoValidate']");
 
     public static final By TOGGLE_SWITCH_ENABLE_DISABLE = By.xpath("//label[@data-title='Disabled']");
+
+    private Actions actions;
+
+    private Actions getActions() {
+        if (actions == null) {
+            actions = new Actions(getDriver());
+        }
+        return actions;
+    }
 
     public void createPipeline() {
         getDriver().findElement(By.xpath("//span[contains(text(),'Create')]")).click();
@@ -33,12 +43,12 @@ public class PipelineConfigurationTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
     }
 
-    @Ignore
     @Test
     public void testScroll() {
         createPipeline();
 
-        getDriver().findElement(By.xpath("//button[@data-section-id='pipeline']")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@data-section-id='pipeline']"))).click();
+
         Assert.assertTrue(getDriver().findElement(By.id("bottom-sticker")).isDisplayed(), "Pipeline");
     }
 
@@ -125,6 +135,24 @@ public class PipelineConfigurationTest extends BaseTest {
             Assert.assertTrue(section.isDisplayed(),
                     "The requested section is not found in Configure side-panel");
         }
+    }
+
+    @Test(dependsOnMethods = "testAddDescriptionInConfigureMenu")
+    public void testEditDiscription() {
+
+        getDriver().findElement(By.id("description-link")).click();
+        WebElement textArea = getDriver().findElement(By.name("description"));
+        textArea.clear();
+        getActions().click(textArea)
+                .keyDown(Keys.SHIFT)
+                .sendKeys("project")
+                .keyUp(Keys.SHIFT)
+                .perform();
+
+        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//div[text()='PROJECT']")).isDisplayed(),
+                "PROJECT");
     }
 
     @Test

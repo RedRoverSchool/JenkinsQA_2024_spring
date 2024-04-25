@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -20,6 +21,7 @@ public class PipelineProject1Test extends BaseTest {
     private static final String PIPELINE_DESCRIPTION = "Description added to my pipeline.";
     private static final By BUILD_TRIANGLE_BUTTON_XPATH = By.xpath("//td[@class='jenkins-table__cell--tight']//a[contains(@tooltip,'Schedule')]");
     private static final By DESCRIPTION_XPATH = By.xpath("//div[@id='description']/div[not(contains(@class, 'jenkins-buttons-row'))]");
+    private static final By CONFIGURATION_BUTTON_XPATH = By.xpath("//a[@href='/job/" + PIPELINE_NAME.replaceAll(" ", "%20") + "/configure']");
 
     private void returnToHomePage() {
         getDriver().findElement(By.id("jenkins-head-icon")).click();
@@ -127,7 +129,7 @@ public class PipelineProject1Test extends BaseTest {
         final String maxNumberBuildsToKeep = "2";
 
         clickOnCreatedJobOnDashboardPage(PIPELINE_NAME);
-        getDriver().findElement(By.xpath("//a[@href='/job/" + PIPELINE_NAME.replaceAll(" ", "%20") + "/configure']")).click();
+        getDriver().findElement(CONFIGURATION_BUTTON_XPATH).click();
 
         getDriver().findElement(By.xpath("//label[contains(text(),'Discard')]")).click();
         getDriver().findElement(By.xpath("//input[@name='_.numToKeepStr']")).sendKeys(maxNumberBuildsToKeep);
@@ -160,6 +162,29 @@ public class PipelineProject1Test extends BaseTest {
         expectedBuildOrder.sort(Collections.reverseOrder());
 
         Assert.assertEquals(actualBuildsOrder, expectedBuildOrder, "Elements are not in descending order");
+    }
+
+    @Test(dependsOnMethods = "testCheckBuildsHistoryDescendingOrder")
+    public void testSetPipelineScript() {
+        clickOnCreatedJobOnDashboardPage(PIPELINE_NAME);
+
+        getDriver().findElement(CONFIGURATION_BUTTON_XPATH).click();
+
+        WebElement dropdownElement = getDriver().findElement(By.xpath("//div[@class='samples']/select"));
+        Select dropdown = new Select(dropdownElement);
+        dropdown.selectByVisibleText("Hello World");
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        returnToHomePage();
+        clickOnCreatedJobOnDashboardPage(PIPELINE_NAME);
+        getDriver().findElement(CONFIGURATION_BUTTON_XPATH).click();
+
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        WebElement scriptName = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//span[@class='ace_string']")));
+        js.executeScript("arguments[0].scrollIntoView();", scriptName);
+
+        Assert.assertTrue(scriptName.getText().contains("Hello"));
     }
 
     @Test
@@ -202,7 +227,7 @@ public class PipelineProject1Test extends BaseTest {
         Assert.assertEquals(actualPipelineViewHeader, expectedPipelineViewHeader);
     }
 
-    @Test(dependsOnMethods = "testCheckBuildsHistoryDescendingOrder")
+    @Test(dependsOnMethods = "testSetPipelineScript")
     public void testRenamePipelineUsingSidebar() {
         clickOnCreatedJobOnDashboardPage(PIPELINE_NAME);
 
