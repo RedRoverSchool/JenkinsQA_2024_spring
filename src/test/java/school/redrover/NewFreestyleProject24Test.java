@@ -17,6 +17,17 @@ public class NewFreestyleProject24Test extends BaseTest {
     private static final By JENKINS_INPUT = By.cssSelector("#name");
     private static final By JENKINS_DASHBOARD = By.className("jenkins-breadcrumbs__list-item");
     private static final String FREESTYLE_NAME = "newFreestyleProject";
+    private void dropDown() {
+        By dropdownChevron = By.xpath("(//li//button[@class='jenkins-menu-dropdown-chevron'])[1]");
+
+        Actions action = new Actions(getDriver());
+        action.moveToElement(getDriver().findElement(dropdownChevron)).perform();
+        getWait5().until(ExpectedConditions.elementToBeClickable(dropdownChevron));
+        int chevronHeight = getDriver().findElement(dropdownChevron).getSize().getHeight();
+        int chevronWidth = getDriver().findElement(dropdownChevron).getSize().getWidth();
+        action.moveToElement(getDriver().findElement(dropdownChevron), chevronWidth, chevronHeight).click()
+                .perform();
+    }
 
    @Test
    public void testCreateFreestyleProject() {
@@ -53,17 +64,6 @@ public class NewFreestyleProject24Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//span[text()='" + FREESTYLE_NAME + "']")).getText(),
                 FREESTYLE_NAME);
-    }
-    private void dropDown() {
-        By dropdownChevron = By.xpath("(//li//button[@class='jenkins-menu-dropdown-chevron'])[1]");
-
-        Actions action = new Actions(getDriver());
-        action.moveToElement(getDriver().findElement(dropdownChevron)).perform();
-        getWait5().until(ExpectedConditions.elementToBeClickable(dropdownChevron));
-        int chevronHeight = getDriver().findElement(dropdownChevron).getSize().getHeight();
-        int chevronWidth = getDriver().findElement(dropdownChevron).getSize().getWidth();
-        action.moveToElement(getDriver().findElement(dropdownChevron), chevronWidth, chevronHeight).click()
-                .perform();
     }
 
     @Test(dependsOnMethods = "testFreestyleMoveToFolder")
