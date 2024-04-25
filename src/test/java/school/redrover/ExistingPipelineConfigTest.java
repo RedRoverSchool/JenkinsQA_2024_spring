@@ -9,7 +9,6 @@ import school.redrover.runner.BaseTest;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import school.redrover.runner.TestUtils;
 
 import java.time.Duration;
 public class ExistingPipelineConfigTest extends BaseTest  {
@@ -25,7 +24,6 @@ public class ExistingPipelineConfigTest extends BaseTest  {
         // Find the menu option element based on its text
         WebElement menuElement = getDriver().findElement(By.xpath("//div[@id='" + menuOption + "']"));
 
-//        Assert.assertTrue();
         // Initialize JavaScript executor
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
 
@@ -57,7 +55,5 @@ public class ExistingPipelineConfigTest extends BaseTest  {
         Thread.sleep(3000);
         boolean resultAfterButtonClick = position("pipeline");
         Assert.assertTrue(resultAfterButtonClick);
-
           }
-
 }
