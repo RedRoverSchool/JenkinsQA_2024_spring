@@ -290,8 +290,9 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.xpath("//span[text() = '"+ MULTI_PIPELINE_NAME + "']")).click();
         List<String> pipelineSideMenu = TestUtils.getTexts(getDriver()
                 .findElements(By.xpath("//span[@class='task-link-text']")));
+        System.out.println(pipelineSideMenu);
 
-        Assert.assertEquals(pipelineSideMenu.size(), 10);
         Assert.assertEquals( pipelineSideMenu, PIPELINE_MENU);
+        Assert.assertEquals(pipelineSideMenu.size(), 10);
     }
 }
