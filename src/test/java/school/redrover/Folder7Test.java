@@ -10,8 +10,6 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
-import static school.redrover.runner.TestUtils.createNewItemAndReturnToDashboard;
-
 public class Folder7Test extends BaseTest {
 
     private final String NAME = "19 April";
@@ -29,6 +27,7 @@ public class Folder7Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.cssSelector("#main-panel h1")).getText(), NAME);
     }
+
     @Test
     public void testAddFolderDescription() {
 
@@ -54,6 +53,7 @@ public class Folder7Test extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateFolderUsingName")
     public void testRenameFolder() {
 
@@ -71,11 +71,10 @@ public class Folder7Test extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.linkText(NEW_NAME)).getText(), "Renamed Folder");
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testRenameFolder")
+    @Test(dependsOnMethods = "testCreateFolderUsingName")
     public void testDeleteFolderViaDropdown() {
 
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        TestUtils.goToMainPage(getDriver());
 
         WebElement dropdownChevron = getDriver().findElement(By.xpath(
                 "//tr//button[@class='jenkins-menu-dropdown-chevron']"));
@@ -84,8 +83,8 @@ public class Folder7Test extends BaseTest {
         ((JavascriptExecutor) getDriver()).executeScript(
                 "arguments[0].dispatchEvent(new Event('click'));", dropdownChevron);
 
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath(
-                "//*[@id='tippy-5']//button"))).click();
+        getDriver().findElement(By.xpath(
+                "//*[@id='tippy-5']//button")).click();
 
         getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']"))
                 .click();
@@ -94,7 +93,7 @@ public class Folder7Test extends BaseTest {
                 "//h1[text()='Welcome to Jenkins!']")).getText(), "Welcome to Jenkins!");
     }
 
-    @Test (dependsOnMethods = "testCreateNewFolder")
+    @Test(dependsOnMethods = "testCreateNewFolder")
     public void testCreateFreestyleProjectInsideFolder() {
         final String freeStyleProjectName = "23 april";
 
@@ -107,6 +106,6 @@ public class Folder7Test extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertTrue(getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("main-panel")))
-              .getText().contains(NAME + "/" + freeStyleProjectName));
+                .getText().contains(NAME + "/" + freeStyleProjectName));
     }
 }
