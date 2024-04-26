@@ -140,13 +140,18 @@ public class Dashboard1Test extends BaseTest {
 
         WebElement dropDownChevron = getWait2().until(ExpectedConditions.elementToBeClickable(chevron));
 
-//        System.out.println(dropDownChevron.isDisplayed());
-//        System.out.println(dropDownChevron.isEnabled());
-//        System.out.println(dropDownChevron.getLocation());
-//        System.out.println(dropDownChevron.getSize());
-//        System.out.println(dropDownChevron);
-//
-        dropDownChevron.click();
+        System.out.println(dropDownChevron.getLocation());  // (639, 351)
+//        dropDownChevron.click(); // (657, 359) - in CI
+        actions
+                .moveToElement(dropDownChevron)
+                .click().perform(); //+
+
+//        actions.moveToLocation(639, 351).click().perform();  //+
+//        actions.moveToLocation(647, 359).click().perform(); //+
+//        actions.moveToLocation(657, 359).click().perform(); //+
+//        actions.moveToElement(dropDownChevron, 7, 7).click(); // -------
+//        actions.click(dropDownChevron); // -----
+
 
         WebElement dropdownMenu = getWait2().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[@class='jenkins-dropdown']")));
