@@ -40,15 +40,13 @@ public class UserTest extends BaseTest {
         getDriver().findElement(By.cssSelector("[href='/manage']")).click();
         getDriver().findElement(By.cssSelector("[href='securityRealm/']")).click();
 
-       createUser();
-       createUser();
-       createUser();
-       createUser();
+        createUser();
+        createUser();
+        createUser();
+        createUser();
 
-        getDriver().findElement(By.xpath("//*[@id='people']/thead/tr/th[3]/a")).click();
-        getDriver().findElement(By.xpath("//*[@id='people']/thead/tr/th[3]/a")).click();
-
-        System.out.println(getDriver().findElement(By.xpath("//*[@id='people']/thead/tr/th[3]/a/span")).getText());
+        getDriver().findElement(By.cssSelector("thead th:nth-child(3)>a")).click();
+        getDriver().findElement(By.cssSelector("thead th:nth-child(3)>a")).click();
 
         List<WebElement> elements = getDriver().findElements(By.cssSelector("tr>td:nth-child(3)"));
         List<String> names = new ArrayList<>();
@@ -56,6 +54,6 @@ public class UserTest extends BaseTest {
             names.add(element.getText());
         }
 
-        Assert.assertEquals(names,names.stream().sorted().collect(Collectors.toList()));
+        Assert.assertEquals(names, names.stream().sorted().collect(Collectors.toList()));
     }
 }
