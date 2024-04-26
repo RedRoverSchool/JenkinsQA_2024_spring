@@ -130,22 +130,20 @@ public class Dashboard1Test extends BaseTest {
 
     private List<String> getChevronMenu(String jobName) {
         WebElement jobLinkText = getDriver().findElement(By.linkText(jobName));
-//        By chevron = By.xpath("//*[@href='job/" + TestUtils.asURL(jobName) + "/']//following-sibling::button");
-        int offsetX = jobLinkText.getSize().getWidth() / 2;
+        By chevron = By.xpath("//*[@href='job/" + TestUtils.asURL(jobName) + "/']//following-sibling::button");
+//        int offsetX = jobLinkText.getSize().getWidth() / 2;
 
-        new Actions(getDriver())
-                .moveToElement(jobLinkText)
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(jobLinkText)
                 .pause(200)
-                .moveByOffset(offsetX + 30,0)
-                .pause(200)
+                .moveToElement(getDriver().findElement(chevron))
                 .click()
                 .perform();
 
         WebElement dropdownMenu = getWait2().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[@class='jenkins-dropdown']")));
 
-        new Actions(getDriver())
-                .scrollToElement(dropdownMenu)
+        actions.scrollToElement(dropdownMenu)
                 .perform();
 
         return Arrays.stream(dropdownMenu.getText().split("\\r?\\n")).toList();
