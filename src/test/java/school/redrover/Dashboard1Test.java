@@ -138,11 +138,20 @@ public class Dashboard1Test extends BaseTest {
                 .pause(200)
                 .perform();
 
-        getDriver().findElement(chevron).click();
+        WebElement dropDownChevron = getWait2().until(ExpectedConditions.elementToBeClickable(chevron));
+
+//        System.out.println(dropDownChevron.isDisplayed());
+//        System.out.println(dropDownChevron.isEnabled());
+//        System.out.println(dropDownChevron.getLocation());
+//        System.out.println(dropDownChevron.getSize());
+//        System.out.println(dropDownChevron);
+//
+        dropDownChevron.click();
+
         WebElement dropdownMenu = getWait2().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[@class='jenkins-dropdown']")));
 
-//        actions.scrollToElement(dropdownMenu).perform();
+        actions.scrollToElement(dropdownMenu).perform();
 
         return Arrays.stream(dropdownMenu.getText().split("\\r?\\n")).toList();
     }
