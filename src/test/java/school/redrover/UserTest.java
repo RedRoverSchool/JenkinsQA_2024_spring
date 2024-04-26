@@ -101,10 +101,6 @@ public class UserTest extends BaseTest {
         getDriver().findElement(
                 By.xpath("//a[(@href='user/" + dataTest + "/')]")).click();
 
-        WebElement chevron = getDriver().findElement(By.xpath("//a[(@href='user/" + dataTest.toLowerCase() + "/')]/button"));
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(chevron).click(chevron).build().perform();
-
         new Actions(getDriver())
                 .keyDown(Keys.ARROW_DOWN)
                 .keyDown(Keys.ARROW_DOWN)
