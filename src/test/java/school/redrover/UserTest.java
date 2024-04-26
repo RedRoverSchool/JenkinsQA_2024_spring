@@ -1,7 +1,9 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -80,6 +82,7 @@ public class UserTest extends BaseTest {
 
         Assert.assertEquals(names, names.stream().sorted().collect(Collectors.toList()));
     }
+
     @Test
     public void testDeleteUsingMenuDropdownChevron() {
         final String dataTest = "one";
@@ -98,8 +101,17 @@ public class UserTest extends BaseTest {
         getDriver().findElement(
                 By.xpath("//a[(@href='user/" + dataTest + "/')]")).click();
 
-        getDriver().findElement(By.xpath("//button[@href='/user/"+dataTest+"/doDelete']")).click();
+        WebElement chevron = getDriver().findElement(By.xpath("//a[(@href='user/" + dataTest.toLowerCase() + "/')]/button"));
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(chevron).click(chevron).build().perform();
 
+        new Actions(getDriver())
+                .keyDown(Keys.ARROW_DOWN)
+                .keyDown(Keys.ARROW_DOWN)
+                .keyDown(Keys.ARROW_DOWN)
+                .keyDown(Keys.ARROW_DOWN)
+                .keyDown(Keys.ENTER)
+                .perform();
         getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
         getDriver().findElement(By.xpath("//a[@href='/asynchPeople/']")).click();
 
