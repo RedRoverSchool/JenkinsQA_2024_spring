@@ -106,6 +106,6 @@ public class UserTest extends BaseTest {
                 .keyDown(Keys.ENTER)
                 .perform();
 
-        Assert.assertTrue(getDriver().getCurrentUrl().contains("configure"));
+        Assert.assertEquals(getDriver().getCurrentUrl(),"configure");
     }
 }
