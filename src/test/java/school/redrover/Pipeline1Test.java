@@ -166,5 +166,24 @@ public class Pipeline1Test extends BaseTest {
             Assert.assertEquals(actualRes, expectedResult);
         }
     }
+
+    @Test(dependsOnMethods = "testCreatePipeline")
+    public void testAvgStageTimeBuildTimeIsDisplayed() {
+        int number_of_stages = 1;
+
+        getDriver().findElement(By.xpath("//*[@href='job/NewPipeline/']/span")).click();
+        getDriver().findElement(By.xpath("//*[@href='/job/NewPipeline/configure']")).click();
+        sendScript(number_of_stages);
+        getDriver().findElement(By.name("Submit")).click();
+
+        getDriver().findElement(By.xpath("//*[@data-build-success='Build scheduled']")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='table-box']")));
+
+        boolean avgTime = getDriver().findElement(By.xpath("//td[@class='stage-total-0']")).isDisplayed();
+        boolean buildTime = getDriver().findElement(By.xpath("//tr[@data-runid='1']//td[@data-stageid='6']")).isDisplayed();
+
+        Assert.assertTrue(avgTime && buildTime); //Find average stage time and build time
+    }
+
 }
 
