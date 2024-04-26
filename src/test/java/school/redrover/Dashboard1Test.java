@@ -145,9 +145,9 @@ public class Dashboard1Test extends BaseTest {
 //        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", dropDownChevron);
 
 //        System.out.println(dropDownChevron.getLocation());  // (639, 351)
-//        dropDownChevron.click(); //  CI --------- click to (657, 359)
+        dropDownChevron.click(); //  CI --------- click to (657, 359)
 
-        actions.moveToElement(dropDownChevron, 12, 12).click().perform(); //+
+//        actions.moveToElement(dropDownChevron, 12, 12).click().perform(); //+  CI ------- no dropDown
 
 //        actions.moveToLocation(639+24, 351+24).contextClick().perform(); //+
 //        actions.moveToElement(dropDownChevron).click().perform(); //+     CI ------- no dropDown
