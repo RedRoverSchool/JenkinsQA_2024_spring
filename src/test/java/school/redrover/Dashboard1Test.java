@@ -130,22 +130,24 @@ public class Dashboard1Test extends BaseTest {
     }
 
     private List<String> getChevronMenu(String jobName) {
-        WebElement jobLinkText = getDriver().findElement(By.linkText(jobName));
-        By chevron = By.xpath("//*[@href='job/" + TestUtils.asURL(jobName) + "/']//following-sibling::button");
-
-        Actions actions = new Actions(getDriver());
-        actions
-                .moveToElement(jobLinkText)
-                .pause(200)
-                .perform();
-
-        WebElement dropDownChevron = getWait2().until(ExpectedConditions.elementToBeClickable(chevron));
+//        WebElement jobLinkText = getDriver().findElement(By.linkText(jobName));
+        TestUtils.openElementDropdown(this, getDriver().findElement(By.linkText(jobName)));
+//        By chevron = By.xpath("//*[@href='job/" + TestUtils.asURL(jobName) + "/']//following-sibling::button");
+//
+//        Actions actions = new Actions(getDriver());
+//        actions
+//                .moveToElement(jobLinkText)
+//                .pause(200)
+//                .perform();
+//
+//        WebElement dropDownChevron = getWait2().until(ExpectedConditions.elementToBeClickable(chevron));
 //        WebElement dropDownChevron = jobLinkText.findElement(By.cssSelector("[class $= 'chevron']"));
 //        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", dropDownChevron);
 //        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", dropDownChevron);
 
 //        System.out.println(dropDownChevron.getLocation());  // (639, 351)
-        dropDownChevron.click(); //  CI --------- click to (657, 359)
+//        dropDownChevron.click(); //  CI --------- click to (657, 359)  ----//----- 14x14   +18  +8
+//        dropDownChevron.click(); //  CI --------- click to (657, 359)  ----//----- 14x14   +18  +8
 
 //        actions.moveToElement(dropDownChevron, 12, 12).click().perform(); //+  CI ------- no dropDown
 
@@ -157,7 +159,7 @@ public class Dashboard1Test extends BaseTest {
         WebElement dropdownMenu = getWait2().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[@class='jenkins-dropdown']")));
 
-        actions.scrollToElement(dropdownMenu).perform();
+//        actions.scrollToElement(dropdownMenu).perform();
 
         return Arrays.stream(dropdownMenu.getText().split("\\r?\\n")).toList();
     }
