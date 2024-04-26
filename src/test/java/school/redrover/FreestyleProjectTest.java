@@ -301,4 +301,16 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertTrue(stringList.contains(projectName2));
     }
+
+    @Test
+    public void testDisableProject() {
+        createFreestyleProject(FREESTYLE_PROJECT_NAME);
+        jenkinsHomeLink().click();
+
+        getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).click();
+        submitButton().click();
+        String disabledStatus = getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//form[@id='enable-project']"))).getText();
+
+        Assert.assertEquals(disabledStatus, "This project is currently disabled\nEnable");
+    }
 }

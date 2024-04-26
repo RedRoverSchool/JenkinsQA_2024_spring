@@ -2,17 +2,19 @@ package school.redrover;
 
 import java.time.Duration;
 import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
-
 import static school.redrover.runner.TestUtils.Job;
 
 public class MultibranchPipelineTest extends BaseTest {
@@ -20,6 +22,11 @@ public class MultibranchPipelineTest extends BaseTest {
     private final static String MULTI_PIPELINE_NAME = "MultibranchPipeline";
     private final static String RENAMED_MULTI_PIPELINE = "NewMultibranchPipelineName";
     private final static String NESTED_TESTS_FOLDER_NAME = "NestedTestsFolder";
+    private static final By SEARCH_RESULT_DROPDOWN = By.className("yui-ac-bd");
+    private final String FOLDER_NAME = "Folder";
+    private final static List <String> PIPELINE_MENU =
+            List.of("Status", "Configure", "Scan Multibranch Pipeline Log", "Multibranch Pipeline Events",
+                    "Delete Multibranch Pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
 
     private void disableCreatedMultiPipeline(String multiPipelineName) {
         getDriver().findElement(By.xpath("//span[text()='" + multiPipelineName + "']")).click();
@@ -277,5 +284,43 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertEquals(actualSidebarTexts.size(), 11);
         Assert.assertEquals(actualSidebarTexts, sidebarTasks);
+    }
+
+    @Test
+    public void testVerifyPipelineSidebarMenu() {
+        createNewMultiPipeline(MULTI_PIPELINE_NAME);
+
+        getDriver().findElement(By.xpath("//span[text() = '"+ MULTI_PIPELINE_NAME + "']")).click();
+        List<String> pipelineSideMenu = TestUtils.getTexts(getDriver()
+                .findElements(By.xpath("//div[@class = 'task ']")));
+
+        Assert.assertEquals(pipelineSideMenu.size(), 10);
+        Assert.assertEquals( pipelineSideMenu, PIPELINE_MENU);
+    }
+
+    @Test
+    public void testMoveInFolderViaSidebarMenu() {
+        TestUtils.createNewItemAndReturnToDashboard(this, FOLDER_NAME, TestUtils.Item.FOLDER);
+        TestUtils.createNewItemAndReturnToDashboard(this, MULTI_PIPELINE_NAME, TestUtils.Item.MULTI_BRANCH_PIPELINE);
+
+        getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']")).click();
+        getDriver().findElement(By.cssSelector("[href $='move']")).click();
+        new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" + FOLDER_NAME);
+        getDriver().findElement(By.name("Submit")).click();
+
+        WebElement searchInput = getDriver().findElement(By.cssSelector("input[role='searchbox']"));
+        searchInput.sendKeys(MULTI_PIPELINE_NAME);
+
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(SEARCH_RESULT_DROPDOWN));
+        String actualFolderNameInSearch = getDriver().findElements(SEARCH_RESULT_DROPDOWN)
+            .stream()
+            .map(WebElement::getText)
+            .toList().toString()
+            .replace("[", "")
+            .replace("]", "")
+            .replace(MULTI_PIPELINE_NAME, "")
+            .trim();
+
+        Assert.assertEquals(actualFolderNameInSearch, FOLDER_NAME, MULTI_PIPELINE_NAME + "находится в другой папке");
     }
 }
