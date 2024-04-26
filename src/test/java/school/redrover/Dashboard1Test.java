@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -139,20 +140,19 @@ public class Dashboard1Test extends BaseTest {
                 .perform();
 
         WebElement dropDownChevron = getWait2().until(ExpectedConditions.elementToBeClickable(chevron));
+//        WebElement dropDownChevron = jobLinkText.findElement(By.cssSelector("[class $= 'chevron']"));
+//        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", dropDownChevron);
+//        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", dropDownChevron);
 
-        int locationX = dropDownChevron.getLocation().getX();
-        int locationY = dropDownChevron.getLocation().getY();
-
-        System.out.println(dropDownChevron.getLocation());  // (639, 351)
+//        System.out.println(dropDownChevron.getLocation());  // (639, 351)
 //        dropDownChevron.click(); //  CI --------- click to (657, 359)
 
-//        actions.moveToElement(dropDownChevron).click().perform(); //+     CI ------- no dropDown
-//        actions.moveToElement(dropDownChevron, 7, 7).click().perform(); //+
+        actions.moveToElement(dropDownChevron, 12, 12).click().perform(); //+
 
+//        actions.moveToLocation(639+24, 351+24).contextClick().perform(); //+
+//        actions.moveToElement(dropDownChevron).click().perform(); //+     CI ------- no dropDown
 //        actions.moveToLocation(locationX + 7, locationY + 7).click().perform(); //+     CI ------- no dropDown
-//        actions.moveToLocation(639, 351).click().perform(); //+
-//        actions.moveToLocation(657, 359).click().perform(); //+
-        actions.click(dropDownChevron).perform(); //
+//        actions.click(dropDownChevron).perform(); //+     CI ------- no dropDown
 
         WebElement dropdownMenu = getWait2().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[@class='jenkins-dropdown']")));
