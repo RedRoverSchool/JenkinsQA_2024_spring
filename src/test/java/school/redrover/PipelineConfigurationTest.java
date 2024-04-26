@@ -18,9 +18,9 @@ public class PipelineConfigurationTest extends BaseTest {
 
     private static final String JOB_NAME = "TestCrazyTesters";
 
-    public static final By SAVE_BUTTON_CONFIGURATION = By.xpath("//button[@formnovalidate='formNoValidate']");
+    private static final By SAVE_BUTTON_CONFIGURATION = By.xpath("//button[@formnovalidate='formNoValidate']");
 
-    public static final By TOGGLE_SWITCH_ENABLE_DISABLE = By.xpath("//label[@data-title='Disabled']");
+    private static final By TOGGLE_SWITCH_ENABLE_DISABLE = By.xpath("//label[@data-title='Disabled']");
 
     private static final By ADVANCED_PROJECT_OPTIONS_MENU = By.xpath("//button[@data-section-id='advanced-project-options']");
 
@@ -130,7 +130,6 @@ public class PipelineConfigurationTest extends BaseTest {
 
     @Test
     public void testSectionsOfSidePanelAreVisible() {
-
         createPipeline();
 
         navigateToConfigurePageFromDashboard();
@@ -172,23 +171,15 @@ public class PipelineConfigurationTest extends BaseTest {
     @Test
     public void testAddDisplayNameInAdvancedSection() {
         final String displayNameText = "This is project's Display name text for Advanced Project Options";
-        final By advancedButton = By.xpath("//section[@class='jenkins-section']//button[@type='button']");
 
         createPipeline();
 
         navigateToConfigurePageFromDashboard();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//button[@data-section-id='advanced-project-options']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(ADVANCED_PROJECT_OPTIONS_MENU)).click();
 
-        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
-        executor.executeScript("arguments[0].dispatchEvent(new Event('click'));",
-                getDriver().findElement(advancedButton));
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(
-                        By.xpath("//div[@class='setting-main']//input[contains(@checkurl, 'checkDisplayName')]")))
-                .sendKeys(displayNameText);
-
+        clickOnAdvancedButton();
+        getWait10().until(ExpectedConditions.elementToBeClickable(DISPLAY_NAME_TEXT_FIELD)).sendKeys(displayNameText);
         getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
 
         Assert.assertEquals(
@@ -205,14 +196,11 @@ public class PipelineConfigurationTest extends BaseTest {
         getWait5().until(ExpectedConditions.elementToBeClickable(ADVANCED_PROJECT_OPTIONS_MENU)).click();
 
         clickOnAdvancedButton();
-
         getWait10().until(ExpectedConditions.elementToBeClickable(DISPLAY_NAME_TEXT_FIELD));
         getDriver().findElement(DISPLAY_NAME_TEXT_FIELD).sendKeys(editedDisplayNameText);
-
         getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
 
-        Assert.assertTrue(
-                getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText().contains(editedDisplayNameText),
-                "Your DisplayName is not edited correctly");
+        Assert.assertTrue(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']"))
+                .getText().contains(editedDisplayNameText),"Your DisplayName is not edited correctly");
     }
 }

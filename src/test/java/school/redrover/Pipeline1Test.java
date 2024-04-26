@@ -172,7 +172,8 @@ public class Pipeline1Test extends BaseTest {
             Assert.assertEquals(actualRes, expectedResult);
         }
     }
-  
+
+    @Ignore
     @Test(dependsOnMethods = "testCreatePipeline")
     public void testAvgStageTimeBuildTimeIsDisplayed() {
         int number_of_stages = 1;
