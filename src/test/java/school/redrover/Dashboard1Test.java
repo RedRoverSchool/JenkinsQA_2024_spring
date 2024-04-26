@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
+
 import java.util.*;
 
 public class Dashboard1Test extends BaseTest {
@@ -128,12 +129,14 @@ public class Dashboard1Test extends BaseTest {
     }
 
     private List<String> getChevronMenu(String jobName) {
+        WebElement jobLinkText = getDriver().findElement(By.linkText(jobName));
         By chevron = By.xpath("//*[@href='job/" + TestUtils.asURL(jobName) + "/']//following-sibling::button");
+        int offsetX = jobLinkText.getSize().getWidth() / 2 + 15;
 
         new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.linkText(jobName)))
+                .moveToElement(jobLinkText)
                 .pause(200)
-                .moveToElement(getDriver().findElement(chevron))
+                .moveByOffset(offsetX,0)
                 .pause(200)
                 .click()
                 .perform();
