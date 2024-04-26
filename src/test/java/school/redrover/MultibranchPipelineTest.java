@@ -22,10 +22,8 @@ public class MultibranchPipelineTest extends BaseTest {
     private final static String MULTI_PIPELINE_NAME = "MultibranchPipeline";
     private final static String RENAMED_MULTI_PIPELINE = "NewMultibranchPipelineName";
     private final static String NESTED_TESTS_FOLDER_NAME = "NestedTestsFolder";
-    public static final By SEARCH_RESULT_DROPDOWN = By.className("yui-ac-bd");
-
+    private static final By SEARCH_RESULT_DROPDOWN = By.className("yui-ac-bd");
     private final String FOLDER_NAME = "Folder";
-
     private final static List <String> PIPELINE_MENU =
             List.of("Status", "Configure", "Scan Multibranch Pipeline Log", "Multibranch Pipeline Events",
                     "Delete Multibranch Pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
