@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -108,7 +109,9 @@ public class UserTest extends BaseTest {
                 .keyDown(Keys.ARROW_DOWN)
                 .keyDown(Keys.ENTER)
                 .perform();
-        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@data-id='ok']"))).click();
         getDriver().findElement(By.xpath("//a[@href='/asynchPeople/']")).click();
 
         List<WebElement> elementList = getDriver().findElements(By.xpath("//*[@id='people']//tbody"));
