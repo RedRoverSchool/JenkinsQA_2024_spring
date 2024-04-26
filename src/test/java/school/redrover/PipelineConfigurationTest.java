@@ -26,6 +26,8 @@ public class PipelineConfigurationTest extends BaseTest {
 
     private static final By DISPLAY_NAME_TEXT_FIELD = By.xpath("//div[@class='setting-main']//input[contains(@checkurl, 'checkDisplayName')]");
 
+    private final String displayNameText = "This is project's Display name text for Advanced Project Options";
+
     private Actions actions;
 
     private Actions getActions() {
@@ -203,4 +205,21 @@ public class PipelineConfigurationTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']"))
                 .getText().contains(editedDisplayNameText),"Your DisplayName is not edited correctly");
     }
+
+    @Test (dependsOnMethods = "testAddDisplayNameInAdvancedSection")
+
+    public void testDeleteDisplayNameInAdvancedSection() {
+
+        navigateToConfigurePageFromDashboard();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(ADVANCED_PROJECT_OPTIONS_MENU)).click();
+
+        clickOnAdvancedButton();
+        getWait10().until(ExpectedConditions.elementToBeClickable(DISPLAY_NAME_TEXT_FIELD)).clear();
+        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
+
+        Assert.assertFalse(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']"))
+                .getText().contains(displayNameText));
+    }
+
 }
