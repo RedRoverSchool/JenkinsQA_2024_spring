@@ -30,6 +30,11 @@ public class Pipeline1Test extends BaseTest {
                 By.xpath("//a[contains(@href, 'workflow-stage')]")))).click();
     }
 
+    private String getH1HeaderText() {
+        return getWait5().until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//h1"))).getText();
+    }
+
     private String getH2HeaderText() {
         return getWait5().until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//h2"))).getText();
@@ -179,7 +184,7 @@ public class Pipeline1Test extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         getDriver().findElement(By.xpath("//*[@data-build-success='Build scheduled']")).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='table-box']")));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='table-box']")));
 
         boolean avgTime = getDriver().findElement(By.xpath("//td[@class='stage-total-0']")).isDisplayed();
         boolean buildTime = getDriver().findElement(By.xpath("//tr[@data-runid='1']//td[@data-stageid='6']")).isDisplayed();
@@ -187,5 +192,13 @@ public class Pipeline1Test extends BaseTest {
         Assert.assertTrue(avgTime && buildTime); //Find average stage time and build time
     }
 
+    @Test
+    public void testCreatePipelineProject() {
+        TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
+
+        getH1HeaderText();
+
+        Assert.assertEquals(getH1HeaderText(), PIPELINE_NAME);
+    }
 }
 

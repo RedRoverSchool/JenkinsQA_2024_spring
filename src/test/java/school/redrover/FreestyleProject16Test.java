@@ -2,14 +2,15 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+
 public class FreestyleProject16Test extends BaseTest {
     final String PROJECT_NAME = "MD first project";
+    final String NEW_PROJECT_NAME = "Rename MD first project";
 
-    @Ignore
+
     @Test
     public void testCreateFirstTest(){
 
@@ -31,6 +32,24 @@ public class FreestyleProject16Test extends BaseTest {
         Assert.assertEquals(projectName, PROJECT_NAME);
         Assert.assertEquals(general, "General");
     }
+
+    @Test (dependsOnMethods = {"testCreateFirstTest"})
+    public void testRenameFirstProject(){
+
+        getDriver().findElement(By.xpath
+                ("//*[@id='breadcrumbs']/li[1]")).click();
+        getDriver().findElement(By.xpath
+                ("//span[text()='" + PROJECT_NAME + "']")).click();
+        getDriver().findElement(By.xpath
+                ("//*[@id='tasks']/div[7]/span/a")).click();
+        getDriver().findElement(By.name("newName")).clear();
+        getDriver().findElement(By.name("newName")).sendKeys(NEW_PROJECT_NAME);
+        getDriver().findElement(By.name("Submit")).click();
+        String newProjectName = getDriver().findElement(By.tagName("h1")).getText();
+
+        Assert.assertEquals(newProjectName, NEW_PROJECT_NAME);
+    }
+
 
     @Test
     public void testCreateFreestyleProject() {
