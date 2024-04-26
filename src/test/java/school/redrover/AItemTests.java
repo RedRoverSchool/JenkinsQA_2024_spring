@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
-public class NewItem3Test extends BaseTest {
+public class AItemTests extends BaseTest {
 
     private boolean isException = false;
     private final By nameUpItem = By.xpath("//span[.='New Folder']");
@@ -33,7 +33,7 @@ public class NewItem3Test extends BaseTest {
         Assert.assertTrue(isException);
     }
 
-    @Test
+    @Test (dependsOnMethods = "createItemEmptyNameNegativeTest")
     public void createItemEmptyNameNegativeTwoTest() {
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.xpath("//span[text()='" + TestUtils.MULTIBRANCH_PIPELINE + "']")).click();
@@ -45,7 +45,7 @@ public class NewItem3Test extends BaseTest {
         Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled());
     }
 
-    @Test
+    @Test (dependsOnMethods = "createItemEmptyNameNegativeTwoTest")
     public void createNewFolderTest() {
         TestUtils.createItem(TestUtils.FOLDER, "New Folder", this);
         TestUtils.goToMainPage(getDriver());
@@ -53,11 +53,8 @@ public class NewItem3Test extends BaseTest {
         Assert.assertTrue(getDriver().findElement(nameUpItem).isDisplayed());
     }
 
-    @Test
+    @Test (dependsOnMethods = "createNewFolderTest")
     public void renameFolderTest() {
-        TestUtils.createItem(TestUtils.FOLDER, "New Folder", this);
-        TestUtils.goToMainPage(getDriver());
-
         getActions().moveToElement(getDriver().findElement(nameUpItem)).perform();
         getDriver().findElement(By.linkText("New Folder")).click();
         getDriver().findElement(By.xpath("//a[normalize-space()='Rename']")).click();
@@ -68,13 +65,13 @@ public class NewItem3Test extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//h1[contains(.,'New Name')]")).isDisplayed());
     }
 
-    @Test (dependsOnMethods = "createNewFolderTest")
+    @Test (dependsOnMethods = "renameFolderTest")
     public void renameFolderShortTest() {
-        TestUtils.renameItem(this, "New Folder", "New Name");
-        Assert.assertTrue(getDriver().findElement(By.xpath("//h1[contains(.,'New Name')]")).isDisplayed());
+        TestUtils.renameItem(this, "New Name", "Renamed Folder");
+        Assert.assertTrue(getDriver().findElement(By.xpath("//h1[contains(.,'Renamed Folder')]")).isDisplayed());
     }
 
-    @Test
+    @Test (dependsOnMethods = "renameFolderShortTest")
     public void createMulticonfigurationProjectNegativeTest() {
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.xpath("//span[text()='" + TestUtils.MULTI_CONFIGURATION_PROJECT + "']")).click();
@@ -83,7 +80,7 @@ public class NewItem3Test extends BaseTest {
                 (By.id("itemname-required")).getText(), "» This field cannot be empty, please enter a valid name");
     }
 
-    @Test
+    @Test (dependsOnMethods = "createMulticonfigurationProjectNegativeTest")
     public void createMulticonfigurationProjectTest() {
         getDriver().findElement(By.linkText("New Item")).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys("New Folder");
