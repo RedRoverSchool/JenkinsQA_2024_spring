@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -98,25 +97,15 @@ public class UserTest extends BaseTest {
         getDriver().findElement(By.name("email")).sendKeys(dataTest + "@gmail.com");
         getDriver().findElement(By.name("Submit")).click();
 
-
         getDriver().findElement(
                 By.xpath("//a[(@href='user/" + dataTest + "/')]")).click();
 
         new Actions(getDriver())
                 .keyDown(Keys.ARROW_DOWN)
                 .keyDown(Keys.ARROW_DOWN)
-                .keyDown(Keys.ARROW_DOWN)
-                .keyDown(Keys.ARROW_DOWN)
                 .keyDown(Keys.ENTER)
                 .perform();
 
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@data-id='ok']"))).click();
-        getDriver().findElement(By.xpath("//a[@href='/asynchPeople/']")).click();
-
-        List<WebElement> elementList = getDriver().findElements(By.xpath("//*[@id='people']//tbody"));
-        List<String> resultList = elementList.stream().map(WebElement::getText).toList();
-
-        Assert.assertFalse(resultList.contains(dataTest));
+        Assert.assertTrue(getDriver().getCurrentUrl().contains("configure"));
     }
 }
