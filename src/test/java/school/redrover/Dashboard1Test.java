@@ -12,7 +12,7 @@ import school.redrover.runner.TestUtils;
 import java.util.*;
 
 public class Dashboard1Test extends BaseTest {
-    private final String VIEW_NAME = "Red Rover";
+    private final String VIEW_NAME = "RedRover";
     private final String SELECTED_NAME1 = TestUtils.MULTIBRANCH_PIPELINE;
     private final String SELECTED_NAME2 = TestUtils.FOLDER;
     private List<String> projectsNames = getNamesList();
@@ -130,13 +130,13 @@ public class Dashboard1Test extends BaseTest {
 
     private List<String> getChevronMenu(String jobName) {
         WebElement jobLinkText = getDriver().findElement(By.linkText(jobName));
-        By chevron = By.xpath("//*[@href='job/" + TestUtils.asURL(jobName) + "/']//following-sibling::button");
-        int offsetX = jobLinkText.getSize().getWidth() / 2 + 15;
+//        By chevron = By.xpath("//*[@href='job/" + TestUtils.asURL(jobName) + "/']//following-sibling::button");
+        int offsetX = jobLinkText.getSize().getWidth() / 2;
 
         new Actions(getDriver())
                 .moveToElement(jobLinkText)
                 .pause(200)
-                .moveByOffset(offsetX,0)
+                .moveByOffset(offsetX + 30,0)
                 .pause(200)
                 .click()
                 .perform();
