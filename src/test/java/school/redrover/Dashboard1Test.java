@@ -149,12 +149,10 @@ public class Dashboard1Test extends BaseTest {
 //        actions.moveToElement(dropDownChevron).click().perform(); //+     CI ------- no dropDown
 //        actions.moveToElement(dropDownChevron, 7, 7).click().perform(); //+
 
-        actions.moveToLocation(locationX + 7, locationY + 7).click().perform();
+//        actions.moveToLocation(locationX + 7, locationY + 7).click().perform(); //+     CI ------- no dropDown
 //        actions.moveToLocation(639, 351).click().perform(); //+
-//        actions.moveToLocation(647, 359).click().perform(); //+
 //        actions.moveToLocation(657, 359).click().perform(); //+
-//        actions.moveToLocation(657, 359).click().perform(); //+
-//        actions.click(dropDownChevron); // -----
+        actions.click(dropDownChevron).perform(); //
 
         WebElement dropdownMenu = getWait2().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[@class='jenkins-dropdown']")));
