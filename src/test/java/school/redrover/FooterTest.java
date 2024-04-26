@@ -39,4 +39,13 @@ public class FooterTest extends BaseTest {
 
         Assert.assertEquals(actualDropDownElementsValues, expectedDropDownElementsValues, "Allarm!");
     }
+
+    @Test
+    public void testRestAPIButtonTitle() {
+        getDriver().findElement(By.xpath("//a[@href='api/']")).click();
+
+        String titleText = getDriver().getTitle();
+
+        Assert.assertEquals(titleText, "Remote API [Jenkins]");
+    }
 }

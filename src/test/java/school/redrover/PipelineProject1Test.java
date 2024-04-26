@@ -13,6 +13,7 @@ import school.redrover.runner.TestUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PipelineProject1Test extends BaseTest {
 
@@ -125,6 +126,22 @@ public class PipelineProject1Test extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testPipelineBuildSuccessFromConsole")
+    public void testPermalinksBuildDetails() {
+        final List<String> expectedPermalinks =
+                List.of("Last build (#1)", "Last stable build (#1)", "Last successful build (#1)", "Last completed build (#1)");
+
+        clickOnCreatedJobOnDashboardPage(PIPELINE_NAME);
+
+        List<String> actualPermalinks = getDriver()
+                .findElements(By.xpath("//li[@class='permalink-item']"))
+                .stream()
+                .map(permalink -> permalink.getText().split(",")[0].trim())
+                .collect(Collectors.toList());
+
+        Assert.assertEquals(actualPermalinks, expectedPermalinks);
+        }
+
+    @Test(dependsOnMethods = "testPermalinksBuildDetails")
     public void testSetPipelineNumberBuildsToKeep() {
         final String maxNumberBuildsToKeep = "2";
 
