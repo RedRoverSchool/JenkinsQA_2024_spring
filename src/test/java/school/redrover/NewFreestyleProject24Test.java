@@ -3,7 +3,6 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
@@ -20,15 +19,12 @@ public class NewFreestyleProject24Test extends BaseTest {
     private static final String FREESTYLE_NAME = "newFreestyleProject";
     private static final String FOLDER = "NewFolder";
 
-    private void dropDown() {
-        By dropdownChevron = By.xpath("(//li//button[@class='jenkins-menu-dropdown-chevron'])[1]");
-
-        Actions action = new Actions(getDriver());
-        action.moveToElement(getDriver().findElement(dropdownChevron)).perform();
-        getWait10().until(ExpectedConditions.elementToBeClickable(dropdownChevron));
-        int chevronHeight = getDriver().findElement(dropdownChevron).getSize().getHeight();
-        int chevronWidth = getDriver().findElement(dropdownChevron).getSize().getWidth();
-        action.moveToElement(getDriver().findElement(dropdownChevron), chevronWidth, chevronHeight).click().perform();
+    private void dropDownJavaScr() {
+        WebElement dropdownChevron = getDriver().findElement(By.xpath("(//li//button[@class='jenkins-menu-dropdown-chevron'])[1]"));
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].dispatchEvent(new Event('mouseenter'));", dropdownChevron);
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].dispatchEvent(new Event('click'));", dropdownChevron);
     }
 
    @Test
@@ -48,15 +44,15 @@ public class NewFreestyleProject24Test extends BaseTest {
     public void testFreestyleMoveToFolder() {
         TestUtils.createNewJob(this, TestUtils.Job.FOLDER,FOLDER);
 
-        WebElement dropdownChevron = getDriver().findElement(By.xpath("//tr//button[@class='jenkins-menu-dropdown-chevron']"));
-        Actions action = new Actions(getDriver());
-        action.moveToElement(dropdownChevron).perform();
-        getWait10().until(ExpectedConditions.elementToBeClickable(dropdownChevron));
-        action.moveToElement(getDriver().findElement(By.xpath("//td//button[@class='jenkins-menu-dropdown-chevron'][contains(@data-href,'" + FREESTYLE_NAME + "')]"))).click().perform();
-        //dropdownChevron.click();
+        WebElement dropdownChevron = getDriver().findElement(By.xpath("(//td//button[@class='jenkins-menu-dropdown-chevron'])[2]"));
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].dispatchEvent(new Event('mouseenter'));", dropdownChevron);
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].dispatchEvent(new Event('click'));", dropdownChevron);
 
-        //getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='jenkins-dropdown__item'][contains(@href,'move')]"))).click();
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@class='jenkins-dropdown__item'][contains(@href,'move')]"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@class='jenkins-table__link model-link inside model-link--open']"))).click();
+
+        getDriver().findElement(By.xpath("//*[@href='/job/" + FREESTYLE_NAME + "/move']")).click();
 
         WebElement move = getDriver().findElement(By.name("destination"));
         Select select = new Select(move);
@@ -73,9 +69,7 @@ public class NewFreestyleProject24Test extends BaseTest {
 
     @Test(dependsOnMethods = "testFreestyleMoveToFolder")
     public void testCheckFreestyleProjectViaBreadcrumb() {
-        //getDriver().findElement(By.xpath("//div[@class='logo']")).click();
-
-        dropDown();
+        dropDownJavaScr();
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class = 'jenkins-dropdown__item'][contains(@href, 'views')]"))).click();
 
