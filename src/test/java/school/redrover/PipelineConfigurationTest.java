@@ -22,6 +22,10 @@ public class PipelineConfigurationTest extends BaseTest {
 
     public static final By TOGGLE_SWITCH_ENABLE_DISABLE = By.xpath("//label[@data-title='Disabled']");
 
+    private static final By ADVANCED_PROJECT_OPTIONS_MENU = By.xpath("//button[@data-section-id='advanced-project-options']");
+
+    private static final By DISPLAY_NAME_TEXT_FIELD = By.xpath("//div[@class='setting-main']//input[contains(@checkurl, 'checkDisplayName')]");
+
     private Actions actions;
 
     private Actions getActions() {
@@ -42,6 +46,14 @@ public class PipelineConfigurationTest extends BaseTest {
     public void navigateToConfigurePageFromDashboard() {
         getDriver().findElement(By.xpath("//a[contains(@href, '" + JOB_NAME + "')]")).click();
         getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
+    }
+
+    public void clickOnAdvancedButton() {
+        WebElement advancedButton = getDriver().findElement(By.xpath("//section[@class='jenkins-section']//button[@type='button']"));
+
+        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
+        executor.executeScript("arguments[0].dispatchEvent(new Event('click'));",
+               advancedButton);
     }
 
     @Test
@@ -182,5 +194,25 @@ public class PipelineConfigurationTest extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText(),
                 displayNameText);
+    }
+
+    @Test (dependsOnMethods = "testAddDisplayNameInAdvancedSection")
+    public void testEditDisplayNameInAdvancedSection() {
+        final String editedDisplayNameText = " - EDITED";
+
+        navigateToConfigurePageFromDashboard();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(ADVANCED_PROJECT_OPTIONS_MENU)).click();
+
+        clickOnAdvancedButton();
+
+        getWait10().until(ExpectedConditions.elementToBeClickable(DISPLAY_NAME_TEXT_FIELD));
+        getDriver().findElement(DISPLAY_NAME_TEXT_FIELD).sendKeys(editedDisplayNameText);
+
+        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
+
+        Assert.assertTrue(
+                getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText().contains(editedDisplayNameText),
+                "Your DisplayName is not edited correctly");
     }
 }
