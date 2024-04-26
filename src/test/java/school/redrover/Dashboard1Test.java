@@ -131,13 +131,12 @@ public class Dashboard1Test extends BaseTest {
     private List<String> getChevronMenu(String jobName) {
         WebElement jobLinkText = getDriver().findElement(By.linkText(jobName));
         By chevron = By.xpath("//*[@href='job/" + TestUtils.asURL(jobName) + "/']//following-sibling::button");
-//        int offsetX = jobLinkText.getSize().getWidth() / 2;
 
         Actions actions = new Actions(getDriver());
         actions.moveToElement(jobLinkText)
                 .pause(200)
                 .moveToElement(getDriver().findElement(chevron))
-                .click()
+                .contextClick()
                 .perform();
 
         WebElement dropdownMenu = getWait2().until(ExpectedConditions.visibilityOfElementLocated(
