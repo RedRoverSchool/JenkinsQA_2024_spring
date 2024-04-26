@@ -134,17 +134,15 @@ public class Dashboard1Test extends BaseTest {
 
         Actions actions = new Actions(getDriver());
         actions
-//                .moveToElement(jobLinkText)
-//                .pause(200)
-//                .moveToElement(getDriver().findElement(chevron))
-                .contextClick()
+                .moveToElement(jobLinkText)
+                .pause(200)
                 .perform();
 
+        getDriver().findElement(chevron).click();
         WebElement dropdownMenu = getWait2().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[@class='jenkins-dropdown']")));
 
-//        actions.scrollToElement(dropdownMenu)
-//                .perform();
+//        actions.scrollToElement(dropdownMenu).perform();
 
         return Arrays.stream(dropdownMenu.getText().split("\\r?\\n")).toList();
     }
