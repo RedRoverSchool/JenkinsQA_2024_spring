@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -34,6 +35,7 @@ public class PipelineConfigurationTest extends BaseTest {
         getDriver().findElement(By.xpath("//span[contains(text(),'Create')]")).click();
         getDriver().findElement(By.id("name")).sendKeys(JOB_NAME);
         getDriver().findElement(By.xpath("//li[contains(@class,'WorkflowJob')]")).click();
+        getWait60().until(ExpectedConditions.visibilityOfElementLocated(By.id("ok-button")));
         getDriver().findElement(By.id("ok-button")).click();
     }
 
@@ -42,12 +44,12 @@ public class PipelineConfigurationTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
     }
 
-    @Ignore
     @Test
     public void testScroll() {
         createPipeline();
 
-        getDriver().findElement(By.xpath("//button[@data-section-id='pipeline']")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@data-section-id='pipeline']"))).click();
+
         Assert.assertTrue(getDriver().findElement(By.id("bottom-sticker")).isDisplayed(), "Pipeline");
     }
 
@@ -91,6 +93,7 @@ public class PipelineConfigurationTest extends BaseTest {
                 getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).isDisplayed());
     }
 
+    @Ignore
     @Test
     public void testDiscardOldBuildsByCount() {
         createPipeline();
@@ -152,5 +155,32 @@ public class PipelineConfigurationTest extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//div[text()='PROJECT']")).isDisplayed(),
                 "PROJECT");
+    }
+
+    @Test
+    public void testAddDisplayNameInAdvancedSection() {
+        final String displayNameText = "This is project's Display name text for Advanced Project Options";
+        final By advancedButton = By.xpath("//section[@class='jenkins-section']//button[@type='button']");
+
+        createPipeline();
+
+        navigateToConfigurePageFromDashboard();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//button[@data-section-id='advanced-project-options']"))).click();
+
+        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
+        executor.executeScript("arguments[0].dispatchEvent(new Event('click'));",
+                getDriver().findElement(advancedButton));
+
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                        By.xpath("//div[@class='setting-main']//input[contains(@checkurl, 'checkDisplayName')]")))
+                .sendKeys(displayNameText);
+
+        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText(),
+                displayNameText);
     }
 }

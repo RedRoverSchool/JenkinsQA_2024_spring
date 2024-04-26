@@ -27,6 +27,10 @@ public class MultibranchPipelineTest extends BaseTest {
 
     private final String FOLDER_NAME = "Folder";
 
+    private final static List <String> PIPELINE_MENU =
+            List.of("Status", "Configure", "Scan Multibranch Pipeline Log", "Multibranch Pipeline Events",
+                    "Delete Multibranch Pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
+
     private void disableCreatedMultiPipeline(String multiPipelineName) {
         getDriver().findElement(By.xpath("//span[text()='" + multiPipelineName + "']")).click();
         WebElement configureLink = getDriver().findElement(By.cssSelector(".task-link-wrapper [href$='configure']"));
@@ -283,6 +287,18 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertEquals(actualSidebarTexts.size(), 11);
         Assert.assertEquals(actualSidebarTexts, sidebarTasks);
+    }
+
+    @Test
+    public void testVerifyPipelineSidebarMenu() {
+        createNewMultiPipeline(MULTI_PIPELINE_NAME);
+
+        getDriver().findElement(By.xpath("//span[text() = '"+ MULTI_PIPELINE_NAME + "']")).click();
+        List<String> pipelineSideMenu = TestUtils.getTexts(getDriver()
+                .findElements(By.xpath("//div[@class = 'task ']")));
+
+        Assert.assertEquals(pipelineSideMenu.size(), 10);
+        Assert.assertEquals( pipelineSideMenu, PIPELINE_MENU);
     }
 
     @Test
