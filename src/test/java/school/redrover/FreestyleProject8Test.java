@@ -1,9 +1,11 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 public class FreestyleProject8Test extends BaseTest {
     @Test
@@ -28,5 +30,21 @@ public class FreestyleProject8Test extends BaseTest {
         getDriver().findElement(By.xpath("//*[@name = 'Submit']")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "New name");
+    }
+
+    @Test(dependsOnMethods = "testCreateProject")
+    public void testFreestyleProjectMoveToFolder() {
+        TestUtils.createNewJob(this,TestUtils.Job.FOLDER,"Folder");
+
+        getDriver().findElement(By.xpath("//*[@href='job/Freestyle%20project/']/span")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/Freestyle%20project/move']")).click();
+        getDriver().findElement(By.xpath("//select/option[@value='/Folder']")).click();
+        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
+
+        TestUtils.goToMainPage(getDriver());
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@class='jenkins-table__link model-link inside']"))).click();
+        getWait10();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@href='job/Freestyle%20project/']/"))
+                .getText(), "Freestyle project");
     }
 }
