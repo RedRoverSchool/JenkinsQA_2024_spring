@@ -56,4 +56,28 @@ public class UserTest extends BaseTest {
 
         Assert.assertEquals(names, names.stream().sorted().collect(Collectors.toList()));
     }
+
+    @Test
+    public void testUsersSortingByUserID() {
+
+        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
+        getDriver().findElement(By.cssSelector("[href='securityRealm/']")).click();
+
+        createUser();
+        createUser();
+        createUser();
+        createUser();
+
+        getDriver().findElement(By.cssSelector("thead th:nth-child(2)>a")).click();
+        getDriver().findElement(By.cssSelector("thead th:nth-child(2)>a")).click();
+
+        List<WebElement> elements = getDriver().findElements(By.cssSelector("tr>td:nth-child(2)"));
+
+        List<String> names = elements
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+
+        Assert.assertEquals(names, names.stream().sorted().collect(Collectors.toList()));
+    }
 }
