@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -130,36 +129,10 @@ public class Dashboard1Test extends BaseTest {
     }
 
     private List<String> getChevronMenu(String jobName) {
-//        WebElement jobLinkText = getDriver().findElement(By.linkText(jobName));
         TestUtils.openElementDropdown(this, getDriver().findElement(By.linkText(jobName)));
-//        By chevron = By.xpath("//*[@href='job/" + TestUtils.asURL(jobName) + "/']//following-sibling::button");
-//
-//        Actions actions = new Actions(getDriver());
-//        actions
-//                .moveToElement(jobLinkText)
-//                .pause(200)
-//                .perform();
-//
-//        WebElement dropDownChevron = getWait2().until(ExpectedConditions.elementToBeClickable(chevron));
-//        WebElement dropDownChevron = jobLinkText.findElement(By.cssSelector("[class $= 'chevron']"));
-//        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", dropDownChevron);
-//        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", dropDownChevron);
-
-//        System.out.println(dropDownChevron.getLocation());  // (639, 351)
-//        dropDownChevron.click(); //  CI --------- click to (657, 359)  ----//----- 14x14   +18  +8
-//        dropDownChevron.click(); //  CI --------- click to (657, 359)  ----//----- 14x14   +18  +8
-
-//        actions.moveToElement(dropDownChevron, 12, 12).click().perform(); //+  CI ------- no dropDown
-
-//        actions.moveToLocation(639+24, 351+24).contextClick().perform(); //+
-//        actions.moveToElement(dropDownChevron).click().perform(); //+     CI ------- no dropDown
-//        actions.moveToLocation(locationX + 7, locationY + 7).click().perform(); //+     CI ------- no dropDown
-//        actions.click(dropDownChevron).perform(); //+     CI ------- no dropDown
 
         WebElement dropdownMenu = getWait2().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[@class='jenkins-dropdown']")));
-
-//        actions.scrollToElement(dropdownMenu).perform();
 
         return Arrays.stream(dropdownMenu.getText().split("\\r?\\n")).toList();
     }
