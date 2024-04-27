@@ -7,7 +7,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -20,7 +19,6 @@ public class FreestyleProject2Test extends BaseTest {
     private static final By PROJECT_ITEM_ON_PROJECTSTATUS_TABLE = By.xpath("//td/a[. = '" + PROJECT_NAME + "']");
     private static final String DESCRIPTION = "My first Freestyle Project";
     private static final String FOLDER_NAME = "Folder";
-
 
     private void createFolder(String name) {
         getDriver().findElement(NEW_ITEM).click();
@@ -63,16 +61,9 @@ public class FreestyleProject2Test extends BaseTest {
         WebElement chevron = projectItem.findElement(By.cssSelector("[class $= 'chevron']"));
 
         js.executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", chevron);
-
         js.executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
 
-     //   action.moveToElement(projectItem)
-      //          .pause(1000)
-       //      .moveToElement(getWait5().until(ExpectedConditions.elementToBeClickable(chevron)))
-      //          .moveToElement(chevron, chevron.getRect().width, chevron.getRect().height).click().perform();
-              // .moveByOffset(((chevron.getRect().width)/2 - 1), 0).click().perform();
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
                         .xpath("//a[contains(@href, '/move')]"))).click();
 
         new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" +  FOLDER_NAME);
