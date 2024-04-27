@@ -55,36 +55,28 @@ public class FreestyleProject2Test extends BaseTest {
     @Test(dependsOnMethods = "testDescriptionAddedByUsingAddDescriptionButton")
     public void testProjectMovedToFolder() {
         Actions action = new Actions(getDriver());
+        JavascriptExecutor js = (JavascriptExecutor)getDriver();
         getDriver().findElement(DASHBOARD_BUTTON).click();
         createFolder(FOLDER_NAME);
 
         WebElement projectItem = getDriver().findElement(PROJECT_ITEM_ON_PROJECTSTATUS_TABLE);
         WebElement chevron = projectItem.findElement(By.cssSelector("[class $= 'chevron']"));
-
-
+      //  js.executeScript("arguments[0].dispatchEvent(new Event('click'))",chevron);
 
         action.moveToElement(projectItem)
                 .pause(1000)
-                .moveToElement(projectItem.findElement(By.cssSelector("[class$='chevron']")))
-                .scrollToElement(projectItem.findElement(By.cssSelector("[class$='chevron']")))
-                .click(projectItem.findElement(By.cssSelector("[class$='chevron']")))
-                .perform();
-
-        WebElement dropdown = getDriver().findElement(By.xpath("//div[@class = 'jenkins-dropdown']"));
+                .moveToElement(chevron)
+                .moveByOffset(((chevron.getRect().width)/2 - 1), 0).click().perform();
 
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
-                .xpath("//div[@class = 'jenkins-dropdown']")));
-
-        action.moveToElement(dropdown).pause(1000)
-                .moveToElement(dropdown.findElement(By.xpath("//a[contains(@href, '/move')]")))
-                .click().perform();
+                        .xpath("//a[contains(@href, '/move')]"))).click();
 
         new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" +  FOLDER_NAME);
         getDriver().findElement(By.name("Submit")).click();
         getDriver().findElement(DASHBOARD_BUTTON).click();
 
         action.click(getDriver().findElement(By.xpath("//td/a[@href='job/" + FOLDER_NAME + "/']"))).
-                perform();
+               perform();
 
         Assert.assertTrue(getDriver().getTitle().contains("Folder"));
         Assert.assertTrue(getDriver().findElement(PROJECT_ITEM_ON_PROJECTSTATUS_TABLE).isDisplayed());
