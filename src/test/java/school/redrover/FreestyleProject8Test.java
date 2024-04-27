@@ -43,6 +43,7 @@ public class FreestyleProject8Test extends BaseTest {
         TestUtils.goToMainPage(getDriver());
         TestUtils.clickAtBeginOfElement(this, TestUtils.getViewItemElement(this, "Folder"));
 
+        getWait10();
         String projectNameText = getDriver().findElement(By.xpath("//*[@href='job/Freestyle%20project/']")).getText();
         Assert.assertEquals(projectNameText, "Freestyle project");
 
