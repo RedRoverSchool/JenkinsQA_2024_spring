@@ -125,11 +125,12 @@ public final class ProjectUtils {
         System.out.printf(str, arr);
         System.out.println();
     }
+
     static void takeScreenshot(WebDriver driver, ITestResult testResult) {
         File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         try {
-            Files.createDirectories(Paths.get("Screenshots"));
-            FileHandler.copy(screenshot, new File("Screenshots/" + testResult.getInstanceName() + "." + testResult.getName()+".png"));
+            Files.createDirectories(Paths.get("screenshots"));
+            FileHandler.copy(screenshot, new File("screenshots/" + testResult.getInstanceName() + "." + testResult.getName() + ".png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
