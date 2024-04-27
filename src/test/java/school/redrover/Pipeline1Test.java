@@ -12,6 +12,8 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
+import java.util.List;
+
 public class Pipeline1Test extends BaseTest {
     private static final String PIPELINE_NAME = "NewPipeline";
 
@@ -97,10 +99,11 @@ public class Pipeline1Test extends BaseTest {
 
         getDriver().findElement(By.name("Submit")).click();
 
-        String actualStatusMessage = getDriver().findElement(By.id("enable-project")).getAttribute("innerText");
+        String actualStatusMessage = getDriver().findElement(By.id("enable-project")).getText();
 
         Assert.assertTrue(actualStatusMessage.contains("This project is currently disabled"));
     }
+
 
     @Test
     public void testFullStageViewButton() {
@@ -129,18 +132,16 @@ public class Pipeline1Test extends BaseTest {
         Assert.assertEquals(getH2HeaderText(), expectedResult);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testVisibilityDisableButton")
     public void testPipelineNotActive() {
         final String expectedProjectName = "Pipeline1";
-        TestUtils.returnToDashBoard(this);
 
-        boolean isNotPresent = getDriver()
-                .findElements(By.xpath("//table//a[contains(@title, 'Schedule a Build for')]")).isEmpty();
-        Assert.assertTrue(isNotPresent, "Schedule a Build for is present");
-
-        String actualProjectName = getDriver().findElement(By.xpath("//tbody//a/span")).getText();
+        String actualProjectName = getDriver().findElement(By.xpath("//tbody//td[3]//a[contains(@href, 'job/')]/span")).getText();
         Assert.assertEquals(actualProjectName, expectedProjectName);
+
+        List<WebElement> scheduleABuildArrows = getDriver().findElements(
+                        By.xpath("//table//a[@title= 'Schedule a Build for " +  expectedProjectName + "']"));
+        Assert.assertEquals(scheduleABuildArrows.size(), 0);
     }
 
     @Ignore

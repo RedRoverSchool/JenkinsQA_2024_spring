@@ -25,12 +25,13 @@ public class SearchBoxTest extends BaseTest {
         openDashboard();
     }
 
-    @Ignore
+
     @Test
     public void testFindFolderByOneLetter() {
         final String lowerCaseLetter = "f";
         List<String> folders = new ArrayList<>(List.of("Folder1", "Folder2", "Folder3"));
         folders.forEach(this::createFolder);
+        getWait60();
         WebElement searchBox = getDriver().findElement(By.id("search-box"));
         searchBox.sendKeys(lowerCaseLetter);
         searchBox.sendKeys(Keys.ENTER);
