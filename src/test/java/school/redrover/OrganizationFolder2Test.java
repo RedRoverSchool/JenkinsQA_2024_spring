@@ -1,9 +1,12 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
+import java.util.List;
 
 public class OrganizationFolder2Test extends BaseTest{
 
@@ -19,5 +22,19 @@ public class OrganizationFolder2Test extends BaseTest{
         getDriver().findElement(By.xpath("//a[.='Dashboard']")).click();
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//span[.='Organization Folder']")).isDisplayed());
+    }
+    @Test(dependsOnMethods = "testCreateOrganizationFolder")
+    public void testDeleteOrganizationFolder() {
+
+        getDriver().findElement(By.xpath("//span[.='Organization Folder']")).click();
+
+        getDriver().findElement(By.xpath("//a[@data-title='Delete Organization Folder']")).click();
+
+        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+
+        List<WebElement> jobList = getDriver().findElements(
+                By.xpath("//span[.='Organization Folder']"));
+
+        Assert.assertTrue(jobList.isEmpty());
     }
 }
