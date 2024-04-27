@@ -40,7 +40,7 @@ public class OrganizationFolder2Test extends BaseTest{
     }
 
     @Ignore
-    @Test(dependsOnMethods = "testCreateOrganizationFolder")
+    @Test//(dependsOnMethods = "testCreateOrganizationFolder")
     public void testOrganizationFolderAddDescription(){
 
         getDriver().findElement(By.xpath("//span[.='Organization Folder']")).click();
