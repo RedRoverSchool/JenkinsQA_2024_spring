@@ -203,4 +203,21 @@ public class PipelineConfigurationTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']"))
                 .getText().contains(editedDisplayNameText),"Your DisplayName is not edited correctly");
     }
+
+    @Test
+    public void testChoosePipelineScript() {
+        createPipeline();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@data-section-id='pipeline']"))).click();
+
+        WebElement selectScript = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class = 'samples']//select")));
+        Select simpleDropDown = new Select(selectScript);
+        simpleDropDown.selectByValue("github-maven");
+
+        WebElement uncheckCheckBox = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//label[text()='Use Groovy Sandbox']")));
+        uncheckCheckBox.click();
+
+        WebElement link = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@target='blank']")));
+        Assert.assertTrue(link.isDisplayed(), "Uncheck doesn't work");
+    }
 }
