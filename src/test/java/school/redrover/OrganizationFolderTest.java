@@ -77,18 +77,16 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1[contains(@id,'examples')]")).getText(), "Pipeline Examples");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testOrganizationFolderCreationWithDefaultIcon")
     public void testCatchErrorStepTooltipsViaDashboardDropdown() {
         final List<String> expectedTooltipsTexts = List.of("Help for feature: catchError", "Help for feature: Message",
                 "Help for feature: Build result on error", "Help for feature: Stage result on error",
                 "Help for feature: Catch Pipeline interruptions");
 
-        createNewItemAndReturnToDashboard(this, ORGANIZATION_FOLDER_NAME, TestUtils.Item.ORGANIZATION_FOLDER);
-
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(By.linkText(ORGANIZATION_FOLDER_NAME)))
                 .pause(500)
-                .scrollToElement(getDriver().findElement(By.cssSelector("td [class$='dropdown-chevron']")))
+                .moveToElement(getDriver().findElement(By.cssSelector("td [class$='dropdown-chevron']")))
                 .click()
                 .perform();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[href$='pipeline-syntax']"))).click();
