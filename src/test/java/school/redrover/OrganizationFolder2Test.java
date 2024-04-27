@@ -24,20 +24,6 @@ public class OrganizationFolder2Test extends BaseTest{
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//span[.='Organization Folder']")).isDisplayed());
     }
-    @Test(dependsOnMethods = "testCreateOrganizationFolder")
-    public void testDeleteOrganizationFolder() {
-
-        getDriver().findElement(By.xpath("//span[.='Organization Folder']")).click();
-
-        getDriver().findElement(By.xpath("//a[@data-title='Delete Organization Folder']")).click();
-
-        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
-
-        List<WebElement> jobList = getDriver().findElements(
-                By.xpath("//span[.='Organization Folder']"));
-
-        Assert.assertTrue(jobList.isEmpty());
-    }
 
     @Ignore
     @Test//(dependsOnMethods = "testCreateOrganizationFolder")
@@ -52,5 +38,20 @@ public class OrganizationFolder2Test extends BaseTest{
         String textOfDescription = getDriver().findElement(By.xpath("//div/*[@id='view-message']")).getText();
 
         Assert.assertEquals(textOfDescription,"Some description of the folder");
+    }
+
+    @Test(dependsOnMethods = "testOrganizationFolderAddDescription")
+    public void testDeleteOrganizationFolder() {
+
+        getDriver().findElement(By.xpath("//span[.='Organization Folder']")).click();
+
+        getDriver().findElement(By.xpath("//a[@data-title='Delete Organization Folder']")).click();
+
+        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+
+        List<WebElement> jobList = getDriver().findElements(
+                By.xpath("//span[.='Organization Folder']"));
+
+        Assert.assertTrue(jobList.isEmpty());
     }
 }

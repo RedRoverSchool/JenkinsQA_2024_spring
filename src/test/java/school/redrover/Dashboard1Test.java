@@ -12,24 +12,104 @@ import school.redrover.runner.TestUtils;
 import java.util.*;
 
 public class Dashboard1Test extends BaseTest {
-    private final String VIEW_NAME = "Classic";
-    private final String SELECTED_NAME1 = "Vivaldi";
-    private final String SELECTED_NAME2 = "Nic";
+    private final String VIEW_NAME = "RedRover";
+    private final String SELECTED_NAME1 = TestUtils.MULTIBRANCH_PIPELINE;
+    private final String SELECTED_NAME2 = TestUtils.FOLDER;
     private List<String> projectsNames = getNamesList();
 
     private List<String> getNamesList() {
         List<String> names = new ArrayList<>();
-        names.add("Imagine Dragons");
-        names.add("A-ha");
-        names.add("Depeche Mode");
-        names.add("Antonio Vivaldi");
-        names.add("Niccolo Paganini");
+        names.add(TestUtils.FREESTYLE_PROJECT);
+        names.add(TestUtils.MULTIBRANCH_PIPELINE);
+        names.add(TestUtils.ORGANIZATION_FOLDER);
+        names.add(TestUtils.FOLDER);
+        names.add(TestUtils.MULTI_CONFIGURATION_PROJECT);
+        names.add(TestUtils.PIPELINE);
         return names;
+    }
+
+    private List<String> getFreestyleProjectMenu() {
+        List<String> menu = new ArrayList<>();
+        menu.add("Changes");
+        menu.add("Workspace");
+        menu.add("Build Now");
+        menu.add("Configure");
+        menu.add("Delete Project");
+        menu.add("Move");
+        menu.add("Rename");
+        return menu;
+    }
+
+    private List<String> getPipelineMenu() {
+        List<String> menu = new ArrayList<>();
+        menu.add("Changes");
+        menu.add("Build Now");
+        menu.add("Configure");
+        menu.add("Delete Pipeline");
+        menu.add("Move");
+        menu.add("Full Stage View");
+        menu.add("Rename");
+        menu.add("Pipeline Syntax");
+        return menu;
+    }
+
+    private List<String> getMultiConfigurationProjectMenu() {
+        List<String> menu = new ArrayList<>();
+        menu.add("Changes");
+        menu.add("Workspace");
+        menu.add("Build Now");
+        menu.add("Configure");
+        menu.add("Delete Multi-configuration project");
+        menu.add("Move");
+        menu.add("Rename");
+        return menu;
+    }
+
+    private List<String> getFolderMenu() {
+        List<String> menu = new ArrayList<>();
+        menu.add("Configure");
+        menu.add("New Item");
+        menu.add("Delete Folder");
+        menu.add("People");
+        menu.add("Build History");
+        menu.add("Rename");
+        menu.add("Credentials");
+        return menu;
+    }
+
+    private List<String> getMultibranchPipelineMenu() {
+        List<String> menu = new ArrayList<>();
+        menu.add("Configure");
+        menu.add("Scan Multibranch Pipeline Log");
+        menu.add("Multibranch Pipeline Events");
+        menu.add("Delete Multibranch Pipeline");
+        menu.add("People");
+        menu.add("Build History");
+        menu.add("Move");
+        menu.add("Rename");
+        menu.add("Pipeline Syntax");
+        menu.add("Credentials");
+        return menu;
+    }
+
+    private List<String> getOrganizationFolderMenu() {
+        List<String> menu = new ArrayList<>();
+        menu.add("Configure");
+        menu.add("Scan Organization Folder Log");
+        menu.add("Organization Folder Events");
+        menu.add("Delete Organization Folder");
+        menu.add("People");
+        menu.add("Build History");
+        menu.add("Move");
+        menu.add("Rename");
+        menu.add("Pipeline Syntax");
+        menu.add("Credentials");
+        return menu;
     }
 
     private void createItemsFromList(List<String> list) {
         for (String name : list) {
-            TestUtils.createItem(TestUtils.MULTIBRANCH_PIPELINE, name, this);
+            TestUtils.createItem(name, name, this);
             TestUtils.goToMainPage(getDriver());
         }
     }
@@ -48,10 +128,48 @@ public class Dashboard1Test extends BaseTest {
                 .perform();
     }
 
-    @Test
-    public void testCreateView() {
-        createItemsFromList(projectsNames);
+    private List<String> getChevronMenu(String jobName) {
+        TestUtils.openElementDropdown(this, getDriver().findElement(By.linkText(jobName)));
 
+        WebElement dropdownMenu = getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@class='jenkins-dropdown']")));
+
+        return Arrays.stream(dropdownMenu.getText().split("\\r?\\n")).toList();
+    }
+
+    @Test
+    public void testFreestyleProjectChevronMenu() {
+        createItemsFromList(projectsNames);
+        Assert.assertEquals(getChevronMenu(TestUtils.FREESTYLE_PROJECT), getFreestyleProjectMenu());
+    }
+
+    @Test(dependsOnMethods = "testFreestyleProjectChevronMenu")
+    public void testPipelineChevronMenu() {
+        Assert.assertEquals(getChevronMenu(TestUtils.PIPELINE), getPipelineMenu());
+    }
+
+    @Test(dependsOnMethods = "testPipelineChevronMenu")
+    public void testMultiConfigurationProjectChevronMenu() {
+        Assert.assertEquals(getChevronMenu(TestUtils.MULTI_CONFIGURATION_PROJECT), getMultiConfigurationProjectMenu());
+    }
+
+    @Test(dependsOnMethods = "testMultiConfigurationProjectChevronMenu")
+    public void testFolderChevronMenu() {
+        Assert.assertEquals(getChevronMenu(TestUtils.FOLDER), getFolderMenu());
+    }
+
+    @Test(dependsOnMethods = "testFolderChevronMenu")
+    public void testMultibranchPipelineChevronMenu() {
+        Assert.assertEquals(getChevronMenu(TestUtils.MULTIBRANCH_PIPELINE), getMultibranchPipelineMenu());
+    }
+
+    @Test(dependsOnMethods = "testMultibranchPipelineChevronMenu")
+    public void testOrganizationChevronMenu() {
+        Assert.assertEquals(getChevronMenu(TestUtils.ORGANIZATION_FOLDER), getOrganizationFolderMenu());
+    }
+
+    @Test(dependsOnMethods = "testOrganizationChevronMenu")
+    public void testCreateView() {
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@title='New View']"))).click();
         getDriver().findElement(By.id("name")).sendKeys(VIEW_NAME);
         getDriver().findElement(By.xpath("//label[@for='hudson.model.ListView']")).click();
@@ -60,7 +178,6 @@ public class Dashboard1Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='tab active']")).getText(), VIEW_NAME);
     }
-
 
     @Test(dependsOnMethods = "testCreateView")
     public void testSortItemsByName() {
@@ -85,8 +202,7 @@ public class Dashboard1Test extends BaseTest {
         WebElement selectedProject2 = getDriver().findElement(
                 By.xpath("//label[contains(@title, '" + SELECTED_NAME2 + "')]"));
 
-        WebElement okButton = getDriver().findElement(
-                By.name("Submit"));
+        WebElement okButton = getDriver().findElement(By.name("Submit"));
 
         clickElement(selectedProject1);
         clickElement(selectedProject2);
