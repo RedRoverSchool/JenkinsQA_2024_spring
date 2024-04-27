@@ -112,10 +112,6 @@ public class JobRemoteTriggeringOBTest extends BaseTest {
         final String uuid = tokenUuidUser[1];
         final String user = tokenUuidUser[2];
 
-        System.out.println(token);
-        System.out.println(uuid);
-        System.out.println(user);
-
         createFreestyleProjectWithConfigurations(projectName);
 
         triggerJobViaHTTPRequest(token, user, projectName);
