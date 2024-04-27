@@ -65,7 +65,7 @@ public class FreestyleProject2Test extends BaseTest {
 
         action.moveToElement(projectItem)
                 .pause(1000)
-                .moveToElement(chevron)
+                .moveToElement(getWait5().until(ExpectedConditions.elementToBeClickable(chevron)))
                 .moveByOffset(((chevron.getRect().width)/2 - 1), 0).click().perform();
 
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
