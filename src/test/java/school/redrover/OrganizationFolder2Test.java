@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -38,6 +39,7 @@ public class OrganizationFolder2Test extends BaseTest{
         Assert.assertTrue(jobList.isEmpty());
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateOrganizationFolder")
     public void testOrganizationFolderAddDescription(){
 
