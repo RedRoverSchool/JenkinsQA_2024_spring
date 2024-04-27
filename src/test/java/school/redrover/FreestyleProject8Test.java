@@ -41,6 +41,7 @@ public class FreestyleProject8Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
 
         TestUtils.goToMainPage(getDriver());
+        getWait10();
         TestUtils.clickAtBeginOfElement(this, TestUtils.getViewItemElement(this, "Folder"));
 
         getWait10();
