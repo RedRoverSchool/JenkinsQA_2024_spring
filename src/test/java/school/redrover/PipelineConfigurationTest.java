@@ -217,6 +217,7 @@ public class PipelineConfigurationTest extends BaseTest {
         WebElement uncheckCheckBox = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//label[text()='Use Groovy Sandbox']")));
         uncheckCheckBox.click();
 
-        Assert.assertTrue(getDriver().findElement(By.xpath("//a[@target='blank']")).isDisplayed(), "Uncheck doesn't work");
+        WebElement link = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@target='blank']")));
+        Assert.assertTrue(link.isDisplayed(), "Uncheck doesn't work");
     }
 }
