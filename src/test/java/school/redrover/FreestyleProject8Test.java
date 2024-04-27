@@ -30,6 +30,7 @@ public class FreestyleProject8Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "New name");
     }
+
     @Test(dependsOnMethods = "testCreateProject")
     public void testFreestyleProjectMoveToFolder() {
         TestUtils.createNewJob(this,TestUtils.Job.FOLDER,"Folder");
