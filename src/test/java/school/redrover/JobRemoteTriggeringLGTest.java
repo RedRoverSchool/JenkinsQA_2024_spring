@@ -17,11 +17,12 @@ import static org.openqa.selenium.By.*;
 public class JobRemoteTriggeringLGTest extends BaseTest {
 
     private void openUserConfigurations() {
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
         getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.id("tasks")));
         getDriver().findElement(By.id("tasks")).findElement(By.linkText("People")).click();
         getWait5().until(ExpectedConditions
                         .visibilityOfElementLocated(By.id("people")))
-                .findElement(By.xpath("//a[contains(@href, '.user/')]"))
+                .findElement(By.xpath("//a[contains(@href, '/user/')]"))
                 .click();
         getWait5().until(ExpectedConditions
                         .presenceOfElementLocated(By.id("tasks")))
@@ -74,11 +75,10 @@ public class JobRemoteTriggeringLGTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
-    private void scrollToElement(By by) {
+   private void scrollToElement(By by) {
         WebElement element = getDriver().findElement(by);
-        ((JavascriptExecutor) getDriver()).executeScript("argument[0].scrollIntoView(true);", element);
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
     }
-
     private void triggerJobViaHTTPRequest(String token, String user, String projectName) {
         final String postBuildToken = "http://" + user + ":" + token + "@localhost:8080/job/Project1/build?token=" + projectName; //???
 
@@ -93,7 +93,7 @@ public class JobRemoteTriggeringLGTest extends BaseTest {
 
     private void revokeTokenViaHTTPRequest(String token, String uuid, String user) {
         final String postRevokeToken = "http://" + user + ":" + token + "@localhost:8080/user/" + user
-                + "descriptorByName/jenkins.security.APiTokenProperty/revoke?tokenUuid=" + uuid;
+                + "/descriptorByName/jenkins.security.ApiTokenProperty/revoke?tokenUuid=" + uuid;
 
         getDriver().switchTo().newWindow(WindowType.TAB);
         getDriver().navigate().to(postRevokeToken);
@@ -127,7 +127,7 @@ public class JobRemoteTriggeringLGTest extends BaseTest {
                         .visibilityOfElementLocated(By.className("console-output")))
                 .getText();
 
-//http://iz:114bfe6c6a8b260e2493b0816703f6d16a@localhost:8080/user/iz/descriptorByName/jenkins.security.ApiTokenProperty/revoke?tokenUuid=b4ff700d-bc57-4035-9f76-288efb94689d
+
         revokeTokenViaHTTPRequest(token, uuid, user);
 
         Assert.assertTrue(
