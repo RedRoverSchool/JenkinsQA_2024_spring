@@ -3,10 +3,13 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.time.Duration;
 import java.util.List;
 public class Folder5Test extends BaseTest {
     public void createFolder(String folderName) {
@@ -46,7 +49,8 @@ public class Folder5Test extends BaseTest {
 
         getDriver().findElement(By.xpath("//table//a[@href='job/" + folderName + "/']"));
 
-        WebElement dropdown = getDriver().findElement(By.xpath("//td//button[@class='jenkins-menu-dropdown-chevron']"));
+        WebElement dropdown = new WebDriverWait(getDriver(), Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td//button[@class='jenkins-menu-dropdown-chevron']")));
         Actions actions = new Actions(getDriver());
         actions.moveToElement(dropdown).build().perform();
         dropdown.click();
