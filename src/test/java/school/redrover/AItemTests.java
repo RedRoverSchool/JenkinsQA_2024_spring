@@ -91,4 +91,10 @@ public class AItemTests extends BaseTest {
         TestUtils.goToMainPage(getDriver());
         Assert.assertTrue(getDriver().findElement(nameUpItem).isDisplayed());
     }
+
+    @Test
+    public void footerRestApiLinkRGBTest() {
+        WebElement restApi = getDriver().findElement(By.xpath("//a[normalize-space()='REST API']"));
+        Assert.assertEquals(restApi.getCssValue("color"), "rgba(20, 20, 31, 1)");
+    }
 }
