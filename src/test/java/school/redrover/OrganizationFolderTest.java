@@ -86,7 +86,7 @@ public class OrganizationFolderTest extends BaseTest {
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(By.linkText(ORGANIZATION_FOLDER_NAME)))
                 .pause(500)
-                .moveToElement(getDriver().findElement(By.cssSelector("td [class$='dropdown-chevron']")))
+                .scrollToElement(getDriver().findElement(By.cssSelector("td [class$='dropdown-chevron']")))
                 .click()
                 .perform();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[href$='pipeline-syntax']"))).click();
