@@ -61,12 +61,14 @@ public class FreestyleProject2Test extends BaseTest {
 
         WebElement projectItem = getDriver().findElement(PROJECT_ITEM_ON_PROJECTSTATUS_TABLE);
         WebElement chevron = projectItem.findElement(By.cssSelector("[class $= 'chevron']"));
-      //  js.executeScript("arguments[0].dispatchEvent(new Event('click'))",chevron);
+
+       // js.executeScript("arguments[0].dispatchEvent(new Event('click'))", chevron);
 
         action.moveToElement(projectItem)
                 .pause(1000)
-                .moveToElement(getWait5().until(ExpectedConditions.elementToBeClickable(chevron)))
-                .moveByOffset(((chevron.getRect().width)/2 - 1), 0).click().perform();
+             .moveToElement(getWait5().until(ExpectedConditions.elementToBeClickable(chevron)))
+                .moveToElement(chevron, chevron.getRect().width, chevron.getRect().height).click().perform();
+              // .moveByOffset(((chevron.getRect().width)/2 - 1), 0).click().perform();
 
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
                         .xpath("//a[contains(@href, '/move')]"))).click();
