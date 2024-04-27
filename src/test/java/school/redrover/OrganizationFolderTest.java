@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static school.redrover.runner.TestUtils.createNewItemAndReturnToDashboard;
-import static school.redrover.runner.TestUtils.getTexts;
+
 
 public class OrganizationFolderTest extends BaseTest {
     private static final String ORGANIZATION_FOLDER_NAME = "Organization Folder";
