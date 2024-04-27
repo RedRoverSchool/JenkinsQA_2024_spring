@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -35,16 +36,17 @@ public class FreestyleProject8Test extends BaseTest {
     public void testFreestyleProjectMoveToFolder() {
         TestUtils.createNewJob(this,TestUtils.Job.FOLDER,"Folder");
 
-        getDriver().findElement(By.xpath("//*[@href='job/Freestyle%20project/']/span")).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@href='job/Freestyle%20project/']/span"))).click();
         getDriver().findElement(By.xpath("//a[@href='/job/Freestyle%20project/move']")).click();
         getDriver().findElement(By.xpath("//select/option[@value='/Folder']")).click();
         getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
 
+        getWait10();
         TestUtils.goToMainPage(getDriver());
         getWait10();
         TestUtils.clickAtBeginOfElement(this, TestUtils.getViewItemElement(this, "Folder"));
 
-        getWait10();
+        getWait60();
         String projectNameText = getDriver().findElement(By.xpath("//*[@href='job/Freestyle%20project/']")).getText();
         Assert.assertEquals(projectNameText, "Freestyle project");
 
