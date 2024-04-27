@@ -29,6 +29,8 @@ public class JobRemoteTriggeringOBTest extends BaseTest {
     }
 
     private String[] getTokenUuidUser(String projectName) {
+        final String emptyTokenMessage = getDriver().findElement(By.cssSelector(".token-list-item>div")).getText();
+        System.out.println(emptyTokenMessage);
         getWait5().until(ExpectedConditions
                 .elementToBeClickable(By.xpath("//button[text()='Add new Token']")))
                 .click();
@@ -102,7 +104,6 @@ public class JobRemoteTriggeringOBTest extends BaseTest {
         getDriver().switchTo().window(tabs.get(0));
     }
 
-    @Ignore
     @Test
     public void testFreestyleJobRemoteTriggering() {
         final String projectName = "Project1";
