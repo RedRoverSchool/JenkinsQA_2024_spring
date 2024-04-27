@@ -119,8 +119,10 @@ public class JobRemoteTriggeringOBTest extends BaseTest {
 
         triggerJobViaHTTPRequest(token, user, projectName);
 
-        getWait60().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@tooltip='Success > Console Output']")))
-                .click();
+        while(getDriver().findElements(By.xpath("//a[@tooltip='Success > Console Output']")).isEmpty()){
+            getWait60().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@tooltip='Success > Console Output']")));
+        }
+        getWait60().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@tooltip='Success > Console Output']"))).click();
 
         final String actualConsoleLogs = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("console-output")))
                 .getText();
