@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
-public class AItemTests extends BaseTest {
+public class AItemTest extends BaseTest {
 
     private boolean isException = false;
     private final By nameUpItem = By.xpath("//span[.='New Folder']");
