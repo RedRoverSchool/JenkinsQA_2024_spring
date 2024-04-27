@@ -23,7 +23,22 @@ public class OrganizationFolder2Test extends BaseTest{
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//span[.='Organization Folder']")).isDisplayed());
     }
+
     @Test(dependsOnMethods = "testCreateOrganizationFolder")
+    public void testOrganizationFolderAddDescription(){
+
+        getDriver().findElement(By.xpath("//span[.='Organization Folder']")).click();
+        getDriver().findElement(By.xpath("//*[@href='/job/Organization%20Folder/configure']")).click();
+
+        getDriver().findElement(By.xpath("//textarea[@name='_.description']")).sendKeys("Some description of the folder");
+        getDriver().findElement(By.xpath("//div/*[@name='Submit']")).click();
+
+        String textOfDescription = getDriver().findElement(By.xpath("//div/*[@id='view-message']")).getText();
+
+        Assert.assertEquals(textOfDescription,"Some description of the folder");
+    }
+
+    @Test(dependsOnMethods = "testOrganizationFolderAddDescription")
     public void testDeleteOrganizationFolder() {
 
         getDriver().findElement(By.xpath("//span[.='Organization Folder']")).click();
