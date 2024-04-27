@@ -113,8 +113,13 @@ public class JobRemoteTriggeringAJTest extends BaseTest {
 
         triggerJobViaHTTPRequest(token, user, projectName);
 
-        getWait60().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@tooltip='Success > Console Output']")))
-                .click();
+        int count = 0;
+        while(getDriver().findElements(By.xpath("//a[@tooltip='Success > Console Output']")).isEmpty()
+                && count < 2){
+            getWait60().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@tooltip='Success > Console Output']")));
+            count++;
+        }
+        getWait60().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@tooltip='Success > Console Output']"))).click();
 
         final String actualConsoleLogs = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("console-output")))
                 .getText();
