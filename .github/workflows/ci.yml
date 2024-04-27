@@ -50,3 +50,9 @@ jobs:
           CHROME_OPTIONS: --remote-allow-origins=*;--disable-gpu;--no-sandbox;--disable-dev-shm-usage;--headless=new;--window-size=1920,1080
           APP_OPTIONS: host=localhost;port=8080;admin.username=${{ secrets.ADMIN_USERNAME }};admin.password=${{ secrets.ADMIN_PASSWORD }}
           CI_RUN: true
+
+      - name: Attach screenshots
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          path: screenshots

@@ -96,6 +96,7 @@ public class JobRemoteTriggeringAJTest extends BaseTest {
 
         getDriver().switchTo().window(tabs.get(0));
     }
+
     @Ignore
     @Test
     public void testFreestyleJobRemoteTriggering() {
