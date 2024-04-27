@@ -24,7 +24,7 @@ public class OrganizationFolder2Test extends BaseTest{
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//span[.='Organization Folder']")).isDisplayed());
     }
-    @Test//(dependsOnMethods = "testCreateOrganizationFolder")
+    @Test(dependsOnMethods = "testCreateOrganizationFolder")
     public void testDeleteOrganizationFolder() {
 
         getDriver().findElement(By.xpath("//span[.='Organization Folder']")).click();
