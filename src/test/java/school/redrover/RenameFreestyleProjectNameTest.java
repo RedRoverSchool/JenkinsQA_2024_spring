@@ -34,8 +34,8 @@ public class RenameFreestyleProjectNameTest extends BaseTest {
         WebElement projectLink = getDriver().findElement(By.linkText("OldFreestyleProjectName"));
         action.moveToElement(nameProject).perform();
 
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".jenkins-menu-dropdown-chevron[data-href='http://localhost:8080/job/OldFreestyleProjectName/']"))).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class ='jenkins-dropdown__item'][4]"))).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".jenkins-menu-dropdown-chevron[data-href='http://localhost:8080/job/OldFreestyleProjectName/']"))).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class ='jenkins-dropdown__item'][4]"))).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Rename Project OldFreestyleProjectName");
         getDriver().findElement(By.name("newName")).clear();
@@ -46,4 +46,4 @@ public class RenameFreestyleProjectNameTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "OldFreestyleProjectNameNew");
         Assert.assertEquals(getDriver().findElement(By.xpath("//h2")).getText(), "Permalinks");
     }
-    }
+}
