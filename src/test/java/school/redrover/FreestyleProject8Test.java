@@ -35,8 +35,9 @@ public class FreestyleProject8Test extends BaseTest {
     @Test(dependsOnMethods = "testCreateProject")
     public void testFreestyleProjectMoveToFolder() {
         TestUtils.createNewJob(this,TestUtils.Job.FOLDER,"Folder");
+        getWait10();
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@href='job/Freestyle%20project/']/span"))).click();
+        getWait60().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@href='job/Freestyle%20project/']/span"))).click();
         getDriver().findElement(By.xpath("//a[@href='/job/Freestyle%20project/move']")).click();
         getDriver().findElement(By.xpath("//select/option[@value='/Folder']")).click();
         getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
