@@ -73,7 +73,7 @@ public class Pipeline2Test extends BaseTest {
     }
 
     @Test
-    public void testRenameViaDropdown(){
+    public void testRenameJobViaBreadcrumbs() {
         createPipeline();
 
         new Actions(getDriver())
