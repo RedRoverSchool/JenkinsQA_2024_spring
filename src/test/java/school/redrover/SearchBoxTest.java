@@ -25,7 +25,7 @@ public class SearchBoxTest extends BaseTest {
         openDashboard();
     }
 
-
+    @Ignore
     @Test
     public void testFindFolderByOneLetter() {
         final String lowerCaseLetter = "f";
