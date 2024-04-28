@@ -79,11 +79,11 @@ public class Pipeline2Test extends BaseTest {
 
         Actions action = new Actions(getDriver());
         action.moveToElement(getDriver().findElement(NAME_IN_BREADCRUMBS_LOCATOR)).perform();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(CHEVRON_LOCATOR));
 
         int attempts = 0;
         while (attempts < 3) {
             try {
+                getWait5().until(ExpectedConditions.visibilityOfElementLocated(CHEVRON_LOCATOR));
                 getDriver().findElement(CHEVRON_LOCATOR).click();
                 getDriver().findElement(By.cssSelector("div > a[href$='rename']")).click();
                 break;
