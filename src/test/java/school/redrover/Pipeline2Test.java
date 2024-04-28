@@ -53,4 +53,17 @@ public class Pipeline2Test extends BaseTest {
 
         Assert.assertEquals(nameInBreadcrumbs, PIPELINE_NAME);
     }
+
+    @Test
+    public void testRenameJobViaSidebar() {
+        final String newName = "New pipeline name";
+
+        createPipeline();
+        getDriver().findElement(By.cssSelector("a[href$='rename']")).click();
+        getDriver().findElement(By.name("newName")).clear();
+        getDriver().findElement(By.name("newName")).sendKeys(newName);
+        getDriver().findElement(SAVE_BUTTON_LOCATOR).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("div > h1")).getText(), newName);
+    }
 }

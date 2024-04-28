@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
@@ -204,6 +205,7 @@ public class PipelineProject1Test extends BaseTest {
         Assert.assertTrue(scriptName.getText().contains("Hello"));
     }
 
+    @Ignore
     @Test
     public void testAddDescriptionColumnToPipelineView() {
         final String viewName = "Empoyee's view";

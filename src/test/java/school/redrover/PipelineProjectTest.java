@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
@@ -90,5 +91,26 @@ public class PipelineProjectTest extends BaseTest {
         for (WebElement element : breadcrumbBarElements) {
             Assert.assertTrue(element.isDisplayed(), "Pipeline project");
         }
+    }
+    @Test
+    public void testNewPipelineProject() {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys("ProjectPL");
+        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[2]/label")).click();
+        getDriver().findElement(By.xpath("//*[@id='ok-button']")).click();
+        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]")).click();
+
+        Assert.assertEquals(getDriver().findElement(
+                By.xpath("//*[@id='main-panel']/div[1]/div/h1")).getText(),"ProjectPL");
+    }
+    @Test (dependsOnMethods = "testNewPipelineProject")
+    public void testUseSearchToFindProject() {
+
+        getDriver().findElement(By.xpath("//*[@id='search-box']")).sendKeys("ProjectPL");
+        getDriver().findElement(By.xpath("//*[@id='search-box']")).sendKeys(Keys.ENTER);
+
+        Assert.assertEquals(getDriver().findElement(
+                By.xpath("//*[@id='main-panel']/div[1]/div/h1")).getText(),"ProjectPL");
     }
 }
