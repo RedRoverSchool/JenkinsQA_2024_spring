@@ -19,7 +19,7 @@ public class Pipeline2Test extends BaseTest {
     private static final By NAME_IN_BREADCRUMBS_LOCATOR = By.cssSelector("li > a[href^='/job/']");
     private static final By NEW_NAME_INPUT_LOCATOR = By.name("newName");
     private static final By RENAME_BUTTON_LOCATOR = By.cssSelector("a[href$='rename']");
-    private static final By CHEVRON_LOCATOR = By.cssSelector("a[href^='/job'] > button");
+    private static final By CHEVRON_LOCATOR = By.cssSelector("[href^='/job'] [class$='dropdown-chevron']");
 
 
     private void createPipeline() {
