@@ -3,19 +3,22 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
+
+import java.util.List;
 
 
 public class PipelineTest extends BaseTest {
 
     private static final String PIPELINE_NAME = "FirstPipeline";
     private static final By ADD_DESCRIPTION_LOCATOR = By.id("description-link");
+    private static final By DASHBOARD_PIPELINE_LOCATOR = By.cssSelector("td [href='job/" + PIPELINE_NAME + "/']");
 
     private void createPipelineWithCreateAJob() {
         getDriver().findElement(By.linkText("Create a job")).click();
@@ -25,7 +28,6 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
-    @Ignore
     @Test
     public void testPipelineDescriptionTextAreaBacklightColor() {
         TestUtils.resetJenkinsTheme(this);
@@ -42,7 +44,6 @@ public class PipelineTest extends BaseTest {
                 "Current text area border backlight color is not equal to rgba(11, 106, 162, 0.25)");
     }
 
-    @Ignore
     @Test
     public void testPipelineDescriptionTextAreaBacklightDefaultColor() {
         TestUtils.resetJenkinsTheme(this);
@@ -74,5 +75,33 @@ public class PipelineTest extends BaseTest {
                 getDriver().findElement(By.xpath("//button[@data-id='ok']")));
 
         Assert.assertEquals(okButtonHexColor, "#e6001f", "The confirmation button color is not red");
+    }
+
+    @Test
+    public void testDeleteViaBreadcrumbs() {
+        createPipelineWithCreateAJob();
+        TestUtils.goToMainPage(getDriver());
+
+        getDriver().findElement(DASHBOARD_PIPELINE_LOCATOR).click();
+        WebElement breadcrumbsItemName = getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job']"));
+
+        new Actions(getDriver())
+                .moveToElement(breadcrumbsItemName)
+                .perform();
+
+        int attempts = 0;
+        while (attempts < 2) {
+            try {
+                getDriver().findElement(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']")).click();
+                getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='Delete']")).click();
+                getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+                break;
+            } catch (Exception e) {
+                attempts++;
+            }
+        }
+
+        List<WebElement> jobsList = getDriver().findElements(DASHBOARD_PIPELINE_LOCATOR);
+        Assert.assertTrue(jobsList.isEmpty(), PIPELINE_NAME + " was not deleted");
     }
 }
