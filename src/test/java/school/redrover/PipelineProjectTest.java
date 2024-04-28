@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
@@ -103,5 +104,13 @@ public class PipelineProjectTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(
                 By.xpath("//*[@id='main-panel']/div[1]/div/h1")).getText(),"ProjectPL");
     }
+    @Test (dependsOnMethods = "testNewPipelineProject")
+    public void testUseSearchToFindProject() {
 
+        getDriver().findElement(By.xpath("//*[@id='search-box']")).sendKeys("ProjectPL");
+        getDriver().findElement(By.xpath("//*[@id='search-box']")).sendKeys(Keys.ENTER);
+
+        Assert.assertEquals(getDriver().findElement(
+                By.xpath("//*[@id='main-panel']/div[1]/div/h1")).getText(),"ProjectPL");
+    }
 }

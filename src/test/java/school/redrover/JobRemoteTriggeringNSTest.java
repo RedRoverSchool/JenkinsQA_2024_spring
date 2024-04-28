@@ -85,8 +85,6 @@ public class JobRemoteTriggeringNSTest extends BaseTest {
 
         final String postBuildJob = "http://" + user + ":" + token + "@localhost:8080/job/ProjectTest1/build?token=" + projectName;
 
-        http://admin:11cefdfa148bd7c7c6e1fe4aefa3827887@localhost:8080/job/ProjectTest1/build?token=ProjectTest1
-
         getDriver().switchTo().newWindow(WindowType.TAB);
         getDriver().navigate().to(postBuildJob);
 
@@ -121,14 +119,17 @@ public class JobRemoteTriggeringNSTest extends BaseTest {
 
         triggerJobHTTPRequest(token, user, projectName);
 
-        getWait60().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@tooltip='Success > Console Output']")))
-                .click();
+        int count = 0;
+        while(getDriver().findElements(By.xpath("//a[@tooltip='Success > Console Output']")).isEmpty()
+                && count < 2){
+            getWait60().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@tooltip='Success > Console Output']")));
+            count++;
+        }
+        getWait60().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@tooltip='Success > Console Output']"))).click();
 
         final String actualConsoleLogs = getWait5().until(ExpectedConditions
                         .visibilityOfElementLocated(By.className("console-output")))
                 .getText();
-
-        System.out.println(actualConsoleLogs);
 
         revokeTokenViaHTTPRequest(token, uuid, user);
 

@@ -136,6 +136,8 @@ public class Pipeline1Test extends BaseTest {
     public void testPipelineNotActive() {
         final String expectedProjectName = "Pipeline1";
 
+
+
         String actualProjectName = getDriver().findElement(By.xpath("//tbody//td[3]//a[contains(@href, 'job/')]/span")).getText();
         Assert.assertEquals(actualProjectName, expectedProjectName);
 
