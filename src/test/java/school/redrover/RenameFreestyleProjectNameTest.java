@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -40,7 +41,12 @@ public class RenameFreestyleProjectNameTest extends BaseTest {
                 .elementToBeClickable(By.xpath("//a[@href='job/"+ expectedProjectName
                 + "/']/button[@class='jenkins-menu-dropdown-chevron']")));
         actions.moveToElement(dropdownArrow).perform();
-        dropdownArrow.click();
+        JavascriptExecutor executor = (JavascriptExecutor)getDriver();
+        executor.executeScript("arguments[0].click();", getDriver().findElement(By.xpath("//a[@href='job/"+ expectedProjectName
+                + "/']/button[@class='jenkins-menu-dropdown-chevron']")));
+
+
+//        dropdownArrow.click();
 
         getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//div[@data-state='visible']")));
         WebElement renameMenu = getDriver().findElement(By.xpath("//div[@data-state='visible']")).findElement(By.linkText("Rename"));
