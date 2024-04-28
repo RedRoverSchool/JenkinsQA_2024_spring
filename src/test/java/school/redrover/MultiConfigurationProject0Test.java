@@ -290,7 +290,7 @@ public class MultiConfigurationProject0Test extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateMCP")
     public void testCreateMCPWithSameName() {
-        TestUtils.createNewItemAndReturnToDashboard(this, randomProjectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+        TestUtils.createNewItem(this, randomProjectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
 
         Assert.assertEquals(
                 getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#main-panel h1"))).getText(),
