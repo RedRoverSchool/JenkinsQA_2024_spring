@@ -52,7 +52,11 @@ public class RenameFreestyleProjectNameTest extends BaseTest {
         WebElement renameMenu = getWait60().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@data-state='visible']"))).findElement(By.linkText("Rename"));
         actions.moveToElement(renameMenu).perform();
 
-        renameMenu.click();
+        JavascriptExecutor executor1 = (JavascriptExecutor)getDriver();
+        executor1.executeScript("arguments[0].click();", getDriver().findElement(By.linkText("Rename")));
+
+        getWait60().until(ExpectedConditions.elementToBeClickable(By.name("Submit")));
+        // renameMenu.click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Rename Project "+ expectedProjectName);
     }
