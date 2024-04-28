@@ -235,4 +235,49 @@ public class MultiConfigurationProject0Test extends BaseTest {
         Assert.assertTrue(actualErrorMessage.contains(errorMessage));
         Assert.assertFalse(okButton.isEnabled());
     }
+
+
+    @Test
+    public void testTryCreateProjectExistName() {
+        final String projectName = "MultiBuild";
+        final String errorMessage = "A job already exists with the name " + "‘" + projectName + "’";
+
+        TestUtils.createNewItemAndReturnToDashboard(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
+        getDriver().findElement(By.className("jenkins-input")).sendKeys(projectName);
+        getDriver().findElement(By.id("ok-button")).click();
+
+        String actualMessage = getDriver().findElement(By.xpath("//*[@id='main-panel']/p")).getText();
+        Assert.assertEquals(actualMessage, errorMessage);
+    }
+
+    @Test
+    public void testCreateMCProject() {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("MCProject");
+        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[3]/label")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]")).click();
+        getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[1]/a")).click();
+
+        Assert.assertEquals(getDriver().findElement(By
+                .xpath("//*[@id='job_MCProject']/td[3]/a/span")).getText(),"MCProject");
+
+    }
+
+    @Test (dependsOnMethods = "testCreateMCProject")
+    public void testRenameMCProject() {
+        getDriver().findElement(By.xpath("//*[@id='job_MCProject']/td[3]/a/span")).click();
+        getDriver().findElement(By.xpath("//*[@id='tasks']/div[7]/span/a")).click();
+        getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/div[1]/div[2]/input")).clear();
+        getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/div[1]/div[2]/input")).sendKeys("MCProjectNew");
+        getDriver().findElement(By.name("Submit")).click();
+
+
+        Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//*[@id='breadcrumbs']/li[3]/a"))).getText(),"MCProjectNew");
+
+    }
 }

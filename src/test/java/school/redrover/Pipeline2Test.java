@@ -37,12 +37,33 @@ public class Pipeline2Test extends BaseTest {
         final String addedToDescription = ", consectetur adipiscing elit.";
         final String expectedDescription = DESCRIPTION + addedToDescription;
 
-        getDriver().findElement(By.xpath("//span[text()='Created Pipeline']")).click();
+        getDriver().findElement(By.xpath("//span[text()='" + PIPELINE_NAME + "']")).click();
         getDriver().findElement(CHANGE_DESCRIPTION_LOCATOR).click();
         getDriver().findElement(DESCRIPTION_INPUT_LOCATOR).click();
         getDriver().findElement(DESCRIPTION_INPUT_LOCATOR).sendKeys(addedToDescription);
         getDriver().findElement(SAVE_BUTTON_LOCATOR).click();
 
         Assert.assertEquals(getDriver().findElement(DISPLAYED_DESCRIPTION).getText(), expectedDescription);
+    }
+
+    @Test
+    public void testVerifyNameInBreadcrumbs() {
+        createPipeline();
+        String nameInBreadcrumbs = getDriver().findElement(By.cssSelector("li > a[href^='/job/']")).getText();
+
+        Assert.assertEquals(nameInBreadcrumbs, PIPELINE_NAME);
+    }
+
+    @Test
+    public void testRenameJobViaSidebar() {
+        final String newName = "New pipeline name";
+
+        createPipeline();
+        getDriver().findElement(By.cssSelector("a[href$='rename']")).click();
+        getDriver().findElement(By.name("newName")).clear();
+        getDriver().findElement(By.name("newName")).sendKeys(newName);
+        getDriver().findElement(SAVE_BUTTON_LOCATOR).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("div > h1")).getText(), newName);
     }
 }

@@ -9,12 +9,11 @@ import school.redrover.runner.BaseTest;
 import static java.sql.DriverManager.getDriver;
 
 public class EditPipelineTest extends BaseTest {
-    public static final String NAME_PIPELINE = "Pipeline1";
-    public static final String DESCRIPTION = "Пишем описание";
+    private static final String NAME_PIPELINE = "Pipeline1";
+    private static final String DESCRIPTION = "Пишем описание";
 
     @Test
     public void testCreatePipeline() {
-
         getDriver().findElement(By.linkText("New Item")).click();
         WebElement field = getDriver().findElement(By.className("jenkins-input"));
         field.sendKeys(NAME_PIPELINE);
@@ -25,9 +24,8 @@ public class EditPipelineTest extends BaseTest {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreatePipeline")
     public void testEditPipelineWithPreview() {
-        testCreatePipeline();
         getDriver().findElement(
                 By.xpath("//table//a[@href='job/" + NAME_PIPELINE + "/']")).click();
         getDriver().findElement(By.id("description-link")).click();

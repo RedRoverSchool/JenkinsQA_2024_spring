@@ -2,6 +2,8 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -39,5 +41,27 @@ public class CreateFolder1Test extends BaseTest {
         Assert.assertEquals(actualEmptyStateMessage, thisFolderIsEmptyMessage);
         Assert.assertEquals(actualNewJobLinkText, createAJobLinkText);
         Assert.assertTrue(newJobLink.isDisplayed(), "newJobLink is NOT displayed");
+    }
+
+    @Test
+    public void testRenameFolder() {
+        final String folderName = "ProjectFolder";
+        final String newFolderName = "NewProjectFolder";
+
+        createNewFolder(folderName);
+        openDashboard();
+
+        getDriver().findElement(By.xpath("//tr[@id='job_" + folderName + "']/td[3]/a/span")).click();
+        getDriver().findElement(By.xpath("//div[@id='tasks']/div[7]/span/a")).click();
+
+        WebElement newName = getDriver().findElement(By.xpath("//div[@class='setting-main']/input"));
+        newName.clear();
+        newName.sendKeys(newFolderName);
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        openDashboard();
+
+        String actualResult = getDriver().findElement(By.xpath("//tr[@id='job_" + newFolderName + "']/td[3]/a/span")).getText();
+        Assert.assertEquals(actualResult, newFolderName);
     }
 }
