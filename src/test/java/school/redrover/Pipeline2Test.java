@@ -92,6 +92,7 @@ public class Pipeline2Test extends BaseTest {
             }
         }
 
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(NEW_NAME_INPUT_LOCATOR));
         getDriver().findElement(NEW_NAME_INPUT_LOCATOR).clear();
         getDriver().findElement(NEW_NAME_INPUT_LOCATOR).sendKeys(NEW_PIPELINE_NAME);
         getDriver().findElement(SAVE_BUTTON_LOCATOR).click();
