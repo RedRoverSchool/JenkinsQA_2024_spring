@@ -84,7 +84,7 @@ public class Pipeline2Test extends BaseTest {
             try {
                 getWait10().until(ExpectedConditions.visibilityOfElementLocated(CHEVRON_LOCATOR));
                 getDriver().findElement(CHEVRON_LOCATOR).click();
-                getDriver().findElement(By.cssSelector("div > a[href$='rename']")).click();
+                getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='rename']")).click();
                 getDriver().findElement(NEW_NAME_INPUT_LOCATOR).clear();
                 getDriver().findElement(NEW_NAME_INPUT_LOCATOR).sendKeys(NEW_PIPELINE_NAME);
                 getDriver().findElement(SAVE_BUTTON_LOCATOR).click();
