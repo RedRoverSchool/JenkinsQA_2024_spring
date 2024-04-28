@@ -19,7 +19,7 @@ public class Pipeline2Test extends BaseTest {
     private static final By NAME_IN_BREADCRUMBS_LOCATOR = By.cssSelector("li > a[href^='/job/']");
     private static final By NEW_NAME_INPUT_LOCATOR = By.name("newName");
     private static final By RENAME_BUTTON_LOCATOR = By.cssSelector("a[href$='rename']");
-    private static final By CHEVRON_LOCATOR = By.cssSelector("[href^='/job'] [class$='dropdown-chevron']");
+    private static final By CHEVRON_LOCATOR = By.cssSelector("a[href^='/job'] > button");
 
 
     private void createPipeline() {
@@ -83,13 +83,12 @@ public class Pipeline2Test extends BaseTest {
         int attempts = 0;
         while (attempts < 3) {
             try {
-                getWait5().until(ExpectedConditions.visibilityOfElementLocated(CHEVRON_LOCATOR));
-//                getDriver().findElement(CHEVRON_LOCATOR).click();
-                getDriver().findElement(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']")).click();
-                getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".tippy-content")));
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(CHEVRON_LOCATOR));
+                getDriver().findElement(CHEVRON_LOCATOR).click();
                 getDriver().findElement(By.cssSelector("div > a[href$='rename']")).click();
                 getDriver().findElement(NEW_NAME_INPUT_LOCATOR).clear();
                 getDriver().findElement(NEW_NAME_INPUT_LOCATOR).sendKeys(NEW_PIPELINE_NAME);
+                getDriver().findElement(SAVE_BUTTON_LOCATOR).click();
                 getDriver().findElement(SAVE_BUTTON_LOCATOR).click();
                 break;
             } catch (Exception e) {
