@@ -88,12 +88,11 @@ public class Pipeline2Test extends BaseTest {
                 getDriver().findElement(NEW_NAME_INPUT_LOCATOR).clear();
                 getDriver().findElement(NEW_NAME_INPUT_LOCATOR).sendKeys(NEW_PIPELINE_NAME);
                 getDriver().findElement(SAVE_BUTTON_LOCATOR).click();
+                Assert.assertEquals(getDriver().findElement(NAME_IN_BREADCRUMBS_LOCATOR).getText(), NEW_PIPELINE_NAME);
                 break;
             } catch (Exception e) {
                 attempts++;
             }
         }
-
-        Assert.assertEquals(getDriver().findElement(NAME_IN_BREADCRUMBS_LOCATOR).getText(), NEW_PIPELINE_NAME);
     }
 }
