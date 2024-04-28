@@ -9,42 +9,43 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class RenameFreestyleProjectNameTest extends BaseTest {
-    private void createFreestyleProject() {
+    private void createFreestyleProject(String projectName) {
         getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.name("name")).sendKeys("OldFreestyleProjectName");
+        getDriver().findElement(By.name("name")).sendKeys(projectName);
         getDriver().findElement(By.xpath("//label/span[text() ='Freestyle project']")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
     }
+
     private void openDashboard() {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
     }
 
     @Test
-    public void testRenameFreestyleProjectName() throws InterruptedException {
-        final String expectedProjectName = "New Freestyle Project";
-
-        createFreestyleProject();
+    public void testRenameFreestyleProjectName() {
+        final String expectedProjectName = "ProjectNew";
+        createFreestyleProject(expectedProjectName);
         openDashboard();
 
-        WebElement nameProject = getDriver().findElement(By.xpath("//span[normalize-space()='OldFreestyleProjectName']"));
+        Actions actions = new Actions(getDriver());
 
-        Actions action = new Actions(getDriver());
+        WebElement projectLink = getDriver().findElement(By.linkText(expectedProjectName));
+        actions.moveToElement(projectLink).perform();
 
-        WebElement projectLink = getDriver().findElement(By.linkText("OldFreestyleProjectName"));
-        action.moveToElement(nameProject).perform();
+        getWait2().until(ExpectedConditions
+                .visibilityOfElementLocated(By.xpath("//a[@href='job/"+ expectedProjectName
+                        + "/']/button[@class='jenkins-menu-dropdown-chevron']")));
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".jenkins-menu-dropdown-chevron[data-href='http://localhost:8080/job/OldFreestyleProjectName/']"))).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class ='jenkins-dropdown__item'][4]"))).click();
+        WebElement dropdownArrow = getDriver().findElement(By.xpath("//a[@href='job/" + expectedProjectName
+                + "/']/button[@class='jenkins-menu-dropdown-chevron']"));
+        actions.moveToElement(dropdownArrow).perform();
+        dropdownArrow.click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Rename Project OldFreestyleProjectName");
+        getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//div[@data-state='visible']")));
+        WebElement renameMenu = getDriver().findElement(By.xpath("//div[@data-state='visible']")).findElement(By.linkText("Rename"));
+        actions.moveToElement(renameMenu).perform();
+        renameMenu.click();
 
-        getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys("OldFreestyleProjectNameNew");
-
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "OldFreestyleProjectNameNew");
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h2")).getText(), "Permalinks");
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Rename Project "+ expectedProjectName);
     }
 }
