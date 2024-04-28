@@ -19,6 +19,7 @@ public class Pipeline2Test extends BaseTest {
     private static final By NAME_IN_BREADCRUMBS_LOCATOR = By.cssSelector("li > a[href^='/job/']");
     private static final By NEW_NAME_INPUT_LOCATOR = By.name("newName");
     private static final By RENAME_BUTTON_LOCATOR = By.cssSelector("a[href$='rename']");
+    private static final By CHEVRON_LOCATOR = By.cssSelector("a[href^='/job'] > button");
 
 
     private void createPipeline() {
@@ -76,15 +77,18 @@ public class Pipeline2Test extends BaseTest {
     public void testRenameJobViaBreadcrumbs() {
         createPipeline();
 
-        new Actions(getDriver())
-                .moveToElement(getDriver().findElement(NAME_IN_BREADCRUMBS_LOCATOR))
-                .perform();
+        Actions action = new Actions(getDriver());
+        action.moveToElement(getDriver().findElement(NAME_IN_BREADCRUMBS_LOCATOR)).perform();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(CHEVRON_LOCATOR));
+        action.moveToElement(getDriver().findElement(CHEVRON_LOCATOR)).perform();
 
-        getWait10().until(ExpectedConditions.elementToBeClickable(By
-                .cssSelector("a[href^='/job'] > button"))).click();
+        int chevronHeight = getDriver().findElement(CHEVRON_LOCATOR).getSize().getHeight();
+        int chevronWidth = getDriver().findElement(CHEVRON_LOCATOR).getSize().getWidth();
+
+        action.moveToElement(getDriver().findElement(CHEVRON_LOCATOR), chevronWidth, chevronHeight).click().perform();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".tippy-content")));
-
         getDriver().findElement(By.cssSelector("div > a[href$='rename']")).click();
+
         getDriver().findElement(NEW_NAME_INPUT_LOCATOR).clear();
         getDriver().findElement(NEW_NAME_INPUT_LOCATOR).sendKeys(NEW_PIPELINE_NAME);
         getDriver().findElement(SAVE_BUTTON_LOCATOR).click();
