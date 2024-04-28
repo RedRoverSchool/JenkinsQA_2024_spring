@@ -94,12 +94,12 @@ public class PipelineTest extends BaseTest {
             try {
                 getDriver().findElement(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']")).click();
                 getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='Delete']")).click();
+                getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
                 break;
             } catch (Exception e) {
                 attempts++;
             }
         }
-        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
 
         List<WebElement> jobsList = getDriver().findElements(DASHBOARD_PIPELINE_LOCATOR);
         Assert.assertTrue(jobsList.isEmpty());
