@@ -80,7 +80,7 @@ public class Pipeline2Test extends BaseTest {
                 .moveToElement(getDriver().findElement(NAME_IN_BREADCRUMBS_LOCATOR))
                 .perform();
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+        getWait10().until(ExpectedConditions.elementToBeClickable(By
                 .cssSelector("a[href^='/job'] > button"))).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".tippy-content")));
 
