@@ -80,14 +80,17 @@ public class Pipeline2Test extends BaseTest {
         Actions action = new Actions(getDriver());
         action.moveToElement(getDriver().findElement(NAME_IN_BREADCRUMBS_LOCATOR)).perform();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(CHEVRON_LOCATOR));
-        action.moveToElement(getDriver().findElement(CHEVRON_LOCATOR)).perform();
 
-        int chevronHeight = getDriver().findElement(CHEVRON_LOCATOR).getSize().getHeight();
-        int chevronWidth = getDriver().findElement(CHEVRON_LOCATOR).getSize().getWidth();
-
-        action.moveToElement(getDriver().findElement(CHEVRON_LOCATOR), chevronWidth, chevronHeight).click().perform();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".tippy-content")));
-        getDriver().findElement(By.cssSelector("div > a[href$='rename']")).click();
+        int attempts = 0;
+        while (attempts < 3) {
+            try {
+                getDriver().findElement(CHEVRON_LOCATOR).click();
+                getDriver().findElement(By.cssSelector("div > a[href$='rename']")).click();
+                break;
+            } catch (Exception e) {
+                attempts++;
+            }
+        }
 
         getDriver().findElement(NEW_NAME_INPUT_LOCATOR).clear();
         getDriver().findElement(NEW_NAME_INPUT_LOCATOR).sendKeys(NEW_PIPELINE_NAME);
