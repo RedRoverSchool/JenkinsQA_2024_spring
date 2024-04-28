@@ -85,25 +85,23 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(DASHBOARD_PIPELINE_LOCATOR).click();
         WebElement breadcrumbsItemName = getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job']"));
 
-//        int attempts = 0;
-//        while (attempts < 2) {
-//            try {
+        int attempts = 0;
+        while (attempts < 2) {
+            try {
+                new Actions(getDriver())
+                        .moveToElement(breadcrumbsItemName)
+                        .perform();
+                getDriver().findElement(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']")).click();
+                getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='Delete']")).click();
+                getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
 
-//                break;
-//            } catch (Exception e) {
-//                attempts++;
-//            }
-//        }
+                List<WebElement> jobsList = getDriver().findElements(DASHBOARD_PIPELINE_LOCATOR);
 
-        new Actions(getDriver())
-                .moveToElement(breadcrumbsItemName)
-                .perform();
-        getDriver().findElement(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']")).click();
-        getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='Delete']")).click();
-        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
-
-        List<WebElement> jobsList = getDriver().findElements(DASHBOARD_PIPELINE_LOCATOR);
-
-        Assert.assertTrue(jobsList.isEmpty());
+                Assert.assertTrue(jobsList.isEmpty());
+                break;
+            } catch (Exception e) {
+                attempts++;
+            }
+        }
     }
 }
