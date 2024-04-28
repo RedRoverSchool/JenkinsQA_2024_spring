@@ -288,4 +288,15 @@ public class MultiConfigurationProject0Test extends BaseTest {
         Assert.assertTrue(TestUtils.getViewItemElement(this, randomProjectName).isDisplayed());
     }
 
+    @Test(dependsOnMethods = "testCreateMCP")
+    public void testCreateMCPWithSameName() {
+        TestUtils.createNewItemAndReturnToDashboard(this, randomProjectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+
+        Assert.assertEquals(
+                getDriver().findElement(By.cssSelector("#main-panel h1")).getText(),
+                "Error");
+        Assert.assertEquals(
+                getDriver().findElement(By.cssSelector("#main-panel p")).getText(),
+                "A job already exists with the name ‘" + randomProjectName + "’");
+    }
 }
