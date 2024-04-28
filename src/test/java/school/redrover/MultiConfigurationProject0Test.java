@@ -293,10 +293,10 @@ public class MultiConfigurationProject0Test extends BaseTest {
         TestUtils.createNewItemAndReturnToDashboard(this, randomProjectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
 
         Assert.assertEquals(
-                getDriver().findElement(By.cssSelector("#main-panel h1")).getText(),
+                getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#main-panel h1"))).getText(),
                 "Error");
         Assert.assertEquals(
-                getDriver().findElement(By.cssSelector("#main-panel p")).getText(),
+                getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#main-panel p"))).getText(),
                 "A job already exists with the name ‘" + randomProjectName + "’");
     }
 }
