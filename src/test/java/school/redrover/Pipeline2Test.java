@@ -77,8 +77,7 @@ public class Pipeline2Test extends BaseTest {
     public void testRenameJobViaBreadcrumbs() {
         createPipeline();
 
-        Actions action = new Actions(getDriver());
-        action.moveToElement(getDriver().findElement(NAME_IN_BREADCRUMBS_LOCATOR)).perform();
+        new Actions(getDriver()).moveToElement(getDriver().findElement(NAME_IN_BREADCRUMBS_LOCATOR)).perform();
 
         int attempts = 0;
         while (attempts < 3) {
@@ -88,7 +87,6 @@ public class Pipeline2Test extends BaseTest {
                 getDriver().findElement(By.cssSelector("div > a[href$='rename']")).click();
                 getDriver().findElement(NEW_NAME_INPUT_LOCATOR).clear();
                 getDriver().findElement(NEW_NAME_INPUT_LOCATOR).sendKeys(NEW_PIPELINE_NAME);
-                getDriver().findElement(SAVE_BUTTON_LOCATOR).click();
                 getDriver().findElement(SAVE_BUTTON_LOCATOR).click();
                 break;
             } catch (Exception e) {
