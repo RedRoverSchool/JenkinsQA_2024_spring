@@ -102,6 +102,6 @@ public class PipelineTest extends BaseTest {
         }
 
         List<WebElement> jobsList = getDriver().findElements(DASHBOARD_PIPELINE_LOCATOR);
-        Assert.assertTrue(jobsList.isEmpty());
+        Assert.assertTrue(jobsList.isEmpty(), PIPELINE_NAME + " was not deleted");
     }
 }
