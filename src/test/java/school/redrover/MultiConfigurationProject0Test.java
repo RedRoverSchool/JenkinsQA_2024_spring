@@ -287,4 +287,5 @@ public class MultiConfigurationProject0Test extends BaseTest {
         TestUtils.createNewItemAndReturnToDashboard(this, randomProjectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
         Assert.assertTrue(TestUtils.getViewItemElement(this, randomProjectName).isDisplayed());
     }
+
 }
