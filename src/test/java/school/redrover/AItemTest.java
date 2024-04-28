@@ -23,7 +23,7 @@ public class AItemTest extends BaseTest {
     }
 
     @Test
-    public void createItemEmptyNameNegativeTest() {
+    public void testCreateItemEmptyNameNegative() {
         try {
             TestUtils.createItem(TestUtils.FREESTYLE_PROJECT, "", this);
         } catch (NoSuchElementException e) {
@@ -33,8 +33,8 @@ public class AItemTest extends BaseTest {
         Assert.assertTrue(isException);
     }
 
-    @Test (dependsOnMethods = "createItemEmptyNameNegativeTest")
-    public void createItemEmptyNameNegativeTwoTest() {
+    @Test (dependsOnMethods = "testCreateItemEmptyNameNegative")
+    public void testCreateItemEmptyNameNegativeTwo() {
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.xpath("//span[text()='" + TestUtils.MULTIBRANCH_PIPELINE + "']")).click();
 
@@ -45,16 +45,16 @@ public class AItemTest extends BaseTest {
         Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled());
     }
 
-    @Test (dependsOnMethods = "createItemEmptyNameNegativeTwoTest")
-    public void createNewFolderTest() {
+    @Test (dependsOnMethods = "testCreateItemEmptyNameNegativeTwo")
+    public void testCreateNewFolder() {
         TestUtils.createItem(TestUtils.FOLDER, "New Folder", this);
         TestUtils.goToMainPage(getDriver());
 
         Assert.assertTrue(getDriver().findElement(nameUpItem).isDisplayed());
     }
 
-    @Test (dependsOnMethods = "createNewFolderTest")
-    public void renameFolderTest() {
+    @Test (dependsOnMethods = "testCreateNewFolder")
+    public void testRenameFolder() {
         getActions().moveToElement(getDriver().findElement(nameUpItem)).perform();
         getDriver().findElement(By.linkText("New Folder")).click();
         getDriver().findElement(By.xpath("//a[normalize-space()='Rename']")).click();
@@ -65,14 +65,14 @@ public class AItemTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//h1[contains(.,'New Name')]")).isDisplayed());
     }
 
-    @Test (dependsOnMethods = "renameFolderTest")
-    public void renameFolderShortTest() {
+    @Test (dependsOnMethods = "testRenameFolder")
+    public void testRenameFolderShort() {
         TestUtils.renameItem(this, "New Name", "Renamed Folder");
         Assert.assertTrue(getDriver().findElement(By.xpath("//h1[contains(.,'Renamed Folder')]")).isDisplayed());
     }
 
-    @Test (dependsOnMethods = "renameFolderShortTest")
-    public void createMulticonfigurationProjectNegativeTest() {
+    @Test (dependsOnMethods = "testRenameFolderShort")
+    public void testCreateMulticonfigurationProjectNegative() {
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.xpath("//span[text()='" + TestUtils.MULTI_CONFIGURATION_PROJECT + "']")).click();
 
@@ -80,8 +80,8 @@ public class AItemTest extends BaseTest {
                 (By.id("itemname-required")).getText(), "» This field cannot be empty, please enter a valid name");
     }
 
-    @Test (dependsOnMethods = "createMulticonfigurationProjectNegativeTest")
-    public void createMulticonfigurationProjectTest() {
+    @Test (dependsOnMethods = "testCreateMulticonfigurationProjectNegative")
+    public void testCreateMulticonfigurationProject() {
         getDriver().findElement(By.linkText("New Item")).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys("New Folder");
         getDriver().findElement(By.xpath("//span[text()='" + TestUtils.MULTI_CONFIGURATION_PROJECT + "']")).click();
@@ -93,7 +93,7 @@ public class AItemTest extends BaseTest {
     }
 
     @Test
-    public void footerRestApiLinkRGBTest() {
+    public void testFooterRestApiLinkRGB() {
         WebElement restApi = getDriver().findElement(By.xpath("//a[normalize-space()='REST API']"));
         Assert.assertEquals(restApi.getCssValue("color"), "rgba(20, 20, 31, 1)");
     }
