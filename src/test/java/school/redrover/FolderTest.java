@@ -117,7 +117,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
-    public void testFolderMovedIntoAnotherFolderViaBreadcrumbs() throws InterruptedException {
+    public void testFolderMovedIntoAnotherFolderViaBreadcrumbs() {
         createFolderViaCreateAJob();
         getDriver().findElement(By.id("jenkins-home-link")).click();
 
