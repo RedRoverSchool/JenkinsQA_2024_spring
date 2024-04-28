@@ -32,12 +32,13 @@ public class RenameFreestyleProjectNameTest extends BaseTest {
         WebElement projectLink = getDriver().findElement(By.linkText(expectedProjectName));
         actions.moveToElement(projectLink).perform();
 
-        getWait2().until(ExpectedConditions
+        getWait10().until(ExpectedConditions
                 .visibilityOfElementLocated(By.xpath("//a[@href='job/"+ expectedProjectName
                         + "/']/button[@class='jenkins-menu-dropdown-chevron']")));
 
-        WebElement dropdownArrow = getDriver().findElement(By.xpath("//a[@href='job/" + expectedProjectName
-                + "/']/button[@class='jenkins-menu-dropdown-chevron']"));
+        WebElement dropdownArrow = getWait60().until(ExpectedConditions
+                .elementToBeClickable(By.xpath("//a[@href='job/"+ expectedProjectName
+                + "/']/button[@class='jenkins-menu-dropdown-chevron']")));
         actions.moveToElement(dropdownArrow).perform();
         dropdownArrow.click();
 
