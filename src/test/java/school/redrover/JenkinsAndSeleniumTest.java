@@ -30,9 +30,9 @@ public class JenkinsAndSeleniumTest extends BaseTest {
     }
 
     @Test
-    public void testOffset165() {
+    public void testOffset175() {
 
-        int offsetX = 165;
+        int offsetX = 175;
 
         createItemsFromList(PROJECT_NAMES);
         String jobName = TestUtils.FREESTYLE_PROJECT;
