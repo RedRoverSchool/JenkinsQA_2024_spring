@@ -10,10 +10,9 @@ import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class JenkinsAndSeleniumTest extends BaseTest {
-    private List<String> projectsNames = getNamesList();
+    private final List<String> PROJECT_NAMES = getNamesList();
 
     private List<String> getNamesList() {
         List<String> names = new ArrayList<>();
@@ -31,13 +30,16 @@ public class JenkinsAndSeleniumTest extends BaseTest {
     }
 
     @Test
-    public void testSelenium() throws InterruptedException {
-        createItemsFromList(projectsNames);
+    public void test105() {
+
+        int offsetX = 105;
+
+        createItemsFromList(PROJECT_NAMES);
         String jobName = TestUtils.FREESTYLE_PROJECT;
         WebElement job = getDriver().findElement(By.linkText(jobName));
+
         int jobX = job.getLocation().getX();
         int jobY = job.getLocation().getY();
-        int jobSizeX = job.getSize().width;
         int jobSizeY = job.getSize().height;
 
         Actions actions = new Actions(getDriver());
@@ -45,32 +47,15 @@ public class JenkinsAndSeleniumTest extends BaseTest {
         actions.moveToElement(job)
                 .perform();
 
-        WebElement chevron = getDriver().findElement(
-                By.xpath("//a[contains(@href, '" + TestUtils.asURL(jobName) + "')]/button"));
+//        WebElement chevron = getDriver().findElement(
+//                By.xpath("//a[contains(@href, '" + TestUtils.asURL(jobName) + "')]/button"));
 
-        int chevronSizeX = chevron.getSize().width;
-        int chevronSizeY = chevron.getSize().height;
+        actions.moveToLocation(jobX + offsetX, jobY + jobSizeY / 2)
+                .click()
+                .pause(200)
+                .perform();
 
-        String dashboardURL = getDriver().getCurrentUrl();
-        for (int i = 100; i < 150; i++) {
-            actions.moveToLocation(jobX + i, jobY + jobSizeY / 2)
-                    .click().pause(200)
-                    .perform();
-
-            if (!dashboardURL.equals(getDriver().getCurrentUrl())) {
-//                TestUtils.goToMainPage(getDriver());
-            } else {
-                try {
-                    getDriver().findElement(By.xpath("//*[@class='jenkins-dropdown']"));
-                    System.out.printf("Menu #%d", i - 102);
-                    System.out.println();
-                    actions.click().perform();
-                } catch (Exception e) {
-                    System.out.println("Menu not displayed. Chevron is clicked " + (i - 103) + " times " );
-                    break;
-                }
-            }
-        }
+        getDriver().findElement(By.xpath("//*[@class='jenkins-dropdown']"));
 
         Assert.assertEquals(1, 2);
     }
