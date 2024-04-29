@@ -32,7 +32,8 @@ public class JenkinsAndSeleniumTest extends BaseTest {
     @Test
     public void testOffset175() {
 
-        int offsetX = -20;
+        int offsetX = -5;
+        int selectedX = 130;
 
         createItemsFromList(PROJECT_NAMES);
         String jobName = TestUtils.FREESTYLE_PROJECT;
@@ -52,7 +53,7 @@ public class JenkinsAndSeleniumTest extends BaseTest {
 
         actions.moveToLocation(jobX + offsetX, jobY + jobSizeY / 2)
                 .clickAndHold()
-                .moveByOffset(100, 0)
+                .moveByOffset(selectedX, 0)
                 .release()
                 .perform();
 
