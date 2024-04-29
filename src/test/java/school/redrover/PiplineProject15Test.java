@@ -41,7 +41,7 @@ public class PiplineProject15Test extends BaseTest {
         getDriver().findElement(By.cssSelector("#name")).sendKeys("PiplineOne");
 
         Assert.assertEquals(
-                getDriver().findElement(By.id("itemname-invalid")).getText(),
+                getDriver().findElement(By.xpath("//*[@id='itemname-invalid']")).getText(),
                 "» A job already exists with the name ‘PiplineOne’");
     }
 }
