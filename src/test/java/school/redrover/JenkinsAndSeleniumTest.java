@@ -33,7 +33,7 @@ public class JenkinsAndSeleniumTest extends BaseTest {
     public void testOffset175() {
 
         int offsetX = -5;
-        int selectedX = 130;
+        int selectedX = 200;
 
         createItemsFromList(PROJECT_NAMES);
         String jobName = TestUtils.FREESTYLE_PROJECT;
