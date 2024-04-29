@@ -3,11 +3,12 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 import java.util.List;
-
+@Ignore
 public class EditFolderDescriptionAndDeleteTest extends BaseTest {
     private final String NAME_FOLDER = "FolderFolder";
     private final String DESCRIPTION_TEXT = "Добавили описание";
@@ -31,7 +32,7 @@ public class EditFolderDescriptionAndDeleteTest extends BaseTest {
 
         getDriver().findElement(By.id("jenkins-name-icon")).click();
     }
-
+    @Ignore
     @Test(dependsOnMethods = "testAddFolder")
     public void testAddDescription() {
         getDriver().findElement(

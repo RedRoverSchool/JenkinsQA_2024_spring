@@ -13,6 +13,7 @@ import school.redrover.runner.TestUtils;
 public class MultiConfigurationProject0Test extends BaseTest {
 
     private final String projectName = "MCProject";
+    private final String randomProjectName = TestUtils.randomString();
 
     @Test
     public void testRenameProjectViaMainPageDropdown() {
@@ -280,4 +281,11 @@ public class MultiConfigurationProject0Test extends BaseTest {
                 By.xpath("//*[@id='breadcrumbs']/li[3]/a"))).getText(),"MCProjectNew");
 
     }
+
+    @Test
+    public void testCreateMCP() {
+        TestUtils.createNewItemAndReturnToDashboard(this, randomProjectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+        Assert.assertTrue(TestUtils.getViewItemElement(this, randomProjectName).isDisplayed());
+    }
+
 }

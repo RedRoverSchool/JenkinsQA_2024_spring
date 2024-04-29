@@ -60,6 +60,11 @@ public class FreestyleProjectTest extends BaseTest {
         openElementDropdown.executeScript("arguments[0].dispatchEvent(new Event('click'));", element);
     }
 
+    public void clickDisableEnableButton(){
+        getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).click();
+        submitButton().click();
+    }
+
     @Test
     public void testCreateFreestyleProjectJob() {
         String expectedHeading = "My First Freestyle project";
@@ -312,5 +317,17 @@ public class FreestyleProjectTest extends BaseTest {
         String disabledStatus = getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//form[@id='enable-project']"))).getText();
 
         Assert.assertEquals(disabledStatus, "This project is currently disabled\nEnable");
+    }
+
+    @Test
+    public void testEnableFreestyleProject() {
+        createFreestyleProject(FREESTYLE_PROJECT_NAME);
+        jenkinsHomeLink().click();
+
+        clickDisableEnableButton();
+        jenkinsHomeLink().click();
+        clickDisableEnableButton();
+
+        Assert.assertEquals(submitButton().getText(), "Disable Project");
     }
 }

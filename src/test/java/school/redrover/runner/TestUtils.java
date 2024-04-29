@@ -8,6 +8,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 import java.util.List;
+import java.util.UUID;
 
 public final class TestUtils {
 
@@ -98,6 +99,10 @@ public final class TestUtils {
 
         ((JavascriptExecutor) baseTest.getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", chevron);
         ((JavascriptExecutor) baseTest.getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
+    }
+
+    public static String randomString() {
+        return UUID.randomUUID().toString();
     }
 
     public static void openJobDropdown(BaseTest baseTest, String jobName) {
