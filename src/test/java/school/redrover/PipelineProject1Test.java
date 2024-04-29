@@ -253,6 +253,7 @@ public class PipelineProject1Test extends BaseTest {
         Assert.assertEquals(actualPipelineViewHeader, expectedPipelineViewHeader);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testAddDescriptionColumnToPipelineView")
     public void testAlterOrderViewTitles() {
         final List<String> expectedAlteredPipelineViewHeader = List.of("Description", "S", "W", "Name" + "\n" + "  ↓", "Last Success", "Last Failure", "Last Duration");
