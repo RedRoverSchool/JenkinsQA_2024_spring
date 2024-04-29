@@ -9,7 +9,7 @@ public class NewItem20Test extends BaseTest {
 
     @Test
     public void testNewItemOpens(){
-        getDriver().findElement(By.xpath("//*[@class='task-icon-link']")).click();
+        getDriver().findElement(By.xpath("//a[contains(@href, '/newJob')]")).click();
 
         String newItemHeader = getDriver().getTitle();
         String TextAboveSearchField = getDriver().findElement(By.xpath("//*[@class='add-item-name']/label")).getText();
