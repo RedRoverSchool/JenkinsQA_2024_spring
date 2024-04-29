@@ -109,10 +109,10 @@ public class ViewsTest extends BaseTest {
         submit.click();
 
         List<WebElement> actualOrder = getDriver().findElements(By.className("sortheader"));
-        List<String> actualColomns = new ArrayList<>();
+        List<String> actualColumns = new ArrayList<>();
         for (WebElement column : actualOrder) {
-            actualColomns.add(column.getText());
+            actualColumns.add(column.getText());
         }
-        Assert.assertEquals(actualColomns.get(0), "Description");
+        Assert.assertEquals(actualColumns.get(0), "Description");
     }
 }
