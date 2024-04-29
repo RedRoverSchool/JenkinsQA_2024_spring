@@ -307,6 +307,7 @@ public class MultiConfigurationProject0Test extends BaseTest {
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(By.linkText(projectName)))
                 .perform();
+        TestUtils.sleep(this,1);
 
         try {
             getDriver().findElement(By.cssSelector("[href^='/job'] [class$='chevron']")).click();
