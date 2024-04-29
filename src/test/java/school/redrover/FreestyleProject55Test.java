@@ -27,8 +27,7 @@ public class FreestyleProject55Test extends BaseTest {
         CreatePipelineProject();
         getDriver().findElement(By.cssSelector("#tasks > div:nth-child(4) > span > a")).click();
 
-        getWait60().until(ExpectedConditions.textToBePresentInElementLocated(By.id("pipeline-box"), "Stage View\n" +
-                "This Pipeline has run successfully, but does not define any stages. Please use the stage step to define some stages in this Pipeline."));
+        getWait60().until(ExpectedConditions.numberOfElementsToBe(By.className("build-row-cell"), 1));
 
         getDriver().findElement(By.cssSelector("#disable-project > button")).click();
 
