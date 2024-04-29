@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -33,9 +32,8 @@ public class Folder12Test extends BaseTest {
 
     @Test (dependsOnMethods = "testCreateNewFolder")
     public void testRenameFolder () {
-        mouseOverChevron("FolderTG");
-        clickChevron("FolderTG");
-        clickContextMenu("/job/FolderTG/confirm-rename");
+        goToFolder("FolderTG");
+        clickLinkMenuButton("/job/FolderTG/confirm-rename");
         renameFolder();
 
         WebElement renamedElement = getDriver().findElement(By.xpath ("//*[@id='job_NewFolderTG']/td[3]/a"));
@@ -46,9 +44,8 @@ public class Folder12Test extends BaseTest {
 
     @Test (dependsOnMethods = "testRenameFolder")
     public void deleteFolder () {
-        mouseOverChevron("NewFolderTG");
-        clickChevron("NewFolderTG");
-        clickContextMenu("/job/NewFolderTG/doDelete");
+        goToFolder("NewFolderTG");
+        clickJSMenuButton("/job/NewFolderTG/doDelete");
 
         WebElement deleteContextMenuButton =  getDriver().findElement(By.cssSelector("*[data-id='ok"));
         deleteContextMenuButton.click();
@@ -64,21 +61,19 @@ public class Folder12Test extends BaseTest {
         getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[1]/a")).click();
     }
 
-    private void clickChevron(String folder) {
-        WebElement chevronElementr = getDriver().findElement(By.xpath("//*[@id='job_"+folder+"']/td[3]/a/button"));
+    private void goToFolder(String folder) {
+        WebElement chevronElementr = getDriver().findElement(By.xpath("//tr[@id='job_" + folder + "']/td[3]/a/span"));
         chevronElementr.click();
     }
 
-    private void clickContextMenu(String href) {
-        WebElement dropButtonDelete = getDriver().findElement(By.cssSelector("*[href='"+ href + "']"));
-        dropButtonDelete.click();
+    private void clickLinkMenuButton(String href) {
+        WebElement button = getDriver().findElement(By.cssSelector("*[href='"+ href + "']"));
+        button.click();
     }
 
-    private void mouseOverChevron(String folder) {
-        WebElement folderName = getDriver().findElement(By.xpath("//*[@id='job_"+folder+ "']/td[3]/a"));
-        Actions action = new Actions(getDriver());
-        action.moveToElement(folderName).perform();
-        getWait2();
+    private void clickJSMenuButton(String href) {
+        WebElement button = getDriver().findElement(By.cssSelector("*[data-url='"+ href + "']"));
+        button.click();
     }
 }
 
