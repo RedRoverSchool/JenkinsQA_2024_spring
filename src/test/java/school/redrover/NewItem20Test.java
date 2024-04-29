@@ -12,7 +12,7 @@ public class NewItem20Test extends BaseTest {
         getDriver().findElement(By.xpath("//*[@class='task-icon-link']")).click();
 
         String newItemHeader = getDriver().getTitle();
-        String TextAboveSearchField = getDriver().findElement(By.xpath("//*[@id='createItem']/div[1]/div/label")).getText();
+        String TextAboveSearchField = getDriver().findElement(By.xpath("//*[@class='add-item-name']/label")).getText();
 
         Assert.assertEquals(newItemHeader, "New Item [Jenkins]");
         Assert.assertEquals(TextAboveSearchField, "Enter an item name");
