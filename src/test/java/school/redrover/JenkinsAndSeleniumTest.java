@@ -35,19 +35,23 @@ public class JenkinsAndSeleniumTest extends BaseTest {
 
         String jobName = TestUtils.FREESTYLE_PROJECT;
         WebElement job = getDriver().findElement(By.linkText(jobName));
+        int jobX = job.getLocation().getX();
+        int jobY = job.getLocation().getY();
+        int jobSizeX = job.getSize().width;
+        int jobSizeY = job.getSize().height;
+
         Actions actions = new Actions(getDriver());
 
         actions.moveToElement(job)
                 .perform();
-        int jobX = job.getLocation().getX();
-        int jobY = job.getLocation().getY();
-        int sizeX = job.getSize().width;
-        int sizeY = job.getSize().height;
 
-//        WebElement chevron = getDriver().findElement(
-//                By.xpath("//a[contains(@href, '" + TestUtils.asURL(jobName) + "')]/button"));
+        WebElement chevron = getDriver().findElement(
+                By.xpath("//a[contains(@href, '" + TestUtils.asURL(jobName) + "')]/button"));
 
-        actions.moveToLocation(jobX + sizeX, jobY)
+        int chevronSizeX = chevron.getSize().width;
+        int chevronSizeY = chevron.getSize().height;
+
+        actions.moveToLocation(jobX + jobSizeX + chevronSizeX, jobY)
                 .click()
                 .perform();
 
