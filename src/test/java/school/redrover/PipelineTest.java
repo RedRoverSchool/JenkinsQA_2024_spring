@@ -103,5 +103,6 @@ public class PipelineTest extends BaseTest {
 
         List<WebElement> jobsList = getDriver().findElements(DASHBOARD_PIPELINE_LOCATOR);
         Assert.assertTrue(jobsList.isEmpty(), PIPELINE_NAME + " was not deleted");
+        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "Welcome to Jenkins!");
     }
 }
