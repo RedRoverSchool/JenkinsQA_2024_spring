@@ -28,6 +28,13 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
+    private void clickOnDropdownArrow(By locator) {
+        WebElement itemDropdownArrow = getDriver().findElement(locator);
+
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
+                "arguments[0].dispatchEvent(new Event('click'));", itemDropdownArrow);
+    }
+
     @Test
     public void testPipelineDescriptionTextAreaBacklightColor() {
         TestUtils.resetJenkinsTheme(this);
@@ -89,20 +96,11 @@ public class PipelineTest extends BaseTest {
                 .moveToElement(breadcrumbsItemName)
                 .perform();
 
-        int attempts = 0;
-        while (attempts < 2) {
-            try {
-                getDriver().findElement(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']")).click();
-                getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='Delete']")).click();
-                getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
-                List<WebElement> jobsList = getDriver().findElements(DASHBOARD_PIPELINE_LOCATOR);
-                Assert.assertTrue(jobsList.isEmpty(), PIPELINE_NAME + " was not deleted");
-                Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "Welcome to Jenkins!");
-                break;
-            } catch (Exception e) {
-                attempts++;
-                System.out.println("CI doesn't work");
-            }
-        }
+        clickOnDropdownArrow(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']"));
+        getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='Delete']")).click();
+        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+
+        List<WebElement> jobsList = getDriver().findElements(DASHBOARD_PIPELINE_LOCATOR);
+        Assert.assertTrue(jobsList.isEmpty(), PIPELINE_NAME + " was not deleted");
     }
 }
