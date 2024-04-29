@@ -10,7 +10,6 @@ import static org.testng.Assert.*;
 public class FreestyleProject99Test extends BaseTest {
 
     private static final String PROJECT_NAME = "FreestyleProject";
-    private static final String PIPELINE_NAME = "New Pipeline";
 
     @Test
     public void testCreatExistingFreestyleProject() {
