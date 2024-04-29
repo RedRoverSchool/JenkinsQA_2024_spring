@@ -52,7 +52,7 @@ public class Folder5Test extends BaseTest {
         WebElement dropdown = new WebDriverWait(getDriver(), Duration.ofSeconds(10))
                 .until(ExpectedConditions.elementToBeClickable(By.xpath("//td//button[@class='jenkins-menu-dropdown-chevron']")));
         Actions actions = new Actions(getDriver());
-        actions.moveToElement(dropdown, -(695 - dropdown.getLocation().getX()), -(309 - dropdown.getLocation().getY())).build().perform();
+        actions.moveToElement(dropdown, 2, -2).build().perform();
         dropdown.click();
 
         WebElement targetLine = getDriver().findElement(By.cssSelector("[href='/job/DeleteFromDropDown/doDelete']"));
