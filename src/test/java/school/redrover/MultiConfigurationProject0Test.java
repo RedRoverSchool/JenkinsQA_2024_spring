@@ -299,4 +299,19 @@ public class MultiConfigurationProject0Test extends BaseTest {
                 getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#main-panel p"))).getText(),
                 "A job already exists with the name ‘" + randomProjectName + "’");
     }
+
+    @Test
+    public void testDeleteProjectViaDropdown() {
+        TestUtils.createNewItemAndReturnToDashboard(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+        getDriver().findElement(By.linkText(projectName)).click();
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.linkText(projectName)))
+                .perform();
+
+        getDriver().findElement(By.cssSelector("[href^='/job'] [class$='chevron']")).click();
+        getDriver().findElement(By.cssSelector(".tippy-box [href$='Delete']")).click();
+        getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "Welcome to Jenkins!");
+    }
 }
