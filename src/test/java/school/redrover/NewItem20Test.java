@@ -8,8 +8,18 @@ import school.redrover.runner.BaseTest;
 public class NewItem20Test extends BaseTest {
 
     @Test
-    public void testNewItemWithEmptyName() {
-        getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
+    public void testNewItemOpens(){
+        getDriver().findElement(By.xpath("//*[@class='task-icon-link']")).click();
+
+        String newItemHeader = getDriver().getTitle();
+        String TextAboveSearchField = getDriver().findElement(By.xpath("//*[@id='createItem']/div[1]/div/label")).getText();
+
+        Assert.assertEquals(newItemHeader, "New Item [Jenkins]");
+        Assert.assertEquals(TextAboveSearchField, "Enter an item name");
+    }
+    @Test(dependsOnMethods = "testNewItemOpens")
+    public void testNewItemWithEmptyName(){
+        getDriver().findElement(By.xpath("//*[@class='task-icon-link']")).click();
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
         String error_Message = getDriver().findElement(By.id("itemname-required")).getText();
 
