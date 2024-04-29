@@ -42,12 +42,18 @@ public class JenkinsAndSeleniumTest extends BaseTest {
     public void testSelenium() {
         createItemsFromList(projectsNames);
 
-        WebElement job = getDriver().findElement(By.linkText(TestUtils.FREESTYLE_PROJECT));
+        String jobName = TestUtils.FREESTYLE_PROJECT;
+        WebElement job = getDriver().findElement(By.linkText(jobName));
         Actions actions = new Actions(getDriver());
 
-        actions
-                .moveToElement(job)
-                .contextClick()
+        actions.moveToElement(job)
+                .perform();
+
+        WebElement chevron = getDriver().findElement(
+                By.xpath("//a[contains(@href, '" + TestUtils.asURL(jobName) + "')]/button"));
+
+        actions.moveToElement(chevron)
+                .click()
                 .perform();
 
         Assert.assertEquals(1, 2);
