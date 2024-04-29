@@ -10,6 +10,7 @@ import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class JenkinsAndSeleniumTest extends BaseTest {
     private List<String> projectsNames = getNamesList();
@@ -30,9 +31,8 @@ public class JenkinsAndSeleniumTest extends BaseTest {
     }
 
     @Test
-    public void testSelenium() {
+    public void testSelenium() throws InterruptedException {
         createItemsFromList(projectsNames);
-
         String jobName = TestUtils.FREESTYLE_PROJECT;
         WebElement job = getDriver().findElement(By.linkText(jobName));
         int jobX = job.getLocation().getX();
@@ -51,12 +51,27 @@ public class JenkinsAndSeleniumTest extends BaseTest {
         int chevronSizeX = chevron.getSize().width;
         int chevronSizeY = chevron.getSize().height;
 
-        actions.moveToLocation(jobX + jobSizeX + chevronSizeX, jobY + jobSizeY / 2)
-                .click()
-                .perform();
+        String dashboardURL = getDriver().getCurrentUrl();
+        for (int i = 103; i < 150; i++) {
+            actions.moveToLocation(jobX + i, jobY + jobSizeY / 2)
+                    .click().pause(200)
+                    .perform();
+
+            if (!dashboardURL.equals(getDriver().getCurrentUrl())) {
+                TestUtils.goToMainPage(getDriver());
+            } else {
+                try {
+                    getDriver().findElement(By.xpath("//*[@class='jenkins-dropdown']"));
+                    System.out.printf("Menu #%d", i - 102);
+                    System.out.println();
+                    actions.click().perform();
+                } catch (Exception e) {
+                    System.out.println("Menu not displayed. Chevron is clicked " + (i - 103) + " times " );
+                    break;
+                }
+            }
+        }
 
         Assert.assertEquals(1, 2);
-
-        //        Assert.assertEquals(getChevronMenu(TestUtils.FREESTYLE_PROJECT), getFreestyleProjectMenu());
     }
 }
