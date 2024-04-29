@@ -304,34 +304,21 @@ public class MultiConfigurationProject0Test extends BaseTest {
     public void testDeleteProjectViaDropdown() {
         TestUtils.createNewItemAndReturnToDashboard(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
         getDriver().findElement(By.linkText(projectName)).click();
+
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(By.linkText(projectName)))
                 .perform();
 
-        int attempts = 0;
-        while (attempts < 2) {
-            try {
-                getDriver().findElement(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']")).click();
-                getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='Delete']")).click();
-                getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
-                break;
-            } catch (Exception e) {
-                attempts++;
-            }
-        }
+        ((JavascriptExecutor)getDriver()).executeScript(
+                "arguments[0].click();",
+                getDriver().findElement(By.cssSelector("[href^='/job'] [class$='chevron']")));
 
-//        TestUtils.sleep(this,1);
-//
-//        try {
-//            getDriver().findElement(By.cssSelector("[href^='/job'] [class$='chevron']")).click();
-//            getDriver().findElement(By.cssSelector(".tippy-box [href$='Delete']")).click();
-//            getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
-//        } catch (Exception ignored) {
-////            getDriver().findElement(By.cssSelector("[href^='/job'] [class$='chevron']")).click();
-//        };
-//        getDriver().findElement(By.cssSelector("[href^='/job'] [class$='chevron']")).click();
-//        getDriver().findElement(By.cssSelector(".tippy-box [href$='Delete']")).click();
-//        getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.cssSelector("[href^='/job'] [class$='chevron']")))
+                .perform();
+
+            getDriver().findElement(By.cssSelector(".tippy-box [href$='Delete']")).click();
+            getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
 
         Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "Welcome to Jenkins!");
     }
