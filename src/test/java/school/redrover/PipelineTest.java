@@ -103,5 +103,6 @@ public class PipelineTest extends BaseTest {
                 attempts++;
             }
         }
+        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "Welcome to Jenkins!");
     }
 }
