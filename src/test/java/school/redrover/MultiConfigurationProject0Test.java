@@ -305,20 +305,10 @@ public class MultiConfigurationProject0Test extends BaseTest {
         TestUtils.createNewItemAndReturnToDashboard(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
         getDriver().findElement(By.linkText(projectName)).click();
 
-        new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.linkText(projectName)))
-                .perform();
+        TestUtils.openElementDropdown(this, getDriver().findElement(By.linkText(projectName)));
 
-        ((JavascriptExecutor)getDriver()).executeScript(
-                "arguments[0].click();",
-                getDriver().findElement(By.cssSelector("[href^='/job'] [class$='chevron']")));
-
-        new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.cssSelector("[href^='/job'] [class$='chevron']")))
-                .perform();
-
-            getDriver().findElement(By.cssSelector(".tippy-box [href$='Delete']")).click();
-            getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
+        getDriver().findElement(By.cssSelector(".tippy-box [href$='Delete']")).click();
+        getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
 
         Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "Welcome to Jenkins!");
     }
