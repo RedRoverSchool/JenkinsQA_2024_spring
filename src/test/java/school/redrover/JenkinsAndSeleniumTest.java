@@ -39,12 +39,15 @@ public class JenkinsAndSeleniumTest extends BaseTest {
 
         actions.moveToElement(job)
                 .perform();
+        int jobX = job.getLocation().getX();
+        int jobY = job.getLocation().getY();
+        int sizeX = job.getSize().width;
+        int sizeY = job.getSize().height;
 
-        WebElement chevron = getDriver().findElement(
-                By.xpath("//a[contains(@href, '" + TestUtils.asURL(jobName) + "')]/button"));
+//        WebElement chevron = getDriver().findElement(
+//                By.xpath("//a[contains(@href, '" + TestUtils.asURL(jobName) + "')]/button"));
 
-        actions.scrollToElement(chevron)
-                .moveToElement(chevron)
+        actions.moveToLocation(jobX + sizeX, jobY)
                 .click()
                 .perform();
 
