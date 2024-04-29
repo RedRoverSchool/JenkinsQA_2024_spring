@@ -5,6 +5,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -15,16 +16,19 @@ public class MultiConfigurationProject0Test extends BaseTest {
     private final String projectName = "MCProject";
     private final String randomProjectName = TestUtils.randomString();
 
-    @Test
-    public void testRenameProjectViaMainPageDropdown() {
-        TestUtils.createNewItemAndReturnToDashboard(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
-
+    public void openDropdownUsingSelenium(String projectName) {
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(By.linkText(projectName)))
                 .pause(1000)
                 .scrollToElement(getDriver().findElement(By.cssSelector(String.format("[data-href*='/job/%s/']", projectName))))
                 .click()
                 .perform();
+    }
+
+    @Test
+    public void testRenameProjectViaMainPageDropdown() {
+        TestUtils.createNewItemAndReturnToDashboard(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+        openDropdownUsingSelenium(projectName);
 
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Rename"))).click();
         getDriver().findElement(By.name("newName")).sendKeys("New");
@@ -310,6 +314,25 @@ public class MultiConfigurationProject0Test extends BaseTest {
         getDriver().findElement(By.cssSelector(".tippy-box [href$='Delete']")).click();
         getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "Welcome to Jenkins!");
+        Assert.assertEquals(
+                getDriver().findElement(By.tagName("h1")).getText(),
+                "Welcome to Jenkins!",
+                "Project not deleted");
+    }
+
+    @Test
+    public void testMoveProjectToFolderViaDropdown() {
+        final String folderName = "Folder";
+        TestUtils.createNewItemAndReturnToDashboard(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+        TestUtils.createNewItemAndReturnToDashboard(this, folderName, TestUtils.Item.FOLDER);
+        openDropdownUsingSelenium(projectName);
+
+        getDriver().findElement(By.linkText("Move")).click();
+        new Select(getDriver().findElement(By.name("destination"))).selectByValue("/"+folderName);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertTrue(
+                getDriver().findElement(By.linkText(folderName)).isDisplayed(),
+                "Project not moved to folder");
     }
 }
