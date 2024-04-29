@@ -12,7 +12,7 @@ public class NewItem20Test extends BaseTest {
         getDriver().findElement(By.xpath("//*[@class='task-icon-link']")).click();
 
         String newItemHeader = getDriver().getTitle();
-        String TextAboveSearchField = getDriver().findElement(By.xpath("//*[@class='add-item-name']/label")).getText();
+        String TextAboveSearchField = getDriver().findElement(By.xpath("//*[@id='createItem']/div[1]/div/label")).getText();
 
         Assert.assertEquals(newItemHeader, "New Item [Jenkins]");
         Assert.assertEquals(TextAboveSearchField, "Enter an item name");
@@ -26,4 +26,5 @@ public class NewItem20Test extends BaseTest {
         Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled());
         Assert.assertEquals(error_Message, "» This field cannot be empty, please enter a valid name");
     }
+
 }
