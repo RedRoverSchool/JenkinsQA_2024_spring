@@ -43,8 +43,8 @@ public class JenkinsAndSeleniumTest extends BaseTest {
         WebElement chevron = getDriver().findElement(
                 By.xpath("//a[contains(@href, '" + TestUtils.asURL(jobName) + "')]/button"));
 
-        actions.moveToElement(chevron)
-                .scrollToElement(chevron)
+        actions.scrollToElement(chevron)
+                .moveToElement(chevron)
                 .click()
                 .perform();
 
