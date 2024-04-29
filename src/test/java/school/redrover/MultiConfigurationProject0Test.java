@@ -307,18 +307,31 @@ public class MultiConfigurationProject0Test extends BaseTest {
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(By.linkText(projectName)))
                 .perform();
-        TestUtils.sleep(this,1);
 
-        try {
-            getDriver().findElement(By.cssSelector("[href^='/job'] [class$='chevron']")).click();
-            getDriver().findElement(By.cssSelector(".tippy-box [href$='Delete']")).click();
-            getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
-        } catch (Exception ignored) {
+        int attempts = 0;
+        while (attempts < 2) {
+            try {
+                getDriver().findElement(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']")).click();
+                getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='Delete']")).click();
+                getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+                break;
+            } catch (Exception e) {
+                attempts++;
+            }
+        }
+
+//        TestUtils.sleep(this,1);
+//
+//        try {
 //            getDriver().findElement(By.cssSelector("[href^='/job'] [class$='chevron']")).click();
-        };
-        getDriver().findElement(By.cssSelector("[href^='/job'] [class$='chevron']")).click();
-        getDriver().findElement(By.cssSelector(".tippy-box [href$='Delete']")).click();
-        getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
+//            getDriver().findElement(By.cssSelector(".tippy-box [href$='Delete']")).click();
+//            getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
+//        } catch (Exception ignored) {
+////            getDriver().findElement(By.cssSelector("[href^='/job'] [class$='chevron']")).click();
+//        };
+//        getDriver().findElement(By.cssSelector("[href^='/job'] [class$='chevron']")).click();
+//        getDriver().findElement(By.cssSelector(".tippy-box [href$='Delete']")).click();
+//        getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
 
         Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "Welcome to Jenkins!");
     }
