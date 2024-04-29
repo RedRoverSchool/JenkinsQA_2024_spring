@@ -52,13 +52,13 @@ public class JenkinsAndSeleniumTest extends BaseTest {
         int chevronSizeY = chevron.getSize().height;
 
         String dashboardURL = getDriver().getCurrentUrl();
-        for (int i = 103; i < 150; i++) {
+        for (int i = 100; i < 150; i++) {
             actions.moveToLocation(jobX + i, jobY + jobSizeY / 2)
                     .click().pause(200)
                     .perform();
 
             if (!dashboardURL.equals(getDriver().getCurrentUrl())) {
-                TestUtils.goToMainPage(getDriver());
+//                TestUtils.goToMainPage(getDriver());
             } else {
                 try {
                     getDriver().findElement(By.xpath("//*[@class='jenkins-dropdown']"));
