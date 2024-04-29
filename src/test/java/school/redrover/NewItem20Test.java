@@ -26,4 +26,5 @@ public class NewItem20Test extends BaseTest {
         Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled());
         Assert.assertEquals(error_Message, "» This field cannot be empty, please enter a valid name");
     }
+
 }
