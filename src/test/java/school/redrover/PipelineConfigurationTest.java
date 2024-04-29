@@ -224,9 +224,7 @@ public class PipelineConfigurationTest extends BaseTest {
     }
 
     @Test (dependsOnMethods = "testAddDisplayNameInAdvancedSection")
-
     public void testDeleteDisplayNameInAdvancedSection() {
-
         navigateToConfigurePageFromDashboard();
 
         getWait5().until(ExpectedConditions.elementToBeClickable(ADVANCED_PROJECT_OPTIONS_MENU)).click();
@@ -238,5 +236,4 @@ public class PipelineConfigurationTest extends BaseTest {
         Assert.assertFalse(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']"))
                 .getText().contains(displayNameText));
     }
-
 }
