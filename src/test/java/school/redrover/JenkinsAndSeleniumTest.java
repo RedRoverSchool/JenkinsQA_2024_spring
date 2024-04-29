@@ -51,7 +51,7 @@ public class JenkinsAndSeleniumTest extends BaseTest {
         int chevronSizeX = chevron.getSize().width;
         int chevronSizeY = chevron.getSize().height;
 
-        actions.moveToLocation(jobX + jobSizeX + chevronSizeX, jobY)
+        actions.moveToLocation(jobX + jobSizeX + chevronSizeX, jobY + jobSizeY / 2)
                 .click()
                 .perform();
 
