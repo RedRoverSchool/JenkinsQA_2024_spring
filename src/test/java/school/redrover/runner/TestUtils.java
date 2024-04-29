@@ -8,6 +8,10 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 import java.util.List;
+import java.util.UUID;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public final class TestUtils {
 
@@ -50,6 +54,12 @@ public final class TestUtils {
     public static void goToMainPage(WebDriver driver) {
         driver.findElement(By.id("jenkins-name-icon")).click();
     }
+
+
+    public static String getUniqueName(String value) {
+        return value + new SimpleDateFormat("HHmmssSS").format(new Date());
+    }
+
 
     public static void sleep(BaseTest baseTest, long seconds) {
         new Actions(baseTest.getDriver()).pause(seconds * 1000).perform();
@@ -98,6 +108,10 @@ public final class TestUtils {
 
         ((JavascriptExecutor) baseTest.getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", chevron);
         ((JavascriptExecutor) baseTest.getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
+    }
+
+    public static String randomString() {
+        return UUID.randomUUID().toString();
     }
 
     public static void openJobDropdown(BaseTest baseTest, String jobName) {

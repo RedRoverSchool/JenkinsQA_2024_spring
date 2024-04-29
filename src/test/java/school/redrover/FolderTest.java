@@ -127,10 +127,9 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
 
-        WebElement breadcrumbFolderName = getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job']"));
+        WebElement breadcrumbsFolderName = getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job']"));
         new Actions(getDriver())
-                .moveToElement(breadcrumbFolderName)
-                .click()
+                .moveToElement(breadcrumbsFolderName)
                 .perform();
         clickOnDropdownArrow(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']"));
         getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='move']")).click();

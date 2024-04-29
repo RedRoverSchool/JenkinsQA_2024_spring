@@ -12,6 +12,8 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
+import java.util.List;
+
 public class Pipeline1Test extends BaseTest {
     private static final String PIPELINE_NAME = "NewPipeline";
 
@@ -58,6 +60,11 @@ public class Pipeline1Test extends BaseTest {
         }
     }
 
+    private String getColorOfPseudoElement(WebElement element) {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        return (String) js.executeScript("return window.getComputedStyle(arguments[0], '::before').getPropertyValue('background-color');", element);
+    }
+
     @Test
     public void testCreatePipeline() {
         createPipeline(PIPELINE_NAME);
@@ -97,10 +104,11 @@ public class Pipeline1Test extends BaseTest {
 
         getDriver().findElement(By.name("Submit")).click();
 
-        String actualStatusMessage = getDriver().findElement(By.id("enable-project")).getAttribute("innerText");
+        String actualStatusMessage = getDriver().findElement(By.id("enable-project")).getText();
 
         Assert.assertTrue(actualStatusMessage.contains("This project is currently disabled"));
     }
+
 
     @Test
     public void testFullStageViewButton() {
@@ -129,18 +137,18 @@ public class Pipeline1Test extends BaseTest {
         Assert.assertEquals(getH2HeaderText(), expectedResult);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testVisibilityDisableButton")
     public void testPipelineNotActive() {
         final String expectedProjectName = "Pipeline1";
-        TestUtils.returnToDashBoard(this);
 
-        boolean isNotPresent = getDriver()
-                .findElements(By.xpath("//table//a[contains(@title, 'Schedule a Build for')]")).isEmpty();
-        Assert.assertTrue(isNotPresent, "Schedule a Build for is present");
 
-        String actualProjectName = getDriver().findElement(By.xpath("//tbody//a/span")).getText();
+
+        String actualProjectName = getDriver().findElement(By.xpath("//tbody//td[3]//a[contains(@href, 'job/')]/span")).getText();
         Assert.assertEquals(actualProjectName, expectedProjectName);
+
+        List<WebElement> scheduleABuildArrows = getDriver().findElements(
+                        By.xpath("//table//a[@title= 'Schedule a Build for " +  expectedProjectName + "']"));
+        Assert.assertEquals(scheduleABuildArrows.size(), 0);
     }
 
     @Ignore
@@ -199,6 +207,46 @@ public class Pipeline1Test extends BaseTest {
         getH1HeaderText();
 
         Assert.assertEquals(getH1HeaderText(), PIPELINE_NAME);
+    }
+
+    @Test(dependsOnMethods = "testCreatePipelineProject")
+    public void testColorWhenHoveringMouseOnFullStageViewButton() {
+
+        String expectedColor = "rgba(175, 175, 207, 0.15)";
+
+        chooseProjectAndClick(PIPELINE_NAME);
+
+        WebElement fullStageViewButton = getDriver().findElement(
+                By.xpath("//a[contains(@href, 'workflow-stage')]"));
+
+        String backgroundColorBeforeHover = getColorOfPseudoElement(fullStageViewButton);
+
+        Actions mouseHover = new Actions(getDriver());
+
+        mouseHover.scrollToElement(fullStageViewButton)
+                .moveToElement(fullStageViewButton)
+                .pause(2000)
+                .perform();
+
+        String backgroundColorAfterHover = getColorOfPseudoElement(fullStageViewButton);
+
+        Assert.assertTrue(!backgroundColorAfterHover.equals(backgroundColorBeforeHover)
+                && backgroundColorAfterHover.equals(expectedColor));
+    }
+
+    @Test(dependsOnMethods = "testCreatePipelineProject")
+    public void testBreadcrumbsOnFullStageViewPage() {
+
+        String expectedResult = "Dashboard > "+ PIPELINE_NAME +" > Full Stage View";
+
+        chooseProjectAndClick(PIPELINE_NAME);
+        clickFullStageViewButton();
+
+        String breadcrumbs = getDriver().findElement(By.id("breadcrumbBar")).getText();
+
+        String actualResult = breadcrumbs.replaceAll("\n", " > ");
+
+        Assert.assertEquals(actualResult, expectedResult);
     }
 }
 
