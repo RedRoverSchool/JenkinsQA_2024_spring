@@ -233,5 +233,20 @@ public class Pipeline1Test extends BaseTest {
         Assert.assertTrue(!backgroundColorAfterHover.equals(backgroundColorBeforeHover)
                 && backgroundColorAfterHover.equals(expectedColor));
     }
+
+    @Test(dependsOnMethods = "testCreatePipelineProject")
+    public void testBreadcrumbsOnFullStageViewPage() {
+
+        String expectedResult = "Dashboard > "+ PIPELINE_NAME +" > Full Stage View";
+
+        chooseProjectAndClick(PIPELINE_NAME);
+        clickFullStageViewButton();
+
+        String breadcrumbs = getDriver().findElement(By.id("breadcrumbBar")).getText();
+
+        String actualResult = breadcrumbs.replaceAll("\n", " > ");
+
+        Assert.assertEquals(actualResult, expectedResult);
+    }
 }
 
