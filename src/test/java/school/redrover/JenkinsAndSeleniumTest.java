@@ -29,15 +29,6 @@ public class JenkinsAndSeleniumTest extends BaseTest {
         }
     }
 
-//    private List<String> getChevronMenu(String jobName) {
-//        TestUtils.openElementDropdown(this, getDriver().findElement(By.linkText(jobName)));
-//
-//        WebElement dropdownMenu = getWait2().until(ExpectedConditions.visibilityOfElementLocated(
-//                By.xpath("//div[@class='jenkins-dropdown']")));
-//
-//        return Arrays.stream(dropdownMenu.getText().split("\\r?\\n")).toList();
-//    }
-
     @Test
     public void testSelenium() {
         createItemsFromList(projectsNames);
@@ -53,6 +44,7 @@ public class JenkinsAndSeleniumTest extends BaseTest {
                 By.xpath("//a[contains(@href, '" + TestUtils.asURL(jobName) + "')]/button"));
 
         actions.moveToElement(chevron)
+                .scrollToElement(chevron)
                 .click()
                 .perform();
 
