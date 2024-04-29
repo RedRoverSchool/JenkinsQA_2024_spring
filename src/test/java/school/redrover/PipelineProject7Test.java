@@ -13,7 +13,7 @@ public class PipelineProject7Test extends BaseTest {
     public void testCreate() {
         getDriver().findElement(By.linkText("New Item")).click();
 
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.name("name"))).sendKeys("ProjectName");
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.name("name"))).sendKeys("NewProjectName");
         getDriver().findElement(By.xpath("//span[text() = 'Pipeline']")).click();
         getDriver().findElement(By.xpath("//button[text() = 'OK']")).click();
 
@@ -21,6 +21,6 @@ public class PipelineProject7Test extends BaseTest {
 
         TestUtils.goToMainPage(getDriver());
 
-        Assert.assertTrue(getDriver().findElement(By.linkText("ProjectName")).isDisplayed());
+        Assert.assertTrue(getDriver().findElement(By.linkText("NewProjectName")).isDisplayed());
     }
 }
