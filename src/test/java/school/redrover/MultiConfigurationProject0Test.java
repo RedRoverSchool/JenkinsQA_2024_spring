@@ -309,6 +309,7 @@ public class MultiConfigurationProject0Test extends BaseTest {
                 .perform();
 
         getDriver().findElement(By.cssSelector("[href^='/job'] [class$='chevron']")).click();
+        getDriver().findElement(By.cssSelector("[href^='/job'] [class$='chevron']")).click();
         getDriver().findElement(By.cssSelector(".tippy-box [href$='Delete']")).click();
         getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
 
