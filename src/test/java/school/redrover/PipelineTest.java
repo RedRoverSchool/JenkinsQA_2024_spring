@@ -19,6 +19,7 @@ public class PipelineTest extends BaseTest {
     private static final String PIPELINE_NAME = "FirstPipeline";
     private static final By ADD_DESCRIPTION_LOCATOR = By.id("description-link");
     private static final By DASHBOARD_PIPELINE_LOCATOR = By.cssSelector("td [href='job/" + PIPELINE_NAME + "/']");
+    private static final By BUILD_HISTORY_PIPELINE_LOCATOR = By.cssSelector("td [href$='job/" + PIPELINE_NAME + "/']");
 
     private void createPipelineWithCreateAJob() {
         getDriver().findElement(By.linkText("Create a job")).click();
@@ -26,6 +27,13 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.cssSelector("[class$='WorkflowJob']")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
+    }
+
+    private void clickOnDropdownArrow(By locator) {
+        WebElement itemDropdownArrow = getDriver().findElement(locator);
+
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
+                "arguments[0].dispatchEvent(new Event('click'));", itemDropdownArrow);
     }
 
     @Test
@@ -88,20 +96,33 @@ public class PipelineTest extends BaseTest {
         new Actions(getDriver())
                 .moveToElement(breadcrumbsItemName)
                 .perform();
+        clickOnDropdownArrow(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']"));
 
-        int attempts = 0;
-        while (attempts < 2) {
-            try {
-                getDriver().findElement(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']")).click();
-                getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='Delete']")).click();
-                getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
-                break;
-            } catch (Exception e) {
-                attempts++;
-            }
-        }
+        getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='Delete']")).click();
+        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
 
-        List<WebElement> jobsList = getDriver().findElements(DASHBOARD_PIPELINE_LOCATOR);
-        Assert.assertTrue(jobsList.isEmpty(), PIPELINE_NAME + " was not deleted");
+        List<WebElement> jobList = getDriver().findElements(DASHBOARD_PIPELINE_LOCATOR);
+        Assert.assertTrue(jobList.isEmpty(), PIPELINE_NAME + " was not deleted");
+    }
+
+    @Test
+    public void testBuildHistoryEmptyUponPipelineRemoval() {
+        createPipelineWithCreateAJob();
+        TestUtils.goToMainPage(getDriver());
+
+        getDriver().findElement(By.cssSelector("td [title='Schedule a Build for " + PIPELINE_NAME + "']")).click();
+        getDriver().findElement(By.cssSelector("[href$='builds']")).click();
+
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(BUILD_HISTORY_PIPELINE_LOCATOR))
+                .perform();
+        clickOnDropdownArrow(By.cssSelector("td [class$='link'] [class$='dropdown-chevron']"));
+
+        getDriver().findElement(By.cssSelector("[href$='Delete']")).click();
+        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+        getDriver().findElement(By.cssSelector("[href$='builds']")).click();
+
+        List<WebElement> buildHistoryTable = getDriver().findElements(BUILD_HISTORY_PIPELINE_LOCATOR);
+        Assert.assertTrue(buildHistoryTable.isEmpty(), PIPELINE_NAME + " build is in Build history table");
     }
 }

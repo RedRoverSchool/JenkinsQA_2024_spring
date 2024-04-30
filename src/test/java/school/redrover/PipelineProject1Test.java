@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
@@ -21,9 +22,11 @@ public class PipelineProject1Test extends BaseTest {
     private static final String PIPELINE_NAME = "New First Pipeline";
     private static final String RENAMED_PIPELINE = "RenamedFirstPipeline";
     private static final String PIPELINE_DESCRIPTION = "Description added to my pipeline.";
+    private static final String VIEW_NAME = "Empoyee_view";
     private static final By BUILD_TRIANGLE_BUTTON_XPATH = By.xpath("//td[@class='jenkins-table__cell--tight']//a[contains(@tooltip,'Schedule')]");
     private static final By DESCRIPTION_XPATH = By.xpath("//div[@id='description']/div[not(contains(@class, 'jenkins-buttons-row'))]");
     private static final By CONFIGURATION_BUTTON_XPATH = By.xpath("//a[@href='/job/" + PIPELINE_NAME.replaceAll(" ", "%20") + "/configure']");
+    private static final By OK_BUTTON_EDIT_VIEW_PAGE_XPATH = By.xpath("//button[@name='Submit']");
 
     private void returnToHomePage() {
         getDriver().findElement(By.id("jenkins-head-icon")).click();
@@ -31,6 +34,13 @@ public class PipelineProject1Test extends BaseTest {
 
     private void clickOnCreatedJobOnDashboardPage(String name) {
         getDriver().findElement(By.xpath("//td/a[@href='job/" + name.replaceAll(" ", "%20") + "/']")).click();
+    }
+
+    private void scrollDownEditViewPageToOkButton() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        WebElement scrollStopPoint = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                OK_BUTTON_EDIT_VIEW_PAGE_XPATH));
+        js.executeScript("arguments[0].scrollIntoView();", scrollStopPoint);
     }
 
     @Test
@@ -140,7 +150,7 @@ public class PipelineProject1Test extends BaseTest {
                 .collect(Collectors.toList());
 
         Assert.assertEquals(actualPermalinks, expectedPermalinks);
-        }
+    }
 
     @Test(dependsOnMethods = "testPermalinksBuildDetails")
     public void testSetPipelineNumberBuildsToKeep() {
@@ -208,31 +218,28 @@ public class PipelineProject1Test extends BaseTest {
     @Ignore
     @Test
     public void testAddDescriptionColumnToPipelineView() {
-        final String viewName = "Empoyee's view";
         final List<String> expectedPipelineViewHeader =
                 List.of("S", "W", "Name" + "\n" + "  ↓", "Last Success", "Last Failure", "Last Duration", "Description");
-        List<String> actualPipelineViewHeader = new ArrayList<>();
 
         TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
 
         returnToHomePage();
 
         getDriver().findElement(By.xpath("//a[@href='/newView']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(viewName);
+        getDriver().findElement(By.id("name")).sendKeys(VIEW_NAME);
         getDriver().findElement(By.xpath("//label[contains(text(),'List View')]")).click();
         getDriver().findElement(By.id("ok")).click();
 
         getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//label[@title='" + PIPELINE_NAME + "']"))).click();
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        WebElement addColumnButton = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//button[@suffix='columns']")));
-        js.executeScript("arguments[0].scrollIntoView();", addColumnButton);
-        addColumnButton.click();
 
+        scrollDownEditViewPageToOkButton();
+
+        getDriver().findElement(By.xpath("//button[@suffix='columns']")).click();
         getDriver().findElement(By.xpath("(//button[@class='jenkins-dropdown__item'])[last()]")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(OK_BUTTON_EDIT_VIEW_PAGE_XPATH).click();
 
+        List<String> actualPipelineViewHeader = new ArrayList<>();
         List<WebElement> projectViewTitles = getWait5().until(ExpectedConditions.numberOfElementsToBeMoreThan(
                 By.xpath("//table[@id='projectstatus']//thead//tr/th"), 7));
         for (WebElement headerTitle : projectViewTitles) {
@@ -244,6 +251,44 @@ public class PipelineProject1Test extends BaseTest {
 
         Assert.assertTrue(projectViewTitles.get(projectViewTitles.size() - 1).getText().contains("Description"));
         Assert.assertEquals(actualPipelineViewHeader, expectedPipelineViewHeader);
+    }
+
+    @Ignore
+    @Test(dependsOnMethods = "testAddDescriptionColumnToPipelineView")
+    public void testAlterOrderViewTitles() {
+        final List<String> expectedAlteredPipelineViewHeader = List.of("Description", "S", "W", "Name" + "\n" + "  ↓", "Last Success", "Last Failure", "Last Duration");
+        getDriver().findElement(By.xpath("//a[@href='/view/" + VIEW_NAME + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/view/" + VIEW_NAME + "/configure']")).click();
+
+        scrollDownEditViewPageToOkButton();
+
+        WebElement sourceElementDescription = getDriver().findElement(
+                By.xpath("//div[@descriptorid='jenkins.branch.DescriptionColumn']//div[@class='dd-handle']"));
+
+        WebElement targetElementStatus = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@descriptorid='hudson.views.StatusColumn']")));
+
+        Actions actions = new Actions(getDriver());
+        actions.clickAndHold(sourceElementDescription)
+                .moveToElement(targetElementStatus)
+                .release(targetElementStatus)
+                .build()
+                .perform();
+
+        getDriver().findElement(OK_BUTTON_EDIT_VIEW_PAGE_XPATH).click();
+
+        List<String> actualAlteredPipelineViewHeader = new ArrayList<>();
+        List<WebElement> projectViewTitles = getWait5().until(ExpectedConditions.numberOfElementsToBe(
+                By.xpath("//table[@id='projectstatus']//thead//tr/th"), 8));
+        for (WebElement headerTitle : projectViewTitles) {
+            String header = headerTitle.getText();
+            if (!header.isEmpty()) {
+                actualAlteredPipelineViewHeader.add(headerTitle.getText());
+            }
+        }
+
+        Assert.assertTrue(actualAlteredPipelineViewHeader.get(0).contains("Description"));
+        Assert.assertEquals(actualAlteredPipelineViewHeader, expectedAlteredPipelineViewHeader);
     }
 
     @Test(dependsOnMethods = "testSetPipelineScript")

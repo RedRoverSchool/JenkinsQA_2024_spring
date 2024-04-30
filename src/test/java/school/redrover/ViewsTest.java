@@ -10,6 +10,9 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ViewsTest extends BaseTest {
     @Test
     public void testGoToMyViewsFromHeaderUserMenu() {
@@ -84,5 +87,32 @@ public class ViewsTest extends BaseTest {
                 getDriver().findElements(By.className("sortheader")).size(),
                 7,
                 "Description column is not added");
+    }
+
+    @Test(dependsOnMethods = "testAddColumnIntoListView")
+    public void testChangeOrderOfColumns() {
+        getDriver().findElement(By.linkText("in progress")).click();
+        getDriver().findElement(By.linkText("Edit View")).click();
+
+        WebElement submit = getDriver().findElement(By.name("Submit"));
+        ((JavascriptExecutor)getDriver()).executeScript("return arguments[0].scrollIntoView(true);", submit);
+
+        WebElement sourceElement = getDriver().findElement(By.cssSelector("[descriptorid $= 'DescriptionColumn'] .dd-handle"));
+        WebElement targetElement = getDriver().findElement(By.cssSelector("[descriptorid $= 'StatusColumn']"));
+        new Actions(getDriver())
+                .clickAndHold(sourceElement)
+                .moveToElement(targetElement)
+                .release(targetElement)
+                .build()
+                .perform();
+
+        submit.click();
+
+        List<WebElement> actualOrder = getDriver().findElements(By.className("sortheader"));
+        List<String> actualColumns = new ArrayList<>();
+        for (WebElement column : actualOrder) {
+            actualColumns.add(column.getText());
+        }
+        Assert.assertEquals(actualColumns.get(0), "Description");
     }
 }

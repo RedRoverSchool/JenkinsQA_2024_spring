@@ -14,17 +14,32 @@ public class OrganizationFolder2Test extends BaseTest{
     public void testCreateOrganizationFolder() {
         getDriver().findElement(By.xpath("//a[.='New Item']")).click();
         getDriver().findElement(By.id("name")).click();
-        getDriver().findElement(By.id("name")).sendKeys("Organization Folder");
+        getDriver().findElement(By.id("name")).sendKeys("New Organization Folder");
         getDriver().findElement(By.xpath("//label[.='Organization Folder']")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
 
         getDriver().findElement(By.xpath("//a[.='Dashboard']")).click();
 
-        Assert.assertTrue(getDriver().findElement(By.xpath("//span[.='Organization Folder']")).isDisplayed());
+        Assert.assertTrue(getDriver().findElement(By.xpath("//span[.='New Organization Folder']")).isDisplayed());
     }
 
     @Test(dependsOnMethods = "testCreateOrganizationFolder")
+    public void testRenameOrganizationFolder() {
+        getDriver().findElement(By.xpath("//span[.='New Organization Folder']")).click();
+        getDriver().findElement(By.xpath("//a[contains(.,'Rename')]")).click();
+        getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
+        getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys(
+                "Organization Folder");
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        getDriver().findElement(By.xpath("//a[.='Dashboard']")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath(
+                "//span[.='Organization Folder']")).isDisplayed());
+    }
+
+    @Test(dependsOnMethods = "testRenameOrganizationFolder")
     public void testOrganizationFolderAddDescription(){
 
         getDriver().findElement(By.xpath("//span[.='Organization Folder']")).click();

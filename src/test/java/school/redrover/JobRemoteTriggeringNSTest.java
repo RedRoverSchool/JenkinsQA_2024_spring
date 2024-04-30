@@ -104,6 +104,7 @@ public class JobRemoteTriggeringNSTest extends BaseTest {
         List<String> tabs = new ArrayList<>(getDriver().getWindowHandles());
         getDriver().switchTo().window(tabs.get(0));
     }
+
     @Ignore
     @Test
     public void testFreestyleJobRemoteTriggeringNSTest(){

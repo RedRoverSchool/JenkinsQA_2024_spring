@@ -60,6 +60,11 @@ public class Pipeline1Test extends BaseTest {
         }
     }
 
+    private String getColorOfPseudoElement(WebElement element) {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        return (String) js.executeScript("return window.getComputedStyle(arguments[0], '::before').getPropertyValue('background-color');", element);
+    }
+
     @Test
     public void testCreatePipeline() {
         createPipeline(PIPELINE_NAME);
@@ -176,23 +181,21 @@ public class Pipeline1Test extends BaseTest {
         }
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreatePipeline")
     public void testAvgStageTimeBuildTimeIsDisplayed() {
         int number_of_stages = 1;
 
-        getDriver().findElement(By.xpath("//*[@href='job/NewPipeline/']/span")).click();
+        chooseProjectAndClick(PIPELINE_NAME);
         getDriver().findElement(By.xpath("//*[@href='/job/NewPipeline/configure']")).click();
         sendScript(number_of_stages);
         getDriver().findElement(By.name("Submit")).click();
-
-        getDriver().findElement(By.xpath("//*[@data-build-success='Build scheduled']")).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@data-build-success='Build scheduled']"))).click();
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='table-box']")));
 
         boolean avgTime = getDriver().findElement(By.xpath("//td[@class='stage-total-0']")).isDisplayed();
         boolean buildTime = getDriver().findElement(By.xpath("//tr[@data-runid='1']//td[@data-stageid='6']")).isDisplayed();
 
-        Assert.assertTrue(avgTime && buildTime); //Find average stage time and build time
+        Assert.assertTrue(avgTime && buildTime);
     }
 
     @Test
@@ -202,6 +205,46 @@ public class Pipeline1Test extends BaseTest {
         getH1HeaderText();
 
         Assert.assertEquals(getH1HeaderText(), PIPELINE_NAME);
+    }
+
+    @Test(dependsOnMethods = "testCreatePipelineProject")
+    public void testColorWhenHoveringMouseOnFullStageViewButton() {
+
+        String expectedColor = "rgba(175, 175, 207, 0.15)";
+
+        chooseProjectAndClick(PIPELINE_NAME);
+
+        WebElement fullStageViewButton = getDriver().findElement(
+                By.xpath("//a[contains(@href, 'workflow-stage')]"));
+
+        String backgroundColorBeforeHover = getColorOfPseudoElement(fullStageViewButton);
+
+        Actions mouseHover = new Actions(getDriver());
+
+        mouseHover.scrollToElement(fullStageViewButton)
+                .moveToElement(fullStageViewButton)
+                .pause(2000)
+                .perform();
+
+        String backgroundColorAfterHover = getColorOfPseudoElement(fullStageViewButton);
+
+        Assert.assertTrue(!backgroundColorAfterHover.equals(backgroundColorBeforeHover)
+                && backgroundColorAfterHover.equals(expectedColor));
+    }
+
+    @Test(dependsOnMethods = "testCreatePipelineProject")
+    public void testBreadcrumbsOnFullStageViewPage() {
+
+        String expectedResult = "Dashboard > "+ PIPELINE_NAME +" > Full Stage View";
+
+        chooseProjectAndClick(PIPELINE_NAME);
+        clickFullStageViewButton();
+
+        String breadcrumbs = getDriver().findElement(By.id("breadcrumbBar")).getText();
+
+        String actualResult = breadcrumbs.replaceAll("\n", " > ");
+
+        Assert.assertEquals(actualResult, expectedResult);
     }
 }
 
