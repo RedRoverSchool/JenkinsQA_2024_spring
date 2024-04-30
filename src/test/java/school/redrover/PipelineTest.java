@@ -106,7 +106,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testBuildHistoryEmptyUponPipelineRemoval() throws InterruptedException {
+    public void testBuildHistoryEmptyUponPipelineRemoval() {
         createPipelineWithCreateAJob();
         TestUtils.goToMainPage(getDriver());
 
