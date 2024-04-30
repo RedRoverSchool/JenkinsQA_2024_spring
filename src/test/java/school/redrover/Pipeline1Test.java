@@ -12,6 +12,8 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Pipeline1Test extends BaseTest {
@@ -70,6 +72,11 @@ public class Pipeline1Test extends BaseTest {
         getDriver().findElement(By.name("name")).sendKeys(pipelineProject);
         getDriver().findElement(By.cssSelector("[class$='WorkflowJob']")).click();
         getDriver().findElement(By.id("ok-button")).click();
+    }
+
+    private void clickConfigButton() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
+                By.xpath("//a[contains(@href, 'configure')]")))).click();
     }
 
     @Test
@@ -285,5 +292,37 @@ public class Pipeline1Test extends BaseTest {
         }
         Assert.assertTrue(result, "One of the elements is missing");
     }
+
+    @Test
+    public void testBuildAttributesDescending() {
+
+        int number_of_stages = 1;
+        int buildsQtt = 5;
+
+        TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
+        clickConfigButton();
+        sendScript(number_of_stages);
+        getDriver().findElement(By.name("Submit")).click();
+
+        WebElement buildButton = getDriver().findElement(
+                By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/build?delay=0sec']"));
+
+        for (int i = 1; i <= buildsQtt; i++) {
+            buildButton.click();
+            getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                    By.xpath("//span[@class='badge']/a[@href='" + i + "']")));
+        }
+
+        List<WebElement> buildTable = getWait2().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                By.className("badge")));
+
+        List<String> actualOrder = TestUtils.getTexts(buildTable);
+
+        List<String> expectedOrder = new ArrayList<>(actualOrder);
+        expectedOrder.sort(Collections.reverseOrder());
+
+        Assert.assertEquals(actualOrder, expectedOrder);
+    }
 }
+
 
