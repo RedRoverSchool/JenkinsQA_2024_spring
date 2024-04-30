@@ -33,7 +33,7 @@ public class JenkinsAndSeleniumTest extends BaseTest {
     public void testOffset175() {
 
         int offsetX = -5;
-        int selectedX = 110;
+        int selectedX = 147;
 
         createItemsFromList(PROJECT_NAMES);
         String jobName = TestUtils.FREESTYLE_PROJECT;
@@ -46,15 +46,14 @@ public class JenkinsAndSeleniumTest extends BaseTest {
         Actions actions = new Actions(getDriver());
 
         actions.moveToElement(job)
+                .pause(200)
                 .perform();
 
 //        WebElement chevron = getDriver().findElement(
 //                By.xpath("//a[contains(@href, '" + TestUtils.asURL(jobName) + "')]/button"));
 
-        actions.moveToLocation(jobX + offsetX, jobY + jobSizeY / 2)
-                .clickAndHold()
-                .moveByOffset(selectedX, 0)
-                .release()
+        actions.moveToLocation(jobX + offsetX + selectedX, jobY + jobSizeY / 2)
+                .click()
                 .perform();
 
         getDriver().findElement(By.xpath("//*[@class='jenkins-dropdown']"));
