@@ -5,6 +5,7 @@ import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.Color;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
@@ -32,14 +33,19 @@ public class PipelineProject6Test extends BaseTest {
         getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']"))).click();
     }
 
+    private String getColorOfPseudoElement(WebElement element) {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        return (String) js.executeScript("return window.getComputedStyle(arguments[0], '::before').getPropertyValue('background-color');", element);
+    }
+
     @Test
     public void testFullStageViewDropDownMenu() {
         createNewPipeline(PIPELINE_NAME);
         goHomePage();
 
         WebElement chevron = getDriver().findElement(By.xpath("//a[@href='job/"+PIPELINE_NAME+"/']//button[@class='jenkins-menu-dropdown-chevron']"));
-        JavascriptExecutor jsExecutor = (JavascriptExecutor) getDriver();
 
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) getDriver();
         jsExecutor.executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", chevron);
         jsExecutor.executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
 
@@ -49,6 +55,29 @@ public class PipelineProject6Test extends BaseTest {
         String expectedText = PIPELINE_NAME + " - Stage View";
         Assert.assertEquals(getWait5().until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//div[@id='pipeline-box']/h2"))).getText(),expectedText);
+    }
+
+    @Test
+    public void testButtonColorOnHover() throws InterruptedException {
+        createNewPipeline(PIPELINE_NAME);
+        goHomePage();
+
+        WebElement chevron = getDriver().findElement(By.xpath("//a[@href='job/"+PIPELINE_NAME+"/']//button[@class='jenkins-menu-dropdown-chevron']"));
+
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) getDriver();
+        jsExecutor.executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", chevron);
+        jsExecutor.executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
+
+        WebElement button = getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
+                By.xpath("//a[contains(@href, 'workflow-stage')]"))));
+
+        Actions action = new Actions(getDriver());
+        action.moveToElement(button).build().perform();
+
+        String backgroundColorBeforeHover = getColorOfPseudoElement(button);
+        String expectedButtonColor = "rgba(175, 175, 207, 0.13)";
+
+        Assert.assertEquals(backgroundColorBeforeHover,expectedButtonColor);
     }
 }
 
