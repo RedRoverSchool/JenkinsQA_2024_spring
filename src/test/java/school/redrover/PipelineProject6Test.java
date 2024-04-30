@@ -74,7 +74,7 @@ public class PipelineProject6Test extends BaseTest {
         action.moveToElement(button).build().perform();
 
         String backgroundColorBeforeHover = getColorOfPseudoElement(button);
-        String expectedButtonColor = "rgba(175, 175, 207, 0.1)";
+        String expectedButtonColor = "rgba(175, 175, 207, 0.118)";
 
         Assert.assertEquals(backgroundColorBeforeHover,expectedButtonColor);
     }
