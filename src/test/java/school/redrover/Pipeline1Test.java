@@ -65,6 +65,13 @@ public class Pipeline1Test extends BaseTest {
         return (String) js.executeScript("return window.getComputedStyle(arguments[0], '::before').getPropertyValue('background-color');", element);
     }
 
+    private void createPipelineProject(String pipelineProject) {
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.name("name")).sendKeys(PIPELINE_NAME);
+        getDriver().findElement(By.cssSelector("[class$='WorkflowJob']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+    }
+
     @Test
     public void testCreatePipeline() {
         createPipeline(PIPELINE_NAME);
@@ -142,12 +149,11 @@ public class Pipeline1Test extends BaseTest {
         final String expectedProjectName = "Pipeline1";
 
 
-
         String actualProjectName = getDriver().findElement(By.xpath("//tbody//td[3]//a[contains(@href, 'job/')]/span")).getText();
         Assert.assertEquals(actualProjectName, expectedProjectName);
 
         List<WebElement> scheduleABuildArrows = getDriver().findElements(
-                        By.xpath("//table//a[@title= 'Schedule a Build for " +  expectedProjectName + "']"));
+                By.xpath("//table//a[@title= 'Schedule a Build for " + expectedProjectName + "']"));
         Assert.assertEquals(scheduleABuildArrows.size(), 0);
     }
 
@@ -235,7 +241,7 @@ public class Pipeline1Test extends BaseTest {
     @Test(dependsOnMethods = "testCreatePipelineProject")
     public void testBreadcrumbsOnFullStageViewPage() {
 
-        String expectedResult = "Dashboard > "+ PIPELINE_NAME +" > Full Stage View";
+        String expectedResult = "Dashboard > " + PIPELINE_NAME + " > Full Stage View";
 
         chooseProjectAndClick(PIPELINE_NAME);
         clickFullStageViewButton();
@@ -245,6 +251,39 @@ public class Pipeline1Test extends BaseTest {
         String actualResult = breadcrumbs.replaceAll("\n", " > ");
 
         Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void testBuildAttributes() {
+
+        int number_of_stages = 5;
+
+        createPipelineProject(PIPELINE_NAME);
+
+        sendScript(number_of_stages);
+
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/build?delay=0sec']")).click();
+
+        WebElement box = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("cell-box")));
+        WebElement date = box.findElement(By.className("date"));
+        WebElement time = box.findElement(By.className("time"));
+        WebElement changesetBox = box.findElement(By.xpath("//div[@class='changeset-box no-changes']"));
+        WebElement number = box.findElement(By.className("badge"));
+        boolean result = true;
+        if (date == null || !date.isDisplayed()) {
+            result = false;
+        }
+        if (time == null || !time.isDisplayed()) {
+            result = false;
+        }
+        if (changesetBox == null || !(changesetBox.getText().equals("No Changes"))) {
+            result = false;
+        }
+        if (number == null || !number.isDisplayed()) {
+            result = false;
+        }
+        Assert.assertTrue(result, "One of the elements is missing");
     }
 }
 
