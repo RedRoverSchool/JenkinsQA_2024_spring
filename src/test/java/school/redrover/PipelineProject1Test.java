@@ -7,10 +7,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -215,15 +213,10 @@ public class PipelineProject1Test extends BaseTest {
         Assert.assertTrue(scriptName.getText().contains("Hello"));
     }
 
-    @Ignore
-    @Test
+    @Test(dependsOnMethods = "testSetPipelineScript")
     public void testAddDescriptionColumnToPipelineView() {
         final List<String> expectedPipelineViewHeader =
                 List.of("S", "W", "Name" + "\n" + "  ↓", "Last Success", "Last Failure", "Last Duration", "Description");
-
-        TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
-
-        returnToHomePage();
 
         getDriver().findElement(By.xpath("//a[@href='/newView']")).click();
         getDriver().findElement(By.id("name")).sendKeys(VIEW_NAME);
@@ -235,12 +228,12 @@ public class PipelineProject1Test extends BaseTest {
 
         scrollDownEditViewPageToOkButton();
 
-        getDriver().findElement(By.xpath("//button[@suffix='columns']")).click();
-        getDriver().findElement(By.xpath("(//button[@class='jenkins-dropdown__item'])[last()]")).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@suffix='columns']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("(//button[@class='jenkins-dropdown__item'])[last()]"))).click();
         getDriver().findElement(OK_BUTTON_EDIT_VIEW_PAGE_XPATH).click();
 
         List<String> actualPipelineViewHeader = new ArrayList<>();
-        List<WebElement> projectViewTitles = getWait5().until(ExpectedConditions.numberOfElementsToBeMoreThan(
+        List<WebElement> projectViewTitles = getWait10().until(ExpectedConditions.numberOfElementsToBeMoreThan(
                 By.xpath("//table[@id='projectstatus']//thead//tr/th"), 7));
         for (WebElement headerTitle : projectViewTitles) {
             String header = headerTitle.getText();
@@ -253,7 +246,6 @@ public class PipelineProject1Test extends BaseTest {
         Assert.assertEquals(actualPipelineViewHeader, expectedPipelineViewHeader);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testAddDescriptionColumnToPipelineView")
     public void testAlterOrderViewTitles() {
         final List<String> expectedAlteredPipelineViewHeader = List.of("Description", "S", "W", "Name" + "\n" + "  ↓", "Last Success", "Last Failure", "Last Duration");
@@ -291,7 +283,16 @@ public class PipelineProject1Test extends BaseTest {
         Assert.assertEquals(actualAlteredPipelineViewHeader, expectedAlteredPipelineViewHeader);
     }
 
-    @Test(dependsOnMethods = "testSetPipelineScript")
+    @Test(dependsOnMethods = "testAlterOrderViewTitles")
+    public void testDeletePipelineView() {
+        getDriver().findElement(By.xpath("//a[@href='/view/" + VIEW_NAME + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@data-title='Delete View']")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@data-id='ok']"))).click();
+
+        Assert.assertEquals(getDriver().findElements(By.xpath("//div[@class='tabBar']/div")).size(), 2);
+    }
+
+    @Test(dependsOnMethods = "testDeletePipelineView")
     public void testRenamePipelineUsingSidebar() {
         clickOnCreatedJobOnDashboardPage(PIPELINE_NAME);
 
