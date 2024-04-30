@@ -329,10 +329,7 @@ public class Pipeline1Test extends BaseTest {
 
         int number_of_stages = 1;
 
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.name("name")).sendKeys(PIPELINE_NAME);
-        getDriver().findElement(By.cssSelector("[class$='WorkflowJob']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        createPipelineProject(PIPELINE_NAME);
 
         sendScript(number_of_stages);
 
