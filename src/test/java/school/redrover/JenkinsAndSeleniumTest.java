@@ -55,7 +55,8 @@ public class JenkinsAndSeleniumTest extends BaseTest {
                 .clickAndHold()
                 .moveByOffset(selectedX, 0)
                 .release()
-                .moveByOffset(17, 0)
+                .moveByOffset(20, 0)
+                .click()
                 .perform();
 
         getDriver().findElement(By.xpath("//*[@class='jenkins-dropdown']"));
