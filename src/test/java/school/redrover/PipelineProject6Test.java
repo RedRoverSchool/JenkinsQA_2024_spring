@@ -5,7 +5,6 @@ import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.Color;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
@@ -58,7 +57,7 @@ public class PipelineProject6Test extends BaseTest {
     }
 
     @Test
-    public void testButtonColorOnHover() throws InterruptedException {
+    public void testButtonColorOnHover(){
         createNewPipeline(PIPELINE_NAME);
         goHomePage();
 
