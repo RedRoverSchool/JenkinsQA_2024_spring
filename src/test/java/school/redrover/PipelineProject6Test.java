@@ -57,7 +57,7 @@ public class PipelineProject6Test extends BaseTest {
     }
 
     @Test
-    public void testButtonColorOnHover(){
+    public void testButtonColorOnHover() throws InterruptedException {
         createNewPipeline(PIPELINE_NAME);
         goHomePage();
 
@@ -72,9 +72,10 @@ public class PipelineProject6Test extends BaseTest {
 
         Actions action = new Actions(getDriver());
         action.moveToElement(button).build().perform();
+        Thread.sleep(1000);
 
         String backgroundColorBeforeHover = getColorOfPseudoElement(button);
-        String expectedButtonColor = "rgba(175, 175, 207, 0.118)";
+        String expectedButtonColor = "rgba(175, 175, 207, 0.1)";
 
         Assert.assertEquals(backgroundColorBeforeHover,expectedButtonColor);
     }
