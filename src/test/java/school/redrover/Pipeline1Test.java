@@ -323,6 +323,30 @@ public class Pipeline1Test extends BaseTest {
 
         Assert.assertEquals(actualOrder, expectedOrder);
     }
+
+    @Test
+    public void testBuildСolorGreen() {
+
+        int number_of_stages = 1;
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.name("name")).sendKeys(PIPELINE_NAME);
+        getDriver().findElement(By.cssSelector("[class$='WorkflowJob']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        sendScript(number_of_stages);
+
+        getDriver().findElement(By.name("Submit")).click();
+        WebElement button = getDriver().findElement(By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/build?delay=0sec']"));
+        for (int i = 1; i <= 2; i++) {
+            button.click();
+            WebElement element = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//tr[@data-runid='" + i + "']/td[@class='stage-cell stage-cell-0 SUCCESS']/div[@class='cell-color']")));
+            String backgroundColor = element.getCssValue("background-color");
+
+            Assert.assertEquals(backgroundColor, "rgba(0, 255, 0, 0.1)");
+        }
+    }
 }
 
 
