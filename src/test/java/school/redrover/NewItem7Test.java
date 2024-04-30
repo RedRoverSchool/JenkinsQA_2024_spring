@@ -2,17 +2,22 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class NewItem7Test extends BaseTest {
 
-    public WebElement getOkButton() {
+    private WebElement findNameField() {
+        return getDriver().findElement(By.id("name"));
+    }
+
+    private WebElement getOkButton() {
         return getDriver().findElement(By.id("ok-button"));
     }
 
-    public void enterToNewItemPage() {
+    private void enterToNewItemPage() {
         getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
     }
 
@@ -28,9 +33,10 @@ public class NewItem7Test extends BaseTest {
     @Test
     public void testCheckHintToCreateNewItemWithoutName() {
         enterToNewItemPage();
+        findNameField().clear();
         getDriver().findElement(By.tagName("body")).click();
 
-        WebElement hintElement = getDriver().findElement(By.id("itemname-required"));
+        WebElement hintElement = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-required")));;
 
         Assert.assertEquals(hintElement.getText(),"» This field cannot be empty, please enter a valid name");
         Assert.assertEquals(hintElement.getCssValue("color"), "rgba(255, 0, 0, 1)");
@@ -39,9 +45,20 @@ public class NewItem7Test extends BaseTest {
     @Test
     public void testVerifyOkButtonUnavailableWithNameWithoutType() {
         enterToNewItemPage();
-        getDriver().findElement(By.id("name")).sendKeys("NewProject");
+        findNameField().sendKeys("NewProject");
 
         Assert.assertTrue(getOkButton().isDisplayed());
         Assert.assertFalse(getOkButton().isEnabled());
     }
+
+    @Test
+    public void testVerifyOkButtonUnavailableNameIsEmpty() {
+        enterToNewItemPage();
+        findNameField().clear();
+        getDriver().findElement(By.id("items")).click();
+
+        Assert.assertTrue(getOkButton().isDisplayed());
+        Assert.assertFalse(getOkButton().isEnabled());
+    }
+
 }

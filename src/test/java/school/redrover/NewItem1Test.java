@@ -1,11 +1,13 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.Color;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 public class NewItem1Test extends BaseTest {
 
@@ -55,15 +57,7 @@ public class NewItem1Test extends BaseTest {
     public void testNewItemIsDisplayedOnMainPage() {
        final String nameProject = "firstProjectPipline";
 
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.cssSelector("div.add-item-name > input#name")).sendKeys(nameProject);
-        getDriver().findElement(By.cssSelector("li.org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
-        getDriver().findElement(By.cssSelector("button#ok-button")).click();
-
-        getDriver().findElement(By.cssSelector("button.jenkins-button--primary ")).click();
-
-        getDriver().findElement(By.cssSelector("li.jenkins-breadcrumbs__list-item > a[href='/']")).click();
-
+        TestUtils.createNewItemAndReturnToDashboard(this, nameProject, TestUtils.Item.PIPELINE);
         Assert.assertTrue(getDriver().findElement(By.cssSelector("tr#job_" + nameProject)).isDisplayed());
     }
 
@@ -74,5 +68,18 @@ public class NewItem1Test extends BaseTest {
 
         boolean isOkButtonEnabled = getDriver().findElement(By.id("ok-button")).isEnabled();
         Assert.assertFalse(isOkButtonEnabled);
+    }
+    @Test
+    public void testEmptyNameFieldHints() {
+        getDriver().findElement(By.linkText("New Item")).click();
+
+        String hintText = getDriver().findElement(By.cssSelector("[class='input-help']")).getText();
+        String hintColor = getDriver().findElement(By.cssSelector("[class='input-help']")).getCssValue("color");
+
+        getDriver().findElement(By.id("name")).sendKeys("a");
+        getDriver().findElement(By.id("name")).sendKeys(Keys.BACK_SPACE);
+
+        Assert.assertNotSame(hintText, getDriver().findElement(By.id("itemname-required")).getText());
+        Assert.assertNotSame(hintColor, getDriver().findElement(By.id("itemname-required")).getCssValue("color"));
     }
 }

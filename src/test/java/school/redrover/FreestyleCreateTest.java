@@ -5,6 +5,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+
 public class FreestyleCreateTest extends BaseTest {
 
     @Test
@@ -18,5 +19,18 @@ public class FreestyleCreateTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By
                 .xpath("//*[@id='breadcrumbs']/li[3]/a")).getText(), "project1");
     }
-}
+    @Test
+    public void testCreateFreestyleProject(){
+        getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys("TestName");
+        getDriver().findElement(By.xpath("//span[@class='label' and text()='Freestyle project']")).click();
+        getDriver().findElement(By.xpath("//*[@id='ok-button']")).click();
+        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]")).click();
+
+        Assert.assertEquals(getDriver().findElement(By
+                .xpath("//*[@id='breadcrumbs']/li[3]/a")).getText(), "TestName");
+    }
+
+    }
+
 
