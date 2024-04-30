@@ -200,6 +200,7 @@ public class PipelineConfigurationTest extends BaseTest {
         clickOnAdvancedButton();
         getWait10().until(ExpectedConditions.elementToBeClickable(DISPLAY_NAME_TEXT_FIELD));
         getDriver().findElement(DISPLAY_NAME_TEXT_FIELD).sendKeys(editedDisplayNameText);
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(SAVE_BUTTON_CONFIGURATION));
         getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']"))
@@ -223,7 +224,7 @@ public class PipelineConfigurationTest extends BaseTest {
         Assert.assertTrue(link.isDisplayed(), "Uncheck doesn't work");
     }
 
-    @Test (dependsOnMethods = "testAddDisplayNameInAdvancedSection")
+    @Test (dependsOnMethods = {"testAddDisplayNameInAdvancedSection", "testEditDisplayNameInAdvancedSection"})
     public void testDeleteDisplayNameInAdvancedSection() {
         navigateToConfigurePageFromDashboard();
 
