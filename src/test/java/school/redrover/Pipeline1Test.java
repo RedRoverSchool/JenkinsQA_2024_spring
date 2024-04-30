@@ -67,7 +67,7 @@ public class Pipeline1Test extends BaseTest {
 
     private void createPipelineProject(String pipelineProject) {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.name("name")).sendKeys(PIPELINE_NAME);
+        getDriver().findElement(By.name("name")).sendKeys(pipelineProject);
         getDriver().findElement(By.cssSelector("[class$='WorkflowJob']")).click();
         getDriver().findElement(By.id("ok-button")).click();
     }
