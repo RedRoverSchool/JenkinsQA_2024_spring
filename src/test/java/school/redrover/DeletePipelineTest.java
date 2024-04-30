@@ -35,9 +35,8 @@ public class DeletePipelineTest extends BaseTest {
         Assert.assertTrue(jobList.isEmpty());
     }
 
-    @Ignore
     @Test
-    public void testDeletePipelineDropdown() throws InterruptedException {
+    public void testDeletePipelineDropdown() {
         TestUtils.createJob(this, TestUtils.Job.PIPELINE, pipelineName);
         TestUtils.goToMainPage(getDriver());
 
