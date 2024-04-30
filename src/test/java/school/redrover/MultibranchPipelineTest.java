@@ -325,7 +325,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testDeleteViaDashboardDropdown() throws InterruptedException {
+    public void testDeleteViaDashboardDropdown(){
         final String WELCOME_PAGE_HEADER ="Welcome to Jenkins!";
         TestUtils.createNewItemAndReturnToDashboard(this, MULTI_PIPELINE_NAME, TestUtils.Item.MULTI_BRANCH_PIPELINE);
 
@@ -334,10 +334,8 @@ public class MultibranchPipelineTest extends BaseTest {
         WebElement dropdownChevron = getDriver().findElement(By.cssSelector("#job_" + MULTI_PIPELINE_NAME + " > td:nth-child(3) > a > button"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
             "arguments[0].dispatchEvent(new Event('click'));", dropdownChevron);
-       //подозрение на вейтер
         getDriver().findElement(By.cssSelector("[href $='doDelete")).click();
 
-        //подозрение на вейтер
         getDriver().switchTo().activeElement();
         getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
 
