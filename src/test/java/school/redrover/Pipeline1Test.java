@@ -270,7 +270,6 @@ public class Pipeline1Test extends BaseTest {
         WebElement time = box.findElement(By.className("time"));
         WebElement changesetBox = box.findElement(By.xpath("//div[@class='changeset-box no-changes']"));
         WebElement number = box.findElement(By.className("badge"));
-
         boolean result = true;
         if (date == null || !date.isDisplayed()) {
             result = false;
