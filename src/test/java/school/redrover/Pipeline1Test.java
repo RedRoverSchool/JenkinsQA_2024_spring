@@ -15,8 +15,6 @@ import school.redrover.runner.TestUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class Pipeline1Test extends BaseTest {
     private static final String PIPELINE_NAME = "NewPipeline";
@@ -333,6 +331,45 @@ public class Pipeline1Test extends BaseTest {
         expectedOrder.sort(Collections.reverseOrder());
 
         Assert.assertEquals(actualOrder, expectedOrder);
+    }
+
+    @Test
+    public void testBuildСolorGreen() {
+
+        int number_of_stages = 1;
+
+        createPipelineProject(PIPELINE_NAME);
+
+        sendScript(number_of_stages);
+
+        getDriver().findElement(By.name("Submit")).click();
+        WebElement button = getDriver().findElement(By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/build?delay=0sec']"));
+        for (int i = 1; i <= 2; i++) {
+            button.click();
+            WebElement element = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//tr[@data-runid='" + i + "']/td[@class='stage-cell stage-cell-0 SUCCESS']/div[@class='cell-color']")));
+            String backgroundColor = element.getCssValue("background-color");
+
+            Assert.assertEquals(backgroundColor, "rgba(0, 255, 0, 0.1)");
+        }
+    }
+
+    @Test
+    public void testFullStageViewPopUpWindowIsDisplayed(){
+        int number_of_stages = 2;
+        TestUtils.createJob(this, TestUtils.Job.PIPELINE, PIPELINE_NAME);
+
+        sendScript(number_of_stages);
+
+        getDriver().findElement(By.name("Submit")).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@data-build-success='Build scheduled']"))).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='table-box']")));
+        getDriver().findElement(By.xpath("//tr[@data-runid='1']//td[@data-stageid='6']")).click();
+        getDriver().findElement(By.xpath("//div[@class='btn btn-small cbwf-widget cbwf-controller-applied stage-logs']")).click();
+
+        String actualResult = getDriver().findElement(By.xpath("//div[@class='cbwf-dialog cbwf-stage-logs-dialog']")).getText();
+
+        Assert.assertTrue(actualResult.contains("Stage Logs (stage 1)"));
     }
 
     @Test
