@@ -113,8 +113,12 @@ public final class TestUtils {
         int y = baseTest.getDriver().findElement(dropdownChevron).getSize().getHeight() / 2;
         action.moveToElement(baseTest.getDriver().findElement(dropdownChevron), x, y).pause(1000).click().perform();
 
-        baseTest.getWait5().until(ExpectedConditions
+        boolean b = baseTest.getWait5().until(ExpectedConditions
                 .attributeContains(dropdownChevron, "ariaExpanded", "true"));
+        if (!b) {
+            action.moveToElement(baseTest.getDriver().findElement(
+                    By.xpath("//span[normalize-space()='" + jobName + "']"))).pause(2000).perform();
+        }
     }
 
     public static void deleteJobViaDropdowm(BaseTest baseTest, String jobName) {
@@ -138,6 +142,7 @@ public final class TestUtils {
 
     public static void goToJobPageAndEnterJobName(BaseTest baseTest, String jobName) {
         baseTest.getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        baseTest.getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("name")));
         baseTest.getDriver().findElement(By.id("name")).sendKeys(jobName);
     }
 
