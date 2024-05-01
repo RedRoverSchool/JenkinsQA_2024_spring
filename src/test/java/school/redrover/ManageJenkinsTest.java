@@ -1,13 +1,14 @@
 package school.redrover;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-
+import org.testng.Assert;
+import school.redrover.runner.BaseTest;
 import java.util.List;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.interactions.Actions;
 
 public class ManageJenkinsTest extends BaseTest {
 
@@ -56,6 +57,19 @@ public class ManageJenkinsTest extends BaseTest {
 
         for (int i = 0; i < actualDescription.size(); i++) {
             Assert.assertTrue(actualDescription.get(i).getText().matches(expectedDescription.get(i)));
+        }
+    }
+  
+    @Test
+    public void testSecurityBlockSectionsClickable(){
+        getDriver().findElement(By.xpath("//a[@href = '/manage']")).click();
+
+        List <WebElement> securityBlockSections = getDriver().findElements(By
+                .xpath("(//div[contains(@class, 'section__items')])[2]/div"));
+
+        for (WebElement element : securityBlockSections) {
+            new Actions(getDriver()).moveToElement(element).perform();
+            Assert.assertTrue(element.isEnabled());
         }
     }
 
