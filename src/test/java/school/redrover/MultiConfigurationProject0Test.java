@@ -5,6 +5,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -13,17 +14,21 @@ import school.redrover.runner.TestUtils;
 public class MultiConfigurationProject0Test extends BaseTest {
 
     private final String projectName = "MCProject";
+    private final String randomProjectName = TestUtils.randomString();
 
-    @Test
-    public void testRenameProjectViaMainPageDropdown() {
-        TestUtils.createNewItemAndReturnToDashboard(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
-
+    public void openDropdownUsingSelenium(String projectName) {
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(By.linkText(projectName)))
                 .pause(1000)
                 .scrollToElement(getDriver().findElement(By.cssSelector(String.format("[data-href*='/job/%s/']", projectName))))
                 .click()
                 .perform();
+    }
+
+    @Test
+    public void testRenameProjectViaMainPageDropdown() {
+        TestUtils.createNewItemAndReturnToDashboard(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+        openDropdownUsingSelenium(projectName);
 
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Rename"))).click();
         getDriver().findElement(By.name("newName")).sendKeys("New");
@@ -220,5 +225,114 @@ public class MultiConfigurationProject0Test extends BaseTest {
         } else if (getDriver().findElement(By.tagName("html")).getAttribute("data-theme").equals("dark")) {
             Assert.assertEquals(expectedColorDark, actualColor);
         }
+    }
+
+    @Test
+    public void testCreateProjectWithoutName() {
+        final String errorMessage = "This field cannot be empty";
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
+
+        String actualErrorMessage = getDriver().findElement(By.id("itemname-required")).getText();
+        WebElement okButton = getDriver().findElement(By.id("ok-button"));
+
+        Assert.assertTrue(actualErrorMessage.contains(errorMessage));
+        Assert.assertFalse(okButton.isEnabled());
+    }
+
+
+    @Test
+    public void testTryCreateProjectExistName() {
+        final String projectName = "MultiBuild";
+        final String errorMessage = "A job already exists with the name " + "‘" + projectName + "’";
+
+        TestUtils.createNewItemAndReturnToDashboard(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
+        getDriver().findElement(By.className("jenkins-input")).sendKeys(projectName);
+        getDriver().findElement(By.id("ok-button")).click();
+
+        String actualMessage = getDriver().findElement(By.xpath("//*[@id='main-panel']/p")).getText();
+        Assert.assertEquals(actualMessage, errorMessage);
+    }
+
+    @Test
+    public void testCreateMCProject() {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("MCProject");
+        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[3]/label")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]")).click();
+        getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[1]/a")).click();
+
+        Assert.assertEquals(getDriver().findElement(By
+                .xpath("//*[@id='job_MCProject']/td[3]/a/span")).getText(),"MCProject");
+
+    }
+
+    @Test (dependsOnMethods = "testCreateMCProject")
+    public void testRenameMCProject() {
+        getDriver().findElement(By.xpath("//*[@id='job_MCProject']/td[3]/a/span")).click();
+        getDriver().findElement(By.xpath("//*[@id='tasks']/div[7]/span/a")).click();
+        getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/div[1]/div[2]/input")).clear();
+        getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/div[1]/div[2]/input")).sendKeys("MCProjectNew");
+        getDriver().findElement(By.name("Submit")).click();
+
+
+        Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//*[@id='breadcrumbs']/li[3]/a"))).getText(),"MCProjectNew");
+
+    }
+
+    @Test
+    public void testCreateMCP() {
+        TestUtils.createNewItemAndReturnToDashboard(this, randomProjectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+        Assert.assertTrue(TestUtils.getViewItemElement(this, randomProjectName).isDisplayed());
+    }
+
+    @Test(dependsOnMethods = "testCreateMCP")
+    public void testCreateMCPWithSameName() {
+        TestUtils.createNewItem(this, randomProjectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+
+        Assert.assertEquals(
+                getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#main-panel h1"))).getText(),
+                "Error");
+        Assert.assertEquals(
+                getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#main-panel p"))).getText(),
+                "A job already exists with the name ‘" + randomProjectName + "’");
+    }
+
+    @Test
+    public void testDeleteProjectViaDropdown() {
+        TestUtils.createNewItemAndReturnToDashboard(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+        getDriver().findElement(By.linkText(projectName)).click();
+
+        TestUtils.openElementDropdown(this, getDriver().findElement(By.linkText(projectName)));
+
+        getDriver().findElement(By.cssSelector(".tippy-box [href$='Delete']")).click();
+        getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.tagName("h1")).getText(),
+                "Welcome to Jenkins!",
+                "Project not deleted");
+    }
+
+    @Test
+    public void testMoveProjectToFolderViaDropdown() {
+        final String folderName = "Folder";
+        TestUtils.createNewItemAndReturnToDashboard(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+        TestUtils.createNewItemAndReturnToDashboard(this, folderName, TestUtils.Item.FOLDER);
+        openDropdownUsingSelenium(projectName);
+
+        getDriver().findElement(By.linkText("Move")).click();
+        new Select(getDriver().findElement(By.name("destination"))).selectByValue("/"+folderName);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertTrue(
+                getDriver().findElement(By.linkText(folderName)).isDisplayed(),
+                "Project not moved to folder");
     }
 }

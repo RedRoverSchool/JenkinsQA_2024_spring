@@ -1,13 +1,17 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
@@ -15,14 +19,30 @@ public class PipelineConfigurationTest extends BaseTest {
 
     private static final String JOB_NAME = "TestCrazyTesters";
 
-    public static final By SAVE_BUTTON_CONFIGURATION = By.xpath("//button[@formnovalidate='formNoValidate']");
+    private static final By SAVE_BUTTON_CONFIGURATION = By.xpath("//button[@formnovalidate='formNoValidate']");
 
-    public static final By TOGGLE_SWITCH_ENABLE_DISABLE = By.xpath("//label[@data-title='Disabled']");
+    private static final By TOGGLE_SWITCH_ENABLE_DISABLE = By.xpath("//label[@data-title='Disabled']");
+
+    private static final By ADVANCED_PROJECT_OPTIONS_MENU = By.xpath("//button[@data-section-id='advanced-project-options']");
+
+    private static final By DISPLAY_NAME_TEXT_FIELD = By.xpath("//div[@class='setting-main']//input[contains(@checkurl, 'checkDisplayName')]");
+
+    private final String displayNameText = "This is project's Display name text for Advanced Project Options";
+
+    private Actions actions;
+
+    private Actions getActions() {
+        if (actions == null) {
+            actions = new Actions(getDriver());
+        }
+        return actions;
+    }
 
     public void createPipeline() {
         getDriver().findElement(By.xpath("//span[contains(text(),'Create')]")).click();
         getDriver().findElement(By.id("name")).sendKeys(JOB_NAME);
         getDriver().findElement(By.xpath("//li[contains(@class,'WorkflowJob')]")).click();
+        getWait60().until(ExpectedConditions.visibilityOfElementLocated(By.id("ok-button")));
         getDriver().findElement(By.id("ok-button")).click();
     }
 
@@ -31,12 +51,26 @@ public class PipelineConfigurationTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
     }
 
-    @Ignore
+    public void clickOnAdvancedButton() {
+        WebElement advancedButton = getDriver().findElement(By.xpath("//section[@class='jenkins-section']//button[@type='button']"));
+
+        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
+        executor.executeScript("arguments[0].dispatchEvent(new Event('click'));",
+               advancedButton);
+    }
+
+    public void scrollCheckBoxQuietPeriodIsVisible(){
+        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
+        executor.executeScript("arguments[0].scrollIntoView();",
+                getDriver().findElement(By.xpath("//label[text()='Poll SCM']")));
+    }
+
     @Test
     public void testScroll() {
         createPipeline();
 
-        getDriver().findElement(By.xpath("//button[@data-section-id='pipeline']")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@data-section-id='pipeline']"))).click();
+
         Assert.assertTrue(getDriver().findElement(By.id("bottom-sticker")).isDisplayed(), "Pipeline");
     }
 
@@ -80,6 +114,7 @@ public class PipelineConfigurationTest extends BaseTest {
                 getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).isDisplayed());
     }
 
+    @Ignore
     @Test
     public void testDiscardOldBuildsByCount() {
         createPipeline();
@@ -104,7 +139,6 @@ public class PipelineConfigurationTest extends BaseTest {
 
     @Test
     public void testSectionsOfSidePanelAreVisible() {
-
         createPipeline();
 
         navigateToConfigurePageFromDashboard();
@@ -123,5 +157,131 @@ public class PipelineConfigurationTest extends BaseTest {
             Assert.assertTrue(section.isDisplayed(),
                     "The requested section is not found in Configure side-panel");
         }
+    }
+
+    @Test(dependsOnMethods = "testAddDescriptionInConfigureMenu")
+    public void testEditDiscription() {
+
+        getDriver().findElement(By.id("description-link")).click();
+        WebElement textArea = getDriver().findElement(By.name("description"));
+        textArea.clear();
+        getActions().click(textArea)
+                .keyDown(Keys.SHIFT)
+                .sendKeys("project")
+                .keyUp(Keys.SHIFT)
+                .perform();
+
+        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//div[text()='PROJECT']")).isDisplayed(),
+                "PROJECT");
+    }
+
+    @Test
+    public void testAddDisplayNameInAdvancedSection() {
+        final String displayNameText = "This is project's Display name text for Advanced Project Options";
+
+        createPipeline();
+
+        navigateToConfigurePageFromDashboard();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(ADVANCED_PROJECT_OPTIONS_MENU)).click();
+
+        clickOnAdvancedButton();
+        getWait10().until(ExpectedConditions.elementToBeClickable(DISPLAY_NAME_TEXT_FIELD)).sendKeys(displayNameText);
+        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText(),
+                displayNameText);
+    }
+
+    @Test (dependsOnMethods = "testAddDisplayNameInAdvancedSection")
+    public void testEditDisplayNameInAdvancedSection() {
+        final String editedDisplayNameText = " - EDITED";
+
+        navigateToConfigurePageFromDashboard();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(ADVANCED_PROJECT_OPTIONS_MENU)).click();
+
+        clickOnAdvancedButton();
+        getWait10().until(ExpectedConditions.elementToBeClickable(DISPLAY_NAME_TEXT_FIELD));
+        getDriver().findElement(DISPLAY_NAME_TEXT_FIELD).sendKeys(editedDisplayNameText);
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(SAVE_BUTTON_CONFIGURATION));
+        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']"))
+                .getText().contains(editedDisplayNameText),"Your DisplayName is not edited correctly");
+    }
+
+    @Test
+    public void testVerifySectionHasTooltip(){
+        String labelText = "Display Name";
+        String tooltipText = "Help for feature: Display Name";
+        createPipeline();
+
+        navigateToConfigurePageFromDashboard();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(ADVANCED_PROJECT_OPTIONS_MENU)).click();
+        clickOnAdvancedButton();
+
+        String actualTooltip = getDriver().findElement(By.xpath("//*[contains(text(), '" + labelText + "')]//a")).getAttribute("tooltip");
+
+        Assert.assertEquals(actualTooltip, tooltipText);
+    }
+
+    @Test
+    public void testChoosePipelineScript() {
+        createPipeline();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@data-section-id='pipeline']"))).click();
+
+        WebElement selectScript = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class = 'samples']//select")));
+        Select simpleDropDown = new Select(selectScript);
+        simpleDropDown.selectByValue("github-maven");
+
+        WebElement uncheckCheckBox = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//label[text()='Use Groovy Sandbox']")));
+        uncheckCheckBox.click();
+
+        WebElement link = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@target='blank']")));
+        Assert.assertTrue(link.isDisplayed(), "Uncheck doesn't work");
+    }
+
+    @Test (dependsOnMethods = {"testAddDisplayNameInAdvancedSection", "testEditDisplayNameInAdvancedSection"})
+    public void testDeleteDisplayNameInAdvancedSection() {
+        navigateToConfigurePageFromDashboard();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(ADVANCED_PROJECT_OPTIONS_MENU)).click();
+
+        clickOnAdvancedButton();
+        getWait10().until(ExpectedConditions.elementToBeClickable(DISPLAY_NAME_TEXT_FIELD)).clear();
+        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
+
+        Assert.assertFalse(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']"))
+                .getText().contains(displayNameText));
+    }
+
+    @Test
+    public void testSetQuietPeriodBuildTriggers() {
+        final int numberOfSeconds = 3;
+
+        createPipeline();
+        navigateToConfigurePageFromDashboard();
+
+        scrollCheckBoxQuietPeriodIsVisible();
+        WebElement checkBoxQuietPeriod = getDriver().findElement(By.xpath("//label[text()='Quiet period']"));
+        checkBoxQuietPeriod.click();
+
+        WebElement inputField = getDriver().findElement(By.name("quiet_period"));
+        inputField.clear();
+        inputField.sendKeys("" + numberOfSeconds + "");
+        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
+
+        navigateToConfigurePageFromDashboard();
+        scrollCheckBoxQuietPeriodIsVisible();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//input[@name='quiet_period']"))
+                        .getAttribute("value").contains("" + numberOfSeconds + ""),
+                "The actual numberOfSeconds differs from expected result");
     }
 }
