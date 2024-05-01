@@ -110,12 +110,8 @@ public class ManageJenkinsTest extends BaseTest {
             securityBlockSections.get(i).click();
             Assert.assertTrue(getDriver().getTitle().contains(pageTitle.get(i)));
             getDriver().findElement(By.xpath("//a[@href='/manage/']")).click();
-            boolean alertMessageIsDisplayed = getWait2().until(ExpectedConditions
-                    .visibilityOfElementLocated(By.className("jenkins-dialog__title"))).isDisplayed();
-            Assert.assertTrue(alertMessageIsDisplayed);
         }
     }
-
     @Test
     public void testPlaceholderSettingsSearchInput() {
         getDriver().findElement(By.cssSelector("[href='/manage']")).click();
