@@ -7,7 +7,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-import java.time.Duration;
 import java.util.List;
 
 public final class TestUtils {
@@ -103,22 +102,21 @@ public final class TestUtils {
 
     public static void openJobDropdown(BaseTest baseTest, String jobName) {
         By dropdownChevron = By.xpath("//table//button[@class='jenkins-menu-dropdown-chevron']");
-
+        boolean dropdownOpened = false;
         Actions action = new Actions(baseTest.getDriver());
 
-        action.moveToElement(baseTest.getDriver().findElement(
-                By.xpath("//span[normalize-space()='" + jobName + "']"))).pause(2000).perform();
-
-        int x = baseTest.getDriver().findElement(dropdownChevron).getSize().getWidth() / 2;
-        int y = baseTest.getDriver().findElement(dropdownChevron).getSize().getHeight() / 2;
-        action.moveToElement(baseTest.getDriver().findElement(dropdownChevron), x, y).pause(1000).click().perform();
-
-        boolean b = baseTest.getWait5().until(ExpectedConditions
-                .attributeContains(dropdownChevron, "ariaExpanded", "true"));
-        if (!b) {
+        do {
             action.moveToElement(baseTest.getDriver().findElement(
                     By.xpath("//span[normalize-space()='" + jobName + "']"))).pause(2000).perform();
+
+            int x = baseTest.getDriver().findElement(dropdownChevron).getSize().getWidth() / 2;
+            int y = baseTest.getDriver().findElement(dropdownChevron).getSize().getHeight() / 2;
+            action.moveToElement(baseTest.getDriver().findElement(dropdownChevron), x, y).pause(1000).click().perform();
+
+            dropdownOpened = baseTest.getWait5().until(ExpectedConditions
+                    .attributeContains(dropdownChevron, "ariaExpanded", "true"));
         }
+        while (!dropdownOpened);
     }
 
     public static void deleteJobViaDropdowm(BaseTest baseTest, String jobName) {
@@ -141,9 +139,8 @@ public final class TestUtils {
     }
 
     public static void goToJobPageAndEnterJobName(BaseTest baseTest, String jobName) {
-        baseTest.getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        baseTest.getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("name")));
-        baseTest.getDriver().findElement(By.id("name")).sendKeys(jobName);
+            baseTest.getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+            baseTest.getDriver().findElement(By.id("name")).sendKeys(jobName);
     }
 
     public static void createJob(BaseTest baseTest, Job job, String jobName) {
