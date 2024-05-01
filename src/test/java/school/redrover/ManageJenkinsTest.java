@@ -34,7 +34,7 @@ public class ManageJenkinsTest extends BaseTest {
         List <String> sectionsNamesActual = new ArrayList<>();
 
         for (WebElement element : securityBlockElements) {
-            sectionsNamesActual.add(element.getText());
+            sectionsNamesActual.add(getWait2().until(ExpectedConditions.visibilityOf(element)).getText());
         }
 
         Assert.assertEquals(sectionsNamesActual,sectionsNamesExpected);
