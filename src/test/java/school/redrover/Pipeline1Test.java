@@ -12,6 +12,8 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Pipeline1Test extends BaseTest {
@@ -60,9 +62,30 @@ public class Pipeline1Test extends BaseTest {
         }
     }
 
+    private void makeBuilds(int buildsQtt) {
+        for (int i = 1; i <= buildsQtt; i++) {
+            getWait5().until(ExpectedConditions.elementToBeClickable(
+                    By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/build?delay=0sec']"))).click();
+            getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                    By.xpath("//span[@class='badge']/a[@href='" + i + "']")));
+        }
+    }
+
     private String getColorOfPseudoElement(WebElement element) {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         return (String) js.executeScript("return window.getComputedStyle(arguments[0], '::before').getPropertyValue('background-color');", element);
+    }
+
+    private void createPipelineProject(String pipelineProject) {
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.name("name")).sendKeys(pipelineProject);
+        getDriver().findElement(By.cssSelector("[class$='WorkflowJob']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+    }
+
+    private void clickConfigButton() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
+                By.xpath("//a[contains(@href, 'configure')]")))).click();
     }
 
     @Test
@@ -142,12 +165,11 @@ public class Pipeline1Test extends BaseTest {
         final String expectedProjectName = "Pipeline1";
 
 
-
         String actualProjectName = getDriver().findElement(By.xpath("//tbody//td[3]//a[contains(@href, 'job/')]/span")).getText();
         Assert.assertEquals(actualProjectName, expectedProjectName);
 
         List<WebElement> scheduleABuildArrows = getDriver().findElements(
-                        By.xpath("//table//a[@title= 'Schedule a Build for " +  expectedProjectName + "']"));
+                By.xpath("//table//a[@title= 'Schedule a Build for " + expectedProjectName + "']"));
         Assert.assertEquals(scheduleABuildArrows.size(), 0);
     }
 
@@ -235,7 +257,7 @@ public class Pipeline1Test extends BaseTest {
     @Test(dependsOnMethods = "testCreatePipelineProject")
     public void testBreadcrumbsOnFullStageViewPage() {
 
-        String expectedResult = "Dashboard > "+ PIPELINE_NAME +" > Full Stage View";
+        String expectedResult = "Dashboard > " + PIPELINE_NAME + " > Full Stage View";
 
         chooseProjectAndClick(PIPELINE_NAME);
         clickFullStageViewButton();
@@ -246,5 +268,140 @@ public class Pipeline1Test extends BaseTest {
 
         Assert.assertEquals(actualResult, expectedResult);
     }
+
+    @Test
+    public void testBuildAttributes() {
+
+        int number_of_stages = 5;
+
+        createPipelineProject(PIPELINE_NAME);
+
+        sendScript(number_of_stages);
+
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/build?delay=0sec']")).click();
+
+        WebElement box = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("cell-box")));
+        WebElement date = box.findElement(By.className("date"));
+        WebElement time = box.findElement(By.className("time"));
+        WebElement changesetBox = box.findElement(By.xpath("//div[@class='changeset-box no-changes']"));
+        WebElement number = box.findElement(By.className("badge"));
+        boolean result = true;
+        if (date == null || !date.isDisplayed()) {
+            result = false;
+        }
+        if (time == null || !time.isDisplayed()) {
+            result = false;
+        }
+        if (changesetBox == null || !(changesetBox.getText().equals("No Changes"))) {
+            result = false;
+        }
+        if (number == null || !number.isDisplayed()) {
+            result = false;
+        }
+        Assert.assertTrue(result, "One of the elements is missing");
+    }
+
+    @Test
+    public void testBuildAttributesDescending() {
+
+        int number_of_stages = 1;
+        int buildsQtt = 5;
+
+        TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
+        clickConfigButton();
+        sendScript(number_of_stages);
+        getDriver().findElement(By.name("Submit")).click();
+
+        WebElement buildButton = getDriver().findElement(
+                By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/build?delay=0sec']"));
+
+        for (int i = 1; i <= buildsQtt; i++) {
+            buildButton.click();
+            getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                    By.xpath("//span[@class='badge']/a[@href='" + i + "']")));
+        }
+
+        List<WebElement> buildTable = getWait2().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                By.className("badge")));
+
+        List<String> actualOrder = TestUtils.getTexts(buildTable);
+
+        List<String> expectedOrder = new ArrayList<>(actualOrder);
+        expectedOrder.sort(Collections.reverseOrder());
+
+        Assert.assertEquals(actualOrder, expectedOrder);
+    }
+
+    @Test
+    public void testBuildСolorGreen() {
+
+        int number_of_stages = 1;
+
+        createPipelineProject(PIPELINE_NAME);
+
+        sendScript(number_of_stages);
+
+        getDriver().findElement(By.name("Submit")).click();
+        WebElement button = getDriver().findElement(By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/build?delay=0sec']"));
+        for (int i = 1; i <= 2; i++) {
+            button.click();
+            WebElement element = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//tr[@data-runid='" + i + "']/td[@class='stage-cell stage-cell-0 SUCCESS']/div[@class='cell-color']")));
+            String backgroundColor = element.getCssValue("background-color");
+
+            Assert.assertEquals(backgroundColor, "rgba(0, 255, 0, 0.1)");
+        }
+    }
+
+    @Test
+    public void testFullStageViewPopUpWindowIsDisplayed(){
+        int number_of_stages = 2;
+        TestUtils.createJob(this, TestUtils.Job.PIPELINE, PIPELINE_NAME);
+
+        sendScript(number_of_stages);
+
+        getDriver().findElement(By.name("Submit")).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@data-build-success='Build scheduled']"))).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='table-box']")));
+        getDriver().findElement(By.xpath("//tr[@data-runid='1']//td[@data-stageid='6']")).click();
+        getDriver().findElement(By.xpath("//div[@class='btn btn-small cbwf-widget cbwf-controller-applied stage-logs']")).click();
+
+        String actualResult = getDriver().findElement(By.xpath("//div[@class='cbwf-dialog cbwf-stage-logs-dialog']")).getText();
+
+        Assert.assertTrue(actualResult.contains("Stage Logs (stage 1)"));
+    }
+
+    @Test
+    public void testTableWithAllStagesAndTheLast10Builds() {
+
+        int number_of_stages = 2;
+        int buildsQtt = 12;
+
+        TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
+        clickConfigButton();
+        sendScript(number_of_stages);
+        getDriver().findElement(By.name("Submit")).click();
+
+        makeBuilds(buildsQtt);
+
+        clickFullStageViewButton();
+
+        int actualSagesQtt = getDriver().findElements(
+                By.xpath("//th[contains(@class, 'stage-header-name')]")).size();
+
+        List<WebElement> actualBuilds = getDriver().findElements(By.className("badge"));
+        List<String> actualBuildsText = new ArrayList<>(TestUtils.getTexts(actualBuilds));
+
+        List<String> expectedBuildsText = new ArrayList<>();
+
+        for (int i = 0; i < actualBuildsText.size(); i++) {
+            expectedBuildsText.add("#" + (buildsQtt - i));
+        }
+
+        Assert.assertEquals(actualSagesQtt, number_of_stages);
+        Assert.assertEquals(actualBuildsText, expectedBuildsText);
+    }
 }
+
 

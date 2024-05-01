@@ -59,6 +59,12 @@ public class PipelineConfigurationTest extends BaseTest {
                advancedButton);
     }
 
+    public void scrollCheckBoxQuietPeriodIsVisible(){
+        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
+        executor.executeScript("arguments[0].scrollIntoView();",
+                getDriver().findElement(By.xpath("//label[text()='Poll SCM']")));
+    }
+
     @Test
     public void testScroll() {
         createPipeline();
@@ -253,5 +259,29 @@ public class PipelineConfigurationTest extends BaseTest {
 
         Assert.assertFalse(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']"))
                 .getText().contains(displayNameText));
+    }
+
+    @Test
+    public void testSetQuietPeriodBuildTriggers() {
+        final int numberOfSeconds = 3;
+
+        createPipeline();
+        navigateToConfigurePageFromDashboard();
+
+        scrollCheckBoxQuietPeriodIsVisible();
+        WebElement checkBoxQuietPeriod = getDriver().findElement(By.xpath("//label[text()='Quiet period']"));
+        checkBoxQuietPeriod.click();
+
+        WebElement inputField = getDriver().findElement(By.name("quiet_period"));
+        inputField.clear();
+        inputField.sendKeys("" + numberOfSeconds + "");
+        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
+
+        navigateToConfigurePageFromDashboard();
+        scrollCheckBoxQuietPeriodIsVisible();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//input[@name='quiet_period']"))
+                        .getAttribute("value").contains("" + numberOfSeconds + ""),
+                "The actual numberOfSeconds differs from expected result");
     }
 }
