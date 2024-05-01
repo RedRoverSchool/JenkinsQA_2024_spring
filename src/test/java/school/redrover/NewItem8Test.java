@@ -44,4 +44,11 @@ public class NewItem8Test extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(By.linkText(FIRST_ITEM_NAME)).isDisplayed());
     }
+
+    @Test
+    public void testUserSeeTheNameEntryField() {
+        enterToNewItemPage();
+
+        Assert.assertTrue(getDriver().findElement(By.className("jenkins-input")).isDisplayed());
+    }
 }
