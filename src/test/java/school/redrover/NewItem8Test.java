@@ -69,7 +69,7 @@ public class NewItem8Test extends BaseTest {
     }
 
     @Test
-    public void CreateMultibranchPipelineFromAnotherExistingMultibranchPipeline() {
+    public void testCreateMultibranchPipelineFromAnotherExistingMultibranchPipeline() {
         createItem();
         goToHomePage();
         enterToNewItemPage();
