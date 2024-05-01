@@ -15,6 +15,8 @@ import school.redrover.runner.TestUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Pipeline1Test extends BaseTest {
     private static final String PIPELINE_NAME = "NewPipeline";
@@ -59,6 +61,15 @@ public class Pipeline1Test extends BaseTest {
             getDriver().findElement(By.className("ace_text-input")).sendKeys(stage);
             getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
             getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
+        }
+    }
+
+    private void makeBuilds(int buildsQtt) {
+        for (int i = 1; i <= buildsQtt; i++) {
+            getWait5().until(ExpectedConditions.elementToBeClickable(
+                    By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/build?delay=0sec']"))).click();
+            getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                    By.xpath("//span[@class='badge']/a[@href='" + i + "']")));
         }
     }
 
@@ -322,6 +333,37 @@ public class Pipeline1Test extends BaseTest {
         expectedOrder.sort(Collections.reverseOrder());
 
         Assert.assertEquals(actualOrder, expectedOrder);
+    }
+
+    @Test
+    public void testTableWithAllStagesAndTheLast10Builds() {
+
+        int number_of_stages = 2;
+        int buildsQtt = 12;
+
+        TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
+        clickConfigButton();
+        sendScript(number_of_stages);
+        getDriver().findElement(By.name("Submit")).click();
+
+        makeBuilds(buildsQtt);
+
+        clickFullStageViewButton();
+
+        int actualSagesQtt = getDriver().findElements(
+                By.xpath("//th[contains(@class, 'stage-header-name')]")).size();
+
+        List<WebElement> actualBuilds = getDriver().findElements(By.className("badge"));
+        List<String> actualBuildsText = new ArrayList<>(TestUtils.getTexts(actualBuilds));
+
+        List<String> expectedBuildsText = new ArrayList<>();
+
+        for (int i = 0; i < actualBuildsText.size(); i++) {
+            expectedBuildsText.add("#" + (buildsQtt - i));
+        }
+
+        Assert.assertEquals(actualSagesQtt, number_of_stages);
+        Assert.assertEquals(actualBuildsText, expectedBuildsText);
     }
 }
 
