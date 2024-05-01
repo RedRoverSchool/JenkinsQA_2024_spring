@@ -36,4 +36,21 @@ public class ManageJenkinsTest extends BaseTest {
             Assert.assertTrue(securityBlockElements.get(i).getText().matches(sectionsNamesExpected.get(i)));
         }
     }
+
+    @Test
+    public void testSectionDescriptionOfSecurityBlock() {
+        final List <String> expectedDescription = List
+                .of("Secure Jenkins; define who is allowed to access/use the system.", "Configure credentials",
+                        "Configure the credential providers and types",
+                        "Create/delete/modify users that can log in to this Jenkins.");
+
+        getDriver().findElement(By.xpath("//a[@href = '/manage']")).click();
+
+        List<WebElement> actualDescription = getDriver().findElements(By
+                .xpath("//section[contains(@class, 'jenkins-section')][2]//div//dd[. !='']"));
+
+        for (int i = 0; i < actualDescription.size(); i++) {
+            Assert.assertTrue(actualDescription.get(i).getText().matches(expectedDescription.get(i)));
+        }
+    }
 }
