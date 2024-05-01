@@ -344,6 +344,24 @@ public class Pipeline1Test extends BaseTest {
             Assert.assertEquals(backgroundColor, "rgba(0, 255, 0, 0.1)");
         }
     }
+
+    @Test
+    public void testFullStageViewPopUpWindowIsDisplayed(){
+        int number_of_stages = 2;
+        TestUtils.createJob(this, TestUtils.Job.PIPELINE, PIPELINE_NAME);
+
+        sendScript(number_of_stages);
+
+        getDriver().findElement(By.name("Submit")).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@data-build-success='Build scheduled']"))).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='table-box']")));
+        getDriver().findElement(By.xpath("//tr[@data-runid='1']//td[@data-stageid='6']")).click();
+        getDriver().findElement(By.xpath("//div[@class='btn btn-small cbwf-widget cbwf-controller-applied stage-logs']")).click();
+
+        String actualResult = getDriver().findElement(By.xpath("//div[@class='cbwf-dialog cbwf-stage-logs-dialog']")).getText();
+
+        Assert.assertTrue(actualResult.contains("Stage Logs (stage 1)"));
+    }
 }
 
 
