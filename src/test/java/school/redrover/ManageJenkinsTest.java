@@ -87,7 +87,16 @@ public class ManageJenkinsTest extends BaseTest {
             getDriver().findElement(By.cssSelector("[href='/manage']")).click();
             getDriver().findElement(By.cssSelector("[href='#']")).click();
 
-            boolean alertMessageIsDisplayed = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dialog__title"))).isDisplayed();
+            boolean alertMessageIsDisplayed = getWait2().until(ExpectedConditions
+                    .visibilityOfElementLocated(By.className("jenkins-dialog__title"))).isDisplayed();
             Assert.assertTrue(alertMessageIsDisplayed);
+        }
+
+        @Test
+        public void testPlaceholderSettingsSearchInput() {
+            getDriver().findElement(By.cssSelector("[href='/manage']")).click();
+
+            String placeholderText = getDriver().findElement(By.id("settings-search-bar")).getDomProperty("placeholder");
+            Assert.assertEquals(placeholderText, "Search settings");
         }
     }
