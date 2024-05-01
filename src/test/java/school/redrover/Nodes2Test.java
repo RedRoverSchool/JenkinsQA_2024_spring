@@ -8,29 +8,32 @@ import school.redrover.runner.BaseTest;
 public class Nodes2Test extends BaseTest {
     public final String NODE_NAME = "New node";
 
+    public void createNewName() {
+
+        final String nodeName = "NewNode";
+
+        getDriver().findElement(By.linkText("Manage Jenkins")).click();
+        getDriver().findElement(By.xpath("//a[@href='computer']")).click();
+        getDriver().findElement(By.xpath("//a[@href='new']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(nodeName);
+        getDriver().findElement(By.xpath("//label[@class='jenkins-radio__label']")).click();
+        getDriver().findElement(By.id("ok")).click();
+        getDriver().findElement(By.name("Submit")).click();
+    }
+
     @Test
-    public void testVerifyErrorMessageWhenCreatingNodeWithExistingNameInJenkins() throws InterruptedException {
-        String nodeName = "NewNode";
+    public void testVerifyErrorMessage() {
+
         final String expectedResult = "Agent called ‘NewNode’ already exists";
+        String nodeName = "NewNode";
 
-        getDriver().findElement(By.xpath("//*[@href='/manage']")).click();
-        getDriver().findElement(By.xpath("//dt[text() ='Nodes']")).click();
+        createNewName();
+
         getDriver().findElement(By.xpath("//a[@href='new']")).click();
-        getDriver().findElement(By.xpath("//input[@ id='name']")).sendKeys(nodeName);
-        getDriver().findElement
-                (By.xpath("//label[@for='hudson.slaves.DumbSlave' and contains(@class, 'jenkins-radio__label')]")).click();
-        getDriver().findElement
-                (By.xpath("//button[@id='ok' and contains(@class, 'jenkins-button--primary')]")).click();
-        getDriver().findElement
-                (By.xpath("//button[normalize-space(text())='Save']")).click();
-        getDriver().findElement(By.xpath("//a[@href='new']")).click();
-        getDriver().findElement(By.xpath("//input[@ id='name']")).sendKeys(nodeName);
-        getDriver().findElement
-                (By.xpath("//label[@for='hudson.slaves.DumbSlave' and contains(@class, 'jenkins-radio__label')]")).click();
-
-        Thread.sleep(500);
-
-        String actualResult = getDriver().findElement(By.xpath("//div[@class='error']")).getText();
+        getDriver().findElement(By.id("name")).sendKeys(nodeName);
+        getDriver().findElement(By.xpath("//label[@class='jenkins-radio__label']")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        String actualResult = getDriver().findElement(By.xpath("//*[@id='main-panel']/p")).getText();
 
         Assert.assertEquals(actualResult, expectedResult);
     }
