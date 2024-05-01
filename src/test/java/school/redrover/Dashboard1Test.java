@@ -123,13 +123,18 @@ public class Dashboard1Test extends BaseTest {
     }
 
     private void clickElement(WebElement webElement) {
-        new Actions(getDriver()).scrollToElement(webElement).scrollByAmount(0, 100).moveToElement(webElement).click().perform();
+        new Actions(getDriver())
+                .scrollToElement(webElement)
+                .scrollByAmount(0, 100)
+                .moveToElement(webElement)
+                .click().perform();
     }
 
     private List<String> getChevronMenu(String jobName) {
         TestUtils.openElementDropdown(this, getDriver().findElement(By.linkText(jobName)));
 
-        WebElement dropdownMenu = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-dropdown']")));
+        WebElement dropdownMenu = getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@class='jenkins-dropdown']")));
 
         return Arrays.stream(dropdownMenu.getText().split("\\r?\\n")).toList();
     }
@@ -167,13 +172,15 @@ public class Dashboard1Test extends BaseTest {
 
     @Test(dependsOnMethods = "testOrganizationChevronMenu")
     public void testCreateView() {
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@title='New View']"))).click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//a[@title='New View']"))).click();
         getDriver().findElement(By.id("name")).sendKeys(VIEW_NAME);
         getDriver().findElement(By.xpath("//label[@for='hudson.model.ListView']")).click();
         getDriver().findElement(By.id("ok")).click();
         clickElement(getDriver().findElement(By.name("Submit")));
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='tab active']")).getText(), VIEW_NAME);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='tab active']"))
+                .getText(), VIEW_NAME);
     }
 
     @Test(dependsOnMethods = "testCreateView")
@@ -193,17 +200,19 @@ public class Dashboard1Test extends BaseTest {
         getDriver().findElement(By.linkText(VIEW_NAME)).click();
         getDriver().findElement(By.linkText("Edit View")).click();
 
-        WebElement selectedProject1 = getDriver().findElement(By.xpath("//label[contains(@title, '" + SELECTED_NAME1 + "')]"));
-
-        WebElement selectedProject2 = getDriver().findElement(By.xpath("//label[contains(@title, '" + SELECTED_NAME2 + "')]"));
-
+        WebElement selectedProject1 = getDriver().findElement(
+                By.xpath("//label[contains(@title, '" + SELECTED_NAME1 + "')]"));
+        WebElement selectedProject2 = getDriver().findElement(
+                By.xpath("//label[contains(@title, '" + SELECTED_NAME2 + "')]"));
         WebElement okButton = getDriver().findElement(By.name("Submit"));
 
         clickElement(selectedProject1);
         clickElement(selectedProject2);
         clickElement(okButton);
 
-        List<String> namesFromNewView = TestUtils.getTexts(getDriver().findElements(By.xpath("//td/a[contains(@href, 'job/')]")));
+        List<String> namesFromNewView = TestUtils.getTexts(getDriver().findElements(
+                By.xpath("//td/a[contains(@href, 'job/')]")));
+
         boolean isName1InView = namesFromNewView.stream().anyMatch(s -> s.contains(SELECTED_NAME1));
         boolean isName2InView = namesFromNewView.stream().anyMatch(s -> s.contains(SELECTED_NAME2));
 
