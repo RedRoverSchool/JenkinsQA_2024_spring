@@ -1,10 +1,9 @@
 package school.redrover;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.runner.BaseTest;
-import org.testng.Assert;
 import school.redrover.runner.BaseTest;
 import java.util.List;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -30,12 +29,12 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test
     public void testSectionNamesOfSecurityBlock() {
-        final List <String> sectionsNamesExpected = List.of("Security", "Credentials", "Credential Providers",
+        final List<String> sectionsNamesExpected = List.of("Security", "Credentials", "Credential Providers",
                 "Users");
 
         getDriver().findElement(By.xpath("//a[@href = '/manage']")).click();
 
-        List <WebElement> securityBlockElements = getDriver().findElements(By
+        List<WebElement> securityBlockElements = getDriver().findElements(By
                 .xpath("//section[contains(@class, 'jenkins-section')][2]//div//dt"));
 
         for (int i = 0; i < securityBlockElements.size(); i++) {
@@ -45,7 +44,7 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test
     public void testSectionDescriptionOfSecurityBlock() {
-        final List <String> expectedDescription = List
+        final List<String> expectedDescription = List
                 .of("Secure Jenkins; define who is allowed to access/use the system.", "Configure credentials",
                         "Configure the credential providers and types",
                         "Create/delete/modify users that can log in to this Jenkins.");
@@ -59,12 +58,12 @@ public class ManageJenkinsTest extends BaseTest {
             Assert.assertTrue(actualDescription.get(i).getText().matches(expectedDescription.get(i)));
         }
     }
-  
+
     @Test
-    public void testSecurityBlockSectionsClickable(){
+    public void testSecurityBlockSectionsClickable() {
         getDriver().findElement(By.xpath("//a[@href = '/manage']")).click();
 
-        List <WebElement> securityBlockSections = getDriver().findElements(By
+        List<WebElement> securityBlockSections = getDriver().findElements(By
                 .xpath("(//div[contains(@class, 'section__items')])[2]/div"));
 
         for (WebElement element : securityBlockSections) {
@@ -73,23 +72,45 @@ public class ManageJenkinsTest extends BaseTest {
         }
     }
 
-        @Test
-        public void testToolsAndActionsBlockSectionsEnabled() {
-            getDriver().findElement(By.cssSelector("[href='/manage']")).click();
+    @Test
+    public void testToolsAndActionsBlockSectionsEnabled() {
+        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
 
-            List<WebElement> toolsAndActionsSections = getDriver().findElements(
-                    By.xpath("(//div[@class='jenkins-section__items'])[5]/div[contains(@class, 'item')]"));
+        List<WebElement> toolsAndActionsSections = getDriver().findElements(
+                By.xpath("(//div[@class='jenkins-section__items'])[5]/div[contains(@class, 'item')]"));
 
-            Assert.assertTrue(areElementsEnabled(toolsAndActionsSections),
-                    "'Tools and Actions' sections are not clickable");
-        }
+        Assert.assertTrue(areElementsEnabled(toolsAndActionsSections),
+                "'Tools and Actions' sections are not clickable");
+    }
 
-        @Test
-        public void testAlertMessageClickingReloadConfigurationFromDisk() {
-            getDriver().findElement(By.cssSelector("[href='/manage']")).click();
-            getDriver().findElement(By.cssSelector("[href='#']")).click();
+    @Test
+    public void testAlertMessageClickingReloadConfigurationFromDisk() {
+        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
+        getDriver().findElement(By.cssSelector("[href='#']")).click();
 
-            boolean alertMessageIsDisplayed = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dialog__title"))).isDisplayed();
-            Assert.assertTrue(alertMessageIsDisplayed);
+        boolean alertMessageIsDisplayed = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dialog__title"))).isDisplayed();
+        Assert.assertTrue(alertMessageIsDisplayed);
+    }
+
+    @Test
+    public void testRedirectionByClickingSecurityBlockSections() {
+        boolean isSecurityBlockSectionsStale;
+        List<String> pageTitle = List.of("Security", "Credentials", "Credential Providers", "Users");
+        getDriver().findElement(By.xpath("//a[@href = '/manage']")).click();
+
+        List<WebElement> securityBlockSections = getDriver().findElements(By
+                .xpath("(//div[contains(@class, 'section__items')])[2]/div"));
+
+        for (int i = 0; i < securityBlockSections.size(); i++) {
+            isSecurityBlockSectionsStale = ExpectedConditions.stalenessOf(securityBlockSections.get(i))
+                    .apply(getDriver());
+            if (isSecurityBlockSectionsStale) {
+                securityBlockSections = getDriver().findElements(By
+                        .xpath("(//div[contains(@class, 'section__items')])[2]/div"));
+            }
+            securityBlockSections.get(i).click();
+            Assert.assertTrue(getDriver().getTitle().contains(pageTitle.get(i)));
+            getDriver().findElement(By.xpath("//a[@href='/manage/']")).click();
         }
     }
+}
