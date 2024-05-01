@@ -3,10 +3,12 @@ package school.redrover;
 import org.checkerframework.checker.signature.qual.DotSeparatedIdentifiersOrPrimitiveType;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ManageJenkinsTest extends BaseTest {
@@ -22,16 +24,19 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test
     public void testSectionNamesOfSecurityBlock() {
-        final List <String> sectionNames = List.of("Security", "Manage Credentials", "Configure Credential Providers",
+        final List <String> sectionsNamesExpected = List.of("Security", "Manage Credentials", "Configure Credential Providers",
                 "Users", "In-process Script Approval");
 
         getDriver().findElement(By.xpath("//a[@href = '/manage']")).click();
 
         List <WebElement> securityBlockElements = getDriver().findElements(By
                 .xpath("//section[contains(@class, 'jenkins-section')][2]//div//dt"));
+        List <String> sectionsNamesActual = new ArrayList<>();
 
-        for(int i = 0; i < securityBlockElements.size(); i++) {
-            Assert.assertTrue(securityBlockElements.get(i).getText().matches(sectionNames.get(i)));
+        for (WebElement element : securityBlockElements) {
+            sectionsNamesActual.add(element.getText());
         }
+
+        Assert.assertEquals(sectionsNamesActual,sectionsNamesExpected);
     }
 }
