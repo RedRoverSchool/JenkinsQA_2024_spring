@@ -9,7 +9,10 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class Dashboard1Test extends BaseTest {
     private final String VIEW_NAME = "RedRover";
@@ -120,19 +123,13 @@ public class Dashboard1Test extends BaseTest {
     }
 
     private void clickElement(WebElement webElement) {
-        new Actions(getDriver())
-                .scrollToElement(webElement)
-                .scrollByAmount(0, 100)
-                .moveToElement(webElement)
-                .click()
-                .perform();
+        new Actions(getDriver()).scrollToElement(webElement).scrollByAmount(0, 100).moveToElement(webElement).click().perform();
     }
 
     private List<String> getChevronMenu(String jobName) {
         TestUtils.openElementDropdown(this, getDriver().findElement(By.linkText(jobName)));
 
-        WebElement dropdownMenu = getWait2().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[@class='jenkins-dropdown']")));
+        WebElement dropdownMenu = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-dropdown']")));
 
         return Arrays.stream(dropdownMenu.getText().split("\\r?\\n")).toList();
     }
@@ -196,11 +193,9 @@ public class Dashboard1Test extends BaseTest {
         getDriver().findElement(By.linkText(VIEW_NAME)).click();
         getDriver().findElement(By.linkText("Edit View")).click();
 
-        WebElement selectedProject1 = getDriver().findElement(
-                By.xpath("//label[contains(@title, '" + SELECTED_NAME1 + "')]"));
+        WebElement selectedProject1 = getDriver().findElement(By.xpath("//label[contains(@title, '" + SELECTED_NAME1 + "')]"));
 
-        WebElement selectedProject2 = getDriver().findElement(
-                By.xpath("//label[contains(@title, '" + SELECTED_NAME2 + "')]"));
+        WebElement selectedProject2 = getDriver().findElement(By.xpath("//label[contains(@title, '" + SELECTED_NAME2 + "')]"));
 
         WebElement okButton = getDriver().findElement(By.name("Submit"));
 
@@ -208,11 +203,23 @@ public class Dashboard1Test extends BaseTest {
         clickElement(selectedProject2);
         clickElement(okButton);
 
-        List<String> namesFromNewView = TestUtils.getTexts
-                (getDriver().findElements(By.xpath("//td/a[contains(@href, 'job/')]")));
+        List<String> namesFromNewView = TestUtils.getTexts(getDriver().findElements(By.xpath("//td/a[contains(@href, 'job/')]")));
         boolean isName1InView = namesFromNewView.stream().anyMatch(s -> s.contains(SELECTED_NAME1));
         boolean isName2InView = namesFromNewView.stream().anyMatch(s -> s.contains(SELECTED_NAME2));
 
         Assert.assertTrue(namesFromNewView.size() == 2 && isName1InView && isName2InView);
+    }
+
+    @Test(dependsOnMethods = "testAddItemsToView")
+    public void testChangeIconSize() {
+        List<Integer> size = List.of(16, 20, 24);
+
+        By iconLocator = By.cssSelector("tr[id*='job_'] > td > div > svg");
+        By sizeLocator = By.cssSelector("div.jenkins-icon-size__items.jenkins-buttons-row > ol > li");
+
+        for (int i = 0; i < size.size(); i++) {
+            getDriver().findElements(sizeLocator).get(i).click();
+            Assert.assertEquals(size.get(i), getDriver().findElement(iconLocator).getSize().height);
+        }
     }
 }
