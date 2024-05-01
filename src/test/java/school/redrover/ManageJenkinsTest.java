@@ -1,12 +1,13 @@
 package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 import java.util.List;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.interactions.Actions;
 
 public class ManageJenkinsTest extends BaseTest {
 
@@ -83,7 +84,7 @@ public class ManageJenkinsTest extends BaseTest {
             Assert.assertTrue(actualDescription.get(i).getText().matches(expectedDescription.get(i)));
         }
     }
-  
+
     @Test
     public void testSecurityBlockSectionsClickable(){
         getDriver().findElement(By.xpath("//a[@href = '/manage']")).click();
@@ -97,17 +98,24 @@ public class ManageJenkinsTest extends BaseTest {
         }
     }
 
-        @Test
-        public void testToolsAndActionsBlockSectionsEnabled() {
-            getDriver().findElement(By.cssSelector("[href='/manage']")).click();
+    @Test
+    public void testToolsAndActionsBlockSectionsEnabled() {
+        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
 
-            List<WebElement> toolsAndActionsSections = getDriver().findElements(
-                    By.xpath("(//div[@class='jenkins-section__items'])[5]/div[contains(@class, 'item')]"));
+        List<WebElement> toolsAndActionsSections = getDriver().findElements(
+                By.xpath("(//div[@class='jenkins-section__items'])[5]/div[contains(@class, 'item')]"));
 
-            Assert.assertTrue(areElementsEnabled(toolsAndActionsSections),
-                    "'Tools and Actions' sections are not clickable");
-        }
+        Assert.assertTrue(areElementsEnabled(toolsAndActionsSections),
+                "'Tools and Actions' sections are not clickable");
+    }
+    @Test
+    public void testAlertMessageClickingReloadConfigurationFromDisk() {
+        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
+        getDriver().findElement(By.cssSelector("[href='#']")).click();
 
+        boolean alertMessageIsDisplayed = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dialog__title"))).isDisplayed();
+        Assert.assertTrue(alertMessageIsDisplayed);
+    }
     @Test
     public void testSectionsNamesVisibility() {
         goToManage();
