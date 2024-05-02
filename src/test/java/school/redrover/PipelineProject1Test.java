@@ -151,6 +151,21 @@ public class PipelineProject1Test extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testPermalinksBuildDetails")
+    public void testGreenBuildSuccessColor() {
+        final String greenHexColor = "#1ea64b";
+
+        clickOnCreatedJobOnDashboardPage(PIPELINE_NAME);
+
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        WebElement statusMark = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@tooltip='Success']")));
+        String actualHexColor = (String) js.executeScript(
+                "return window.getComputedStyle(arguments[0]).getPropertyValue('--success');",
+                statusMark);
+
+        Assert.assertEquals(actualHexColor, greenHexColor);
+    }
+
+    @Test(dependsOnMethods = "testGreenBuildSuccessColor")
     public void testSetPipelineNumberBuildsToKeep() {
         final String maxNumberBuildsToKeep = "2";
 
@@ -323,6 +338,4 @@ public class PipelineProject1Test extends BaseTest {
                 By.xpath("//h2")).getText(), "Start building your software project");
     }
 }
-
-
 
