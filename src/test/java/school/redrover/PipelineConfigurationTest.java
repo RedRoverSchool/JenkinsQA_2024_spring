@@ -366,8 +366,7 @@ public class PipelineConfigurationTest extends BaseTest {
         WebElement selectTimePeriod = getDriver().findElement(By.name("_.durationName"));
         getActions().moveToElement(selectTimePeriod).click();
 
-        Assert.assertFalse(getDriver().findElement(By.xpath("//div[@class='ok']"))
+        Assert.assertTrue(getDriver().findElement(By.xpath("//div[@class='ok']"))
                 .getText().contains("Approximately 24 hours between builds"));
-
     }
 }
