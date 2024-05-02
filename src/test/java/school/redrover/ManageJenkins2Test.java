@@ -8,7 +8,7 @@ import school.redrover.runner.*;
 import java.util.*;
 
 public class ManageJenkins2Test extends BaseTest {
-    private static final Map<String, String> manageLinks = new HashMap<>() {{
+   private static final Map<String, String> manageLinks = new HashMap<>() {{
         put("System", "/configure");
         put("Tools", "/configureTools");
         put("Plugins", "/pluginManager");
