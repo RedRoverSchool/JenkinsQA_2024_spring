@@ -6,13 +6,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 public class Nodes2Test extends BaseTest {
     public final String NODE_NAME = "New node";
 
-    public void createNewName() {
-
-        final String nodeName = "NewNode";
+    public void createNewName(String nodeName) {
 
         getDriver().findElement(By.linkText("Manage Jenkins")).click();
         getDriver().findElement(By.xpath("//a[@href='computer']")).click();
@@ -27,9 +26,9 @@ public class Nodes2Test extends BaseTest {
     public void testVerifyErrorMessage() {
 
         final String expectedResult = "Agent called ‘NewNode’ already exists";
-        String nodeName = "NewNode";
+        final String nodeName = "NewNode";
 
-        createNewName();
+        createNewName(nodeName);
 
         getDriver().findElement(By.xpath("//a[@href='new']")).click();
         getDriver().findElement(By.id("name")).sendKeys(nodeName);
@@ -98,31 +97,15 @@ public class Nodes2Test extends BaseTest {
 
     @Test
     public void testDeleteNode() {
-
-        createNewName();
-        String nodeName = "NewNode";
+        final String nodeName = "NewNode";
+        createNewName(nodeName);
 
         WebElement createdNode = getDriver().findElement(
                 By.cssSelector("a[href*='../computer/" + nodeName + "/']"));
 
-        WebElement dropdownChevron = getDriver().findElement(
-                By.xpath("//button[@data-href='http://localhost:8080/manage/computer/" + nodeName + "/']"));
-
-        Actions actions = new Actions(getDriver());
-        actions.scrollToElement(createdNode)
-                .moveToElement(createdNode)
-                .pause(1000)
-                .perform();
-
-        actions.moveToElement(dropdownChevron)
-                .pause(1000)
-                .click()
-                .perform();
-
-        actions.pause(2000)
-                .moveToElement(getDriver().findElement(By.xpath("//button[@href='/manage/computer/" + nodeName + "/doDelete']")))
-                .click()
-                .perform();
+        TestUtils.openElementDropdown(this, createdNode);
+        WebElement deleteButton = getDriver().findElement(By.xpath("//button[@href='/manage/computer/" + nodeName + "/doDelete']"));
+        deleteButton.click();
 
         WebElement confirmButton = getDriver().findElement(By.cssSelector("[data-id='ok']"));
         confirmButton.click();
