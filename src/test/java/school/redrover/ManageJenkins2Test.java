@@ -56,9 +56,9 @@ public class ManageJenkins2Test extends BaseTest {
     public void testListOfManageJenkinsLinks() {
         List<String> expectedLinksName = List.of
                 ("System", "Tools", "Plugins", "Nodes", "Clouds", "Appearance", "Security", "Credentials",
-                        "Credential Providers", "Users", "In-process Script Approval", "System Information",
-                        "System Log", "Load Statistics", "About Jenkins", "Manage Old Data",
-                        "Reload Configuration from Disk", "Jenkins CLI", "Script Console", "Prepare for Shutdown"
+                        "Credential Providers", "Users", "System Information", "System Log", "Load Statistics",
+                        "About Jenkins", "Manage Old Data", "Reload Configuration from Disk", "Jenkins CLI",
+                        "Script Console", "Prepare for Shutdown"
                 );
 
         getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
