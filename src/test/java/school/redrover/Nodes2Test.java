@@ -119,7 +119,8 @@ public class Nodes2Test extends BaseTest {
                 .click()
                 .perform();
 
-        actions.moveToElement(getDriver().findElement(By.xpath("//button[@href='/manage/computer/" + nodeName + "/doDelete']")))
+        actions.pause(2000)
+                .moveToElement(getDriver().findElement(By.xpath("//button[@href='/manage/computer/" + nodeName + "/doDelete']")))
                 .click()
                 .perform();
 
