@@ -19,7 +19,6 @@ public class ManageJenkins2Test extends BaseTest {
         put("Credentials", "/credentials");
         put("Credential Providers", "/configureCredentials");
         put("Users", "/securityRealm");
-//        put("In-process Script Approval", "/scriptApproval");
         put("System Information", "/systemInfo");
         put("System Log", "/log");
         put("Load Statistics", "/load-statistics");
