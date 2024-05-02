@@ -1,16 +1,15 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
+import org.openqa.selenium.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 public class Nodes2Test extends BaseTest {
     public final String NODE_NAME = "New node";
 
-    public void createNewName() {
-
-        final String nodeName = "NewNode";
+    public void createNewNode(String nodeName) {
 
         getDriver().findElement(By.linkText("Manage Jenkins")).click();
         getDriver().findElement(By.xpath("//a[@href='computer']")).click();
@@ -25,9 +24,9 @@ public class Nodes2Test extends BaseTest {
     public void testVerifyErrorMessage() {
 
         final String expectedResult = "Agent called ‘NewNode’ already exists";
-        String nodeName = "NewNode";
+        final String nodeName = "NewNode";
 
-        createNewName();
+        createNewNode(nodeName);
 
         getDriver().findElement(By.xpath("//a[@href='new']")).click();
         getDriver().findElement(By.id("name")).sendKeys(nodeName);
@@ -93,6 +92,35 @@ public class Nodes2Test extends BaseTest {
 
         Assert.assertTrue(actualResult.contains(NODE_NAME));
     }
+
+    @Test
+    public void testDeleteNode() {
+        final String nodeName = "NewNode";
+        createNewNode(nodeName);
+
+        WebElement createdNode = getDriver().findElement(
+                By.cssSelector("a[href*='../computer/" + nodeName + "/']"));
+
+        TestUtils.openElementDropdown(this, createdNode);
+        WebElement deleteButton = getDriver().findElement(By.xpath("//button[@href='/manage/computer/" + nodeName + "/doDelete']"));
+        deleteButton.click();
+
+        WebElement confirmButton = getDriver().findElement(By.cssSelector("[data-id='ok']"));
+        confirmButton.click();
+
+        boolean result;
+
+        try {
+            getDriver().findElement(By.xpath("//a[contains(@href,'../computer/" + nodeName + "/')]")).isDisplayed();
+            result = false;
+        } catch (Exception e) {
+            result = true;
+        }
+
+        Assert.assertTrue(result);
+    }
 }
+
+
 
 

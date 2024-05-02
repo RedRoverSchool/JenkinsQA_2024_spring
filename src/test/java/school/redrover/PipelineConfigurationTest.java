@@ -306,6 +306,52 @@ public class PipelineConfigurationTest extends BaseTest {
     }
 
     @Test
+    public void testSetQuietPeriodBuildTriggersLessThanZero() {
+        final int numberOfSeconds = -5;
+        final String errorMessage = "This value should be larger than 0";
+
+        createPipeline();
+        navigateToConfigurePageFromDashboard();
+
+        scrollCheckBoxQuietPeriodIsVisible();
+        WebElement checkBoxQuietPeriod = getDriver().findElement(By.xpath("//label[text()='Quiet period']"));
+        checkBoxQuietPeriod.click();
+
+        WebElement inputField = getDriver().findElement(By.name("quiet_period"));
+        inputField.clear();
+        inputField.sendKeys("" + numberOfSeconds + "");
+        getDriver().findElement(By.xpath("//div[text()='Number of seconds']")).click();
+
+        WebElement errorElement = getDriver().findElement(By.xpath("//div[@class='form-container tr']//div[@class='error']"));
+        getWait5().until(ExpectedConditions.visibilityOf(errorElement));
+
+        Assert.assertEquals(errorElement.getText(), errorMessage);
+    }
+
+    @Test
+    public void testSetDoubleQuietPeriodBuildTriggersLessThanZero() {
+        final double numberOfSeconds = 0.3;
+        final String errorMessage = "Not an integer";
+
+        createPipeline();
+        navigateToConfigurePageFromDashboard();
+
+        scrollCheckBoxQuietPeriodIsVisible();
+        WebElement checkBoxQuietPeriod = getDriver().findElement(By.xpath("//label[text()='Quiet period']"));
+        checkBoxQuietPeriod.click();
+
+        WebElement inputField = getDriver().findElement(By.name("quiet_period"));
+        inputField.clear();
+        inputField.sendKeys("" + numberOfSeconds + "");
+        getDriver().findElement(By.xpath("//div[text()='Number of seconds']")).click();
+
+        WebElement errorElement = getDriver().findElement(By.xpath("//div[@class='form-container tr']//div[@class='error']"));
+        getWait5().until(ExpectedConditions.visibilityOf(errorElement));
+
+        Assert.assertEquals(errorElement.getText(), errorMessage);
+    }
+
+    @Test
     public void testSetNumberOfBuildsThrottleBuilds() {
         createPipeline();
         navigateToConfigurePageFromDashboard();

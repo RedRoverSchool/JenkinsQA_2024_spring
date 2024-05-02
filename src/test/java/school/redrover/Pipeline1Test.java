@@ -355,7 +355,7 @@ public class Pipeline1Test extends BaseTest {
     }
 
     @Test
-    public void testFullStageViewPopUpWindowIsDisplayed(){
+    public void testFullStageViewPopUpWindowIsDisplayed() {
         int number_of_stages = 2;
         TestUtils.createJob(this, TestUtils.Job.PIPELINE, PIPELINE_NAME);
 
@@ -401,6 +401,25 @@ public class Pipeline1Test extends BaseTest {
 
         Assert.assertEquals(actualSagesQtt, number_of_stages);
         Assert.assertEquals(actualBuildsText, expectedBuildsText);
+    }
+
+    @Test
+    public void testStageColumnHeader() {
+
+        int number_of_stages = 2;
+
+        TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
+        clickConfigButton();
+        sendScript(number_of_stages);
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/build?delay=0sec']")).click();
+
+        for (int i = 1; i <= number_of_stages; i++) {
+            String actualResult = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("th[class='stage-header-name-" + (i - 1) + "']"))).getText();
+            String expectedResult = "stage " + i;
+
+            Assert.assertEquals(actualResult, expectedResult);
+        }
     }
 }
 

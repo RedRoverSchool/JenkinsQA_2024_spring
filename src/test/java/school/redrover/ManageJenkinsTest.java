@@ -1,4 +1,5 @@
 package school.redrover;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -6,9 +7,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
 import java.util.List;
 
 public class ManageJenkinsTest extends BaseTest {
+
+    private static final By SETTINGS_SEARCH_BAR_LOCATOR = By.id("settings-search-bar");
 
     private boolean areElementsEnabled(List<WebElement> elements) {
         for (WebElement element : elements) {
@@ -112,11 +116,25 @@ public class ManageJenkinsTest extends BaseTest {
             getDriver().findElement(By.xpath("//a[@href='/manage/']")).click();
         }
     }
+
     @Test
     public void testPlaceholderSettingsSearchInput() {
         getDriver().findElement(By.cssSelector("[href='/manage']")).click();
 
         String placeholderText = getDriver().findElement(By.id("settings-search-bar")).getDomProperty("placeholder");
         Assert.assertEquals(placeholderText, "Search settings");
+    }
+
+    @Test
+    public void testSearchSettingsInvalidData() {
+        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
+
+        getDriver().findElement(SETTINGS_SEARCH_BAR_LOCATOR).click();
+        getDriver().findElement(SETTINGS_SEARCH_BAR_LOCATOR).sendKeys("admin");
+
+        String searchResult = getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("[class='jenkins-search__results'] p"))).getText();
+
+        Assert.assertEquals(searchResult, "No results");
     }
 }
