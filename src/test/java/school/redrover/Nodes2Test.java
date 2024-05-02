@@ -112,12 +112,17 @@ public class Nodes2Test extends BaseTest {
         actions.scrollToElement(createdNode)
                 .moveToElement(createdNode)
                 .pause(1000)
-                .moveToElement(dropdownChevron)
-                .pause(1000)
-                .click().perform();
+                .perform();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
-                By.className("icon-edit-delete")))).click();
+        actions.moveToElement(dropdownChevron)
+                .pause(1000)
+                .click()
+                .perform();
+
+        actions.moveToElement(getDriver().findElement(By.xpath("//button[@href='/manage/computer/" + nodeName + "/doDelete']")))
+                .click()
+                .perform();
+
         WebElement confirmButton = getDriver().findElement(By.cssSelector("[data-id='ok']"));
         confirmButton.click();
 
