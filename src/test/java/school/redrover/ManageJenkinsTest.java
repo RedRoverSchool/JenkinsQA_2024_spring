@@ -1,13 +1,12 @@
 package school.redrover;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import java.util.List;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.interactions.Actions;
 
 public class ManageJenkinsTest extends BaseTest {
 
@@ -112,5 +111,12 @@ public class ManageJenkinsTest extends BaseTest {
             Assert.assertTrue(getDriver().getTitle().contains(pageTitle.get(i)));
             getDriver().findElement(By.xpath("//a[@href='/manage/']")).click();
         }
+    }
+    @Test
+    public void testPlaceholderSettingsSearchInput() {
+        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
+
+        String placeholderText = getDriver().findElement(By.id("settings-search-bar")).getDomProperty("placeholder");
+        Assert.assertEquals(placeholderText, "Search settings");
     }
 }

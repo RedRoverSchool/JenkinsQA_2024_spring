@@ -11,6 +11,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
@@ -282,6 +283,23 @@ public class PipelineConfigurationTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//input[@name='quiet_period']"))
                         .getAttribute("value").contains("" + numberOfSeconds + ""),
                 "The actual numberOfSeconds differs from expected result");
+    }
+
+    @Test
+    public void testVerifySectionsHaveTooltips() {
+        String[] labelsText = {"Display Name", "Script"};
+
+        createPipeline();
+        navigateToConfigurePageFromDashboard();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(ADVANCED_PROJECT_OPTIONS_MENU)).click();
+        clickOnAdvancedButton();
+
+        for (String label: labelsText) {
+            String actualTooltip = getDriver().findElement(By.xpath("//*[contains(text(), '" + label + "')]//a")).getAttribute("tooltip");
+
+            Assert.assertEquals(actualTooltip, "Help for feature: " + label);
+        }
     }
 
     @Test
