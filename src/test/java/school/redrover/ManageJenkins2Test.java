@@ -13,8 +13,8 @@ public class ManageJenkins2Test extends BaseTest {
         put("Tools", "/configureTools");
         put("Plugins", "/pluginManager");
         put("Nodes", "/computer");
-        put("Install as Windows Service", "/install");
         put("Clouds", "/cloud");
+        put("Appearance", "/appearance");
         put("Security", "/configureSecurity");
         put("Credentials", "/credentials");
         put("Credential Providers", "/configureCredentials");
