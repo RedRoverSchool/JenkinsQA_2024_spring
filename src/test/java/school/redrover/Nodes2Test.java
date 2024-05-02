@@ -1,6 +1,8 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -93,6 +95,38 @@ public class Nodes2Test extends BaseTest {
 
         Assert.assertTrue(actualResult.contains(NODE_NAME));
     }
+
+    @Test
+    public void testDeleteNode() {
+
+        createNewName();
+        String nodeName = "NewNode";
+
+        WebElement createdNode = getDriver().findElement(
+                By.cssSelector("a[href*='../computer/" + nodeName + "/']"));
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(createdNode).perform();
+        WebElement dropdownChevron = getDriver().findElement(
+                By.xpath("//tr[@id='node_" + nodeName + "']//button[contains(@class,'jenkins-menu-dropdown-chevron')]"));
+        dropdownChevron.click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
+                By.className("icon-edit-delete")))).click();
+        WebElement confirmButton = getDriver().findElement(By.cssSelector("[data-id='ok']"));
+        confirmButton.click();
+
+        boolean result;
+
+        try {
+            getDriver().findElement(By.xpath("//a[contains(@href,'../computer/" + nodeName + "/')]")).isDisplayed();
+            result = false;
+        } catch (Exception e) {
+            result = true;
+        }
+
+        Assert.assertTrue(result);
+    }
 }
+
+
 
 
