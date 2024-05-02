@@ -105,7 +105,8 @@ public class Nodes2Test extends BaseTest {
         WebElement createdNode = getDriver().findElement(
                 By.cssSelector("a[href*='../computer/" + nodeName + "/']"));
         Actions actions = new Actions(getDriver());
-        actions.moveToElement(createdNode).perform();
+        actions.scrollToElement(createdNode)
+                .moveToElement(createdNode).perform();
         WebElement dropdownChevron = getDriver().findElement(
                 By.xpath("//tr[@id='node_" + nodeName + "']//button[contains(@class,'jenkins-menu-dropdown-chevron')]"));
         dropdownChevron.click();
