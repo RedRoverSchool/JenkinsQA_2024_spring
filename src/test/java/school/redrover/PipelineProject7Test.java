@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -26,12 +25,7 @@ public class PipelineProject7Test extends BaseTest {
     }
     @Test(dependsOnMethods = "testCreate")
     public void testDelete() {
-        Actions action = new Actions(getDriver());
-
-        action.moveToElement(getDriver().findElement(By.xpath("//a[@href='job/ProjectName/']"))).perform();
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//table//button[@class='jenkins-menu-dropdown-chevron']"))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@href='/job/ProjectName/doDelete']"))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-id='ok']"))).click();
+        TestUtils.deleteJobViaDropdowm(this, "ProjectName");
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//h1[text()='Welcome to Jenkins!']")).isDisplayed());
     }
