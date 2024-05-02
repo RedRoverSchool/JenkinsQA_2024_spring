@@ -104,12 +104,18 @@ public class Nodes2Test extends BaseTest {
 
         WebElement createdNode = getDriver().findElement(
                 By.cssSelector("a[href*='../computer/" + nodeName + "/']"));
+
+        WebElement dropdownChevron = getDriver().findElement(
+                By.xpath("//button[@data-href='http://localhost:8080/manage/computer/" + nodeName + "/']"));
+
         Actions actions = new Actions(getDriver());
         actions.scrollToElement(createdNode)
-                .moveToElement(createdNode).perform();
-        WebElement dropdownChevron = getDriver().findElement(
-                By.xpath("//tr[@id='node_" + nodeName + "']//button[contains(@class,'jenkins-menu-dropdown-chevron')]"));
-        dropdownChevron.click();
+                .moveToElement(createdNode)
+                .pause(1000)
+                .moveToElement(dropdownChevron)
+                .pause(1000)
+                .click().perform();
+
         getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
                 By.className("icon-edit-delete")))).click();
         WebElement confirmButton = getDriver().findElement(By.cssSelector("[data-id='ok']"));
