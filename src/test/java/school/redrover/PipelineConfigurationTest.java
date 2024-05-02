@@ -1,9 +1,6 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -63,6 +60,12 @@ public class PipelineConfigurationTest extends BaseTest {
         JavascriptExecutor executor = (JavascriptExecutor) getDriver();
         executor.executeScript("arguments[0].scrollIntoView();",
                 getDriver().findElement(By.xpath("//label[text()='Poll SCM']")));
+    }
+
+    public void scrollCheckBoxThrottleBuildsIsVisible() {
+        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
+        executor.executeScript("arguments[0].scrollIntoView({block: 'center'});",
+                getDriver().findElement(By.xpath("//label[text()='Throttle builds']")));
     }
 
     @Test
@@ -300,5 +303,25 @@ public class PipelineConfigurationTest extends BaseTest {
 
             Assert.assertEquals(actualTooltip, "Help for feature: " + label);
         }
+    }
+
+    @Test
+    public void testSetNumberOfBuildsThrottleBuilds() {
+        createPipeline();
+        navigateToConfigurePageFromDashboard();
+        scrollCheckBoxThrottleBuildsIsVisible();
+
+        WebElement selectThrottleBuilds = getDriver().findElement(By.xpath("//label[text()='Throttle builds']"));
+        getActions().moveToElement(selectThrottleBuilds)
+                .click()
+                .perform();
+        selectThrottleBuilds.click();
+
+        WebElement selectTimePeriod = getDriver().findElement(By.name("_.durationName"));
+        getActions().moveToElement(selectTimePeriod).click();
+
+        Assert.assertFalse(getDriver().findElement(By.xpath("//div[@class='ok']"))
+                .getText().contains("Approximately 24 hours between builds"));
+
     }
 }
