@@ -1,8 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -11,7 +9,7 @@ import school.redrover.runner.TestUtils;
 public class Nodes2Test extends BaseTest {
     public final String NODE_NAME = "New node";
 
-    public void createNewName(String nodeName) {
+    public void createNewNode(String nodeName) {
 
         getDriver().findElement(By.linkText("Manage Jenkins")).click();
         getDriver().findElement(By.xpath("//a[@href='computer']")).click();
@@ -28,7 +26,7 @@ public class Nodes2Test extends BaseTest {
         final String expectedResult = "Agent called ‘NewNode’ already exists";
         final String nodeName = "NewNode";
 
-        createNewName(nodeName);
+        createNewNode(nodeName);
 
         getDriver().findElement(By.xpath("//a[@href='new']")).click();
         getDriver().findElement(By.id("name")).sendKeys(nodeName);
@@ -98,7 +96,7 @@ public class Nodes2Test extends BaseTest {
     @Test
     public void testDeleteNode() {
         final String nodeName = "NewNode";
-        createNewName(nodeName);
+        createNewNode(nodeName);
 
         WebElement createdNode = getDriver().findElement(
                 By.cssSelector("a[href*='../computer/" + nodeName + "/']"));
