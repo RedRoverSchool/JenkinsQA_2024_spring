@@ -29,7 +29,7 @@ public class PipelineProject7Test extends BaseTest {
         Actions action = new Actions(getDriver());
 
         action.moveToElement(getDriver().findElement(By.xpath("//a[@href='job/ProjectName/']"))).perform();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//table//button[@class='jenkins-menu-dropdown-chevron']"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//table//button[@class='jenkins-menu-dropdown-chevron']"))).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@href='/job/ProjectName/doDelete']"))).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-id='ok']"))).click();
 
