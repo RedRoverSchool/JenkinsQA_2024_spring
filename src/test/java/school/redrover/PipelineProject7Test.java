@@ -40,8 +40,7 @@ public class PipelineProject7Test extends BaseTest {
         action.moveToElement(getDriver().findElement(dropdownChevron), chevronWidth, chevronHeight).click()
                 .perform();
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@href='/job/ProjectName/doDelete']")));
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@href='/job/ProjectName/doDelete']"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@href='/job/ProjectName/doDelete']"))).click();
         getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//h1[text()='Welcome to Jenkins!']")).isDisplayed());
