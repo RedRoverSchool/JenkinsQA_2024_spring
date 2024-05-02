@@ -55,7 +55,7 @@ public class ManageJenkins2Test extends BaseTest {
     @Test
     public void testListOfManageJenkinsLinks() {
         List<String> expectedLinksName = List.of
-                ("System", "Tools", "Plugins", "Nodes", "Clouds", "Security", "Credentials",
+                ("System", "Tools", "Plugins", "Nodes", "Clouds", "Appearance", "Security", "Credentials",
                         "Credential Providers", "Users", "In-process Script Approval", "System Information",
                         "System Log", "Load Statistics", "About Jenkins", "Manage Old Data",
                         "Reload Configuration from Disk", "Jenkins CLI", "Script Console", "Prepare for Shutdown"
