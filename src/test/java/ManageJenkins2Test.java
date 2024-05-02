@@ -5,7 +5,7 @@ import school.redrover.runner.BaseTest;
 
 public class ManageJenkins2Test extends BaseTest {
 
-    public void goToManageJenkins() {
+    private void goToManageJenkins() {
         getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
     }
 
