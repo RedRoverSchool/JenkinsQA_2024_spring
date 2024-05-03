@@ -1,8 +1,9 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -77,21 +78,15 @@ public class Pipeline2Test extends BaseTest {
     public void testRenameJobViaBreadcrumbs() {
         createPipeline();
 
-        new Actions(getDriver()).moveToElement(getDriver().findElement(NAME_IN_BREADCRUMBS_LOCATOR)).perform();
+        WebElement dropdownArrow = getDriver().findElement(CHEVRON_LOCATOR);
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
+                "arguments[0].dispatchEvent(new Event('click'));", dropdownArrow);
 
-        int attempts = 0;
-        while (attempts < 3) {
-            try {
-                getWait5().until(ExpectedConditions.visibilityOfElementLocated(CHEVRON_LOCATOR)).click();
-                getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='rename']")).click();
-                getDriver().findElement(NEW_NAME_INPUT_LOCATOR).clear();
-                getDriver().findElement(NEW_NAME_INPUT_LOCATOR).sendKeys(NEW_PIPELINE_NAME);
-                getDriver().findElement(SAVE_BUTTON_LOCATOR).click();
-                Assert.assertEquals(getDriver().findElement(NAME_IN_BREADCRUMBS_LOCATOR).getText(), NEW_PIPELINE_NAME);
-                break;
-            } catch (Exception e) {
-                attempts++;
-            }
-        }
+        getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='rename']")).click();
+        getDriver().findElement(NEW_NAME_INPUT_LOCATOR).clear();
+        getDriver().findElement(NEW_NAME_INPUT_LOCATOR).sendKeys(NEW_PIPELINE_NAME);
+        getDriver().findElement(SAVE_BUTTON_LOCATOR).click();
+
+        Assert.assertEquals(getDriver().findElement(NAME_IN_BREADCRUMBS_LOCATOR).getText(), NEW_PIPELINE_NAME);
     }
 }

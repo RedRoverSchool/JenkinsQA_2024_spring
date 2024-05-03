@@ -8,25 +8,25 @@ import school.redrover.runner.*;
 import java.util.*;
 
 public class ManageJenkins2Test extends BaseTest {
-    private static final Map<String, String> manageLinks = new HashMap<>(){{
-        put("System", "configure");
-        put("Tools", "configureTools");
-        put("Plugins", "pluginManager");
-        put("Nodes", "computer");
-        put("Clouds", "cloud");
-        put("Security", "configureSecurity");
-        put("Credentials", "credentials");
-        put("Credential Providers", "configureCredentials");
-        put("Users", "securityRealm");
-//        put("In-process Script Approval", "scriptApproval");
-        put("System Information", "systemInfo");
-        put("System Log", "log");
-        put("Load Statistics", "load-statistics");
-        put("About Jenkins", "about");
-        put("Manage Old Data", "OldData");
-        put("Jenkins CLI", "cli");
-        put("Script Console", "script");
-        put("Prepare for Shutdown", "prepareShutdown");
+   private static final Map<String, String> manageLinks = new HashMap<>() {{
+        put("System", "/configure");
+        put("Tools", "/configureTools");
+        put("Plugins", "/pluginManager");
+        put("Nodes", "/computer");
+        put("Clouds", "/cloud");
+        put("Appearance", "/appearance");
+        put("Security", "/configureSecurity");
+        put("Credentials", "/credentials");
+        put("Credential Providers", "/configureCredentials");
+        put("Users", "/securityRealm");
+        put("System Information", "/systemInfo");
+        put("System Log", "/log");
+        put("Load Statistics", "/load-statistics");
+        put("About Jenkins", "/about");
+        put("Manage Old Data", "/OldData");
+        put("Jenkins CLI", "/cli");
+        put("Script Console", "/script");
+        put("Prepare for Shutdown", "/prepareShutdown");
     }};
 
     @DataProvider(name = "linksDataProvider")
@@ -49,5 +49,25 @@ public class ManageJenkins2Test extends BaseTest {
         String actualUrl = getDriver().getCurrentUrl();
 
         Assert.assertTrue(actualUrl.contains(value));
+    }
+
+    @Test
+    public void testListOfManageJenkinsLinks() {
+        List<String> expectedLinksName = List.of
+                ("System", "Tools", "Plugins", "Nodes", "Clouds", "Appearance", "Security", "Credentials",
+                        "Credential Providers", "Users", "System Information", "System Log", "Load Statistics",
+                        "About Jenkins", "Manage Old Data", "Reload Configuration from Disk", "Jenkins CLI",
+                        "Script Console", "Prepare for Shutdown"
+                );
+
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+        List<WebElement> linksList = getDriver().findElements(By.xpath("//div[@class='jenkins-section__item']//dt"));
+
+        List<String> actualListName = new ArrayList<>();
+        for (WebElement link : linksList) {
+            actualListName.add(link.getText());
+        }
+
+        Assert.assertEquals(actualListName, expectedLinksName);
     }
 }
