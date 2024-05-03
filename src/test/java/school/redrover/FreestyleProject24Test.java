@@ -49,7 +49,7 @@ public class FreestyleProject24Test extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//div[@id='description']/div")).getText().matches(DESCRIPTION_TEXT));
     }
 
-    @Test(dependsOnMethods = "testEditDescription")
+    @Test(dependsOnMethods = "testAddDescription")
     public void testFreestyleMoveToFolder() {
         TestUtils.createNewJob(this, TestUtils.Job.FOLDER,FOLDER);
 
