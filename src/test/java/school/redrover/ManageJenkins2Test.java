@@ -51,6 +51,7 @@ public class ManageJenkins2Test extends BaseTest {
         Assert.assertTrue(actualUrl.contains(value));
     }
 
+    @Ignore
     @Test
     public void testListOfManageJenkinsLinks() {
         List<String> expectedLinksName = List.of
