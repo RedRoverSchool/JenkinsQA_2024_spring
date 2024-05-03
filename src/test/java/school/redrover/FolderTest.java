@@ -12,11 +12,9 @@ import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
-import java.security.Key;
 
 public class FolderTest extends BaseTest {
 
-    private static final By NAME_ERROR_MESSAGE_LOCATOR = By.id("itemname-invalid");
     private static final String FOLDER_NAME = "First_Folder";
     private static final String NEW_FOLDER_NAME = "Renamed_First_Folder";
     private static final String THIRD_FOLDER_NAME = "Dependant_Test_Folder";
