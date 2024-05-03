@@ -8,9 +8,6 @@ import school.redrover.model.HomePage;
 
 public abstract class BasePage extends BaseModel {
 
-    @FindBy(xpath = "//button[@type='button']")
-    private WebElement footerVersion;
-
     public BasePage(WebDriver driver) {
         super(driver);
     }
