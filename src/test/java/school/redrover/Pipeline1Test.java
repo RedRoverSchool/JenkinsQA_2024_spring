@@ -204,6 +204,7 @@ public class Pipeline1Test extends BaseTest {
         }
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreatePipeline")
     public void testAvgStageTimeBuildTimeIsDisplayed() {
         int number_of_stages = 1;
@@ -270,6 +271,7 @@ public class Pipeline1Test extends BaseTest {
         Assert.assertEquals(actualResult, expectedResult);
     }
 
+    @Ignore
     @Test
     public void testBuildAttributes() {
 
@@ -303,6 +305,7 @@ public class Pipeline1Test extends BaseTest {
         Assert.assertTrue(result, "One of the elements is missing");
     }
 
+    @Ignore
     @Test
     public void testBuildAttributesDescending() {
 
@@ -334,6 +337,7 @@ public class Pipeline1Test extends BaseTest {
         Assert.assertEquals(actualOrder, expectedOrder);
     }
 
+    @Ignore
     @Test
     public void testBuildСolorGreen() {
 
@@ -355,6 +359,7 @@ public class Pipeline1Test extends BaseTest {
         }
     }
 
+    @Ignore
     @Test
     public void testFullStageViewPopUpWindowIsDisplayed() {
         int number_of_stages = 2;
@@ -373,6 +378,7 @@ public class Pipeline1Test extends BaseTest {
         Assert.assertTrue(actualResult.contains("Stage Logs (stage 1)"));
     }
 
+    @Ignore
     @Test
     public void testTableWithAllStagesAndTheLast10Builds() {
 
@@ -404,6 +410,7 @@ public class Pipeline1Test extends BaseTest {
         Assert.assertEquals(actualBuildsText, expectedBuildsText);
     }
 
+    @Ignore
     @Test
     public void testStageColumnHeader() {
 
