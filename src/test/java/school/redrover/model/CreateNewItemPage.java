@@ -3,7 +3,6 @@ package school.redrover.model;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
 import school.redrover.model.base.BasePage;
 
 public class CreateNewItemPage extends BasePage {
@@ -22,6 +21,9 @@ public class CreateNewItemPage extends BasePage {
 
     @FindBy(css = "[class*='WorkflowMultiBranchProject']")
     private WebElement multibranchPipelineItem;
+
+    @FindBy(id = "itemname-invalid")
+    private WebElement errorMessage;
 
     public CreateNewItemPage(WebDriver driver) {
         super(driver);
@@ -51,5 +53,15 @@ public class CreateNewItemPage extends BasePage {
         okButton.click();
 
         return new MultibranchPipelineConfigPage(getDriver());
+    }
+
+    public CreateNewItemPage selectFolder() {
+        folderItem.click();
+
+        return this;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage.getText();
     }
 }
