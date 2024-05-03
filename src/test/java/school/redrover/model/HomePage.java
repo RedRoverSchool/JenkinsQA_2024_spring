@@ -3,11 +3,15 @@ package school.redrover.model;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
 import java.util.List;
 
 public class HomePage extends BasePage {
+
+    @FindBy(linkText = "Create a job")
+    WebElement createAJobLink;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -24,5 +28,11 @@ public class HomePage extends BasePage {
                 .stream()
                 .map(WebElement::getText)
                 .toList();
+    }
+
+    public CreateNewItemPage clickCreateAJob() {
+        createAJobLink.click();
+
+        return new CreateNewItemPage(getDriver());
     }
 }

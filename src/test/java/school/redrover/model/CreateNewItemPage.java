@@ -16,6 +16,9 @@ public class CreateNewItemPage extends BasePage {
     @FindBy(id = "ok-button")
     private WebElement okButton;
 
+    @FindBy(css = "[class$='_Folder']")
+    private WebElement folderItem;
+
     public CreateNewItemPage(WebDriver driver) {
         super(driver);
     }
@@ -30,5 +33,12 @@ public class CreateNewItemPage extends BasePage {
         okButton.click();
 
         return new OrganizationFolderConfigPage(getDriver());
+    }
+
+    public FolderConfigPage selectFolderAndClickOk() {
+        folderItem.click();
+        okButton.click();
+
+        return new FolderConfigPage(getDriver());
     }
 }
