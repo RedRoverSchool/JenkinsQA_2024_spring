@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import school.redrover.model.base.BasePage;
 
@@ -36,6 +37,6 @@ public class MultibranchPipelineConfigPage extends BasePage {
     }
 
     public boolean isTooltipDisplayed() {
-        return tooltip.isDisplayed();
+        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-box"))).isDisplayed();
     }
 }
