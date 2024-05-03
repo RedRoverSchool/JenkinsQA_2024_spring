@@ -15,7 +15,7 @@ import school.redrover.runner.TestUtils;
 import java.util.List;
 
 public class FreestyleProject100Test extends BaseTest {
-    final String projectName = "This is the project to be deleted";
+    final String projectName = "This is the project name";
 
     @Test
     public void testCreateFreestyleProject() {

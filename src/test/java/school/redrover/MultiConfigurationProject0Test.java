@@ -8,8 +8,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
+import school.redrover.model.MultiConfigurationConfigPage;
+import school.redrover.model.MultiConfigurationPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
+
+import java.util.List;
 
 public class MultiConfigurationProject0Test extends BaseTest {
 
@@ -288,8 +293,15 @@ public class MultiConfigurationProject0Test extends BaseTest {
 
     @Test
     public void testCreateMCP() {
-        TestUtils.createNewItemAndReturnToDashboard(this, randomProjectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
-        Assert.assertTrue(TestUtils.getViewItemElement(this, randomProjectName).isDisplayed());
+        List<String> itemNames = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(randomProjectName)
+                .selectMultiConfigurationAndClickOk()
+                .clickSave()
+                .clickLogo()
+                .getItemList();
+
+        Assert.assertTrue(itemNames.contains(randomProjectName));
     }
 
     @Test(dependsOnMethods = "testCreateMCP")
