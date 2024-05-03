@@ -87,4 +87,17 @@ public class FreestyleProject24Test extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='jenkins-app-bar']")).getText(),
                 FREESTYLE_NAME);
     }
+
+    @Test(dependsOnMethods = "testCheckFreestyleProjectViaBreadcrumb")
+    public void testDeleteFreestyleProjectViaDropdown() {
+        getDriver().findElement(By.xpath("//tr//a[@href='job/NewFolder/']")).click();
+
+        dropDown(By.xpath("//td//button[@class='jenkins-menu-dropdown-chevron']"));
+
+        getDriver().findElement(By.xpath("//button[@class='jenkins-dropdown__item'][contains(@href, 'Delete')]")).click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@data-id='ok']"))).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h2")).getText(), "This folder is empty");
+    }
 }
