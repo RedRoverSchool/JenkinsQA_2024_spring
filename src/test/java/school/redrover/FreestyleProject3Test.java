@@ -90,12 +90,12 @@ public class FreestyleProject3Test extends BaseTest {
 
         Assert.assertEquals(ActualProjectName, RENAMED_PROJECT_NAME);
     }
-    @Test (dependsOnMethods = "testCreateFreestyleProject")
+    @Test (dependsOnMethods = "testRenameFreestyleProjectFromDropdown")
     public void testDeleteFreestyleProjectFromDropdown() {
 
         clickJenkinsLogo();
 
-        WebElement dropdownChevron = getDriver().findElement(By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]/following-sibling::button"));
+        WebElement dropdownChevron = getDriver().findElement(By.xpath("//span[text()=('" + RENAMED_PROJECT_NAME + "')]/following-sibling::button"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", dropdownChevron);
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", dropdownChevron);
         getDriver().findElement((By.xpath("/html/body/div[3]/div/div/div/button[2]"))).click();
