@@ -377,7 +377,7 @@ public class Pipeline1Test extends BaseTest {
         Assert.assertTrue(actualResult.contains("Stage Logs (stage 1)"));
     }
 
-    @Test
+    @Test //Был в игноре, причина падения не известна. Если упадет снова дайте знать на каком шаге, плиз. Спс!
     public void testTableWithAllStagesAndTheLast10Builds() {
 
         int number_of_stages = 2;
