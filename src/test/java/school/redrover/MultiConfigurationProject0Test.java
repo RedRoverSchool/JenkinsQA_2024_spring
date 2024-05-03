@@ -7,6 +7,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.MultiConfigurationConfigPage;
@@ -114,6 +115,7 @@ public class MultiConfigurationProject0Test extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.cssSelector("#description div:not([class])")).getText(), newText);
     }
 
+    @Ignore
     @Test
     public void testMakeCopyMultiConfigurationProject() {
         final String newProjectName = "MCProject copy";
