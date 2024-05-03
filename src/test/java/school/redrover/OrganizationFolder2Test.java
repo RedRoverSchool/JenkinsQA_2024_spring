@@ -4,6 +4,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
+import school.redrover.model.OrganizationFolderConfigPage;
+import school.redrover.model.OrganizationFolderPage;
 import school.redrover.runner.BaseTest;
 
 import java.util.List;
@@ -12,16 +15,17 @@ public class OrganizationFolder2Test extends BaseTest{
 
     @Test
     public void testCreateOrganizationFolder() {
-        getDriver().findElement(By.xpath("//a[.='New Item']")).click();
-        getDriver().findElement(By.id("name")).click();
-        getDriver().findElement(By.id("name")).sendKeys("New Organization Folder");
-        getDriver().findElement(By.xpath("//label[.='Organization Folder']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
+        final String organizationFolderName = "New Organization Folder";
 
-        getDriver().findElement(By.xpath("//a[.='Dashboard']")).click();
+        List<String> itemList = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(organizationFolderName)
+                .selectOrganizationFolderAndClickOk()
+                .clickSave()
+                .clickLogo()
+                .getItemList();
 
-        Assert.assertTrue(getDriver().findElement(By.xpath("//span[.='New Organization Folder']")).isDisplayed());
+        Assert.assertTrue(itemList.contains(organizationFolderName));
     }
 
     @Test(dependsOnMethods = "testCreateOrganizationFolder")
