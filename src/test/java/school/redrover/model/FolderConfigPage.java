@@ -19,6 +19,4 @@ public class FolderConfigPage extends BasePage {
 
         return new FolderStatusPage(getDriver());
     }
-
-
 }
