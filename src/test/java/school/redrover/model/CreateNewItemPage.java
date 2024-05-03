@@ -19,6 +19,9 @@ public class CreateNewItemPage extends BasePage {
     @FindBy(css = "[class$='_Folder']")
     private WebElement folderItem;
 
+    @FindBy(css = "[class*='WorkflowMultiBranchProject']")
+    private WebElement multibranchPipelineItem;
+
     @FindBy(id = "itemname-invalid")
     private WebElement errorMessage;
 
@@ -43,6 +46,13 @@ public class CreateNewItemPage extends BasePage {
         okButton.click();
 
         return new FolderConfigPage(getDriver());
+    }
+
+    public MultibranchPipelineConfigPage selectMultibranchPipelineAndClickOk() {
+        multibranchPipelineItem.click();
+        okButton.click();
+
+        return new MultibranchPipelineConfigPage(getDriver());
     }
 
     public CreateNewItemPage selectFolder() {
