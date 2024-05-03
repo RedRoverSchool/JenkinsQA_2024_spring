@@ -156,7 +156,6 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testDisabledTooltip() {
-        WebDriverWait webDriverWait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
         final String tooltipText = "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
 
         MultibranchPipelineConfigPage multibranchPipelineConfigPage = new HomePage(getDriver())
