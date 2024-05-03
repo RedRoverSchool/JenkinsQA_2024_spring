@@ -11,6 +11,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
@@ -25,6 +26,8 @@ public class PipelineConfigurationTest extends BaseTest {
     private static final By ADVANCED_PROJECT_OPTIONS_MENU = By.xpath("//button[@data-section-id='advanced-project-options']");
 
     private static final By DISPLAY_NAME_TEXT_FIELD = By.xpath("//div[@class='setting-main']//input[contains(@checkurl, 'checkDisplayName')]");
+
+    private final String displayNameText = "This is project's Display name text for Advanced Project Options";
 
     private Actions actions;
 
@@ -54,6 +57,12 @@ public class PipelineConfigurationTest extends BaseTest {
         JavascriptExecutor executor = (JavascriptExecutor) getDriver();
         executor.executeScript("arguments[0].dispatchEvent(new Event('click'));",
                advancedButton);
+    }
+
+    public void scrollCheckBoxQuietPeriodIsVisible(){
+        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
+        executor.executeScript("arguments[0].scrollIntoView();",
+                getDriver().findElement(By.xpath("//label[text()='Poll SCM']")));
     }
 
     @Test
@@ -198,10 +207,27 @@ public class PipelineConfigurationTest extends BaseTest {
         clickOnAdvancedButton();
         getWait10().until(ExpectedConditions.elementToBeClickable(DISPLAY_NAME_TEXT_FIELD));
         getDriver().findElement(DISPLAY_NAME_TEXT_FIELD).sendKeys(editedDisplayNameText);
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(SAVE_BUTTON_CONFIGURATION));
         getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']"))
                 .getText().contains(editedDisplayNameText),"Your DisplayName is not edited correctly");
+    }
+
+    @Test
+    public void testVerifySectionHasTooltip(){
+        String labelText = "Display Name";
+        String tooltipText = "Help for feature: Display Name";
+        createPipeline();
+
+        navigateToConfigurePageFromDashboard();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(ADVANCED_PROJECT_OPTIONS_MENU)).click();
+        clickOnAdvancedButton();
+
+        String actualTooltip = getDriver().findElement(By.xpath("//*[contains(text(), '" + labelText + "')]//a")).getAttribute("tooltip");
+
+        Assert.assertEquals(actualTooltip, tooltipText);
     }
 
     @Test
@@ -219,5 +245,106 @@ public class PipelineConfigurationTest extends BaseTest {
 
         WebElement link = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@target='blank']")));
         Assert.assertTrue(link.isDisplayed(), "Uncheck doesn't work");
+    }
+
+    @Test (dependsOnMethods = {"testAddDisplayNameInAdvancedSection", "testEditDisplayNameInAdvancedSection"})
+    public void testDeleteDisplayNameInAdvancedSection() {
+        navigateToConfigurePageFromDashboard();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(ADVANCED_PROJECT_OPTIONS_MENU)).click();
+
+        clickOnAdvancedButton();
+        getWait10().until(ExpectedConditions.elementToBeClickable(DISPLAY_NAME_TEXT_FIELD)).clear();
+        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
+
+        Assert.assertFalse(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']"))
+                .getText().contains(displayNameText));
+    }
+
+    @Test
+    public void testSetQuietPeriodBuildTriggers() {
+        final int numberOfSeconds = 3;
+
+        createPipeline();
+        navigateToConfigurePageFromDashboard();
+
+        scrollCheckBoxQuietPeriodIsVisible();
+        WebElement checkBoxQuietPeriod = getDriver().findElement(By.xpath("//label[text()='Quiet period']"));
+        checkBoxQuietPeriod.click();
+
+        WebElement inputField = getDriver().findElement(By.name("quiet_period"));
+        inputField.clear();
+        inputField.sendKeys("" + numberOfSeconds + "");
+        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
+
+        navigateToConfigurePageFromDashboard();
+        scrollCheckBoxQuietPeriodIsVisible();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//input[@name='quiet_period']"))
+                        .getAttribute("value").contains("" + numberOfSeconds + ""),
+                "The actual numberOfSeconds differs from expected result");
+    }
+
+    @Test
+    public void testVerifySectionsHaveTooltips() {
+        String[] labelsText = {"Display Name", "Script"};
+
+        createPipeline();
+        navigateToConfigurePageFromDashboard();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(ADVANCED_PROJECT_OPTIONS_MENU)).click();
+        clickOnAdvancedButton();
+
+        for (String label: labelsText) {
+            String actualTooltip = getDriver().findElement(By.xpath("//*[contains(text(), '" + label + "')]//a")).getAttribute("tooltip");
+
+            Assert.assertEquals(actualTooltip, "Help for feature: " + label);
+        }
+    }
+
+    @Test
+    public void testSetQuietPeriodBuildTriggersLessThanZero() {
+        final int numberOfSeconds = -5;
+        final String errorMessage = "This value should be larger than 0";
+
+        createPipeline();
+        navigateToConfigurePageFromDashboard();
+
+        scrollCheckBoxQuietPeriodIsVisible();
+        WebElement checkBoxQuietPeriod = getDriver().findElement(By.xpath("//label[text()='Quiet period']"));
+        checkBoxQuietPeriod.click();
+
+        WebElement inputField = getDriver().findElement(By.name("quiet_period"));
+        inputField.clear();
+        inputField.sendKeys("" + numberOfSeconds + "");
+        getDriver().findElement(By.xpath("//div[text()='Number of seconds']")).click();
+
+        WebElement errorElement = getDriver().findElement(By.xpath("//div[@class='form-container tr']//div[@class='error']"));
+        getWait5().until(ExpectedConditions.visibilityOf(errorElement));
+
+        Assert.assertEquals(errorElement.getText(), errorMessage);
+    }
+
+    @Test
+    public void testSetDoubleQuietPeriodBuildTriggersLessThanZero() {
+        final double numberOfSeconds = 0.3;
+        final String errorMessage = "Not an integer";
+
+        createPipeline();
+        navigateToConfigurePageFromDashboard();
+
+        scrollCheckBoxQuietPeriodIsVisible();
+        WebElement checkBoxQuietPeriod = getDriver().findElement(By.xpath("//label[text()='Quiet period']"));
+        checkBoxQuietPeriod.click();
+
+        WebElement inputField = getDriver().findElement(By.name("quiet_period"));
+        inputField.clear();
+        inputField.sendKeys("" + numberOfSeconds + "");
+        getDriver().findElement(By.xpath("//div[text()='Number of seconds']")).click();
+
+        WebElement errorElement = getDriver().findElement(By.xpath("//div[@class='form-container tr']//div[@class='error']"));
+        getWait5().until(ExpectedConditions.visibilityOf(errorElement));
+
+        Assert.assertEquals(errorElement.getText(), errorMessage);
     }
 }

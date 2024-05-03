@@ -323,4 +323,24 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertEquals(actualFolderNameInSearch, FOLDER_NAME, MULTI_PIPELINE_NAME + "находится в другой папке");
     }
+
+    @Test
+    public void testDeleteViaDashboardDropdown(){
+        final String WELCOME_PAGE_HEADER ="Welcome to Jenkins!";
+        TestUtils.createNewItemAndReturnToDashboard(this, MULTI_PIPELINE_NAME, TestUtils.Item.MULTI_BRANCH_PIPELINE);
+
+        WebElement createdMultibranchPipeline = getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']"));
+        new Actions(getDriver()).moveToElement(createdMultibranchPipeline).perform();
+        WebElement dropdownChevron = getDriver().findElement(By.cssSelector("#job_" + MULTI_PIPELINE_NAME + " > td:nth-child(3) > a > button"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
+            "arguments[0].dispatchEvent(new Event('click'));", dropdownChevron);
+        getDriver().findElement(By.cssSelector("[href $='doDelete")).click();
+
+        getDriver().switchTo().activeElement();
+        getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
+
+        String actualPageHeader = getDriver().findElement(By.tagName("h1")).getText();
+
+        Assert.assertEquals(actualPageHeader,WELCOME_PAGE_HEADER);
+    }
 }
