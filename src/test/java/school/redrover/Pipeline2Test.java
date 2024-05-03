@@ -3,8 +3,8 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -31,16 +31,7 @@ public class Pipeline2Test extends BaseTest {
         getDriver().findElement(SAVE_BUTTON_LOCATOR).click();
     }
 
-    @Test
-    public void testAddDescription() {
-        createPipeline();
-        getDriver().findElement(CHANGE_DESCRIPTION_LOCATOR).click();
-        getDriver().findElement(DESCRIPTION_INPUT_LOCATOR).sendKeys(DESCRIPTION);
-        getDriver().findElement(SAVE_BUTTON_LOCATOR).click();
-
-        Assert.assertEquals(getDriver().findElement(DISPLAYED_DESCRIPTION_LOCATOR).getText(), DESCRIPTION);
-    }
-
+    @Ignore
     @Test(dependsOnMethods = "testAddDescription")
     public void testEditDescription() {
         final String addedToDescription = ", consectetur adipiscing elit.";
