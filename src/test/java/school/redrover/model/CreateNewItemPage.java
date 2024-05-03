@@ -11,6 +11,9 @@ public class CreateNewItemPage extends BasePage {
     @FindBy(id = "name")
     private WebElement nameText;
 
+    @FindBy(xpath = "//label[.='Freestyle project']")
+    private WebElement FreestyleItem;
+
     @FindBy(xpath = "//label[.='Organization Folder']")
     private WebElement organizationFolderItem;
 
@@ -33,6 +36,13 @@ public class CreateNewItemPage extends BasePage {
     public CreateNewItemPage setItemName(String name) {
         nameText.sendKeys(name);
         return this;
+    }
+
+    public FreestyleConfigPage selectFreestyleAndClickOk() {
+        FreestyleItem.click();
+        okButton.click();
+
+        return new FreestyleConfigPage(getDriver());
     }
 
     public OrganizationFolderConfigPage selectOrganizationFolderAndClickOk() {
