@@ -10,13 +10,14 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 public class NodesTest extends BaseTest {
 
     private static final String NODE_NAME = "FirstNode";
     public static final By NODE_TABLE_LOCATOR = By.cssSelector(
-        "a[href='../computer/" + NODE_NAME + "/']");
+            "a[href='../computer/" + NODE_NAME + "/']");
 
     private void createNodeViaMainPage() {
         getDriver().findElement(By.cssSelector("[href='/computer/']")).click();
@@ -30,9 +31,9 @@ public class NodesTest extends BaseTest {
     private void deleteNodeViaNodesTable(By nodeTableLocator) {
         WebElement createdNode = getDriver().findElement(nodeTableLocator);
         new Actions(getDriver()).moveToElement(createdNode).perform();
-        WebElement dropdownChevron =getDriver().findElement(By.cssSelector("#node_" + NODE_NAME + " > td:nth-child(2) > a > button"));
+        WebElement dropdownChevron = getDriver().findElement(By.cssSelector("#node_" + NODE_NAME + " > td:nth-child(2) > a > button"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
-            "arguments[0].dispatchEvent(new Event('click'));", dropdownChevron);
+                "arguments[0].dispatchEvent(new Event('click'));", dropdownChevron);
         getDriver().findElement(By.cssSelector("button[href$='doDelete']")).click();
         getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
     }
@@ -77,12 +78,17 @@ public class NodesTest extends BaseTest {
 
     @Test
     public void testCreatedNodeIsOnMainPage() {
-        createNodeViaMainPage();
-        getDriver().findElement(By.id("jenkins-home-link")).click();
-        WebElement createdNode = getDriver().findElement(By.cssSelector("[href='/computer/" + NODE_NAME + "/']"));
+        HomePage homePage = new HomePage(getDriver())
+                .clickNodesLink()
+                .clickNewNodeButton()
+                .setNodeName(NODE_NAME)
+                .selectPermanentAgentRadioButton()
+                .clickOkButton()
+                .clickSaveButton()
+                .clickLogo();
 
-        Assert.assertTrue(createdNode.isDisplayed());
-        Assert.assertEquals(createdNode.getText(), NODE_NAME, "The created node name is not " + NODE_NAME);
+        Assert.assertTrue(homePage.isNodeDisplayed(NODE_NAME));
+        Assert.assertTrue(homePage.getNodesList().contains(NODE_NAME), "The created node name is not " + NODE_NAME);
     }
 
     @Test
@@ -99,7 +105,7 @@ public class NodesTest extends BaseTest {
     public void testDeletedNodeNotDisplayedInNodesTable() {
         createNodeViaMainPage();
         deleteNodeViaNodesTable(NODE_TABLE_LOCATOR);
-        
+
         Assert.assertTrue(getDriver().findElements(NODE_TABLE_LOCATOR).isEmpty());
     }
 }

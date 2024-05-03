@@ -1,5 +1,7 @@
 package school.redrover.model;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -11,10 +13,17 @@ import school.redrover.runner.TestUtils;
 import java.awt.*;
 import java.util.List;
 
+
 public class HomePage extends BasePage {
 
     @FindBy(linkText = "Create a job")
-    WebElement createAJobLink;
+    private WebElement createAJobLink;
+
+    @FindBy(css = "[href='/computer/']")
+    private WebElement nodesLink;
+
+    @FindBy(css = "#executors tr [href]")
+    private List<WebElement> nodesList;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -39,6 +48,7 @@ public class HomePage extends BasePage {
         return new CreateNewItemPage(getDriver());
     }
 
+
     public HomePage openItemDropdown(String projectName) {
         WebElement element = getDriver().findElement(By.cssSelector(String.format(
                 "td>a[href = 'job/%s/']",
@@ -50,5 +60,22 @@ public class HomePage extends BasePage {
     public DeleteDialog clickDeleteInDropdown(DeleteDialog dialog) {
         getDriver().findElement(TestUtils.DROPDOWN_DELETE).click();
         return dialog;
+    }
+  
+    public NodesTablePage clickNodesLink() {
+        nodesLink.click();
+
+        return new NodesTablePage(getDriver());
+    }
+
+    public List<String> getNodesList() {
+        return nodesList
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+    }
+
+    public boolean isNodeDisplayed(String name) {
+        return getDriver().findElement(By.cssSelector("[href='/computer/" + name + "/']")).isDisplayed();
     }
 }
