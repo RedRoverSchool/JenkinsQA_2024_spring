@@ -3,7 +3,6 @@ package school.redrover.model;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.Pipeline1Test;
 import school.redrover.model.base.BasePage;
 
 public class CreateNewItemPage extends BasePage {
@@ -12,13 +11,13 @@ public class CreateNewItemPage extends BasePage {
     private WebElement nameText;
 
     @FindBy(xpath = "//label[.='Freestyle project']")
-    private WebElement FreestyleItem;
+    private WebElement freestyleItem;
 
     @FindBy(xpath = "//label[.='Pipeline']")
-    private WebElement PipelineItem;
+    private WebElement pipelineItem;
 
     @FindBy(xpath = "//label[.='Multi-configuration project']")
-    private WebElement MultiConfigurationItem;
+    private WebElement multiConfigurationItem;
 
     @FindBy(css = "[class$='_Folder']")
     private WebElement folderItem;
@@ -45,24 +44,30 @@ public class CreateNewItemPage extends BasePage {
     }
 
     public FreestyleConfigPage selectFreestyleAndClickOk() {
-        FreestyleItem.click();
+        freestyleItem.click();
         okButton.click();
 
         return new FreestyleConfigPage(getDriver());
     }
 
     public PipelineConfigPage selectPipelineAndClickOk() {
-        PipelineItem.click();
+        pipelineItem.click();
         okButton.click();
 
         return new PipelineConfigPage(getDriver());
     }
 
     public MultiConfigurationConfigPage selectMultiConfigurationAndClickOk() {
-        MultiConfigurationItem.click();
+        multiConfigurationItem.click();
         okButton.click();
 
         return new MultiConfigurationConfigPage(getDriver());
+    }
+
+    public CreateNewItemPage selectMultiConfiguration() {
+        multiConfigurationItem.click();
+
+        return this;
     }
 
     public FolderConfigPage selectFolderAndClickOk() {
@@ -90,6 +95,12 @@ public class CreateNewItemPage extends BasePage {
         okButton.click();
 
         return new OrganizationFolderConfigPage(getDriver());
+    }
+
+    public <T> T clickOkAnyway(T page) {
+        okButton.click();
+
+        return page;
     }
 
     public String getErrorMessage() {

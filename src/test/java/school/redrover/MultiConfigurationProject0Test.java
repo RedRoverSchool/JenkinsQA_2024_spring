@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
+import school.redrover.model.ItemErrorPage;
 import school.redrover.model.MultiConfigurationConfigPage;
 import school.redrover.model.MultiConfigurationPage;
 import school.redrover.runner.BaseTest;
@@ -294,7 +295,7 @@ public class MultiConfigurationProject0Test extends BaseTest {
     @Test
     public void testCreateMCP() {
         List<String> itemNames = new HomePage(getDriver())
-                .clickCreateAJob()
+                .clickNewItem()
                 .setItemName(randomProjectName)
                 .selectMultiConfigurationAndClickOk()
                 .clickSave()
@@ -306,13 +307,16 @@ public class MultiConfigurationProject0Test extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateMCP")
     public void testCreateMCPWithSameName() {
-        TestUtils.createNewItem(this, randomProjectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+        ItemErrorPage errorPage = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(randomProjectName)
+                .selectMultiConfiguration()
+                .clickOkAnyway(new ItemErrorPage(getDriver()));
 
+
+        Assert.assertEquals(errorPage.getHeaderText(), "Error");
         Assert.assertEquals(
-                getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#main-panel h1"))).getText(),
-                "Error");
-        Assert.assertEquals(
-                getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#main-panel p"))).getText(),
+                errorPage.getMessageText(),
                 "A job already exists with the name ‘" + randomProjectName + "’");
     }
 
