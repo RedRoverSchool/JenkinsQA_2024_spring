@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import school.redrover.model.base.BasePage;
 
@@ -27,19 +26,16 @@ public class MultibranchPipelineConfigPage extends BasePage {
     }
 
     public MultibranchPipelineConfigPage hoverOverToggle() {
+        getDriver().findElement(By.tagName("h1")).click();
         new Actions(getDriver()).moveToElement(statusToggle).perform();
         return this;
     }
 
-    public MultibranchPipelineConfigPage getTooltip() throws InterruptedException {
-        Thread.sleep(2000);
-        return this;
-       // return getWait2().until(ExpectedConditions.visibilityOf(tooltip));
-
-    }
-
     public String getTooltipText() {
-      return tooltip.getText();
+        return tooltip.getText();
     }
 
+    public boolean isTooltipDisplayed() {
+        return tooltip.isDisplayed();
+    }
 }

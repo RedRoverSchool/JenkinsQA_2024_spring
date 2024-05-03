@@ -155,32 +155,19 @@ public class MultibranchPipelineTest extends BaseTest {
 
 
     @Test
-    public void testDisabledMultiPipelineTooltip() throws InterruptedException {
+    public void testDisabledTooltip() {
         WebDriverWait webDriverWait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
         final String tooltipText = "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
 
         MultibranchPipelineConfigPage multibranchPipelineConfigPage = new HomePage(getDriver())
             .clickCreateAJob()
-                .setItemName(MULTI_PIPELINE_NAME)
-                    .selectMultibranchPipelineAndClickOk()
-                        .clickToggle()
-                            .hoverOverToggle();
+            .setItemName(MULTI_PIPELINE_NAME)
+            .selectMultibranchPipelineAndClickOk()
+            .clickToggle()
+            .hoverOverToggle();
 
-
-
-
-      //  createNewMultiPipeline(MULTI_PIPELINE_NAME);
-       // disableCreatedMultiPipeline(MULTI_PIPELINE_NAME);
-
-       // getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']")).click();
-       // getDriver().findElement(By.cssSelector("[href$='Pipeline/configure']")).click();
-       // WebElement disabledSpan = getDriver().findElement(By.cssSelector("[data-title*='Disabled']"));
-       // new Actions(getDriver()).moveToElement(disabledSpan).perform();
-       // WebElement tooltip = webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-box")));
-
-      //  Assert.assertTrue(multibranchPipelineConfigPage.getTooltip().isDisplayed());
-        Thread.sleep(2000);
-        Assert.assertEquals(multibranchPipelineConfigPage.getTooltipText(),tooltipText);
+       Assert.assertTrue(multibranchPipelineConfigPage.isTooltipDisplayed());
+       Assert.assertEquals(multibranchPipelineConfigPage.getTooltipText(),tooltipText);
     }
 
     @Test
