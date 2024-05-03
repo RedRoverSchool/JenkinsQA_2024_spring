@@ -5,18 +5,18 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class FolderConfigPage extends BasePage {
+public class NodesCreationConfigurePage extends BasePage {
 
     @FindBy(name = "Submit")
     private WebElement saveButton;
 
-    public FolderConfigPage(WebDriver driver) {
+    public NodesCreationConfigurePage(WebDriver driver) {
         super(driver);
     }
 
-    public FolderStatusPage clickSaveButton() {
+    public NodesTablePage clickSaveButton() {
         saveButton.click();
 
-        return new FolderStatusPage(getDriver());
+        return new NodesTablePage(getDriver());
     }
 }
