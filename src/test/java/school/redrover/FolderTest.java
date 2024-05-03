@@ -12,6 +12,8 @@ import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
+import java.security.Key;
+
 public class FolderTest extends BaseTest {
 
     private static final By NAME_ERROR_MESSAGE_LOCATOR = By.id("itemname-invalid");
@@ -38,23 +40,25 @@ public class FolderTest extends BaseTest {
 
     @Test
     public void testDotAsFirstFolderNameCharErrorMessage() {
-        getDriver().findElement(By.cssSelector("[href$='/newJob']")).click();
-        getDriver().findElement(By.cssSelector("[class$='_Folder']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(".");
+        String errorMessageText = new HomePage(getDriver())
+                .clickNewItem()
+                .selectFolder()
+                .setItemName(".")
+                .getErrorMessage();
 
-        String dotAsFirstCharErrorMessage = getDriver().findElement(NAME_ERROR_MESSAGE_LOCATOR).getText();
-        Assert.assertEquals(dotAsFirstCharErrorMessage, "» “.” is not an allowed name",
+        Assert.assertEquals(errorMessageText, "» “.” is not an allowed name",
                 "The error message is different");
     }
 
     @Test
     public void testDotAsLastFolderNameCharErrorMessage() {
-        getDriver().findElement(By.cssSelector("[href$='/newJob']")).click();
-        getDriver().findElement(By.cssSelector("[class$='_Folder']")).click();
-        getDriver().findElement(By.id("name")).sendKeys("Folder." + Keys.TAB);
+        String errorMessageText = new HomePage(getDriver())
+                .clickNewItem()
+                .selectFolder()
+                .setItemName("Folder." + Keys.TAB)
+                .getErrorMessage();
 
-        String dotAsLastCharErrorMessage = getDriver().findElement(NAME_ERROR_MESSAGE_LOCATOR).getText();
-        Assert.assertEquals(dotAsLastCharErrorMessage, "» A name cannot end with ‘.’",
+        Assert.assertEquals(errorMessageText, "» A name cannot end with ‘.’",
                 "The error message is different");
     }
 

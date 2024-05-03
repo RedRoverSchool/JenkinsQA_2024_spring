@@ -19,6 +19,9 @@ public class CreateNewItemPage extends BasePage {
     @FindBy(css = "[class$='_Folder']")
     private WebElement folderItem;
 
+    @FindBy(id = "itemname-invalid")
+    private WebElement errorMessage;
+
     public CreateNewItemPage(WebDriver driver) {
         super(driver);
     }
@@ -40,5 +43,15 @@ public class CreateNewItemPage extends BasePage {
         okButton.click();
 
         return new FolderConfigPage(getDriver());
+    }
+
+    public CreateNewItemPage selectFolder() {
+        folderItem.click();
+
+        return this;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage.getText();
     }
 }
