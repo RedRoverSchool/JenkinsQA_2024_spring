@@ -54,7 +54,6 @@ public class HomePage extends BasePage {
                 .stream()
                 .map(WebElement::getText)
                 .toList();
-
     }
 
     public boolean isNodeDisplayed(String name) {
