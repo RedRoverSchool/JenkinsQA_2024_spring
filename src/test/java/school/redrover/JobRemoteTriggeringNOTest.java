@@ -111,10 +111,6 @@ public class JobRemoteTriggeringNOTest extends BaseTest {
         final String uuid = tokenUuidUser[1];
         final String user = tokenUuidUser[2];
 
-        System.out.println(token);
-        System.out.println(uuid);
-        System.out.println(user);
-
         createFreestyleProjectWithConfiguration(projectName);
 
         triggerJobViaHTTPRequest(token, user, projectName);
@@ -126,8 +122,6 @@ public class JobRemoteTriggeringNOTest extends BaseTest {
         final String actualConsoleLogs = getWait5().until(ExpectedConditions
                 .visibilityOfElementLocated(By.className("console-output")))
                 .getText();
-
-        System.out.println(actualConsoleLogs);
 
         revokeTokenViaHTTPRequest(token, uuid, user);
 
