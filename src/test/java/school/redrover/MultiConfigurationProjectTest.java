@@ -10,7 +10,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.ItemErrorPage;
-import school.redrover.model.MultiConfigurationConfigPage;
 import school.redrover.model.MultiConfigurationPage;
 
 import school.redrover.runner.BaseTest;
@@ -18,7 +17,7 @@ import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
-public class MultiConfigurationProject0Test extends BaseTest {
+public class MultiConfigurationProjectTest extends BaseTest {
 
     private static final String PROJECT_NAME = "MCProject";
     private final String RANDOM_PROJECT_NAME = TestUtils.randomString();
@@ -296,7 +295,7 @@ public class MultiConfigurationProject0Test extends BaseTest {
     public void testCreateMCP() {
         List<String> itemNames = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(randomProjectName)
+                .setItemName(RANDOM_PROJECT_NAME)
                 .selectMultiConfigurationAndClickOk()
                 .clickSave()
                 .clickLogo()
@@ -309,7 +308,7 @@ public class MultiConfigurationProject0Test extends BaseTest {
     public void testCreateMCPWithSameName() {
         ItemErrorPage errorPage = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(randomProjectName)
+                .setItemName(RANDOM_PROJECT_NAME)
                 .selectMultiConfiguration()
                 .clickOkAnyway(new ItemErrorPage(getDriver()));
 
@@ -317,7 +316,7 @@ public class MultiConfigurationProject0Test extends BaseTest {
         Assert.assertEquals(errorPage.getHeaderText(), "Error");
         Assert.assertEquals(
                 errorPage.getMessageText(),
-                "A job already exists with the name ‘" + randomProjectName + "’");
+                "A job already exists with the name ‘" + RANDOM_PROJECT_NAME + "’");
     }
 
     @Test
