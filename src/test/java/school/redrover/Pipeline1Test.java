@@ -419,7 +419,7 @@ public class Pipeline1Test extends BaseTest {
         TestUtils.createItem(TestUtils.PIPELINE, pipeName, this);
         clickConfigButton();
         cleanConfig();
-//        sendScript(number_of_stages);
+        sendScript(number_of_stages);
         getDriver().findElement(By.name("Submit")).click();
 
         makeBuilds(buildsQtt, pipeName);
