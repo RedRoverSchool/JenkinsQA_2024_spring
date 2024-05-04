@@ -115,7 +115,6 @@ public class MultiConfigurationProject0Test extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.cssSelector("#description div:not([class])")).getText(), newText);
     }
 
-    @Ignore
     @Test
     public void testMakeCopyMultiConfigurationProject() {
         final String newProjectName = "MCProject copy";
