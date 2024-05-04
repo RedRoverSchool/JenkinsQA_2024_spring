@@ -75,9 +75,9 @@ public class HomePage extends BasePage {
         return getDriver().findElement(By.cssSelector("[href='/computer/" + name + "/']")).isDisplayed();
     }
 
-    public MultiConfigurationStatusPage clickMCPName(String projectName) {
+    public MultiConfigurationPage clickMCPName(String projectName) {
         getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
 
-        return new MultiConfigurationStatusPage(getDriver());
+        return new MultiConfigurationPage(getDriver());
     }
 }
