@@ -134,15 +134,32 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testAddDescription() {
-        PipelinePage pipelinePage = new HomePage(getDriver())
+        String descriptionText = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
                 .clickChangeDescription()
                 .setDescription(DESCRIPTION)
-                .clickSaveButton();
+                .clickSaveButton()
+                .getDescriptionText();
 
-        Assert.assertEquals(pipelinePage.getDescriptionText(), DESCRIPTION);
+        Assert.assertEquals(descriptionText, DESCRIPTION);
+    }
+
+    @Test(dependsOnMethods = "testAddDescription")
+    public void testEditDescription() {
+        final String addedToDescription = ", consectetur adipiscing elit.";
+        final String expectedDescription = DESCRIPTION + addedToDescription;
+
+        String descriptionText = new HomePage(getDriver())
+                .clickCreatedPipelineName()
+                .clickChangeDescription()
+                .clickOnDescriptionInput()
+                .setDescription(addedToDescription)
+                .clickSaveButton()
+                .getDescriptionText();
+
+        Assert.assertEquals(descriptionText, expectedDescription);
     }
 }
