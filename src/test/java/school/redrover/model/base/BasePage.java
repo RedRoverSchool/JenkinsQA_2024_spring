@@ -6,7 +6,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import school.redrover.model.AppearancePage;
 import school.redrover.model.HomePage;
-import school.redrover.runner.BaseTest;
 
 public abstract class BasePage extends BaseModel {
 
