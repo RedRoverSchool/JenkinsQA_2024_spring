@@ -6,6 +6,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 import java.util.List;
@@ -23,10 +24,11 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test
     public void testRedirectionToSecurityPage() {
-        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
-        getDriver().findElement(By.cssSelector("[href='configureSecurity']")).click();
+        String pageTitle = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickSecurity()
+                .getTitleText();
 
-        String pageTitle = getDriver().getTitle().split(" ")[0];
         Assert.assertEquals(pageTitle, "Security");
     }
 
