@@ -71,7 +71,7 @@ public class Pipeline1Test extends BaseTest {
             try {
                 getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
                         By.xpath("//tr[@data-runid='" + i + "']")));
-            } catch (NoSuchElementException e) {
+            } catch (Exception e) {
                 clickConfigButton();
                 getDriver().findElement(By.className("findTheYgramul"));
             }
@@ -419,7 +419,7 @@ public class Pipeline1Test extends BaseTest {
         TestUtils.createItem(TestUtils.PIPELINE, pipeName, this);
         clickConfigButton();
         cleanConfig();
-        sendScript(number_of_stages);
+//        sendScript(number_of_stages);
         getDriver().findElement(By.name("Submit")).click();
 
         makeBuilds(buildsQtt, pipeName);
