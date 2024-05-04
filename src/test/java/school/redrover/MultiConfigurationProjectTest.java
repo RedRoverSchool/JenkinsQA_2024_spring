@@ -10,7 +10,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.ItemErrorPage;
-import school.redrover.model.MultiConfigurationPage;
+
 
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
