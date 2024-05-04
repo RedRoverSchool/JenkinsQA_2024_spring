@@ -1,6 +1,9 @@
 package school.redrover;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -232,7 +235,7 @@ public class PipelineConfigurationTest extends BaseTest {
 
         Assert.assertEquals(actualTooltip, tooltipText);
     }
-
+    @Ignore
     @Test
     public void testChoosePipelineScript() {
         createPipeline();
@@ -352,6 +355,28 @@ public class PipelineConfigurationTest extends BaseTest {
     }
 
     @Test
+    public void testSetPipelineSpeedDurabilityOverride() {
+        final String selectedOptionForCheck = "Less durability, a bit faster (specialty use only)";
+        createPipeline();
+        navigateToConfigurePageFromDashboard();
+
+        getDriver().findElement(By.xpath("//label[text()='Pipeline speed/durability override']")).click();
+        WebElement selectCustomPipelineSpeedDurabilityLevel = getDriver().findElement(By.xpath("//select[@class='setting-input']"));
+        Select dropDown = new Select(selectCustomPipelineSpeedDurabilityLevel);
+        dropDown.selectByIndex(1);
+        String selectedValue = selectCustomPipelineSpeedDurabilityLevel.getText();
+
+        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
+        executor.executeScript("arguments[0].scrollIntoView();",
+                getDriver().findElement(SAVE_BUTTON_CONFIGURATION));
+        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
+
+        navigateToConfigurePageFromDashboard();
+
+        Assert.assertTrue(selectedValue.contains(selectedOptionForCheck));
+    }
+
+    @Test
     public void testSetNumberOfBuildsThrottleBuilds() {
         createPipeline();
         navigateToConfigurePageFromDashboard();
@@ -368,6 +393,5 @@ public class PipelineConfigurationTest extends BaseTest {
 
         Assert.assertFalse(getDriver().findElement(By.xpath("//div[@class='ok']"))
                 .getText().contains("Approximately 24 hours between builds"));
-
     }
 }

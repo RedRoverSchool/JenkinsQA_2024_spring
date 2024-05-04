@@ -9,11 +9,12 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
+
 
 public class FolderTest extends BaseTest {
 
-    private static final By NAME_ERROR_MESSAGE_LOCATOR = By.id("itemname-invalid");
     private static final String FOLDER_NAME = "First_Folder";
     private static final String NEW_FOLDER_NAME = "Renamed_First_Folder";
     private static final String THIRD_FOLDER_NAME = "Dependant_Test_Folder";
@@ -37,32 +38,38 @@ public class FolderTest extends BaseTest {
 
     @Test
     public void testDotAsFirstFolderNameCharErrorMessage() {
-        getDriver().findElement(By.cssSelector("[href$='/newJob']")).click();
-        getDriver().findElement(By.cssSelector("[class$='_Folder']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(".");
+        String errorMessageText = new HomePage(getDriver())
+                .clickNewItem()
+                .selectFolder()
+                .setItemName(".")
+                .getErrorMessage();
 
-        String dotAsFirstCharErrorMessage = getDriver().findElement(NAME_ERROR_MESSAGE_LOCATOR).getText();
-        Assert.assertEquals(dotAsFirstCharErrorMessage, "» “.” is not an allowed name",
+        Assert.assertEquals(errorMessageText, "» “.” is not an allowed name",
                 "The error message is different");
     }
 
     @Test
     public void testDotAsLastFolderNameCharErrorMessage() {
-        getDriver().findElement(By.cssSelector("[href$='/newJob']")).click();
-        getDriver().findElement(By.cssSelector("[class$='_Folder']")).click();
-        getDriver().findElement(By.id("name")).sendKeys("Folder." + Keys.TAB);
+        String errorMessageText = new HomePage(getDriver())
+                .clickNewItem()
+                .selectFolder()
+                .setItemName("Folder." + Keys.TAB)
+                .getErrorMessage();
 
-        String dotAsLastCharErrorMessage = getDriver().findElement(NAME_ERROR_MESSAGE_LOCATOR).getText();
-        Assert.assertEquals(dotAsLastCharErrorMessage, "» A name cannot end with ‘.’",
+        Assert.assertEquals(errorMessageText, "» A name cannot end with ‘.’",
                 "The error message is different");
     }
 
     @Test
     public void testCreateFolderViaCreateAJob() {
-        createFolderViaCreateAJob();
-        String breadcrumbFolderName = getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job']")).getText();
+        String folderBreadcrumbName = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .getBreadcrumbName();
 
-        Assert.assertEquals(breadcrumbFolderName, FOLDER_NAME, "Breadcrumb name doesn't match " + FOLDER_NAME);
+        Assert.assertEquals(folderBreadcrumbName, FOLDER_NAME, "Breadcrumb name doesn't match " + FOLDER_NAME);
     }
 
     @Test(dependsOnMethods = "testCreateFolderViaCreateAJob")

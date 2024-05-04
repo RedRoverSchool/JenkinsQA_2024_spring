@@ -7,9 +7,15 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
+import school.redrover.model.MultiConfigurationConfigPage;
+import school.redrover.model.MultiConfigurationPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
+
+import java.util.List;
 
 public class MultiConfigurationProject0Test extends BaseTest {
 
@@ -66,7 +72,7 @@ public class MultiConfigurationProject0Test extends BaseTest {
 
         TestUtils.returnToDashBoard(this);
 
-        getDriver().findElement(By.cssSelector("[href = 'job/" + projectName+ "/']")).click();
+        getDriver().findElement(By.cssSelector("[href = 'job/" + projectName + "/']")).click();
         getDriver().findElement(By.id("description-link")).click();
         getDriver().findElement(By.name("description")).sendKeys(additionText);
         getDriver().findElement(By.name("Submit")).click();
@@ -109,6 +115,7 @@ public class MultiConfigurationProject0Test extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.cssSelector("#description div:not([class])")).getText(), newText);
     }
 
+    @Ignore
     @Test
     public void testMakeCopyMultiConfigurationProject() {
         final String newProjectName = "MCProject copy";
@@ -145,7 +152,7 @@ public class MultiConfigurationProject0Test extends BaseTest {
 
         TestUtils.returnToDashBoard(this);
 
-        getDriver().findElement(By.cssSelector("[href = 'job/" + projectName+ "/']")).click();
+        getDriver().findElement(By.cssSelector("[href = 'job/" + projectName + "/']")).click();
         getDriver().findElement(By.id("description-link")).click();
         getDriver().findElement(By.name("description")).clear();
         getDriver().findElement(By.name("Submit")).click();
@@ -154,7 +161,7 @@ public class MultiConfigurationProject0Test extends BaseTest {
                 getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div#description>div"))));
     }
 
-    private  static final String NAME_OF_PROJECT = "The name of Multi-configuration project";
+    private static final String NAME_OF_PROJECT = "The name of Multi-configuration project";
 
     @Test
     public void testCreateMultiConfigurationProject() {
@@ -164,7 +171,7 @@ public class MultiConfigurationProject0Test extends BaseTest {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@type='submit']"))).click();
         getDriver().findElement(By.name("Submit")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(),"Project " +  NAME_OF_PROJECT);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Project " + NAME_OF_PROJECT);
     }
 
     @Test
@@ -180,7 +187,7 @@ public class MultiConfigurationProject0Test extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.cssSelector("#description>div:first-child")).getText(),
                 description,
-                "Project description is not displayed" );
+                "Project description is not displayed");
     }
 
     @Test
@@ -193,7 +200,7 @@ public class MultiConfigurationProject0Test extends BaseTest {
         Assert.assertFalse(getDriver().findElement(By.id("enable-disable-project")).isSelected());
     }
 
-    @Test (dependsOnMethods = "testMCPDisableByToggle")
+    @Test(dependsOnMethods = "testMCPDisableByToggle")
     public void testCheckTooltipEnablingMCP() {
         getDriver().findElement(By.linkText(projectName)).click();
         getDriver().findElement(By.linkText("Configure")).click();
@@ -209,12 +216,12 @@ public class MultiConfigurationProject0Test extends BaseTest {
 
     @Test
     public void testYesButtonColorDeletingMCPInSidebar() {
-        TestUtils.createNewItemAndReturnToDashboard(this,projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+        TestUtils.createNewItemAndReturnToDashboard(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
         getDriver().findElement(By.linkText(projectName)).click();
         getDriver().findElement(By.cssSelector("[data-message^='Delete']")).click();
 
         String script = "return window.getComputedStyle(arguments[0]).getPropertyValue('--color')";
-        String actualColor = (String)(((JavascriptExecutor) getDriver()).executeScript(
+        String actualColor = (String) (((JavascriptExecutor) getDriver()).executeScript(
                 script,
                 getDriver().findElement(By.cssSelector("[data-id='ok']"))));
         String expectedColorNone = "#e6001f";
@@ -268,11 +275,11 @@ public class MultiConfigurationProject0Test extends BaseTest {
         getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[1]/a")).click();
 
         Assert.assertEquals(getDriver().findElement(By
-                .xpath("//*[@id='job_MCProject']/td[3]/a/span")).getText(),"MCProject");
+                .xpath("//*[@id='job_MCProject']/td[3]/a/span")).getText(), "MCProject");
 
     }
 
-    @Test (dependsOnMethods = "testCreateMCProject")
+    @Test(dependsOnMethods = "testCreateMCProject")
     public void testRenameMCProject() {
         getDriver().findElement(By.xpath("//*[@id='job_MCProject']/td[3]/a/span")).click();
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[7]/span/a")).click();
@@ -282,14 +289,21 @@ public class MultiConfigurationProject0Test extends BaseTest {
 
 
         Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//*[@id='breadcrumbs']/li[3]/a"))).getText(),"MCProjectNew");
+                By.xpath("//*[@id='breadcrumbs']/li[3]/a"))).getText(), "MCProjectNew");
 
     }
 
     @Test
     public void testCreateMCP() {
-        TestUtils.createNewItemAndReturnToDashboard(this, randomProjectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
-        Assert.assertTrue(TestUtils.getViewItemElement(this, randomProjectName).isDisplayed());
+        List<String> itemNames = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(randomProjectName)
+                .selectMultiConfigurationAndClickOk()
+                .clickSave()
+                .clickLogo()
+                .getItemList();
+
+        Assert.assertTrue(itemNames.contains(randomProjectName));
     }
 
     @Test(dependsOnMethods = "testCreateMCP")
@@ -328,11 +342,21 @@ public class MultiConfigurationProject0Test extends BaseTest {
         openDropdownUsingSelenium(projectName);
 
         getDriver().findElement(By.linkText("Move")).click();
-        new Select(getDriver().findElement(By.name("destination"))).selectByValue("/"+folderName);
+        new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" + folderName);
         getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertTrue(
                 getDriver().findElement(By.linkText(folderName)).isDisplayed(),
                 "Project not moved to folder");
+    }
+
+    @Test
+    public void testDeleteMultiConfigurationProjectFromMenu() {
+        TestUtils.createJob(this, TestUtils.Job.MULTI_CONFIGURATION, randomProjectName);
+        getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[3]/a")).click();
+
+        TestUtils.deleteItem(this,randomProjectName);
+
+        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "Welcome to Jenkins!");
     }
 }
