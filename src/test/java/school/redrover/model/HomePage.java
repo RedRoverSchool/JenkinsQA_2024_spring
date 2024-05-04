@@ -21,6 +21,9 @@ public class HomePage extends BasePage {
     @FindBy(css = "#executors tr [href]")
     private List<WebElement> nodesList;
 
+    @FindBy(css = "td > a[href^='job']")
+    private WebElement pipelineItem;
+
     @FindBy(css = "[href='/manage']")
     private WebElement manageJenkinsLink;
 
@@ -77,10 +80,16 @@ public class HomePage extends BasePage {
         return getDriver().findElement(By.cssSelector("[href='/computer/" + name + "/']")).isDisplayed();
     }
 
-    public MultiConfigurationStatusPage clickMCPName(String projectName) {
+    public MultiConfigurationPage clickMCPName(String projectName) {
         getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
 
-        return new MultiConfigurationStatusPage(getDriver());
+        return new MultiConfigurationPage(getDriver());
+    }
+
+    public PipelinePage clickCreatedPipelineName() {
+        pipelineItem.click();
+
+        return new PipelinePage(getDriver());
     }
 
     public ManageJenkinsPage clickManageJenkins() {

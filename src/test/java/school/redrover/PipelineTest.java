@@ -5,7 +5,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -41,24 +40,26 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testPipelineDescriptionTextAreaBacklightColor() {
-        TestUtils.resetJenkinsTheme(this);
-        TestUtils.goToMainPage(getDriver());
-
-        createPipelineWithCreateAJob();
-        getDriver().findElement(ADD_DESCRIPTION_LOCATOR).click();
-
-        getWait2().until(ExpectedConditions.invisibilityOfElementLocated(ADD_DESCRIPTION_LOCATOR));
-        String currentTextAreaBorderBacklightColor = getDriver().switchTo().activeElement().
-                getCssValue("box-shadow").split(" 0px")[0];
+        String currentTextAreaBorderBacklightColor = new HomePage(getDriver())
+                .resetJenkinsTheme()
+                .clickLogo()
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickChangeDescription()
+                .waitAddDescriptionButtonDisappears()
+                .getTextAreaBorderBacklightColor();
 
         Assert.assertEquals(currentTextAreaBorderBacklightColor, "rgba(11, 106, 162, 0.25)",
-                "Current text area border backlight color is not equal to rgba(11, 106, 162, 0.25)");
+                "Current text area border backlight color is different");
     }
 
     @Test
     public void testPipelineDescriptionTextAreaBacklightDefaultColor() {
-        TestUtils.resetJenkinsTheme(this);
-        TestUtils.goToMainPage(getDriver());
+        new HomePage(getDriver())
+                .resetJenkinsTheme()
+                .clickLogo();
 
         createPipelineWithCreateAJob();
         getDriver().findElement(ADD_DESCRIPTION_LOCATOR).click();
@@ -74,8 +75,9 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testYesButtonColorDeletingPipelineInSidebar() {
-        TestUtils.resetJenkinsTheme(this);
-        TestUtils.goToMainPage(getDriver());
+        new HomePage(getDriver())
+                .resetJenkinsTheme()
+                .clickLogo();
 
         createPipelineWithCreateAJob();
         getDriver().findElement(By.cssSelector("[data-title='Delete Pipeline']")).click();
@@ -132,15 +134,32 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testAddDescription() {
-        PipelinePage pipelinePage = new HomePage(getDriver())
+        String descriptionText = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
                 .clickChangeDescription()
                 .setDescription(DESCRIPTION)
-                .clickSaveButton();
+                .clickSaveButton()
+                .getDescriptionText();
 
-        Assert.assertEquals(pipelinePage.getDescriptionText(), DESCRIPTION);
+        Assert.assertEquals(descriptionText, DESCRIPTION);
+    }
+
+    @Test(dependsOnMethods = "testAddDescription")
+    public void testEditDescription() {
+        final String addedToDescription = ", consectetur adipiscing elit.";
+        final String expectedDescription = DESCRIPTION + addedToDescription;
+
+        String descriptionText = new HomePage(getDriver())
+                .clickCreatedPipelineName()
+                .clickChangeDescription()
+                .clickOnDescriptionInput()
+                .setDescription(addedToDescription)
+                .clickSaveButton()
+                .getDescriptionText();
+
+        Assert.assertEquals(descriptionText, expectedDescription);
     }
 }

@@ -9,12 +9,15 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
+import school.redrover.model.ItemErrorPage;
+
+
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
-public class MultiConfigurationProject0Test extends BaseTest {
+public class MultiConfigurationProjectTest extends BaseTest {
 
     private static final String PROJECT_NAME = "MCProject";
     private final String RANDOM_PROJECT_NAME = TestUtils.randomString();
@@ -291,7 +294,7 @@ public class MultiConfigurationProject0Test extends BaseTest {
     @Test
     public void testCreateMCP() {
         List<String> itemNames = new HomePage(getDriver())
-                .clickCreateAJob()
+                .clickNewItem()
                 .setItemName(RANDOM_PROJECT_NAME)
                 .selectMultiConfigurationAndClickOk()
                 .clickSave()
@@ -303,13 +306,16 @@ public class MultiConfigurationProject0Test extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateMCP")
     public void testCreateMCPWithSameName() {
-        TestUtils.createNewItem(this, RANDOM_PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+        ItemErrorPage errorPage = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(RANDOM_PROJECT_NAME)
+                .selectMultiConfiguration()
+                .clickOkAnyway(new ItemErrorPage(getDriver()));
 
+
+        Assert.assertEquals(errorPage.getHeaderText(), "Error");
         Assert.assertEquals(
-                getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#main-panel h1"))).getText(),
-                "Error");
-        Assert.assertEquals(
-                getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#main-panel p"))).getText(),
+                errorPage.getMessageText(),
                 "A job already exists with the name ‘" + RANDOM_PROJECT_NAME + "’");
     }
 

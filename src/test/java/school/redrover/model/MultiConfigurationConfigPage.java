@@ -10,9 +10,9 @@ public class MultiConfigurationConfigPage extends BasePage {
         super(driver);
     }
 
-    public MultiConfigurationStatusPage clickSave() {
+    public MultiConfigurationPage clickSave() {
         getDriver().findElement(By.name("Submit")).click();
 
-        return new MultiConfigurationStatusPage(getDriver());
+        return new MultiConfigurationPage(getDriver());
     }
 }
