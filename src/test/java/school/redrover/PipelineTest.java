@@ -2,14 +2,12 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
-import school.redrover.model.PipelinePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -57,18 +55,16 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testPipelineDescriptionTextAreaBacklightDefaultColor() {
-        new HomePage(getDriver())
+        String defaultTextAreaBorderBacklightColor = new HomePage(getDriver())
                 .resetJenkinsTheme()
-                .clickLogo();
-
-        createPipelineWithCreateAJob();
-        getDriver().findElement(ADD_DESCRIPTION_LOCATOR).click();
-        new Actions(getDriver()).sendKeys(Keys.TAB).perform();
-
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        String defaultTextAreaBorderBacklightColor = (String) js.executeScript(
-                "return window.getComputedStyle(arguments[0]).getPropertyValue('--focus-input-glow');",
-                getDriver().findElement(By.name("description")));
+                .clickLogo()
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickChangeDescription()
+                .makeDescriptionFieldNotActive()
+                .getDefaultTextAreaBorderBacklightColor();
 
         Assert.assertEquals(defaultTextAreaBorderBacklightColor, "rgba(11,106,162,.25)");
     }

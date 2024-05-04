@@ -1,7 +1,10 @@
 package school.redrover.model;
 
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
@@ -61,4 +64,20 @@ public class PipelinePage extends BasePage {
 
         return this;
     }
+
+
+    public PipelinePage makeDescriptionFieldNotActive() {
+        new Actions(getDriver()).sendKeys(Keys.TAB).perform();
+
+        return this;
+    }
+
+    public String getDefaultTextAreaBorderBacklightColor() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+
+        return (String) js.executeScript(
+                "return window.getComputedStyle(arguments[0]).getPropertyValue('--focus-input-glow');",
+                descriptionInput);
+    }
+
 }
