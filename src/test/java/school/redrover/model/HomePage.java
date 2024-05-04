@@ -27,6 +27,9 @@ public class HomePage extends BasePage {
     @FindBy(css = "[href='/manage']")
     private WebElement manageJenkinsLink;
 
+    @FindBy(css = "[tooltip='New View']")
+    private WebElement newView;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -104,5 +107,22 @@ public class HomePage extends BasePage {
         manageJenkinsLink.click();
 
         return new ManageJenkinsPage(getDriver());
+    }
+
+    public CreateNewViewPage clickNewView() {
+        newView.click();
+
+        return new CreateNewViewPage(getDriver());
+    }
+
+    public HomePage clickView(String viewName) {
+        getDriver().findElement(By.linkText(viewName)).click();
+
+        return this;
+    }
+
+    public int sizeColumnList() {
+
+        return getDriver().findElements(By.className("sortheader")).size();
     }
 }
