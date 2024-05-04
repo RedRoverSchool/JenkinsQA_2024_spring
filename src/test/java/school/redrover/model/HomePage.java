@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
 
@@ -79,5 +80,12 @@ public class HomePage extends BasePage {
         getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
 
         return new MultiConfigurationPage(getDriver());
+    }
+
+    public ViewAllPage clickMyViewsFromDropdown() {
+        openHeaderUsernameDropdown();
+        getDriver().findElement(By.cssSelector("[href$='admin/my-views']")).click();
+
+        return new ViewAllPage(getDriver());
     }
 }

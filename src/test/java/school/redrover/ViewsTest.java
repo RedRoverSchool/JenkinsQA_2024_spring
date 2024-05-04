@@ -7,6 +7,9 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
+import school.redrover.model.ViewAllPage;
+import school.redrover.model.base.BasePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -27,15 +30,13 @@ public class ViewsTest extends BaseTest {
 
     @Test
     public void testGoToMyViewFromUsernameDropdown() {
-        new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.cssSelector("[data-href$='admin']")))
-                .pause(1000)
-                .click()
-                .perform();
+        String views = "My Views";
 
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[href$='admin/my-views']"))).click();
+        boolean x = new HomePage(getDriver())
+                .clickMyViewsFromDropdown()
+                .isThereTextInBreadcrumbs(views);
 
-        Assert.assertTrue(getDriver().findElement(By.cssSelector("[href$='my-views/']")).isDisplayed());
+        Assert.assertTrue(x);
     }
 
     final String VIEW_NAME = "in progress";
