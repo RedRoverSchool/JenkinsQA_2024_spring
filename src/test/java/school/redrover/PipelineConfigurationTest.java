@@ -378,20 +378,20 @@ public class PipelineConfigurationTest extends BaseTest {
 
     @Test
     public void testSetNumberOfBuildsThrottleBuilds() {
+        final String messageDay = "Approximately 24 hours between builds";
+
         createPipeline();
         navigateToConfigurePageFromDashboard();
         scrollCheckBoxThrottleBuildsIsVisible();
 
-        WebElement selectThrottleBuilds = getDriver().findElement(By.xpath("//label[text()='Throttle builds']"));
-        getActions().moveToElement(selectThrottleBuilds)
-                .click()
-                .perform();
-        selectThrottleBuilds.click();
+        getDriver().findElement(By.xpath("//label[text()='Throttle builds']")).click();
+        WebElement selectThrottleBuilds = getDriver().findElement(By.xpath("//select[@class='jenkins-select__input select']"));
+        Select simpleDropDown = new Select(selectThrottleBuilds);
+        simpleDropDown.selectByValue("day");
 
-        WebElement selectTimePeriod = getDriver().findElement(By.name("_.durationName"));
-        getActions().moveToElement(selectTimePeriod).click();
+        WebElement dayElement = getDriver().findElement(By.xpath("//div[@class='ok']"));
+        getWait5().until(ExpectedConditions.visibilityOf(dayElement));
 
-        Assert.assertFalse(getDriver().findElement(By.xpath("//div[@class='ok']"))
-                .getText().contains("Approximately 24 hours between builds"));
+        Assert.assertEquals(dayElement.getText(), messageDay);
     }
 }
