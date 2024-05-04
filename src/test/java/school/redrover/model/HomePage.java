@@ -21,6 +21,9 @@ public class HomePage extends BasePage {
     @FindBy(css = "#executors tr [href]")
     private List<WebElement> nodesList;
 
+    @FindBy(css = "[href='/manage']")
+    private WebElement manageJenkinsLink;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -79,5 +82,11 @@ public class HomePage extends BasePage {
         getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
 
         return new MultiConfigurationStatusPage(getDriver());
+    }
+
+    public ManageJenkinsPage clickManageJenkins() {
+        manageJenkinsLink.click();
+
+        return  new ManageJenkinsPage(getDriver());
     }
 }
