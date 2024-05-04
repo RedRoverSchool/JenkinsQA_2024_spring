@@ -108,7 +108,7 @@ public class JobRemoteTriggeringOBTest extends BaseTest {
     @Test
     public void testFreestyleJobRemoteTriggering() {
         final String projectName = "Project1";
-
+ 
         openUserConfigurations();
 
         final String[] tokenUuidUser = getTokenUuidUser(projectName);
