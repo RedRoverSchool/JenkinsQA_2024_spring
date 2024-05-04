@@ -229,7 +229,6 @@ public class PipelineConfigurationTest extends BaseTest {
 
         Assert.assertEquals(actualTooltip, tooltipText);
     }
-    @Ignore
     @Test
     public void testChoosePipelineScript() {
         createPipeline();
