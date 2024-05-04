@@ -55,4 +55,10 @@ public class PipelinePage extends BasePage {
     public String getTextAreaBorderBacklightColor() {
         return getDriver().switchTo().activeElement().getCssValue("box-shadow").split(" 0px")[0];
     }
+
+    public PipelinePage clickOnDescriptionInput() {
+        descriptionInput.click();
+
+        return this;
+    }
 }
