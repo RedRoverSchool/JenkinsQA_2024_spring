@@ -19,8 +19,4 @@ public class ManageJenkinsPage extends BasePage {
 
         return new SecurityPage(getDriver());
     }
-
-
-
-
 }

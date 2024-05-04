@@ -47,7 +47,6 @@ public class HomePage extends BasePage {
         return new CreateNewItemPage(getDriver());
     }
 
-
     public HomePage openItemDropdown(String projectName) {
         WebElement element = getDriver().findElement(By.cssSelector(String.format(
                 "td>a[href = 'job/%s/']",
@@ -60,7 +59,7 @@ public class HomePage extends BasePage {
         getDriver().findElement(TestUtils.DROPDOWN_DELETE).click();
         return dialog;
     }
-  
+
     public NodesTablePage clickNodesLink() {
         nodesLink.click();
 
@@ -87,6 +86,6 @@ public class HomePage extends BasePage {
     public ManageJenkinsPage clickManageJenkins() {
         manageJenkinsLink.click();
 
-        return  new ManageJenkinsPage(getDriver());
+        return new ManageJenkinsPage(getDriver());
     }
 }

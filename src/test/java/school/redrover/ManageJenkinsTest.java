@@ -24,11 +24,12 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test
     public void testRedirectionToSecurityPage() {
-        String titlePage = new HomePage(getDriver())
+        String pageTitle = new HomePage(getDriver())
                 .clickManageJenkins()
                 .clickSecurity()
                 .getTitleText();
-        Assert.assertEquals(titlePage, "Security");
+
+        Assert.assertEquals(pageTitle, "Security");
     }
 
     @Test
