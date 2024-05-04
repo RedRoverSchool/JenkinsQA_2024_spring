@@ -229,7 +229,6 @@ public class PipelineConfigurationTest extends BaseTest {
 
         Assert.assertEquals(actualTooltip, tooltipText);
     }
-    @Ignore
     @Test
     public void testChoosePipelineScript() {
         createPipeline();
@@ -243,7 +242,7 @@ public class PipelineConfigurationTest extends BaseTest {
         WebElement uncheckCheckBox = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//label[text()='Use Groovy Sandbox']")));
         uncheckCheckBox.click();
 
-        WebElement link = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@target='blank']")));
+        WebElement link = getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@target='blank']")));
         Assert.assertTrue(link.isDisplayed(), "Uncheck doesn't work");
     }
 
