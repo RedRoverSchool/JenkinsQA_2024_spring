@@ -17,9 +17,14 @@ public class FolderRenamePage extends BasePage {
         super(driver);
     }
 
-    public FolderStatusPage setNewNameAndClickRename(String name) {
+    public FolderRenamePage setNewName(String name) {
         textBox.clear();
         textBox.sendKeys(name);
+
+        return this;
+    }
+
+    public FolderStatusPage clickRename() {
         submitButton.click();
 
         return new FolderStatusPage(getDriver());
