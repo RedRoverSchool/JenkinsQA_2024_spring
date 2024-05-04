@@ -22,7 +22,7 @@ public class HomePage extends BasePage {
     private List<WebElement> nodesList;
 
     @FindBy(css = "td > a[href^='job']")
-    private WebElement singleItem;
+    private WebElement pipelineItem;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -85,7 +85,7 @@ public class HomePage extends BasePage {
     }
 
     public PipelinePage clickCreatedPipelineName() {
-        singleItem.click();
+        pipelineItem.click();
 
         return new PipelinePage(getDriver());
     }
