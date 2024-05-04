@@ -64,10 +64,10 @@ public class Pipeline1Test extends BaseTest {
         }
     }
 
-    private void makeBuilds(int buildsQtt) {
+    private void makeBuilds(int buildsQtt, String pipeLineName) {
         for (int i = 1; i <= buildsQtt; i++) {
             getWait5().until(ExpectedConditions.elementToBeClickable(
-                    By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/build?delay=0sec']"))).click();
+                    By.xpath("//a[@href='/job/" + pipeLineName + "/build?delay=0sec']"))).click();
             try {
                 getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
                         By.xpath("//tr[@data-runid='" + i + "']")));
@@ -422,7 +422,7 @@ public class Pipeline1Test extends BaseTest {
         sendScript(number_of_stages);
         getDriver().findElement(By.name("Submit")).click();
 
-        makeBuilds(buildsQtt);
+        makeBuilds(buildsQtt, pipeName);
 
         clickFullStageViewButton();
 
