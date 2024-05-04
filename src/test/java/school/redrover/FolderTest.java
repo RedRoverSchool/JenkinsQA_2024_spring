@@ -36,6 +36,16 @@ public class FolderTest extends BaseTest {
                 "arguments[0].dispatchEvent(new Event('click'));", itemDropdownArrow);
     }
 
+    public void create() {
+        HomePage homePage = new HomePage(getDriver());
+
+        homePage.clickNewItem()
+                .setItemName(FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .clickLogo();
+    }
+
     @Test
     public void testDotAsFirstFolderNameCharErrorMessage() {
         String errorMessageText = new HomePage(getDriver())
@@ -147,5 +157,20 @@ public class FolderTest extends BaseTest {
 
         String nestedFolder = getDriver().findElement(By.cssSelector("td [href*='job']:first-child")).getText();
         Assert.assertEquals(nestedFolder, FOLDER_TO_MOVE, FOLDER_TO_MOVE + " is not in " + FOLDER_NAME);
+    }
+
+    @Test
+    public void testRename() {
+        create();
+
+        HomePage homePage = new HomePage(getDriver());
+
+        String resultName = homePage
+                .clickOnCreatedFolder(FOLDER_NAME)
+                .clickOnRenameButton()
+                .setNewNameAndClickRename(NEW_FOLDER_NAME)
+                .getBreadcrumbName();
+
+        Assert.assertEquals(resultName, NEW_FOLDER_NAME);
     }
 }

@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
 
@@ -104,5 +105,11 @@ public class HomePage extends BasePage {
         manageJenkinsLink.click();
 
         return new ManageJenkinsPage(getDriver());
+    }
+
+    public FolderStatusPage clickOnCreatedFolder(String name) {
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tr[@id='job_" + name + "']/td/a"))).click();
+
+        return new FolderStatusPage(getDriver());
     }
 }
