@@ -8,8 +8,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
-import school.redrover.model.ViewAllPage;
-import school.redrover.model.base.BasePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -29,14 +27,14 @@ public class ViewsTest extends BaseTest {
     }
 
     @Test
-    public void testGoToMyViewFromUsernameDropdown() {
+    public void testGoToMyViewsFromUsernameDropdown() {
         String views = "My Views";
 
-        boolean x = new HomePage(getDriver())
+        boolean textVisibility = new HomePage(getDriver())
                 .clickMyViewsFromDropdown()
                 .isThereTextInBreadcrumbs(views);
 
-        Assert.assertTrue(x);
+        Assert.assertTrue(textVisibility,"'My Views' didn't open");
     }
 
     final String VIEW_NAME = "in progress";

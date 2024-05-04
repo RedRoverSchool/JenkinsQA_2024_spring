@@ -8,8 +8,6 @@ import org.openqa.selenium.interactions.Actions;
 import school.redrover.model.AppearancePage;
 import school.redrover.model.HomePage;
 
-import java.util.List;
-
 public abstract class BasePage extends BaseModel {
 
     public BasePage(WebDriver driver) {
