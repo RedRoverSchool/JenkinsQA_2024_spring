@@ -84,7 +84,7 @@ public class HomePage extends BasePage {
         return new MultiConfigurationPage(getDriver());
     }
 
-    public PipelinePage openSinglePipelineItem() {
+    public PipelinePage clickCreatedPipelineName() {
         singleItem.click();
 
         return new PipelinePage(getDriver());
