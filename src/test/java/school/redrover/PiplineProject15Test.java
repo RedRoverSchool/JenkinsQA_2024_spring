@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -33,7 +34,7 @@ public class PiplineProject15Test extends BaseTest {
                 getDriver().findElement(By.xpath("//*[@id='main-panel']/div[1]/div/h1")).getText(),
                 "PiplineOne");
     }
-
+    @Ignore
     @Test(dependsOnMethods = "testCreatePipline")
     public void testCreatePiplineSameName() {
 

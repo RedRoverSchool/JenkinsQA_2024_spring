@@ -9,11 +9,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
+import school.redrover.model.PipelinePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
 import java.util.List;
-
 
 public class PipelineTest extends BaseTest {
 
@@ -21,6 +22,7 @@ public class PipelineTest extends BaseTest {
     private static final By ADD_DESCRIPTION_LOCATOR = By.id("description-link");
     private static final By DASHBOARD_PIPELINE_LOCATOR = By.cssSelector("td [href='job/" + PIPELINE_NAME + "/']");
     private static final By BUILD_HISTORY_PIPELINE_LOCATOR = By.cssSelector("td [href$='job/" + PIPELINE_NAME + "/']");
+    private static final String DESCRIPTION = "Lorem ipsum dolor sit amet";
 
     private void createPipelineWithCreateAJob() {
         getDriver().findElement(By.linkText("Create a job")).click();
@@ -126,5 +128,19 @@ public class PipelineTest extends BaseTest {
 
         List<WebElement> buildHistoryTable = getDriver().findElements(BUILD_HISTORY_PIPELINE_LOCATOR);
         Assert.assertTrue(buildHistoryTable.isEmpty(), PIPELINE_NAME + " build is in Build history table");
+    }
+
+    @Test
+    public void testAddDescription() {
+        PipelinePage pipelinePage = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickChangeDescription()
+                .setDescription(DESCRIPTION)
+                .clickSaveButton();
+
+        Assert.assertEquals(pipelinePage.getDescriptionText(), DESCRIPTION);
     }
 }

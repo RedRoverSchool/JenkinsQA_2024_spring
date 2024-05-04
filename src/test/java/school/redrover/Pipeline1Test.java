@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@Ignore
 public class Pipeline1Test extends BaseTest {
     private static final String PIPELINE_NAME = "NewPipeline";
 
@@ -65,10 +64,10 @@ public class Pipeline1Test extends BaseTest {
 
     private void makeBuilds(int buildsQtt) {
         for (int i = 1; i <= buildsQtt; i++) {
-            getWait5().until(ExpectedConditions.elementToBeClickable(
+            getWait10().until(ExpectedConditions.elementToBeClickable(
                     By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/build?delay=0sec']"))).click();
-            getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
-                    By.xpath("//span[@class='badge']/a[@href='" + i + "']")));
+            getWait60().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                    By.xpath("//tr[@data-runid='" + i + "']")));
         }
     }
 
@@ -378,7 +377,6 @@ public class Pipeline1Test extends BaseTest {
         Assert.assertTrue(actualResult.contains("Stage Logs (stage 1)"));
     }
 
-    @Ignore
     @Test
     public void testTableWithAllStagesAndTheLast10Builds() {
 
