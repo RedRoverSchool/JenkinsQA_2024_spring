@@ -47,6 +47,4 @@ public class FolderStatusPage extends BasePage {
                 .map(WebElement::getText)
                 .toList();
     }
-
-
 }
