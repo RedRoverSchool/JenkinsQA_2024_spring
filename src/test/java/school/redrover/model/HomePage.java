@@ -3,15 +3,11 @@ package school.redrover.model;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
-
-import java.awt.*;
-import java.util.List;
 
 
 public class HomePage extends BasePage {
@@ -24,6 +20,12 @@ public class HomePage extends BasePage {
 
     @FindBy(css = "#executors tr [href]")
     private List<WebElement> nodesList;
+
+    @FindBy(css = "td > a[href^='job']")
+    private WebElement pipelineItem;
+
+    @FindBy(css = "[href='/manage']")
+    private WebElement manageJenkinsLink;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -77,5 +79,30 @@ public class HomePage extends BasePage {
 
     public boolean isNodeDisplayed(String name) {
         return getDriver().findElement(By.cssSelector("[href='/computer/" + name + "/']")).isDisplayed();
+    }
+
+    public MultiConfigurationPage clickMCPName(String projectName) {
+        getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
+
+        return new MultiConfigurationPage(getDriver());
+    }
+
+    public PipelinePage clickCreatedPipelineName() {
+        pipelineItem.click();
+
+        return new PipelinePage(getDriver());
+    }
+
+    public ViewAllPage clickMyViewsFromDropdown() {
+        openHeaderUsernameDropdown();
+        getDriver().findElement(By.cssSelector("[href$='admin/my-views']")).click();
+
+        return new ViewAllPage(getDriver());
+    }
+
+    public ManageJenkinsPage clickManageJenkins() {
+        manageJenkinsLink.click();
+
+        return new ManageJenkinsPage(getDriver());
     }
 }

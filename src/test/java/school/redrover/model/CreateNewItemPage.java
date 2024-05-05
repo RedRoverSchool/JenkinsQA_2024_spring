@@ -12,19 +12,25 @@ public class CreateNewItemPage extends BasePage {
     private WebElement nameText;
 
     @FindBy(xpath = "//label[.='Freestyle project']")
-    private WebElement FreestyleItem;
+    private WebElement freestyleItem;
 
-    @FindBy(xpath = "//label[.='Organization Folder']")
-    private WebElement organizationFolderItem;
+    @FindBy(xpath = "//label[.='Pipeline']")
+    private WebElement pipelineItem;
 
-    @FindBy(id = "ok-button")
-    private WebElement okButton;
+    @FindBy(xpath = "//label[.='Multi-configuration project']")
+    private WebElement multiConfigurationItem;
 
     @FindBy(css = "[class$='_Folder']")
     private WebElement folderItem;
 
     @FindBy(css = "[class*='WorkflowMultiBranchProject']")
     private WebElement multibranchPipelineItem;
+
+    @FindBy(xpath = "//label[.='Organization Folder']")
+    private WebElement organizationFolderItem;
+
+    @FindBy(id = "ok-button")
+    private WebElement okButton;
 
     @FindBy(id = "itemname-invalid")
     private WebElement errorMessage;
@@ -39,17 +45,30 @@ public class CreateNewItemPage extends BasePage {
     }
 
     public FreestyleConfigPage selectFreestyleAndClickOk() {
-        FreestyleItem.click();
+        freestyleItem.click();
         okButton.click();
 
         return new FreestyleConfigPage(getDriver());
     }
 
-    public OrganizationFolderConfigPage selectOrganizationFolderAndClickOk() {
-        organizationFolderItem.click();
+    public PipelineConfigPage selectPipelineAndClickOk() {
+        pipelineItem.click();
         okButton.click();
 
-        return new OrganizationFolderConfigPage(getDriver());
+        return new PipelineConfigPage(getDriver());
+    }
+
+    public MultiConfigurationConfigPage selectMultiConfigurationAndClickOk() {
+        multiConfigurationItem.click();
+        okButton.click();
+
+        return new MultiConfigurationConfigPage(getDriver());
+    }
+
+    public CreateNewItemPage selectMultiConfiguration() {
+        multiConfigurationItem.click();
+
+        return this;
     }
 
     public FolderConfigPage selectFolderAndClickOk() {
@@ -59,6 +78,12 @@ public class CreateNewItemPage extends BasePage {
         return new FolderConfigPage(getDriver());
     }
 
+    public CreateNewItemPage selectFolder() {
+        folderItem.click();
+
+        return this;
+    }
+
     public MultibranchPipelineConfigPage selectMultibranchPipelineAndClickOk() {
         multibranchPipelineItem.click();
         okButton.click();
@@ -66,10 +91,17 @@ public class CreateNewItemPage extends BasePage {
         return new MultibranchPipelineConfigPage(getDriver());
     }
 
-    public CreateNewItemPage selectFolder() {
-        folderItem.click();
+    public OrganizationFolderConfigPage selectOrganizationFolderAndClickOk() {
+        organizationFolderItem.click();
+        okButton.click();
 
-        return this;
+        return new OrganizationFolderConfigPage(getDriver());
+    }
+
+    public <T> T clickOkAnyway(T page) {
+        okButton.click();
+
+        return page;
     }
 
     public String getErrorMessage() {
