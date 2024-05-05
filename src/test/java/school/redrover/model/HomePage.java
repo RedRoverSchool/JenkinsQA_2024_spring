@@ -105,4 +105,17 @@ public class HomePage extends BasePage {
 
         return new ManageJenkinsPage(getDriver());
     }
+
+    public String getStatusFor(String jobName) {
+        By pipelineProjectNameLinkXPath = By.xpath("//a[contains(., '" + jobName + "')]");
+        By pipelineProjectStatusXPath = By.xpath("./ancestor-or-self::tr//span[@class='build-status-icon__outer']/*[name() = 'svg']");
+        WebElement pipelineProjectStatus = getDriver().findElement(pipelineProjectNameLinkXPath).findElement(pipelineProjectStatusXPath);
+
+        return pipelineProjectStatus.getAttribute("tooltip");
+    }
+
+    public PipelinePage clickJobName(String jobName) {
+        getDriver().findElement(By.xpath("//a[contains(., '" + jobName + "')]")).click();
+        return new PipelinePage(getDriver());
+    }
 }

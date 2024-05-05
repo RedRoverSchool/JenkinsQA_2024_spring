@@ -20,6 +20,9 @@ public class PipelinePage extends BasePage {
     @FindBy(name = "Submit")
     private WebElement saveButton;
 
+    @FindBy(xpath = "//form[@id='disable-project' or @id='enable-project']/button")
+    private WebElement disableEnableProjectButton;
+
     @FindBy(css = "#description>:first-child")
     private WebElement displayedDescription;
 
@@ -30,6 +33,11 @@ public class PipelinePage extends BasePage {
     public PipelinePage clickSaveButton() {
         saveButton.click();
 
+        return this;
+    }
+
+    public PipelinePage clickDisableEnableProjectButton() {
+        disableEnableProjectButton.click();
         return this;
     }
 

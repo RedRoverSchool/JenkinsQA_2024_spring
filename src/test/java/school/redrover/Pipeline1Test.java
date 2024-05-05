@@ -9,6 +9,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -432,23 +433,24 @@ public class Pipeline1Test extends BaseTest {
     @Test
     public void testPipelineProjectCanBeReenabled() {
         String pipelineName = "My new cool disable pipeline project";
-        By disableEnableButtonXPath = By.xpath("//button[@name='Submit']");
-        By jenkinsHomeLinkXPath = By.xpath("//a[@id='jenkins-home-link']");
-        By pipelineProjectNameLinkXPath = By.xpath("//a[contains(., '" + pipelineName + "')]");
-        By pipelineProjectStatusXPath = By.xpath("./ancestor-or-self::tr//span[@class='build-status-icon__outer']/*[name() = 'svg']");
 
-        TestUtils.createItem(TestUtils.PIPELINE, pipelineName, this);
+        HomePage homePage = new HomePage(getDriver());
+        String statusForJobNameGiven = homePage
+            .clickNewItem()
+            .setItemName(pipelineName)
+            .selectPipelineAndClickOk()
+            .clickSaveButton()
+            .clickDisableEnableProjectButton()
+            .clickLogo()
+            .getStatusFor(pipelineName);
+        Assert.assertEquals(statusForJobNameGiven, "Disabled");
 
-        getDriver().findElement(disableEnableButtonXPath).click();
-        getDriver().findElement(jenkinsHomeLinkXPath).click();
-        WebElement pipelineProjectStatus = getDriver().findElement(pipelineProjectNameLinkXPath).findElement(pipelineProjectStatusXPath);
-        Assert.assertEquals(pipelineProjectStatus.getAttribute("tooltip"), "Disabled");
-
-        getDriver().findElement(pipelineProjectNameLinkXPath).click();
-        getDriver().findElement(disableEnableButtonXPath).click();
-        getDriver().findElement(jenkinsHomeLinkXPath).click();
-        WebElement pipelineProjectStatusNew = getDriver().findElement(pipelineProjectNameLinkXPath).findElement(pipelineProjectStatusXPath);
-        Assert.assertEquals(pipelineProjectStatusNew.getAttribute("tooltip"), "Not built");
+        String statusForJobNameGivenAfterReenable = homePage
+            .clickJobName(pipelineName)
+            .clickDisableEnableProjectButton()
+            .clickLogo()
+            .getStatusFor(pipelineName);
+        Assert.assertEquals(statusForJobNameGivenAfterReenable, "Not built");
 
     }
 }
