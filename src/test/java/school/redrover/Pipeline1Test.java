@@ -424,6 +424,7 @@ public class Pipeline1Test extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         makeBuilds(buildsQtt, pipeName);
+
         clickFullStageViewButton();
 
         int actualSagesQtt = getDriver().findElements(
