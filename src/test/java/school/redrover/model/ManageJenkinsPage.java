@@ -1,6 +1,5 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import school.redrover.runner.TestUtils;
 import org.openqa.selenium.WebElement;
@@ -29,7 +28,7 @@ public class ManageJenkinsPage extends BasePage {
         return TestUtils.getBaseUrl() + "/manage/";
     }
 
-    public boolean searchInputIsDisplayed() {
+    public boolean isSearchInputDisplayed() {
         return searchInput.isDisplayed();
     }
 

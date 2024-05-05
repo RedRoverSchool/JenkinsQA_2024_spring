@@ -142,10 +142,10 @@ public class ManageJenkinsTest extends BaseTest {
     }
 
     @Test
-    public void testUserSeeTheSearchSettingsField() {
+    public void testSearchSettingsFieldVisibility() {
         ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
                 .clickManageJenkins();
 
-        Assert.assertTrue(manageJenkinsPage.searchInputIsDisplayed());
+        Assert.assertTrue(manageJenkinsPage.isSearchInputDisplayed());
     }
 }
