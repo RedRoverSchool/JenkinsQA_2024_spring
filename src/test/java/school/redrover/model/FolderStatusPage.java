@@ -10,11 +10,29 @@ public class FolderStatusPage extends BasePage {
     @FindBy(css = "[class*='breadcrumbs']>[href*='job']")
     private WebElement breadcrumbsName;
 
+    @FindBy(linkText = "Rename")
+    private WebElement renameItemLink;
+
+    @FindBy(linkText = "Delete Folder")
+    private WebElement deleteFolderLink;
+
     public FolderStatusPage(WebDriver driver) {
         super(driver);
     }
 
     public String getBreadcrumbName() {
         return breadcrumbsName.getText();
+    }
+
+    public RenameItemPage clickRenameMenu () {
+        renameItemLink.click();
+
+        return new RenameItemPage(getDriver());
+    }
+
+    public DeleteDialog clickDeleteMenu () {
+        deleteFolderLink.click();
+
+        return new DeleteDialog (getDriver());
     }
 }

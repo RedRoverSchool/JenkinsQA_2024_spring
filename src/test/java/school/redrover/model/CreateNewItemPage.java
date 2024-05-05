@@ -72,6 +72,7 @@ public class CreateNewItemPage extends BasePage {
 
     public FolderConfigPage selectFolderAndClickOk() {
         folderItem.click();
+        getWait2();
         okButton.click();
 
         return new FolderConfigPage(getDriver());
