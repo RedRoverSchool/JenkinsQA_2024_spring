@@ -23,6 +23,9 @@ public class PipelinePage extends BasePage {
     @FindBy(css = "#description>:first-child")
     private WebElement displayedDescription;
 
+    @FindBy(css = "[data-title='Delete Pipeline']")
+    private WebElement sidebarDeleteButton;
+
     public PipelinePage(WebDriver driver) {
         super(driver);
     }
@@ -78,6 +81,12 @@ public class PipelinePage extends BasePage {
         return (String) js.executeScript(
                 "return window.getComputedStyle(arguments[0]).getPropertyValue('--focus-input-glow');",
                 descriptionInput);
+    }
+
+    public DeleteDialog clickSidebarDeleteButton() {
+        sidebarDeleteButton.click();
+
+        return new DeleteDialog(getDriver());
     }
 
 }
