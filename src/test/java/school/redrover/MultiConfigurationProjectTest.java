@@ -22,25 +22,20 @@ public class MultiConfigurationProjectTest extends BaseTest {
     private static final String PROJECT_NAME = "MCProject";
     private final String RANDOM_PROJECT_NAME = TestUtils.randomString();
 
-    public void openDropdownUsingSelenium(String projectName) {
-        new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.linkText(projectName)))
-                .pause(1000)
-                .scrollToElement(getDriver().findElement(By.cssSelector(String.format("[data-href*='/job/%s/']", projectName))))
-                .click()
-                .perform();
-    }
-
-    @Test
+    @Test(dependsOnMethods = "testCreateMCP")
     public void testRenameProjectViaMainPageDropdown() {
-        TestUtils.createNewItemAndReturnToDashboard(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
-        openDropdownUsingSelenium(PROJECT_NAME);
+        String addToProjectName = "New";
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Rename"))).click();
-        getDriver().findElement(By.name("newName")).sendKeys("New");
-        getDriver().findElement(By.name("Submit")).click();
+        String newProjectName = new HomePage(getDriver())
+                .openDropdownUsingSelenium(RANDOM_PROJECT_NAME)
+                .selectRenameFromDropdown()
+                .changeProjectName(addToProjectName)
+                .clickRenameButton()
+                .getProjectNameText();
 
-        Assert.assertTrue(getDriver().findElement(By.linkText(PROJECT_NAME + "New")).isDisplayed());
+        Assert.assertEquals(newProjectName,
+                "Project " + RANDOM_PROJECT_NAME + "New",
+                "Project name has not been changed" );
     }
 
     @Test(dependsOnMethods = "testCreateMCP")
@@ -340,7 +335,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         final String folderName = "Folder";
         TestUtils.createNewItemAndReturnToDashboard(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
         TestUtils.createNewItemAndReturnToDashboard(this, folderName, TestUtils.Item.FOLDER);
-        openDropdownUsingSelenium(PROJECT_NAME);
+        new HomePage(getDriver()).openDropdownUsingSelenium(PROJECT_NAME);
 
         getDriver().findElement(By.linkText("Move")).click();
         new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" + folderName);
