@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
+import school.redrover.model.ManageJenkinsPage;
 import school.redrover.runner.BaseTest;
 
 import java.util.List;
@@ -138,5 +139,13 @@ public class ManageJenkinsTest extends BaseTest {
                 By.cssSelector("[class='jenkins-search__results'] p"))).getText();
 
         Assert.assertEquals(searchResult, "No results");
+    }
+
+    @Test
+    public void testSearchSettingsFieldVisibility() {
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins();
+
+        Assert.assertTrue(manageJenkinsPage.isSearchInputDisplayed());
     }
 }
