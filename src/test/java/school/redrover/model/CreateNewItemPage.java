@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
+import school.redrover.runner.TestUtils;
 
 public class CreateNewItemPage extends BasePage {
 
@@ -105,5 +106,10 @@ public class CreateNewItemPage extends BasePage {
 
     public String getErrorMessage() {
         return errorMessage.getText();
+
+    }
+
+    public String getCreateNewItemPageUrl() {
+        return TestUtils.getBaseUrl() + "/view/all/newJob";
     }
 }
