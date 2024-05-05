@@ -5,6 +5,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -12,6 +13,7 @@ import school.redrover.runner.BaseTest;
 public class PipelineProject6Test extends BaseTest {
     private static final String PIPELINE_NAME = "Pipeline";
     private static final String SUCCEED_BUILD_EXPECTED = "Finished: SUCCESS";
+    private static final String FAILED_BUILD_EXPECTED = "Finished: FAILURE";
     private static final By BUILD_1 = By.cssSelector("[class$='-name'][href$='1/']");
     private static final By BUILD_2 = By.cssSelector("[href='/job/Pipeline/2/console']");
     private static final By CONSOLE_OUTPUT = By.cssSelector("[class$='output']");
@@ -44,6 +46,10 @@ public class PipelineProject6Test extends BaseTest {
         getDriver().findElement(By.cssSelector("[href='job/Pipeline/']")).click();
     }
 
+    private void clickBuildNow() {
+        getDriver().findElement(By.linkText("Build Now")).click();
+    }
+
     @Test
     public void testFullStageViewDropDownMenu() {
         createNewPipeline(PIPELINE_NAME);
@@ -67,7 +73,7 @@ public class PipelineProject6Test extends BaseTest {
     public void testRunByBuildNowButton() {
         createNewPipeline(PIPELINE_NAME);
 
-        getDriver().findElement(By.linkText("Build Now")).click();
+        clickBuildNow();
         waitForPopUp();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(BUILD_1)).click();
         goToConsoleOutput();
@@ -97,5 +103,24 @@ public class PipelineProject6Test extends BaseTest {
                 .getCssValue("stroke");
 
         Assert.assertEquals(actualColor, greenColor);
+    }
+
+    @Test
+    public void testCreateErrorBuild() {
+        createNewPipeline(PIPELINE_NAME);
+
+        getDriver().findElement(By.cssSelector("[href$='/configure']")).click();
+        Select definition = new Select(getDriver().findElement(By.cssSelector("[class$='section'] [class$='List']")));
+        definition.selectByValue("1");
+        Select csm = new Select(getDriver().findElement(By.cssSelector("[class$=' tr'] [class$='List']")));
+        csm.selectByIndex(1);
+        getDriver().findElement(By.cssSelector("[name='Submit']")).click();
+
+        clickBuildNow();
+        waitForPopUp();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(BUILD_1)).click();
+        goToConsoleOutput();
+
+        Assert.assertTrue(getDriver().findElement(CONSOLE_OUTPUT).getText().contains(FAILED_BUILD_EXPECTED));
     }
 }
