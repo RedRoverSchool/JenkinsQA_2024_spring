@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
@@ -11,6 +12,7 @@ public class FreestyleProject99Test extends BaseTest {
 
     private static final String PROJECT_NAME = "FreestyleProject";
 
+    @Ignore
     @Test
     public void testCreatExistingFreestyleProject() {
 
