@@ -428,6 +428,35 @@ public class Pipeline1Test extends BaseTest {
             Assert.assertEquals(actualResult, expectedResult);
         }
     }
+
+    @Test
+    public void testPipelineProjectCanBeReenabled() {
+        // 1. Click on new item
+        //    - Click on pipiline button
+        //    - fill out pipeline name
+        //    - click 'ok' button
+        // 1. Create pipeline project
+        String pipelineName = "My new cool disable pipeline project";
+        TestUtils.createItem(TestUtils.PIPELINE, pipelineName, this);
+
+        WebElement disableEnableButton = getDriver().findElement(By.xpath("//button[@name='Submit']"));
+        disableEnableButton.click();
+
+        WebElement jenkinsHomeLink = getDriver().findElement(By.xpath("//a[@id='jenkins-home-link']"));
+        jenkinsHomeLink.click();
+
+        WebElement pipelineProjectNameLink = getDriver().findElement(By.xpath("//a[contains(., '" + pipelineName + "')]"));
+
+        WebElement pipelineProjectStatus = pipelineProjectNameLink.findElement(By.xpath("./ancestor-or-self::tr//span[@class='build-status-icon__outer']/*[name() = 'svg']"));
+
+        Assert.assertEquals(pipelineProjectStatus.getAttribute("tooltip"), "Disabled");
+
+        pipelineProjectNameLink.click();
+        disableEnableButton.click();
+        jenkinsHomeLink.click();
+        Assert.assertEquals(pipelineProjectStatus.getAttribute("tooltip"), "Not built");
+
+    }
 }
 
 
