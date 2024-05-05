@@ -1,6 +1,5 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -21,6 +20,12 @@ public class FolderStatusPage extends BasePage {
 
     @FindBy(css = ".empty-state-section")
     private WebElement emptyStateSection;
+
+    @FindBy(css = "tr > td > .jenkins-table__link > span:first-child")
+    private List<WebElement> itemsList;
+
+    @FindBy(xpath = "//a[.='New Item']")
+    private WebElement newItem;
 
     public FolderStatusPage(WebDriver driver) {
         super(driver);
@@ -45,13 +50,13 @@ public class FolderStatusPage extends BasePage {
     }
 
     public CreateNewItemPage clickNewItemInsideFolder() {
-        getDriver().findElement(By.xpath("//a[.='New Item']")).click();
+        newItem.click();
 
         return new CreateNewItemPage(getDriver());
     }
 
     public List<String> getItemListInsideFolder() {
-        return getDriver().findElements(By.cssSelector("tr > td > .jenkins-table__link > span:first-child"))
+        return itemsList
                 .stream()
                 .map(WebElement::getText)
                 .toList();
