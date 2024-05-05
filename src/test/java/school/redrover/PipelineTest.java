@@ -70,19 +70,17 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testYesButtonColorDeletingPipelineInSidebar() {
-        new HomePage(getDriver())
+        String yesButtonHexColor = new HomePage(getDriver())
                 .resetJenkinsTheme()
-                .clickLogo();
+                .clickLogo()
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickSidebarDeleteButton()
+                .getYesButtonColorDeletingViaSidebar();
 
-        createPipelineWithCreateAJob();
-        getDriver().findElement(By.cssSelector("[data-title='Delete Pipeline']")).click();
-
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        String okButtonHexColor = (String) js.executeScript(
-                "return window.getComputedStyle(arguments[0]).getPropertyValue('--color');",
-                getDriver().findElement(By.xpath("//button[@data-id='ok']")));
-
-        Assert.assertEquals(okButtonHexColor, "#e6001f", "The confirmation button color is not red");
+        Assert.assertEquals(yesButtonHexColor, "#e6001f", "The confirmation button color is not red");
     }
 
     @Test

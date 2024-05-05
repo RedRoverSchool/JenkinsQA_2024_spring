@@ -58,6 +58,11 @@ public class HomePage extends BasePage {
         return new CreateNewItemPage(getDriver());
     }
 
+    public FolderStatusPage clickFolder(String name) {
+        getDriver().findElement(By.xpath("//a[.='" + name + "']")).click();
+
+        return new FolderStatusPage(getDriver());
+    }
 
     public HomePage openItemDropdown(String projectName) {
         WebElement element = getDriver().findElement(By.cssSelector(String.format(
@@ -152,6 +157,18 @@ public class HomePage extends BasePage {
         renameFromDropdown.click();
 
         return new MultiConfigurationConfirmRenamePage(getDriver());
+    }
+
+    public AppearancePage resetJenkinsTheme() {
+        clickManageJenkins();
+        getDriver().findElement(By.cssSelector("[href='appearance']")).click();
+
+        WebElement defaultThemeButton = getDriver().findElement(By.cssSelector("[for='radio-block-2']"));
+        if (!defaultThemeButton.isSelected()) {
+            defaultThemeButton.click();
+            getDriver().findElement(By.name("Apply")).click();
+        }
+        return new AppearancePage(getDriver());
     }
 
     public PipelinePage chooseCreatedProject(String projectName) {
