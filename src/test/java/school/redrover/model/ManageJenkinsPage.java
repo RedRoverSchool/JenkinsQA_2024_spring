@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import school.redrover.runner.TestUtils;
 import org.openqa.selenium.WebElement;
@@ -10,6 +11,9 @@ public class ManageJenkinsPage extends BasePage {
 
     @FindBy(css = "[href='configureSecurity']")
     private WebElement securityLink;
+
+    @FindBy(className = "jenkins-search__input")
+            private WebElement searchInput;
 
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
@@ -24,4 +28,9 @@ public class ManageJenkinsPage extends BasePage {
     public String getManageJenkinsPage() {
         return TestUtils.getBaseUrl() + "/manage/";
     }
+
+    public boolean searchInputIsDisplayed() {
+        return searchInput.isDisplayed();
+    }
+
 }
