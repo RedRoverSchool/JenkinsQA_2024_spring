@@ -1,15 +1,24 @@
 package school.redrover.model;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.FindBys;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CreateNewItemPage extends BasePage {
 
     @FindBy(id = "name")
     private WebElement nameText;
+
+    @FindBy(id = "from")
+    private WebElement nameTextInCopyForm;
 
     @FindBy(xpath = "//label[.='Freestyle project']")
     private WebElement freestyleItem;
@@ -34,6 +43,9 @@ public class CreateNewItemPage extends BasePage {
 
     @FindBy(id = "itemname-invalid")
     private WebElement errorMessage;
+
+    @FindBy(xpath = "//div[@class='item-copy']//li[not(@style='display: none;')]")
+    private List<WebElement> copyFormElements;
 
     public CreateNewItemPage(WebDriver driver) {
         super(driver);
@@ -111,5 +123,17 @@ public class CreateNewItemPage extends BasePage {
 
     public String getCreateNewItemPageUrl() {
         return TestUtils.getBaseUrl() + "/view/all/newJob";
+    }
+
+    public CreateNewItemPage setItemNameInCopyForm(String name) {
+        nameTextInCopyForm.sendKeys(name);
+        return this;
+    }
+
+    public List<String> copyFormElementsList() {
+        return copyFormElements
+                .stream()
+                .map(WebElement::getText)
+                .toList();
     }
 }
