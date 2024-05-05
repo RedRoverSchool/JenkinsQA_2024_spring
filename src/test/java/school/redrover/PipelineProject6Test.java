@@ -40,6 +40,10 @@ public class PipelineProject6Test extends BaseTest {
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[aria-describedby^='tippy']")));
     }
 
+    private void goToPipelinePage() {
+        getDriver().findElement(By.cssSelector("[href='job/Pipeline/']")).click();
+    }
+
     @Test
     public void testFullStageViewDropDownMenu() {
         createNewPipeline(PIPELINE_NAME);
@@ -75,7 +79,7 @@ public class PipelineProject6Test extends BaseTest {
     public void testRunBuildByTriangleButton() {
         getDriver().findElement(By.cssSelector("[title^='Schedule a Build']")).click();
         waitForPopUp();
-        getDriver().findElement(By.cssSelector("[href='job/Pipeline/']")).click();
+        goToPipelinePage();
 
         getActions().moveToElement(getDriver().findElement(BUILD_2)).perform();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[aria-describedby='tippy-17']")));
@@ -84,5 +88,14 @@ public class PipelineProject6Test extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(CONSOLE_OUTPUT).getText().contains(SUCCEED_BUILD_EXPECTED));
     }
-}
 
+    @Test(dependsOnMethods = {"testRunByBuildNowButton", "testRunBuildByTriangleButton"})
+    public void successfulBuildColor() {
+        goToPipelinePage();
+        String greenColor = "rgb(30, 166, 75)";
+        String actualColor = getDriver().findElement(By.cssSelector("tr.build-row:nth-child(2) svg ellipse"))
+                .getCssValue("stroke");
+
+        Assert.assertEquals(actualColor, greenColor);
+    }
+}
