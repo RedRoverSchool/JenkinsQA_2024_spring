@@ -26,6 +26,15 @@ public class PipelinePage extends BasePage {
     @FindBy(css = "[data-title='Delete Pipeline']")
     private WebElement sidebarDeleteButton;
 
+    @FindBy(css = "[class*='breadcrumbs']>[href*='job']")
+    private WebElement breadcrumbsName;
+
+    @FindBy(css = "[href^='/job'] [class$='dropdown-chevron']")
+    private WebElement breadcrumbsDropdownArrow;
+
+    @FindBy(css = "[class*='dropdown'] [href$='Delete']")
+    private WebElement breadcrumbsDeleteButton;
+
     public PipelinePage(WebDriver driver) {
         super(driver);
     }
@@ -89,4 +98,21 @@ public class PipelinePage extends BasePage {
         return new DeleteDialog(getDriver());
     }
 
+    public PipelinePage hoverOverBreadcrumbsName() {
+        hoverOverElement(breadcrumbsName);
+
+        return this;
+    }
+
+    public PipelinePage clickBreadcrumbsDropdownArrow() {
+        clickSpecificDropdownArrow(breadcrumbsDropdownArrow);
+
+        return this;
+    }
+
+    public DeleteDialog clickBreadcrumbsDeleteButton() {
+        breadcrumbsDeleteButton.click();
+
+        return new DeleteDialog(getDriver());
+    }
 }
