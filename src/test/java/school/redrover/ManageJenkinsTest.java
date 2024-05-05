@@ -6,6 +6,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
+import school.redrover.model.ManageJenkinsPage;
 import school.redrover.runner.BaseTest;
 
 import java.util.List;
@@ -23,10 +25,11 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test
     public void testRedirectionToSecurityPage() {
-        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
-        getDriver().findElement(By.cssSelector("[href='configureSecurity']")).click();
+        String pageTitle = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickSecurity()
+                .getTitleText();
 
-        String pageTitle = getDriver().getTitle().split(" ")[0];
         Assert.assertEquals(pageTitle, "Security");
     }
 
@@ -136,5 +139,13 @@ public class ManageJenkinsTest extends BaseTest {
                 By.cssSelector("[class='jenkins-search__results'] p"))).getText();
 
         Assert.assertEquals(searchResult, "No results");
+    }
+
+    @Test
+    public void testSearchSettingsFieldVisibility() {
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins();
+
+        Assert.assertTrue(manageJenkinsPage.isSearchInputDisplayed());
     }
 }

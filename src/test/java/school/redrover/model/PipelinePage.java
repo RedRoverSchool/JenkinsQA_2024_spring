@@ -1,8 +1,12 @@
 package school.redrover.model;
 
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 public class PipelinePage extends BasePage {
@@ -18,6 +22,18 @@ public class PipelinePage extends BasePage {
 
     @FindBy(css = "#description>:first-child")
     private WebElement displayedDescription;
+
+    @FindBy(css = "[data-title='Delete Pipeline']")
+    private WebElement sidebarDeleteButton;
+
+    @FindBy(css = "[class*='breadcrumbs']>[href*='job']")
+    private WebElement breadcrumbsName;
+
+    @FindBy(css = "[href^='/job'] [class$='dropdown-chevron']")
+    private WebElement breadcrumbsDropdownArrow;
+
+    @FindBy(css = "[class*='dropdown'] [href$='Delete']")
+    private WebElement breadcrumbsDeleteButton;
 
     public PipelinePage(WebDriver driver) {
         super(driver);
@@ -43,5 +59,60 @@ public class PipelinePage extends BasePage {
 
     public String getDescriptionText() {
         return displayedDescription.getText();
+    }
+
+    public PipelinePage waitAddDescriptionButtonDisappears() {
+        getWait2().until(ExpectedConditions.invisibilityOf(changeDescriptionButton));
+
+        return this;
+    }
+
+    public String getTextAreaBorderBacklightColor() {
+        return getDriver().switchTo().activeElement().getCssValue("box-shadow").split(" 0px")[0];
+    }
+
+    public PipelinePage clickOnDescriptionInput() {
+        descriptionInput.click();
+
+        return this;
+    }
+
+
+    public PipelinePage makeDescriptionFieldNotActive() {
+        new Actions(getDriver()).sendKeys(Keys.TAB).perform();
+
+        return this;
+    }
+
+    public String getDefaultTextAreaBorderBacklightColor() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+
+        return (String) js.executeScript(
+                "return window.getComputedStyle(arguments[0]).getPropertyValue('--focus-input-glow');",
+                descriptionInput);
+    }
+
+    public DeleteDialog clickSidebarDeleteButton() {
+        sidebarDeleteButton.click();
+
+        return new DeleteDialog(getDriver());
+    }
+
+    public PipelinePage hoverOverBreadcrumbsName() {
+        hoverOverElement(breadcrumbsName);
+
+        return this;
+    }
+
+    public PipelinePage clickBreadcrumbsDropdownArrow() {
+        clickSpecificDropdownArrow(breadcrumbsDropdownArrow);
+
+        return this;
+    }
+
+    public DeleteDialog clickBreadcrumbsDeleteButton() {
+        breadcrumbsDeleteButton.click();
+
+        return new DeleteDialog(getDriver());
     }
 }

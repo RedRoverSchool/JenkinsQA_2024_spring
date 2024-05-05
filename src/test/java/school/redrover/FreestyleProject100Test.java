@@ -21,7 +21,7 @@ public class FreestyleProject100Test extends BaseTest {
     public void testCreateFreestyleProject() {
 
         List<String> itemList = new HomePage(getDriver())
-                .clickCreateAJob()
+                .clickNewItem()
                 .setItemName(projectName)
                 .selectFreestyleAndClickOk()
                 .clickSave()
