@@ -23,23 +23,24 @@ public class MultiConfigurationProjectTest extends BaseTest {
     private static final String PROJECT_NAME = "MCProject";
     private final String RANDOM_PROJECT_NAME = TestUtils.randomString();
 
-    @Test(dependsOnMethods = "testCreateMCP")
+    @Test
     public void testRenameProjectViaMainPageDropdown() {
         String addToProjectName = "New";
 
         String newProjectName = new HomePage(getDriver())
-                .openDropdownUsingSelenium(RANDOM_PROJECT_NAME)
+                .clickNewItem()
+                .createNewItem(PROJECT_NAME, "MultiConfiguration")
+                .openDropdownUsingSelenium(PROJECT_NAME)
                 .selectRenameFromDropdown()
                 .changeProjectName(addToProjectName)
                 .clickRenameButton()
                 .getProjectNameText();
 
         Assert.assertEquals(newProjectName,
-                "Project " + RANDOM_PROJECT_NAME + "New",
+                "Project " + PROJECT_NAME + "New",
                 "Project name has not been changed" );
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreateMCP")
     public void testAddDescription() {
         final String text = "❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
