@@ -21,7 +21,6 @@ public class PipelineTest extends BaseTest {
     private static final String DESCRIPTION = "Lorem ipsum dolor sit amet";
     private static final String NEW_PIPELINE_NAME = "New Pipeline name";
 
-
     private void createPipelineWithCreateAJob() {
         getDriver().findElement(By.linkText("Create a job")).click();
         getDriver().findElement(By.id("name")).sendKeys(PIPELINE_NAME);
