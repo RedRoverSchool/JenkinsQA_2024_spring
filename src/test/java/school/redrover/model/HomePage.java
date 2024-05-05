@@ -158,4 +158,16 @@ public class HomePage extends BasePage {
 
         return new MultiConfigurationConfirmRenamePage(getDriver());
     }
+
+    public AppearancePage resetJenkinsTheme() {
+        clickManageJenkins();
+        getDriver().findElement(By.cssSelector("[href='appearance']")).click();
+
+        WebElement defaultThemeButton = getDriver().findElement(By.cssSelector("[for='radio-block-2']"));
+        if (!defaultThemeButton.isSelected()) {
+            defaultThemeButton.click();
+            getDriver().findElement(By.name("Apply")).click();
+        }
+        return new AppearancePage(getDriver());
+    }
 }
