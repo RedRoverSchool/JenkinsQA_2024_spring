@@ -5,6 +5,7 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
@@ -30,6 +31,9 @@ public class HomePage extends BasePage {
 
     @FindBy(css = "[tooltip='New View']")
     private WebElement newView;
+
+    @FindBy(css = "[href*='rename']")
+    private WebElement renameFromDropdown;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -131,5 +135,22 @@ public class HomePage extends BasePage {
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tr[@id='job_" + name + "']/td/a"))).click();
 
         return new FolderStatusPage(getDriver());
+    }
+
+    public HomePage openDropdownUsingSelenium(String projectName) {
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.linkText(projectName)))
+                .pause(1000)
+                .scrollToElement(getDriver().findElement(By.cssSelector(String.format("[data-href*='/job/%s/']", projectName))))
+                .click()
+                .perform();
+
+        return this;
+    }
+
+    public MultiConfigurationConfirmRenamePage selectRenameFromDropdown() {
+        renameFromDropdown.click();
+
+        return new MultiConfigurationConfirmRenamePage(getDriver());
     }
 }
