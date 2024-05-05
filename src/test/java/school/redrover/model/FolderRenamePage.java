@@ -7,10 +7,10 @@ import school.redrover.model.base.BasePage;
 
 public class FolderRenamePage extends BasePage {
 
-    @FindBy(xpath = "//input[@name='newName']")
-    private WebElement textBox;
+    @FindBy(name = "newName")
+    private WebElement folderNameTextField;
 
-    @FindBy(xpath = "//button[@name='Submit']")
+    @FindBy(name = "Submit")
     private WebElement submitButton;
 
     public FolderRenamePage(WebDriver driver) {
@@ -18,13 +18,13 @@ public class FolderRenamePage extends BasePage {
     }
 
     public FolderRenamePage setNewName(String name) {
-        textBox.clear();
-        textBox.sendKeys(name);
+        folderNameTextField.clear();
+        folderNameTextField.sendKeys(name);
 
         return this;
     }
 
-    public FolderStatusPage clickRename() {
+    public FolderStatusPage clickSave() {
         submitButton.click();
 
         return new FolderStatusPage(getDriver());

@@ -24,8 +24,9 @@ public class CreateRenameDeleteFolder extends BaseTest {
         String renameFolderName = "TG Folder Renamed";
 
         FolderStatusPage folderStatusPage = createNewFolderByName(newFolderName);
-        RenameItemPage renameItemPage = folderStatusPage.clickRenameMenu();
-        FolderStatusPage renamedFolderStatusPage = renameItemPage.setFolderNameAndSave(renameFolderName);
+        FolderRenamePage renameItemPage = folderStatusPage.clickRenameMenuButton();
+        renameItemPage.setNewName(renameFolderName);
+        FolderStatusPage renamedFolderStatusPage = renameItemPage.clickSave();
 
         String getBreadcrumbName = renamedFolderStatusPage.getBreadcrumbName();
         Assert.assertEquals(getBreadcrumbName, renameFolderName);
@@ -36,7 +37,7 @@ public class CreateRenameDeleteFolder extends BaseTest {
         String newFolderName = "TG New Folder";
 
         FolderStatusPage folderStatusPage = createNewFolderByName(newFolderName);
-        DeleteDialog deleteDialog = folderStatusPage.clickDeleteMenu();
+        DeleteDialog deleteDialog = folderStatusPage.clickDeleteMenuButton();
         HomePage homepage = deleteDialog.clickYes(new HomePage(getDriver()));
 
         List<String> folders = homepage.getItemList();
