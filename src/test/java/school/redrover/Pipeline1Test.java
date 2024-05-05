@@ -66,11 +66,9 @@ public class Pipeline1Test extends BaseTest {
 
     private void makeBuilds(int buildsQtt) {
         for (int i = 1; i <= buildsQtt; i++) {
-            getWait5().until(ExpectedConditions.elementToBeClickable(
-                    By.xpath("//a[contains(@href, '/build?delay=0sec')]")));
-
-            ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", getDriver().findElement(
-                    By.xpath("//a[contains(@href, '/build?delay=0sec')]")));
+            ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",
+                    getWait5().until(ExpectedConditions.elementToBeClickable(
+                    By.xpath("//a[contains(@href, '/build?delay=0sec')]"))));
 
             getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
                     By.xpath("//tr[@data-runid='" + i + "']")));
