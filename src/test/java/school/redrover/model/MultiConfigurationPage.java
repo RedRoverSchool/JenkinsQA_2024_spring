@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
-public class MultiConfigurationStatusPage extends BasePage {
+public class MultiConfigurationPage extends BasePage {
 
     @FindBy(id = "description-link")
     private WebElement addDescriptionButton;
@@ -21,29 +21,38 @@ public class MultiConfigurationStatusPage extends BasePage {
     @FindBy(css = "#description>div:first-child")
     private WebElement description;
 
-    public MultiConfigurationStatusPage(WebDriver driver) {
+    @FindBy(tagName = "h1")
+    private WebElement projectName;
+
+    public MultiConfigurationPage(WebDriver driver) {
         super(driver);
     }
 
-    public MultiConfigurationStatusPage clickAddDescriptionButton() {
+    public MultiConfigurationPage clickAddDescriptionButton() {
         addDescriptionButton.click();
 
         return this;
     }
 
-    public MultiConfigurationStatusPage addOrEditDescription(String description) {
+    public MultiConfigurationPage addOrEditDescription(String description) {
         descriptionField.sendKeys(description);
 
         return this;
     }
 
-    public MultiConfigurationStatusPage clickSaveDescription() {
+    public MultiConfigurationPage clickSaveDescription() {
         saveButton.click();
 
         return this;
     }
 
     public String getDescriptionText() {
+
         return getWait2().until(ExpectedConditions.visibilityOf(description)).getText();
+    }
+
+    public String getProjectNameText() {
+
+        return projectName.getText();
     }
 }

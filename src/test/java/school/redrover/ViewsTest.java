@@ -7,6 +7,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
+import school.redrover.model.ViewMyListConfigPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -26,28 +28,25 @@ public class ViewsTest extends BaseTest {
     }
 
     @Test
-    public void testGoToMyViewFromUsernameDropdown() {
-        new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.cssSelector("[data-href$='admin']")))
-                .pause(1000)
-                .click()
-                .perform();
+    public void testGoToMyViewsFromUsernameDropdown() {
+        String views = "My Views";
 
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[href$='admin/my-views']"))).click();
+        boolean textVisibility = new HomePage(getDriver())
+                .clickMyViewsFromDropdown()
+                .isThereTextInBreadcrumbs(views);
 
-        Assert.assertTrue(getDriver().findElement(By.cssSelector("[href$='my-views/']")).isDisplayed());
+        Assert.assertTrue(textVisibility,"'My Views' didn't open");
     }
 
     final String VIEW_NAME = "in progress";
     final String VISIBLE = "visible";
 
     public void createView(String VIEW_NAME) {
-        getDriver().findElement(By.cssSelector("[tooltip='New View']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(VIEW_NAME);
-        getDriver().findElement(By.cssSelector("[for$='ListView']")).click();
-        getDriver().findElement(By.id("ok")).click();
-        getDriver().findElement(By.cssSelector("label[title=" + VISIBLE + "]")).click();
-        getDriver().findElement(By.name("Submit")).click();
+        new HomePage(getDriver())
+                .clickNewView()
+                .setViewName(VIEW_NAME)
+                .clickListViewRadioButton()
+                .clickCreateView();
     }
 
     @Test
@@ -72,24 +71,26 @@ public class ViewsTest extends BaseTest {
 
     @Test
     public void testAddColumnIntoListView() {
-        TestUtils.createNewItemAndReturnToDashboard(this, VISIBLE, TestUtils.Item.FOLDER);
+
+        new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(VISIBLE)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .clickLogo();
+
         createView(VIEW_NAME);
 
-        getDriver().findElement(By.linkText("Edit View")).click();
+        int numberOfColumns = new ViewMyListConfigPage(getDriver())
+                .clickProjectName(VISIBLE)
+                .clickAddColumn()
+                .clickColumnName()
+                .clickOkButton()
+                .clickLogo()
+                .clickView(VIEW_NAME)
+                .sizeColumnList();
 
-        WebElement addColumn = getDriver().findElement(By.cssSelector("[suffix='columns']>svg"));
-        ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView(true);", addColumn);
-        addColumn.click();
-
-        getDriver().findElement(By.cssSelector("div.jenkins-dropdown button:last-child")).click();
-        getDriver().findElement(By.name("Submit")).click();
-        getDriver().findElement(By.id("jenkins-home-link")).click();
-        getDriver().findElement(By.linkText(VIEW_NAME)).click();
-
-        Assert.assertEquals(
-                getDriver().findElements(By.className("sortheader")).size(),
-                7,
-                "Description column is not added");
+        Assert.assertEquals(numberOfColumns, 7, "Description column is not added");
     }
 
     @Test(dependsOnMethods = "testAddColumnIntoListView")
