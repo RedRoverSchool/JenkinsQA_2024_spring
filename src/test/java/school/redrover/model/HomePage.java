@@ -1,7 +1,5 @@
 package school.redrover.model;
 
-import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,6 +8,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
+
+import java.util.List;
 
 
 public class HomePage extends BasePage {
@@ -34,6 +34,12 @@ public class HomePage extends BasePage {
 
     @FindBy(css = "[href*='rename']")
     private WebElement renameFromDropdown;
+
+    @FindBy(css = "div.jenkins-dropdown")
+    private WebElement dropdownMenu;
+
+    @FindBy(xpath = "//a[@class='sortheader' and text()='Name']")
+    private WebElement columnNameTitle;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -76,7 +82,7 @@ public class HomePage extends BasePage {
         getDriver().findElement(TestUtils.DROPDOWN_DELETE).click();
         return dialog;
     }
-  
+
     public NodesTablePage clickNodesLink() {
         nodesLink.click();
 
@@ -131,6 +137,12 @@ public class HomePage extends BasePage {
         return this;
     }
 
+    public ViewPage clickViewName(String viewName) {
+        getDriver().findElement(By.linkText(viewName)).click();
+
+        return new ViewPage(getDriver());
+    }
+
     public int sizeColumnList() {
 
         return getDriver().findElements(By.className("sortheader")).size();
@@ -169,5 +181,14 @@ public class HomePage extends BasePage {
             getDriver().findElement(By.name("Apply")).click();
         }
         return new AppearancePage(getDriver());
+    }
+
+    public WebElement getDropdownMenu() {
+        return dropdownMenu;
+    }
+
+    public HomePage clickColumnNameTitle() {
+        columnNameTitle.click();
+        return new HomePage(getDriver());
     }
 }
