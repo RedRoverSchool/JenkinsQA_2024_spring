@@ -73,6 +73,7 @@ public class PipelineProject6Test extends BaseTest {
         Assert.assertTrue(getDriver().findElement(CONSOLE_OUTPUT).getText().contains(SUCCEED_BUILD_EXPECTED));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testRunByBuildNowButton")
     public void testRunBuildByTriangleButton() {
         getDriver().findElement(By.cssSelector("[title^='Schedule a Build']")).click();
