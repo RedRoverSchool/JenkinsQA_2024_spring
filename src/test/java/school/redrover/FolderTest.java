@@ -167,7 +167,7 @@ public class FolderTest extends BaseTest {
 
         String resultName = homePage
                 .clickOnCreatedFolder(FOLDER_NAME)
-                .clickRenameMenuButton()
+                .clickOnRenameButton()
                 .setNewName(NEW_FOLDER_NAME)
                 .clickSave()
                 .getBreadcrumbName();

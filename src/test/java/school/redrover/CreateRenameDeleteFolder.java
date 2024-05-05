@@ -24,7 +24,7 @@ public class CreateRenameDeleteFolder extends BaseTest {
         String renameFolderName = "TG Folder Renamed";
 
         FolderStatusPage folderStatusPage = createNewFolderByName(newFolderName);
-        FolderRenamePage renameItemPage = folderStatusPage.clickRenameMenuButton();
+        FolderRenamePage renameItemPage = folderStatusPage.clickOnRenameButton();
         renameItemPage.setNewName(renameFolderName);
         FolderStatusPage renamedFolderStatusPage = renameItemPage.clickSave();
 
