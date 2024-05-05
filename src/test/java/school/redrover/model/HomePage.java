@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
 
@@ -20,6 +21,9 @@ public class HomePage extends BasePage {
 
     @FindBy(css = "#executors tr [href]")
     private List<WebElement> nodesList;
+
+    @FindBy(css = "a[href $= '/move']")
+    private WebElement dropdown_move;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -57,7 +61,12 @@ public class HomePage extends BasePage {
         getDriver().findElement(TestUtils.DROPDOWN_DELETE).click();
         return dialog;
     }
-  
+
+    public MovePage clickMoveInDropdown() {
+        dropdown_move.click();
+        return new MovePage(getDriver());
+    }
+
     public NodesTablePage clickNodesLink() {
         nodesLink.click();
 
