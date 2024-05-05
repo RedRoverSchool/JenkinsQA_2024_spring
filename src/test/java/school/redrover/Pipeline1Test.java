@@ -70,8 +70,14 @@ public class Pipeline1Test extends BaseTest {
                     getWait5().until(ExpectedConditions.elementToBeClickable(
                     By.xpath("//a[contains(@href, '/build?delay=0sec')]"))));
 
-            getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
-                    By.xpath("//tr[@data-runid='" + i + "']")));
+            try {
+                getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                        By.xpath("//tr[@data-runid='" + i + "']")));
+            }catch (Exception e) {
+                getDriver().navigate().refresh();
+                getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                        By.xpath("//tr[@data-runid='" + i + "']")));
+            }
         }
     }
 
