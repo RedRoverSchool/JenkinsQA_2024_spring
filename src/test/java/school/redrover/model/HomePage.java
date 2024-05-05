@@ -179,6 +179,5 @@ public class HomePage extends BasePage {
 
     public boolean isItemDeleted(String name) {
         return !getItemList().contains(name);
-//        return getDriver().findElements(locator).isEmpty();
     }
 }
