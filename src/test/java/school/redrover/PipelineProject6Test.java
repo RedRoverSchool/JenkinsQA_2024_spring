@@ -50,6 +50,10 @@ public class PipelineProject6Test extends BaseTest {
         getDriver().findElement(By.linkText("Build Now")).click();
     }
 
+    private String getActualColor() {
+        return getDriver().findElement(By.cssSelector("td a svg ellipse"))
+                .getCssValue("stroke");
+    }
     @Test
     public void testFullStageViewDropDownMenu() {
         createNewPipeline(PIPELINE_NAME);
@@ -98,11 +102,10 @@ public class PipelineProject6Test extends BaseTest {
     @Test(dependsOnMethods = {"testRunByBuildNowButton", "testRunBuildByTriangleButton"})
     public void successfulBuildColor() {
         goToPipelinePage();
-        String greenColor = "rgb(30, 166, 75)";
-        String actualColor = getDriver().findElement(By.cssSelector("tr.build-row:nth-child(2) svg ellipse"))
-                .getCssValue("stroke");
+        String expectedGreen = "rgb(30, 166, 75)";
+        getActualColor();
 
-        Assert.assertEquals(actualColor, greenColor);
+        Assert.assertEquals(getActualColor(), expectedGreen);
     }
 
     @Test
@@ -111,7 +114,7 @@ public class PipelineProject6Test extends BaseTest {
 
         getDriver().findElement(By.cssSelector("[href$='/configure']")).click();
         Select definition = new Select(getDriver().findElement(By.cssSelector("[class$='section'] [class$='List']")));
-        definition.selectByValue("1");
+        definition.selectByIndex(1);
         Select csm = new Select(getDriver().findElement(By.cssSelector("[class$=' tr'] [class$='List']")));
         csm.selectByIndex(1);
         getDriver().findElement(By.cssSelector("[name='Submit']")).click();
@@ -122,5 +125,14 @@ public class PipelineProject6Test extends BaseTest {
         goToConsoleOutput();
 
         Assert.assertTrue(getDriver().findElement(CONSOLE_OUTPUT).getText().contains(FAILED_BUILD_EXPECTED));
+    }
+
+    @Test(dependsOnMethods = "testCreateErrorBuild")
+    public void testFailedBuildColor() {
+        goToPipelinePage();
+        String expectedRed = "rgb(230, 0, 31)";
+        getActualColor();
+
+        Assert.assertEquals(getActualColor(), expectedRed);
     }
 }
