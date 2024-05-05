@@ -21,6 +21,9 @@ public class MultiConfigurationPage extends BasePage {
     @FindBy(css = "#description>div:first-child")
     private WebElement description;
 
+    @FindBy(tagName = "h1")
+    private WebElement projectName;
+
     public MultiConfigurationPage(WebDriver driver) {
         super(driver);
     }
@@ -44,6 +47,12 @@ public class MultiConfigurationPage extends BasePage {
     }
 
     public String getDescriptionText() {
+
         return getWait2().until(ExpectedConditions.visibilityOf(description)).getText();
+    }
+
+    public String getProjectNameText() {
+
+        return projectName.getText();
     }
 }
