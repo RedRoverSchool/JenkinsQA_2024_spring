@@ -23,6 +23,9 @@ public class PipelinePage extends BasePage {
     @FindBy(css = "#description>:first-child")
     private WebElement displayedDescription;
 
+    @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
+    private WebElement fullStageViewButton;
+
     public PipelinePage(WebDriver driver) {
         super(driver);
     }
@@ -80,4 +83,9 @@ public class PipelinePage extends BasePage {
                 descriptionInput);
     }
 
+    public FullStageViewPage clickFullStageViewButton() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(fullStageViewButton)).click();
+
+        return new FullStageViewPage(getDriver());
+    }
 }

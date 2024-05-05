@@ -153,4 +153,11 @@ public class HomePage extends BasePage {
 
         return new MultiConfigurationConfirmRenamePage(getDriver());
     }
+
+    public PipelinePage chooseCreatedProject(String projectName) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/"
+                + projectName.replaceAll(" ", "%20") + "/']"))).click();
+
+        return new PipelinePage(getDriver());
+    }
 }
