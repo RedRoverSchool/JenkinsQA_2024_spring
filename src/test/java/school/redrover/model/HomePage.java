@@ -170,4 +170,14 @@ public class HomePage extends BasePage {
         }
         return new AppearancePage(getDriver());
     }
+
+    public PipelinePage clickSpecificPipelineName(By locator) {
+        getDriver().findElement(locator).click();
+
+        return new PipelinePage(getDriver());
+    }
+
+    public boolean isItemDeleted(String name) {
+        return !getItemList().contains(name);
+    }
 }
