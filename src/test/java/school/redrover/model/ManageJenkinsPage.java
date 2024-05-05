@@ -13,7 +13,7 @@ public class ManageJenkinsPage extends BasePage {
     private WebElement securityLink;
 
     @FindBy(className = "jenkins-search__input")
-            private WebElement searchInput;
+    private WebElement searchInput;
 
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
