@@ -7,7 +7,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -15,7 +14,7 @@ public class PipelineProject6Test extends BaseTest {
     private static final String PIPELINE_NAME = "Pipeline";
     private static final String SUCCEED_BUILD_EXPECTED = "Finished: SUCCESS";
     private static final String FAILED_BUILD_EXPECTED = "Finished: FAILURE";
-    private static final By BUILD_1 = By.cssSelector("[class$='-name'][href$='1/']");
+    private static final By BUILD_1 = By.cssSelector("td div a[class*='name']");
     private static final By BUILD_2 = By.cssSelector("[href='/job/Pipeline/2/console']");
     private static final By CONSOLE_OUTPUT = By.cssSelector("[class$='output']");
 
@@ -67,14 +66,13 @@ public class PipelineProject6Test extends BaseTest {
         jsExecutor.executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
 
         getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
-                    By.xpath("//a[contains(@href, 'workflow-stage')]")))).click();
+                By.xpath("//a[contains(@href, 'workflow-stage')]")))).click();
 
         String expectedText = PIPELINE_NAME + " - Stage View";
         Assert.assertEquals(getWait5().until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//div[@id='pipeline-box']/h2"))).getText(),expectedText);
     }
 
-    @Ignore
     @Test
     public void testRunByBuildNowButton() {
         createNewPipeline(PIPELINE_NAME);
@@ -87,7 +85,6 @@ public class PipelineProject6Test extends BaseTest {
         Assert.assertTrue(getDriver().findElement(CONSOLE_OUTPUT).getText().contains(SUCCEED_BUILD_EXPECTED));
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testRunByBuildNowButton")
     public void testRunBuildByTriangleButton() {
         getDriver().findElement(By.cssSelector("[title^='Schedule a Build']")).click();
