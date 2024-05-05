@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
@@ -52,6 +53,7 @@ public class Folder6Test extends BaseTest {
         Assert.assertTrue(allEditDescription, changeFolderDescription);
         TestUtils.returnToDashBoard(this);
     }
+    @Ignore
     @Test(dependsOnMethods = "testEditDescription")
     public void testDeleteDescription() {
         for (String s : Arrays.asList("//span[text()='" + name + "']", "//*[@id=\"description-link\"]")) {

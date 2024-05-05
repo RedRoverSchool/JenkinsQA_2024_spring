@@ -3,6 +3,7 @@ package school.redrover.runner;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.model.base.BasePage;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -225,5 +226,17 @@ public final class TestUtils {
             defaultThemeButton.click();
             baseTest.getDriver().findElement(By.name("Apply")).click();
         }
+    }
+
+    public static String getFooterVersionText(BaseTest baseTest) {
+        return baseTest.getDriver().findElement(By.xpath("//button[@type='button']")).getText();
+    }
+    
+    public static void openPageInNewTab(BaseTest baseTest, String url) {
+        baseTest.getDriver().switchTo().newWindow(WindowType.TAB).navigate().to(url);
+    }
+
+    public static String getBaseUrl() {
+        return ProjectUtils.getUrl();
     }
 }

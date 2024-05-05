@@ -229,7 +229,6 @@ public class PipelineConfigurationTest extends BaseTest {
 
         Assert.assertEquals(actualTooltip, tooltipText);
     }
-
     @Test
     public void testChoosePipelineScript() {
         createPipeline();
@@ -243,7 +242,7 @@ public class PipelineConfigurationTest extends BaseTest {
         WebElement uncheckCheckBox = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//label[text()='Use Groovy Sandbox']")));
         uncheckCheckBox.click();
 
-        WebElement link = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@target='blank']")));
+        WebElement link = getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@target='blank']")));
         Assert.assertTrue(link.isDisplayed(), "Uncheck doesn't work");
     }
 
@@ -346,5 +345,27 @@ public class PipelineConfigurationTest extends BaseTest {
         getWait5().until(ExpectedConditions.visibilityOf(errorElement));
 
         Assert.assertEquals(errorElement.getText(), errorMessage);
+    }
+
+    @Test
+    public void testSetPipelineSpeedDurabilityOverride() {
+        final String selectedOptionForCheck = "Less durability, a bit faster (specialty use only)";
+        createPipeline();
+        navigateToConfigurePageFromDashboard();
+
+        getDriver().findElement(By.xpath("//label[text()='Pipeline speed/durability override']")).click();
+        WebElement selectCustomPipelineSpeedDurabilityLevel = getDriver().findElement(By.xpath("//select[@class='setting-input']"));
+        Select dropDown = new Select(selectCustomPipelineSpeedDurabilityLevel);
+        dropDown.selectByIndex(1);
+        String selectedValue = selectCustomPipelineSpeedDurabilityLevel.getText();
+
+        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
+        executor.executeScript("arguments[0].scrollIntoView();",
+                getDriver().findElement(SAVE_BUTTON_CONFIGURATION));
+        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
+
+        navigateToConfigurePageFromDashboard();
+
+        Assert.assertTrue(selectedValue.contains(selectedOptionForCheck));
     }
 }

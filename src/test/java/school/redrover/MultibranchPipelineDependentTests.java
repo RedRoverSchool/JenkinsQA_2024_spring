@@ -1,6 +1,7 @@
 package school.redrover;
 import java.util.List;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -8,8 +9,9 @@ import school.redrover.runner.BaseTest;
 
 public class MultibranchPipelineDependentTests extends BaseTest {
 
-    private final String MULTI_PIPELINE_NAME = "MultibranchPipeline";
-    private final String NEW_MULTI_PIPELINE_NAME = "newMultibranchPipeline";
+    private static final String MULTI_PIPELINE_NAME = "MultibranchPipeline";
+    private static final String NEW_MULTI_PIPELINE_NAME = "newMultibranchPipeline";
+    private static final By MULTI_PIPELINE_ON_DASHBOARD_LOCATOR = By.cssSelector("[href='job/" + NEW_MULTI_PIPELINE_NAME + "/']");
 
     @Test
 
@@ -45,7 +47,7 @@ public class MultibranchPipelineDependentTests extends BaseTest {
         Assert.assertEquals(disabledMultiPipelineMessage.size(), 0, "Disabled message is displayed!!!");
     }
 
-    @Test(dependsOnMethods = {"testCreate", "testVerifyMpDisabledOnStatusPage", "testVerifyMpDisabledMessageColorOnStatusPage"})
+    @Test(dependsOnMethods = "testChangeFromDisableOnStatusPage")
     public void testRenameOnTheSidebar() {
         getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']")).click();
         getDriver().findElement(By.cssSelector("[href $='rename']")).click();
@@ -68,11 +70,27 @@ public class MultibranchPipelineDependentTests extends BaseTest {
         Assert.assertEquals(disabledMpMessage,"This Multibranch Pipeline is currently disabled");
     }
 
-    @Test (dependsOnMethods = {"testCreate", "testVerifyMpDisabledOnStatusPage"})
+    @Test (dependsOnMethods = "testVerifyMpDisabledOnStatusPage")
     public void testVerifyMpDisabledMessageColorOnStatusPage() {
         getDriver().findElement(By.cssSelector("[href='job/" + MULTI_PIPELINE_NAME + "/']")).click();
 
         String messageColor = getDriver().findElement(By.id("enable-project")).getCssValue("color");
         Assert.assertEquals(messageColor, "rgba(254, 130, 10, 1)");
     }
+
+    @Test (dependsOnMethods = "testRenameOnTheSidebar")
+    public void testDeleteMpViaBreadcrumbs() {
+        getDriver().findElement(MULTI_PIPELINE_ON_DASHBOARD_LOCATOR).click();
+
+        WebElement dropdownArrow  = getDriver().findElement(By.cssSelector("a[href^='/job'] > button"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
+                "arguments[0].dispatchEvent(new Event('click'));", dropdownArrow);
+
+        getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='doDelete']")).click();
+        getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
+
+        List<WebElement> projectList = getDriver().findElements(MULTI_PIPELINE_ON_DASHBOARD_LOCATOR);
+        Assert.assertTrue(projectList.isEmpty());
+    }
+
 }
