@@ -40,4 +40,13 @@ public abstract class BasePage extends BaseModel {
                 .anyMatch(e -> e.getText()
                 .contains(text));
     }
+
+    protected void clickElement(WebElement webElement) {
+        new Actions(getDriver())
+                .scrollToElement(webElement)
+                .scrollByAmount(0, 100)
+                .moveToElement(webElement)
+                .click().perform();
+    }
+
 }
