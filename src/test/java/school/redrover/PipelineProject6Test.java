@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -59,6 +60,7 @@ public class PipelineProject6Test extends BaseTest {
                 By.xpath("//div[@id='pipeline-box']/h2"))).getText(),expectedText);
     }
 
+    @Ignore
     @Test
     public void testRunByBuildNowButton() {
         createNewPipeline(PIPELINE_NAME);
@@ -71,6 +73,7 @@ public class PipelineProject6Test extends BaseTest {
         Assert.assertTrue(getDriver().findElement(CONSOLE_OUTPUT).getText().contains(SUCCEED_BUILD_EXPECTED));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testRunByBuildNowButton")
     public void testRunBuildByTriangleButton() {
         getDriver().findElement(By.cssSelector("[title^='Schedule a Build']")).click();

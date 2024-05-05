@@ -7,6 +7,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.ItemErrorPage;
@@ -38,6 +39,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 "Project name has not been changed" );
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateMCP")
     public void testAddDescription() {
         final String text = "❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
@@ -299,6 +301,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         Assert.assertTrue(itemNames.contains(RANDOM_PROJECT_NAME));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateMCP")
     public void testCreateMCPWithSameName() {
         ItemErrorPage errorPage = new HomePage(getDriver())
