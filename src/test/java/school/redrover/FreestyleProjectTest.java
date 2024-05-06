@@ -222,7 +222,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickLogo()
                 .openItemDropdown(projectName)
                 .clickMoveInDropdown()
-                .choseFolderAndSave(folderName)
+                .chooseFolderAndSave(folderName)
                 .checkFullProjectName();
 
         Assert.assertTrue(actualResult.contains(expectedResult));
