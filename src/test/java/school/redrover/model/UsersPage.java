@@ -13,6 +13,9 @@ public class UsersPage extends BasePage {
     @FindBy(css = "[href='addUser']")
     private WebElement createUserLink;
 
+    @FindBy(css = "[class*='jenkins-table__link']")
+    List<WebElement> usersList;
+
     public UsersPage(WebDriver driver) {
         super(driver);
     }
@@ -24,7 +27,7 @@ public class UsersPage extends BasePage {
     }
 
     public List<String> getUsersList() {
-        return getDriver().findElements(By.cssSelector("[class*='jenkins-table__link']")).stream()
+        return usersList.stream()
                 .map(WebElement::getText)
                 .toList();
     }
