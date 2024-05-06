@@ -1,10 +1,13 @@
 package school.redrover.model;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
+
+import java.util.List;
 
 public class CreateNewItemPage extends BasePage {
 
@@ -13,6 +16,9 @@ public class CreateNewItemPage extends BasePage {
 
     @FindBy(css = "[class$='FreeStyleProject']")
     private WebElement freestyleItem;
+
+    @FindBy(id = "from")
+    private WebElement nameTextInCopyForm;
 
     @FindBy(css = "[class$='WorkflowJob']")
     private WebElement pipelineItem;
@@ -35,6 +41,9 @@ public class CreateNewItemPage extends BasePage {
     @FindBy(id = "itemname-invalid")
     private WebElement errorMessage;
 
+    @FindBy(xpath = "//div[@class='item-copy']//li[not(@style='display: none;')]")
+    private List<WebElement> copyFormElements;
+
     public CreateNewItemPage(WebDriver driver) {
         super(driver);
     }
@@ -56,8 +65,17 @@ public class CreateNewItemPage extends BasePage {
         return new HomePage(getDriver());
     }
 
+
     public CreateNewItemPage setItemName(String name) {
         nameText.sendKeys(name);
+        return this;
+    }
+
+
+
+    public CreateNewItemPage selectTypeAndClickOk(String type) {
+        getDriver().findElement(By.xpath("//span[text()='" + type + "']")).click();
+        okButton.click();
         return this;
     }
 
@@ -121,6 +139,7 @@ public class CreateNewItemPage extends BasePage {
         return page;
     }
 
+
     public String getErrorMessage() {
         return errorMessage.getText();
 
@@ -128,5 +147,22 @@ public class CreateNewItemPage extends BasePage {
 
     public String getCreateNewItemPageUrl() {
         return TestUtils.getBaseUrl() + "/view/all/newJob";
+    }
+
+    public CreateNewItemPage setItemNameInCopyForm(String name) {
+        nameTextInCopyForm.sendKeys(name);
+        return this;
+    }
+
+    public List<String> copyFormElementsList() {
+        return copyFormElements
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+    }
+
+    public CreateItemPage clickOkButton() {
+        okButton.click();
+        return new CreateItemPage(getDriver());
     }
 }

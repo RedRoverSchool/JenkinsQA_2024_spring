@@ -6,6 +6,10 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.CreateNewItemPage;
+import school.redrover.model.CreateNewViewPage;
+import school.redrover.model.FreestyleConfigPage;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -32,10 +36,12 @@ public class FreestyleProject3Test extends BaseTest {
     @Test
     public void testCreateFreestyleProject() {
 
-        TestUtils.createJob(this, TestUtils.Job.FREESTYLE, FREESTYLE_PROJECT_NAME);
-        getDriver().findElement(By.name("Submit")).click();
-
-        String newProjectName = getDriver().findElement(By.tagName("h1")).getText();
+        String newProjectName = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(FREESTYLE_PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .clickSave()
+                .getProjectName();
 
         Assert.assertEquals(newProjectName, FREESTYLE_PROJECT_NAME);
     }

@@ -1,5 +1,8 @@
 package school.redrover;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
@@ -184,5 +187,36 @@ public class PipelineTest extends BaseTest {
         boolean isUnderPipeline = stageViewLocation.getY() > (pipelineInfoLocation.getY() + pipelineInfoSize.getHeight());
 
         Assert.assertTrue(isUnderPipeline,"Stage View is displayed under Pipeline Info.");
+    }
+
+    @Test
+    public void testCreatePipelineProject() {
+        String getH1HeaderText = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .getHeadlineDisplayedName();
+
+             Assert.assertEquals(getH1HeaderText, PIPELINE_NAME);
+    }
+
+    @Test
+    public void testFullStageViewButton() {
+
+        final String pipelineName = "New Pipeline";
+        final String expectedResult = pipelineName + " - Stage View";
+
+        String h2HeadingText = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(pipelineName)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .chooseCreatedProject(pipelineName)
+                .clickFullStageViewButton()
+                .getH2HeadingText();
+
+        Assert.assertEquals(h2HeadingText, expectedResult);
     }
 }

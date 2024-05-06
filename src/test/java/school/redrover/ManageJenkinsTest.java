@@ -16,12 +16,6 @@ public class ManageJenkinsTest extends BaseTest {
 
     private static final By SETTINGS_SEARCH_BAR_LOCATOR = By.id("settings-search-bar");
 
-    private boolean areElementsEnabled(List<WebElement> elements) {
-        for (WebElement element : elements) {
-            return element.isEnabled();
-        }
-        return false;
-    }
 
     @Test
     public void testRedirectionToSecurityPage() {
@@ -79,14 +73,12 @@ public class ManageJenkinsTest extends BaseTest {
     }
 
     @Test
-    public void testToolsAndActionsBlockSectionsEnabled() {
-        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
+    public void testToolsAndActionsBlockSectionsClickable() {
+        boolean areToolsAndActionsSectionsEnabled = new HomePage(getDriver())
+                .clickManageJenkins()
+                .areToolsAndActionsSectionsEnabled();
 
-        List<WebElement> toolsAndActionsSections = getDriver().findElements(
-                By.xpath("(//div[@class='jenkins-section__items'])[5]/div[contains(@class, 'item')]"));
-
-        Assert.assertTrue(areElementsEnabled(toolsAndActionsSections),
-                "'Tools and Actions' sections are not clickable");
+        Assert.assertTrue(areToolsAndActionsSectionsEnabled,"'Tools and Actions' sections are not clickable");
     }
 
     @Test
