@@ -146,7 +146,7 @@ public class PipelinePage extends BasePage {
     }
 
     public PipelinePage clickBuild() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(buildButton)).click();
+        ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].click();", buildButton);
 
         return this;
     }

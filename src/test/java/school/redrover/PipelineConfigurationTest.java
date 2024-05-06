@@ -123,6 +123,7 @@ public class PipelineConfigurationTest extends BaseTest {
 
     @Test
     public void testDiscardOldBuildsByCount() {
+
         PipelinePage pipelinePage = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(JOB_NAME)
