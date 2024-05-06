@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.WebElement;
 import school.redrover.model.CreateItemPage;
-import school.redrover.model.CreateNewItemPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import org.openqa.selenium.By;
@@ -53,7 +52,7 @@ public class CopyFromExistingJobTest extends BaseTest{
 
             Thread.sleep(3000);
 
-            ArrayList<String> allJobFromThisLetterName = new ArrayList<String>();
+            ArrayList<String> allJobFromThisLetterName = new ArrayList<>();
             List<WebElement> allJobFromThisLetter = getDriver().findElements(By.xpath("//input[@id='from']/ following-sibling::div//li"));
 
             for (WebElement el : allJobFromThisLetter) {
