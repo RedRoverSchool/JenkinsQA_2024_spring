@@ -35,6 +35,9 @@ public class HomePage extends BasePage {
     @FindBy(css = "[href*='rename']")
     private WebElement renameFromDropdown;
 
+    @FindBy(css = "a[href $= '/move']")
+    private WebElement dropdownMove;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -75,6 +78,11 @@ public class HomePage extends BasePage {
     public DeleteDialog clickDeleteInDropdown(DeleteDialog dialog) {
         getDriver().findElement(TestUtils.DROPDOWN_DELETE).click();
         return dialog;
+    }
+
+    public MovePage clickMoveInDropdown() {
+        dropdownMove.click();
+        return new MovePage(getDriver());
     }
 
     public NodesTablePage clickNodesLink() {
