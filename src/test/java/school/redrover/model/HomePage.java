@@ -189,6 +189,22 @@ public class HomePage extends BasePage {
         return new AppearancePage(getDriver());
     }
 
+    public PipelinePage clickSpecificPipelineName(By locator) {
+        getDriver().findElement(locator).click();
+
+        return new PipelinePage(getDriver());
+    }
+
+    public boolean isItemDeleted(String name) {
+        return !getItemList().contains(name);
+    }
+
+    public MultibranchPipelineStatusPage clickMPName(String projectName) {
+        getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
+
+        return new MultibranchPipelineStatusPage(getDriver());
+    }
+
     public WebElement getDropdownMenu() {
         return  getWait2().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[@class='jenkins-dropdown']")));

@@ -19,6 +19,7 @@ public class PipelineTest extends BaseTest {
     private static final By DASHBOARD_PIPELINE_LOCATOR = By.cssSelector("td [href='job/" + PIPELINE_NAME + "/']");
     private static final By BUILD_HISTORY_PIPELINE_LOCATOR = By.cssSelector("td [href$='job/" + PIPELINE_NAME + "/']");
     private static final String DESCRIPTION = "Lorem ipsum dolor sit amet";
+    private static final String NEW_PIPELINE_NAME = "New Pipeline name";
 
     private void createPipelineWithCreateAJob() {
         getDriver().findElement(By.linkText("Create a job")).click();
@@ -85,22 +86,20 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testDeleteViaBreadcrumbs() {
-        createPipelineWithCreateAJob();
-        TestUtils.goToMainPage(getDriver());
+        boolean isPipelineDeleted = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .clickSpecificPipelineName(DASHBOARD_PIPELINE_LOCATOR)
+                .hoverOverBreadcrumbsName()
+                .clickBreadcrumbsDropdownArrow()
+                .clickBreadcrumbsDeleteButton()
+                .clickYes(new HomePage(getDriver()))
+                .isItemDeleted(PIPELINE_NAME);
 
-        getDriver().findElement(DASHBOARD_PIPELINE_LOCATOR).click();
-        WebElement breadcrumbsItemName = getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job']"));
-
-        new Actions(getDriver())
-                .moveToElement(breadcrumbsItemName)
-                .perform();
-        clickOnDropdownArrow(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']"));
-
-        getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='Delete']")).click();
-        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
-
-        List<WebElement> jobList = getDriver().findElements(DASHBOARD_PIPELINE_LOCATOR);
-        Assert.assertTrue(jobList.isEmpty(), PIPELINE_NAME + " was not deleted");
+        Assert.assertTrue(isPipelineDeleted, PIPELINE_NAME + " was not deleted");
     }
 
     @Ignore
@@ -154,5 +153,21 @@ public class PipelineTest extends BaseTest {
                 .getDescriptionText();
 
         Assert.assertEquals(descriptionText, expectedDescription);
+    }
+
+    @Test
+    public void testRenamePipelineViaSidebar() {
+        String displayedName = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickSidebarRenameButton()
+                .clearNameInputField()
+                .setNewName(NEW_PIPELINE_NAME)
+                .clickSaveRenameButton()
+                .getHeadlineDisplayedName();
+
+        Assert.assertEquals(displayedName, NEW_PIPELINE_NAME);
     }
 }
