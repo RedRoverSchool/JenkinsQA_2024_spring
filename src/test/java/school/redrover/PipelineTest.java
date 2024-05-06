@@ -178,7 +178,7 @@ public class PipelineTest extends BaseTest {
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
-                .getH1HeaderText();
+                .getHeadlineDisplayedName();
 
              Assert.assertEquals(getH1HeaderText, PIPELINE_NAME);
     }
