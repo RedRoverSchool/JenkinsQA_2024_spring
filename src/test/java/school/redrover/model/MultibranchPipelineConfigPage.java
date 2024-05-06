@@ -23,7 +23,7 @@ public class MultibranchPipelineConfigPage extends BasePage {
     @FindBy(id = "enable-disable-project")
     private WebElement toggleInput;
 
-    @FindBy(css = "[href$='MultibranchPipeline/']")
+    @FindBy(css = "#breadcrumbs > li:nth-child(3)")
     private WebElement multibranchPipelineBreadcrumbs;
 
     public MultibranchPipelineConfigPage(WebDriver driver) {
@@ -61,11 +61,6 @@ public class MultibranchPipelineConfigPage extends BasePage {
     public MultibranchPipelineStatusPage clickSaveButton() {
         saveButton.click();
 
-        return new MultibranchPipelineStatusPage(getDriver());
-    }
-
-    public MultibranchPipelineStatusPage clickMultibranchPipelineStatusBreadcrumbs() {
-        multibranchPipelineBreadcrumbs.click();
         return new MultibranchPipelineStatusPage(getDriver());
     }
 }
