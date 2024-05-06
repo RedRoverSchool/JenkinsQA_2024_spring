@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -18,14 +19,14 @@ public class Folder7Test extends BaseTest {
 
     @Test
     public void testCreateNewFolder() {
+        String name = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(NAME)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .getPageTopic();
 
-        getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.id("name")).sendKeys(NAME);
-        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.cssSelector("#main-panel h1")).getText(), NAME);
+        Assert.assertEquals(name, NAME);
     }
 
     @Test

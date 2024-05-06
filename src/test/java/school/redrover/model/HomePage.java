@@ -145,21 +145,10 @@ public class HomePage extends BasePage {
         return new CreateNewViewPage(getDriver());
     }
 
-    public HomePage clickView(String viewName) {
-        getDriver().findElement(By.linkText(viewName)).click();
-
-        return this;
-    }
-
     public ViewPage clickViewName(String viewName) {
         getDriver().findElement(By.linkText(viewName)).click();
 
         return new ViewPage(getDriver());
-    }
-
-    public int sizeColumnList() {
-
-        return getDriver().findElements(By.className("sortheader")).size();
     }
 
     public FolderStatusPage clickOnCreatedFolder(String name) {
