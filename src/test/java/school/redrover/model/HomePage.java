@@ -41,6 +41,12 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@class='sortheader' and text()='Name']")
     private WebElement columnNameTitle;
 
+    @FindBy(css = "tr[id*='job_'] > td > div > svg")
+    private WebElement projectIcon;
+
+    @FindBy(css = "div.jenkins-icon-size__items.jenkins-buttons-row > ol > li")
+    private List<WebElement> sizeIcon;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -184,11 +190,22 @@ public class HomePage extends BasePage {
     }
 
     public WebElement getDropdownMenu() {
-        return dropdownMenu;
+        return  getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@class='jenkins-dropdown']")));
     }
 
     public HomePage clickColumnNameTitle() {
         columnNameTitle.click();
         return new HomePage(getDriver());
+    }
+
+    public HomePage clickSizeIcon(int i) {
+        sizeIcon.get(i).click();
+
+        return this;
+    }
+
+    public int getProjectIconHeight() {
+        return projectIcon.getSize().height;
     }
 }

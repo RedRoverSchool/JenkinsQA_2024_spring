@@ -208,39 +208,16 @@ public class Dashboard1Test extends BaseTest {
         Assert.assertTrue(namesFromNewView.size() == 2 && isName1InView && isName2InView);
     }
 
-//    @Test(dependsOnMethods = "testSortItemsByName")
-//    public void testAddItemsToView() {
-//        getDriver().findElement(By.linkText(VIEW_NAME)).click();
-//        getDriver().findElement(By.linkText("Edit View")).click();
-//
-//        WebElement selectedProject1 = getDriver().findElement(
-//                By.xpath("//label[contains(@title, '" + SELECTED_NAME1 + "')]"));
-//        WebElement selectedProject2 = getDriver().findElement(
-//                By.xpath("//label[contains(@title, '" + SELECTED_NAME2 + "')]"));
-//        WebElement okButton = getDriver().findElement(By.name("Submit"));
-//
-//          TestUtils.clickElement(selectedProject1);
-//        clickElement(selectedProject2);
-//        clickElement(okButton);
-//
-//        List<String> namesFromNewView = TestUtils.getTexts(getDriver().findElements(
-//                By.xpath("//td/a[contains(@href, 'job/')]")));
-//
-//        boolean isName1InView = namesFromNewView.stream().anyMatch(s -> s.contains(SELECTED_NAME1));
-//        boolean isName2InView = namesFromNewView.stream().anyMatch(s -> s.contains(SELECTED_NAME2));
-//
-//        Assert.assertTrue(namesFromNewView.size() == 2 && isName1InView && isName2InView);
-//}
-//    @Test(dependsOnMethods = "testAddItemsToView")
-//    public void testChangeIconSize() {
-//        List<Integer> size = List.of(16, 20, 24);
-//
-//        By iconLocator = By.cssSelector("tr[id*='job_'] > td > div > svg");
-//        By sizeLocator = By.cssSelector("div.jenkins-icon-size__items.jenkins-buttons-row > ol > li");
-//
-//        for (int i = 0; i < size.size(); i++) {
-//            getDriver().findElements(sizeLocator).get(i).click();
-//            Assert.assertEquals(size.get(i), getDriver().findElement(iconLocator).getSize().height);
-//        }
-//    }
+    @Test(dependsOnMethods = "testAddItemsToView")
+    public void testChangeIconSize() {
+        List<Integer> size = List.of(16, 20, 24);
+
+        for (int i = 0; i < size.size(); i++) {
+            int iconHeight = new HomePage(getDriver())
+                    .clickSizeIcon(i)
+                    .getProjectIconHeight();
+
+            Assert.assertEquals(iconHeight, size.get(i));
+        }
+    }
 }

@@ -48,5 +48,4 @@ public abstract class BasePage extends BaseModel {
                 .moveToElement(webElement)
                 .click().perform();
     }
-
 }
