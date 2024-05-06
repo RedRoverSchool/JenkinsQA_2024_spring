@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.PipelineConfigPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -80,12 +81,12 @@ public class PipelineConfigurationTest extends BaseTest {
 
         createPipeline();
 
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(pipelineDescription);
-        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
+        boolean isDescriptionVisible = new PipelineConfigPage(getDriver())
+                .addDescription(pipelineDescription)
+                .clickSaveButton()
+                .isDescriptionVisible(pipelineDescription);
 
-        Assert.assertTrue(
-                getDriver().findElement(By.xpath("//div[text()='" + pipelineDescription + "']")).isDisplayed(),
-                "Something went wrong with the description");
+        Assert.assertTrue(isDescriptionVisible,"Something went wrong with the description");
     }
 
     @Test
@@ -367,5 +368,30 @@ public class PipelineConfigurationTest extends BaseTest {
         navigateToConfigurePageFromDashboard();
 
         Assert.assertTrue(selectedValue.contains(selectedOptionForCheck));
+    }
+
+    public void scrollCheckBoxThrottleBuildsIsVisible() {
+        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
+        executor.executeScript("arguments[0].scrollIntoView({block: 'center'});",
+                getDriver().findElement(By.xpath("//label[text()='Throttle builds']")));
+    }
+
+    @Test
+    public void testSetNumberOfBuildsThrottleBuilds() {
+        final String messageDay = "Approximately 24 hours between builds";
+
+        createPipeline();
+        navigateToConfigurePageFromDashboard();
+        scrollCheckBoxThrottleBuildsIsVisible();
+
+        getDriver().findElement(By.xpath("//label[text()='Throttle builds']")).click();
+        WebElement selectThrottleBuilds = getDriver().findElement(By.xpath("//select[@class='jenkins-select__input select']"));
+        Select simpleDropDown = new Select(selectThrottleBuilds);
+        simpleDropDown.selectByValue("day");
+
+        WebElement dayElement = getDriver().findElement(By.xpath("//div[@class='ok']"));
+        getWait5().until(ExpectedConditions.visibilityOf(dayElement));
+
+        Assert.assertEquals(dayElement.getText(), messageDay);
     }
 }

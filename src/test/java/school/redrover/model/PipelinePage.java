@@ -1,9 +1,6 @@
 package school.redrover.model;
 
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -65,7 +62,6 @@ public class PipelinePage extends BasePage {
         return this;
     }
 
-
     public PipelinePage makeDescriptionFieldNotActive() {
         new Actions(getDriver()).sendKeys(Keys.TAB).perform();
 
@@ -80,4 +76,8 @@ public class PipelinePage extends BasePage {
                 descriptionInput);
     }
 
+    public boolean isDescriptionVisible(String pipelineDescription) {
+        return getWait5().until(ExpectedConditions
+                .visibilityOfElementLocated(By.xpath("//div[text()='" + pipelineDescription + "']"))).isDisplayed();
+    }
 }
