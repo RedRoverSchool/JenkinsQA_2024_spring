@@ -21,13 +21,11 @@ public class CopyFromExistingJobTest extends BaseTest{
         TestUtils.createNewJob(this, Job.FOLDER, "Folder1");
         String notExistingName ="AAA";
 
-         new HomePage(getDriver())
+        CreateItemPage errorPage = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName("someName")
                 .setItemNameInCopyForm(notExistingName)
                 .clickOkButton();
-
-        CreateItemPage errorPage = new CreateItemPage(getDriver());
 
         Assert.assertTrue(errorPage.getCurrentUrl().endsWith("/createItem"));
         Assert.assertEquals(errorPage.getPageHeaderText(),"Error");
