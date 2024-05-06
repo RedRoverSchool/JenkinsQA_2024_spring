@@ -128,7 +128,7 @@ public class HomePage extends BasePage {
 
     public ViewAllPage clickMyViewsFromDropdown() {
         openHeaderUsernameDropdown();
-        getWait2().until(ExpectedConditions
+        getWait5().until(ExpectedConditions
                 .visibilityOfElementLocated(By.cssSelector("div.tippy-box [href $= 'my-views']")))
                 .click();
 
