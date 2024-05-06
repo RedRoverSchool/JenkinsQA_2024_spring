@@ -4,16 +4,21 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
+import school.redrover.model.PipelinePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
 public class PipelineTest extends BaseTest {
+
+    @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
+    private WebElement fullStageViewButton;
 
     private static final String PIPELINE_NAME = "FirstPipeline";
     private static final By DASHBOARD_PIPELINE_LOCATOR = By.cssSelector("td [href='job/" + PIPELINE_NAME + "/']");
@@ -180,7 +185,7 @@ public class PipelineTest extends BaseTest {
                 .clickSaveButton()
                 .getHeadlineDisplayedName();
 
-             Assert.assertEquals(getH1HeaderText, PIPELINE_NAME);
+        Assert.assertEquals(getH1HeaderText, PIPELINE_NAME);
     }
 
     @Test
@@ -200,5 +205,22 @@ public class PipelineTest extends BaseTest {
                 .getH2HeadingText();
 
         Assert.assertEquals(h2HeadingText, expectedResult);
+    }
+
+    @Test(dependsOnMethods = "testCreatePipelineProject")
+    public void testColorWhenHoveringMouseOnFullStageViewButton() {
+
+        final String expectedColor = "rgba(175, 175, 207, 0.15)";
+
+        String backgroundColorBeforeHover = new HomePage(getDriver())
+                .chooseCreatedProject(PIPELINE_NAME)
+                .getFullStageViewButtonBackgroundColor();
+
+        String backgroundColorAfterHover = new PipelinePage(getDriver())
+                .hoverOnFullStageViewButton()
+                .getFullStageViewButtonBackgroundColor();
+
+        Assert.assertTrue(!backgroundColorAfterHover.equals(backgroundColorBeforeHover)
+                && backgroundColorAfterHover.equals(expectedColor));
     }
 }

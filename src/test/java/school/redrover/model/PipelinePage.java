@@ -8,6 +8,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
+import school.redrover.runner.BaseTest;
 
 public class PipelinePage extends BasePage {
 
@@ -123,6 +124,7 @@ public class PipelinePage extends BasePage {
 
         return new DeleteDialog(getDriver());
     }
+
     public PipelineRenamePage clickSidebarRenameButton() {
         sidebarRenameButton.click();
 
@@ -132,9 +134,24 @@ public class PipelinePage extends BasePage {
     public String getHeadlineDisplayedName() {
         return headlineDisplayedName.getText();
     }
+
     public FullStageViewPage clickFullStageViewButton() {
         getWait5().until(ExpectedConditions.elementToBeClickable(fullStageViewButton)).click();
 
         return new FullStageViewPage(getDriver());
+    }
+
+    public String getFullStageViewButtonBackgroundColor() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        return (String) js.executeScript("return window.getComputedStyle(arguments[0], '::before').getPropertyValue('background-color');", fullStageViewButton);
+    }
+
+    public PipelinePage hoverOnFullStageViewButton() {
+        new Actions(getDriver()).scrollToElement(fullStageViewButton)
+                .moveToElement(fullStageViewButton)
+                .pause(2000)
+                .perform();
+
+        return this;
     }
 }
