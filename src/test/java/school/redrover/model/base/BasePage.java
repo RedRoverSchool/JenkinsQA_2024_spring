@@ -28,8 +28,7 @@ public abstract class BasePage extends BaseModel {
 
     public void openHeaderUsernameDropdown() {
         new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.xpath("//header[@class='page-header']//button[@class='jenkins-menu-dropdown-chevron']")))
-                .pause(1000)
+                .moveToElement(getDriver().findElement(By.cssSelector(".login.page-header__hyperlinks .jenkins-menu-dropdown-chevron")))
                 .click()
                 .perform();
     }
