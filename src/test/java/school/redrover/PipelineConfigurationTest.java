@@ -130,17 +130,19 @@ public class PipelineConfigurationTest extends BaseTest {
                 .setItemName(JOB_NAME)
                 .selectPipelineAndClickOk()
                 .clickDiscardOldBuilds()
-                .setNumberBuildsToKeep(1)
+                .setNumberBuildsToKeep(2)
                 .scrollToPiplineScript()
                 .selectSamplePiplineScript("hello")
                 .clickSaveButton()
                 .clickBuild()
                 .waitBuildToFinish()
                 .clickBuild()
+                .waitBuildToFinish()
+                .clickBuild()
                 .waitBuildToFinish();
 
         Assert.assertTrue(pipelinePage.isBuildAppear(2, JOB_NAME), "there is no second build");
-        Assert.assertEquals(pipelinePage.numberOfBuild(), 1);
+        Assert.assertEquals(pipelinePage.numberOfBuild(), 2);
     }
 
     @Test
