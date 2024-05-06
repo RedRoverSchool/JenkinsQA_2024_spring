@@ -189,7 +189,7 @@ public class PipelineTest extends BaseTest {
         final String pipelineName = "New Pipeline";
         final String expectedResult = pipelineName + " - Stage View";
 
-        String getH2HeaderText = new HomePage(getDriver())
+        String h2HeadingText = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(pipelineName)
                 .selectPipelineAndClickOk()
@@ -199,6 +199,6 @@ public class PipelineTest extends BaseTest {
                 .clickFullStageViewButton()
                 .getH2HeadingText();
 
-        Assert.assertEquals(getH2HeaderText, expectedResult);
+        Assert.assertEquals(h2HeadingText, expectedResult);
     }
 }
