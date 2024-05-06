@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.PipelineConfigPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -59,6 +60,18 @@ public class PipelineConfigurationTest extends BaseTest {
                advancedButton);
     }
 
+    public void scrollCheckBoxQuietPeriodIsVisible(){
+        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
+        executor.executeScript("arguments[0].scrollIntoView();",
+                getDriver().findElement(By.xpath("//label[text()='Poll SCM']")));
+    }
+
+    public void scrollCheckBoxThrottleBuildsIsVisible() {
+        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
+        executor.executeScript("arguments[0].scrollIntoView({block: 'center'});",
+                getDriver().findElement(By.xpath("//label[text()='Throttle builds']")));
+    }
+
     @Test
     public void testScroll() {
         createPipeline();
@@ -74,12 +87,12 @@ public class PipelineConfigurationTest extends BaseTest {
 
         createPipeline();
 
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(pipelineDescription);
-        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
+        boolean isDescriptionVisible = new PipelineConfigPage(getDriver())
+                .addDescription(pipelineDescription)
+                .clickSaveButton()
+                .isDescriptionVisible(pipelineDescription);
 
-        Assert.assertTrue(
-                getDriver().findElement(By.xpath("//div[text()='" + pipelineDescription + "']")).isDisplayed(),
-                "Something went wrong with the description");
+        Assert.assertTrue(isDescriptionVisible,"Something went wrong with the description");
     }
 
     @Test
@@ -223,7 +236,6 @@ public class PipelineConfigurationTest extends BaseTest {
 
         Assert.assertEquals(actualTooltip, tooltipText);
     }
-
     @Test
     public void testChoosePipelineScript() {
         createPipeline();
@@ -237,7 +249,7 @@ public class PipelineConfigurationTest extends BaseTest {
         WebElement uncheckCheckBox = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//label[text()='Use Groovy Sandbox']")));
         uncheckCheckBox.click();
 
-        WebElement link = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@target='blank']")));
+        WebElement link = getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@target='blank']")));
         Assert.assertTrue(link.isDisplayed(), "Uncheck doesn't work");
     }
 
@@ -253,5 +265,133 @@ public class PipelineConfigurationTest extends BaseTest {
 
         Assert.assertFalse(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']"))
                 .getText().contains(displayNameText));
+    }
+
+    @Test
+    public void testSetQuietPeriodBuildTriggers() {
+        final int numberOfSeconds = 3;
+
+        createPipeline();
+        navigateToConfigurePageFromDashboard();
+
+        scrollCheckBoxQuietPeriodIsVisible();
+        WebElement checkBoxQuietPeriod = getDriver().findElement(By.xpath("//label[text()='Quiet period']"));
+        checkBoxQuietPeriod.click();
+
+        WebElement inputField = getDriver().findElement(By.name("quiet_period"));
+        inputField.clear();
+        inputField.sendKeys("" + numberOfSeconds + "");
+        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
+
+        navigateToConfigurePageFromDashboard();
+        scrollCheckBoxQuietPeriodIsVisible();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//input[@name='quiet_period']"))
+                        .getAttribute("value").contains("" + numberOfSeconds + ""),
+                "The actual numberOfSeconds differs from expected result");
+    }
+
+    @Test
+    public void testVerifySectionsHaveTooltips() {
+        String[] labelsText = {"Display Name", "Script"};
+
+        createPipeline();
+        navigateToConfigurePageFromDashboard();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(ADVANCED_PROJECT_OPTIONS_MENU)).click();
+        clickOnAdvancedButton();
+
+        for (String label: labelsText) {
+            String actualTooltip = getDriver().findElement(By.xpath("//*[contains(text(), '" + label + "')]//a")).getAttribute("tooltip");
+
+            Assert.assertEquals(actualTooltip, "Help for feature: " + label);
+        }
+    }
+
+    @Test
+    public void testSetQuietPeriodBuildTriggersLessThanZero() {
+        final int numberOfSeconds = -5;
+        final String errorMessage = "This value should be larger than 0";
+
+        createPipeline();
+        navigateToConfigurePageFromDashboard();
+
+        scrollCheckBoxQuietPeriodIsVisible();
+        WebElement checkBoxQuietPeriod = getDriver().findElement(By.xpath("//label[text()='Quiet period']"));
+        checkBoxQuietPeriod.click();
+
+        WebElement inputField = getDriver().findElement(By.name("quiet_period"));
+        inputField.clear();
+        inputField.sendKeys("" + numberOfSeconds + "");
+        getDriver().findElement(By.xpath("//div[text()='Number of seconds']")).click();
+
+        WebElement errorElement = getDriver().findElement(By.xpath("//div[@class='form-container tr']//div[@class='error']"));
+        getWait5().until(ExpectedConditions.visibilityOf(errorElement));
+
+        Assert.assertEquals(errorElement.getText(), errorMessage);
+    }
+
+    @Test
+    public void testSetDoubleQuietPeriodBuildTriggersLessThanZero() {
+        final double numberOfSeconds = 0.3;
+        final String errorMessage = "Not an integer";
+
+        createPipeline();
+        navigateToConfigurePageFromDashboard();
+
+        scrollCheckBoxQuietPeriodIsVisible();
+        WebElement checkBoxQuietPeriod = getDriver().findElement(By.xpath("//label[text()='Quiet period']"));
+        checkBoxQuietPeriod.click();
+
+        WebElement inputField = getDriver().findElement(By.name("quiet_period"));
+        inputField.clear();
+        inputField.sendKeys("" + numberOfSeconds + "");
+        getDriver().findElement(By.xpath("//div[text()='Number of seconds']")).click();
+
+        WebElement errorElement = getDriver().findElement(By.xpath("//div[@class='form-container tr']//div[@class='error']"));
+        getWait5().until(ExpectedConditions.visibilityOf(errorElement));
+
+        Assert.assertEquals(errorElement.getText(), errorMessage);
+    }
+
+    @Test
+    public void testSetPipelineSpeedDurabilityOverride() {
+        final String selectedOptionForCheck = "Less durability, a bit faster (specialty use only)";
+        createPipeline();
+        navigateToConfigurePageFromDashboard();
+
+        getDriver().findElement(By.xpath("//label[text()='Pipeline speed/durability override']")).click();
+        WebElement selectCustomPipelineSpeedDurabilityLevel = getDriver().findElement(By.xpath("//select[@class='setting-input']"));
+        Select dropDown = new Select(selectCustomPipelineSpeedDurabilityLevel);
+        dropDown.selectByIndex(1);
+        String selectedValue = selectCustomPipelineSpeedDurabilityLevel.getText();
+
+        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
+        executor.executeScript("arguments[0].scrollIntoView();",
+                getDriver().findElement(SAVE_BUTTON_CONFIGURATION));
+        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
+
+        navigateToConfigurePageFromDashboard();
+
+        Assert.assertTrue(selectedValue.contains(selectedOptionForCheck));
+    }
+
+    @Test
+    public void testSetNumberOfBuildsThrottleBuilds() {
+        final String messageDay = "Approximately 24 hours between builds";
+
+        createPipeline();
+        navigateToConfigurePageFromDashboard();
+        scrollCheckBoxThrottleBuildsIsVisible();
+
+        getDriver().findElement(By.xpath("//label[text()='Throttle builds']")).click();
+        WebElement selectThrottleBuilds = getDriver().findElement(By.xpath("//select[@class='jenkins-select__input select']"));
+        Select simpleDropDown = new Select(selectThrottleBuilds);
+        simpleDropDown.selectByValue("day");
+
+        WebElement dayElement = getDriver().findElement(By.xpath("//div[@class='ok']"));
+        getWait5().until(ExpectedConditions.visibilityOf(dayElement));
+
+        Assert.assertEquals(dayElement.getText(), messageDay);
     }
 }

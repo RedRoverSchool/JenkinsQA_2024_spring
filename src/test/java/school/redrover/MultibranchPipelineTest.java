@@ -1,6 +1,5 @@
 package school.redrover;
 
-import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -9,10 +8,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import school.redrover.model.HomePage;
+import school.redrover.model.MultibranchPipelineConfigPage;
+import school.redrover.model.MultibranchPipelineStatusPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 import static school.redrover.runner.TestUtils.Job;
@@ -114,17 +115,16 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testChangeMultiPipelineFromDisabledToEnabledOnStatusPage() {
+    public void testChangeFromDisabledToEnabledOnStatusPage() {
+        MultibranchPipelineStatusPage multibranchPipelineStatusPage = new HomePage(getDriver())
+            .clickCreateAJob()
+            .setItemName(MULTI_PIPELINE_NAME)
+            .selectMultibranchPipelineAndClickOk()
+            .clickToggle()
+            .clickSaveButton()
+            .clickDisableMultibranchPipeline();
 
-        createNewMultiPipeline(MULTI_PIPELINE_NAME);
-        disableCreatedMultiPipeline(MULTI_PIPELINE_NAME);
-
-        getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']")).click();
-        getDriver().findElement(By.xpath("//button[contains(., 'Enable')]")).click();
-        List<WebElement> disabledMultiPipelineMessage = getDriver().findElements(
-            By.xpath("//form[contains(., 'This Multibranch Pipeline is currently disabled')]"));
-
-        Assert.assertEquals(disabledMultiPipelineMessage.size(), 0, "Disabled message is displayed!!!");
+        Assert.assertTrue(multibranchPipelineStatusPage.isMultibranchPipelineDisabledTextNotDisplayed(),"Disabled message is displayed!!!");
     }
 
     @Test
@@ -153,21 +153,18 @@ public class MultibranchPipelineTest extends BaseTest {
 
 
     @Test
-    public void testDisabledMultiPipelineTooltip() {
-        WebDriverWait webDriverWait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
+    public void testDisabledTooltip() {
         final String tooltipText = "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
 
-        createNewMultiPipeline(MULTI_PIPELINE_NAME);
-        disableCreatedMultiPipeline(MULTI_PIPELINE_NAME);
+        MultibranchPipelineConfigPage multibranchPipelineConfigPage = new HomePage(getDriver())
+            .clickCreateAJob()
+            .setItemName(MULTI_PIPELINE_NAME)
+            .selectMultibranchPipelineAndClickOk()
+            .clickToggle()
+            .hoverOverToggle();
 
-        getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']")).click();
-        getDriver().findElement(By.cssSelector("[href$='Pipeline/configure']")).click();
-        WebElement disabledSpan = getDriver().findElement(By.cssSelector("[data-title*='Disabled']"));
-        new Actions(getDriver()).moveToElement(disabledSpan).perform();
-        WebElement tooltip = webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-box")));
-
-        Assert.assertTrue(tooltip.isDisplayed());
-        Assert.assertEquals(tooltip.getText(),tooltipText);
+       Assert.assertTrue(multibranchPipelineConfigPage.isTooltipDisplayed());
+       Assert.assertEquals(multibranchPipelineConfigPage.getTooltipText(),tooltipText);
     }
 
     @Test
@@ -342,5 +339,32 @@ public class MultibranchPipelineTest extends BaseTest {
         String actualPageHeader = getDriver().findElement(By.tagName("h1")).getText();
 
         Assert.assertEquals(actualPageHeader,WELCOME_PAGE_HEADER);
+    }
+
+    @Test
+    public void testEnableMultibranchPipeline() {
+        MultibranchPipelineConfigPage page = new HomePage(getDriver()).clickCreateAJob()
+                .setItemName("TextName")
+                .selectMultibranchPipelineAndClickOk()
+                .clickOnToggle()
+                .clickSaveButton()
+                .selectConfigure()
+                .clickOnToggle()
+                .clickSaveButton()
+                .selectConfigure();
+
+        Assert.assertEquals(page.getStatusToggle(), "true");
+    }
+
+    @Test
+    public void testDisabledMultibranchPipeline() {
+        MultibranchPipelineConfigPage page = new HomePage(getDriver()).clickCreateAJob()
+                .setItemName("TextName1")
+                .selectMultibranchPipelineAndClickOk()
+                .clickOnToggle()
+                .clickSaveButton()
+                .selectConfigure();
+
+        Assert.assertEquals(page.getStatusToggle(), "false");
     }
 }

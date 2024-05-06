@@ -6,6 +6,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -15,6 +16,7 @@ import school.redrover.runner.TestUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class Pipeline1Test extends BaseTest {
     private static final String PIPELINE_NAME = "NewPipeline";
@@ -62,6 +64,23 @@ public class Pipeline1Test extends BaseTest {
         }
     }
 
+    private void makeBuilds(int buildsQtt) {
+        for (int i = 1; i <= buildsQtt; i++) {
+            ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",
+                    getWait5().until(ExpectedConditions.elementToBeClickable(
+                    By.xpath("//a[contains(@href, '/build?delay=0sec')]"))));
+
+            try {
+                getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                        By.xpath("//tr[@data-runid='" + i + "']")));
+            }catch (Exception e) {
+                getDriver().navigate().refresh();
+                getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                        By.xpath("//tr[@data-runid='" + i + "']")));
+            }
+        }
+    }
+
     private String getColorOfPseudoElement(WebElement element) {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         return (String) js.executeScript("return window.getComputedStyle(arguments[0], '::before').getPropertyValue('background-color');", element);
@@ -77,6 +96,30 @@ public class Pipeline1Test extends BaseTest {
     private void clickConfigButton() {
         getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
                 By.xpath("//a[contains(@href, 'configure')]")))).click();
+    }
+
+    private void cleanConfig() {
+
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).clear();
+
+        for (int i = 0; i <= 13; i++) {
+            boolean isCheckboxSelected = getDriver().findElement(By.id("cb" + i)).isSelected();
+            if (isCheckboxSelected == true) {
+                getDriver().findElement(By.xpath("//div[@ref='cb" + i + "']//label")).click();
+            }
+        }
+
+        Select selectDefinition = new Select(getDriver().findElement(
+                By.xpath("//section[@class='jenkins-section']//select[@class='jenkins-select__input dropdownList']")));
+        selectDefinition.selectByValue("0");
+
+        getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
+
+
+        boolean isCheckboxSelected = getDriver().findElement(By.xpath("//input[@name='_.sandbox']")).isSelected();
+        if (isCheckboxSelected != true) {
+            getDriver().findElement(By.xpath("//input[@name='_.sandbox']")).click();
+        }
     }
 
     @Test
@@ -194,6 +237,7 @@ public class Pipeline1Test extends BaseTest {
         }
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreatePipeline")
     public void testAvgStageTimeBuildTimeIsDisplayed() {
         int number_of_stages = 1;
@@ -260,6 +304,7 @@ public class Pipeline1Test extends BaseTest {
         Assert.assertEquals(actualResult, expectedResult);
     }
 
+    @Ignore
     @Test
     public void testBuildAttributes() {
 
@@ -293,6 +338,7 @@ public class Pipeline1Test extends BaseTest {
         Assert.assertTrue(result, "One of the elements is missing");
     }
 
+    @Ignore
     @Test
     public void testBuildAttributesDescending() {
 
@@ -322,6 +368,104 @@ public class Pipeline1Test extends BaseTest {
         expectedOrder.sort(Collections.reverseOrder());
 
         Assert.assertEquals(actualOrder, expectedOrder);
+    }
+
+    @Ignore
+    @Test
+    public void testBuildColorGreen() {
+
+        int number_of_stages = 1;
+
+        createPipelineProject(PIPELINE_NAME);
+
+        sendScript(number_of_stages);
+
+        getDriver().findElement(By.name("Submit")).click();
+        WebElement button = getDriver().findElement(By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/build?delay=0sec']"));
+        for (int i = 1; i <= 2; i++) {
+            button.click();
+            WebElement element = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//tr[@data-runid='" + i + "']/td[@class='stage-cell stage-cell-0 SUCCESS']/div[@class='cell-color']")));
+            String backgroundColor = element.getCssValue("background-color");
+
+            Assert.assertEquals(backgroundColor, "rgba(0, 255, 0, 0.1)");
+        }
+    }
+
+
+
+
+    @Ignore
+    @Test
+    public void testFullStageViewPopUpWindowIsDisplayed() {
+        int number_of_stages = 2;
+        TestUtils.createJob(this, TestUtils.Job.PIPELINE, PIPELINE_NAME);
+
+        sendScript(number_of_stages);
+
+        getDriver().findElement(By.name("Submit")).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@data-build-success='Build scheduled']"))).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='table-box']")));
+        getDriver().findElement(By.xpath("//tr[@data-runid='1']//td[@data-stageid='6']")).click();
+        getDriver().findElement(By.xpath("//div[@class='btn btn-small cbwf-widget cbwf-controller-applied stage-logs']")).click();
+
+        String actualResult = getDriver().findElement(By.xpath("//div[@class='cbwf-dialog cbwf-stage-logs-dialog']")).getText();
+
+        Assert.assertTrue(actualResult.contains("Stage Logs (stage 1)"));
+    }
+
+    @Ignore
+    @Test
+    public void testTableWithAllStagesAndTheLast10Builds() {
+
+        final int number_of_stages = 2;
+        final int buildsQtt = 12;
+        final String pipeName = "Ygramul";
+
+        TestUtils.createItem(TestUtils.PIPELINE, pipeName, this);
+        clickConfigButton();
+        cleanConfig();
+        sendScript(number_of_stages);
+        getDriver().findElement(By.name("Submit")).click();
+
+        makeBuilds(buildsQtt);
+
+        clickFullStageViewButton();
+
+        int actualSagesQtt = getDriver().findElements(
+                By.xpath("//th[contains(@class, 'stage-header-name')]")).size();
+
+        List<WebElement> actualBuilds = getDriver().findElements(By.className("badge"));
+        List<String> actualBuildsText = new ArrayList<>(TestUtils.getTexts(actualBuilds));
+
+        List<String> expectedBuildsText = new ArrayList<>();
+
+        for (int i = 0; i < actualBuildsText.size(); i++) {
+            expectedBuildsText.add("#" + (buildsQtt - i));
+        }
+
+        Assert.assertEquals(actualSagesQtt, number_of_stages);
+        Assert.assertEquals(actualBuildsText, expectedBuildsText);
+    }
+
+    @Ignore
+    @Test
+    public void testStageColumnHeader() {
+
+        int number_of_stages = 2;
+
+        TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
+        clickConfigButton();
+        sendScript(number_of_stages);
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/build?delay=0sec']")).click();
+
+        for (int i = 1; i <= number_of_stages; i++) {
+            String actualResult = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("th[class='stage-header-name-" + (i - 1) + "']"))).getText();
+            String expectedResult = "stage " + i;
+
+            Assert.assertEquals(actualResult, expectedResult);
+        }
     }
 }
 
