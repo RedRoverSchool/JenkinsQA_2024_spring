@@ -14,7 +14,6 @@ import school.redrover.model.ItemErrorPage;
 
 
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.JenkinsUtils;
 import school.redrover.runner.TestUtils;
 
 import java.util.List;
@@ -31,7 +30,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         String newProjectName = new HomePage(getDriver())
                 .clickNewItem()
                 .createNewItem(PROJECT_NAME, "MultiConfiguration")
-                .openDropdownUsingSelenium(PROJECT_NAME)
+                .openItemDropdownWithSelenium(PROJECT_NAME)
                 .selectRenameFromDropdown()
                 .changeProjectName(addToProjectName)
                 .clickRenameButton()
@@ -340,7 +339,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         final String folderName = "Folder";
         TestUtils.createNewItemAndReturnToDashboard(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
         TestUtils.createNewItemAndReturnToDashboard(this, folderName, TestUtils.Item.FOLDER);
-        new HomePage(getDriver()).openDropdownUsingSelenium(PROJECT_NAME);
+        new HomePage(getDriver()).openItemDropdownWithSelenium(PROJECT_NAME);
 
         getDriver().findElement(By.linkText("Move")).click();
         new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" + folderName);
