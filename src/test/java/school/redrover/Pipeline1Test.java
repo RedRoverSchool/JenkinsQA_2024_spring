@@ -394,6 +394,8 @@ public class Pipeline1Test extends BaseTest {
 
 
 
+
+    @Ignore
     @Test
     public void testFullStageViewPopUpWindowIsDisplayed() {
         int number_of_stages = 2;

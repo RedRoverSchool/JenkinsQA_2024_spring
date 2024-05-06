@@ -139,6 +139,7 @@ public class CreateNewItemPage extends BasePage {
         return page;
     }
 
+
     public String getErrorMessage() {
         return errorMessage.getText();
 
