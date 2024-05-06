@@ -184,9 +184,9 @@ public class PipelineTest extends BaseTest {
         Dimension pipelineInfoSize = pipelineInfo.getSize();
         Point stageViewLocation = stageView.getLocation();
 
-        boolean isUnderPipeline = stageViewLocation.getY() > (pipelineInfoLocation.getY() + pipelineInfoSize.getHeight());
+        boolean isUnderPipelineInfo = stageViewLocation.getY() > (pipelineInfoLocation.getY() + pipelineInfoSize.getHeight());
 
-        Assert.assertTrue(isUnderPipeline,"Stage View is displayed under Pipeline Info.");
+        Assert.assertTrue(isUnderPipelineInfo,"Stage View is displayed under Pipeline Info.");
     }
 
     @Test
