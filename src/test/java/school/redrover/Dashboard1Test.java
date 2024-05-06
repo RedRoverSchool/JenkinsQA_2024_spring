@@ -1,6 +1,5 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
@@ -14,8 +13,6 @@ import java.util.List;
 
 public class Dashboard1Test extends BaseTest {
     private final String VIEW_NAME = "RedRover";
-    private final String SELECTED_NAME1 = TestUtils.MULTIBRANCH_PIPELINE;
-    private final String SELECTED_NAME2 = TestUtils.FOLDER;
     private final List<String> projectsNames = getNamesList();
 
     private List<String> getNamesList() {
@@ -122,11 +119,6 @@ public class Dashboard1Test extends BaseTest {
                 .getItemList();
     }
 
-    private List<String> getItemNamesFromColumnAfterSortingByName1() {
-        getDriver().findElement(By.xpath("//a[@class='sortheader' and text()='Name']")).click();
-        return TestUtils.getTexts(getDriver().findElements(By.xpath("//td/a[contains(@href, 'job/')]")));
-    }
-
     private List<String> getChevronMenu(String jobName) {
         return Arrays.stream(new HomePage(getDriver())
                         .openItemDropdown(jobName)
@@ -194,6 +186,9 @@ public class Dashboard1Test extends BaseTest {
 
     @Test(dependsOnMethods = "testSortItemsByName")
     public void testAddItemsToView() {
+        final String SELECTED_NAME1 = TestUtils.MULTIBRANCH_PIPELINE;
+        final String SELECTED_NAME2 = TestUtils.FOLDER;
+
         List<String> namesFromNewView = new HomePage(getDriver())
                 .clickViewName(VIEW_NAME)
                 .clickEditViewButton()
