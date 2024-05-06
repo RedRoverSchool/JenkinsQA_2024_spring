@@ -19,6 +19,7 @@ public class PipelineTest extends BaseTest {
     private static final By DASHBOARD_PIPELINE_LOCATOR = By.cssSelector("td [href='job/" + PIPELINE_NAME + "/']");
     private static final By BUILD_HISTORY_PIPELINE_LOCATOR = By.cssSelector("td [href$='job/" + PIPELINE_NAME + "/']");
     private static final String DESCRIPTION = "Lorem ipsum dolor sit amet";
+    private static final String NEW_PIPELINE_NAME = "New Pipeline name";
 
     private void createPipelineWithCreateAJob() {
         getDriver().findElement(By.linkText("Create a job")).click();
@@ -152,6 +153,34 @@ public class PipelineTest extends BaseTest {
                 .getDescriptionText();
 
         Assert.assertEquals(descriptionText, expectedDescription);
+    }
+
+    @Test
+    public void testRenamePipelineViaSidebar() {
+        String displayedName = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickSidebarRenameButton()
+                .clearNameInputField()
+                .setNewName(NEW_PIPELINE_NAME)
+                .clickSaveRenameButton()
+                .getHeadlineDisplayedName();
+
+        Assert.assertEquals(displayedName, NEW_PIPELINE_NAME);
+    }
+
+    @Test
+    public void testCreatePipelineProject() {
+        String getH1HeaderText = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .getHeadlineDisplayedName();
+
+             Assert.assertEquals(getH1HeaderText, PIPELINE_NAME);
     }
 
     @Test
