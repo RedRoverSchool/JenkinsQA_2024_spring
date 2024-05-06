@@ -40,7 +40,7 @@ public class PipelinePage extends BasePage {
     @FindBy(css = "div > h1")
     private WebElement headlineDisplayedName;
 
-    @FindBy(xpath = "//a[@data-build-success = 'Build scheduled']")
+    @FindBy(xpath = "//a[@data-build-success = 'Build scheduled']//span[@class='task-icon-link']")
     private WebElement buildButton;
 
     @FindBy(xpath = "//td[contains(@class, 'progress-bar')]")
@@ -152,6 +152,8 @@ public class PipelinePage extends BasePage {
     }
 
     public PipelinePage waitBuildToFinish() {
+        getWait10().until(ExpectedConditions.invisibilityOf(buildProgressBar));
+        getDriver().navigate().refresh();
         getWait10().until(ExpectedConditions.invisibilityOf(buildProgressBar));
         getWait60().until(ExpectedConditions.numberOfElementsToBeMoreThan(By.xpath("//div[@id = 'buildHistory']//tr[@class != 'build-search-row']"), 0));
 
