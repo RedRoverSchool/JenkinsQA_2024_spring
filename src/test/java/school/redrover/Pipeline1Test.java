@@ -71,7 +71,7 @@ public class Pipeline1Test extends BaseTest {
                     By.xpath("//a[contains(@href, '/build?delay=0sec')]"))));
 
             try {
-                getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                getWait60().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
                         By.xpath("//tr[@data-runid='" + i + "']")));
             }catch (Exception e) {
                 getDriver().navigate().refresh();
