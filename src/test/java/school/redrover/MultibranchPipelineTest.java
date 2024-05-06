@@ -342,4 +342,31 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertEquals(actualPageHeader,WELCOME_PAGE_HEADER);
     }
+
+    @Test
+    public void testEnableMultibranchPipeline() {
+        MultibranchPipelineConfigPage page = new HomePage(getDriver()).clickCreateAJob()
+                .setItemName("TextName")
+                .selectMultibranchPipelineAndClickOk()
+                .clickOnToggle()
+                .clickSaveButton()
+                .selectConfigure()
+                .clickOnToggle()
+                .clickSaveButton()
+                .selectConfigure();
+
+        Assert.assertEquals(page.getStatusToggle(), "true");
+    }
+
+    @Test
+    public void testDisabledMultibranchPipeline() {
+        MultibranchPipelineConfigPage page = new HomePage(getDriver()).clickCreateAJob()
+                .setItemName("TextName1")
+                .selectMultibranchPipelineAndClickOk()
+                .clickOnToggle()
+                .clickSaveButton()
+                .selectConfigure();
+
+        Assert.assertEquals(page.getStatusToggle(), "false");
+    }
 }

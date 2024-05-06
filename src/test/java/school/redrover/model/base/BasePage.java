@@ -40,4 +40,15 @@ public abstract class BasePage extends BaseModel {
                 .anyMatch(e -> e.getText()
                 .contains(text));
     }
+
+    public void hoverOverElement(WebElement element) {
+        new Actions(getDriver())
+                .moveToElement(element)
+                .perform();
+    }
+
+    public void clickSpecificDropdownArrow(WebElement element) {
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
+                "arguments[0].dispatchEvent(new Event('click'));", element);
+    }
 }

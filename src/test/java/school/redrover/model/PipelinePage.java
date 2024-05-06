@@ -26,6 +26,21 @@ public class PipelinePage extends BasePage {
     @FindBy(css = "[data-title='Delete Pipeline']")
     private WebElement sidebarDeleteButton;
 
+    @FindBy(css = "[class*='breadcrumbs']>[href*='job']")
+    private WebElement breadcrumbsName;
+
+    @FindBy(css = "[href^='/job'] [class$='dropdown-chevron']")
+    private WebElement breadcrumbsDropdownArrow;
+
+    @FindBy(css = "[class*='dropdown'] [href$='Delete']")
+    private WebElement breadcrumbsDeleteButton;
+
+    @FindBy(css = "a[href$='rename']")
+    private WebElement sidebarRenameButton;
+
+    @FindBy(css = "div > h1")
+    private WebElement headlineDisplayedName;
+
     public PipelinePage(WebDriver driver) {
         super(driver);
     }
@@ -68,7 +83,6 @@ public class PipelinePage extends BasePage {
         return this;
     }
 
-
     public PipelinePage makeDescriptionFieldNotActive() {
         new Actions(getDriver()).sendKeys(Keys.TAB).perform();
 
@@ -89,4 +103,30 @@ public class PipelinePage extends BasePage {
         return new DeleteDialog(getDriver());
     }
 
+    public PipelinePage hoverOverBreadcrumbsName() {
+        hoverOverElement(breadcrumbsName);
+
+        return this;
+    }
+
+    public PipelinePage clickBreadcrumbsDropdownArrow() {
+        clickSpecificDropdownArrow(breadcrumbsDropdownArrow);
+
+        return this;
+    }
+
+    public DeleteDialog clickBreadcrumbsDeleteButton() {
+        breadcrumbsDeleteButton.click();
+
+        return new DeleteDialog(getDriver());
+    }
+    public PipelineRenamePage clickSidebarRenameButton() {
+        sidebarRenameButton.click();
+
+        return new PipelineRenamePage(getDriver());
+    }
+
+    public String getHeadlineDisplayedName() {
+        return headlineDisplayedName.getText();
+    }
 }
