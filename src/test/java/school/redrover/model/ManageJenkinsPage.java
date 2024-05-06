@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
+import java.util.List;
+
 public class ManageJenkinsPage extends BasePage {
 
     @FindBy(css = "[href='configureSecurity']")
@@ -17,6 +19,9 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(css = "[href='appearance']")
     private WebElement appearanceButton;
 
+    @FindBy(xpath = "(//div[@class='jenkins-section__items'])[5]/div[contains(@class, 'item')]")
+    List<WebElement> toolsAndActionsSections;
+
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
@@ -26,7 +31,7 @@ public class ManageJenkinsPage extends BasePage {
 
         return new SecurityPage(getDriver());
     }
-
+  
     public String getManageJenkinsPage() {
         return TestUtils.getBaseUrl() + "/manage/";
     }
@@ -39,5 +44,9 @@ public class ManageJenkinsPage extends BasePage {
         appearanceButton.click();
 
         return new AppearancePage(getDriver());
+    }
+
+    public boolean areToolsAndActionsSectionsEnabled() {
+        return areElementsEnabled(toolsAndActionsSections);
     }
 }
