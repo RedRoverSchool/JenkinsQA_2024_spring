@@ -28,16 +28,6 @@ public class NodesTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
-    private void deleteNodeViaNodesTable(By nodeTableLocator) {
-       // WebElement createdNode = getDriver().findElement(nodeTableLocator);
-      //  new Actions(getDriver()).moveToElement(createdNode).perform();
-        WebElement dropdownChevron = getDriver().findElement(By.cssSelector("#node_" + NODE_NAME + " > td:nth-child(2) > a > button"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
-                "arguments[0].dispatchEvent(new Event('click'));", dropdownChevron);
-        getDriver().findElement(By.cssSelector("button[href$='doDelete']")).click();
-        getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
-    }
-
     @Test
     public void testAddNode() {
         String text;
