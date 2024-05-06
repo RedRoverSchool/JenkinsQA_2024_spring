@@ -158,7 +158,7 @@ public class PipelineTest extends BaseTest {
     public void testFullStageViewButton() {
 
         final String pipelineName = "New Pipeline";
-        String expectedResult = pipelineName + " - Stage View";
+        final String expectedResult = pipelineName + " - Stage View";
 
         String getH2HeaderText = new HomePage(getDriver())
                 .clickNewItem()
