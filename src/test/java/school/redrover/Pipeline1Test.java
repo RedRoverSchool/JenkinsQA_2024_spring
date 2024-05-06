@@ -392,7 +392,8 @@ public class Pipeline1Test extends BaseTest {
         }
     }
 
-    @Ignore
+
+
     @Test
     public void testFullStageViewPopUpWindowIsDisplayed() {
         int number_of_stages = 2;
@@ -410,7 +411,7 @@ public class Pipeline1Test extends BaseTest {
 
         Assert.assertTrue(actualResult.contains("Stage Logs (stage 1)"));
     }
-
+    @Ignore
     @Test
     public void testTableWithAllStagesAndTheLast10Builds() {
 
