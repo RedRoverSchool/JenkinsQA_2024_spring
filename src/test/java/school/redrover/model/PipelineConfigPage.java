@@ -81,8 +81,4 @@ public class PipelineConfigPage extends BasePage {
         return this;
     }
 
-
-
-
-
 }
