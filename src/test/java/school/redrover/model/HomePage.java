@@ -47,6 +47,9 @@ public class HomePage extends BasePage {
     @FindBy(css = "div.jenkins-icon-size__items.jenkins-buttons-row > ol > li")
     private List<WebElement> sizeIcon;
 
+    @FindBy(css = "a[href $= '/move']")
+    private WebElement dropdownMove;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -87,6 +90,11 @@ public class HomePage extends BasePage {
     public DeleteDialog clickDeleteInDropdown(DeleteDialog dialog) {
         getDriver().findElement(TestUtils.DROPDOWN_DELETE).click();
         return dialog;
+    }
+
+    public MovePage clickMoveInDropdown() {
+        dropdownMove.click();
+        return new MovePage(getDriver());
     }
 
     public NodesTablePage clickNodesLink() {

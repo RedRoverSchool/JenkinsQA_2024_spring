@@ -170,4 +170,16 @@ public class PipelineTest extends BaseTest {
 
         Assert.assertEquals(displayedName, NEW_PIPELINE_NAME);
     }
+
+    @Test
+    public void testCreatePipelineProject() {
+        String getH1HeaderText = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .getHeadlineDisplayedName();
+
+             Assert.assertEquals(getH1HeaderText, PIPELINE_NAME);
+    }
 }
