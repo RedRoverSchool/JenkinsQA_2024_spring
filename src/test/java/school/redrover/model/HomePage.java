@@ -35,6 +35,9 @@ public class HomePage extends BasePage {
     @FindBy(css = "[href*='rename']")
     private WebElement renameFromDropdown;
 
+    @FindBy(css = "a[href $= '/move']")
+    private WebElement dropdownMove;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -76,7 +79,12 @@ public class HomePage extends BasePage {
         getDriver().findElement(TestUtils.DROPDOWN_DELETE).click();
         return dialog;
     }
-  
+
+    public MovePage clickMoveInDropdown() {
+        dropdownMove.click();
+        return new MovePage(getDriver());
+    }
+
     public NodesTablePage clickNodesLink() {
         nodesLink.click();
 
@@ -179,5 +187,18 @@ public class HomePage extends BasePage {
 
     public boolean isItemDeleted(String name) {
         return !getItemList().contains(name);
+    }
+
+    public MultibranchPipelineStatusPage clickMPName(String projectName) {
+        getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
+
+        return new MultibranchPipelineStatusPage(getDriver());
+    }
+
+    public PipelinePage chooseCreatedProject(String projectName) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/"
+                + projectName.replaceAll(" ", "%20") + "/']"))).click();
+
+        return new PipelinePage(getDriver());
     }
 }
