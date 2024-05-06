@@ -8,13 +8,11 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.CreateNewItemPage;
 import school.redrover.model.HomePage;
 import school.redrover.model.PipelinePage;
+import school.redrover.model.PipelineConfigPage;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
@@ -89,12 +87,12 @@ public class PipelineConfigurationTest extends BaseTest {
 
         createPipeline();
 
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(pipelineDescription);
-        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
+        boolean isDescriptionVisible = new PipelineConfigPage(getDriver())
+                .addDescription(pipelineDescription)
+                .clickSaveButton()
+                .isDescriptionVisible(pipelineDescription);
 
-        Assert.assertTrue(
-                getDriver().findElement(By.xpath("//div[text()='" + pipelineDescription + "']")).isDisplayed(),
-                "Something went wrong with the description");
+        Assert.assertTrue(isDescriptionVisible,"Something went wrong with the description");
     }
 
     @Test

@@ -108,6 +108,10 @@ public class PipelinePage extends BasePage {
                 descriptionInput);
     }
 
+    public boolean isDescriptionVisible(String pipelineDescription) {
+        return getWait5().until(ExpectedConditions
+                .visibilityOfElementLocated(By.xpath("//div[text()='" + pipelineDescription + "']"))).isDisplayed();
+    }
     public DeleteDialog clickSidebarDeleteButton() {
         sidebarDeleteButton.click();
 

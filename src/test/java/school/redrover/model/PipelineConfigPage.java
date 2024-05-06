@@ -18,6 +18,10 @@ public class PipelineConfigPage extends BasePage {
     @FindBy(name = "Submit")
     private WebElement saveButton;
 
+    @FindBy(xpath = "//textarea[@name='description']")
+    private WebElement descriptionTextArea;
+
+
     @FindBy(xpath = "//label[text() = 'Discard old builds']")
     private WebElement discardOldBuildsCheckbox;
 
@@ -38,6 +42,12 @@ public class PipelineConfigPage extends BasePage {
         saveButton.click();
 
         return new PipelinePage(getDriver());
+    }
+
+    public PipelineConfigPage addDescription(String descriptionText) {
+        getWait2().until(ExpectedConditions.visibilityOf(descriptionTextArea)).sendKeys(descriptionText);
+
+        return this;
     }
 
     public PipelineConfigPage clickDiscardOldBuilds() {
