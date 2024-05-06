@@ -128,7 +128,9 @@ public class HomePage extends BasePage {
 
     public ViewAllPage clickMyViewsFromDropdown() {
         openHeaderUsernameDropdown();
-        getDriver().findElement(By.cssSelector("div.tippy-box [href $= 'my-views']")).click();
+        getWait2().until(ExpectedConditions
+                .visibilityOfElementLocated(By.cssSelector("div.tippy-box [href $= 'my-views']")))
+                .click();
 
         return new ViewAllPage(getDriver());
     }
