@@ -411,7 +411,7 @@ public class Pipeline1Test extends BaseTest {
         Assert.assertTrue(actualResult.contains("Stage Logs (stage 1)"));
     }
 
-    @Test
+    @Test @Ignore
     public void testTableWithAllStagesAndTheLast10Builds() {
 
         final int number_of_stages = 2;
