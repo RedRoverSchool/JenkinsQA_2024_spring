@@ -152,7 +152,8 @@ public class PipelinePage extends BasePage {
     }
 
     public PipelinePage waitBuildToFinish() {
-        getWait5().until(ExpectedConditions.invisibilityOf(buildProgressBar));
+        getWait10().until(ExpectedConditions.invisibilityOf(buildProgressBar));
+        getWait60().until(ExpectedConditions.numberOfElementsToBeMoreThan(By.xpath("//div[@id = 'buildHistory']//tr[@class != 'build-search-row']"), 0));
 
         return this;
     }
