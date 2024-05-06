@@ -41,6 +41,9 @@ public class PipelinePage extends BasePage {
     @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
     private WebElement fullStageViewButton;
 
+    @FindBy(id = "enable-project")
+    private WebElement warningMessage;
+
     public PipelinePage(WebDriver driver) {
         super(driver);
     }
@@ -101,6 +104,7 @@ public class PipelinePage extends BasePage {
         return getWait5().until(ExpectedConditions
                 .visibilityOfElementLocated(By.xpath("//div[text()='" + pipelineDescription + "']"))).isDisplayed();
     }
+
     public DeleteDialog clickSidebarDeleteButton() {
         sidebarDeleteButton.click();
 
@@ -137,5 +141,9 @@ public class PipelinePage extends BasePage {
         getWait5().until(ExpectedConditions.elementToBeClickable(fullStageViewButton)).click();
 
         return new FullStageViewPage(getDriver());
+    }
+
+    public String getWarningMessageText() {
+        return getWait2().until(ExpectedConditions.visibilityOf(warningMessage)).getText();
     }
 }

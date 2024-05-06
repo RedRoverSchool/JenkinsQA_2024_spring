@@ -12,7 +12,6 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.PipelineConfigPage;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
@@ -101,12 +100,12 @@ public class PipelineConfigurationTest extends BaseTest {
 
         createPipeline();
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(TOGGLE_SWITCH_ENABLE_DISABLE));
-        getDriver().findElement(TOGGLE_SWITCH_ENABLE_DISABLE).click();
-        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
+         String warningMessageText = new PipelineConfigPage(getDriver())
+                .clickToggleSwitchEnableDisable()
+                .clickSaveButton()
+                .getWarningMessageText();
 
-        Assert.assertTrue(
-                getDriver().findElement(By.id("enable-project")).getText().contains(expectedMessageForDisabledProject));
+        Assert.assertTrue(warningMessageText.contains(expectedMessageForDisabledProject));
     }
 
     @Test(dependsOnMethods = "testDisableProjectInConfigureMenu")
