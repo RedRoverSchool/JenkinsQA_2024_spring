@@ -4,12 +4,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.WheelInput;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.model.base.BasePage;
 
 import javax.swing.*;
+import java.time.Duration;
 
 public class PipelineConfigPage extends BasePage {
 
@@ -19,7 +21,7 @@ public class PipelineConfigPage extends BasePage {
     @FindBy(xpath = "//label[text() = 'Discard old builds']")
     private WebElement discardOldBuildsCheckbox;
 
-    @FindBy(xpath = "//label[text() = 'Discard old builds']")
+    @FindBy(xpath = "//input[@name = '_.numToKeepStr']")
     private WebElement numberBuildsToKeep;
 
     @FindBy(xpath = "//button[@data-section-id='pipeline']")
@@ -45,13 +47,17 @@ public class PipelineConfigPage extends BasePage {
     }
 
     public PipelineConfigPage setNumberBuildsToKeep(int numberOfBuilds) {
-        Actions action = new Actions(getDriver());
-        action.moveToElement(numberBuildsToKeep, 0, 100)
+        WheelInput.ScrollOrigin scrollFromDuildField = WheelInput.ScrollOrigin.fromElement(numberBuildsToKeep);
+        new Actions(getDriver())
+              .scrollFromOrigin(scrollFromDuildField, 0, 80)
+              .pause(Duration.ofMillis(200))
               .perform();
         getWait5().until(ExpectedConditions.visibilityOf(numberBuildsToKeep)).sendKeys(String.valueOf(numberOfBuilds));
 
         return this;
     }
+
+    //input[@name = '_.numToKeepStr']
 
     public PipelineConfigPage scrollToPiplineScript() {
         getWait5().until(ExpectedConditions.elementToBeClickable(scrollToPiplineScript)).click();

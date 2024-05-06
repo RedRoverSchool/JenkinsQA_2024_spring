@@ -3,9 +3,12 @@ package school.redrover.model;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import school.redrover.model.base.BasePage;
+
+import java.util.List;
 
 public class PipelinePage extends BasePage {
 
@@ -44,6 +47,9 @@ public class PipelinePage extends BasePage {
 
     @FindBy(xpath = "//td[contains(@class, 'progress-bar')]")
     private WebElement buildProgressBar;
+
+    @FindBy(xpath = "//div[@id = 'buildHistory']//tr[@class != 'build-search-row']")
+    private List<WebElement> listOfBuilds;
 
     public PipelinePage(WebDriver driver) {
         super(driver);
@@ -151,6 +157,10 @@ public class PipelinePage extends BasePage {
         WebElement nBuild = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[@class = 'build-row-cell']//a[text() = '#" +buildNumber + "']")));
 
         return nBuild.getAttribute("href").contains("/job/" +jobName.replaceAll(" ", "%20") + "/2/");
+    }
+
+    public int numberOfBuild() {
+        return getWait5().until(ExpectedConditions.visibilityOfAllElements(listOfBuilds)).size();
     }
 
 }

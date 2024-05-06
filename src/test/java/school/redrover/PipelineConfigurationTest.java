@@ -12,6 +12,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.CreateNewItemPage;
 import school.redrover.model.HomePage;
+import school.redrover.model.PipelinePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -124,9 +125,7 @@ public class PipelineConfigurationTest extends BaseTest {
 
     @Test
     public void testDiscardOldBuildsByCount() {
-        //createPipeline();
-
-        boolean isBuildAppear = new HomePage(getDriver())
+        PipelinePage pipelinePage = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(JOB_NAME)
                 .selectPipelineAndClickOk()
@@ -138,10 +137,10 @@ public class PipelineConfigurationTest extends BaseTest {
                 .clickBuild()
                 .waitBuildToFinish()
                 .clickBuild()
-                .waitBuildToFinish()
-                .isBuildAppear(2, JOB_NAME);
+                .waitBuildToFinish();
 
-        Assert.assertTrue(isBuildAppear, "there is no second build");
+        Assert.assertTrue(pipelinePage.isBuildAppear(2, JOB_NAME), "there is no second build");
+        Assert.assertEquals(pipelinePage.numberOfBuild(), 1);
     }
 
     @Test
