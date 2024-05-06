@@ -262,26 +262,22 @@ public class FreestyleProjectTest extends BaseTest {
         String oldProjectName2 = "Race Bikes";
         String newProjectName = "Vintage Cars";
 
-        createFreestyleProject(oldProjectName1);
-        jenkinsHomeLink().click();
 
-        createFreestyleProject(oldProjectName2);
-        jenkinsHomeLink().click();
-
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(newProjectName);
-        getDriver().findElement(
-                By.xpath("//input[@name='from']")).sendKeys(oldProjectName1.substring(0, 1));
-
-        WebDriverWait wait20 = new WebDriverWait(getDriver(), Duration.ofSeconds(20));
-
-        List<WebElement> elements = wait20.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
-                By.xpath("//div[@class='item-copy']//li[not(@style='display: none;')]")));
-
-        List<String> elementsList = new ArrayList<>();
-        for (WebElement element : elements) {
-            elementsList.add(element.getText());
-        }
+        List<String> elementsList = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(oldProjectName1)
+                .selectFreestyleAndClickOk()
+                .clickSave()
+                .clickLogo()
+                .clickNewItem()
+                .setItemName(oldProjectName2)
+                .selectFreestyleAndClickOk()
+                .clickSave()
+                .clickLogo()
+                .clickNewItem()
+                .setItemName(newProjectName)
+                .setItemNameInCopyForm(oldProjectName1.substring(0, 1))
+                .copyFormElementsList();
 
         Assert.assertTrue(elementsList.contains(oldProjectName1));
     }

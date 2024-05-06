@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
 import school.redrover.model.base.BasePage;
 
 public class MultibranchPipelineConfigPage extends BasePage {
@@ -21,6 +22,9 @@ public class MultibranchPipelineConfigPage extends BasePage {
 
     @FindBy(id = "enable-disable-project")
     private WebElement toggleInput;
+
+    @FindBy(css = "#breadcrumbs > li:nth-child(3)")
+    private WebElement multibranchPipelineBreadcrumbs;
 
     public MultibranchPipelineConfigPage(WebDriver driver) {
         super(driver);
