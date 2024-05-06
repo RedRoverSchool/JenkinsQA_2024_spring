@@ -146,16 +146,13 @@ public class PipelinePage extends BasePage {
     }
 
     public PipelinePage clickBuild() {
-        ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].click();", buildButton);
+        getWait5().until(ExpectedConditions.elementToBeClickable(buildButton)).click();
 
         return this;
     }
 
     public PipelinePage waitBuildToFinish() {
         getWait10().until(ExpectedConditions.invisibilityOf(buildProgressBar));
-        getDriver().navigate().refresh();
-        getWait10().until(ExpectedConditions.invisibilityOf(buildProgressBar));
-        getWait60().until(ExpectedConditions.numberOfElementsToBeMoreThan(By.xpath("//div[@id = 'buildHistory']//tr[@class != 'build-search-row']"), 0));
 
         return this;
     }
