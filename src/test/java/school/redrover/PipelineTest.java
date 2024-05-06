@@ -182,4 +182,23 @@ public class PipelineTest extends BaseTest {
 
              Assert.assertEquals(getH1HeaderText, PIPELINE_NAME);
     }
+
+    @Test
+    public void testFullStageViewButton() {
+
+        final String pipelineName = "New Pipeline";
+        final String expectedResult = pipelineName + " - Stage View";
+
+        String h2HeadingText = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(pipelineName)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .chooseCreatedProject(pipelineName)
+                .clickFullStageViewButton()
+                .getH2HeadingText();
+
+        Assert.assertEquals(h2HeadingText, expectedResult);
+    }
 }

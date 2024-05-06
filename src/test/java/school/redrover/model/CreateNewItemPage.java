@@ -6,6 +6,9 @@ import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import java.util.List;
 
 public class CreateNewItemPage extends BasePage {
