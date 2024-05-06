@@ -128,7 +128,9 @@ public class HomePage extends BasePage {
 
     public ViewAllPage clickMyViewsFromDropdown() {
         openHeaderUsernameDropdown();
-        getDriver().findElement(By.cssSelector("[href$='admin/my-views']")).click();
+        getWait2().until(ExpectedConditions
+                .visibilityOfElementLocated(By.xpath("//div[@class='jenkins-dropdown']//a[contains(@href,'my-views')]")))
+                .click();
 
         return new ViewAllPage(getDriver());
     }
