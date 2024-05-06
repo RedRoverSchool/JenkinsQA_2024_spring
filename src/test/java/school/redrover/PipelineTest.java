@@ -197,7 +197,7 @@ public class PipelineTest extends BaseTest {
                 .clickLogo()
                 .chooseCreatedProject(pipelineName)
                 .clickFullStageViewButton()
-                .getH2HeaderText();
+                .getH2HeadingText();
 
         Assert.assertEquals(getH2HeaderText, expectedResult);
     }

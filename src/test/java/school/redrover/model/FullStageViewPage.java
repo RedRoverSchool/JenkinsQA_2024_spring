@@ -15,7 +15,7 @@ public class FullStageViewPage extends BasePage {
         super(driver);
     }
 
-    public String getH2HeaderText() {
+    public String getH2HeadingText() {
         return getWait5().until(ExpectedConditions.visibilityOf(H2HeadingText)).getText();
     }
 }
