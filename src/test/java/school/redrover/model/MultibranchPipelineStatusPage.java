@@ -1,8 +1,11 @@
 package school.redrover.model;
 
+import java.util.List;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+
 import school.redrover.model.base.BasePage;
 
 public class MultibranchPipelineStatusPage extends BasePage {
@@ -15,6 +18,9 @@ public class MultibranchPipelineStatusPage extends BasePage {
 
     @FindBy(id = "enable-project")
     private WebElement disableMPMessage;
+
+    @FindBy(xpath = "//form[contains(., 'This Multibranch Pipeline is currently disabled')]")
+    private List<WebElement> disabledMultiPipelineMessage;
 
     public MultibranchPipelineStatusPage(WebDriver driver) {
         super(driver);
@@ -34,5 +40,9 @@ public class MultibranchPipelineStatusPage extends BasePage {
 
     public String getDisableMultibranchPipelineText() {
         return disableMPMessage.getDomProperty("innerText").split(" Enable")[0];
+    }
+
+    public boolean isMultibranchPipelineDisabledTextNotDisplayed() {
+        return disabledMultiPipelineMessage.isEmpty();
     }
 }
