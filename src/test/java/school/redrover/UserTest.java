@@ -35,7 +35,6 @@ public class UserTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
-    @Ignore
     @Test
     public void testUsersSortingByName() {
 

@@ -11,6 +11,9 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(css = "[href='configureSecurity']")
     private WebElement securityLink;
 
+    @FindBy(className = "jenkins-search__input")
+    private WebElement searchInput;
+
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
@@ -24,4 +27,9 @@ public class ManageJenkinsPage extends BasePage {
     public String getManageJenkinsPage() {
         return TestUtils.getBaseUrl() + "/manage/";
     }
+
+    public boolean isSearchInputDisplayed() {
+        return searchInput.isDisplayed();
+    }
+
 }
