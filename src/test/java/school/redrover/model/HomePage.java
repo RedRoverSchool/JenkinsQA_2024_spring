@@ -1,7 +1,5 @@
 package school.redrover.model;
 
-import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,6 +8,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
+
+import java.util.List;
 
 
 public class HomePage extends BasePage {
@@ -34,6 +34,18 @@ public class HomePage extends BasePage {
 
     @FindBy(css = "[href*='rename']")
     private WebElement renameFromDropdown;
+
+    @FindBy(css = "div.jenkins-dropdown")
+    private WebElement dropdownMenu;
+
+    @FindBy(xpath = "//a[@class='sortheader' and text()='Name']")
+    private WebElement columnNameTitle;
+
+    @FindBy(css = "tr[id*='job_'] > td > div > svg")
+    private WebElement projectIcon;
+
+    @FindBy(css = "div.jenkins-icon-size__items.jenkins-buttons-row > ol > li")
+    private List<WebElement> sizeIcon;
 
     @FindBy(css = "a[href $= '/move']")
     private WebElement dropdownMove;
@@ -139,6 +151,12 @@ public class HomePage extends BasePage {
         return this;
     }
 
+    public ViewPage clickViewName(String viewName) {
+        getDriver().findElement(By.linkText(viewName)).click();
+
+        return new ViewPage(getDriver());
+    }
+
     public int sizeColumnList() {
 
         return getDriver().findElements(By.className("sortheader")).size();
@@ -193,6 +211,26 @@ public class HomePage extends BasePage {
         getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
 
         return new MultibranchPipelineStatusPage(getDriver());
+    }
+
+    public WebElement getDropdownMenu() {
+        return  getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@class='jenkins-dropdown']")));
+    }
+
+    public HomePage clickColumnNameTitle() {
+        columnNameTitle.click();
+        return new HomePage(getDriver());
+    }
+
+    public HomePage clickSizeIcon(int i) {
+        sizeIcon.get(i).click();
+
+        return this;
+    }
+
+    public int getProjectIconHeight() {
+        return projectIcon.getSize().height;
     }
 
     public PipelinePage chooseCreatedProject(String projectName) {

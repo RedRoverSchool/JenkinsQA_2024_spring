@@ -51,4 +51,12 @@ public abstract class BasePage extends BaseModel {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
                 "arguments[0].dispatchEvent(new Event('click'));", element);
     }
+
+    protected void clickElement(WebElement webElement) {
+        new Actions(getDriver())
+                .scrollToElement(webElement)
+                .scrollByAmount(0, 100)
+                .moveToElement(webElement)
+                .click().perform();
+    }
 }
