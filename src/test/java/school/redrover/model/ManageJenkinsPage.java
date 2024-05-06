@@ -14,6 +14,9 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(className = "jenkins-search__input")
     private WebElement searchInput;
 
+    @FindBy(css = "[href='appearance']")
+    private WebElement appearanceButton;
+
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
@@ -23,7 +26,7 @@ public class ManageJenkinsPage extends BasePage {
 
         return new SecurityPage(getDriver());
     }
-  
+
     public String getManageJenkinsPage() {
         return TestUtils.getBaseUrl() + "/manage/";
     }
@@ -32,4 +35,9 @@ public class ManageJenkinsPage extends BasePage {
         return searchInput.isDisplayed();
     }
 
+    public AppearancePage clickAppearanceButton() {
+        appearanceButton.click();
+
+        return new AppearancePage(getDriver());
+    }
 }
