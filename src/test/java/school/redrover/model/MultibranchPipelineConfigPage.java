@@ -17,6 +17,15 @@ public class MultibranchPipelineConfigPage extends BasePage {
     @FindBy(className = "tippy-box")
     private WebElement tooltip;
 
+    @FindBy(xpath = "//button[@name='Submit']")
+    private WebElement saveButton;
+
+    @FindBy(id = "enable-disable-project")
+    private WebElement toggleInput;
+
+    @FindBy(css = "#breadcrumbs > li:nth-child(3)")
+    private WebElement multibranchPipelineBreadcrumbs;
+
     public MultibranchPipelineConfigPage(WebDriver driver) {
         super(driver);
     }
@@ -24,6 +33,11 @@ public class MultibranchPipelineConfigPage extends BasePage {
     public MultibranchPipelineConfigPage clickToggle() {
         statusToggle.click();
         return this;
+    }
+
+    public MultibranchPipelineConfigPage clickOnToggle() {
+        statusToggle.click();
+        return new MultibranchPipelineConfigPage(getDriver());
     }
 
     public MultibranchPipelineConfigPage hoverOverToggle() {
@@ -38,5 +52,15 @@ public class MultibranchPipelineConfigPage extends BasePage {
 
     public boolean isTooltipDisplayed() {
         return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-box"))).isDisplayed();
+    }
+
+    public String getStatusToggle() {
+        return toggleInput.getDomProperty("checked");
+    }
+
+    public MultibranchPipelineStatusPage clickSaveButton() {
+        saveButton.click();
+
+        return new MultibranchPipelineStatusPage(getDriver());
     }
 }

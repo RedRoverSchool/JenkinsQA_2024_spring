@@ -66,6 +66,12 @@ public class PipelineConfigurationTest extends BaseTest {
                 getDriver().findElement(By.xpath("//label[text()='Poll SCM']")));
     }
 
+    public void scrollCheckBoxThrottleBuildsIsVisible() {
+        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
+        executor.executeScript("arguments[0].scrollIntoView({block: 'center'});",
+                getDriver().findElement(By.xpath("//label[text()='Throttle builds']")));
+    }
+
     @Test
     public void testScroll() {
         createPipeline();
@@ -368,12 +374,6 @@ public class PipelineConfigurationTest extends BaseTest {
         navigateToConfigurePageFromDashboard();
 
         Assert.assertTrue(selectedValue.contains(selectedOptionForCheck));
-    }
-
-    public void scrollCheckBoxThrottleBuildsIsVisible() {
-        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
-        executor.executeScript("arguments[0].scrollIntoView({block: 'center'});",
-                getDriver().findElement(By.xpath("//label[text()='Throttle builds']")));
     }
 
     @Test
