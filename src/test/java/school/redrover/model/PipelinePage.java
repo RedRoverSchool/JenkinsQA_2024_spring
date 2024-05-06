@@ -133,6 +133,7 @@ public class PipelinePage extends BasePage {
     public String getHeadlineDisplayedName() {
         return headlineDisplayedName.getText();
     }
+
     public FullStageViewPage clickFullStageViewButton() {
         getWait5().until(ExpectedConditions.elementToBeClickable(fullStageViewButton)).click();
 

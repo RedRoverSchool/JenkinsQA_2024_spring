@@ -50,6 +50,9 @@ public class HomePage extends BasePage {
     @FindBy(css = "a[href $= '/move']")
     private WebElement dropdownMove;
 
+    @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
+    private WebElement fullStageViewButton;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -238,5 +241,11 @@ public class HomePage extends BasePage {
                 + projectName.replaceAll(" ", "%20") + "/']"))).click();
 
         return new PipelinePage(getDriver());
+    }
+
+    public FullStageViewPage clickFullStageViewButton() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(fullStageViewButton)).click();
+
+        return new FullStageViewPage(getDriver());
     }
 }
