@@ -9,7 +9,6 @@ import school.redrover.model.base.BasePage;
 
 public class CreateItemPage extends BasePage {
 
-
     @FindBy(css = "#main-panel h1")
     private WebElement pageHeader;
 
