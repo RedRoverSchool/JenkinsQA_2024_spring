@@ -14,6 +14,9 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(className = "jenkins-search__input")
     private WebElement searchInput;
 
+    @FindBy(css = "[href='securityRealm/']")
+    private WebElement usersLink;
+
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
@@ -30,6 +33,12 @@ public class ManageJenkinsPage extends BasePage {
 
     public boolean isSearchInputDisplayed() {
         return searchInput.isDisplayed();
+    }
+
+    public UsersPage clickUsers() {
+        usersLink.click();
+
+        return new UsersPage(getDriver());
     }
 
 }
