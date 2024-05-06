@@ -1,15 +1,11 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.FindBys;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CreateNewItemPage extends BasePage {
@@ -17,16 +13,16 @@ public class CreateNewItemPage extends BasePage {
     @FindBy(id = "name")
     private WebElement nameText;
 
+    @FindBy(css = "[class$='FreeStyleProject']")
+    private WebElement freestyleItem;
+
     @FindBy(id = "from")
     private WebElement nameTextInCopyForm;
 
-    @FindBy(xpath = "//label[.='Freestyle project']")
-    private WebElement freestyleItem;
-
-    @FindBy(xpath = "//label[.='Pipeline']")
+    @FindBy(css = "[class$='WorkflowJob']")
     private WebElement pipelineItem;
 
-    @FindBy(xpath = "//label[.='Multi-configuration project']")
+    @FindBy(css = "[class$='MatrixProject']")
     private WebElement multiConfigurationItem;
 
     @FindBy(css = "[class$='_Folder']")
@@ -35,7 +31,7 @@ public class CreateNewItemPage extends BasePage {
     @FindBy(css = "[class*='WorkflowMultiBranchProject']")
     private WebElement multibranchPipelineItem;
 
-    @FindBy(xpath = "//label[.='Organization Folder']")
+    @FindBy(css = "[class$='OrganizationFolder']")
     private WebElement organizationFolderItem;
 
     @FindBy(id = "ok-button")
@@ -49,6 +45,23 @@ public class CreateNewItemPage extends BasePage {
 
     public CreateNewItemPage(WebDriver driver) {
         super(driver);
+    }
+
+    public HomePage createNewItem(String projectName, String projectType) {
+        setItemName(projectName);
+        switch (projectType) {
+            case "Freestyle" -> freestyleItem.click();
+            case "Pipeline" -> pipelineItem.click();
+            case "MultiConfiguration" -> multiConfigurationItem.click();
+            case "Folder" -> folderItem.click();
+            case "MultibranchPipeline" -> multibranchPipelineItem.click();
+            case "OrganizationFolder" -> organizationFolderItem.click();
+            default -> throw new IllegalArgumentException("Project type name incorrect");
+         }
+        okButton.click();
+        clickLogo();
+
+        return new HomePage(getDriver());
     }
 
     public CreateNewItemPage setItemName(String name) {

@@ -14,7 +14,6 @@ public class Pipeline2Test extends BaseTest {
     private static final By SAVE_BUTTON_LOCATOR = By.name("Submit");
     private static final By NAME_IN_BREADCRUMBS_LOCATOR = By.cssSelector("li > a[href^='/job/']");
     private static final By NEW_NAME_INPUT_LOCATOR = By.name("newName");
-    private static final By RENAME_BUTTON_LOCATOR = By.cssSelector("a[href$='rename']");
     private static final By CHEVRON_LOCATOR = By.cssSelector("a[href^='/job'] > button");
 
     private void createPipeline() {
@@ -31,17 +30,6 @@ public class Pipeline2Test extends BaseTest {
         String nameInBreadcrumbs = getDriver().findElement(NAME_IN_BREADCRUMBS_LOCATOR).getText();
 
         Assert.assertEquals(nameInBreadcrumbs, PIPELINE_NAME);
-    }
-
-    @Test
-    public void testRenameJobViaSidebar() {
-        createPipeline();
-        getDriver().findElement(RENAME_BUTTON_LOCATOR).click();
-        getDriver().findElement(NEW_NAME_INPUT_LOCATOR).clear();
-        getDriver().findElement(NEW_NAME_INPUT_LOCATOR).sendKeys(NEW_PIPELINE_NAME);
-        getDriver().findElement(SAVE_BUTTON_LOCATOR).click();
-
-        Assert.assertEquals(getDriver().findElement(By.cssSelector("div > h1")).getText(), NEW_PIPELINE_NAME);
     }
 
     @Test

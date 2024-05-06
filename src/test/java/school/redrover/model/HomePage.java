@@ -76,7 +76,7 @@ public class HomePage extends BasePage {
         getDriver().findElement(TestUtils.DROPDOWN_DELETE).click();
         return dialog;
     }
-  
+
     public NodesTablePage clickNodesLink() {
         nodesLink.click();
 
@@ -169,5 +169,21 @@ public class HomePage extends BasePage {
             getDriver().findElement(By.name("Apply")).click();
         }
         return new AppearancePage(getDriver());
+    }
+
+    public PipelinePage clickSpecificPipelineName(By locator) {
+        getDriver().findElement(locator).click();
+
+        return new PipelinePage(getDriver());
+    }
+
+    public boolean isItemDeleted(String name) {
+        return !getItemList().contains(name);
+    }
+
+    public MultibranchPipelineStatusPage clickMPName(String projectName) {
+        getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
+
+        return new MultibranchPipelineStatusPage(getDriver());
     }
 }
