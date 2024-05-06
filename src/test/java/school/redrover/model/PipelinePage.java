@@ -3,9 +3,7 @@ package school.redrover.model;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.Assert;
 import school.redrover.model.base.BasePage;
 
 import java.util.List;
@@ -50,6 +48,9 @@ public class PipelinePage extends BasePage {
 
     @FindBy(xpath = "//div[@id = 'buildHistory']//tr[@class != 'build-search-row']")
     private List<WebElement> listOfBuilds;
+
+    @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
+    private WebElement fullStageViewButton;
 
     public PipelinePage(WebDriver driver) {
         super(driver);
@@ -163,4 +164,9 @@ public class PipelinePage extends BasePage {
         return getWait5().until(ExpectedConditions.visibilityOfAllElements(listOfBuilds)).size();
     }
 
+    public FullStageViewPage clickFullStageViewButton() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(fullStageViewButton)).click();
+
+        return new FullStageViewPage(getDriver());
+    }
 }

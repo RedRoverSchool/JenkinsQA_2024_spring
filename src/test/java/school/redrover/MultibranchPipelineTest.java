@@ -1,6 +1,5 @@
 package school.redrover;
 
-import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -9,12 +8,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import school.redrover.model.HomePage;
 import school.redrover.model.MultibranchPipelineConfigPage;
+import school.redrover.model.MultibranchPipelineStatusPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 import static school.redrover.runner.TestUtils.Job;
@@ -116,17 +115,16 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testChangeMultiPipelineFromDisabledToEnabledOnStatusPage() {
+    public void testChangeFromDisabledToEnabledOnStatusPage() {
+        MultibranchPipelineStatusPage multibranchPipelineStatusPage = new HomePage(getDriver())
+            .clickCreateAJob()
+            .setItemName(MULTI_PIPELINE_NAME)
+            .selectMultibranchPipelineAndClickOk()
+            .clickToggle()
+            .clickSaveButton()
+            .clickDisableMultibranchPipeline();
 
-        createNewMultiPipeline(MULTI_PIPELINE_NAME);
-        disableCreatedMultiPipeline(MULTI_PIPELINE_NAME);
-
-        getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']")).click();
-        getDriver().findElement(By.xpath("//button[contains(., 'Enable')]")).click();
-        List<WebElement> disabledMultiPipelineMessage = getDriver().findElements(
-            By.xpath("//form[contains(., 'This Multibranch Pipeline is currently disabled')]"));
-
-        Assert.assertEquals(disabledMultiPipelineMessage.size(), 0, "Disabled message is displayed!!!");
+        Assert.assertTrue(multibranchPipelineStatusPage.isMultibranchPipelineDisabledTextNotDisplayed(),"Disabled message is displayed!!!");
     }
 
     @Test
