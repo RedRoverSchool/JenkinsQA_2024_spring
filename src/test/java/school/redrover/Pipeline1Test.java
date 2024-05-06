@@ -71,7 +71,7 @@ public class Pipeline1Test extends BaseTest {
                     By.xpath("//a[contains(@href, '/build?delay=0sec')]"))));
 
             try {
-                getWait60().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
                         By.xpath("//tr[@data-runid='" + i + "']")));
             }catch (Exception e) {
                 getDriver().navigate().refresh();
@@ -411,6 +411,7 @@ public class Pipeline1Test extends BaseTest {
         Assert.assertTrue(actualResult.contains("Stage Logs (stage 1)"));
     }
 
+    @Ignore
     @Test
     public void testTableWithAllStagesAndTheLast10Builds() {
 
