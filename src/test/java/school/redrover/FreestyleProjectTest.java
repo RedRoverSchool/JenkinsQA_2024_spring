@@ -202,30 +202,28 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testMoveToFolder() {
+    public void testMoveToFolderInDropdown() {
 
         final String folderName = "Classic Models";
         final String projectName = "Race Cars";
 
         final String expectedResult = "Full project name: " + folderName + "/" + projectName;
 
-        createFolder(folderName);
-        jenkinsHomeLink().click();
-        createFreestyleProject(projectName);
-        jenkinsHomeLink().click();
-
-        openElementDropdown(getDriver().findElement(
-                By.xpath("//a[@href='job/" + projectName.replaceAll(" ", "%20")
-                        + "/']/button[@class='jenkins-menu-dropdown-chevron']")));
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/"
-                + projectName.replaceAll(" ", "%20") + "/move']"))).click();
-
-        getDriver().findElement(By.xpath("//option[@value='/" + folderName + "']")).click();
-
-        submitButton().click();
-
-        String actualResult = getDriver().findElement(By.xpath("//div[@id='main-panel']")).getText();
+        String actualResult = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(folderName)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .clickNewItem()
+                .setItemName(projectName)
+                .selectFreestyleAndClickOk()
+                .clickSave()
+                .clickLogo()
+                .openItemDropdown(projectName)
+                .clickMoveInDropdown()
+                .chooseFolderAndSave(folderName)
+                .checkFullProjectName();
 
         Assert.assertTrue(actualResult.contains(expectedResult));
     }
