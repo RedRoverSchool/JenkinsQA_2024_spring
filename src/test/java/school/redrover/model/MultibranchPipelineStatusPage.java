@@ -22,6 +22,9 @@ public class MultibranchPipelineStatusPage extends BasePage {
     @FindBy(xpath = "//form[contains(., 'This Multibranch Pipeline is currently disabled')]")
     private List<WebElement> disabledMultiPipelineMessage;
 
+    @FindBy(tagName = "h1")
+    private WebElement name;
+
     public MultibranchPipelineStatusPage(WebDriver driver) {
         super(driver);
     }
@@ -48,5 +51,9 @@ public class MultibranchPipelineStatusPage extends BasePage {
 
     public String getDisableMultibranchPipelineTextColor() {
         return disableMPMessage.getCssValue("color");
+    }
+
+    public String getMultibranchPipelineName(){
+       return name.getText();
     }
 }

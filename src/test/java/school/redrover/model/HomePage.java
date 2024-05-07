@@ -269,4 +269,10 @@ public class HomePage extends BasePage {
     public int getBuildExecutorListSize() {
         return buildExecutorStatusList.size();
     }
+
+    public MultibranchPipelineRenamePage selectRenameFromDropdownMP() {
+        renameFromDropdown.click();
+
+        return new MultibranchPipelineRenamePage(getDriver());
+    }
 }
