@@ -17,7 +17,17 @@ public class UserTest extends BaseTest {
 
     @Test
     public void testCreateUserViaManageJenkins() {
-        List<String> userName = new HomePage(getDriver()).clickManageJenkins().clickUsers().clickCreateUser().setUserName(USER_NAME).setPassword(PASSWORD).setConfirmPassword(PASSWORD).setFullName(FULL_NAME).setEmailAddress(EMAIL_ADDRESS).clickCreateUser().getUsersList();
+        List<String> userName = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickUsers()
+                .clickCreateUser()
+                .setUserName(USER_NAME)
+                .setPassword(PASSWORD)
+                .setConfirmPassword(PASSWORD)
+                .setFullName(FULL_NAME)
+                .setEmailAddress(EMAIL_ADDRESS)
+                .clickCreateUser()
+                .getUsersList();
 
         Assert.assertTrue(userName.contains("TestUser"));
     }
@@ -25,33 +35,30 @@ public class UserTest extends BaseTest {
     @Test
     public void testUsersSortingByName() {
 
-        List<String> names = new HomePage(getDriver()).clickManageJenkins().clickUsers().createUserWithRandomData().createUserWithRandomData().createUserWithRandomData().createUserWithRandomData().clickColumnNameHeader().getUserNames();
+        List<String> names = new HomePage(getDriver())
+                .clickManageJenkins().clickUsers()
+                .createUserWithRandomData()
+                .createUserWithRandomData()
+                .createUserWithRandomData()
+                .createUserWithRandomData()
+                .clickColumnNameHeader()
+                .getUserNames();
 
         Assert.assertEquals(names, names.stream().sorted(Comparator.reverseOrder()).toList());
     }
 
+    @Test
+    public void testUsersSortingByUserID() {
 
-//    @Test
-//    public void testUsersSortingByUserID() {
-//
-//        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
-//        getDriver().findElement(By.cssSelector("[href='securityRealm/']")).click();
-//
-//        createUser();
-//        createUser();
-//        createUser();
-//        createUser();
-//
-//        getDriver().findElement(By.cssSelector("thead th:nth-child(2)>a")).click();
-//        getDriver().findElement(By.cssSelector("thead th:nth-child(2)>a")).click();
-//
-//        List<WebElement> elements = getDriver().findElements(By.cssSelector("tr>td:nth-child(2)"));
-//
-//        List<String> names = elements
-//                .stream()
-//                .map(WebElement::getText)
-//                .toList();
-//
-//        Assert.assertEquals(names, names.stream().sorted().collect(Collectors.toList()));
-//    }
+        List<String> userIDList = new HomePage(getDriver())
+                .clickManageJenkins().clickUsers()
+                .createUserWithRandomData()
+                .createUserWithRandomData()
+                .createUserWithRandomData()
+                .createUserWithRandomData()
+                .clickColumnUserIDHeader()
+                .getUserIDList();
+
+        Assert.assertEquals(userIDList, userIDList.stream().sorted(Comparator.reverseOrder()).toList());
+    }
 }
