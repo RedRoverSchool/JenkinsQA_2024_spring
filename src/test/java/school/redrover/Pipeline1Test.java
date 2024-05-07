@@ -294,11 +294,12 @@ public class Pipeline1Test extends BaseTest {
         Assert.assertEquals(actualResult, expectedResult);
     }
 
-    @Ignore
     @Test
     public void testBuildAttributes() {
 
         int number_of_stages = 5;
+
+        turnNodeOnIfOffline();
 
         createPipelineProject(PIPELINE_NAME);
 

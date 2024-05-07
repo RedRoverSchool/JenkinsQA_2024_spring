@@ -1,6 +1,7 @@
 package school.redrover.model;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -67,6 +68,7 @@ public class CreateNewItemPage extends BasePage {
 
 
     public CreateNewItemPage setItemName(String name) {
+        nameText.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
         nameText.sendKeys(name);
         return this;
     }
