@@ -40,7 +40,7 @@ public class PipelinePage extends BasePage {
     @FindBy(css = "div > h1")
     private WebElement headlineDisplayedName;
 
-    @FindBy(xpath = "//a[@data-build-success = 'Build scheduled']//span[@class='task-icon-link']")
+    @FindBy(xpath = "//a[@data-build-success = 'Build scheduled']")
     private WebElement buildButton;
 
     @FindBy(xpath = "//td[contains(@class, 'progress-bar')]")
