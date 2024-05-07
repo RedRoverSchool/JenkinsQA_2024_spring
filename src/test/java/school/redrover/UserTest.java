@@ -16,7 +16,6 @@ public class UserTest extends BaseTest {
 
     private static final String USER_NAME = "TestUser";
     private static final String PASSWORD = "test123";
-    private static final String CONFIRM_PASSWORD = "test123";
     private static final String FULL_NAME = "User";
     private static final String EMAIL_ADDRESS = "test@gmail.com";
 
@@ -49,7 +48,7 @@ public class UserTest extends BaseTest {
                 .clickCreateUser()
                 .setUserName(USER_NAME)
                 .setPassword(PASSWORD)
-                .setConfirmPassword(CONFIRM_PASSWORD)
+                .setConfirmPassword(PASSWORD)
                 .setFullName(FULL_NAME)
                 .setEmailAddress(EMAIL_ADDRESS)
                 .clickCreateUser()
