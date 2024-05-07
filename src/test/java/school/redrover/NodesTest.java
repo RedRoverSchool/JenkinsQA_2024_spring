@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
+import school.redrover.model.NodeBuiltInStatusPage;
 import school.redrover.model.NodesTablePage;
 import school.redrover.runner.BaseTest;
 
@@ -62,9 +63,8 @@ public class NodesTest extends BaseTest {
                 .clickMonitoringDataButton()
                 .getMonitoringDataElementsList();
 
-        Assert.assertEquals(actualMonitoringDataValues, expectedMonitoringDataValues);
-//        new NodeBuiltInStatusPage(getDriver()).
-//                assertMonitoringDataValues(actualMonitoringDataValues, expectedMonitoringDataValues);
+        new NodeBuiltInStatusPage(getDriver()).
+                assertMonitoringDataValues(actualMonitoringDataValues, expectedMonitoringDataValues);
     }
 
     @Test
