@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -38,6 +37,31 @@ public class NodesTest extends BaseTest {
         text = getDriver().findElement(By.xpath("//h1")).getText();
 
         Assert.assertEquals(text, "New node");
+    }
+
+    @Test
+    public void testTooltipConfigureNodePage() {
+        List<String> expectedList = List.of(
+                "Help for feature: Architecture",
+                "Help for feature: Clock Difference",
+                "Help for feature: Free Disk Space",
+                "Help for feature: Don&#039;t mark agents temporarily offline",
+                "Help for feature: Free Space Threshold",
+                "Help for feature: Free Space Warning Threshold",
+                "Help for feature: Free Swap Space",
+                "Help for feature: Free Temp Space",
+                "Help for feature: Don&#039;t mark agents temporarily offline",
+                "Help for feature: Free Space Threshold",
+                "Help for feature: Free Space Warning Threshold",
+                "Help for feature: Response Time",
+                "Help for feature: Don&#039;t mark agents temporarily offline"
+        );
+        List<String> actualList = new HomePage(getDriver())
+                .clickNodesLink()
+                .clickConfigureMonitorButton()
+                .getTooltipsConfigureNodePage();
+
+        Assert.assertEquals(actualList, expectedList);
     }
 
     @Test

@@ -22,6 +22,9 @@ public class NodesTablePage extends BasePage {
     @FindBy(id = "computers")
     private WebElement table;
 
+    @FindBy(css = "[href='configure']")
+    private WebElement configureMonitorButton;
+
     public NodesTablePage(WebDriver driver) {
         super(driver);
     }
@@ -49,5 +52,11 @@ public class NodesTablePage extends BasePage {
 
     public boolean isConteinNode(String name) {
         return table.getText().contains(name);
+    }
+
+    public NodesConfigurePage clickConfigureMonitorButton() {
+        configureMonitorButton.click();
+
+        return new NodesConfigurePage(getDriver());
     }
 }
