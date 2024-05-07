@@ -7,6 +7,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
+import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
 import java.util.List;
@@ -177,6 +178,12 @@ public class HomePage extends BasePage {
                 .perform();
 
         return this;
+    }
+
+    public FolderStatusPage renameJobFromJobDropdown(BaseTest baseTest, String currentName, String newName) {
+        TestUtils.openJobDropdown(baseTest, currentName.replace(" ", "%20"));
+        renameFromDropdown.click();
+        return new FolderRenamePage(getDriver()).renameFolder(newName);
     }
 
     public MultiConfigurationConfirmRenamePage selectRenameFromDropdown() {
