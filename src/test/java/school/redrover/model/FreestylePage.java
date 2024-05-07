@@ -11,6 +11,9 @@ public class FreestylePage extends BasePage {
     @FindBy(id = "main-panel")
     private WebElement fullProjectName;
 
+    @FindBy(xpath = "//*[@id='main-panel']//h1")
+    private WebElement projectName;
+
     public FreestylePage(WebDriver driver) {
         super(driver);
     }
@@ -18,5 +21,10 @@ public class FreestylePage extends BasePage {
     public String checkFullProjectName() {
 
         return fullProjectName.getText();
+    }
+
+    public String getProjectName() {
+
+        return projectName.getText();
     }
 }

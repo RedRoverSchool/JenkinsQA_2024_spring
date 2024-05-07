@@ -288,18 +288,21 @@ public class FreestyleProjectTest extends BaseTest {
         final String projectName1 = "Race Cars";
         final String projectName2 = "Vintage Cars";
 
-        createFreestyleProject(projectName1);
-        jenkinsHomeLink().click();
+        List<String> projectList = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(projectName1)
+                .selectFreestyleAndClickOk()
+                .clickSave()
+                .clickLogo()
+                .clickNewItem()
+                .setItemName(projectName2)
+                .setItemNameInCopyForm(projectName1)
+                .selectFreestyleAndClickOk()
+                .clickSave()
+                .clickLogo()
+                .getItemList();
 
-        createNewItemFromOtherExisting(projectName2, projectName1);
-        jenkinsHomeLink().click();
-
-        List<WebElement> elementsList = getDriver().findElements(
-                By.xpath("//td/a[contains(@href, 'job/')]/span"));
-
-        List<String> stringList = TestUtils.getTexts(elementsList);
-
-        Assert.assertTrue(stringList.contains(projectName2));
+        Assert.assertTrue(projectList.contains(projectName2));
     }
 
     @Test
