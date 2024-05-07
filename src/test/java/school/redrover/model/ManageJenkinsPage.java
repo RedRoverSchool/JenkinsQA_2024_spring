@@ -22,6 +22,9 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(xpath = "(//div[@class='jenkins-section__items'])[5]/div[contains(@class, 'item')]")
     List<WebElement> toolsAndActionsSections;
 
+    @FindBy(className = "jenkins-search__shortcut")
+    private WebElement shortcut;
+
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
@@ -48,5 +51,15 @@ public class ManageJenkinsPage extends BasePage {
 
     public boolean areToolsAndActionsSectionsEnabled() {
         return areElementsEnabled(toolsAndActionsSections);
+    }
+
+    public boolean isShortcutDisplayed() {
+        return shortcut.isDisplayed();
+    }
+
+    public ManageJenkinsPage pressSlashKey() {
+        securityLink.sendKeys("/");
+
+        return new ManageJenkinsPage(getDriver());
     }
 }
