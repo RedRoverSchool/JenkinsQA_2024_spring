@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -33,4 +34,10 @@ public class ViewPage extends BasePage {
     public List<String> getProjectNames(){
         return projectNamesList.stream().map(WebElement::getText).toList();
     }
+
+    public int sizeColumnList() {
+
+        return getDriver().findElements(By.className("sortheader")).size();
+    }
 }
+

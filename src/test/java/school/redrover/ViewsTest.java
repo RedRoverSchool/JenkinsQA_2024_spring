@@ -87,7 +87,7 @@ public class ViewsTest extends BaseTest {
                 .clickColumnName()
                 .clickOkButton()
                 .clickLogo()
-                .clickView(VIEW_NAME)
+                .clickViewName(VIEW_NAME)
                 .sizeColumnList();
 
         Assert.assertEquals(numberOfColumns, 7, "Description column is not added");
