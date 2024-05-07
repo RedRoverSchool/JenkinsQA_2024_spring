@@ -15,17 +15,6 @@ import school.redrover.runner.BaseTest;
 public class NodesTest extends BaseTest {
 
     private static final String NODE_NAME = "FirstNode";
-    public static final By NODE_TABLE_LOCATOR = By.cssSelector(
-            "a[href='../computer/" + NODE_NAME + "/']");
-
-    private void createNodeViaMainPage() {
-        getDriver().findElement(By.cssSelector("[href='/computer/']")).click();
-        getDriver().findElement(By.cssSelector("[href='new']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(NODE_NAME);
-        getDriver().findElement(By.cssSelector("[class$=radio__label]")).click();
-        getDriver().findElement(By.id("ok")).click();
-        getDriver().findElement(By.name("Submit")).click();
-    }
 
     @Test
     public void testAddNode() {
@@ -107,11 +96,16 @@ public class NodesTest extends BaseTest {
 
     @Test
     public void testCreatedNodeIsInNodesTable() {
-        createNodeViaMainPage();
-        WebElement createdNodeInNodesTable = getDriver().findElement(By.cssSelector("[href='../computer/" + NODE_NAME + "/']"));
+        NodesTablePage nodesTablePage = new HomePage(getDriver())
+                .clickNodesLink()
+                .clickNewNodeButton()
+                .setNodeName(NODE_NAME)
+                .selectPermanentAgentRadioButton()
+                .clickOkButton()
+                .clickSaveButton();
 
-        Assert.assertTrue(createdNodeInNodesTable.isDisplayed());
-        Assert.assertEquals(createdNodeInNodesTable.getText(), NODE_NAME,
+        Assert.assertTrue(nodesTablePage.isNodeDisplayedInTable(NODE_NAME));
+        Assert.assertTrue(nodesTablePage.getNodesinTableList().contains(NODE_NAME),
                 "The created node '" + NODE_NAME + "' is not in the Nodes table");
     }
 
