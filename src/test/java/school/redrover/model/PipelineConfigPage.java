@@ -76,8 +76,6 @@ public class PipelineConfigPage extends BasePage {
         return this;
     }
 
-    //input[@name = '_.numToKeepStr']
-
     public PipelineConfigPage scrollToPiplineScript() {
         getWait5().until(ExpectedConditions.elementToBeClickable(scrollToPiplineScript)).click();
 
@@ -91,9 +89,5 @@ public class PipelineConfigPage extends BasePage {
 
         return this;
     }
-
-
-
-
 
 }
