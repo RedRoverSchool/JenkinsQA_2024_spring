@@ -55,6 +55,20 @@ public class NewItem1Test extends BaseTest {
 
         assert (Color.fromString((validationMessage).getCssValue("color")).asHex().equals("#ff0000"));
     }
+    @Test
+    public void testNewItemIsDisplayedOnMainPage() {
+        final String nameProject = "firstProjectPipline";
+        List<String> projectList = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(nameProject)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .getItemList();
+
+
+        Assert.assertTrue(projectList.contains(nameProject));
+    }
 
     @Test
     public void testDisabledOkButtonWhenItemNameIsEmpty() {
