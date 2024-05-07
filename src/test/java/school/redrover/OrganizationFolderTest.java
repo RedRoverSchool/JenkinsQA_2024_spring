@@ -10,6 +10,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.OrganizationFolderPage;
+import school.redrover.model.PipelineSyntaxPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -30,9 +31,23 @@ public class OrganizationFolderTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[contains(text(), 'Save')]")).click();
     }
 
-    @Ignore
     @Test
     public void testCreateOrganizationFolder() {
+
+        List<String> itemList = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .clickSave()
+                .clickLogo()
+                .getItemList();
+
+        Assert.assertTrue(itemList.contains(ORGANIZATION_FOLDER_NAME));
+    }
+
+    @Ignore
+    @Test
+    public void testCreateOrganizationFolderOld() {
         createOrganizationFolder("Organization Folder");
         WebElement disableOrganizationFolderButton = getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']"));
 
@@ -120,5 +135,18 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertTrue(organizationFolderPage
                 .clickConfigure()
                 .isSidebarVisible());
+    }
+
+    @Test(dependsOnMethods ="testCreateOrganizationFolder")
+    public void testPipelineSyntaxMenuList(){
+
+        List <String> actuallistOfDocumentation = new HomePage(getDriver())
+                .openOrgFolderMenu(ORGANIZATION_FOLDER_NAME)
+                .clickPipelineSyntax()
+                .getActualListOfDocumentation();
+
+        for (int i = 0; i< actuallistOfDocumentation.size()-1; i++){
+            Assert.assertEquals(actuallistOfDocumentation.get(i), PipelineSyntaxPage.listOfDocumentation.get(i));
+        }
     }
 }

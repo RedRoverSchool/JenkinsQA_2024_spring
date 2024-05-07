@@ -66,6 +66,9 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
     private WebElement fullStageViewButton;
 
+    @FindBy(xpath = "//*[@class='jenkins-dropdown__item'][8]")
+    private WebElement pipelineSyntaxMenu;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -281,5 +284,22 @@ public class HomePage extends BasePage {
         getWait5().until(ExpectedConditions.elementToBeClickable(fullStageViewButton)).click();
 
         return new FullStageViewPage(getDriver());
+    }
+
+    public HomePage openOrgFolderMenu(String organizationFolderName) {
+        WebElement currentOrganizationFolder = getDriver().
+                findElement(By.xpath("//span[text()='" + organizationFolderName + "']"));
+        new Actions(getDriver()).moveToElement(currentOrganizationFolder).perform();
+        WebElement menuForCurrentOrganizationFolder = getWait2().until(ExpectedConditions
+                .elementToBeClickable(By.xpath("//*[@id='job_" + organizationFolderName + "']/td[3]/a/button")));
+        menuForCurrentOrganizationFolder.click();
+
+        return new HomePage(getDriver());
+    }
+
+    public PipelineSyntaxPage clickPipelineSyntax() {
+        pipelineSyntaxMenu.click();
+
+        return new PipelineSyntaxPage(getDriver());
     }
 }
