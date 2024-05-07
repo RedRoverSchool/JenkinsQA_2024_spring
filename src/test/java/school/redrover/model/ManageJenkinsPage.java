@@ -5,7 +5,6 @@ import school.redrover.runner.TestUtils;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
-
 import java.util.List;
 
 public class ManageJenkinsPage extends BasePage {
