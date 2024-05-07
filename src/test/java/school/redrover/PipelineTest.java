@@ -236,4 +236,23 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(!backgroundColorAfterHover.equals(backgroundColorBeforeHover)
                 && backgroundColorAfterHover.equals(expectedColor));
     }
+
+    @Test
+    public void testFullStageViewButtonInDropDown() {
+
+        final String pipelineName = PIPELINE_NAME;
+        final String expectedResult = PIPELINE_NAME + " - Stage View";
+
+        String h2HeadingText = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(pipelineName)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .openItemDropdown(pipelineName)
+                .clickFullStageViewButton()
+                .getH2HeadingText();
+
+        Assert.assertEquals(h2HeadingText, expectedResult);
+    }
 }
