@@ -29,6 +29,31 @@ public class NodesTest extends BaseTest {
     }
 
     @Test
+    public void testTooltipConfigureNodePage() {
+        List<String> expectedList = List.of(
+                "Help for feature: Architecture",
+                "Help for feature: Clock Difference",
+                "Help for feature: Free Disk Space",
+                "Help for feature: Don&#039;t mark agents temporarily offline",
+                "Help for feature: Free Space Threshold",
+                "Help for feature: Free Space Warning Threshold",
+                "Help for feature: Free Swap Space",
+                "Help for feature: Free Temp Space",
+                "Help for feature: Don&#039;t mark agents temporarily offline",
+                "Help for feature: Free Space Threshold",
+                "Help for feature: Free Space Warning Threshold",
+                "Help for feature: Response Time",
+                "Help for feature: Don&#039;t mark agents temporarily offline"
+        );
+        List<String> actualList = new HomePage(getDriver())
+                .clickNodesLink()
+                .clickConfigureMonitorButton()
+                .getTooltipsConfigureNodePage();
+
+        Assert.assertEquals(actualList, expectedList);
+    }
+
+    @Test
     public void testBuiltInNodeMonitoringDataList() {
         final List<String> expectedMonitoringDataValues = new ArrayList<>(List.of("Architecture", "Response Time",
                 "Clock Difference", "Free Temp Space", "Free Disk Space", "Free Swap Space"));

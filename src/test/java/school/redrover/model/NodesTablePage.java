@@ -24,6 +24,9 @@ public class NodesTablePage extends BasePage {
     @FindBy(id = "computers")
     private WebElement table;
 
+    @FindBy(css = "[href='configure']")
+    private WebElement configureMonitorButton;
+
     @FindBy(css = "[href^='../computer/']:not([href$='configure'])")
     private List<WebElement> nodesInTableList;
 
@@ -54,6 +57,12 @@ public class NodesTablePage extends BasePage {
 
     public boolean isConteinNode(String name) {
         return table.getText().contains(name);
+    }
+
+    public NodesConfigurePage clickConfigureMonitorButton() {
+        configureMonitorButton.click();
+
+        return new NodesConfigurePage(getDriver());
     }
 
     public boolean isNodeDisplayedInTable(String name) {
