@@ -288,7 +288,7 @@ public class HomePage extends BasePage {
 
     public HomePage openOrgFolderMenu(String organizationFolderName) {
         WebElement currentOrganizationFolder = getDriver().
-                findElement(By.xpath("//span[text()='" + organizationFolderName + "']"));
+                findElement(By.xpath("//span[text()='" + organizationFolderName + "']/.."));
         new Actions(getDriver()).moveToElement(currentOrganizationFolder).perform();
         WebElement menuForCurrentOrganizationFolder = getWait2().until(ExpectedConditions
                 .elementToBeClickable(By.xpath("//*[@id='job_" + organizationFolderName + "']/td[3]/a")));
