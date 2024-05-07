@@ -7,6 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import school.redrover.model.HomePage;
 
+import java.util.List;
+
 public abstract class BasePage extends BaseModel {
 
     public BasePage(WebDriver driver) {
@@ -50,5 +52,22 @@ public abstract class BasePage extends BaseModel {
     public void clickSpecificDropdownArrow(WebElement element) {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
                 "arguments[0].dispatchEvent(new Event('click'));", element);
+    }
+
+    protected void clickElement(WebElement webElement) {
+        new Actions(getDriver())
+                .scrollToElement(webElement)
+                .scrollByAmount(0, 100)
+                .moveToElement(webElement)
+                .click().perform();
+    }
+
+    public boolean areElementsEnabled(List<WebElement> elements) {
+        return elements.stream()
+                .allMatch(WebElement::isEnabled);
+    }
+
+    public String getText(WebElement webElement) {
+        return webElement.getText();
     }
 }

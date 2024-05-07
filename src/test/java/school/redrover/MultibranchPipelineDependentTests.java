@@ -75,10 +75,11 @@ public class MultibranchPipelineDependentTests extends BaseTest {
 
     @Test(dependsOnMethods = "testVerifyMpDisabledOnStatusPage")
     public void testVerifyMpDisabledMessageColorOnStatusPage() {
-        getDriver().findElement(By.cssSelector("[href='job/" + MULTI_PIPELINE_NAME + "/']")).click();
+        String disabledMessageColor = new HomePage(getDriver())
+                .clickMPName(MULTI_PIPELINE_NAME)
+                .getDisableMultibranchPipelineTextColor();
 
-        String messageColor = getDriver().findElement(By.id("enable-project")).getCssValue("color");
-        Assert.assertEquals(messageColor, "rgba(254, 130, 10, 1)");
+        Assert.assertEquals(disabledMessageColor, "rgba(254, 130, 10, 1)");
     }
 
     @Test(dependsOnMethods = "testRenameOnTheSidebar")

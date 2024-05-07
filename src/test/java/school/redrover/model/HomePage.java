@@ -1,8 +1,7 @@
 package school.redrover.model;
 
-import java.util.List;
-
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -10,6 +9,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
+
+import java.util.List;
 
 
 public class HomePage extends BasePage {
@@ -35,8 +36,32 @@ public class HomePage extends BasePage {
     @FindBy(css = "[href*='rename']")
     private WebElement renameFromDropdown;
 
+    @FindBy(css = "div.jenkins-dropdown")
+    private WebElement dropdownMenu;
+
+    @FindBy(xpath = "//a[@class='sortheader' and text()='Name']")
+    private WebElement columnNameTitle;
+
+    @FindBy(css = "tr[id*='job_'] > td > div > svg")
+    private WebElement projectIcon;
+
+    @FindBy(css = "div.jenkins-icon-size__items.jenkins-buttons-row > ol > li")
+    private List<WebElement> sizeIcon;
+
     @FindBy(css = "a[href $= '/move']")
     private WebElement dropdownMove;
+
+    @FindBy(css = "div#breadcrumbBar a[href = '/']")
+    private WebElement dashboardBreadcrumbs;
+
+    @FindBy(css = "[class='tippy-box'] [href='/manage']")
+    private WebElement manageFromDashboardBreadcrumbsMenu;
+
+    @FindBy(id="executors")
+    private WebElement buildExecutorStatus;
+
+    @FindBy(xpath = "//td[text()='Idle']")
+    private List<WebElement> buildExecutorStatusList;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -133,15 +158,10 @@ public class HomePage extends BasePage {
         return new CreateNewViewPage(getDriver());
     }
 
-    public HomePage clickView(String viewName) {
+    public ViewPage clickViewName(String viewName) {
         getDriver().findElement(By.linkText(viewName)).click();
 
-        return this;
-    }
-
-    public int sizeColumnList() {
-
-        return getDriver().findElements(By.className("sortheader")).size();
+        return new ViewPage(getDriver());
     }
 
     public FolderStatusPage clickOnCreatedFolder(String name) {
@@ -150,7 +170,7 @@ public class HomePage extends BasePage {
         return new FolderStatusPage(getDriver());
     }
 
-    public HomePage openDropdownUsingSelenium(String projectName) {
+    public HomePage openItemDropdownWithSelenium(String projectName) {
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(By.linkText(projectName)))
                 .pause(1000)
@@ -195,10 +215,58 @@ public class HomePage extends BasePage {
         return new MultibranchPipelineStatusPage(getDriver());
     }
 
+    public WebElement getDropdownMenu() {
+        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@class='jenkins-dropdown']")));
+    }
+
+    public HomePage clickColumnNameTitle() {
+        columnNameTitle.click();
+        return new HomePage(getDriver());
+    }
+
+    public HomePage clickSizeIcon(int i) {
+        sizeIcon.get(i).click();
+
+        return this;
+    }
+
+    public int getProjectIconHeight() {
+        return projectIcon.getSize().height;
+    }
+
     public PipelinePage chooseCreatedProject(String projectName) {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/"
                 + projectName.replaceAll(" ", "%20") + "/']"))).click();
 
         return new PipelinePage(getDriver());
+    }
+
+    public HomePage openDashboardBreadcrumbsDropdown() {
+        WebElement chevron = dashboardBreadcrumbs.findElement(By.cssSelector("[class$='chevron']"));
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].dispatchEvent(new Event('mouseenter'));" +
+                        "arguments[0].dispatchEvent(new Event('click'));",
+                chevron);
+
+        return this;
+    }
+
+    public ManageJenkinsPage clickManageFromDashboardBreadcrumbsMenu() {
+        manageFromDashboardBreadcrumbsMenu.click();
+
+        return new ManageJenkinsPage(getDriver());
+    }
+
+    public String getBuildExecutorStatusText() {
+       return buildExecutorStatus.getText();
+    }
+
+    public List<WebElement> getBuildExecutorStatusList() {
+        return buildExecutorStatusList.stream().toList();
+    }
+
+    public int getBuildExecutorListSize() {
+        return buildExecutorStatusList.size();
     }
 }

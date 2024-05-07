@@ -64,18 +64,20 @@ public class Pipeline1Test extends BaseTest {
         }
     }
 
-    private void makeBuilds(int buildsQtt, String pipeLineName) {
+    private void makeBuilds(int buildsQtt) {
         for (int i = 1; i <= buildsQtt; i++) {
-            getWait5().until(ExpectedConditions.elementToBeClickable(
-                    By.xpath("//a[@href='/job/" + pipeLineName + "/build?delay=0sec']"))).click();
+            ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",
+                    getWait5().until(ExpectedConditions.elementToBeClickable(
+                    By.xpath("//a[contains(@href, '/build?delay=0sec')]"))));
+
             try {
                 getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
                         By.xpath("//tr[@data-runid='" + i + "']")));
-            } catch (Exception e) {
-                clickConfigButton();
-                getDriver().findElement(By.className("findTheYgramul"));
+            }catch (Exception e) {
+                getDriver().navigate().refresh();
+                getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                        By.xpath("//tr[@data-runid='" + i + "']")));
             }
-
         }
     }
 
@@ -370,7 +372,7 @@ public class Pipeline1Test extends BaseTest {
 
     @Ignore
     @Test
-    public void testBuildСolorGreen() {
+    public void testBuildColorGreen() {
 
         int number_of_stages = 1;
 
@@ -389,6 +391,9 @@ public class Pipeline1Test extends BaseTest {
             Assert.assertEquals(backgroundColor, "rgba(0, 255, 0, 0.1)");
         }
     }
+
+
+
 
     @Ignore
     @Test
@@ -423,7 +428,7 @@ public class Pipeline1Test extends BaseTest {
         sendScript(number_of_stages);
         getDriver().findElement(By.name("Submit")).click();
 
-        makeBuilds(buildsQtt, pipeName);
+        makeBuilds(buildsQtt);
 
         clickFullStageViewButton();
 
