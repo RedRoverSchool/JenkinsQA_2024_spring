@@ -111,4 +111,26 @@ public class NodesTest extends BaseTest {
 
         Assert.assertFalse(nodesTablePage.isConteinNode(NODE_NAME));
     }
+
+    @Test
+    public void testVerifyErrorMessage() {
+
+        final String expectedResult = "Agent called ‘NewNode’ already exists";
+        final String nodeName = "NewNode";
+
+        String actualResult = new HomePage(getDriver())
+                .clickNodesLink()
+                .clickNewNodeButton()
+                .setNodeName(nodeName)
+                .selectPermanentAgentRadioButton()
+                .clickOkButton()
+                .clickSaveButton()
+                .clickNewNodeButton()
+                .setNodeName(nodeName)
+                .selectPermanentAgentRadioButton()
+                .clickOkButtonOnError()
+                .getErrorMessageText();
+
+        Assert.assertEquals(actualResult, expectedResult);
+    }
 }
