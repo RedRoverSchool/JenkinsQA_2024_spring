@@ -5,6 +5,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.FreestylePage;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 public class FreestyleProject4Test extends BaseTest {
@@ -14,17 +16,14 @@ public class FreestyleProject4Test extends BaseTest {
     @Test
     public void testCreateNewFreestyleProject() {
 
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@href='/view/all/newJob']"))).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='name']"))).sendKeys(PROJECT_NAME);
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'Freestyle project')]"))).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@type='submit']"))).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@name='Submit']"))).click();
+        FreestylePage freestylePage = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .clickSave();
 
-        WebElement newProjectHeader = getWait2().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-app-bar__content jenkins-build-caption']")));
-
-        Assert.assertTrue(newProjectHeader.isDisplayed());
-        Assert.assertEquals(newProjectHeader.getText(),PROJECT_NAME);
+        Assert.assertTrue(freestylePage.isProjectNameDisplayed());
+        Assert.assertEquals(freestylePage.getProjectName(),PROJECT_NAME);
     }
 
     @Test

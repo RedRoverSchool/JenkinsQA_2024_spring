@@ -27,4 +27,8 @@ public class FreestylePage extends BasePage {
 
         return projectName.getText();
     }
+    public boolean isProjectNameDisplayed() {
+
+        return projectName.isDisplayed();
+    }
 }
