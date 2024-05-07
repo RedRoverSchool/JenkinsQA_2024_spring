@@ -108,7 +108,7 @@ public class HomePage extends BasePage {
 
     public String getStatusFor(String jobName) {
         By pipelineProjectNameLinkXPath = By.xpath("//a[contains(., '" + jobName + "')]");
-        By pipelineProjectStatusXPath = By.xpath("./ancestor-or-self::tr//span[@class='build-status-icon__outer']/*[name() = 'svg']");
+        By pipelineProjectStatusXPath = By.xpath("./ancestor-or-self::tr//td[1]//*[name() = 'svg']");
         WebElement pipelineProjectStatus = getDriver().findElement(pipelineProjectNameLinkXPath).findElement(pipelineProjectStatusXPath);
 
         return pipelineProjectStatus.getAttribute("tooltip");
