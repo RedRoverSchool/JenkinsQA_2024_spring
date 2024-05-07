@@ -5,12 +5,11 @@ import java.util.Collections;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
+import school.redrover.model.NodesTablePage;
 import school.redrover.runner.BaseTest;
 
 public class NodesTest extends BaseTest {
@@ -28,16 +27,6 @@ public class NodesTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
-    private void deleteNodeViaNodesTable(By nodeTableLocator) {
-        WebElement createdNode = getDriver().findElement(nodeTableLocator);
-        new Actions(getDriver()).moveToElement(createdNode).perform();
-        WebElement dropdownChevron = getDriver().findElement(By.cssSelector("#node_" + NODE_NAME + " > td:nth-child(2) > a > button"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
-                "arguments[0].dispatchEvent(new Event('click'));", dropdownChevron);
-        getDriver().findElement(By.cssSelector("button[href$='doDelete']")).click();
-        getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
-    }
-
     @Test
     public void testAddNode() {
         String text;
@@ -48,6 +37,31 @@ public class NodesTest extends BaseTest {
         text = getDriver().findElement(By.xpath("//h1")).getText();
 
         Assert.assertEquals(text, "New node");
+    }
+
+    @Test
+    public void testTooltipConfigureNodePage() {
+        List<String> expectedList = List.of(
+                "Help for feature: Architecture",
+                "Help for feature: Clock Difference",
+                "Help for feature: Free Disk Space",
+                "Help for feature: Don&#039;t mark agents temporarily offline",
+                "Help for feature: Free Space Threshold",
+                "Help for feature: Free Space Warning Threshold",
+                "Help for feature: Free Swap Space",
+                "Help for feature: Free Temp Space",
+                "Help for feature: Don&#039;t mark agents temporarily offline",
+                "Help for feature: Free Space Threshold",
+                "Help for feature: Free Space Warning Threshold",
+                "Help for feature: Response Time",
+                "Help for feature: Don&#039;t mark agents temporarily offline"
+        );
+        List<String> actualList = new HomePage(getDriver())
+                .clickNodesLink()
+                .clickConfigureMonitorButton()
+                .getTooltipsConfigureNodePage();
+
+        Assert.assertEquals(actualList, expectedList);
     }
 
     @Test
@@ -103,9 +117,16 @@ public class NodesTest extends BaseTest {
 
     @Test
     public void testDeletedNodeNotDisplayedInNodesTable() {
-        createNodeViaMainPage();
-        deleteNodeViaNodesTable(NODE_TABLE_LOCATOR);
+        NodesTablePage nodesTablePage = new HomePage(getDriver())
+            .clickNodesLink()
+            .clickNewNodeButton()
+            .setNodeName(NODE_NAME)
+            .selectPermanentAgentRadioButton()
+            .clickOkButton()
+            .clickSaveButton()
+            .openDropDownChevron(NODE_NAME)
+            .deleteNodeViaOpenedDropDownChevron();
 
-        Assert.assertTrue(getDriver().findElements(NODE_TABLE_LOCATOR).isEmpty());
+        Assert.assertFalse(nodesTablePage.isConteinNode(NODE_NAME));
     }
 }

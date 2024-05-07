@@ -45,4 +45,8 @@ public class MultibranchPipelineStatusPage extends BasePage {
     public boolean isMultibranchPipelineDisabledTextNotDisplayed() {
         return disabledMultiPipelineMessage.isEmpty();
     }
+
+    public String getDisableMultibranchPipelineTextColor() {
+        return disableMPMessage.getCssValue("color");
+    }
 }

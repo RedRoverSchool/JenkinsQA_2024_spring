@@ -1,15 +1,14 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
-public class ManageAppearance0Test extends BaseTest {
+public class AppearanceTest extends BaseTest {
 
     void goToManageAppearance() {
         getDriver().findElement(By.linkText("Manage Jenkins")).click();
@@ -18,16 +17,15 @@ public class ManageAppearance0Test extends BaseTest {
 
     @Test
     public void testAppearanceQuantityOfThemesViaDashboardDropDown() {
-        WebElement dashboard = getDriver().findElement(By.cssSelector("div#breadcrumbBar a[href = '/']"));
-        WebElement chevron = dashboard.findElement(By.cssSelector("[class$='chevron']"));
 
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", chevron);
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
+        int quantityOfThemes = new HomePage(getDriver())
+                .openDashboardBreadcrumbsDropdown()
+                .clickManageFromDashboardBreadcrumbsMenu()
+                .clickAppearanceButton()
+                .getThemesList()
+                .size();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class='tippy-box'] [href='/manage']"))).click();
-        getDriver().findElement(By.cssSelector("[href=\"appearance\"]")).click();
-
-        Assert.assertEquals(getDriver().findElements(By.className("app-theme-picker__item")).size(), 3);
+        Assert.assertEquals(quantityOfThemes, 3);
     }
 
     @Test
