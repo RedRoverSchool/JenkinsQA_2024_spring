@@ -2,18 +2,24 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
+import java.util.List;
 
 public class PipelineTest extends BaseTest {
 
     private static final String PIPELINE_NAME = "FirstPipeline";
-    private static final By ADD_DESCRIPTION_LOCATOR = By.id("description-link");
+    private static final By DASHBOARD_PIPELINE_LOCATOR = By.cssSelector("td [href='job/" + PIPELINE_NAME + "/']");
+    private static final By BUILD_HISTORY_PIPELINE_LOCATOR = By.cssSelector("td [href$='job/" + PIPELINE_NAME + "/']");
+    private static final String DESCRIPTION = "Lorem ipsum dolor sit amet";
+    private static final String NEW_PIPELINE_NAME = "New Pipeline name";
 
     private void createPipelineWithCreateAJob() {
         getDriver().findElement(By.linkText("Create a job")).click();
@@ -23,30 +29,189 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
+    private void clickOnDropdownArrow(By locator) {
+        WebElement itemDropdownArrow = getDriver().findElement(locator);
+
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
+                "arguments[0].dispatchEvent(new Event('click'));", itemDropdownArrow);
+    }
+
     @Test
     public void testPipelineDescriptionTextAreaBacklightColor() {
-        createPipelineWithCreateAJob();
-        getDriver().findElement(ADD_DESCRIPTION_LOCATOR).click();
-
-        getWait2().until(ExpectedConditions.invisibilityOfElementLocated(ADD_DESCRIPTION_LOCATOR));
-        String currentTextAreaBorderBacklightColor = getDriver().switchTo().activeElement().
-                getCssValue("box-shadow").split(" 0px")[0];
+        String currentTextAreaBorderBacklightColor = new HomePage(getDriver())
+                .resetJenkinsTheme()
+                .clickLogo()
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickChangeDescription()
+                .waitAddDescriptionButtonDisappears()
+                .getTextAreaBorderBacklightColor();
 
         Assert.assertEquals(currentTextAreaBorderBacklightColor, "rgba(11, 106, 162, 0.25)",
-                "Current text area border backlight color is not equal to rgba(11, 106, 162, 0.25)");
+                "Current text area border backlight color is different");
     }
 
     @Test
     public void testPipelineDescriptionTextAreaBacklightDefaultColor() {
-        createPipelineWithCreateAJob();
-        getDriver().findElement(ADD_DESCRIPTION_LOCATOR).click();
-        new Actions(getDriver()).sendKeys(Keys.TAB).perform();
-
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        String defaultTextAreaBorderBacklightColor = (String) js.executeScript(
-                "return window.getComputedStyle(arguments[0]).getPropertyValue('--focus-input-glow');",
-                getDriver().findElement(By.name("description")));
+        String defaultTextAreaBorderBacklightColor = new HomePage(getDriver())
+                .resetJenkinsTheme()
+                .clickLogo()
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickChangeDescription()
+                .makeDescriptionFieldNotActive()
+                .getDefaultTextAreaBorderBacklightColor();
 
         Assert.assertEquals(defaultTextAreaBorderBacklightColor, "rgba(11,106,162,.25)");
+    }
+
+    @Test
+    public void testYesButtonColorDeletingPipelineInSidebar() {
+        String yesButtonHexColor = new HomePage(getDriver())
+                .resetJenkinsTheme()
+                .clickLogo()
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickSidebarDeleteButton()
+                .getYesButtonColorDeletingViaSidebar();
+
+        Assert.assertEquals(yesButtonHexColor, "#e6001f", "The confirmation button color is not red");
+    }
+
+    @Test
+    public void testDeleteViaBreadcrumbs() {
+        boolean isPipelineDeleted = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .clickSpecificPipelineName(DASHBOARD_PIPELINE_LOCATOR)
+                .hoverOverBreadcrumbsName()
+                .clickBreadcrumbsDropdownArrow()
+                .clickBreadcrumbsDeleteButton()
+                .clickYes(new HomePage(getDriver()))
+                .isItemDeleted(PIPELINE_NAME);
+
+        Assert.assertTrue(isPipelineDeleted, PIPELINE_NAME + " was not deleted");
+    }
+
+    @Ignore
+    @Test
+    public void testBuildHistoryEmptyUponPipelineRemoval() {
+        createPipelineWithCreateAJob();
+        TestUtils.goToMainPage(getDriver());
+
+        getDriver().findElement(By.cssSelector("td [title='Schedule a Build for " + PIPELINE_NAME + "']")).click();
+        getDriver().findElement(By.cssSelector("[href$='builds']")).click();
+
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(BUILD_HISTORY_PIPELINE_LOCATOR))
+                .perform();
+        clickOnDropdownArrow(By.cssSelector("td [class$='link'] [class$='dropdown-chevron']"));
+
+        getDriver().findElement(By.cssSelector("[href$='Delete']")).click();
+        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+        getDriver().findElement(By.cssSelector("[href$='builds']")).click();
+
+        List<WebElement> buildHistoryTable = getDriver().findElements(BUILD_HISTORY_PIPELINE_LOCATOR);
+        Assert.assertTrue(buildHistoryTable.isEmpty(), PIPELINE_NAME + " build is in Build history table");
+    }
+
+    @Test
+    public void testAddDescription() {
+        String descriptionText = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickChangeDescription()
+                .setDescription(DESCRIPTION)
+                .clickSaveButton()
+                .getDescriptionText();
+
+        Assert.assertEquals(descriptionText, DESCRIPTION);
+    }
+
+    @Test(dependsOnMethods = "testAddDescription")
+    public void testEditDescription() {
+        final String addedToDescription = ", consectetur adipiscing elit.";
+        final String expectedDescription = DESCRIPTION + addedToDescription;
+
+        String descriptionText = new HomePage(getDriver())
+                .clickCreatedPipelineName()
+                .clickChangeDescription()
+                .clickOnDescriptionInput()
+                .setDescription(addedToDescription)
+                .clickSaveButton()
+                .getDescriptionText();
+
+        Assert.assertEquals(descriptionText, expectedDescription);
+    }
+
+    @Test
+    public void testRenamePipelineViaSidebar() {
+        String displayedName = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickSidebarRenameButton()
+                .clearNameInputField()
+                .setNewName(NEW_PIPELINE_NAME)
+                .clickSaveRenameButton()
+                .getHeadlineDisplayedName();
+
+        Assert.assertEquals(displayedName, NEW_PIPELINE_NAME);
+    }
+
+    @Test
+    public void testCreatePipelineProject() {
+        String getH1HeaderText = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .getHeadlineDisplayedName();
+
+        Assert.assertEquals(getH1HeaderText, PIPELINE_NAME);
+    }
+
+    @Test
+    public void testFullStageViewButton() {
+
+        final String pipelineName = "New Pipeline";
+        final String expectedResult = pipelineName + " - Stage View";
+
+        String h2HeadingText = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(pipelineName)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .chooseCreatedProject(pipelineName)
+                .clickFullStageViewButton()
+                .getH2HeadingText();
+
+        Assert.assertEquals(h2HeadingText, expectedResult);
+    }
+
+    @Test(dependsOnMethods = "testCreatePipelineProject")
+    public void testBreadcrumbsOnFullStageViewPage() {
+
+        final String expectedResult = "Dashboard > " + PIPELINE_NAME + " > Full Stage View";
+
+        String actualResult = new HomePage(getDriver())
+                .chooseCreatedProject(PIPELINE_NAME)
+                .clickFullStageViewButton()
+                .getBreadcrumbsText();
+
+        Assert.assertEquals(actualResult, expectedResult);
     }
 }

@@ -5,17 +5,20 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
+
 
 public class FolderTest extends BaseTest {
 
-    private static final By NAME_ERROR_MESSAGE_LOCATOR = By.id("itemname-invalid");
     private static final String FOLDER_NAME = "First_Folder";
     private static final String NEW_FOLDER_NAME = "Renamed_First_Folder";
     private static final String THIRD_FOLDER_NAME = "Dependant_Test_Folder";
+    private static final String FOLDER_TO_MOVE = "Folder_to_move_into_the_first";
     private static final By NEW_NAME = By.name("newName");
 
     private void createFolderViaCreateAJob() {
@@ -33,34 +36,50 @@ public class FolderTest extends BaseTest {
                 "arguments[0].dispatchEvent(new Event('click'));", itemDropdownArrow);
     }
 
+    public void create() {
+        HomePage homePage = new HomePage(getDriver());
+
+        homePage.clickNewItem()
+                .setItemName(FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .clickLogo();
+    }
+
     @Test
     public void testDotAsFirstFolderNameCharErrorMessage() {
-        getDriver().findElement(By.cssSelector("[href$='/newJob']")).click();
-        getDriver().findElement(By.cssSelector("[class$='_Folder']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(".");
+        String errorMessageText = new HomePage(getDriver())
+                .clickNewItem()
+                .selectFolder()
+                .setItemName(".")
+                .getErrorMessage();
 
-        String dotAsFirstCharErrorMessage = getDriver().findElement(NAME_ERROR_MESSAGE_LOCATOR).getText();
-        Assert.assertEquals(dotAsFirstCharErrorMessage, "» “.” is not an allowed name",
+        Assert.assertEquals(errorMessageText, "» “.” is not an allowed name",
                 "The error message is different");
     }
 
     @Test
     public void testDotAsLastFolderNameCharErrorMessage() {
-        getDriver().findElement(By.cssSelector("[href$='/newJob']")).click();
-        getDriver().findElement(By.cssSelector("[class$='_Folder']")).click();
-        getDriver().findElement(By.id("name")).sendKeys("Folder." + Keys.TAB);
+        String errorMessageText = new HomePage(getDriver())
+                .clickNewItem()
+                .selectFolder()
+                .setItemName("Folder." + Keys.TAB)
+                .getErrorMessage();
 
-        String dotAsLastCharErrorMessage = getDriver().findElement(NAME_ERROR_MESSAGE_LOCATOR).getText();
-        Assert.assertEquals(dotAsLastCharErrorMessage, "» A name cannot end with ‘.’",
+        Assert.assertEquals(errorMessageText, "» A name cannot end with ‘.’",
                 "The error message is different");
     }
 
     @Test
     public void testCreateFolderViaCreateAJob() {
-        createFolderViaCreateAJob();
-        String breadcrumbFolderName = getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job']")).getText();
+        String folderBreadcrumbName = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .getBreadcrumbName();
 
-        Assert.assertEquals(breadcrumbFolderName, FOLDER_NAME, "Breadcrumb name doesn't match " + FOLDER_NAME);
+        Assert.assertEquals(folderBreadcrumbName, FOLDER_NAME, "Breadcrumb name doesn't match " + FOLDER_NAME);
     }
 
     @Test(dependsOnMethods = "testCreateFolderViaCreateAJob")
@@ -112,5 +131,47 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), NEW_FOLDER_NAME);
+    }
+
+    @Test
+    public void testFolderMovedIntoAnotherFolderViaBreadcrumbs() {
+        createFolderViaCreateAJob();
+        getDriver().findElement(By.id("jenkins-home-link")).click();
+
+        getDriver().findElement(By.cssSelector("[href$='newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(FOLDER_TO_MOVE);
+        getDriver().findElement(By.cssSelector("[class$='_Folder']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        WebElement breadcrumbsFolderName = getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job']"));
+        new Actions(getDriver())
+                .moveToElement(breadcrumbsFolderName)
+                .perform();
+        clickOnDropdownArrow(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']"));
+        getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='move']")).click();
+
+        new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" + FOLDER_NAME);
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job/" + FOLDER_NAME + "']")).click();
+
+        String nestedFolder = getDriver().findElement(By.cssSelector("td [href*='job']:first-child")).getText();
+        Assert.assertEquals(nestedFolder, FOLDER_TO_MOVE, FOLDER_TO_MOVE + " is not in " + FOLDER_NAME);
+    }
+
+    @Test
+    public void testRename() {
+        create();
+
+        HomePage homePage = new HomePage(getDriver());
+
+        String resultName = homePage
+                .clickOnCreatedFolder(FOLDER_NAME)
+                .clickOnRenameButton()
+                .setNewName(NEW_FOLDER_NAME)
+                .clickRename()
+                .getBreadcrumbName();
+
+        Assert.assertEquals(resultName, NEW_FOLDER_NAME);
     }
 }

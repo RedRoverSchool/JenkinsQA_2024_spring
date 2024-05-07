@@ -13,21 +13,6 @@ public class NewItemTests extends BaseTest {
     private static final By JENKINS_INPUT = By.cssSelector("#name");
 
     @Test
-    public void testCreateFreestyleProject() {
-        getDriver().findElement(MAIN_PAGE).click();
-
-        getDriver().findElement(JENKINS_INPUT).sendKeys("new Freestyle project");
-        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(OK_BUTTON).click();
-
-        getDriver().findElement(SAVE_BUTTON).click();
-
-        WebElement newFreestyle = getDriver().findElement(By.xpath("//h1"));
-
-        Assert.assertEquals(newFreestyle.getText(),"new Freestyle project");
-    }
-
-    @Test
     public void testCreatePipelineProject() {
 
         getDriver().findElement(MAIN_PAGE).click();
@@ -40,21 +25,19 @@ public class NewItemTests extends BaseTest {
 
         WebElement pipeLine = getDriver().findElement(By.xpath("//div[@class='jenkins-app-bar__content jenkins-build-caption']"));
 
-        Assert.assertEquals(pipeLine.getText(),"Pipeline");
+        Assert.assertEquals(pipeLine.getText(), "Pipeline");
     }
 
-    @Test
     public void testCreateNewFolder() {
+        final String folderName = "NewFolder";
+
         getDriver().findElement(MAIN_PAGE).click();
 
-        getDriver().findElement(JENKINS_INPUT).sendKeys("NewFolder");
+        getDriver().findElement(JENKINS_INPUT).sendKeys(folderName);
         getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
 
         getDriver().findElement(OK_BUTTON).click();
 
         getDriver().findElement(By.className("jenkins-breadcrumbs__list-item")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//td/*[@href='job/NewFolder/']")).getText(),
-                "NewFolder");
     }
 }

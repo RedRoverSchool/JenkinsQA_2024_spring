@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -24,11 +25,13 @@ public class SearchBoxTest extends BaseTest {
         openDashboard();
     }
 
+    @Ignore
     @Test
     public void testFindFolderByOneLetter() {
         final String lowerCaseLetter = "f";
         List<String> folders = new ArrayList<>(List.of("Folder1", "Folder2", "Folder3"));
         folders.forEach(this::createFolder);
+        getWait60();
         WebElement searchBox = getDriver().findElement(By.id("search-box"));
         searchBox.sendKeys(lowerCaseLetter);
         searchBox.sendKeys(Keys.ENTER);

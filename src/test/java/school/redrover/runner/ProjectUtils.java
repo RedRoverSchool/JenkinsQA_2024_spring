@@ -1,13 +1,20 @@
 package school.redrover.runner;
 
 import org.openqa.selenium.Alert;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.io.FileHandler;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.ITestResult;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Properties;
 
@@ -117,5 +124,15 @@ public final class ProjectUtils {
     public static void logf(String str, Object... arr) {
         System.out.printf(str, arr);
         System.out.println();
+    }
+
+    static void takeScreenshot(WebDriver driver, ITestResult testResult) {
+        File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        try {
+            Files.createDirectories(Paths.get("screenshots"));
+            FileHandler.copy(screenshot, new File("screenshots/" + testResult.getInstanceName() + "." + testResult.getName() + ".png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
