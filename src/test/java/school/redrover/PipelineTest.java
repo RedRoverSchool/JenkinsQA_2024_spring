@@ -208,6 +208,19 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreatePipelineProject")
+    public void testBreadcrumbsOnFullStageViewPage() {
+
+        final String expectedResult = "Dashboard > " + PIPELINE_NAME + " > Full Stage View";
+
+        String actualResult = new HomePage(getDriver())
+                .chooseCreatedProject(PIPELINE_NAME)
+                .clickFullStageViewButton()
+                .getBreadcrumbsText();
+
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test(dependsOnMethods = "testCreatePipelineProject")
     public void testColorWhenHoveringMouseOnFullStageViewButton() {
 
         final String expectedColor = "rgba(175, 175, 207, 0.15)";

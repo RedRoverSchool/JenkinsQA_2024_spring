@@ -64,18 +64,36 @@ public class Pipeline1Test extends BaseTest {
         }
     }
 
-    private void makeBuilds(int buildsQtt, String pipeLineName) {
+    private void makeBuilds(int buildsQtt) {
         for (int i = 1; i <= buildsQtt; i++) {
             getWait5().until(ExpectedConditions.elementToBeClickable(
-                    By.xpath("//a[@href='/job/" + pipeLineName + "/build?delay=0sec']"))).click();
+                    By.xpath("//a[contains(@href, '/build?delay=0sec')]"))).click();
+
             try {
                 getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
                         By.xpath("//tr[@data-runid='" + i + "']")));
-            } catch (Exception e) {
-                clickConfigButton();
-                getDriver().findElement(By.className("findTheYgramul"));
-            }
 
+            } catch (Exception e) {
+                getDriver().navigate().refresh();
+                getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                        By.xpath("//tr[@data-runid='" + i + "']")));
+            }
+        }
+    }
+
+    private void turnNodeOnIfOffline() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/manage']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='computer']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[@class='jenkins-table__link model-link inside']"))).click();
+
+        try {
+            getWait5().until(ExpectedConditions.elementToBeClickable(
+                    By.xpath("//button[@class='jenkins-button jenkins-button--primary ']"))).click();
+            getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+        } catch (Exception e) {
+            getDriver().findElement(By.id("jenkins-name-icon")).click();
         }
     }
 
@@ -94,30 +112,6 @@ public class Pipeline1Test extends BaseTest {
     private void clickConfigButton() {
         getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
                 By.xpath("//a[contains(@href, 'configure')]")))).click();
-    }
-
-    private void cleanConfig() {
-
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).clear();
-
-        for (int i = 0; i <= 13; i++) {
-            boolean isCheckboxSelected = getDriver().findElement(By.id("cb" + i)).isSelected();
-            if (isCheckboxSelected == true) {
-                getDriver().findElement(By.xpath("//div[@ref='cb" + i + "']//label")).click();
-            }
-        }
-
-        Select selectDefinition = new Select(getDriver().findElement(
-                By.xpath("//section[@class='jenkins-section']//select[@class='jenkins-select__input dropdownList']")));
-        selectDefinition.selectByValue("0");
-
-        getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
-
-
-        boolean isCheckboxSelected = getDriver().findElement(By.xpath("//input[@name='_.sandbox']")).isSelected();
-        if (isCheckboxSelected != true) {
-            getDriver().findElement(By.xpath("//input[@name='_.sandbox']")).click();
-        }
     }
 
     @Test
@@ -370,7 +364,7 @@ public class Pipeline1Test extends BaseTest {
 
     @Ignore
     @Test
-    public void testBuildСolorGreen() {
+    public void testBuildColorGreen() {
 
         int number_of_stages = 1;
 
@@ -409,7 +403,6 @@ public class Pipeline1Test extends BaseTest {
         Assert.assertTrue(actualResult.contains("Stage Logs (stage 1)"));
     }
 
-    @Ignore
     @Test
     public void testTableWithAllStagesAndTheLast10Builds() {
 
@@ -417,13 +410,13 @@ public class Pipeline1Test extends BaseTest {
         final int buildsQtt = 12;
         final String pipeName = "Ygramul";
 
+        turnNodeOnIfOffline();
         TestUtils.createItem(TestUtils.PIPELINE, pipeName, this);
         clickConfigButton();
-        cleanConfig();
         sendScript(number_of_stages);
         getDriver().findElement(By.name("Submit")).click();
 
-        makeBuilds(buildsQtt, pipeName);
+        makeBuilds(buildsQtt);
 
         clickFullStageViewButton();
 
