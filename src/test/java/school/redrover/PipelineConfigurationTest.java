@@ -10,8 +10,8 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.PipelineConfigPage;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
@@ -65,6 +65,12 @@ public class PipelineConfigurationTest extends BaseTest {
                 getDriver().findElement(By.xpath("//label[text()='Poll SCM']")));
     }
 
+    public void scrollCheckBoxThrottleBuildsIsVisible() {
+        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
+        executor.executeScript("arguments[0].scrollIntoView({block: 'center'});",
+                getDriver().findElement(By.xpath("//label[text()='Throttle builds']")));
+    }
+
     @Test
     public void testScroll() {
         createPipeline();
@@ -80,12 +86,12 @@ public class PipelineConfigurationTest extends BaseTest {
 
         createPipeline();
 
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(pipelineDescription);
-        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
+        boolean isDescriptionVisible = new PipelineConfigPage(getDriver())
+                .addDescription(pipelineDescription)
+                .clickSaveButton()
+                .isDescriptionVisible(pipelineDescription);
 
-        Assert.assertTrue(
-                getDriver().findElement(By.xpath("//div[text()='" + pipelineDescription + "']")).isDisplayed(),
-                "Something went wrong with the description");
+        Assert.assertTrue(isDescriptionVisible,"Something went wrong with the description");
     }
 
     @Test
@@ -94,12 +100,12 @@ public class PipelineConfigurationTest extends BaseTest {
 
         createPipeline();
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(TOGGLE_SWITCH_ENABLE_DISABLE));
-        getDriver().findElement(TOGGLE_SWITCH_ENABLE_DISABLE).click();
-        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
+         String warningMessageText = new PipelineConfigPage(getDriver())
+                .clickToggleSwitchEnableDisable()
+                .clickSaveButton()
+                .getWarningMessageText();
 
-        Assert.assertTrue(
-                getDriver().findElement(By.id("enable-project")).getText().contains(expectedMessageForDisabledProject));
+        Assert.assertTrue(warningMessageText.contains(expectedMessageForDisabledProject));
     }
 
     @Test(dependsOnMethods = "testDisableProjectInConfigureMenu")
@@ -367,5 +373,24 @@ public class PipelineConfigurationTest extends BaseTest {
         navigateToConfigurePageFromDashboard();
 
         Assert.assertTrue(selectedValue.contains(selectedOptionForCheck));
+    }
+
+    @Test
+    public void testSetNumberOfBuildsThrottleBuilds() {
+        final String messageDay = "Approximately 24 hours between builds";
+
+        createPipeline();
+        navigateToConfigurePageFromDashboard();
+        scrollCheckBoxThrottleBuildsIsVisible();
+
+        getDriver().findElement(By.xpath("//label[text()='Throttle builds']")).click();
+        WebElement selectThrottleBuilds = getDriver().findElement(By.xpath("//select[@class='jenkins-select__input select']"));
+        Select simpleDropDown = new Select(selectThrottleBuilds);
+        simpleDropDown.selectByValue("day");
+
+        WebElement dayElement = getDriver().findElement(By.xpath("//div[@class='ok']"));
+        getWait5().until(ExpectedConditions.visibilityOf(dayElement));
+
+        Assert.assertEquals(dayElement.getText(), messageDay);
     }
 }

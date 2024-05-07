@@ -5,8 +5,9 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import school.redrover.model.AppearancePage;
 import school.redrover.model.HomePage;
+
+import java.util.List;
 
 public abstract class BasePage extends BaseModel {
 
@@ -27,18 +28,6 @@ public abstract class BasePage extends BaseModel {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
     }
 
-    public AppearancePage resetJenkinsTheme() {
-        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
-        getDriver().findElement(By.cssSelector("[href='appearance']")).click();
-
-        WebElement defaultThemeButton = getDriver().findElement(By.cssSelector("[for='radio-block-2']"));
-        if (!defaultThemeButton.isSelected()) {
-            defaultThemeButton.click();
-            getDriver().findElement(By.name("Apply")).click();
-        }
-        return new AppearancePage(getDriver());
-    }
-
     public void openHeaderUsernameDropdown() {
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(By.cssSelector("[data-href$='admin']")))
@@ -52,5 +41,33 @@ public abstract class BasePage extends BaseModel {
                 .stream()
                 .anyMatch(e -> e.getText()
                 .contains(text));
+    }
+
+    public void hoverOverElement(WebElement element) {
+        new Actions(getDriver())
+                .moveToElement(element)
+                .perform();
+    }
+
+    public void clickSpecificDropdownArrow(WebElement element) {
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
+                "arguments[0].dispatchEvent(new Event('click'));", element);
+    }
+
+    protected void clickElement(WebElement webElement) {
+        new Actions(getDriver())
+                .scrollToElement(webElement)
+                .scrollByAmount(0, 100)
+                .moveToElement(webElement)
+                .click().perform();
+    }
+
+    public boolean areElementsEnabled(List<WebElement> elements) {
+        return elements.stream()
+                .allMatch(WebElement::isEnabled);
+    }
+
+    public String getText(WebElement webElement) {
+        return webElement.getText();
     }
 }
