@@ -362,11 +362,12 @@ public class Pipeline1Test extends BaseTest {
         Assert.assertEquals(actualOrder, expectedOrder);
     }
 
-    @Ignore
     @Test
     public void testBuildColorGreen() {
 
         int number_of_stages = 1;
+
+        turnNodeOnIfOffline();
 
         createPipelineProject(PIPELINE_NAME);
 
