@@ -59,15 +59,10 @@ public class CreateUserPage extends BasePage {
         return new CreateUserPage(getDriver());
     }
 
-    public UsersPage setEmailAddress() {
-        createUserButton.click();
-
-        return new UsersPage(getDriver());
-    }
-
     public UsersPage clickCreateUser() {
         createUserButton.click();
 
         return new UsersPage(getDriver());
     }
+
 }
