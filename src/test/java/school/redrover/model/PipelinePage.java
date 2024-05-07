@@ -139,6 +139,7 @@ public class PipelinePage extends BasePage {
 
         return new DeleteDialog(getDriver());
     }
+
     public PipelineRenamePage clickSidebarRenameButton() {
         sidebarRenameButton.click();
 
@@ -180,5 +181,19 @@ public class PipelinePage extends BasePage {
 
     public String getWarningMessageText() {
         return getWait2().until(ExpectedConditions.visibilityOf(warningMessage)).getText();
+    }
+
+    public String getFullStageViewButtonBackgroundColor() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        return (String) js.executeScript("return window.getComputedStyle(arguments[0], '::before').getPropertyValue('background-color');", fullStageViewButton);
+    }
+
+    public PipelinePage hoverOnFullStageViewButton() {
+        new Actions(getDriver()).scrollToElement(fullStageViewButton)
+                .moveToElement(fullStageViewButton)
+                .pause(2000)
+                .perform();
+
+        return this;
     }
 }
