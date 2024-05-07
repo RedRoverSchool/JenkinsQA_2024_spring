@@ -183,7 +183,6 @@ public class HomePage extends BasePage {
     public FolderStatusPage renameJobFromJobDropdown(String currentName, String newName) {
         openDropdownUsingSelenium(currentName.replace(" ", "%20"));
         selectRenameFromDropdown();
-        renameFromDropdown.click();
         return new FolderRenamePage(getDriver()).renameFolder(newName);
     }
 
