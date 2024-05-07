@@ -171,7 +171,7 @@ public class HomePage extends BasePage {
 
     public HomePage openDropdownUsingSelenium(String projectName) {
         new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.linkText(projectName)))
+                .moveToElement(getDriver().findElement(By.xpath("//a[@href='job/"+ projectName +"/']")))
                 .pause(1000)
                 .scrollToElement(getDriver().findElement(By.cssSelector(String.format("[data-href*='/job/%s/']", projectName))))
                 .click()
@@ -180,8 +180,9 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public FolderStatusPage renameJobFromJobDropdown(BaseTest baseTest, String currentName, String newName) {
-        TestUtils.openJobDropdown(baseTest, currentName.replace(" ", "%20"));
+    public FolderStatusPage renameJobFromJobDropdown(String currentName, String newName) {
+        openDropdownUsingSelenium(currentName.replace(" ", "%20"));
+        selectRenameFromDropdown();
         renameFromDropdown.click();
         return new FolderRenamePage(getDriver()).renameFolder(newName);
     }
