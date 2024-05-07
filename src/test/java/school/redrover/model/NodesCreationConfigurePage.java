@@ -9,6 +9,8 @@ public class NodesCreationConfigurePage extends BasePage {
 
     @FindBy(name = "Submit")
     private WebElement saveButton;
+    @FindBy(name = "_.labelString")
+    private WebElement labelsField;
 
     public NodesCreationConfigurePage(WebDriver driver) {
         super(driver);
@@ -18,5 +20,11 @@ public class NodesCreationConfigurePage extends BasePage {
         saveButton.click();
 
         return new NodesTablePage(getDriver());
+    }
+
+    public NodesCreationConfigurePage createLabel(String labelName) {
+        labelsField.sendKeys(labelName);
+
+        return new NodesCreationConfigurePage(getDriver());
     }
 }

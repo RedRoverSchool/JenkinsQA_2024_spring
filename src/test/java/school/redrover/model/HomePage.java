@@ -57,6 +57,15 @@ public class HomePage extends BasePage {
     @FindBy(css = "[class='tippy-box'] [href='/manage']")
     private WebElement manageFromDashboardBreadcrumbsMenu;
 
+    @FindBy(id="executors")
+    private WebElement buildExecutorStatus;
+
+    @FindBy(xpath = "//td[text()='Idle']")
+    private List<WebElement> buildExecutorStatusList;
+
+    @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
+    private WebElement fullStageViewButton;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -203,6 +212,10 @@ public class HomePage extends BasePage {
         return !getItemList().contains(name);
     }
 
+    public boolean isItemExists(String name) {
+        return getItemList().contains(name);
+    }
+
     public MultibranchPipelineStatusPage clickMPName(String projectName) {
         getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
 
@@ -250,5 +263,23 @@ public class HomePage extends BasePage {
         manageFromDashboardBreadcrumbsMenu.click();
 
         return new ManageJenkinsPage(getDriver());
+    }
+
+    public String getBuildExecutorStatusText() {
+       return buildExecutorStatus.getText();
+    }
+
+    public List<WebElement> getBuildExecutorStatusList() {
+        return buildExecutorStatusList.stream().toList();
+    }
+
+    public int getBuildExecutorListSize() {
+        return buildExecutorStatusList.size();
+    }
+
+    public FullStageViewPage clickFullStageViewButton() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(fullStageViewButton)).click();
+
+        return new FullStageViewPage(getDriver());
     }
 }
