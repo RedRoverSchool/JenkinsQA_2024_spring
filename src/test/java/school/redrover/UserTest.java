@@ -3,8 +3,8 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
@@ -13,6 +13,11 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class UserTest extends BaseTest {
+
+    private static final String USER_NAME = "TestUser";
+    private static final String PASSWORD = "test123";
+    private static final String FULL_NAME = "User";
+    private static final String EMAIL_ADDRESS = "test@gmail.com";
 
     public String randomString() {
         return UUID.randomUUID()
@@ -33,6 +38,23 @@ public class UserTest extends BaseTest {
         getDriver().findElement(By.name("fullname")).sendKeys(randomString());
         getDriver().findElement(By.name("email")).sendKeys(randomEmail());
         getDriver().findElement(By.name("Submit")).click();
+    }
+
+    @Test
+    public void testCreateUserViaManageJenkins() {
+        List<String> userName = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickUsers()
+                .clickCreateUser()
+                .setUserName(USER_NAME)
+                .setPassword(PASSWORD)
+                .setConfirmPassword(PASSWORD)
+                .setFullName(FULL_NAME)
+                .setEmailAddress(EMAIL_ADDRESS)
+                .clickCreateUser()
+                .getUsersList();
+
+        Assert.assertTrue(userName.contains("TestUser"));
     }
 
     @Test

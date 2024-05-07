@@ -1,6 +1,7 @@
 package school.redrover.model;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -49,6 +50,18 @@ public class HomePage extends BasePage {
 
     @FindBy(css = "a[href $= '/move']")
     private WebElement dropdownMove;
+
+    @FindBy(css = "div#breadcrumbBar a[href = '/']")
+    private WebElement dashboardBreadcrumbs;
+
+    @FindBy(css = "[class='tippy-box'] [href='/manage']")
+    private WebElement manageFromDashboardBreadcrumbsMenu;
+
+    @FindBy(id="executors")
+    private WebElement buildExecutorStatus;
+
+    @FindBy(xpath = "//td[text()='Idle']")
+    private List<WebElement> buildExecutorStatusList;
 
     @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
     private WebElement fullStageViewButton;
@@ -148,21 +161,10 @@ public class HomePage extends BasePage {
         return new CreateNewViewPage(getDriver());
     }
 
-    public HomePage clickView(String viewName) {
-        getDriver().findElement(By.linkText(viewName)).click();
-
-        return this;
-    }
-
     public ViewPage clickViewName(String viewName) {
         getDriver().findElement(By.linkText(viewName)).click();
 
         return new ViewPage(getDriver());
-    }
-
-    public int sizeColumnList() {
-
-        return getDriver().findElements(By.className("sortheader")).size();
     }
 
     public FolderStatusPage clickOnCreatedFolder(String name) {
@@ -171,7 +173,7 @@ public class HomePage extends BasePage {
         return new FolderStatusPage(getDriver());
     }
 
-    public HomePage openDropdownUsingSelenium(String projectName) {
+    public HomePage openItemDropdownWithSelenium(String projectName) {
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(By.linkText(projectName)))
                 .pause(1000)
@@ -217,7 +219,7 @@ public class HomePage extends BasePage {
     }
 
     public WebElement getDropdownMenu() {
-        return  getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[@class='jenkins-dropdown']")));
     }
 
@@ -241,6 +243,34 @@ public class HomePage extends BasePage {
                 + projectName.replaceAll(" ", "%20") + "/']"))).click();
 
         return new PipelinePage(getDriver());
+    }
+
+    public HomePage openDashboardBreadcrumbsDropdown() {
+        WebElement chevron = dashboardBreadcrumbs.findElement(By.cssSelector("[class$='chevron']"));
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].dispatchEvent(new Event('mouseenter'));" +
+                        "arguments[0].dispatchEvent(new Event('click'));",
+                chevron);
+
+        return this;
+    }
+
+    public ManageJenkinsPage clickManageFromDashboardBreadcrumbsMenu() {
+        manageFromDashboardBreadcrumbsMenu.click();
+
+        return new ManageJenkinsPage(getDriver());
+    }
+
+    public String getBuildExecutorStatusText() {
+       return buildExecutorStatus.getText();
+    }
+
+    public List<WebElement> getBuildExecutorStatusList() {
+        return buildExecutorStatusList.stream().toList();
+    }
+
+    public int getBuildExecutorListSize() {
+        return buildExecutorStatusList.size();
     }
 
     public FullStageViewPage clickFullStageViewButton() {
