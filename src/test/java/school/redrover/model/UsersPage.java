@@ -20,8 +20,14 @@ public class UsersPage extends BasePage {
     @FindBy(css = "thead th:nth-child(3)>a")
     private WebElement columnNameHeader;
 
+    @FindBy(css = "thead th:nth-child(2)>a")
+    private WebElement columnUserIDHeader;
+
     @FindBy(css = "tr>td:nth-child(3)")
     private List<WebElement> userNameList;
+
+    @FindBy(css = "tr>td:nth-child(2)")
+    private List<WebElement> userIDList;
 
     public UsersPage(WebDriver driver) {
         super(driver);
@@ -68,6 +74,12 @@ public class UsersPage extends BasePage {
         return this;
     }
 
+    public UsersPage clickColumnUserIDHeader() {
+        columnUserIDHeader.click();
+
+        return this;
+    }
+
     public List<String> getUserNames() {
         List<String> names = new ArrayList<>();
         for (WebElement element : userNameList) {
@@ -75,5 +87,13 @@ public class UsersPage extends BasePage {
         }
 
         return names;
+    }
+
+    public List<String> getUserIDList() {
+
+        return userIDList
+                .stream()
+                .map(WebElement::getText)
+                .toList();
     }
 }
