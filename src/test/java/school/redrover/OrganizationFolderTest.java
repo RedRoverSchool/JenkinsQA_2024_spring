@@ -117,8 +117,8 @@ public class OrganizationFolderTest extends BaseTest {
         createOrganizationFolder(ORGANIZATION_FOLDER_NAME);
 
         OrganizationFolderPage organizationFolderPage = new OrganizationFolderPage(getDriver());
-        organizationFolderPage.clickConfigure();
-
-        Assert.assertTrue(organizationFolderPage.isSidebarVisible());
+        Assert.assertTrue(organizationFolderPage
+                .clickConfigure()
+                .isSidebarVisible());
     }
 }
