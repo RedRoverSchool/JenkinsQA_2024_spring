@@ -392,9 +392,6 @@ public class Pipeline1Test extends BaseTest {
         }
     }
 
-
-
-
     @Ignore
     @Test
     public void testFullStageViewPopUpWindowIsDisplayed() {
