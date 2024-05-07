@@ -150,7 +150,7 @@ public class ManageJenkinsTest extends BaseTest {
     }
 
     @Test
-    public void testSearch() throws InterruptedException {
+    public void testActivatingSearchPressingSlash() {
         ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
                 .clickManageJenkins()
                 .pressSlashKey();
