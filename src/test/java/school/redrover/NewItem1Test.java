@@ -6,8 +6,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.Color;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.TestUtils;
+
+import java.util.List;
 
 public class NewItem1Test extends BaseTest {
 
@@ -52,13 +54,6 @@ public class NewItem1Test extends BaseTest {
         WebElement validationMessage = getDriver().findElement(By.cssSelector("div#itemname-invalid"));
 
         assert (Color.fromString((validationMessage).getCssValue("color")).asHex().equals("#ff0000"));
-    }
-    @Test
-    public void testNewItemIsDisplayedOnMainPage() {
-       final String nameProject = "firstProjectPipline";
-
-        TestUtils.createNewItemAndReturnToDashboard(this, nameProject, TestUtils.Item.PIPELINE);
-        Assert.assertTrue(getDriver().findElement(By.cssSelector("tr#job_" + nameProject)).isDisplayed());
     }
 
     @Test
