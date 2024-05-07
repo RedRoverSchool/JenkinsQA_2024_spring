@@ -374,7 +374,6 @@ public class Pipeline1Test extends BaseTest {
         sendScript(number_of_stages);
 
         getDriver().findElement(By.name("Submit")).click();
-
         WebElement button = getDriver().findElement(By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/build?delay=0sec']"));
         for (int i = 1; i <= 2; i++) {
             button.click();
