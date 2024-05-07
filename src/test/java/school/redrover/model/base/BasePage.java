@@ -63,7 +63,8 @@ public abstract class BasePage extends BaseModel {
     }
 
     public boolean areElementsEnabled(List<WebElement> elements) {
-        return elements.stream()
+        return elements
+                .stream()
                 .allMatch(WebElement::isEnabled);
     }
 

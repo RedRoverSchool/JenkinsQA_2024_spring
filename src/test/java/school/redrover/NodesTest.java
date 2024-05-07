@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -83,11 +82,16 @@ public class NodesTest extends BaseTest {
 
     @Test
     public void testCreatedNodeIsInNodesTable() {
-        createNodeViaMainPage();
-        WebElement createdNodeInNodesTable = getDriver().findElement(By.cssSelector("[href='../computer/" + NODE_NAME + "/']"));
+        NodesTablePage nodesTablePage = new HomePage(getDriver())
+                .clickNodesLink()
+                .clickNewNodeButton()
+                .setNodeName(NODE_NAME)
+                .selectPermanentAgentRadioButton()
+                .clickOkButton()
+                .clickSaveButton();
 
-        Assert.assertTrue(createdNodeInNodesTable.isDisplayed());
-        Assert.assertEquals(createdNodeInNodesTable.getText(), NODE_NAME,
+        Assert.assertTrue(nodesTablePage.isNodeDisplayedInTable(NODE_NAME));
+        Assert.assertTrue(nodesTablePage.getNodesinTableList().contains(NODE_NAME),
                 "The created node '" + NODE_NAME + "' is not in the Nodes table");
     }
 
