@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
@@ -29,7 +30,7 @@ public class Dashboard1Test extends BaseTest {
             "Move",
             "Rename");
 
-    private final List<String> PIPLINE_MENU = List.of(
+    private final List<String> PIPELINE_MENU = List.of(
             "Changes",
             "Build Now",
             "Configure",
@@ -80,6 +81,13 @@ public class Dashboard1Test extends BaseTest {
             "Rename",
             "Pipeline Syntax",
             "Credentials");
+    private final Object[][] PROJECTS_MENUS = {
+            {TestUtils.FREESTYLE_PROJECT, FREESTYLE_PROJECT_MENU},
+            {TestUtils.MULTIBRANCH_PIPELINE, MULTIBRANCH_PIPELINE_MENU},
+            {TestUtils.ORGANIZATION_FOLDER, ORGANIZATION_FOLDER_MENU},
+            {TestUtils.FOLDER, FOLDER_MENU},
+            {TestUtils.MULTI_CONFIGURATION_PROJECT, MULTI_CONFIGURATION_PROJECT_MENU},
+            {TestUtils.PIPELINE, PIPELINE_MENU}};
 
     public void createItem(String type, String name) {
         new HomePage(getDriver())
@@ -100,56 +108,44 @@ public class Dashboard1Test extends BaseTest {
 
     @Test
     public void testSortItemsByName() {
+        Collections.sort(PROJECTS_NAMES);
         PROJECTS_NAMES.forEach(s -> createItem(s, s));
 
-        Collections.sort(PROJECTS_NAMES);
-
-        Collections.reverse(PROJECTS_NAMES);
         List<String> descSortingByNameList = new HomePage(getDriver())
                 .clickColumnNameTitle()
                 .getItemList();
+        Collections.reverse(PROJECTS_NAMES);
 
         Assert.assertEquals(descSortingByNameList, PROJECTS_NAMES);
 
-        Collections.reverse(PROJECTS_NAMES);
         List<String> ascSortingByNameList = new HomePage(getDriver())
                 .clickColumnNameTitle()
                 .getItemList();
+        Collections.reverse(PROJECTS_NAMES);
 
         Assert.assertEquals(ascSortingByNameList, PROJECTS_NAMES);
     }
 
-    @Test(dependsOnMethods = "testSortItemsByName")
-    public void testFreestyleProjectChevronMenu() {
-        Assert.assertEquals(getChevronMenu(TestUtils.FREESTYLE_PROJECT), FREESTYLE_PROJECT_MENU);
+    @DataProvider(name = "projects")
+    public Object[][] projectsName() {
+
+        return PROJECTS_MENUS;
     }
 
-    @Test(dependsOnMethods = "testFreestyleProjectChevronMenu")
-    public void testPipelineChevronMenu() {
-        Assert.assertEquals(getChevronMenu(TestUtils.PIPELINE), PIPLINE_MENU);
+    @Test(dependsOnMethods = "testSortItemsByName", dataProvider = "projects")
+    public void testProjectChevronMenu(String projectName, List<String> projectMenu) {
+        List<String> chevronMenu = Arrays.stream(
+                        new HomePage(getDriver())
+                                .openItemDropdown(projectName)
+                                .getDropdownMenu()
+                                .getText()
+                                .split("\\r?\\n"))
+                .toList();
+
+        Assert.assertEquals(chevronMenu, projectMenu);
     }
 
-    @Test(dependsOnMethods = "testPipelineChevronMenu")
-    public void testMultiConfigurationProjectChevronMenu() {
-        Assert.assertEquals(getChevronMenu(TestUtils.MULTI_CONFIGURATION_PROJECT), MULTI_CONFIGURATION_PROJECT_MENU);
-    }
-
-    @Test(dependsOnMethods = "testMultiConfigurationProjectChevronMenu")
-    public void testFolderChevronMenu() {
-        Assert.assertEquals(getChevronMenu(TestUtils.FOLDER), FOLDER_MENU);
-    }
-
-    @Test(dependsOnMethods = "testFolderChevronMenu")
-    public void testMultibranchPipelineChevronMenu() {
-        Assert.assertEquals(getChevronMenu(TestUtils.MULTIBRANCH_PIPELINE), MULTIBRANCH_PIPELINE_MENU);
-    }
-
-    @Test(dependsOnMethods = "testMultibranchPipelineChevronMenu")
-    public void testOrganizationChevronMenu() {
-        Assert.assertEquals(getChevronMenu(TestUtils.ORGANIZATION_FOLDER), ORGANIZATION_FOLDER_MENU);
-    }
-
-    @Test(dependsOnMethods = "testOrganizationChevronMenu")
+    @Test(dependsOnMethods = "testProjectChevronMenu")
     public void testCreateView() {
         String createdViewName = new HomePage(getDriver())
                 .clickNewView()
