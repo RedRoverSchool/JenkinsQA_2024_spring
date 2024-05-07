@@ -291,7 +291,7 @@ public class HomePage extends BasePage {
                 findElement(By.xpath("//span[text()='" + organizationFolderName + "']"));
         new Actions(getDriver()).moveToElement(currentOrganizationFolder).perform();
         WebElement menuForCurrentOrganizationFolder = getWait2().until(ExpectedConditions
-                .elementToBeClickable(By.xpath("//*[@id='job_" + organizationFolderName + "']/td[3]/a/button")));
+                .elementToBeClickable(By.xpath("//*[@id='job_" + organizationFolderName + "']/td[3]/a")));
         menuForCurrentOrganizationFolder.click();
 
         return new HomePage(getDriver());
