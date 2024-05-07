@@ -44,6 +44,9 @@ public class PipelinePage extends BasePage {
     @FindBy(id = "enable-project")
     private WebElement warningMessage;
 
+    @FindBy(xpath = "//a[@data-build-success='Build scheduled']")
+    private WebElement sidebarBuildNowButton;
+
     public PipelinePage(WebDriver driver) {
         super(driver);
     }
@@ -145,5 +148,9 @@ public class PipelinePage extends BasePage {
 
     public String getWarningMessageText() {
         return getWait2().until(ExpectedConditions.visibilityOf(warningMessage)).getText();
+    }
+
+    public boolean isBuildNowButtonDisplayed() {
+        return sidebarBuildNowButton.isDisplayed();
     }
 }

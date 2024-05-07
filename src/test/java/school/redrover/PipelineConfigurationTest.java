@@ -21,8 +21,6 @@ public class PipelineConfigurationTest extends BaseTest {
 
     private static final By SAVE_BUTTON_CONFIGURATION = By.xpath("//button[@formnovalidate='formNoValidate']");
 
-    private static final By TOGGLE_SWITCH_ENABLE_DISABLE = By.xpath("//label[@data-title='Disabled']");
-
     private static final By ADVANCED_PROJECT_OPTIONS_MENU = By.xpath("//button[@data-section-id='advanced-project-options']");
 
     private static final By DISPLAY_NAME_TEXT_FIELD = By.xpath("//div[@class='setting-main']//input[contains(@checkurl, 'checkDisplayName')]");
@@ -110,14 +108,14 @@ public class PipelineConfigurationTest extends BaseTest {
 
     @Test(dependsOnMethods = "testDisableProjectInConfigureMenu")
     public void testEnableProjectInConfigureMenu() {
-
         navigateToConfigurePageFromDashboard();
 
-        getDriver().findElement(TOGGLE_SWITCH_ENABLE_DISABLE).click();
-        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
+        boolean buildNowButtonIsDisplayed = new PipelineConfigPage(getDriver())
+                .clickToggleSwitchEnableDisable()
+                .clickSaveButton()
+                .isBuildNowButtonDisplayed();
 
-        Assert.assertTrue(
-                getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).isDisplayed());
+        Assert.assertTrue(buildNowButtonIsDisplayed, "Build Now button is not visible");
     }
 
     @Ignore
