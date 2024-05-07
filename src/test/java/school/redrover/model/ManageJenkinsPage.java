@@ -14,6 +14,9 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(className = "jenkins-search__input")
     private WebElement searchInput;
 
+    @FindBy(className = "jenkins-search__shortcut")
+    private WebElement shortcut;
+
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
@@ -32,4 +35,13 @@ public class ManageJenkinsPage extends BasePage {
         return searchInput.isDisplayed();
     }
 
+    public boolean isShortcutDisplayed() {
+        return shortcut.isDisplayed();
+    }
+
+    public ManageJenkinsPage pressSlashKey() {
+        securityLink.sendKeys("/");
+
+        return new ManageJenkinsPage(getDriver());
+    }
 }
