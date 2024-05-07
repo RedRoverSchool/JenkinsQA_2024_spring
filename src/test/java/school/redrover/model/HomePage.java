@@ -63,6 +63,9 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//td[text()='Idle']")
     private List<WebElement> buildExecutorStatusList;
 
+    @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
+    private WebElement fullStageViewButton;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -268,5 +271,11 @@ public class HomePage extends BasePage {
 
     public int getBuildExecutorListSize() {
         return buildExecutorStatusList.size();
+    }
+
+    public FullStageViewPage clickFullStageViewButton() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(fullStageViewButton)).click();
+
+        return new FullStageViewPage(getDriver());
     }
 }

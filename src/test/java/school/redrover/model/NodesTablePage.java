@@ -8,6 +8,8 @@ import org.openqa.selenium.support.FindBy;
 
 import school.redrover.model.base.BasePage;
 
+import java.util.List;
+
 public class NodesTablePage extends BasePage {
 
     @FindBy(css = "[href='new']")
@@ -21,6 +23,15 @@ public class NodesTablePage extends BasePage {
 
     @FindBy(id = "computers")
     private WebElement table;
+
+    @FindBy(css = "[href='configure']")
+    private WebElement configureMonitorButton;
+
+    @FindBy(css = "[href^='../computer/']:not([href$='configure'])")
+    private List<WebElement> nodesInTableList;
+
+    @FindBy(css = "[href*='built-in']")
+    private WebElement builtInNode;
 
     public NodesTablePage(WebDriver driver) {
         super(driver);
@@ -49,5 +60,28 @@ public class NodesTablePage extends BasePage {
 
     public boolean isConteinNode(String name) {
         return table.getText().contains(name);
+    }
+
+    public NodesConfigurePage clickConfigureMonitorButton() {
+        configureMonitorButton.click();
+
+        return new NodesConfigurePage(getDriver());
+    }
+
+    public boolean isNodeDisplayedInTable(String name) {
+        return getDriver().findElement(By.cssSelector("[href='../computer/" + name + "/']")).isDisplayed();
+    }
+
+    public List<String> getNodesinTableList() {
+        return nodesInTableList
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+    }
+
+    public NodeBuiltInStatusPage clickBuiltInNodeName() {
+        builtInNode.click();
+
+        return new NodeBuiltInStatusPage(getDriver());
     }
 }
