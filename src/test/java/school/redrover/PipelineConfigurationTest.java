@@ -8,11 +8,11 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
+import school.redrover.model.PipelinePage;
 import school.redrover.model.PipelineConfigPage;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
@@ -101,12 +101,12 @@ public class PipelineConfigurationTest extends BaseTest {
 
         createPipeline();
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(TOGGLE_SWITCH_ENABLE_DISABLE));
-        getDriver().findElement(TOGGLE_SWITCH_ENABLE_DISABLE).click();
-        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
+         String warningMessageText = new PipelineConfigPage(getDriver())
+                .clickToggleSwitchEnableDisable()
+                .clickSaveButton()
+                .getWarningMessageText();
 
-        Assert.assertTrue(
-                getDriver().findElement(By.id("enable-project")).getText().contains(expectedMessageForDisabledProject));
+        Assert.assertTrue(warningMessageText.contains(expectedMessageForDisabledProject));
     }
 
     @Test(dependsOnMethods = "testDisableProjectInConfigureMenu")
@@ -121,27 +121,25 @@ public class PipelineConfigurationTest extends BaseTest {
                 getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).isDisplayed());
     }
 
-    @Ignore
     @Test
     public void testDiscardOldBuildsByCount() {
-        createPipeline();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//label[text() = 'Discard old builds']"))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name = '_.numToKeepStr']"))).sendKeys("1");
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-section-id='pipeline']"))).click();
-        WebElement sampleScript = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class = 'samples']//select")));
-        Select sampleScriptSelect = new Select(sampleScript);
-        sampleScriptSelect.selectByValue("hello");
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name = 'Submit']"))).click();
+        PipelinePage pipelinePage = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(JOB_NAME)
+                .selectPipelineAndClickOk()
+                .clickDiscardOldBuilds()
+                .setNumberBuildsToKeep(1)
+                .scrollToPiplineScript()
+                .selectSamplePiplineScript("hello")
+                .clickSaveButton()
+                .clickBuild()
+                .waitBuildToFinish()
+                .clickBuild()
+                .waitBuildToFinish();
 
-        WebElement buildButton = getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-build-success = 'Build scheduled']")));
-        buildButton.click();
-        buildButton.click();
-        getWait5().until(ExpectedConditions.invisibilityOfAllElements(getDriver().findElements(By.xpath("//td[contains(@class, 'progress-bar')]"))));
-        getDriver().navigate().refresh();
-        WebElement secondBuild = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[@class = 'build-row-cell']//a[text() = '#2']")));
-
-        Assert.assertTrue(secondBuild.getAttribute("href").contains("/job/" + JOB_NAME.replaceAll(" ", "%20") + "/2/"), "there is no second build");
+        Assert.assertTrue(pipelinePage.isBuildAppear(2, JOB_NAME), "there is no second build");
+        Assert.assertEquals(pipelinePage.numberOfBuild(), 1);
     }
 
     @Test
