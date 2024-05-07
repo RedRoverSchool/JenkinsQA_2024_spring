@@ -1,6 +1,8 @@
 package school.redrover;
 
 import org.openqa.selenium.WebElement;
+import school.redrover.model.CreateItemPage;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import org.openqa.selenium.By;
 import org.testng.Assert;
@@ -11,27 +13,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CopyFromExistingJobTest extends BaseTest{
-         @Test
-         public void testCopyFromExistingJob() {
-             TestUtils.createNewJob(this, Job.PIPELINE, "ppp");
-             TestUtils.createNewJob(this, Job.FREESTYLE, "fff");
-             TestUtils.createNewJob(this, Job.FOLDER, "Folder1");
+    @Test
+    public void testCopyFromNotExistingJob() {
+        TestUtils.createNewJob(this, Job.PIPELINE, "ppp");
+        TestUtils.createNewJob(this, Job.FREESTYLE, "fff");
+        TestUtils.createNewJob(this, Job.FOLDER, "Folder1");
+        String notExistingName ="AAA";
 
-             String notExistingName ="AAA";
+        CreateItemPage errorPage = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName("someName")
+                .setItemNameInCopyForm(notExistingName)
+                .clickOkButton();
 
-             getDriver().findElement(By.cssSelector("a[href$='newJob']")).click();
-
-             getDriver().findElement(By.id("name")).sendKeys("someName");
-             getDriver().findElement(By.id("from")).sendKeys(notExistingName);
-             getDriver().findElement(By.id("ok-button")).click();
-             String newJobUrl = getDriver().getCurrentUrl();
-             String headerError = getDriver().findElement(By.cssSelector("#main-panel h1")).getText();
-             String errorText  = getDriver().findElement(By.cssSelector("#main-panel p")).getText();
-
-             Assert.assertTrue(newJobUrl.endsWith("/createItem"));
-             Assert.assertEquals(headerError,"Error");
-             Assert.assertEquals(errorText,"No such job: " + notExistingName);
-         }
+        Assert.assertTrue(errorPage.getCurrentUrl().endsWith("/createItem"));
+        Assert.assertEquals(errorPage.getPageHeaderText(),"Error");
+        Assert.assertEquals(errorPage.getErrorMessageText(),"No such job: " + notExistingName);
+}
 
         @Test
         public void testDropdownMenuContent() throws InterruptedException {
@@ -54,7 +52,7 @@ public class CopyFromExistingJobTest extends BaseTest{
 
             Thread.sleep(3000);
 
-            ArrayList<String> allJobFromThisLetterName = new ArrayList<String>();
+            ArrayList<String> allJobFromThisLetterName = new ArrayList<>();
             List<WebElement> allJobFromThisLetter = getDriver().findElements(By.xpath("//input[@id='from']/ following-sibling::div//li"));
 
             for (WebElement el : allJobFromThisLetter) {

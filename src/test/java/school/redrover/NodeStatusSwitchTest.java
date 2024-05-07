@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 import java.util.List;
@@ -18,19 +19,18 @@ public class NodeStatusSwitchTest extends BaseTest {
     @Test
     public void testNumberOfItems() {
 
-        String text = getDriver().findElement(By.id("executors")).getText();
-        List<WebElement> buildExecutors = getDriver().findElements(By.xpath("//td[text()='Idle']"));
-        int number = buildExecutors.size();
-        
+        HomePage homePage = new HomePage(getDriver());
+        String text = homePage.getBuildExecutorStatusText();
+        List<WebElement> buildExecutors = homePage.getBuildExecutorStatusList();
+        int number = homePage.getBuildExecutorListSize();
+
         if(text.contains("( offline)")) {
-            List<WebElement> buildExecutors1 = getDriver().findElements(By.xpath("//td[text()='Idle']"));
-            int number1 = buildExecutors1.size();
+            int number1 = buildExecutors.size();
 
             Assert.assertEquals(number, number1);
 
         } else if(number >= 1){
-            List<WebElement> buildExecutors2 = getDriver().findElements(By.xpath("//td[text()='Idle']"));
-            int number2 = buildExecutors2.size();
+            int number2 = buildExecutors.size();
 
             Assert.assertEquals(number, number2);
         }
