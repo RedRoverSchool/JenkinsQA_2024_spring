@@ -85,6 +85,8 @@ public class HomePage extends BasePage {
     @FindBy(className = "jenkins-dropdown__item")
     private List<WebElement> dropDownElements;
 
+    @FindBy(tagName = "h1")
+    private WebElement heading;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -373,5 +375,10 @@ public class HomePage extends BasePage {
             actualDropDownElementsValues.add(element.getDomProperty("innerText"));
         }
         return actualDropDownElementsValues;
+    }
+
+    public String getHeadingValue() {
+
+        return heading.getText();
     }
 }
