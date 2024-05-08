@@ -62,6 +62,9 @@ public class PipelinePage extends BasePage {
     @FindBy(id = "enable-project")
     private WebElement warningMessage;
 
+    @FindBy(css = "[class*='dropdown'] [href$='rename']")
+    private WebElement breadcrumbsRenameButton;
+
     public PipelinePage(WebDriver driver) {
         super(driver);
     }
@@ -220,5 +223,11 @@ public class PipelinePage extends BasePage {
                     By.xpath("//tr[@data-runid='" + i + "']")));
         }
         return this;
+    }
+
+    public PipelineRenamePage clickBreadcrumbsRenameButton() {
+        breadcrumbsRenameButton.click();
+
+        return new PipelineRenamePage(getDriver());
     }
 }
