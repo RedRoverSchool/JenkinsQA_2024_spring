@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import school.redrover.model.DeleteDialog;
 import school.redrover.model.HomePage;
 import school.redrover.model.MultibranchPipelineConfigPage;
 import school.redrover.model.MultibranchPipelineStatusPage;
@@ -28,6 +29,7 @@ public class MultibranchPipelineTest extends BaseTest {
     private final static List <String> PIPELINE_MENU =
             List.of("Status", "Configure", "Scan Multibranch Pipeline Log", "Multibranch Pipeline Events",
                     "Delete Multibranch Pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
+    private final String WELCOME_PAGE_HEADER ="Welcome to Jenkins!";
 
     private void createNewMultiPipeline(String multiPipelineName) {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
@@ -304,20 +306,15 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testDeleteViaDashboardDropdown(){
-        final String WELCOME_PAGE_HEADER ="Welcome to Jenkins!";
-        TestUtils.createNewItemAndReturnToDashboard(this, MULTI_PIPELINE_NAME, TestUtils.Item.MULTI_BRANCH_PIPELINE);
-
-        WebElement createdMultibranchPipeline = getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']"));
-        new Actions(getDriver()).moveToElement(createdMultibranchPipeline).perform();
-        WebElement dropdownChevron = getDriver().findElement(By.cssSelector("#job_" + MULTI_PIPELINE_NAME + " > td:nth-child(3) > a > button"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
-            "arguments[0].dispatchEvent(new Event('click'));", dropdownChevron);
-        getDriver().findElement(By.cssSelector("[href $='doDelete")).click();
-
-        getDriver().switchTo().activeElement();
-        getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
-
-        String actualPageHeader = getDriver().findElement(By.tagName("h1")).getText();
+        String actualPageHeader = new HomePage(getDriver())
+            .clickCreateAJob()
+            .setItemName(MULTI_PIPELINE_NAME)
+            .selectMultibranchPipelineAndClickOk()
+            .clickLogo()
+            .openItemDropdown(MULTI_PIPELINE_NAME)
+            .clickDeleteInDropdown(new DeleteDialog(getDriver()))
+            .clickYes(new HomePage(getDriver()))
+            .getHeadingValue();
 
         Assert.assertEquals(actualPageHeader,WELCOME_PAGE_HEADER);
     }
