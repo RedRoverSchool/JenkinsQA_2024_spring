@@ -67,6 +67,9 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
     private WebElement fullStageViewButton;
 
+    @FindBy(css =  "a.jenkins-table__link.model-link.inside")
+    private List<WebElement> allExistingJobs;
+
     @FindBy(css = ".tab.active a")
     private WebElement activeViewName;
 
@@ -85,8 +88,20 @@ public class HomePage extends BasePage {
     @FindBy(className = "jenkins-dropdown__item")
     private List<WebElement> dropDownElements;
 
+    @FindBy(xpath = "//*[@class=' job-status-']/td[3]/a")
+    private WebElement createdElementInTable;
+
     @FindBy(tagName = "h1")
     private WebElement heading;
+
+    @FindBy(xpath = "//a[@class='jenkins-table__link model-link inside']")
+    private List<WebElement> listNamesOfItems;
+
+    @FindBy(xpath = "//td//button[@class='jenkins-menu-dropdown-chevron']")
+    private List<WebElement> jenkinsMenuDropdownChevron;
+
+    @FindBy(xpath = "//a[contains(@href, '/move')]")
+    private WebElement moveOption;
 
     @FindBy (xpath = "//*[@href='newJob']")
     private WebElement createJob;
@@ -308,6 +323,23 @@ public class HomePage extends BasePage {
         return new FullStageViewPage(getDriver());
     }
 
+    public List<String> allExistingJobsNames() {
+        return allExistingJobs
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+    }
+
+    public List<String> getJobsBeginningFromThisFirstLetters(String firstLetters) {
+        return allExistingJobs
+                .stream()
+                .map(WebElement::getText)
+                .toList()
+                .stream()
+                .filter(el-> el.substring(0,firstLetters.length()).equalsIgnoreCase(firstLetters))
+                .toList();
+    }
+
     public MultibranchPipelineRenamePage clickRenameFromDropdownMP() {
         renameFromDropdown.click();
 
@@ -372,6 +404,18 @@ public class HomePage extends BasePage {
     public String getHeadingValue() {
 
         return heading.getText();
+    }
+    public HomePage createNewFolder(String folderName) {
+        clickNewItem()
+                .setItemName(folderName)
+                .selectFolderAndClickOk()
+                .clickSaveButton();
+        return this;
+    }
+
+    public MovePage chooseFolderToMove() {
+        getWait5().until(ExpectedConditions.visibilityOf(moveOption)).click();
+        return new MovePage(getDriver());
     }
 
     public  CreateNewItemPage clickCreateJob() {

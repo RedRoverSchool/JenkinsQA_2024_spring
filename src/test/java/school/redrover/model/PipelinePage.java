@@ -62,6 +62,9 @@ public class PipelinePage extends BasePage {
     @FindBy(id = "enable-project")
     private WebElement warningMessage;
 
+    @FindBy(xpath = "//div[contains(text(), 'Full project name:')]")
+    private WebElement fullProjectNameLocation;
+
     @FindBy(css = "[class*='dropdown__item'][href$='changes']")
     private WebElement dropdownChangesButton;
 
@@ -229,6 +232,10 @@ public class PipelinePage extends BasePage {
                     By.xpath("//tr[@data-runid='" + i + "']")));
         }
         return this;
+    }
+
+    public String getFullProjectNameLocationText() {
+        return fullProjectNameLocation.getText();
     }
 
     public PipelineChangesPage clickDropdownChangesButton() {

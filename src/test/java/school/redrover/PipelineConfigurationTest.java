@@ -74,11 +74,15 @@ public class PipelineConfigurationTest extends BaseTest {
 
     @Test
     public void testScroll() {
-        createPipeline();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@data-section-id='pipeline']"))).click();
+        boolean isPiplineScroll = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(JOB_NAME)
+                .selectPipelineAndClickOk()
+                .scrollToPiplineScript()
+                .isPiplineDisplayed();
 
-        Assert.assertTrue(getDriver().findElement(By.id("bottom-sticker")).isDisplayed(), "Pipeline");
+        Assert.assertTrue(isPiplineScroll, "Pipline doesn't scroll");
     }
 
     @Test
