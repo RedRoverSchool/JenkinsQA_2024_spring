@@ -79,6 +79,9 @@ public class HomePage extends BasePage {
     @FindBy(css = "[class$=jenkins_ver]")
     private WebElement version;
 
+    @FindBy(className = "jenkins-dropdown__item")
+    private List<WebElement> dropDownElements;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -344,7 +347,6 @@ public class HomePage extends BasePage {
     }
 
     public List<String> getVersionDropDownElementsValues(){
-        List<WebElement> dropDownElements = getDriver().findElements(By.className("jenkins-dropdown__item"));
         List<String> actualDropDownElementsValues = new ArrayList<>();
         for (WebElement element : dropDownElements) {
             actualDropDownElementsValues.add(element.getDomProperty("innerText"));
