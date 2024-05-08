@@ -97,7 +97,7 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[contains(@href, '/move')]")
     private WebElement moveOption;
 
-    @FindBy(xpath = "//a[text()[contains(.,'Pipeline Syntax')]]")
+    @FindBy(xpath = "//div[@class='jenkins-dropdown']/a[7]")
     private WebElement pipelineSyntaxMenu;
 
     public HomePage(WebDriver driver) {
@@ -407,10 +407,11 @@ public class HomePage extends BasePage {
     }
 
     public HomePage openOrgFolderMenu(String organizationFolderName) {
-        WebElement currentOrganizationFolder = getDriver().
-                findElement(By.xpath("//span[text()='" + organizationFolderName + "']/.."));
-        new Actions(getDriver()).moveToElement(currentOrganizationFolder).perform();
-        WebElement menuForCurrentOrganizationFolder = getWait2().until(ExpectedConditions
+        WebElement currentOrganizationFolder = getDriver()
+                .findElement(By.xpath("//span[text()='" + organizationFolderName + "']/.."));
+        new Actions(getDriver()).moveToElement(currentOrganizationFolder)
+                .perform();
+        WebElement menuForCurrentOrganizationFolder = getWait10().until(ExpectedConditions
                 .elementToBeClickable(By.xpath("//*[@id='job_" + organizationFolderName + "']/td[3]/a")));
         menuForCurrentOrganizationFolder.click();
 
