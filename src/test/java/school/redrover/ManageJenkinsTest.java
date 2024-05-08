@@ -157,9 +157,5 @@ public class ManageJenkinsTest extends BaseTest {
                 .hoverMouseOverTheTooltip();
 
         Assert.assertTrue(manageJenkinsPage.isSearchHintDisplayed());
-
-
     }
-
-
 }
