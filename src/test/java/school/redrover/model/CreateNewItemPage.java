@@ -1,6 +1,7 @@
 package school.redrover.model;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -60,7 +61,7 @@ public class CreateNewItemPage extends BasePage {
             case "MultibranchPipeline" -> multibranchPipelineItem.click();
             case "OrganizationFolder" -> organizationFolderItem.click();
             default -> throw new IllegalArgumentException("Project type name incorrect");
-         }
+        }
         okButton.click();
         clickLogo();
 
@@ -69,10 +70,10 @@ public class CreateNewItemPage extends BasePage {
 
 
     public CreateNewItemPage setItemName(String name) {
+        nameText.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
         nameText.sendKeys(name);
         return this;
     }
-
 
 
     public CreateNewItemPage selectTypeAndClickOk(String type) {
@@ -156,7 +157,7 @@ public class CreateNewItemPage extends BasePage {
         return this;
     }
 
-    public List<String> copyFormElementsList() {
+    public List<String> getCopyFormElementsList() {
         return copyFormElements
                 .stream()
                 .map(WebElement::getText)

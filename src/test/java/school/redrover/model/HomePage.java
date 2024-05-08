@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -69,7 +70,21 @@ public class HomePage extends BasePage {
     @FindBy(css =  "a.jenkins-table__link.model-link.inside")
     private List<WebElement> allExistingJobs;
 
-//    List<WebElement> allExistingJobs = getDriver().findElements(By.cssSelector("a.jenkins-table__link.model-link.inside"));
+    @FindBy(css = ".tab.active a")
+    private WebElement activeViewName;
+
+    @FindBy(css = ".tab input:not(:checked)~a")
+    private WebElement passiveViewName;
+
+    @FindBy(css = "[href$='builds']")
+    private WebElement buildHistoryButton;
+
+    @FindBy(css = "[class$=jenkins_ver]")
+    private WebElement version;
+
+    @FindBy(className = "jenkins-dropdown__item")
+    private List<WebElement> dropDownElements;
+
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -217,6 +232,10 @@ public class HomePage extends BasePage {
         return !getItemList().contains(name);
     }
 
+    public boolean isItemExists(String name) {
+        return getItemList().contains(name);
+    }
+
     public MultibranchPipelineStatusPage clickMPName(String projectName) {
         getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
 
@@ -283,6 +302,7 @@ public class HomePage extends BasePage {
 
         return new FullStageViewPage(getDriver());
     }
+
     public List<String> allExistingJobsNames() {
         return allExistingJobs
                 .stream()
@@ -300,7 +320,58 @@ public class HomePage extends BasePage {
                 .toList();
     }
 
+    public MultibranchPipelineRenamePage clickRenameFromDropdownMP() {
+        renameFromDropdown.click();
 
+        return new MultibranchPipelineRenamePage(getDriver());
+    }
 
+    public HomePage moveMouseToPassiveViewName() {
+        new Actions(getDriver())
+                .moveToElement(passiveViewName)
+                .pause(200)
+                .perform();
+        return this;
+    }
 
+    public HomePage mouseClick() {
+        new Actions(getDriver())
+                .click()
+                .perform();
+        return this;
+    }
+    public String getPassiveViewNameBackgroundColor() {
+        return passiveViewName.getCssValue("background-color");
+    }
+
+    public String getActiveViewNameBackgroundColor() {
+        return activeViewName.getCssValue("background-color");
+    }
+
+    public HomePage scheduleBuildForItem(String itemName) {
+        getDriver().findElement(By.cssSelector("td [title='Schedule a Build for " +
+                itemName.replace(" ", "%20") + "']")).click();
+
+        return this;
+    }
+
+    public BuildHistoryPage clickBuildHistory() {
+        buildHistoryButton.click();
+
+        return new BuildHistoryPage(getDriver());
+    }
+
+    public HomePage clickVersion() {
+        version.click();
+
+        return this;
+    }
+
+    public List<String> getVersionDropDownElementsValues(){
+        List<String> actualDropDownElementsValues = new ArrayList<>();
+        for (WebElement element : dropDownElements) {
+            actualDropDownElementsValues.add(element.getDomProperty("innerText"));
+        }
+        return actualDropDownElementsValues;
+    }
 }

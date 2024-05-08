@@ -3,6 +3,7 @@ package school.redrover.model;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
@@ -51,6 +52,12 @@ public class PipelinePage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
     private WebElement fullStageViewButton;
+
+    @FindBys({
+            @FindBy(id = "tasks"),
+            @FindBy(className = "task-link-text")
+    })
+    private List<WebElement> taskLinkTextElements;
 
     @FindBy(id = "enable-project")
     private WebElement warningMessage;
@@ -164,9 +171,9 @@ public class PipelinePage extends BasePage {
 
     public boolean isBuildAppear(int buildNumber, String jobName) {
         getDriver().navigate().refresh();
-        WebElement nBuild = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[@class = 'build-row-cell']//a[text() = '#" +buildNumber + "']")));
+        WebElement nBuild = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[@class = 'build-row-cell']//a[text() = '#" + buildNumber + "']")));
 
-        return nBuild.getAttribute("href").contains("/job/" +jobName.replaceAll(" ", "%20") + "/2/");
+        return nBuild.getAttribute("href").contains("/job/" + jobName.replaceAll(" ", "%20") + "/2/");
     }
 
     public int numberOfBuild() {
@@ -177,6 +184,13 @@ public class PipelinePage extends BasePage {
         getWait5().until(ExpectedConditions.elementToBeClickable(fullStageViewButton)).click();
 
         return new FullStageViewPage(getDriver());
+    }
+
+    public boolean isBtnPresentInSidebar(String btnText) {
+        getWait2().until(ExpectedConditions.visibilityOfAllElements(taskLinkTextElements));
+
+        return taskLinkTextElements.stream()
+                .anyMatch(element -> btnText.equals(element.getText()));
     }
 
     public String getWarningMessageText() {
@@ -194,6 +208,17 @@ public class PipelinePage extends BasePage {
                 .pause(2000)
                 .perform();
 
+        return this;
+    }
+
+    public PipelinePage makeBuilds(int buildsQtt) {
+        for (int i = 1; i <= buildsQtt; i++) {
+            getWait5().until(ExpectedConditions.elementToBeClickable(
+                    By.xpath("//a[contains(@href, '/build?delay=0sec')]"))).click();
+
+            getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                    By.xpath("//tr[@data-runid='" + i + "']")));
+        }
         return this;
     }
 }

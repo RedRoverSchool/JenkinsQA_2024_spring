@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
@@ -110,5 +111,83 @@ public class NodesTest extends BaseTest {
                 .deleteNodeViaOpenedDropDownChevron();
 
         Assert.assertFalse(nodesTablePage.isConteinNode(NODE_NAME));
+    }
+
+    @Test
+    public void testVerifyErrorMessage() {
+
+        final String expectedResult = "Agent called ‘NewNode’ already exists";
+        final String nodeName = "NewNode";
+
+        String actualResult = new HomePage(getDriver())
+                .clickNodesLink()
+                .clickNewNodeButton()
+                .setNodeName(nodeName)
+                .selectPermanentAgentRadioButton()
+                .clickOkButton()
+                .clickSaveButton()
+                .clickNewNodeButton()
+                .setNodeName(nodeName)
+                .selectPermanentAgentRadioButton()
+                .clickOkButtonOnError()
+                .getErrorMessageText();
+
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void testCreateNewNodeWithOneLabel() {
+        String labelName = "NewLabelName";
+
+        String actualResult = new HomePage(getDriver())
+                .clickNodesLink()
+                .clickNewNodeButton()
+                .setNodeName(NODE_NAME)
+                .selectPermanentAgentRadioButton()
+                .clickOkButton()
+                .createLabel(labelName)
+                .clickSaveButton()
+                .clickNode(NODE_NAME)
+                .getLabels();
+
+        Assert.assertTrue(actualResult.contains(labelName));
+    }
+
+    @Test
+    public void testCreateNewNodeWithDescription() {
+        String description = "Description for user in node is correct and useful for next step";
+
+        String actualResult = new HomePage(getDriver())
+                .clickNodesLink()
+                .clickNewNodeButton()
+                .setNodeName(NODE_NAME)
+                .selectPermanentAgentRadioButton()
+                .clickOkButton()
+                .addDescription(description)
+                .clickSaveButton()
+                .clickNode(NODE_NAME)
+                .getDescription();
+
+        Assert.assertTrue(actualResult.contains(description));
+    }
+
+    @Test
+    public void testNumberOfItems() {
+
+        HomePage homePage = new HomePage(getDriver());
+        String text = homePage.getBuildExecutorStatusText();
+        List<WebElement> buildExecutors = homePage.getBuildExecutorStatusList();
+        int number = homePage.getBuildExecutorListSize();
+
+        if(text.contains("( offline)")) {
+            int number1 = buildExecutors.size();
+
+            Assert.assertEquals(number, number1);
+
+        } else if(number >= 1){
+            int number2 = buildExecutors.size();
+
+            Assert.assertEquals(number, number2);
+        }
     }
 }

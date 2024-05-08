@@ -29,12 +29,20 @@ public class ItemPage extends BasePage {
     @FindBy(id = "name")
     WebElement NewItemName;
 
+    @FindBy(xpath = "//li[@class='com_cloudbees_hudson_plugins_folder_Folder']")
+    WebElement Folder;
+
+    public ItemPage setItemName(String name) {
+        NewItemName.sendKeys(name);
+        return this;
+    }
+
     public ItemPage NewItemName() {
         NewItemName.sendKeys("NewItemName");
         return this;
     }
 
-    public ItemPage btnOKClick() {
+    public ItemPage clickButtonOK() {
         btnOK.click();
         return this;
     }
@@ -56,6 +64,11 @@ public class ItemPage extends BasePage {
 
     public ItemPage ElementWelcomeClic() {
         ElementWelcome.click();
+        return this;
+    }
+
+    public ItemPage selectFolderType() {
+        Folder.click();
         return this;
     }
 }
