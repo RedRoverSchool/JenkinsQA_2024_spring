@@ -212,6 +212,10 @@ public class HomePage extends BasePage {
         return !getItemList().contains(name);
     }
 
+    public boolean isItemExists(String name) {
+        return getItemList().contains(name);
+    }
+
     public MultibranchPipelineStatusPage clickMPName(String projectName) {
         getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
 

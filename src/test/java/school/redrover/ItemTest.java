@@ -31,7 +31,7 @@ public class ItemTest extends BaseTest {
                 .NewItemClick()
                 .FreestyleProjectClick()
                 .NewItemName()
-                .btnOKClick()
+                .clickButtonOK()
                 .clickLogo();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//span[contains(.,'NewItemName')]")).getText(), "NewItemName");
