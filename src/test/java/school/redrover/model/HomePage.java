@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -74,6 +75,12 @@ public class HomePage extends BasePage {
 
     @FindBy(css = "[href$='builds']")
     private WebElement buildHistoryButton;
+
+    @FindBy(css = "[class$=jenkins_ver]")
+    private WebElement version;
+
+    @FindBy(className = "jenkins-dropdown__item")
+    private List<WebElement> dropDownElements;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -331,5 +338,19 @@ public class HomePage extends BasePage {
         buildHistoryButton.click();
 
         return new BuildHistoryPage(getDriver());
+    }
+
+    public HomePage clickVersion() {
+        version.click();
+
+        return this;
+    }
+
+    public List<String> getVersionDropDownElementsValues(){
+        List<String> actualDropDownElementsValues = new ArrayList<>();
+        for (WebElement element : dropDownElements) {
+            actualDropDownElementsValues.add(element.getDomProperty("innerText"));
+        }
+        return actualDropDownElementsValues;
     }
 }
