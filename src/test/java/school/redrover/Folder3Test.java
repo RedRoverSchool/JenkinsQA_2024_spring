@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.FolderStatusPage;
 import school.redrover.model.HomePage;
 import school.redrover.model.ItemPage;
 import school.redrover.runner.BaseTest;
@@ -44,12 +45,13 @@ public class Folder3Test extends BaseTest {
 
     @Test (dependsOnMethods = "testCreate")
     public void testAddDescription() {
-        clickFolderName(FOLDER_NAME_FIRST);
-        getDriver().findElement(By.xpath("//*[@id='description-link']")).click();
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(FOLDER_DESCRIPTION_FIRST);
-        clickSaveButton();
+        new HomePage(getDriver()).clickFolder(FOLDER_NAME_FIRST);
 
-        String textInDescription = getDriver().findElement(By.xpath("//*[@id='description']/div")).getText();
+        String textInDescription = new FolderStatusPage(getDriver())
+                .clickAddOrEditDescription()
+                .setDescription(FOLDER_DESCRIPTION_FIRST)
+                .clickSaveButton()
+                .getDescriptionText();
 
         Assert.assertEquals(textInDescription, FOLDER_DESCRIPTION_FIRST);
     }
