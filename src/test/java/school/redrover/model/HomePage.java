@@ -66,6 +66,15 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
     private WebElement fullStageViewButton;
 
+    @FindBy(css = ".tab.active a")
+    private WebElement activeViewName;
+
+    @FindBy(css = ".tab input:not(:checked)~a")
+    private WebElement passiveViewName;
+
+    @FindBy(css = "[href$='builds']")
+    private WebElement buildHistoryButton;
+
     @FindBy(xpath = "//*[@class=' job-status-']/td[3]/a")
     private WebElement createdElementInTable;
 
@@ -269,7 +278,7 @@ public class HomePage extends BasePage {
     }
 
     public String getBuildExecutorStatusText() {
-        return buildExecutorStatus.getText();
+       return buildExecutorStatus.getText();
     }
 
     public List<WebElement> getBuildExecutorStatusList() {
@@ -284,6 +293,47 @@ public class HomePage extends BasePage {
         getWait5().until(ExpectedConditions.elementToBeClickable(fullStageViewButton)).click();
 
         return new FullStageViewPage(getDriver());
+    }
+
+    public MultibranchPipelineRenamePage clickRenameFromDropdownMP() {
+        renameFromDropdown.click();
+
+        return new MultibranchPipelineRenamePage(getDriver());
+    }
+
+    public HomePage moveMouseToPassiveViewName() {
+        new Actions(getDriver())
+                .moveToElement(passiveViewName)
+                .pause(200)
+                .perform();
+        return this;
+    }
+
+    public HomePage mouseClick() {
+        new Actions(getDriver())
+                .click()
+                .perform();
+        return this;
+    }
+    public String getPassiveViewNameBackgroundColor() {
+        return passiveViewName.getCssValue("background-color");
+    }
+
+    public String getActiveViewNameBackgroundColor() {
+        return activeViewName.getCssValue("background-color");
+    }
+
+    public HomePage scheduleBuildForItem(String itemName) {
+        getDriver().findElement(By.cssSelector("td [title='Schedule a Build for " +
+                itemName.replace(" ", "%20") + "']")).click();
+
+        return this;
+    }
+
+    public BuildHistoryPage clickBuildHistory() {
+        buildHistoryButton.click();
+
+        return new BuildHistoryPage(getDriver());
     }
 
     public FolderStatusPage clickFolderName() {

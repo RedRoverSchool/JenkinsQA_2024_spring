@@ -9,7 +9,6 @@ import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.ManageJenkinsPage;
 import school.redrover.runner.BaseTest;
-
 import java.util.List;
 
 public class ManageJenkinsTest extends BaseTest {
@@ -148,5 +147,15 @@ public class ManageJenkinsTest extends BaseTest {
                 .pressSlashKey();
 
         Assert.assertTrue(manageJenkinsPage.isShortcutDisplayed());
+    }
+
+    @Test
+    public void testTooltipAppears() {
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins()
+                .hoverMouseOverTheTooltip();
+
+        Assert.assertTrue(manageJenkinsPage.isSearchHintDisplayed()
+                        && manageJenkinsPage.getSearchHintText().equals("Press / on your keyboard to focus"), "tooltip text is incorrect");
     }
 }

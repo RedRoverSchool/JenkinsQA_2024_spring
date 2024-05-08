@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
@@ -168,5 +169,25 @@ public class NodesTest extends BaseTest {
                 .getDescription();
 
         Assert.assertTrue(actualResult.contains(description));
+    }
+
+    @Test
+    public void testNumberOfItems() {
+
+        HomePage homePage = new HomePage(getDriver());
+        String text = homePage.getBuildExecutorStatusText();
+        List<WebElement> buildExecutors = homePage.getBuildExecutorStatusList();
+        int number = homePage.getBuildExecutorListSize();
+
+        if(text.contains("( offline)")) {
+            int number1 = buildExecutors.size();
+
+            Assert.assertEquals(number, number1);
+
+        } else if(number >= 1){
+            int number2 = buildExecutors.size();
+
+            Assert.assertEquals(number, number2);
+        }
     }
 }

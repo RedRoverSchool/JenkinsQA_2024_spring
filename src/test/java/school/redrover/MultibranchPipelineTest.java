@@ -29,18 +29,6 @@ public class MultibranchPipelineTest extends BaseTest {
             List.of("Status", "Configure", "Scan Multibranch Pipeline Log", "Multibranch Pipeline Events",
                     "Delete Multibranch Pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
 
-    private void disableCreatedMultiPipeline(String multiPipelineName) {
-        getDriver().findElement(By.xpath("//span[text()='" + multiPipelineName + "']")).click();
-        WebElement configureLink = getDriver().findElement(By.cssSelector(".task-link-wrapper [href$='configure']"));
-        configureLink.click();
-        if (getDriver().findElement(By.className("jenkins-toggle-switch__label__checked-title"))
-            .isDisplayed()) {
-            getDriver().findElement(By.cssSelector("[data-title*='Disabled']")).click();
-        }
-        getDriver().findElement(By.cssSelector("[name*='Submit']")).click();
-        getDriver().findElement(By.id("jenkins-home-link")).click();
-    }
-
     private void createNewMultiPipeline(String multiPipelineName) {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(multiPipelineName);
@@ -216,24 +204,18 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testRenameMultibranchPipelineViaMainPageDropdownMenu() {
-        createNewMultiPipeline(MULTI_PIPELINE_NAME);
 
-        getDriver().findElement(By.id("jenkins-head-icon")).click();
-        WebElement createdMultibranchPipeline = getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']"));
-        new Actions(getDriver()).moveToElement(createdMultibranchPipeline).perform();
-        WebElement dropdownChevron = getDriver().findElement(By.cssSelector("#job_" + MULTI_PIPELINE_NAME + " > td:nth-child(3) > a > button"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
-            "arguments[0].dispatchEvent(new Event('click'));", dropdownChevron);
-        getDriver().findElement(By.cssSelector("[href $='rename']")).click();
+        String multibranchPipelineName = new HomePage(getDriver())
+            .clickCreateAJob()
+            .setItemName(MULTI_PIPELINE_NAME)
+            .selectMultibranchPipelineAndClickOk()
+            .clickLogo()
+            .openItemDropdown(MULTI_PIPELINE_NAME)
+            .clickRenameFromDropdownMP()
+            .changeNameTo(RENAMED_MULTI_PIPELINE)
+            .getMultibranchPipelineName();
 
-        WebElement renameInput = getDriver().findElement(By.xpath("//input[@checkdependson='newName']"));
-        renameInput.clear();
-        renameInput.sendKeys(RENAMED_MULTI_PIPELINE);
-        getDriver().findElement(By.name("Submit")).click();
-
-        String multiPipelinePageHeading = getDriver().findElement(By.tagName("h1")).getText();
-        Assert.assertEquals(multiPipelinePageHeading, RENAMED_MULTI_PIPELINE,
-            "The Multi Pipeline name is not equal to " + RENAMED_MULTI_PIPELINE);
+        Assert.assertEquals(multibranchPipelineName,RENAMED_MULTI_PIPELINE, "чтото пошло не так");
     }
 
     @Test
