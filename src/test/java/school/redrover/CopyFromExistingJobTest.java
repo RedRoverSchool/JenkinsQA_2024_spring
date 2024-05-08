@@ -1,7 +1,9 @@
 package school.redrover;
 
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.CreateItemPage;
+import school.redrover.model.CreateNewItemPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import org.openqa.selenium.By;
@@ -31,36 +33,41 @@ public class CopyFromExistingJobTest extends BaseTest{
         Assert.assertEquals(errorPage.getErrorMessageText(),"No such job: " + notExistingName);
 }
 
-        @Test
-        public void testDropdownMenuContent() throws InterruptedException {
-            TestUtils.createNewJob(this, Job.PIPELINE, "ppp");
-            TestUtils.createNewJob(this, Job.FREESTYLE, "folff");
-            TestUtils.createNewJob(this, Job.FOLDER, "Folder1");
+    @Test
+    public void testDropdownMenuContent()  {
+        String freestyle1 = "folff";
+        String freestyle2 = "folff00";
+        String folder1 = "Folder1";
+        String folder2 = "bFolder2";
 
-            String firstLetters ="foL";
-            List<WebElement> allExistingJobs = getDriver().findElements(By.cssSelector("a.jenkins-table__link.model-link.inside"));
-            List<String> allExistingJobsNames = TestUtils.getTexts(allExistingJobs);
+        String firstLetters ="foL";
+        String newItemName  ="someName";
 
-            List<String> firstLettersJobs = allExistingJobsNames
-                        .stream()
-                        .filter(el-> el.substring(0,firstLetters.length()).equalsIgnoreCase(firstLetters))
-                        .toList();
+        List<String> firstLettersJobs = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(freestyle1)
+                .selectFreestyleAndClickOk()
+                .clickLogo()
+                .clickNewItem()
+                .setItemName(folder1)
+                .selectFolderAndClickOk()
+                .clickLogo()
+                .clickNewItem()
+                .setItemName(folder2)
+                .selectFolderAndClickOk()
+                .clickLogo()
+                .clickNewItem()
+                .setItemName(freestyle2)
+                .selectFreestyleAndClickOk()
+                .clickLogo()
+                .getJobsBeginningFromThisFirstLetters(firstLetters);
 
-            getDriver().findElement(By.cssSelector("a[href$='newJob']")).click();
-            getDriver().findElement(By.id("name")).sendKeys("someName");
-            getDriver().findElement(By.id("from")).sendKeys(firstLetters);
+            List<String> jobsFromDropdownMenu = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(newItemName)
+                .setItemNameInCopyForm(firstLetters)
+                .getDropdownMenuContent();
 
-            Thread.sleep(3000);
-
-            ArrayList<String> allJobFromThisLetterName = new ArrayList<>();
-            List<WebElement> allJobFromThisLetter = getDriver().findElements(By.xpath("//input[@id='from']/ following-sibling::div//li"));
-
-            for (WebElement el : allJobFromThisLetter) {
-                if(!el.getText().isEmpty()){
-                    allJobFromThisLetterName.add(el.getText());
-                }
-           }
-
-            Assert.assertEquals(allJobFromThisLetterName,firstLettersJobs);
+        Assert.assertEquals(jobsFromDropdownMenu,firstLettersJobs);
         }
     }

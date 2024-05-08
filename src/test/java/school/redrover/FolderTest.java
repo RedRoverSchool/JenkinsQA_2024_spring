@@ -9,8 +9,12 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.FolderStatusPage;
 import school.redrover.model.HomePage;
+import school.redrover.model.PipelinePage;
 import school.redrover.runner.BaseTest;
+
+import java.util.List;
 
 
 public class FolderTest extends BaseTest {
@@ -20,6 +24,7 @@ public class FolderTest extends BaseTest {
     private static final String THIRD_FOLDER_NAME = "Dependant_Test_Folder";
     private static final String FOLDER_TO_MOVE = "Folder_to_move_into_the_first";
     private static final By NEW_NAME = By.name("newName");
+    private static final String PIPELINE_NAME = "Pipeline Sv";
 
     private void createFolderViaCreateAJob() {
         getDriver().findElement(By.linkText("Create a job")).click();
@@ -120,17 +125,19 @@ public class FolderTest extends BaseTest {
                 "The Folder name is not equal to " + THIRD_FOLDER_NAME);
     }
 
-    @Ignore
     @Test
     public void testRenameFolderViaSidebarMenu() {
-        createFolderViaCreateAJob();
+        String folderRenamedName = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .clickOnRenameButton()
+                .setNewName(NEW_FOLDER_NAME)
+                .clickRename()
+                .getPageTopic();
 
-        getDriver().findElement(By.linkText("Rename")).click();
-        getDriver().findElement(NEW_NAME).clear();
-        getDriver().findElement(NEW_NAME).sendKeys(NEW_FOLDER_NAME);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), NEW_FOLDER_NAME);
+        Assert.assertEquals(folderRenamedName, NEW_FOLDER_NAME);
     }
 
     @Test
@@ -174,4 +181,50 @@ public class FolderTest extends BaseTest {
 
         Assert.assertEquals(resultName, NEW_FOLDER_NAME);
     }
+
+    @Test
+    public void testCreateViaNewItem() {
+        FolderStatusPage folderStatusPage = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .clickSaveButton();
+        String folderName = folderStatusPage.getBreadcrumbName();
+
+        Assert.assertEquals(folderName, FOLDER_NAME);
+
+        List<String> itemList = folderStatusPage
+                .clickLogo()
+                .getItemList();
+
+        Assert.assertTrue((itemList.contains(FOLDER_NAME)));
+
+    }
+
+    @Test
+    public void testCreateJobPipelineInFolder() {
+        String expectedText = String.format("Full project name: %s/%s", FOLDER_NAME, PIPELINE_NAME);
+
+        create();
+
+        PipelinePage pipelinePage = new HomePage(getDriver())
+                .clickFolderName()
+                .clickNewItemInsideFolder()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton();
+
+        String actualText = pipelinePage.getFullProjectNameLocationText();
+
+        Assert.assertTrue(actualText.contains(expectedText), "The text does not contain the expected project name.");
+
+        String itemName = pipelinePage.clickLogo()
+                .clickFolderName()
+                .getItemInTableName();
+
+        Assert.assertEquals(itemName, PIPELINE_NAME);
+
+    }
+
+
 }

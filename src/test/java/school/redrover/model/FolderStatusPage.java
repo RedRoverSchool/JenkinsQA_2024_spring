@@ -27,6 +27,21 @@ public class FolderStatusPage extends BasePage {
     @FindBy(xpath = "//a[.='New Item']")
     private WebElement newItem;
 
+    @FindBy(xpath = "//*[@id='description']/div")
+    private WebElement description;
+
+    @FindBy(xpath = "//*[@id='description-link']")
+    private WebElement descriptionLink;
+
+    @FindBy(xpath = "//textarea[@name='description']")
+    private WebElement textareaDescription;
+
+    @FindBy(xpath = "//*[@name='Submit']")
+    private WebElement saveButton;
+
+    @FindBy(xpath = "//tr[contains(@id,'job_')]/td[3]/a")
+    private WebElement itemInTable;
+
     public FolderStatusPage(WebDriver driver) {
         super(driver);
     }
@@ -60,5 +75,28 @@ public class FolderStatusPage extends BasePage {
                 .stream()
                 .map(WebElement::getText)
                 .toList();
+    }
+
+    public FolderStatusPage clickAddOrEditDescription() {
+        descriptionLink.click();
+        return this;
+    }
+
+    public FolderStatusPage setDescription(String text) {
+        textareaDescription.sendKeys(text);
+        return this;
+    }
+
+    public FolderStatusPage clickSaveButton() {
+        saveButton.click();
+        return this;
+    }
+
+    public String getDescriptionText() {
+        return description.getText();
+    }
+
+    public String getItemInTableName() {
+        return itemInTable.getText();
     }
 }
