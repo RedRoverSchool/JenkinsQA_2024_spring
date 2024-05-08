@@ -18,6 +18,9 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(css = "[href='appearance']")
     private WebElement appearanceButton;
 
+    @FindBy(css = "[href='computer']")
+    private WebElement nodesButton;
+
     @FindBy(xpath = "(//div[@class='jenkins-section__items'])[5]/div[contains(@class, 'item')]")
     List<WebElement> toolsAndActionsSections;
 
@@ -69,5 +72,11 @@ public class ManageJenkinsPage extends BasePage {
         securityLink.sendKeys("/");
 
         return new ManageJenkinsPage(getDriver());
+    }
+
+    public NodesTablePage clickNodes() {
+        nodesButton.click();
+
+        return new NodesTablePage(getDriver());
     }
 }

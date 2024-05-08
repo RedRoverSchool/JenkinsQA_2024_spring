@@ -58,7 +58,7 @@ public class CreateNewItemPage extends BasePage {
             case "MultibranchPipeline" -> multibranchPipelineItem.click();
             case "OrganizationFolder" -> organizationFolderItem.click();
             default -> throw new IllegalArgumentException("Project type name incorrect");
-         }
+        }
         okButton.click();
         clickLogo();
 
@@ -70,7 +70,6 @@ public class CreateNewItemPage extends BasePage {
         nameText.sendKeys(name);
         return this;
     }
-
 
 
     public CreateNewItemPage selectTypeAndClickOk(String type) {
@@ -154,7 +153,7 @@ public class CreateNewItemPage extends BasePage {
         return this;
     }
 
-    public List<String> copyFormElementsList() {
+    public List<String> getCopyFormElementsList() {
         return copyFormElements
                 .stream()
                 .map(WebElement::getText)
