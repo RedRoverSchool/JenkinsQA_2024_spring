@@ -10,9 +10,6 @@ import java.util.List;
 
 public class ManageJenkinsPage extends BasePage {
 
-    public static final String SEARCH_HINT_TITLE = "Press / on your keyboard to focus";
-
-
     @FindBy(css = "[href='configureSecurity']")
     private WebElement securityLink;
 

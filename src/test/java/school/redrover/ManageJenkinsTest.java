@@ -155,7 +155,7 @@ public class ManageJenkinsTest extends BaseTest {
                 .clickManageJenkins()
                 .hoverMouseOverTheTooltip();
 
-        Assert.assertTrue(manageJenkinsPage.isSearchHintDisplayed());
-        Assert.assertEquals(manageJenkinsPage.getSearchHintText(),ManageJenkinsPage.SEARCH_HINT_TITLE);
+        Assert.assertTrue(manageJenkinsPage.isSearchHintDisplayed()
+                        && manageJenkinsPage.getSearchHintText().equals("Press / on your keyboard to focus"));
     }
 }
