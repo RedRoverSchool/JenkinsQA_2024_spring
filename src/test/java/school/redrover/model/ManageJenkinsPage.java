@@ -1,6 +1,7 @@
 package school.redrover.model;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.runner.TestUtils;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -26,6 +27,9 @@ public class ManageJenkinsPage extends BasePage {
 
     @FindBy(className = "jenkins-search__shortcut")
     private WebElement shortcut;
+
+    @FindBy(tagName = "h1")
+    private WebElement pageTitle;
 
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
@@ -69,5 +73,9 @@ public class ManageJenkinsPage extends BasePage {
         securityLink.sendKeys("/");
 
         return new ManageJenkinsPage(getDriver());
+    }
+
+    public String getPageTitleText() {
+        return pageTitle.getText();
     }
 }
