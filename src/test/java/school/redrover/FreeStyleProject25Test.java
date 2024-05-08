@@ -24,7 +24,7 @@ public class FreeStyleProject25Test extends BaseTest {
     }
 
 
-        @Test(dependsOnMethods = "testCreate")
+       @Test(dependsOnMethods = "testCreate")
         public void testCreateFolder(){
             getDriver().findElement(By.linkText("New Item")).click();
             getDriver().findElement(By.id("name")).sendKeys("Folder_1");
