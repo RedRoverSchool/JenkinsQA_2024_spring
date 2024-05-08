@@ -72,6 +72,9 @@ public class HomePage extends BasePage {
     @FindBy(css = ".tab input:not(:checked)~a")
     private WebElement passiveViewName;
 
+    @FindBy(css = "[href$='builds']")
+    private WebElement buildHistoryButton;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -315,5 +318,18 @@ public class HomePage extends BasePage {
 
     public String getActiveViewNameBackgroundColor() {
         return activeViewName.getCssValue("background-color");
+    }
+
+    public HomePage scheduleBuildForItem(String itemName) {
+        getDriver().findElement(By.cssSelector("td [title='Schedule a Build for " +
+                itemName.replace(" ", "%20") + "']")).click();
+
+        return this;
+    }
+
+    public BuildHistoryPage clickBuildHistory() {
+        buildHistoryButton.click();
+
+        return new BuildHistoryPage(getDriver());
     }
 }
