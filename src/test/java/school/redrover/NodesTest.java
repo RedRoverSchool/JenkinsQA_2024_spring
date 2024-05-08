@@ -1,6 +1,7 @@
 package school.redrover;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -9,6 +10,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.NodeBuiltInStatusPage;
+import school.redrover.model.NodeManagePage;
 import school.redrover.model.NodesTablePage;
 import school.redrover.runner.BaseTest;
 
@@ -189,5 +191,30 @@ public class NodesTest extends BaseTest {
 
             Assert.assertEquals(number, number2);
         }
+    }
+
+    @Test
+    public void testSwitchNodeToOfflineStatus() {
+        final String nodeStatusMessage = "Disconnected by admin";
+
+        String nodeStatus = new HomePage(getDriver())
+                .clickNodesLink()
+                .clickOnBuiltInNode()
+                .clickMarkThisNodeTemporaryOfflineButton()
+                .clickMarkThisNodeTemporaryOfflineConfirmationBtn()
+                .getNodeOnlineStatusText();
+
+        Assert.assertTrue(nodeStatus.contains(nodeStatusMessage));
+    }
+
+    @Test(dependsOnMethods = "testSwitchNodeToOfflineStatus")
+    public void testSwitchNodeToOnlineStatus() {
+
+         NodeManagePage nodeStatus = new HomePage(getDriver())
+                .clickNodesLink()
+                .clickOnBuiltInNode()
+                .clickBringThisNodeBackOnlineBtn();
+
+        Assert.assertTrue(nodeStatus.nodeOnlineStatusText().isEmpty());
     }
 }
