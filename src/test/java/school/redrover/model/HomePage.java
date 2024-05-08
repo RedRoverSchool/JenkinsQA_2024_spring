@@ -66,6 +66,11 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
     private WebElement fullStageViewButton;
 
+    @FindBy(css =  "a.jenkins-table__link.model-link.inside")
+    private List<WebElement> allExistingJobs;
+
+//    List<WebElement> allExistingJobs = getDriver().findElements(By.cssSelector("a.jenkins-table__link.model-link.inside"));
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -278,4 +283,24 @@ public class HomePage extends BasePage {
 
         return new FullStageViewPage(getDriver());
     }
+    public List<String> allExistingJobsNames() {
+        return allExistingJobs
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+    }
+
+    public List<String> getJobsBeginningFromThisFirstLetters(String firstLetters) {
+        return allExistingJobs
+                .stream()
+                .map(WebElement::getText)
+                .toList()
+                .stream()
+                .filter(el-> el.substring(0,firstLetters.length()).equalsIgnoreCase(firstLetters))
+                .toList();
+    }
+
+
+
+
 }
