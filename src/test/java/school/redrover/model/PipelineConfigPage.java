@@ -38,6 +38,15 @@ public class PipelineConfigPage extends BasePage {
     @FindBy(xpath = "//div[@class = 'samples']//select")
     private WebElement samplePiplineScript;
 
+    @FindBy(css = "#breadcrumbs > li:nth-child(3)")
+    private WebElement multibranchPipelineBreadcrumbs;
+
+    @FindBy(xpath = "//a[@previewendpoint='/markupFormatter/previewDescription']")
+    private WebElement preview;
+
+    @FindBy(xpath = "//div[@class='textarea-preview']")
+    private WebElement textareaPreview;
+
     public PipelineConfigPage(WebDriver driver) {
         super(driver);
     }
@@ -108,5 +117,15 @@ public class PipelineConfigPage extends BasePage {
             getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
         }
         return this;
+    }
+
+    public PipelineConfigPage clickPreview() {
+        preview.click();
+
+        return new PipelineConfigPage(getDriver());
+    }
+
+    public String getTextareaPreviewText() {
+        return textareaPreview.getText();
     }
 }

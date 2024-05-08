@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils.*;
 import school.redrover.runner.TestUtils;
@@ -125,17 +126,15 @@ public class PipelineProjectTest extends BaseTest {
 
     @Test
     public void testAddDescriptionPreview(){
-
-        TestUtils.createJob(this, Job.PIPELINE, "Pipeline project");
+        String previewDescription = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .addDescription(PIPELINE_DESCRIPTION)
+                .clickPreview()
+                .getTextareaPreviewText();
         
-        getDriver().findElement(By.xpath("//*[text()='Pipeline project']")).click();
-        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("First");
-        getDriver().findElement(By.xpath("//a[@class='textarea-show-preview']")).click();
-
-        WebElement previewDescription = getDriver().findElement(By.xpath("//div[@class='textarea-preview']"));
-
-        Assert.assertEquals(previewDescription.getText(),"First");
+        Assert.assertEquals(previewDescription,PIPELINE_DESCRIPTION);
     }
 
     @Test
