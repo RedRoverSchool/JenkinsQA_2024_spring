@@ -156,6 +156,6 @@ public class ManageJenkinsTest extends BaseTest {
                 .hoverMouseOverTheTooltip();
 
         Assert.assertTrue(manageJenkinsPage.isSearchHintDisplayed()
-                        && manageJenkinsPage.getSearchHintText().equals("Press / on your keyboard to focus"));
+                        && manageJenkinsPage.getSearchHintText().equals("Press / on your keyboard to focus"), "tooltip text is incorrect");
     }
 }
