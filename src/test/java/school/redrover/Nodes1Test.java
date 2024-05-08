@@ -41,9 +41,9 @@ public class Nodes1Test extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href='new']")).click();
 
         getDriver().findElement(By.id("name")).sendKeys("!");
-        getDriver().findElement(By.xpath("//label[@for='hudson.slaves.DumbSlave']")).click();
+        WebElement labelElement = getDriver().findElement(By.xpath("//label[@for='hudson.slaves.DumbSlave']"));
+        labelElement.click();
 
-        Thread.sleep(500);
         String actualResult = getDriver().findElement(By.className("error")).getText();
 
         Assert.assertEquals(actualResult, expectedResult);
