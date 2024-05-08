@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -65,6 +66,36 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
     private WebElement fullStageViewButton;
+
+    @FindBy(css =  "a.jenkins-table__link.model-link.inside")
+    private List<WebElement> allExistingJobs;
+
+    @FindBy(css = ".tab.active a")
+    private WebElement activeViewName;
+
+    @FindBy(css = ".tab input:not(:checked)~a")
+    private WebElement passiveViewName;
+
+    @FindBy(css = "[href$='builds']")
+    private WebElement buildHistoryButton;
+
+    @FindBy(css = "[class$=jenkins_ver]")
+    private WebElement version;
+
+    @FindBy(className = "jenkins-dropdown__item")
+    private List<WebElement> dropDownElements;
+
+    @FindBy(tagName = "h1")
+    private WebElement heading;
+
+    @FindBy(xpath = "//a[@class='jenkins-table__link model-link inside']")
+    private List<WebElement> listNamesOfItems;
+
+    @FindBy(xpath = "//td//button[@class='jenkins-menu-dropdown-chevron']")
+    private List<WebElement> jenkinsMenuDropdownChevron;
+
+    @FindBy(xpath = "//a[contains(@href, '/move')]")
+    private WebElement moveOption;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -281,5 +312,94 @@ public class HomePage extends BasePage {
         getWait5().until(ExpectedConditions.elementToBeClickable(fullStageViewButton)).click();
 
         return new FullStageViewPage(getDriver());
+    }
+
+    public List<String> allExistingJobsNames() {
+        return allExistingJobs
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+    }
+
+    public List<String> getJobsBeginningFromThisFirstLetters(String firstLetters) {
+        return allExistingJobs
+                .stream()
+                .map(WebElement::getText)
+                .toList()
+                .stream()
+                .filter(el-> el.substring(0,firstLetters.length()).equalsIgnoreCase(firstLetters))
+                .toList();
+    }
+
+    public MultibranchPipelineRenamePage clickRenameFromDropdownMP() {
+        renameFromDropdown.click();
+
+        return new MultibranchPipelineRenamePage(getDriver());
+    }
+
+    public HomePage moveMouseToPassiveViewName() {
+        new Actions(getDriver())
+                .moveToElement(passiveViewName)
+                .pause(200)
+                .perform();
+        return this;
+    }
+
+    public HomePage mouseClick() {
+        new Actions(getDriver())
+                .click()
+                .perform();
+        return this;
+    }
+    public String getPassiveViewNameBackgroundColor() {
+        return passiveViewName.getCssValue("background-color");
+    }
+
+    public String getActiveViewNameBackgroundColor() {
+        return activeViewName.getCssValue("background-color");
+    }
+
+    public HomePage scheduleBuildForItem(String itemName) {
+        getDriver().findElement(By.cssSelector("td [title='Schedule a Build for " +
+                itemName.replace(" ", "%20") + "']")).click();
+
+        return this;
+    }
+
+    public BuildHistoryPage clickBuildHistory() {
+        buildHistoryButton.click();
+
+        return new BuildHistoryPage(getDriver());
+    }
+
+    public HomePage clickVersion() {
+        version.click();
+
+        return this;
+    }
+
+    public List<String> getVersionDropDownElementsValues(){
+        List<String> actualDropDownElementsValues = new ArrayList<>();
+        for (WebElement element : dropDownElements) {
+            actualDropDownElementsValues.add(element.getDomProperty("innerText"));
+        }
+        return actualDropDownElementsValues;
+    }
+
+    public String getHeadingValue() {
+
+        return heading.getText();
+    }
+    public HomePage createNewFolder(String folderName) {
+        clickNewItem()
+                .setItemName(folderName)
+                .selectFolderAndClickOk()
+                .clickSaveButton();
+        return this;
+    }
+
+    public MovePage chooseFolderToMove() {
+        getWait5().until(ExpectedConditions.visibilityOf(moveOption)).click();
+        return new MovePage(getDriver());
     }
 }

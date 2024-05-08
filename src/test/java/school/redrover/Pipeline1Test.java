@@ -83,10 +83,10 @@ public class Pipeline1Test extends BaseTest {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/manage']"))).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='computer']"))).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//a[@class='jenkins-table__link model-link inside']"))).click();
+                By.xpath("//td/a[contains(@href, 'built-in')]"))).click();
 
         try {
-            getWait5().until(ExpectedConditions.elementToBeClickable(
+            getWait2().until(ExpectedConditions.elementToBeClickable(
                     By.xpath("//button[@class='jenkins-button jenkins-button--primary ']"))).click();
             getDriver().findElement(By.id("jenkins-name-icon")).click();
 
@@ -406,14 +406,13 @@ public class Pipeline1Test extends BaseTest {
     @Test
     public void testTableWithAllStagesAndTheLast10Builds() {
 
-        final int number_of_stages = 2;
-        final int buildsQtt = 12;
-        final String pipeName = "Ygramul";
+        final int stagesQtt = 2;
+        final int buildsQtt = 13;
 
         turnNodeOnIfOffline();
-        TestUtils.createItem(TestUtils.PIPELINE, pipeName, this);
+        TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
         clickConfigButton();
-        sendScript(number_of_stages);
+        sendScript(stagesQtt);
         getDriver().findElement(By.name("Submit")).click();
 
         makeBuilds(buildsQtt);
@@ -432,7 +431,7 @@ public class Pipeline1Test extends BaseTest {
             expectedBuildsText.add("#" + (buildsQtt - i));
         }
 
-        Assert.assertEquals(actualSagesQtt, number_of_stages);
+        Assert.assertEquals(actualSagesQtt, stagesQtt);
         Assert.assertEquals(actualBuildsText, expectedBuildsText);
     }
 
