@@ -55,6 +55,9 @@ public class PipelinePage extends BasePage {
     @FindBy(id = "enable-project")
     private WebElement warningMessage;
 
+    @FindBy(xpath = "//div[contains(text(), 'Full project name:')]")
+    private WebElement fullProjectNameLocation;
+
     public PipelinePage(WebDriver driver) {
         super(driver);
     }
@@ -164,9 +167,9 @@ public class PipelinePage extends BasePage {
 
     public boolean isBuildAppear(int buildNumber, String jobName) {
         getDriver().navigate().refresh();
-        WebElement nBuild = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[@class = 'build-row-cell']//a[text() = '#" +buildNumber + "']")));
+        WebElement nBuild = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[@class = 'build-row-cell']//a[text() = '#" + buildNumber + "']")));
 
-        return nBuild.getAttribute("href").contains("/job/" +jobName.replaceAll(" ", "%20") + "/2/");
+        return nBuild.getAttribute("href").contains("/job/" + jobName.replaceAll(" ", "%20") + "/2/");
     }
 
     public int numberOfBuild() {
@@ -195,5 +198,9 @@ public class PipelinePage extends BasePage {
                 .perform();
 
         return this;
+    }
+
+    public String getFullProjectNameLocationText() {
+        return fullProjectNameLocation.getText();
     }
 }

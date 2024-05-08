@@ -27,6 +27,9 @@ public class FolderStatusPage extends BasePage {
     @FindBy(xpath = "//a[.='New Item']")
     private WebElement newItem;
 
+    @FindBy(xpath = "//tr[contains(@id,'job_')]/td[3]/a")
+    private WebElement itemInTable;
+
     public FolderStatusPage(WebDriver driver) {
         super(driver);
     }
@@ -60,5 +63,9 @@ public class FolderStatusPage extends BasePage {
                 .stream()
                 .map(WebElement::getText)
                 .toList();
+    }
+
+    public String getItemInTableName() {
+        return itemInTable.getText();
     }
 }
