@@ -18,7 +18,7 @@ public class MultibranchPipelineRenamePage extends BasePage {
         super(driver);
     }
 
-    public MultibranchPipelineStatusPage changeName(String newName) {
+    public MultibranchPipelineStatusPage changeNameTo(String newName) {
         newNameInput.clear();
         newNameInput.sendKeys(newName);
         renameButton.click();

@@ -212,8 +212,8 @@ public class MultibranchPipelineTest extends BaseTest {
             .selectMultibranchPipelineAndClickOk()
             .clickLogo()
             .openItemDropdown(MULTI_PIPELINE_NAME)
-            .selectRenameFromDropdownMP()
-            .changeName(RENAMED_MULTI_PIPELINE)
+            .clickRenameFromDropdownMP()
+            .changeNameTo(RENAMED_MULTI_PIPELINE)
             .getMultibranchPipelineName();
 
         Assert.assertEquals(multibranchPipelineName,RENAMED_MULTI_PIPELINE, "чтото пошло не так");
