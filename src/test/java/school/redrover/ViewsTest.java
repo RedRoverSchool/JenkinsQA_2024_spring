@@ -93,36 +93,22 @@ public class ViewsTest extends BaseTest {
                 .clickOkButton()
                 .clickLogo()
                 .clickViewName(VIEW_NAME)
-                .sizeColumnList();
+                .getSizeColumnList();
 
         Assert.assertEquals(numberOfColumns, 7, "Description column is not added");
     }
 
     @Test(dependsOnMethods = "testAddColumnIntoListView")
     public void testChangeOrderOfColumns() {
-        getDriver().findElement(By.linkText("in progress")).click();
-        getDriver().findElement(By.linkText("Edit View")).click();
 
-        WebElement submit = getDriver().findElement(By.name("Submit"));
-        ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView(true);", submit);
+        List<String> columnNameText = new HomePage(getDriver())
+                .clickViewName(VIEW_NAME)
+                .clickEditViewButton()
+                .scrollIntoSubmit()
+                .moveDescriptionToStatusColumn()
+                .getColumnNameText();
 
-        WebElement sourceElement = getDriver().findElement(By.cssSelector("[descriptorid $= 'DescriptionColumn'] .dd-handle"));
-        WebElement targetElement = getDriver().findElement(By.cssSelector("[descriptorid $= 'StatusColumn']"));
-        new Actions(getDriver())
-                .clickAndHold(sourceElement)
-                .moveToElement(targetElement)
-                .release(targetElement)
-                .build()
-                .perform();
-
-        submit.click();
-
-        List<WebElement> actualOrder = getDriver().findElements(By.className("sortheader"));
-        List<String> actualColumns = new ArrayList<>();
-        for (WebElement column : actualOrder) {
-            actualColumns.add(column.getText());
-        }
-        Assert.assertEquals(actualColumns.get(0), "Description");
+        Assert.assertEquals(columnNameText.get(0), "Description");
     }
 
     @Test
