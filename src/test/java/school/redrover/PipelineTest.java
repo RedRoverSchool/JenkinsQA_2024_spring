@@ -282,6 +282,21 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
+    public void testChangesPageHeading() {
+        String actualPageHeading = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .hoverOverBreadcrumbsName()
+                .clickBreadcrumbsDropdownArrow()
+                .clickDropdownChangesButton()
+                .getPageHeading();
+
+        Assert.assertEquals(actualPageHeading, "Changes");
+    }
+
+    @Test
     public void testRenameJobViaBreadcrumbs() {
         String displayedNewName = new HomePage(getDriver())
                 .clickCreateAJob()
