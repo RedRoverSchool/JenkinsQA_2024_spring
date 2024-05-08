@@ -87,21 +87,4 @@ public class ManageJenkinsPage extends BasePage {
 
         return new ManageJenkinsPage(getDriver());
     }
-    /*
-    WebDriver driver = getWebDriver();
-    By by = By.xpath("//*[@pageid='" + menuItem + "']");
-    Actions action = new Actions(driver);
-    WebElement elem = driver.findElement(by);
-    action.moveToElement(elem);
-    action.perform();
-    this.sleep(2);
-
-
-            Actions actions = new Actions(getDriver());
-        actions.clickAndHold(sourceElementDescription)
-                .moveToElement(targetElementStatus)
-                .release(targetElementStatus)
-                .build()
-                .perform();
-     */
 }
