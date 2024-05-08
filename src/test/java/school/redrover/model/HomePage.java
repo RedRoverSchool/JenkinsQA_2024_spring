@@ -57,7 +57,7 @@ public class HomePage extends BasePage {
     @FindBy(css = "[class='tippy-box'] [href='/manage']")
     private WebElement manageFromDashboardBreadcrumbsMenu;
 
-    @FindBy(id="executors")
+    @FindBy(id = "executors")
     private WebElement buildExecutorStatus;
 
     @FindBy(xpath = "//td[text()='Idle']")
@@ -65,6 +65,15 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
     private WebElement fullStageViewButton;
+
+    @FindBy(xpath = "//a[@class='jenkins-table__link model-link inside']")
+    private List<WebElement> listNamesOfItems;
+
+    @FindBy(xpath = "//td//button[@class='jenkins-menu-dropdown-chevron']")
+    private List<WebElement> jenkinsMenuDropdownChevron;
+
+    @FindBy(xpath = "//a[contains(@href, '/move')]")
+    private WebElement moveOption;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -266,7 +275,7 @@ public class HomePage extends BasePage {
     }
 
     public String getBuildExecutorStatusText() {
-       return buildExecutorStatus.getText();
+        return buildExecutorStatus.getText();
     }
 
     public List<WebElement> getBuildExecutorStatusList() {
@@ -288,4 +297,17 @@ public class HomePage extends BasePage {
 
         return new MultibranchPipelineRenamePage(getDriver());
     }
+
+    public void createNewFolder(String folderName) {
+        clickNewItem()
+                .setItemName(folderName)
+                .selectFolderAndClickOk()
+                .clickSaveButton();
+    }
+
+    public MovePage chooseFolderToMove() {
+        getWait5().until(ExpectedConditions.visibilityOf(moveOption)).click();
+        return new MovePage(getDriver());
+    }
+
 }
