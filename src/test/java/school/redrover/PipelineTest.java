@@ -278,4 +278,19 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(actualSagesQtt, stagesQtt);
         Assert.assertEquals(actualBuildsText, expectedBuildsText);
     }
+
+    @Test
+    public void testChangesPageHeading() {
+        String actualPageHeading = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .hoverOverBreadcrumbsName()
+                .clickBreadcrumbsDropdownArrow()
+                .clickDropdownChangesButton()
+                .getPageHeading();
+
+        Assert.assertEquals(actualPageHeading, "Changes");
+    }
 }
