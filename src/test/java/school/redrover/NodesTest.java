@@ -133,4 +133,40 @@ public class NodesTest extends BaseTest {
 
         Assert.assertEquals(actualResult, expectedResult);
     }
+
+    @Test
+    public void testCreateNewNodeWithOneLabel() {
+        String labelName = "NewLabelName";
+
+        String actualResult = new HomePage(getDriver())
+                .clickNodesLink()
+                .clickNewNodeButton()
+                .setNodeName(NODE_NAME)
+                .selectPermanentAgentRadioButton()
+                .clickOkButton()
+                .createLabel(labelName)
+                .clickSaveButton()
+                .clickNode(NODE_NAME)
+                .getLabels();
+
+        Assert.assertTrue(actualResult.contains(labelName));
+    }
+
+    @Test
+    public void testCreateNewNodeWithDescription() {
+        String description = "Description for user in node is correct and useful for next step";
+
+        String actualResult = new HomePage(getDriver())
+                .clickNodesLink()
+                .clickNewNodeButton()
+                .setNodeName(NODE_NAME)
+                .selectPermanentAgentRadioButton()
+                .clickOkButton()
+                .addDescription(description)
+                .clickSaveButton()
+                .clickNode(NODE_NAME)
+                .getDescription();
+
+        Assert.assertTrue(actualResult.contains(description));
+    }
 }
