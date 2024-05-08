@@ -10,7 +10,7 @@ import school.redrover.model.HomePage;
 import school.redrover.model.ManageJenkinsPage;
 import school.redrover.runner.BaseTest;
 import java.util.List;
-import static org.testng.Assert.assertEquals;
+
 
 public class ManageJenkinsTest extends BaseTest {
 
@@ -24,8 +24,7 @@ public class ManageJenkinsTest extends BaseTest {
                 .clickSecurity()
                 .getTitleText();
 
-        assertEquals(pageTitle, "Security");
-    }
+        Assert.assertEquals(pageTitle, "Security");    }
 
     @Test
     public void testSectionNamesOfSecurityBlock() {
@@ -117,8 +116,7 @@ public class ManageJenkinsTest extends BaseTest {
         getDriver().findElement(By.cssSelector("[href='/manage']")).click();
 
         String placeholderText = getDriver().findElement(By.id("settings-search-bar")).getDomProperty("placeholder");
-        assertEquals(placeholderText, "Search settings");
-    }
+        Assert.assertEquals(placeholderText, "Search settings");    }
 
     @Test
     public void testSearchSettingsInvalidData() {
@@ -130,7 +128,7 @@ public class ManageJenkinsTest extends BaseTest {
         String searchResult = getWait2().until(ExpectedConditions.visibilityOfElementLocated(
                 By.cssSelector("[class='jenkins-search__results'] p"))).getText();
 
-        assertEquals(searchResult, "No results");
+        Assert.assertEquals(searchResult, "No results");
     }
 
     @Test
