@@ -65,6 +65,12 @@ public class PipelinePage extends BasePage {
     @FindBy(xpath = "//div[contains(text(), 'Full project name:')]")
     private WebElement fullProjectNameLocation;
 
+    @FindBy(css = "[class*='dropdown__item'][href$='changes']")
+    private WebElement dropdownChangesButton;
+
+    @FindBy(css = "[class*='dropdown'] [href$='rename']")
+    private WebElement breadcrumbsRenameButton;
+
     public PipelinePage(WebDriver driver) {
         super(driver);
     }
@@ -227,5 +233,17 @@ public class PipelinePage extends BasePage {
 
     public String getFullProjectNameLocationText() {
         return fullProjectNameLocation.getText();
+    }
+
+    public PipelineChangesPage clickDropdownChangesButton() {
+        dropdownChangesButton.click();
+
+        return new PipelineChangesPage(getDriver());
+    }
+
+    public PipelineRenamePage clickBreadcrumbsRenameButton() {
+        breadcrumbsRenameButton.click();
+
+        return new PipelineRenamePage(getDriver());
     }
 }

@@ -85,6 +85,9 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//*[@class=' job-status-']/td[3]/a")
     private WebElement createdElementInTable;
 
+    @FindBy(tagName = "h1")
+    private WebElement heading;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -361,5 +364,10 @@ public class HomePage extends BasePage {
             actualDropDownElementsValues.add(element.getDomProperty("innerText"));
         }
         return actualDropDownElementsValues;
+    }
+
+    public String getHeadingValue() {
+
+        return heading.getText();
     }
 }
