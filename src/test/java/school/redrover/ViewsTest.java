@@ -53,19 +53,24 @@ public class ViewsTest extends BaseTest {
     public void testDisplayViewWithListViewConstraints() {
         final String INVISIBLE = "invisible";
 
-        TestUtils.createNewItemAndReturnToDashboard(this, VISIBLE, TestUtils.Item.FOLDER);
-        TestUtils.createNewItemAndReturnToDashboard(this, INVISIBLE, TestUtils.Item.PIPELINE);
+        List<String> projectNameList = new HomePage(getDriver())
+                .clickNewItem()
+                .createNewItem(VISIBLE, "Folder")
+                .clickNewItem()
+                .createNewItem(INVISIBLE, "Pipeline")
+                .clickNewView()
+                .setViewName(VIEW_NAME)
+                .clickListViewRadioButton()
+                .clickCreateView()
+                .clickProjectName(VISIBLE)
+                .clickOkButton()
+                .getProjectNames();
 
-        getDriver().findElement(By.cssSelector("[tooltip='New View']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(VIEW_NAME);
-        getDriver().findElement(By.cssSelector("[for$='ListView']")).click();
-        getDriver().findElement(By.id("ok")).click();
-        getDriver().findElement(By.cssSelector("label[title=" + VISIBLE + "]")).click();
-        getDriver().findElement(By.name("Submit")).click();
+        List<String> expectedProjectNameList = List.of(VISIBLE);
+        int expectedProjectListSize = 1;
 
-        Assert.assertTrue(
-                getDriver().findElements(By.cssSelector("[id^='job']")).size() == 1 &&
-                        getDriver().findElement(By.cssSelector(String.format("tr [href='job/%s/']", VISIBLE))).getText().equals(VISIBLE),
+        Assert.assertTrue(projectNameList.size() == expectedProjectListSize &&
+                        projectNameList.equals(expectedProjectNameList),
                 "Error displaying projects in View");
     }
 
@@ -88,36 +93,22 @@ public class ViewsTest extends BaseTest {
                 .clickOkButton()
                 .clickLogo()
                 .clickViewName(VIEW_NAME)
-                .sizeColumnList();
+                .getSizeColumnList();
 
         Assert.assertEquals(numberOfColumns, 7, "Description column is not added");
     }
 
     @Test(dependsOnMethods = "testAddColumnIntoListView")
     public void testChangeOrderOfColumns() {
-        getDriver().findElement(By.linkText("in progress")).click();
-        getDriver().findElement(By.linkText("Edit View")).click();
 
-        WebElement submit = getDriver().findElement(By.name("Submit"));
-        ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView(true);", submit);
+        List<String> columnNameText = new HomePage(getDriver())
+                .clickViewName(VIEW_NAME)
+                .clickEditViewButton()
+                .scrollIntoSubmit()
+                .moveDescriptionToStatusColumn()
+                .getColumnNameText();
 
-        WebElement sourceElement = getDriver().findElement(By.cssSelector("[descriptorid $= 'DescriptionColumn'] .dd-handle"));
-        WebElement targetElement = getDriver().findElement(By.cssSelector("[descriptorid $= 'StatusColumn']"));
-        new Actions(getDriver())
-                .clickAndHold(sourceElement)
-                .moveToElement(targetElement)
-                .release(targetElement)
-                .build()
-                .perform();
-
-        submit.click();
-
-        List<WebElement> actualOrder = getDriver().findElements(By.className("sortheader"));
-        List<String> actualColumns = new ArrayList<>();
-        for (WebElement column : actualOrder) {
-            actualColumns.add(column.getText());
-        }
-        Assert.assertEquals(actualColumns.get(0), "Description");
+        Assert.assertEquals(columnNameText.get(0), "Description");
     }
 
     @Test
