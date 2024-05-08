@@ -71,4 +71,8 @@ public abstract class BasePage extends BaseModel {
     public String getText(WebElement webElement) {
         return webElement.getText();
     }
+
+    public void scrollIntoView(WebElement element) {
+        ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView(true);", element);
+    }
 }
