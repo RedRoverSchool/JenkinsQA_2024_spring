@@ -133,4 +133,22 @@ public class NodesTest extends BaseTest {
 
         Assert.assertEquals(actualResult, expectedResult);
     }
+
+    @Test
+    public void testCreateNewNodeWithOneLabel() {
+        String labelName = "NewLabelName";
+
+        String actualResult = new HomePage(getDriver())
+                .clickNodesLink()
+                .clickNewNodeButton()
+                .setNodeName(NODE_NAME)
+                .selectPermanentAgentRadioButton()
+                .clickOkButton()
+                .createLabel(labelName)
+                .clickSaveButton()
+                .clickNode(NODE_NAME)
+                .getLabels();
+
+        Assert.assertTrue(actualResult.contains(labelName));
+    }
 }
