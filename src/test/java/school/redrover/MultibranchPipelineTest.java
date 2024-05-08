@@ -363,7 +363,6 @@ public class MultibranchPipelineTest extends BaseTest {
     @Test(dependsOnMethods = "testCreatingMultibranchPipeline")
     public void testMultibranchPipelineEnable(){
         String buttonName = new HomePage(getDriver())
-                .clickLogo()
                 .clickJobByName(MULTI_PIPELINE_NAME,
                         new MultibranchPipelineStatusPage(getDriver()))
                 .getDisableMultibranchPipelineButtonText();
