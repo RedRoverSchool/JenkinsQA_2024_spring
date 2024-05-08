@@ -66,7 +66,7 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
     private WebElement fullStageViewButton;
 
-    @FindBy(xpath = "//*[text()[contains(.,'Pipeline Syntax')]]")
+    @FindBy(xpath = "//a[text()[contains(.,'Pipeline Syntax')]]")
     private WebElement pipelineSyntaxMenu;
 
     public HomePage(WebDriver driver) {
