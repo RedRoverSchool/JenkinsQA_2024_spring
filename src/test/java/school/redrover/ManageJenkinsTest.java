@@ -10,7 +10,6 @@ import school.redrover.model.HomePage;
 import school.redrover.model.ManageJenkinsPage;
 import school.redrover.runner.BaseTest;
 import java.util.List;
-
 import static org.testng.Assert.assertEquals;
 
 public class ManageJenkinsTest extends BaseTest {
