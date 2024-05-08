@@ -97,42 +97,34 @@ public class Dashboard1Test extends BaseTest {
                 .clickLogo();
     }
 
-    private List<String> getChevronMenu(String jobName) {
-        return Arrays.stream(new HomePage(getDriver())
-                        .openItemDropdown(jobName)
-                        .getDropdownMenu()
-                        .getText()
-                        .split("\\r?\\n"))
-                .toList();
-    }
-
     @Test
     public void testSortItemsByName() {
         Collections.sort(PROJECTS_NAMES);
+
         PROJECTS_NAMES.forEach(s -> createItem(s, s));
 
-        List<String> descSortingByNameList = new HomePage(getDriver())
+        List<String> sortedNameList = new HomePage(getDriver())
                 .clickColumnNameTitle()
                 .getItemList();
         Collections.reverse(PROJECTS_NAMES);
 
-        Assert.assertEquals(descSortingByNameList, PROJECTS_NAMES);
+        Assert.assertEquals(sortedNameList, PROJECTS_NAMES);
 
-        List<String> ascSortingByNameList = new HomePage(getDriver())
+        List<String> reversedNameList = new HomePage(getDriver())
                 .clickColumnNameTitle()
                 .getItemList();
         Collections.reverse(PROJECTS_NAMES);
 
-        Assert.assertEquals(ascSortingByNameList, PROJECTS_NAMES);
+        Assert.assertEquals(reversedNameList, PROJECTS_NAMES);
     }
 
-    @DataProvider(name = "projects")
+    @DataProvider(name = "menus")
     public Object[][] projectsName() {
 
         return PROJECTS_MENUS;
     }
 
-    @Test(dependsOnMethods = "testSortItemsByName", dataProvider = "projects")
+    @Test(dependsOnMethods = "testSortItemsByName", dataProvider = "menus")
     public void testProjectChevronMenu(String projectName, List<String> projectMenu) {
         List<String> chevronMenu = Arrays.stream(
                         new HomePage(getDriver())
@@ -187,5 +179,25 @@ public class Dashboard1Test extends BaseTest {
 
             Assert.assertEquals(iconHeight, size.get(i));
         }
+    }
+
+    @Test(dependsOnMethods = "testChangeIconSize")
+    public void testColorChangeWhenHoveringMouseOverViewName() {
+
+        String passiveColor = new HomePage(getDriver())
+                .getPassiveViewNameBackgroundColor();
+
+        String hoverColor = new HomePage(getDriver())
+                .moveMouseToPassiveViewName()
+                .getPassiveViewNameBackgroundColor();
+
+        String activeColor = new HomePage(getDriver())
+                .moveMouseToPassiveViewName()
+                .mouseClick()
+                .getActiveViewNameBackgroundColor();
+
+        Assert.assertNotEquals(passiveColor, hoverColor);
+        Assert.assertNotEquals(hoverColor, activeColor);
+        Assert.assertNotEquals(activeColor, passiveColor);
     }
 }
