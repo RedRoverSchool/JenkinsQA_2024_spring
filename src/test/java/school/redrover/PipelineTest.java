@@ -1,6 +1,8 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.FullStageViewPage;
@@ -292,5 +294,22 @@ public class PipelineTest extends BaseTest {
                 .getPageHeading();
 
         Assert.assertEquals(actualPageHeading, "Changes");
+    }
+
+    @Test
+    public void testRenameJobViaBreadcrumbs() {
+        String displayedNewName = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickBreadcrumbsDropdownArrow()
+                .clickBreadcrumbsRenameButton()
+                .clearNameInputField()
+                .setNewName(NEW_PIPELINE_NAME)
+                .clickSaveRenameButton()
+                .getHeadlineDisplayedName();
+
+        Assert.assertEquals(displayedNewName, NEW_PIPELINE_NAME);
     }
 }
