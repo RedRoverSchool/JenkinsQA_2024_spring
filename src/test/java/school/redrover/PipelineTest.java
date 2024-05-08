@@ -1,45 +1,19 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.PipelinePage;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.TestUtils;
 
-import java.util.List;
 
 public class PipelineTest extends BaseTest {
 
-    @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
-    private WebElement fullStageViewButton;
-
     private static final String PIPELINE_NAME = "FirstPipeline";
     private static final By DASHBOARD_PIPELINE_LOCATOR = By.cssSelector("td [href='job/" + PIPELINE_NAME + "/']");
-    private static final By BUILD_HISTORY_PIPELINE_LOCATOR = By.cssSelector("td [href$='job/" + PIPELINE_NAME + "/']");
     private static final String DESCRIPTION = "Lorem ipsum dolor sit amet";
     private static final String NEW_PIPELINE_NAME = "New Pipeline name";
-
-    private void createPipelineWithCreateAJob() {
-        getDriver().findElement(By.linkText("Create a job")).click();
-        getDriver().findElement(By.id("name")).sendKeys(PIPELINE_NAME);
-        getDriver().findElement(By.cssSelector("[class$='WorkflowJob']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-    }
-
-    private void clickOnDropdownArrow(By locator) {
-        WebElement itemDropdownArrow = getDriver().findElement(locator);
-
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
-                "arguments[0].dispatchEvent(new Event('click'));", itemDropdownArrow);
-    }
 
     @Test
     public void testPipelineDescriptionTextAreaBacklightColor() {
@@ -107,26 +81,24 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(isPipelineDeleted, PIPELINE_NAME + " was not deleted");
     }
 
-    @Ignore
     @Test
     public void testBuildHistoryEmptyUponPipelineRemoval() {
-        createPipelineWithCreateAJob();
-        TestUtils.goToMainPage(getDriver());
+        boolean isBuildDeleted = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .scheduleBuildForItem(PIPELINE_NAME)
+                .clickBuildHistory()
+                .hoverOverItemName(PIPELINE_NAME)
+                .clickItemDropdownArrow()
+                .clickItemDeleteButton()
+                .clickYes(new HomePage(getDriver()))
+                .clickBuildHistory()
+                .isBuildDeleted(PIPELINE_NAME);
 
-        getDriver().findElement(By.cssSelector("td [title='Schedule a Build for " + PIPELINE_NAME + "']")).click();
-        getDriver().findElement(By.cssSelector("[href$='builds']")).click();
-
-        new Actions(getDriver())
-                .moveToElement(getDriver().findElement(BUILD_HISTORY_PIPELINE_LOCATOR))
-                .perform();
-        clickOnDropdownArrow(By.cssSelector("td [class$='link'] [class$='dropdown-chevron']"));
-
-        getDriver().findElement(By.cssSelector("[href$='Delete']")).click();
-        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
-        getDriver().findElement(By.cssSelector("[href$='builds']")).click();
-
-        List<WebElement> buildHistoryTable = getDriver().findElements(BUILD_HISTORY_PIPELINE_LOCATOR);
-        Assert.assertTrue(buildHistoryTable.isEmpty(), PIPELINE_NAME + " build is in Build history table");
+        Assert.assertTrue(isBuildDeleted, PIPELINE_NAME + " build is in the Build history table");
     }
 
     @Test
