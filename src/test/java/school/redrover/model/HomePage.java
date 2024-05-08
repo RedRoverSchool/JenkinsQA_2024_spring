@@ -76,6 +76,9 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[contains(@href, '/move')]")
     private WebElement moveOption;
 
+    @FindBy(css =  "a.jenkins-table__link.model-link.inside")
+    private List<WebElement> allExistingJobs;
+
     @FindBy(css = ".tab.active a")
     private WebElement activeViewName;
 
@@ -309,6 +312,23 @@ public class HomePage extends BasePage {
         getWait5().until(ExpectedConditions.elementToBeClickable(fullStageViewButton)).click();
 
         return new FullStageViewPage(getDriver());
+    }
+
+    public List<String> allExistingJobsNames() {
+        return allExistingJobs
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+    }
+
+    public List<String> getJobsBeginningFromThisFirstLetters(String firstLetters) {
+        return allExistingJobs
+                .stream()
+                .map(WebElement::getText)
+                .toList()
+                .stream()
+                .filter(el-> el.substring(0,firstLetters.length()).equalsIgnoreCase(firstLetters))
+                .toList();
     }
 
     public MultibranchPipelineRenamePage clickRenameFromDropdownMP() {
