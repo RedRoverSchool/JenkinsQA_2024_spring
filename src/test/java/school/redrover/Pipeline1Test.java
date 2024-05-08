@@ -460,7 +460,7 @@ public class Pipeline1Test extends BaseTest {
         final String pipelineName = "My new cool disable pipeline project";
 
         HomePage homePage = new HomePage(getDriver());
-        String statusForJobNameGiven = homePage
+        String statusForJobNameAfterDisabled = homePage
             .clickNewItem()
             .setItemName(pipelineName)
             .selectPipelineAndClickOk()
@@ -468,14 +468,15 @@ public class Pipeline1Test extends BaseTest {
             .clickDisableEnableProjectButton()
             .clickLogo()
             .getStatusFor(pipelineName);
-        Assert.assertEquals(statusForJobNameGiven, "Disabled");
 
-        String statusForJobNameGivenAfterReenable = homePage
+        String statusForJobNameAfterReenable = homePage
             .clickJobName(pipelineName)
             .clickDisableEnableProjectButton()
             .clickLogo()
             .getStatusFor(pipelineName);
-        Assert.assertEquals(statusForJobNameGivenAfterReenable, "Not built");
+
+        Assert.assertEquals(statusForJobNameAfterDisabled, "Disabled");
+        Assert.assertEquals(statusForJobNameAfterReenable, "Not built");
 
     }
 }
