@@ -1,6 +1,7 @@
 package school.redrover.model;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -68,9 +69,9 @@ public class PipelineConfigPage extends BasePage {
     public PipelineConfigPage setNumberBuildsToKeep(int numberOfBuilds) {
         WheelInput.ScrollOrigin scrollFromDuildField = WheelInput.ScrollOrigin.fromElement(numberBuildsToKeep);
         new Actions(getDriver())
-              .scrollFromOrigin(scrollFromDuildField, 0, 80)
-              .pause(Duration.ofMillis(200))
-              .perform();
+                .scrollFromOrigin(scrollFromDuildField, 0, 80)
+                .pause(Duration.ofMillis(200))
+                .perform();
         getWait5().until(ExpectedConditions.visibilityOf(numberBuildsToKeep)).sendKeys(String.valueOf(numberOfBuilds));
 
         return this;
@@ -90,4 +91,22 @@ public class PipelineConfigPage extends BasePage {
         return this;
     }
 
+    public PipelineConfigPage sendScript(int stagesQtt) {
+        String pipelineScript = "pipeline {\n" +
+                "agent any\n\n" +
+                "stages {\n";
+
+        getDriver().findElement(By.className("ace_text-input")).sendKeys(pipelineScript);
+
+        for (int i = 1; i <= stagesQtt; i++) {
+
+            String stage = "\nstage(\'stage " + i + "\') {\n" +
+                    "steps {\n" +
+                    "echo \'test " + i + "\'\n";
+            getDriver().findElement(By.className("ace_text-input")).sendKeys(stage);
+            getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
+            getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
+        }
+        return this;
+    }
 }

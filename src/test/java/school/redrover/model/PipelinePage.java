@@ -171,9 +171,9 @@ public class PipelinePage extends BasePage {
 
     public boolean isBuildAppear(int buildNumber, String jobName) {
         getDriver().navigate().refresh();
-        WebElement nBuild = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[@class = 'build-row-cell']//a[text() = '#" +buildNumber + "']")));
+        WebElement nBuild = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[@class = 'build-row-cell']//a[text() = '#" + buildNumber + "']")));
 
-        return nBuild.getAttribute("href").contains("/job/" +jobName.replaceAll(" ", "%20") + "/2/");
+        return nBuild.getAttribute("href").contains("/job/" + jobName.replaceAll(" ", "%20") + "/2/");
     }
 
     public int numberOfBuild() {
@@ -208,6 +208,17 @@ public class PipelinePage extends BasePage {
                 .pause(2000)
                 .perform();
 
+        return this;
+    }
+
+    public PipelinePage makeBuilds(int buildsQtt) {
+        for (int i = 1; i <= buildsQtt; i++) {
+            getWait5().until(ExpectedConditions.elementToBeClickable(
+                    By.xpath("//a[contains(@href, '/build?delay=0sec')]"))).click();
+
+            getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                    By.xpath("//tr[@data-runid='" + i + "']")));
+        }
         return this;
     }
 }

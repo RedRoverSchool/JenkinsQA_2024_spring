@@ -3,10 +3,13 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.FullStageViewPage;
 import school.redrover.model.HomePage;
 import school.redrover.model.PipelinePage;
 import school.redrover.runner.BaseTest;
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class PipelineTest extends BaseTest {
 
@@ -241,5 +244,38 @@ public class PipelineTest extends BaseTest {
                 .getH2HeadingText();
 
         Assert.assertEquals(h2HeadingText, expectedResult);
+    }
+
+    @Test
+    public void testTableWithAllStagesAndTheLast10Builds() {
+
+        final int stagesQtt = 2;
+        final int buildsQtt = 13;
+
+        int actualSagesQtt = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickNodes()
+                .clickBuiltInNodeName()
+                .turnNodeOnIfOffline()
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .sendScript(stagesQtt)
+                .clickSaveButton()
+                .makeBuilds(buildsQtt)
+                .clickFullStageViewButton()
+                .getSagesQtt();
+
+        List<String> actualBuildsText = new FullStageViewPage(getDriver())
+                .getItemList();
+
+        List<String> expectedBuildsText = new ArrayList<>();
+
+        for (int i = 0; i < actualBuildsText.size(); i++) {
+            expectedBuildsText.add("#" + (buildsQtt - i));
+        }
+
+        Assert.assertEquals(actualSagesQtt, stagesQtt);
+        Assert.assertEquals(actualBuildsText, expectedBuildsText);
     }
 }
