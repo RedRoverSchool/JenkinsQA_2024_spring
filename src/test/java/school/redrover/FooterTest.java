@@ -30,7 +30,7 @@ public class FooterTest extends BaseTest {
 
     @Test
     public void testLinkButtonsListInVersionDropDown() {
-        final List<String> expectedDropDownElementsValues = new ArrayList<>(List.of("About Jenkins", "Get involved", "Website"));
+        final List<String> expectedDropDownElementsValues = List.of("About Jenkins", "Get involved", "Website");
 
         List<String> actualDropDownElementsValues = new HomePage(getDriver())
             .clickVersion()
