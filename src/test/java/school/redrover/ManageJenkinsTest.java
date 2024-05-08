@@ -149,4 +149,17 @@ public class ManageJenkinsTest extends BaseTest {
 
         Assert.assertTrue(manageJenkinsPage.isShortcutDisplayed());
     }
+
+    @Test
+    public void testTooltipAppears() {
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins()
+                .hoverMouseOverTheTooltip();
+
+        Assert.assertTrue(manageJenkinsPage.isSearchHintDisplayed());
+
+
+    }
+
+
 }
