@@ -35,8 +35,11 @@ public class ViewPage extends BasePage {
         return projectNamesList.stream().map(WebElement::getText).toList();
     }
 
-    public int sizeColumnList() {
+    public int getProjectListSize(){
+        return projectNamesList.size();
+    }
 
+    public int sizeColumnList() {
         return getDriver().findElements(By.className("sortheader")).size();
     }
 }
