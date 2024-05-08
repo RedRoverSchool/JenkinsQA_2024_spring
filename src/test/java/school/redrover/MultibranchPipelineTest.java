@@ -3,7 +3,6 @@ package school.redrover;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -25,11 +24,11 @@ public class MultibranchPipelineTest extends BaseTest {
     private final static String RENAMED_MULTI_PIPELINE = "NewMultibranchPipelineName";
     private final static String NESTED_TESTS_FOLDER_NAME = "NestedTestsFolder";
     private static final By SEARCH_RESULT_DROPDOWN = By.className("yui-ac-bd");
-    private final String FOLDER_NAME = "Folder";
+    private static final String FOLDER_NAME = "Folder";
     private final static List <String> PIPELINE_MENU =
             List.of("Status", "Configure", "Scan Multibranch Pipeline Log", "Multibranch Pipeline Events",
                     "Delete Multibranch Pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
-    private final String WELCOME_PAGE_HEADER ="Welcome to Jenkins!";
+    private static final String WELCOME_PAGE_HEADING ="Welcome to Jenkins!";
 
     private void createNewMultiPipeline(String multiPipelineName) {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
@@ -306,7 +305,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testDeleteViaDashboardDropdown(){
-        String actualPageHeader = new HomePage(getDriver())
+        String actualPageHeading = new HomePage(getDriver())
             .clickCreateAJob()
             .setItemName(MULTI_PIPELINE_NAME)
             .selectMultibranchPipelineAndClickOk()
@@ -316,7 +315,7 @@ public class MultibranchPipelineTest extends BaseTest {
             .clickYes(new HomePage(getDriver()))
             .getHeadingValue();
 
-        Assert.assertEquals(actualPageHeader,WELCOME_PAGE_HEADER);
+        Assert.assertEquals(actualPageHeading, WELCOME_PAGE_HEADING);
     }
 
     @Test
