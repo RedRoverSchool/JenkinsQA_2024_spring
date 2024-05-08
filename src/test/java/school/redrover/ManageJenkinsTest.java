@@ -140,4 +140,13 @@ public class ManageJenkinsTest extends BaseTest {
 
         Assert.assertTrue(manageJenkinsPage.isSearchInputDisplayed());
     }
+
+    @Test
+    public void testActivatingSearchPressingSlash() {
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins()
+                .pressSlashKey();
+
+        Assert.assertTrue(manageJenkinsPage.isShortcutDisplayed());
+    }
 }

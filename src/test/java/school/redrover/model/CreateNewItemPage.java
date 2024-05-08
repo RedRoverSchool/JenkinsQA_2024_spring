@@ -1,14 +1,12 @@
 package school.redrover.model;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import java.util.List;
 
@@ -68,10 +66,14 @@ public class CreateNewItemPage extends BasePage {
         return new HomePage(getDriver());
     }
 
+
     public CreateNewItemPage setItemName(String name) {
+        nameText.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
         nameText.sendKeys(name);
         return this;
     }
+
+
 
     public CreateNewItemPage selectTypeAndClickOk(String type) {
         getDriver().findElement(By.xpath("//span[text()='" + type + "']")).click();
@@ -139,6 +141,7 @@ public class CreateNewItemPage extends BasePage {
         return page;
     }
 
+
     public String getErrorMessage() {
         return errorMessage.getText();
 
@@ -158,5 +161,10 @@ public class CreateNewItemPage extends BasePage {
                 .stream()
                 .map(WebElement::getText)
                 .toList();
+    }
+
+    public CreateItemPage clickOkButton() {
+        okButton.click();
+        return new CreateItemPage(getDriver());
     }
 }

@@ -1,6 +1,7 @@
 package school.redrover.model;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -51,6 +52,21 @@ public class HomePage extends BasePage {
     private WebElement dropdownMove;
     @FindBy(xpath = "//*[@href='job/MultibranchPipeline/']/span")
     private WebElement multibranchPipelineName;
+
+    @FindBy(css = "div#breadcrumbBar a[href = '/']")
+    private WebElement dashboardBreadcrumbs;
+
+    @FindBy(css = "[class='tippy-box'] [href='/manage']")
+    private WebElement manageFromDashboardBreadcrumbsMenu;
+
+    @FindBy(id="executors")
+    private WebElement buildExecutorStatus;
+
+    @FindBy(xpath = "//td[text()='Idle']")
+    private List<WebElement> buildExecutorStatusList;
+
+    @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
+    private WebElement fullStageViewButton;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -159,7 +175,7 @@ public class HomePage extends BasePage {
         return new FolderStatusPage(getDriver());
     }
 
-    public HomePage openDropdownUsingSelenium(String projectName) {
+    public HomePage openItemDropdownWithSelenium(String projectName) {
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(By.linkText(projectName)))
                 .pause(1000)
@@ -198,6 +214,10 @@ public class HomePage extends BasePage {
         return !getItemList().contains(name);
     }
 
+    public boolean isItemExists(String name) {
+        return getItemList().contains(name);
+    }
+
     public MultibranchPipelineStatusPage clickMPName(String projectName) {
         getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
 
@@ -205,7 +225,7 @@ public class HomePage extends BasePage {
     }
 
     public WebElement getDropdownMenu() {
-        return  getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[@class='jenkins-dropdown']")));
     }
 
@@ -229,6 +249,46 @@ public class HomePage extends BasePage {
                 + projectName.replaceAll(" ", "%20") + "/']"))).click();
 
         return new PipelinePage(getDriver());
+    }
+
+    public HomePage openDashboardBreadcrumbsDropdown() {
+        WebElement chevron = dashboardBreadcrumbs.findElement(By.cssSelector("[class$='chevron']"));
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].dispatchEvent(new Event('mouseenter'));" +
+                        "arguments[0].dispatchEvent(new Event('click'));",
+                chevron);
+
+        return this;
+    }
+
+    public ManageJenkinsPage clickManageFromDashboardBreadcrumbsMenu() {
+        manageFromDashboardBreadcrumbsMenu.click();
+
+        return new ManageJenkinsPage(getDriver());
+    }
+
+    public String getBuildExecutorStatusText() {
+       return buildExecutorStatus.getText();
+    }
+
+    public List<WebElement> getBuildExecutorStatusList() {
+        return buildExecutorStatusList.stream().toList();
+    }
+
+    public int getBuildExecutorListSize() {
+        return buildExecutorStatusList.size();
+    }
+
+    public FullStageViewPage clickFullStageViewButton() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(fullStageViewButton)).click();
+
+        return new FullStageViewPage(getDriver());
+    }
+
+    public MultibranchPipelineRenamePage clickRenameFromDropdownMP() {
+        renameFromDropdown.click();
+
+        return new MultibranchPipelineRenamePage(getDriver());
     }
 
     public <T> T clickJobByName(String name, T page) {
