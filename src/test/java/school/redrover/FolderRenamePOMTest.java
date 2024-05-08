@@ -23,8 +23,8 @@ public class FolderRenamePOMTest extends BaseTest {
 
         new FolderConfigPage(getDriver())
                 .clickSaveButton()
-                .clickLogo()
-                .renameJobFromJobDropdown(FOLDER_NAME, NEW_FOLDER_NAME)
+                .clickOnRenameButtonLeft()
+                .renameFolder(NEW_FOLDER_NAME)
                 .clickLogo();
 
         List<String> itemList = homePage.getItemList();

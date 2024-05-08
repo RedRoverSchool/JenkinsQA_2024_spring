@@ -180,13 +180,7 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public FolderStatusPage renameJobFromJobDropdown(String currentName, String newName) {
-        openDropdownUsingSelenium(currentName.replace(" ", "%20"));
-        selectRenameFromDropdown();
-        return new FolderRenamePage(getDriver()).renameFolder(newName);
-    }
-
-    public MultiConfigurationConfirmRenamePage selectRenameFromDropdown() {
+       public MultiConfigurationConfirmRenamePage selectRenameFromDropdown() {
         renameFromDropdown.click();
 
         return new MultiConfigurationConfirmRenamePage(getDriver());
