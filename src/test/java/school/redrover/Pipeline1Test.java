@@ -294,11 +294,12 @@ public class Pipeline1Test extends BaseTest {
         Assert.assertEquals(actualResult, expectedResult);
     }
 
-    @Ignore
     @Test
     public void testBuildAttributes() {
 
         int number_of_stages = 5;
+
+        turnNodeOnIfOffline();
 
         createPipelineProject(PIPELINE_NAME);
 
@@ -328,12 +329,13 @@ public class Pipeline1Test extends BaseTest {
         Assert.assertTrue(result, "One of the elements is missing");
     }
 
-    @Ignore
     @Test
     public void testBuildAttributesDescending() {
 
         int number_of_stages = 1;
         int buildsQtt = 5;
+
+        turnNodeOnIfOffline();
 
         TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
         clickConfigButton();
