@@ -404,13 +404,13 @@ public class Pipeline1Test extends BaseTest {
     @Test
     public void testTableWithAllStagesAndTheLast10Builds() {
 
-        final int number_of_stages = 2;
+        final int stagesQtt = 2;
         final int buildsQtt = 13;
 
         turnNodeOnIfOffline();
         TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
         clickConfigButton();
-        sendScript(number_of_stages);
+        sendScript(stagesQtt);
         getDriver().findElement(By.name("Submit")).click();
 
         makeBuilds(buildsQtt);
@@ -429,7 +429,7 @@ public class Pipeline1Test extends BaseTest {
             expectedBuildsText.add("#" + (buildsQtt - i));
         }
 
-        Assert.assertEquals(actualSagesQtt, number_of_stages);
+        Assert.assertEquals(actualSagesQtt, stagesQtt);
         Assert.assertEquals(actualBuildsText, expectedBuildsText);
     }
 
