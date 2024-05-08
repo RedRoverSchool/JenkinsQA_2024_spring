@@ -457,7 +457,7 @@ public class Pipeline1Test extends BaseTest {
 
     @Test
     public void testPipelineProjectCanBeReenabled() {
-        String pipelineName = "My new cool disable pipeline project";
+        final String pipelineName = "My new cool disable pipeline project";
 
         HomePage homePage = new HomePage(getDriver());
         String statusForJobNameGiven = homePage
