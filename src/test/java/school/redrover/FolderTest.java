@@ -120,17 +120,19 @@ public class FolderTest extends BaseTest {
                 "The Folder name is not equal to " + THIRD_FOLDER_NAME);
     }
 
-    @Ignore
     @Test
     public void testRenameFolderViaSidebarMenu() {
-        createFolderViaCreateAJob();
+        String folderRenamedName = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .clickOnRenameButton()
+                .setNewName(NEW_FOLDER_NAME)
+                .clickRename()
+                .getPageTopic();
 
-        getDriver().findElement(By.linkText("Rename")).click();
-        getDriver().findElement(NEW_NAME).clear();
-        getDriver().findElement(NEW_NAME).sendKeys(NEW_FOLDER_NAME);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), NEW_FOLDER_NAME);
+        Assert.assertEquals(folderRenamedName, NEW_FOLDER_NAME);
     }
 
     @Test

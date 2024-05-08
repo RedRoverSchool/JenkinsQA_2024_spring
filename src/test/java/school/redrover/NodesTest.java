@@ -1,13 +1,16 @@
 package school.redrover;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.NodeBuiltInStatusPage;
+import school.redrover.model.NodeManagePage;
 import school.redrover.model.NodesTablePage;
 import school.redrover.runner.BaseTest;
 
@@ -150,5 +153,68 @@ public class NodesTest extends BaseTest {
                 .getLabels();
 
         Assert.assertTrue(actualResult.contains(labelName));
+    }
+
+    @Test
+    public void testCreateNewNodeWithDescription() {
+        String description = "Description for user in node is correct and useful for next step";
+
+        String actualResult = new HomePage(getDriver())
+                .clickNodesLink()
+                .clickNewNodeButton()
+                .setNodeName(NODE_NAME)
+                .selectPermanentAgentRadioButton()
+                .clickOkButton()
+                .addDescription(description)
+                .clickSaveButton()
+                .clickNode(NODE_NAME)
+                .getDescription();
+
+        Assert.assertTrue(actualResult.contains(description));
+    }
+
+    @Test
+    public void testNumberOfItems() {
+
+        HomePage homePage = new HomePage(getDriver());
+        String text = homePage.getBuildExecutorStatusText();
+        List<WebElement> buildExecutors = homePage.getBuildExecutorStatusList();
+        int number = homePage.getBuildExecutorListSize();
+
+        if(text.contains("( offline)")) {
+            int number1 = buildExecutors.size();
+
+            Assert.assertEquals(number, number1);
+
+        } else if(number >= 1){
+            int number2 = buildExecutors.size();
+
+            Assert.assertEquals(number, number2);
+        }
+    }
+
+    @Test
+    public void testSwitchNodeToOfflineStatus() {
+        final String nodeStatusMessage = "Disconnected by admin";
+
+        String nodeStatus = new HomePage(getDriver())
+                .clickNodesLink()
+                .clickOnBuiltInNode()
+                .clickMarkThisNodeTemporaryOfflineButton()
+                .clickMarkThisNodeTemporaryOfflineConfirmationBtn()
+                .getNodeOnlineStatusText();
+
+        Assert.assertTrue(nodeStatus.contains(nodeStatusMessage));
+    }
+
+    @Test(dependsOnMethods = "testSwitchNodeToOfflineStatus")
+    public void testSwitchNodeToOnlineStatus() {
+
+         NodeManagePage nodeStatus = new HomePage(getDriver())
+                .clickNodesLink()
+                .clickOnBuiltInNode()
+                .clickBringThisNodeBackOnlineBtn();
+
+        Assert.assertTrue(nodeStatus.nodeOnlineStatusText().isEmpty());
     }
 }
