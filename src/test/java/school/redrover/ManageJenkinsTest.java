@@ -24,7 +24,8 @@ public class ManageJenkinsTest extends BaseTest {
                 .clickSecurity()
                 .getTitleText();
 
-        Assert.assertEquals(pageTitle, "Security");    }
+        Assert.assertEquals(pageTitle, "Security");
+    }
 
     @Test
     public void testSectionNamesOfSecurityBlock() {
@@ -116,7 +117,8 @@ public class ManageJenkinsTest extends BaseTest {
         getDriver().findElement(By.cssSelector("[href='/manage']")).click();
 
         String placeholderText = getDriver().findElement(By.id("settings-search-bar")).getDomProperty("placeholder");
-        Assert.assertEquals(placeholderText, "Search settings");    }
+        Assert.assertEquals(placeholderText, "Search settings");
+    }
 
     @Test
     public void testSearchSettingsInvalidData() {
