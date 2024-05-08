@@ -53,19 +53,24 @@ public class ViewsTest extends BaseTest {
     public void testDisplayViewWithListViewConstraints() {
         final String INVISIBLE = "invisible";
 
-        TestUtils.createNewItemAndReturnToDashboard(this, VISIBLE, TestUtils.Item.FOLDER);
-        TestUtils.createNewItemAndReturnToDashboard(this, INVISIBLE, TestUtils.Item.PIPELINE);
+        List<String> projectNameList = new HomePage(getDriver())
+                .clickNewItem()
+                .createNewItem(VISIBLE, "Folder")
+                .clickNewItem()
+                .createNewItem(INVISIBLE, "Pipeline")
+                .clickNewView()
+                .setViewName(VIEW_NAME)
+                .clickListViewRadioButton()
+                .clickCreateView()
+                .clickProjectName(VISIBLE)
+                .clickOkButton()
+                .getProjectNames();
 
-        getDriver().findElement(By.cssSelector("[tooltip='New View']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(VIEW_NAME);
-        getDriver().findElement(By.cssSelector("[for$='ListView']")).click();
-        getDriver().findElement(By.id("ok")).click();
-        getDriver().findElement(By.cssSelector("label[title=" + VISIBLE + "]")).click();
-        getDriver().findElement(By.name("Submit")).click();
+        List<String> expectedProjectNameList = List.of(VISIBLE);
+        int expectedProjectListSize = 1;
 
-        Assert.assertTrue(
-                getDriver().findElements(By.cssSelector("[id^='job']")).size() == 1 &&
-                        getDriver().findElement(By.cssSelector(String.format("tr [href='job/%s/']", VISIBLE))).getText().equals(VISIBLE),
+        Assert.assertTrue(projectNameList.size() == expectedProjectListSize &&
+                        projectNameList.equals(expectedProjectNameList),
                 "Error displaying projects in View");
     }
 

@@ -289,6 +289,12 @@ public class HomePage extends BasePage {
         return new FullStageViewPage(getDriver());
     }
 
+    public MultibranchPipelineRenamePage clickRenameFromDropdownMP() {
+        renameFromDropdown.click();
+
+        return new MultibranchPipelineRenamePage(getDriver());
+    }
+
     public HomePage moveMouseToPassiveViewName() {
         new Actions(getDriver())
                 .moveToElement(passiveViewName)

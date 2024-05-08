@@ -185,7 +185,7 @@ public class PipelineTest extends BaseTest {
                 .clickSaveButton()
                 .getHeadlineDisplayedName();
 
-        Assert.assertEquals(getH1HeaderText, PIPELINE_NAME);
+             Assert.assertEquals(getH1HeaderText, PIPELINE_NAME);
     }
 
     @Test
@@ -205,6 +205,21 @@ public class PipelineTest extends BaseTest {
                 .getH2HeadingText();
 
         Assert.assertEquals(h2HeadingText, expectedResult);
+    }
+
+    @Test
+    void testVerifyThePresenceOfTheFullStageViewButtonInTheSidebar() {
+        String pipelineName = "New Pipeline group_java_autoqa_rrschool";
+
+        new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(pipelineName)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .chooseCreatedProject(pipelineName);
+
+        Assert.assertTrue(new PipelinePage(getDriver()).isBtnPresentInSidebar("Full Stage View"));
     }
 
     @Test(dependsOnMethods = "testCreatePipelineProject")
