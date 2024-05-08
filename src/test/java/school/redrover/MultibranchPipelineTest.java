@@ -122,7 +122,7 @@ public class MultibranchPipelineTest extends BaseTest {
             .selectMultibranchPipelineAndClickOk()
             .clickToggle()
             .clickSaveButton()
-            .clickDisableMultibranchPipeline();
+            .clickDisableEnableMultibranchPipeline();
 
         Assert.assertTrue(multibranchPipelineStatusPage.isMultibranchPipelineDisabledTextNotDisplayed(),"Disabled message is displayed!!!");
     }
@@ -363,8 +363,32 @@ public class MultibranchPipelineTest extends BaseTest {
                 .selectMultibranchPipelineAndClickOk()
                 .clickOnToggle()
                 .clickSaveButton()
-                .selectConfigure();
+                 .selectConfigure();
 
         Assert.assertEquals(page.getStatusToggle(), "false");
     }
+
+    @Test
+    public void testCreatingMultibranchPipeline(){
+        HomePage multibranchPipelinePage = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(MULTI_PIPELINE_NAME)
+                .selectMultibranchPipelineAndClickOk()
+                .clickSaveButton()
+                .clickLogo();
+        Assert.assertEquals(multibranchPipelinePage.getMultibranchPipelineNameText(),MULTI_PIPELINE_NAME);
+    }
+
+    @Test(dependsOnMethods = "testCreatingMultibranchPipeline")
+    public void testMultibranchPipelineEnable(){
+        String buttonName = new HomePage(getDriver())
+                .clickLogo()
+                .clickJobByName(MULTI_PIPELINE_NAME,
+                        new MultibranchPipelineStatusPage(getDriver()))
+                .getDisableMultibranchPipelineButtonText();
+
+        Assert.assertEquals(buttonName, "Disable Multibranch Pipeline");
+
+    }
+
 }

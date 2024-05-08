@@ -49,6 +49,8 @@ public class HomePage extends BasePage {
 
     @FindBy(css = "a[href $= '/move']")
     private WebElement dropdownMove;
+    @FindBy(xpath = "//*[@href='job/MultibranchPipeline/']/span")
+    private WebElement multibranchPipelineName;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -227,5 +229,15 @@ public class HomePage extends BasePage {
                 + projectName.replaceAll(" ", "%20") + "/']"))).click();
 
         return new PipelinePage(getDriver());
+    }
+
+    public <T> T clickJobByName(String name, T page) {
+        getDriver().findElement(By.xpath(
+                "//td/a[@href='job/" + name.replace(" ", "%20") + "/']")).click();
+
+        return page;
+    }
+    public String getMultibranchPipelineNameText(){
+        return multibranchPipelineName.getText();
     }
 }
