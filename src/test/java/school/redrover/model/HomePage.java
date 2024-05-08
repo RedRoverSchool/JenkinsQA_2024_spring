@@ -88,6 +88,9 @@ public class HomePage extends BasePage {
     @FindBy(tagName = "h1")
     private WebElement heading;
 
+    @FindBy (xpath = "//*[@href='newJob']")
+    private WebElement createJob;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -370,4 +373,11 @@ public class HomePage extends BasePage {
 
         return heading.getText();
     }
+
+    public  CreateNewItemPage clickCreateJob() {
+        createJob.click();
+
+        return new CreateNewItemPage(getDriver());
+    }
+
 }

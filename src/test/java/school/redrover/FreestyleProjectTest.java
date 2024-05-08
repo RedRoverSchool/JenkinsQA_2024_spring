@@ -4,6 +4,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.*;
 import org.testng.annotations.*;
+import school.redrover.model.FreestylePage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.*;
 
@@ -12,6 +13,7 @@ import java.util.List;
 public class FreestyleProjectTest extends BaseTest {
     private static final String FREESTYLE_PROJECT_NAME = "Freestyle Project Name";
     private static final String NEW_FREESTYLE_PROJECT_NAME = "New Freestyle Project Name";
+    final String FREESTYLE_PROJECT_DESCRIPTION = "Some description text";
 
     private WebElement okButton() {
         return getDriver().findElement(By.id("ok-button"));
@@ -318,5 +320,31 @@ public class FreestyleProjectTest extends BaseTest {
         clickDisableEnableButton();
 
         Assert.assertEquals(submitButton().getText(), "Disable Project");
+    }
+
+    public FreestylePage createFreestyleProjectWithDescription() {
+
+        return new HomePage(getDriver())
+                .clickCreateJob()
+                .setItemName(FREESTYLE_PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .inputDescription(FREESTYLE_PROJECT_DESCRIPTION)
+                .clickSave();
+    }
+
+    @Test
+    public void testCreateFreestyleProjectWithDescription() {
+        FreestylePage freestylePage = createFreestyleProjectWithDescription();
+        String freestyleTitleName = freestylePage.getProjectName();
+        String freestyleDescriptionText = freestylePage.getProjectDescriptionText();
+
+        Assert.assertEquals(freestyleTitleName, FREESTYLE_PROJECT_NAME);
+        Assert.assertEquals(freestyleDescriptionText, FREESTYLE_PROJECT_DESCRIPTION);
+
+        List<String> itemList = freestylePage
+                .clickLogo()
+                .getItemList();
+
+        Assert.assertTrue(itemList.contains(FREESTYLE_PROJECT_NAME));
     }
 }
