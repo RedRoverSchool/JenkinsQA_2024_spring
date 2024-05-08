@@ -10,7 +10,10 @@ import school.redrover.model.HomePage;
 import school.redrover.model.ManageJenkinsPage;
 import school.redrover.runner.BaseTest;
 
+import java.sql.SQLOutput;
 import java.util.List;
+
+import static org.testng.Assert.assertEquals;
 
 public class ManageJenkinsTest extends BaseTest {
 
@@ -24,7 +27,7 @@ public class ManageJenkinsTest extends BaseTest {
                 .clickSecurity()
                 .getTitleText();
 
-        Assert.assertEquals(pageTitle, "Security");
+        assertEquals(pageTitle, "Security");
     }
 
     @Test
@@ -117,7 +120,7 @@ public class ManageJenkinsTest extends BaseTest {
         getDriver().findElement(By.cssSelector("[href='/manage']")).click();
 
         String placeholderText = getDriver().findElement(By.id("settings-search-bar")).getDomProperty("placeholder");
-        Assert.assertEquals(placeholderText, "Search settings");
+        assertEquals(placeholderText, "Search settings");
     }
 
     @Test
@@ -130,7 +133,7 @@ public class ManageJenkinsTest extends BaseTest {
         String searchResult = getWait2().until(ExpectedConditions.visibilityOfElementLocated(
                 By.cssSelector("[class='jenkins-search__results'] p"))).getText();
 
-        Assert.assertEquals(searchResult, "No results");
+        assertEquals(searchResult, "No results");
     }
 
     @Test
@@ -157,5 +160,6 @@ public class ManageJenkinsTest extends BaseTest {
                 .hoverMouseOverTheTooltip();
 
         Assert.assertTrue(manageJenkinsPage.isSearchHintDisplayed());
+        Assert.assertEquals(manageJenkinsPage.getSearchHintText(),ManageJenkinsPage.SEARCH_HINT_TITLE);
     }
 }
