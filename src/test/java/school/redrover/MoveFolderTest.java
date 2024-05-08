@@ -14,20 +14,14 @@ public class MoveFolderTest extends BaseTest {
 
     @Test
     public void testMoveFolderToFolder() {
-        new HomePage(getDriver())
-                .createNewFolder(FIRST_FOLDER_NAME);
-        new HomePage(getDriver()).clickLogo();
-
-        new HomePage(getDriver())
-                .createNewFolder(SECOND_FOLDER_NAME);
-        new HomePage(getDriver()).clickLogo();
-
-        new HomePage(getDriver())
+        List<String> folderNameList = new HomePage(getDriver())
+                .createNewFolder(FIRST_FOLDER_NAME)
+                .clickLogo()
+                .createNewFolder(SECOND_FOLDER_NAME)
+                .clickLogo()
                 .openItemDropdown(FIRST_FOLDER_NAME)
                 .chooseFolderToMove()
-                .chooseFolderFromListAndSave(SECOND_FOLDER_NAME);
-
-        List<String> folderNameList = new HomePage(getDriver())
+                .chooseFolderFromListAndSave(SECOND_FOLDER_NAME)
                 .clickFolder(SECOND_FOLDER_NAME)
                 .getItemListInsideFolder();
 

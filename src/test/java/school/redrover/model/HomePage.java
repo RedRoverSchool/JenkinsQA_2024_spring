@@ -67,7 +67,6 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
     private WebElement fullStageViewButton;
 
-
     @FindBy(xpath = "//a[@class='jenkins-table__link model-link inside']")
     private List<WebElement> listNamesOfItems;
 
@@ -76,7 +75,7 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href, '/move')]")
     private WebElement moveOption;
-  
+
     @FindBy(css = ".tab.active a")
     private WebElement activeViewName;
 
@@ -316,12 +315,12 @@ public class HomePage extends BasePage {
         return new MultibranchPipelineRenamePage(getDriver());
     }
 
-
-    public void createNewFolder(String folderName) {
+    public HomePage createNewFolder(String folderName) {
         clickNewItem()
                 .setItemName(folderName)
                 .selectFolderAndClickOk()
                 .clickSaveButton();
+        return this;
     }
 
     public MovePage chooseFolderToMove() {
@@ -377,5 +376,4 @@ public class HomePage extends BasePage {
         }
         return actualDropDownElementsValues;
     }
-
 }
