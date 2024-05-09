@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.FolderStatusPage;
 import school.redrover.model.HomePage;
@@ -89,21 +88,16 @@ public class FolderTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateFolderViaCreateAJob")
     public void testRenameFolderViaFolderBreadcrumbsDropdownMenu() {
-        getDriver().findElement(By.cssSelector("td>[href^='job']")).click();
+        String folderStatusPageHeading = new HomePage(getDriver())
+                .clickSpecificFolderName(FOLDER_NAME)
+                .hoverOverBreadcrumbsName()
+                .clickBreadcrumbsDropdownArrow()
+                .clickDropdownRenameButton()
+                .setNewName(NEW_FOLDER_NAME)
+                .clickRename()
+                .getPageHeading();
 
-        WebElement breadcrumbFolderName = getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job']"));
-        new Actions(getDriver())
-                .moveToElement(breadcrumbFolderName)
-                .perform();
-
-        clickOnDropdownArrow(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']"));
-        getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='rename']")).click();
-        getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys(NEW_FOLDER_NAME);
-        getDriver().findElement(By.name("Submit")).click();
-
-        String folderPageHeading = getDriver().findElement(By.tagName("h1")).getText();
-        Assert.assertEquals(folderPageHeading, NEW_FOLDER_NAME,
+        Assert.assertEquals(folderStatusPageHeading, NEW_FOLDER_NAME,
                 "The Folder name is not equal to " + NEW_FOLDER_NAME);
     }
 
@@ -135,7 +129,7 @@ public class FolderTest extends BaseTest {
                 .clickOnRenameButton()
                 .setNewName(NEW_FOLDER_NAME)
                 .clickRename()
-                .getPageTopic();
+                .getPageHeading();
 
         Assert.assertEquals(folderRenamedName, NEW_FOLDER_NAME);
     }
