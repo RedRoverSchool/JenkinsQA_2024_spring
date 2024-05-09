@@ -417,7 +417,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testCreate() {
+    public void testCreate1() {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
         getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
             .sendKeys(MULTI_PIPELINE_NAME);
@@ -462,7 +462,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(multiPipelinePageHeading, RENAMED_MULTI_PIPELINE, "Wrong name");
     }
 
-    @Test(dependsOnMethods = "testCreate")
+    @Test(dependsOnMethods = "testCreate1")
     public void testVerifyMpDisabledOnStatusPage() {
         String disabledMessage = new HomePage(getDriver())
                 .clickMPName(MULTI_PIPELINE_NAME)
