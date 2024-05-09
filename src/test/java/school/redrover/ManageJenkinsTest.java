@@ -82,12 +82,12 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test
     public void testAlertMessageClickingReloadConfigurationFromDisk() {
-        boolean areAlertTitleVisible = new HomePage(getDriver())
+        boolean isAlertTitleVisible = new HomePage(getDriver())
                 .clickManageJenkins()
                 .clickReloadConfigurationFromDisk()
                 .dialogTitleVisibility();
 
-        Assert.assertTrue(areAlertTitleVisible);
+        Assert.assertTrue(isAlertTitleVisible);
     }
 
     @Test

@@ -1,9 +1,7 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.runner.TestUtils;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -41,9 +39,6 @@ public class ManageJenkinsPage extends BasePage {
 
     @FindBy(css = "[href='#']")
     private WebElement reloadConfigurationFromDiskLink;
-
-    @FindBy(className = "jenkins-dialog__title")
-    private WebElement reloadConfigurationFromDiskDialogTitle;
 
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
@@ -115,13 +110,9 @@ public class ManageJenkinsPage extends BasePage {
         return pageTitle.getText();
     }
 
-    public ManageJenkinsPage clickReloadConfigurationFromDisk() {
+    public ReloadConfigurationDialog clickReloadConfigurationFromDisk() {
         reloadConfigurationFromDiskLink.click();
 
-        return this;
-    }
-
-    public boolean dialogTitleVisibility() {
-        return getWait2().until(ExpectedConditions.visibilityOf(reloadConfigurationFromDiskDialogTitle)).isDisplayed();
+        return new ReloadConfigurationDialog(getDriver());
     }
 }
