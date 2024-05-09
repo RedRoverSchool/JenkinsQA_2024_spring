@@ -346,4 +346,24 @@ public class PipelineTest extends BaseTest {
 
         Assert.assertEquals(actualSagesQtt, stagesQtt);
     }
+
+    @Test
+    public void testBuildAttributes() {
+
+        int number_of_stages = 5;
+        boolean result = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickNodes()
+                .clickBuiltInNodeName()
+                .turnNodeOnIfOffline()
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .sendScript(number_of_stages)
+                .clickSaveButton()
+                .makeBuilds(1)
+                .getBuildAttributeStatus();
+
+        Assert.assertTrue(result, "One of the elements is missing");
+    }
 }
