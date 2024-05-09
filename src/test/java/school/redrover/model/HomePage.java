@@ -503,12 +503,18 @@ public class HomePage extends BasePage {
 
         return new PeoplePage(getDriver());
     }
-    public FolderStatusPage clickSpecificFolderName(String name) {
-        getDriver().findElement(By.cssSelector("td>[href^='job/" + name.replace(" ", "%20") + "']")).click();
+    public FolderStatusPage clickSpecificFolderName(String itemName) {
+        getDriver().findElement(
+                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
 
         return new FolderStatusPage(getDriver());
     }
 
+    public FolderRenamePage renameFolderFromDropdown() {
+        renameFromDropdown.click();
+
+        return new FolderRenamePage(getDriver());
+    }
 
     public  CreateNewItemPage clickCreateJob() {
         createJob.click();
