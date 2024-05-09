@@ -417,7 +417,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testCreate1() {
+    public void testCreate() {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
         getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
             .sendKeys(MULTI_PIPELINE_NAME);
