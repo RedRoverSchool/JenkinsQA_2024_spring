@@ -5,9 +5,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.FolderStatusPage;
 import school.redrover.model.HomePage;
@@ -23,16 +21,7 @@ public class FolderTest extends BaseTest {
     private static final String NEW_FOLDER_NAME = "Renamed_First_Folder";
     private static final String THIRD_FOLDER_NAME = "Dependant_Test_Folder";
     private static final String FOLDER_TO_MOVE = "Folder_to_move_into_the_first";
-    private static final By NEW_NAME = By.name("newName");
     private static final String PIPELINE_NAME = "Pipeline Sv";
-
-    private void createFolderViaCreateAJob() {
-        getDriver().findElement(By.linkText("Create a job")).click();
-        getDriver().findElement(By.id("name")).sendKeys(FOLDER_NAME);
-        getDriver().findElement(By.cssSelector("[class$='_Folder']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-    }
 
     private void clickOnDropdownArrow(By locator) {
         WebElement itemDropdownArrow = getDriver().findElement(locator);
@@ -142,27 +131,23 @@ public class FolderTest extends BaseTest {
 
     @Test
     public void testFolderMovedIntoAnotherFolderViaBreadcrumbs() {
-        createFolderViaCreateAJob();
-        getDriver().findElement(By.id("jenkins-home-link")).click();
+        String nestedFolder = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .clickNewItem()
+                .setItemName(FOLDER_TO_MOVE)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .hoverOverBreadcrumbsName()
+                .clickBreadcrumbsDropdownArrow()
+                .clickDropdownMoveButton()
+                .chooseDestinationFromListAndSave(FOLDER_NAME)
+                .clickMainFolderName(FOLDER_NAME)
+                .getNestedFolderName();
 
-        getDriver().findElement(By.cssSelector("[href$='newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(FOLDER_TO_MOVE);
-        getDriver().findElement(By.cssSelector("[class$='_Folder']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-
-        WebElement breadcrumbsFolderName = getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job']"));
-        new Actions(getDriver())
-                .moveToElement(breadcrumbsFolderName)
-                .perform();
-        clickOnDropdownArrow(By.cssSelector("[href^='/job'] [class$='dropdown-chevron']"));
-        getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='move']")).click();
-
-        new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" + FOLDER_NAME);
-        getDriver().findElement(By.name("Submit")).click();
-        getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job/" + FOLDER_NAME + "']")).click();
-
-        String nestedFolder = getDriver().findElement(By.cssSelector("td [href*='job']:first-child")).getText();
         Assert.assertEquals(nestedFolder, FOLDER_TO_MOVE, FOLDER_TO_MOVE + " is not in " + FOLDER_NAME);
     }
 
