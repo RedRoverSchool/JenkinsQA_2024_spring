@@ -41,26 +41,4 @@ public class ItemTest extends BaseTest {
 
     }
 
-    @DataProvider(name = "userAddProvider")
-    public Object[][] userAddProvider() {
-        return  new Object[][] {
-                {"Gleb", "Password", "Full name", "E-mail@com"},
-                {"Ignat", "Password", "Full name", "E-mail@com"},
-                {"Lion", "Password", "Full name", "E-mail@com"},
-                {"Oleg", "Password", "Full name", "E-mail@com"},
-                {"Den", "Password", "Full name", "E-mail@com"},
-        };
-    }
-
-    @Test(dataProvider = "userAddProvider")
-    public void testCheckPeople(String username, String password, String fullname, String email) {
-
-        List<String> showNam = new HomePage(getDriver())
-                .clickManageJenkins()
-                .clickUsers()
-                .createUser(username, password, fullname, email)
-                .getUserIDList();
-
-        Assert.assertTrue(showNam.contains(username));
-    }
 }
