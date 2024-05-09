@@ -85,6 +85,21 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(actualErrorMessage.getText(),expectedErrorMessage);
     }
 
+    @Test(dependsOnMethods = "testRenameOnTheSidebar")
+    public void testDeleteMpViaBreadcrumbs() {
+        getDriver().findElement(MULTI_PIPELINE_ON_DASHBOARD_LOCATOR).click();
+
+        WebElement dropdownArrow = getDriver().findElement(By.cssSelector("a[href^='/job'] > button"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
+                "arguments[0].dispatchEvent(new Event('click'));", dropdownArrow);
+
+        getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='doDelete']")).click();
+        getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
+
+        List<WebElement> projectList = getDriver().findElements(MULTI_PIPELINE_ON_DASHBOARD_LOCATOR);
+        Assert.assertTrue(projectList.isEmpty());
+    }
+
     @Test
     public void testRenameMultibranchPipeline() {
         String newNameMultibranchPipeline = new HomePage(getDriver())
@@ -495,20 +510,4 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertEquals(disabledMessageColor, "rgba(254, 130, 10, 1)");
     }
-
-    @Test(dependsOnMethods = "testRenameOnTheSidebar")
-    public void testDeleteMpViaBreadcrumbs() {
-        getDriver().findElement(MULTI_PIPELINE_ON_DASHBOARD_LOCATOR).click();
-
-        WebElement dropdownArrow = getDriver().findElement(By.cssSelector("a[href^='/job'] > button"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
-                "arguments[0].dispatchEvent(new Event('click'));", dropdownArrow);
-
-        getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='doDelete']")).click();
-        getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
-
-        List<WebElement> projectList = getDriver().findElements(MULTI_PIPELINE_ON_DASHBOARD_LOCATOR);
-        Assert.assertTrue(projectList.isEmpty());
-    }
-
 }
