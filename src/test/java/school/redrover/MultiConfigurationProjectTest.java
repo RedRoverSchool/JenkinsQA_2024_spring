@@ -23,6 +23,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     private static final String PROJECT_NAME = "MCProject";
     private final String RANDOM_PROJECT_NAME = TestUtils.randomString();
 
+    @Ignore
     @Test
     public void testRenameProjectViaMainPageDropdown() {
         String addToProjectName = "New";

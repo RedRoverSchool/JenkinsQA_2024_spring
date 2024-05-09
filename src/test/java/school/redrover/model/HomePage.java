@@ -8,6 +8,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
+import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
@@ -239,7 +240,7 @@ public class HomePage extends BasePage {
 
     public HomePage openItemDropdownWithSelenium(String projectName) {
         new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.linkText(projectName)))
+                .moveToElement(getDriver().findElement(By.xpath("//a[@href='job/"+ projectName +"/']")))
                 .pause(1000)
                 .scrollToElement(getDriver().findElement(By.cssSelector(String.format("[data-href*='/job/%s/']", projectName))))
                 .click()
@@ -248,7 +249,7 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public MultiConfigurationConfirmRenamePage selectRenameFromDropdown() {
+       public MultiConfigurationConfirmRenamePage selectRenameFromDropdown() {
         renameFromDropdown.click();
 
         return new MultiConfigurationConfirmRenamePage(getDriver());
@@ -326,6 +327,12 @@ public class HomePage extends BasePage {
                 chevron);
 
         return this;
+    }
+
+    public CreateNewItemPage clickNewJobFromDashboardBreadcrumbsMenu() {
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.tippy-box a[href $= 'newJob']"))).click();
+
+        return new CreateNewItemPage(getDriver());
     }
 
     public ManageJenkinsPage clickManageFromDashboardBreadcrumbsMenu() {

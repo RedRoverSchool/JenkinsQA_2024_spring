@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -26,6 +27,14 @@ public class FolderRenamePage extends BasePage {
 
     public FolderStatusPage clickRename() {
         submitButton.click();
+
+        return new FolderStatusPage(getDriver());
+    }
+
+    public FolderStatusPage renameFolder (String newName) {
+        textBox.clear();
+        textBox.sendKeys(newName);
+        textBox.sendKeys(Keys.ENTER);
 
         return new FolderStatusPage(getDriver());
     }

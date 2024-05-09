@@ -19,6 +19,12 @@ public class FolderStatusPage extends BasePage {
     @FindBy(tagName = "h1")
     private WebElement pageHeading;
 
+    @FindBy(xpath = "//span[contains(text(),'Rename')]/../.")
+    private WebElement renameButtonLeft;
+
+    @FindBy(css = "h1")
+    private WebElement pageTopic;
+
     @FindBy(css = ".empty-state-section")
     private WebElement emptyStateSection;
 
@@ -65,6 +71,12 @@ public class FolderStatusPage extends BasePage {
 
     public FolderRenamePage clickOnRenameButton() {
         renameButton.click();
+
+        return new FolderRenamePage(getDriver());
+    }
+
+    public FolderRenamePage clickOnRenameButtonLeft() {
+        renameButtonLeft.click();
 
         return new FolderRenamePage(getDriver());
     }
