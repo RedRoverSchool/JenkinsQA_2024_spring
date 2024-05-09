@@ -18,6 +18,9 @@ public class ViewPage extends BasePage {
     @FindBy(xpath = "//td/a[contains(@href, 'job/')]")
     List<WebElement> projectNamesList;
 
+    @FindBy(className = "sortheader")
+    List<WebElement> columnNameList;
+
     public ViewPage(WebDriver driver) { super(driver); }
 
     public ViewMyListConfigPage clickEditViewButton() {
@@ -33,4 +36,17 @@ public class ViewPage extends BasePage {
     public List<String> getProjectNames(){
         return projectNamesList.stream().map(WebElement::getText).toList();
     }
+
+    public int getProjectListSize(){
+        return projectNamesList.size();
+    }
+
+    public int getSizeColumnList() {
+        return columnNameList.size();
+    }
+
+    public List<String> getColumnNameText() {
+         return columnNameList.stream().map(WebElement::getText).toList();
+    }
 }
+

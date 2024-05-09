@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -15,6 +16,9 @@ public class FolderStatusPage extends BasePage {
     @FindBy(css = "[href*='confirm-rename']")
     private WebElement renameButton;
 
+    @FindBy(tagName = "h1")
+    private WebElement pageHeading;
+
     @FindBy(xpath = "//span[contains(text(),'Rename')]/../.")
     private WebElement renameButtonLeft;
 
@@ -29,6 +33,33 @@ public class FolderStatusPage extends BasePage {
 
     @FindBy(xpath = "//a[.='New Item']")
     private WebElement newItem;
+
+    @FindBy(xpath = "//*[@id='description']/div")
+    private WebElement description;
+
+    @FindBy(xpath = "//*[@id='description-link']")
+    private WebElement descriptionLink;
+
+    @FindBy(xpath = "//textarea[@name='description']")
+    private WebElement textareaDescription;
+
+    @FindBy(xpath = "//*[@name='Submit']")
+    private WebElement saveButton;
+
+    @FindBy(xpath = "//tr[contains(@id,'job_')]/td[3]/a")
+    private WebElement itemInTable;
+
+    @FindBy(css = "[href^='/job'] [class$='dropdown-chevron']")
+    private WebElement breadcrumbsDropdownArrow;
+
+    @FindBy(css = "[class*='dropdown'] [href$='move']")
+    private WebElement dropdownMoveButton;
+
+    @FindBy(css = "td [href*='job']:first-child")
+    private WebElement nestedFolderName;
+
+    @FindBy(css = "[class*='dropdown'] [href$='rename']")
+    private WebElement dropdownRenameButton;
 
     public FolderStatusPage(WebDriver driver) {
         super(driver);
@@ -50,8 +81,8 @@ public class FolderStatusPage extends BasePage {
         return new FolderRenamePage(getDriver());
     }
 
-    public String getPageTopic() {
-        return pageTopic.getText();
+    public String getPageHeading() {
+        return pageHeading.getText();
     }
 
     public Boolean isFolderEmpty() {
@@ -69,5 +100,62 @@ public class FolderStatusPage extends BasePage {
                 .stream()
                 .map(WebElement::getText)
                 .toList();
+    }
+
+    public FolderStatusPage clickAddOrEditDescription() {
+        descriptionLink.click();
+        return this;
+    }
+
+    public FolderStatusPage setDescription(String text) {
+        textareaDescription.sendKeys(text);
+        return this;
+    }
+
+    public FolderStatusPage clickSaveButton() {
+        saveButton.click();
+        return this;
+    }
+
+    public String getDescriptionText() {
+        return description.getText();
+    }
+
+    public String getItemInTableName() {
+        return itemInTable.getText();
+    }
+
+    public FolderStatusPage hoverOverBreadcrumbsName() {
+        hoverOverElement(breadcrumbsName);
+
+        return this;
+    }
+
+    public FolderStatusPage clickBreadcrumbsDropdownArrow() {
+        clickSpecificDropdownArrow(breadcrumbsDropdownArrow);
+
+        return this;
+    }
+
+    public MovePage clickDropdownMoveButton() {
+        dropdownMoveButton.click();
+
+        return new MovePage(getDriver());
+    }
+
+    public FolderStatusPage clickMainFolderName(String mainFolder) {
+        getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job/" + mainFolder + "']")).click();
+
+        return new FolderStatusPage(getDriver());
+    }
+
+    public String getNestedFolderName() {
+        return nestedFolderName.getText();
+    }
+
+    public FolderRenamePage clickDropdownRenameButton() {
+        dropdownRenameButton.click();
+
+        return new FolderRenamePage(getDriver());
     }
 }

@@ -1,40 +1,23 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.Keys;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.FullStageViewPage;
 import school.redrover.model.HomePage;
+import school.redrover.model.PipelinePage;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.TestUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PipelineTest extends BaseTest {
 
     private static final String PIPELINE_NAME = "FirstPipeline";
     private static final By DASHBOARD_PIPELINE_LOCATOR = By.cssSelector("td [href='job/" + PIPELINE_NAME + "/']");
-    private static final By BUILD_HISTORY_PIPELINE_LOCATOR = By.cssSelector("td [href$='job/" + PIPELINE_NAME + "/']");
     private static final String DESCRIPTION = "Lorem ipsum dolor sit amet";
     private static final String NEW_PIPELINE_NAME = "New Pipeline name";
-
-    private void createPipelineWithCreateAJob() {
-        getDriver().findElement(By.linkText("Create a job")).click();
-        getDriver().findElement(By.id("name")).sendKeys(PIPELINE_NAME);
-        getDriver().findElement(By.cssSelector("[class$='WorkflowJob']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-    }
-
-    private void clickOnDropdownArrow(By locator) {
-        WebElement itemDropdownArrow = getDriver().findElement(locator);
-
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
-                "arguments[0].dispatchEvent(new Event('click'));", itemDropdownArrow);
-    }
 
     @Test
     public void testPipelineDescriptionTextAreaBacklightColor() {
@@ -102,26 +85,24 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(isPipelineDeleted, PIPELINE_NAME + " was not deleted");
     }
 
-    @Ignore
     @Test
     public void testBuildHistoryEmptyUponPipelineRemoval() {
-        createPipelineWithCreateAJob();
-        TestUtils.goToMainPage(getDriver());
+        boolean isBuildDeleted = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .scheduleBuildForItem(PIPELINE_NAME)
+                .clickBuildHistory()
+                .hoverOverItemName(PIPELINE_NAME)
+                .clickItemDropdownArrow()
+                .clickItemDeleteButton()
+                .clickYes(new HomePage(getDriver()))
+                .clickBuildHistory()
+                .isBuildDeleted(PIPELINE_NAME);
 
-        getDriver().findElement(By.cssSelector("td [title='Schedule a Build for " + PIPELINE_NAME + "']")).click();
-        getDriver().findElement(By.cssSelector("[href$='builds']")).click();
-
-        new Actions(getDriver())
-                .moveToElement(getDriver().findElement(BUILD_HISTORY_PIPELINE_LOCATOR))
-                .perform();
-        clickOnDropdownArrow(By.cssSelector("td [class$='link'] [class$='dropdown-chevron']"));
-
-        getDriver().findElement(By.cssSelector("[href$='Delete']")).click();
-        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
-        getDriver().findElement(By.cssSelector("[href$='builds']")).click();
-
-        List<WebElement> buildHistoryTable = getDriver().findElements(BUILD_HISTORY_PIPELINE_LOCATOR);
-        Assert.assertTrue(buildHistoryTable.isEmpty(), PIPELINE_NAME + " build is in Build history table");
+        Assert.assertTrue(isBuildDeleted, PIPELINE_NAME + " build is in the Build history table");
     }
 
     @Test
@@ -180,7 +161,7 @@ public class PipelineTest extends BaseTest {
                 .clickSaveButton()
                 .getHeadlineDisplayedName();
 
-             Assert.assertEquals(getH1HeaderText, PIPELINE_NAME);
+        Assert.assertEquals(getH1HeaderText, PIPELINE_NAME);
     }
 
     @Test
@@ -200,5 +181,188 @@ public class PipelineTest extends BaseTest {
                 .getH2HeadingText();
 
         Assert.assertEquals(h2HeadingText, expectedResult);
+    }
+
+    @Test
+    void testVerifyThePresenceOfTheFullStageViewButtonInTheSidebar() {
+        String pipelineName = "New Pipeline group_java_autoqa_rrschool";
+
+        new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(pipelineName)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .chooseCreatedProject(pipelineName);
+
+        Assert.assertTrue(new PipelinePage(getDriver()).isBtnPresentInSidebar("Full Stage View"));
+    }
+
+    @Test(dependsOnMethods = "testCreatePipelineProject")
+    public void testBreadcrumbsOnFullStageViewPage() {
+
+        final String expectedResult = "Dashboard > " + PIPELINE_NAME + " > Full Stage View";
+
+        String actualResult = new HomePage(getDriver())
+                .chooseCreatedProject(PIPELINE_NAME)
+                .clickFullStageViewButton()
+                .getBreadcrumbsText();
+
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test(dependsOnMethods = "testCreatePipelineProject")
+    public void testColorWhenHoveringMouseOnFullStageViewButton() {
+
+        final String expectedColor = "rgba(175, 175, 207, 0.15)";
+
+        String backgroundColorBeforeHover = new HomePage(getDriver())
+                .chooseCreatedProject(PIPELINE_NAME)
+                .getFullStageViewButtonBackgroundColor();
+
+        String backgroundColorAfterHover = new PipelinePage(getDriver())
+                .hoverOnFullStageViewButton()
+                .getFullStageViewButtonBackgroundColor();
+
+        Assert.assertTrue(!backgroundColorAfterHover.equals(backgroundColorBeforeHover)
+                && backgroundColorAfterHover.equals(expectedColor));
+    }
+
+    @Test
+    public void testFullStageViewButtonInDropDown() {
+
+        final String pipelineName = PIPELINE_NAME;
+        final String expectedResult = PIPELINE_NAME + " - Stage View";
+
+        String h2HeadingText = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(pipelineName)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .openItemDropdown(pipelineName)
+                .clickFullStageViewButton()
+                .getH2HeadingText();
+
+        Assert.assertEquals(h2HeadingText, expectedResult);
+    }
+
+    @Test
+    public void testTableWithAllStagesAndTheLast10Builds() {
+
+        final int stagesQtt = 2;
+        final int buildsQtt = 13;
+
+        int actualSagesQtt = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickNodes()
+                .clickBuiltInNodeName()
+                .turnNodeOnIfOffline()
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .sendScript(stagesQtt)
+                .clickSaveButton()
+                .makeBuilds(buildsQtt)
+                .clickFullStageViewButton()
+                .getSagesQtt();
+
+        List<String> actualBuildsText = new FullStageViewPage(getDriver())
+                .getItemList();
+
+        List<String> expectedBuildsText = new ArrayList<>();
+
+        for (int i = 0; i < actualBuildsText.size(); i++) {
+            expectedBuildsText.add("#" + (buildsQtt - i));
+        }
+
+        Assert.assertEquals(actualSagesQtt, stagesQtt);
+        Assert.assertEquals(actualBuildsText, expectedBuildsText);
+    }
+
+    @Test
+    public void testChangesPageHeading() {
+        String actualPageHeading = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .hoverOverBreadcrumbsName()
+                .clickBreadcrumbsDropdownArrow()
+                .clickDropdownChangesButton()
+                .getPageHeading();
+
+        Assert.assertEquals(actualPageHeading, "Changes");
+    }
+
+    @Test
+    public void testRenameJobViaBreadcrumbs() {
+        String displayedNewName = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickBreadcrumbsDropdownArrow()
+                .clickBreadcrumbsRenameButton()
+                .clearNameInputField()
+                .setNewName(NEW_PIPELINE_NAME)
+                .clickSaveRenameButton()
+                .getHeadlineDisplayedName();
+
+        Assert.assertEquals(displayedNewName, NEW_PIPELINE_NAME);
+    }
+
+    @Test
+    public void testAddDescriptionPreview() {
+        String previewDescription = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .addDescription(DESCRIPTION)
+                .clickPreview()
+                .getTextareaPreviewText();
+
+        Assert.assertEquals(previewDescription, DESCRIPTION);
+    }
+
+    @Test
+    public void testStagesQtt() {
+        final int stagesQtt = 5;
+        final int buildsQtt = 1;
+
+        int actualSagesQtt = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickNodes()
+                .clickBuiltInNodeName()
+                .turnNodeOnIfOffline()
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .sendScript(stagesQtt)
+                .clickSaveButton()
+                .makeBuilds(buildsQtt)
+                .getSagesQtt();
+
+        Assert.assertEquals(actualSagesQtt, stagesQtt);
+    }
+
+    @Test
+    public void testAvgStageTimeBuildTimeIsDisplayed() {
+
+        new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .scrollToPipelineScript()
+                .selectSamplePipelineScript("hello")
+                .clickSaveButton()
+                .clickBuild()
+                .waitBuildToFinish()
+                .waitStageTable();
+
+        boolean avgTime = new PipelinePage(getDriver()).avgStageTimeAppear();
+        boolean buildTime = new PipelinePage(getDriver()).buildTimeAppear(1);
+
+        Assert.assertTrue(avgTime && buildTime);
     }
 }

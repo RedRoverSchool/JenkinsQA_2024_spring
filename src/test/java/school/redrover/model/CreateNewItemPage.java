@@ -1,15 +1,15 @@
 package school.redrover.model;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import java.util.List;
 
 public class CreateNewItemPage extends BasePage {
@@ -47,6 +47,9 @@ public class CreateNewItemPage extends BasePage {
     @FindBy(xpath = "//div[@class='item-copy']//li[not(@style='display: none;')]")
     private List<WebElement> copyFormElements;
 
+    @FindBy(id = "itemname-required")
+    private WebElement itemNameHint;
+
     public CreateNewItemPage(WebDriver driver) {
         super(driver);
     }
@@ -61,17 +64,20 @@ public class CreateNewItemPage extends BasePage {
             case "MultibranchPipeline" -> multibranchPipelineItem.click();
             case "OrganizationFolder" -> organizationFolderItem.click();
             default -> throw new IllegalArgumentException("Project type name incorrect");
-         }
+        }
         okButton.click();
         clickLogo();
 
         return new HomePage(getDriver());
     }
 
+
     public CreateNewItemPage setItemName(String name) {
+        nameText.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
         nameText.sendKeys(name);
         return this;
     }
+
 
     public CreateNewItemPage selectTypeAndClickOk(String type) {
         getDriver().findElement(By.xpath("//span[text()='" + type + "']")).click();
@@ -139,6 +145,7 @@ public class CreateNewItemPage extends BasePage {
         return page;
     }
 
+
     public String getErrorMessage() {
         return errorMessage.getText();
 
@@ -153,10 +160,38 @@ public class CreateNewItemPage extends BasePage {
         return this;
     }
 
-    public List<String> copyFormElementsList() {
+    public List<String> getCopyFormElementsList() {
         return copyFormElements
                 .stream()
                 .map(WebElement::getText)
                 .toList();
+    }
+
+    public CreateItemPage clickOkButton() {
+        okButton.click();
+        return new CreateItemPage(getDriver());
+    }
+
+    public List<String> getDropdownMenuContent() {
+        List<WebElement> allJobFromThisLetter = getWait60().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("li[style='']")));
+        List<String> allJobFromThisLetterName = new ArrayList<>();
+
+        for (WebElement el : allJobFromThisLetter) {
+            allJobFromThisLetterName.add(el.getText());
+        }
+        return allJobFromThisLetterName ;
+    }
+
+    public CreateNewItemPage clearItemNameField() {
+        nameText.sendKeys(Keys.CONTROL + "a", Keys.BACK_SPACE);
+        return this;
+    }
+
+    public String getItemNameHintText() {
+        return itemNameHint.getText();
+    }
+
+    public String getItemNameHintColor() {
+        return itemNameHint.getCssValue("color");
     }
 }

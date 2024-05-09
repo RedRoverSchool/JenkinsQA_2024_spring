@@ -9,19 +9,12 @@ import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.ManageJenkinsPage;
 import school.redrover.runner.BaseTest;
-
 import java.util.List;
 
 public class ManageJenkinsTest extends BaseTest {
 
     private static final By SETTINGS_SEARCH_BAR_LOCATOR = By.id("settings-search-bar");
 
-    private boolean areElementsEnabled(List<WebElement> elements) {
-        for (WebElement element : elements) {
-            return element.isEnabled();
-        }
-        return false;
-    }
 
     @Test
     public void testRedirectionToSecurityPage() {
@@ -79,23 +72,22 @@ public class ManageJenkinsTest extends BaseTest {
     }
 
     @Test
-    public void testToolsAndActionsBlockSectionsEnabled() {
-        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
+    public void testToolsAndActionsBlockSectionsClickable() {
+        boolean areToolsAndActionsSectionsEnabled = new HomePage(getDriver())
+                .clickManageJenkins()
+                .areToolsAndActionsSectionsEnabled();
 
-        List<WebElement> toolsAndActionsSections = getDriver().findElements(
-                By.xpath("(//div[@class='jenkins-section__items'])[5]/div[contains(@class, 'item')]"));
-
-        Assert.assertTrue(areElementsEnabled(toolsAndActionsSections),
-                "'Tools and Actions' sections are not clickable");
+        Assert.assertTrue(areToolsAndActionsSectionsEnabled,"'Tools and Actions' sections are not clickable");
     }
 
     @Test
     public void testAlertMessageClickingReloadConfigurationFromDisk() {
-        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
-        getDriver().findElement(By.cssSelector("[href='#']")).click();
+        boolean isAlertTitleVisible = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickReloadConfigurationFromDisk()
+                .dialogTitleVisibility();
 
-        boolean alertMessageIsDisplayed = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dialog__title"))).isDisplayed();
-        Assert.assertTrue(alertMessageIsDisplayed);
+        Assert.assertTrue(isAlertTitleVisible);
     }
 
     @Test
@@ -147,5 +139,24 @@ public class ManageJenkinsTest extends BaseTest {
                 .clickManageJenkins();
 
         Assert.assertTrue(manageJenkinsPage.isSearchInputDisplayed());
+    }
+
+    @Test
+    public void testActivatingSearchPressingSlash() {
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins()
+                .pressSlashKey();
+
+        Assert.assertTrue(manageJenkinsPage.isShortcutDisplayed());
+    }
+
+    @Test
+    public void testTooltipAppears() {
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins()
+                .hoverMouseOverTheTooltip();
+
+        Assert.assertTrue(manageJenkinsPage.isSearchHintDisplayed()
+                        && manageJenkinsPage.getSearchHintText().equals("Press / on your keyboard to focus"), "tooltip text is incorrect");
     }
 }
