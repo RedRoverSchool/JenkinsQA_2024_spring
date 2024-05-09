@@ -129,7 +129,7 @@ public class HomePage extends BasePage {
     private WebElement configureTooltipButton;
 
     @FindBy(xpath = "//a[@href='/asynchPeople/']")
-    WebElement peopleButton;
+    private WebElement peopleButton;
 
     public HomePage(WebDriver driver) {
         super(driver);

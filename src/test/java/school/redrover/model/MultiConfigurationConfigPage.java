@@ -9,10 +9,10 @@ import school.redrover.model.base.BasePage;
 public class MultiConfigurationConfigPage extends BasePage {
 
     @FindBy(className = "jenkins-toggle-switch__label")
-    WebElement toggleSwitch;
+    private WebElement toggleSwitch;
 
     @FindBy(name = "Apply")
-    WebElement applyButton;
+    private WebElement applyButton;
 
     public MultiConfigurationConfigPage(WebDriver driver) {
         super(driver);
