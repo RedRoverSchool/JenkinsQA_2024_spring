@@ -5,9 +5,11 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CreateNewItemPage extends BasePage {
@@ -166,4 +168,16 @@ public class CreateNewItemPage extends BasePage {
         okButton.click();
         return new CreateItemPage(getDriver());
     }
+
+
+    public List<String> getDropdownMenuContent() {
+        List<WebElement> allJobFromThisLetter = getWait60().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("li[style='']")));
+        List<String> allJobFromThisLetterName = new ArrayList<>();
+
+        for (WebElement el : allJobFromThisLetter) {
+            allJobFromThisLetterName.add(el.getText());
+        }
+        return allJobFromThisLetterName ;
+    }
+
 }

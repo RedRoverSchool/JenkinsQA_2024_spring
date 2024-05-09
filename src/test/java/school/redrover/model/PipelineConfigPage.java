@@ -1,9 +1,6 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.WheelInput;
 import org.openqa.selenium.support.FindBy;
@@ -12,6 +9,8 @@ import org.openqa.selenium.support.ui.Select;
 import school.redrover.model.base.BasePage;
 
 import javax.swing.*;
+import javax.xml.xpath.XPath;
+import java.security.cert.X509Certificate;
 import java.time.Duration;
 
 public class PipelineConfigPage extends BasePage {
@@ -37,6 +36,15 @@ public class PipelineConfigPage extends BasePage {
 
     @FindBy(xpath = "//div[@class = 'samples']//select")
     private WebElement samplePiplineScript;
+
+    @FindBy(xpath = "//*[@id='pipeline]")
+    private WebElement isPiplineDisplayed;
+
+    @FindBy(xpath = "//a[@previewendpoint='/markupFormatter/previewDescription']")
+    private WebElement preview;
+
+    @FindBy(xpath = "//div[@class='textarea-preview']")
+    private WebElement textareaPreview;
 
     public PipelineConfigPage(WebDriver driver) {
         super(driver);
@@ -108,5 +116,18 @@ public class PipelineConfigPage extends BasePage {
             getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
         }
         return this;
+    }
+    public boolean isPiplineDisplayed() {
+        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='pipeline']"))).isDisplayed();
+        }
+
+    public PipelineConfigPage clickPreview() {
+        preview.click();
+
+        return new PipelineConfigPage(getDriver());
+    }
+
+    public String getTextareaPreviewText() {
+        return textareaPreview.getText();
     }
 }

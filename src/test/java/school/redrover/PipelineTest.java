@@ -1,6 +1,8 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.FullStageViewPage;
@@ -277,5 +279,50 @@ public class PipelineTest extends BaseTest {
 
         Assert.assertEquals(actualSagesQtt, stagesQtt);
         Assert.assertEquals(actualBuildsText, expectedBuildsText);
+    }
+
+    @Test
+    public void testChangesPageHeading() {
+        String actualPageHeading = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .hoverOverBreadcrumbsName()
+                .clickBreadcrumbsDropdownArrow()
+                .clickDropdownChangesButton()
+                .getPageHeading();
+
+        Assert.assertEquals(actualPageHeading, "Changes");
+    }
+
+    @Test
+    public void testRenameJobViaBreadcrumbs() {
+        String displayedNewName = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickBreadcrumbsDropdownArrow()
+                .clickBreadcrumbsRenameButton()
+                .clearNameInputField()
+                .setNewName(NEW_PIPELINE_NAME)
+                .clickSaveRenameButton()
+                .getHeadlineDisplayedName();
+
+        Assert.assertEquals(displayedNewName, NEW_PIPELINE_NAME);
+    }
+
+    @Test
+    public void testAddDescriptionPreview(){
+        String previewDescription = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .addDescription(DESCRIPTION)
+                .clickPreview()
+                .getTextareaPreviewText();
+
+        Assert.assertEquals(previewDescription,DESCRIPTION);
     }
 }
