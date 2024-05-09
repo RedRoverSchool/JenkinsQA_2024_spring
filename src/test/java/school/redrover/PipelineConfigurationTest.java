@@ -75,14 +75,14 @@ public class PipelineConfigurationTest extends BaseTest {
     @Test
     public void testScroll() {
 
-        boolean isPiplineScroll = new HomePage(getDriver())
+        boolean isPipelineScroll = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(JOB_NAME)
                 .selectPipelineAndClickOk()
-                .scrollToPiplineScript()
-                .isPiplineDisplayed();
+                .scrollToPipelineScript()
+                .isPipelineDisplayed();
 
-        Assert.assertTrue(isPiplineScroll, "Pipline doesn't scroll");
+        Assert.assertTrue(isPipelineScroll, "Pipline doesn't scroll");
     }
 
     @Test
@@ -134,8 +134,8 @@ public class PipelineConfigurationTest extends BaseTest {
                 .selectPipelineAndClickOk()
                 .clickDiscardOldBuilds()
                 .setNumberBuildsToKeep(1)
-                .scrollToPiplineScript()
-                .selectSamplePiplineScript("hello")
+                .scrollToPipelineScript()
+                .selectSamplePipelineScript("hello")
                 .clickSaveButton()
                 .clickBuild()
                 .waitBuildToFinish()
@@ -169,7 +169,7 @@ public class PipelineConfigurationTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testAddDescriptionInConfigureMenu")
-    public void testEditDiscription() {
+    public void testEditDescription() {
 
         getDriver().findElement(By.id("description-link")).click();
         WebElement textArea = getDriver().findElement(By.name("description"));

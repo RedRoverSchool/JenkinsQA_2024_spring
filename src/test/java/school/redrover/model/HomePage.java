@@ -100,6 +100,18 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[contains(@href, '/move')]")
     private WebElement moveOption;
 
+    @FindBy(css = "[class$='am-button security-am']")
+    private WebElement warningIcon;
+
+    @FindBy(xpath = "//div[@role='alert']")
+    private WebElement warningTooltipLocator;
+
+    @FindBy(xpath = "//a[contains(text(),'Manage Jenkins')]")
+    private WebElement manageJenkinsTooltipLink;
+
+    @FindBy(xpath = "//button[@name='configure']")
+    private WebElement configureTooltipButton;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -410,5 +422,25 @@ public class HomePage extends BasePage {
     public MovePage chooseFolderToMove() {
         getWait5().until(ExpectedConditions.visibilityOf(moveOption)).click();
         return new MovePage(getDriver());
+    }
+
+    public HomePage clickWarningIcon() {
+        warningIcon.click();
+        return this;
+    }
+
+    public String getWarningTooltipText() {
+        WebElement warningTooltipText = getWait5().until(ExpectedConditions.visibilityOf(warningTooltipLocator));
+        return warningTooltipText.getText();
+    }
+
+    public ManageJenkinsPage clickManageJenkinsTooltipLink() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(manageJenkinsTooltipLink)).click();
+        return new ManageJenkinsPage(getDriver());
+    }
+
+    public SecurityPage clickConfigureTooltipButton() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(configureTooltipButton)).click();
+        return new SecurityPage(getDriver());
     }
 }

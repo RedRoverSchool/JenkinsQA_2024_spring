@@ -24,7 +24,6 @@ public class PipelineConfigPage extends BasePage {
     @FindBy(xpath = "//label[@data-title='Disabled']")
     private WebElement toggleSwitchEnableDisable;
 
-
     @FindBy(xpath = "//label[text() = 'Discard old builds']")
     private WebElement discardOldBuildsCheckbox;
 
@@ -32,13 +31,13 @@ public class PipelineConfigPage extends BasePage {
     private WebElement numberBuildsToKeep;
 
     @FindBy(xpath = "//button[@data-section-id='pipeline']")
-    private WebElement scrollToPiplineScript;
+    private WebElement scrollToPipelineScript;
 
     @FindBy(xpath = "//div[@class = 'samples']//select")
-    private WebElement samplePiplineScript;
+    private WebElement samplePipelineScript;
 
     @FindBy(xpath = "//*[@id='pipeline]")
-    private WebElement isPiplineDisplayed;
+    private WebElement isPipelineDisplayed;
 
     @FindBy(xpath = "//a[@previewendpoint='/markupFormatter/previewDescription']")
     private WebElement preview;
@@ -85,14 +84,14 @@ public class PipelineConfigPage extends BasePage {
         return this;
     }
 
-    public PipelineConfigPage scrollToPiplineScript() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(scrollToPiplineScript)).click();
+    public PipelineConfigPage scrollToPipelineScript() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(scrollToPipelineScript)).click();
 
         return this;
     }
 
-    public PipelineConfigPage selectSamplePiplineScript(String scriptName) {
-        WebElement sampleScript = getWait5().until(ExpectedConditions.visibilityOf(samplePiplineScript));
+    public PipelineConfigPage selectSamplePipelineScript(String scriptName) {
+        WebElement sampleScript = getWait5().until(ExpectedConditions.visibilityOf(samplePipelineScript));
         Select sampleScriptSelect = new Select(sampleScript);
         sampleScriptSelect.selectByValue(scriptName);
 
@@ -117,7 +116,7 @@ public class PipelineConfigPage extends BasePage {
         }
         return this;
     }
-    public boolean isPiplineDisplayed() {
+    public boolean isPipelineDisplayed() {
         return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='pipeline']"))).isDisplayed();
         }
 
