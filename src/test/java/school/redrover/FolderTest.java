@@ -4,9 +4,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.FolderConfigPage;
 import school.redrover.model.FolderStatusPage;
 import school.redrover.model.HomePage;
 import school.redrover.model.PipelinePage;
@@ -22,13 +22,6 @@ public class FolderTest extends BaseTest {
     private static final String THIRD_FOLDER_NAME = "Dependant_Test_Folder";
     private static final String FOLDER_TO_MOVE = "Folder_to_move_into_the_first";
     private static final String PIPELINE_NAME = "Pipeline Sv";
-
-    private void clickOnDropdownArrow(By locator) {
-        WebElement itemDropdownArrow = getDriver().findElement(locator);
-
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
-                "arguments[0].dispatchEvent(new Event('click'));", itemDropdownArrow);
-    }
 
     public void create() {
         HomePage homePage = new HomePage(getDriver());
@@ -93,19 +86,14 @@ public class FolderTest extends BaseTest {
 
     @Test(dependsOnMethods = {"testCreateFolderViaCreateAJob", "testRenameFolderViaFolderBreadcrumbsDropdownMenu"})
     public void testRenameFolderViaMainPageDropdownMenu() {
-        WebElement dashboardFolderName = getDriver().findElement(By.cssSelector("td>[href^='job']"));
-        new Actions(getDriver())
-                .moveToElement(dashboardFolderName)
-                .perform();
+        String folderStatusPageHeading = new HomePage(getDriver())
+                .openItemDropdownWithSelenium(NEW_FOLDER_NAME)
+                .renameFolderFromDropdown()
+                .setNewName(THIRD_FOLDER_NAME)
+                .clickRename()
+                .getPageHeading();
 
-        clickOnDropdownArrow(By.cssSelector("[href^='job'] [class$='dropdown-chevron']"));
-        getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='rename']")).click();
-        getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys(THIRD_FOLDER_NAME);
-        getDriver().findElement(By.name("Submit")).click();
-
-        String folderPageHeading = getDriver().findElement(By.tagName("h1")).getText();
-        Assert.assertEquals(folderPageHeading, THIRD_FOLDER_NAME,
+        Assert.assertEquals(folderStatusPageHeading, THIRD_FOLDER_NAME,
                 "The Folder name is not equal to " + THIRD_FOLDER_NAME);
     }
 
@@ -160,6 +148,25 @@ public class FolderTest extends BaseTest {
                 .getBreadcrumbName();
 
         Assert.assertEquals(resultName, NEW_FOLDER_NAME);
+    }
+
+    @Test
+    public void testRenameFolder() {
+
+        HomePage homePage = new HomePage(getDriver());
+        homePage
+                .clickNewItem()
+                .setItemName(FOLDER_NAME)
+                .selectTypeAndClickOk("Folder");
+
+        new FolderConfigPage(getDriver())
+                .clickSaveButton()
+                .clickOnRenameButtonLeft()
+                .renameFolder(NEW_FOLDER_NAME)
+                .clickLogo();
+
+        List<String> itemList = homePage.getItemList();
+        Assert.assertTrue(itemList.contains(NEW_FOLDER_NAME), "Folder is not renamed!");
     }
 
     @Test

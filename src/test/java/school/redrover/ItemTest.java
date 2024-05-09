@@ -2,9 +2,12 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.model.ItemPage;
 import school.redrover.runner.BaseTest;
+import java.util.List;
 
 public class ItemTest extends BaseTest {
 
@@ -38,4 +41,27 @@ public class ItemTest extends BaseTest {
 
     }
 
+    @DataProvider(name = "userAddProvider")
+    public Object[][] userAddProvider() {
+        return  new Object[][] {
+                {"Gleb", "Password", "Full name", "E-mail@com"},
+                {"Ignat", "Password", "Full name", "E-mail@com"},
+                {"Lion", "Password", "Full name", "E-mail@com"},
+                {"Oleg", "Password", "Full name", "E-mail@com"},
+                {"Den", "Password", "Full name", "E-mail@com"},
+        };
+    }
+
+    @Test(dataProvider = "userAddProvider")
+    public void testCheckPeople(String Username, String Password, String Fullname, String Email) {
+
+        List<String> showNam = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickUsers()
+                .createUser(Username, Password, Fullname, Email)
+                .getUserIDList();
+//        System.out.printf(showNam.toString());
+
+        Assert.assertTrue(showNam.contains(Username));
+    }
 }

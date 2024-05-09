@@ -82,11 +82,12 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test
     public void testAlertMessageClickingReloadConfigurationFromDisk() {
-        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
-        getDriver().findElement(By.cssSelector("[href='#']")).click();
+        boolean isAlertTitleVisible = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickReloadConfigurationFromDisk()
+                .dialogTitleVisibility();
 
-        boolean alertMessageIsDisplayed = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dialog__title"))).isDisplayed();
-        Assert.assertTrue(alertMessageIsDisplayed);
+        Assert.assertTrue(isAlertTitleVisible);
     }
 
     @Test

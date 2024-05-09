@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.Assert;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
 
@@ -94,14 +93,14 @@ public class HomePage extends BasePage {
     @FindBy(css = "[href$='builds']")
     private WebElement buildHistoryButton;
 
+    @FindBy(xpath = "//*[@class=' job-status-']/td[3]/a")
+    private WebElement createdElementInTable;
+
     @FindBy(css = "[class$=jenkins_ver]")
     private WebElement version;
 
     @FindBy(className = "jenkins-dropdown__item")
     private List<WebElement> dropDownElements;
-
-    @FindBy(xpath = "//*[@class=' job-status-']/td[3]/a")
-    private WebElement createdElementInTable;
 
     @FindBy(tagName = "h1")
     private WebElement heading;
@@ -114,6 +113,9 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href, '/move')]")
     private WebElement moveOption;
+
+    @FindBy (xpath = "//*[@href='newJob']")
+    private WebElement createJob;
 
     @FindBy(css = "[class$='am-button security-am']")
     private WebElement warningIcon;
@@ -128,7 +130,7 @@ public class HomePage extends BasePage {
     private WebElement configureTooltipButton;
 
     @FindBy(xpath = "//a[@href='/asynchPeople/']")
-    WebElement peopleButton;
+    private WebElement peopleButton;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -239,7 +241,7 @@ public class HomePage extends BasePage {
 
     public HomePage openItemDropdownWithSelenium(String projectName) {
         new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.linkText(projectName)))
+                .moveToElement(getDriver().findElement(By.xpath("//a[@href='job/"+ projectName +"/']")))
                 .pause(1000)
                 .scrollToElement(getDriver().findElement(By.cssSelector(String.format("[data-href*='/job/%s/']", projectName))))
                 .click()
@@ -248,7 +250,7 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public MultiConfigurationConfirmRenamePage selectRenameFromDropdown() {
+       public MultiConfigurationConfirmRenamePage selectRenameFromDropdown() {
         renameFromDropdown.click();
 
         return new MultiConfigurationConfirmRenamePage(getDriver());
@@ -326,6 +328,12 @@ public class HomePage extends BasePage {
                 chevron);
 
         return this;
+    }
+
+    public CreateNewItemPage clickNewJobFromDashboardBreadcrumbsMenu() {
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.tippy-box a[href $= 'newJob']"))).click();
+
+        return new CreateNewItemPage(getDriver());
     }
 
     public ManageJenkinsPage clickManageFromDashboardBreadcrumbsMenu() {
@@ -512,10 +520,23 @@ public class HomePage extends BasePage {
 
         return new PeoplePage(getDriver());
     }
-    public FolderStatusPage clickSpecificFolderName(String name) {
-        getDriver().findElement(By.cssSelector("td>[href^='job/" + name.replace(" ", "%20") + "']")).click();
+    public FolderStatusPage clickSpecificFolderName(String itemName) {
+        getDriver().findElement(
+                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
 
         return new FolderStatusPage(getDriver());
+    }
+
+    public FolderRenamePage renameFolderFromDropdown() {
+        renameFromDropdown.click();
+
+        return new FolderRenamePage(getDriver());
+    }
+
+    public  CreateNewItemPage clickCreateJob() {
+        createJob.click();
+
+        return new CreateNewItemPage(getDriver());
     }
 
 }

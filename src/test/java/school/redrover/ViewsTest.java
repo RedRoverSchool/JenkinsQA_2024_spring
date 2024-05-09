@@ -18,6 +18,8 @@ import java.util.List;
 public class ViewsTest extends BaseTest {
 
     private static final String MY_VIEW_NAME = "EmpoyeeView";
+    final String VIEW_NAME = "in progress";
+    final String VISIBLE = "visible";
 
     @Test
     public void testGoToMyViewsFromHeaderUserMenu() {
@@ -37,9 +39,6 @@ public class ViewsTest extends BaseTest {
 
         Assert.assertTrue(textVisibility,"'My Views' didn't open");
     }
-
-    final String VIEW_NAME = "in progress";
-    final String VISIBLE = "visible";
 
     public void createView(String VIEW_NAME) {
         new HomePage(getDriver())

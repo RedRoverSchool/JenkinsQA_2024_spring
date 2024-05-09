@@ -74,6 +74,19 @@ public class PipelinePage extends BasePage {
     @FindBy(xpath = "//th[contains(@class, 'stage-header-name')]")
     private List<WebElement> stageHeader;
 
+    @FindBy(className ="date")
+    private WebElement stageDate;
+
+    @FindBy(className ="time")
+    private WebElement stageTime;
+
+    @FindBy(className ="badge")
+    private WebElement stageBadge;
+
+    @FindBy(xpath ="//div[@class='changeset-box no-changes']")
+    private WebElement stageStatus;
+
+
     @FindBy(className = "stage-total-0")
     private WebElement avgStageTime;
 
@@ -260,6 +273,24 @@ public class PipelinePage extends BasePage {
 
         return stageHeader.size();
     }
+
+    public boolean getBuildAttributeStatus(){
+        boolean result = true;
+            if (stageDate == null || !stageDate.isDisplayed()) {
+                result = false;
+            }
+            if (stageTime == null || !stageTime.isDisplayed()) {
+                result = false;
+            }
+            if (stageStatus == null || !(stageStatus.getText().equals("No Changes"))) {
+                result = false;
+            }
+            if (stageBadge == null || !stageBadge.isDisplayed()) {
+                result = false;
+            }
+        return result;
+    }
+
 
     public void waitStageTable() {
         getWait10().until(ExpectedConditions.visibilityOf(stageTable));
