@@ -466,7 +466,7 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testVerifyMpDisabledOnStatusPage() {
         String disabledMessage = new HomePage(getDriver())
             .clickMPName(MULTI_PIPELINE_NAME)
-            .clickDisableMultibranchPipeline()
+            .clickDisableEnableMultibranchPipeline()
             .getDisableMultibranchPipelineText();
 
         Assert.assertEquals(disabledMessage, "This Multibranch Pipeline is currently disabled");
