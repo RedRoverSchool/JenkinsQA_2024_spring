@@ -9,8 +9,11 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.FolderConfigPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
+
+import java.util.List;
 
 
 public class FolderTest extends BaseTest {
@@ -173,5 +176,24 @@ public class FolderTest extends BaseTest {
                 .getBreadcrumbName();
 
         Assert.assertEquals(resultName, NEW_FOLDER_NAME);
+    }
+
+    @Test
+    public void testRenameFolder() {
+
+        HomePage homePage = new HomePage(getDriver());
+        homePage
+                .clickNewItem()
+                .setItemName(FOLDER_NAME)
+                .selectTypeAndClickOk("Folder");
+
+        new FolderConfigPage(getDriver())
+                .clickSaveButton()
+                .clickOnRenameButtonLeft()
+                .renameFolder(NEW_FOLDER_NAME)
+                .clickLogo();
+
+        List<String> itemList = homePage.getItemList();
+        Assert.assertTrue(itemList.contains(NEW_FOLDER_NAME), "Folder is not renamed!");
     }
 }
