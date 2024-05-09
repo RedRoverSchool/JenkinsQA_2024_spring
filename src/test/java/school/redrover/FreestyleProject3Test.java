@@ -51,7 +51,6 @@ public class FreestyleProject3Test extends BaseTest {
         boolean isJobCreated = getDriver().findElement(By.xpath("//h1[text()='new Freestyle project']")).isDisplayed();
         Assert.assertTrue(isJobCreated, "FreestyleProject is not created.");
     }
-
     @Test
     public void deleteFreestyleProject() {
         List<WebElement> projectList = new HomePage(getDriver())
