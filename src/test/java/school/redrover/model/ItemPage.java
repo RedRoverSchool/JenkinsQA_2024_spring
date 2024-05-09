@@ -12,25 +12,25 @@ public class ItemPage extends BasePage {
     }
 
     @FindBy(xpath = "//a[@href='/asynchPeople/']")
-    WebElement ElementPeople;
+    private WebElement ElementPeople;
 
     @FindBy(xpath = "//h1[contains(.,'Welcome to Jenkins!')]")
-    WebElement ElementWelcome;
+    private WebElement ElementWelcome;
 
     @FindBy(linkText = "New Item")
-    WebElement NewItem;
+    private WebElement NewItem;
 
     @FindBy(xpath = "//img[@class='icon-freestyle-project icon-xlg']")
-    WebElement FreestyleProject;
+    private WebElement FreestyleProject;
 
     @FindBy(xpath = "//button[@class='jenkins-button jenkins-button--primary jenkins-buttons-row--equal-width']")
-    WebElement btnOK;
+    private WebElement btnOK;
 
     @FindBy(id = "name")
-    WebElement NewItemName;
+    private WebElement NewItemName;
 
     @FindBy(xpath = "//li[@class='com_cloudbees_hudson_plugins_folder_Folder']")
-    WebElement Folder;
+    private WebElement Folder;
 
     public ItemPage setItemName(String name) {
         NewItemName.sendKeys(name);
@@ -71,6 +71,5 @@ public class ItemPage extends BasePage {
         Folder.click();
         return this;
     }
-
 
 }

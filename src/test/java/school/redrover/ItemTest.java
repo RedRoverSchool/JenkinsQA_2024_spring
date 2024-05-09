@@ -53,15 +53,14 @@ public class ItemTest extends BaseTest {
     }
 
     @Test(dataProvider = "userAddProvider")
-    public void testCheckPeople(String Username, String Password, String Fullname, String Email) {
+    public void testCheckPeople(String username, String password, String fullname, String email) {
 
         List<String> showNam = new HomePage(getDriver())
                 .clickManageJenkins()
                 .clickUsers()
-                .createUser(Username, Password, Fullname, Email)
+                .createUser(username, password, fullname, email)
                 .getUserIDList();
-//        System.out.printf(showNam.toString());
 
-        Assert.assertTrue(showNam.contains(Username));
+        Assert.assertTrue(showNam.contains(username));
     }
 }
