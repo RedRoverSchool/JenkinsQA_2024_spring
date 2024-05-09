@@ -34,4 +34,12 @@ public class MovePage extends BasePage {
         clickLogo();
         return new HomePage(getDriver());
     }
+
+    public FolderStatusPage chooseDestinationFromListAndSave(String destination) {
+        new Select(selectDestination)
+                .selectByValue("/" + destination);
+        moveButton.click();
+
+        return new FolderStatusPage(getDriver());
+    }
 }

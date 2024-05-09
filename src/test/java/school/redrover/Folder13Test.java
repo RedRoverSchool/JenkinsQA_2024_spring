@@ -7,7 +7,9 @@ import school.redrover.runner.BaseTest;
 
 import java.util.List;
 
-public class MoveFolderTest extends BaseTest {private static final String FIRST_FOLDER_NAME = "First folder";
+public class Folder13Test extends BaseTest {
+
+    private static final String FIRST_FOLDER_NAME = "First folder";
     private static final String SECOND_FOLDER_NAME = "Second folder";
 
     @Test

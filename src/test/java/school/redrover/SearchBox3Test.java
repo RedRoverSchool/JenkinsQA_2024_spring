@@ -1,9 +1,11 @@
 package school.redrover;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.HeaderBlock;
 import school.redrover.runner.BaseTest;
 
 public class SearchBox3Test extends BaseTest {
@@ -12,17 +14,17 @@ public class SearchBox3Test extends BaseTest {
 
     @Test
     public void testSearchWithValidData() {
-        getDriver().findElement(SEARCH_BOX).sendKeys("config");
-        getDriver().findElement(SEARCH_BOX).sendKeys(Keys.ENTER);
+        String systemPageTitle = new HeaderBlock(getDriver())
+                .enterRequestIntoSearchBox("config")
+                .makeClickToSearchBox()
+                .getTitleText();
 
-        String systemPageTitle = getDriver().findElement(By.tagName("h1")).getText();
-
-        Assert.assertEquals(systemPageTitle, "System");
+        Assert.assertEquals(systemPageTitle,"System");
     }
 
     @Test
     public void testSearchUsingSuggestList() {
-       getDriver().findElement(SEARCH_BOX).sendKeys("c");
+        getDriver().findElement(SEARCH_BOX).sendKeys("c");
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[@class='yui-ac-bd']//ul//li[.='config']"))).click();
         getDriver().findElement(SEARCH_BOX).sendKeys(Keys.ENTER);

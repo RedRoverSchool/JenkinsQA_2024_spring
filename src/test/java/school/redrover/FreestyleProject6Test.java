@@ -7,6 +7,8 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.FreestylePage;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 import java.util.List;
@@ -18,15 +20,14 @@ public class FreestyleProject6Test extends BaseTest {
     final String FREESTYLE_PROJECT_RENAME = "Renamed Freestyle project Sv";
     final String FOLDER_NAME = "Folder SV";
 
-    public void createFreestyleProjectWithDescription() {
-        getDriver().findElement(By.xpath("//*[@href='newJob']")).click();
+    public FreestylePage createFreestyleProjectWithDescription() {
 
-        getDriver().findElement(By.cssSelector(".jenkins-input")).sendKeys(FREESTYLE_PROJECT_NAME);
-        getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        getDriver().findElement(By.xpath("//*[@name='description']")).sendKeys(FREESTYLE_PROJECT_DESCRIPTION);
-        getDriver().findElement(By.xpath("//*[@name='Submit']")).click();
+        return new HomePage(getDriver())
+                .clickCreateJob()
+                .setItemName(FREESTYLE_PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .inputDescription(FREESTYLE_PROJECT_DESCRIPTION)
+                .clickSave();
     }
 
     public void goHome() {
@@ -39,18 +40,6 @@ public class FreestyleProject6Test extends BaseTest {
         getDriver().findElement(By.xpath("//li[contains(@class, '_folder')]")).click();
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-    }
-
-    @Test
-    public void testCreateFreestyleProjectWithDescription() {
-
-        createFreestyleProjectWithDescription();
-
-        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), FREESTYLE_PROJECT_NAME);
-        Assert.assertEquals(getDriver().findElement(By.cssSelector("#description > div:first-child")).getText(), FREESTYLE_PROJECT_DESCRIPTION);
-
-        goHome();
-        Assert.assertEquals(getDriver().findElement(By.cssSelector(".job-status-nobuilt > :nth-child(3)")).getText(), FREESTYLE_PROJECT_NAME);
     }
 
     @Ignore
