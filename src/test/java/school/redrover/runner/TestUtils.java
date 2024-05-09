@@ -28,12 +28,7 @@ public final class TestUtils {
     public static final String FOLDER = "Folder";
     public static final String MULTIBRANCH_PIPELINE = "Multibranch Pipeline";
     public static final String ORGANIZATION_FOLDER = "Organization Folder";
-
-    public static final By SIDE_PANEL_DELETE = By.cssSelector("[data-url $= '/doDelete']");
     public static final By DROPDOWN_DELETE = By.cssSelector("button[href $= '/doDelete']");
-    public static final By DROPDOWN_RENAME = By.cssSelector("a[href $= '/confirm-rename']");
-
-    public static final By DIALOG_DEFAULT_BUTTON = By.cssSelector("dialog .jenkins-button--primary");
     public static final By EMPTY_STATE_BLOCK = By.cssSelector("div.empty-state-block");
     public static final String JOB_XPATH = "//*[text()='%s']";
 
@@ -53,14 +48,8 @@ public final class TestUtils {
         driver.findElement(By.id("jenkins-name-icon")).click();
     }
 
-
     public static String getUniqueName(String value) {
         return value + new SimpleDateFormat("HHmmssSS").format(new Date());
-    }
-
-
-    public static void sleep(BaseTest baseTest, long seconds) {
-        new Actions(baseTest.getDriver()).pause(seconds * 1000).perform();
     }
 
     public static String asURL(String str) {
@@ -128,7 +117,7 @@ public final class TestUtils {
                 .perform();
     }
 
-    public static void deleteJobViaDropdowm(BaseTest baseTest, String jobName) {
+    public static void deleteJobViaDropdown(BaseTest baseTest, String jobName) {
         openJobDropdown(baseTest, jobName);
 
         baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(DROPDOWN_DELETE)).click();
@@ -159,11 +148,8 @@ public final class TestUtils {
     }
 
     public static void createNewJob(BaseTest baseTest, Job job, String jobName) {
-        goToJobPageAndEnterJobName(baseTest, jobName);
-        baseTest.getDriver().findElement(By.xpath(JOB_XPATH.formatted(job))).click();
-        baseTest.getDriver().findElement(By.id("ok-button")).click();
-        baseTest.getDriver().findElement(By.id("jenkins-home-link")).click();
-
+        createJob(baseTest, job, jobName);
+        goToMainPage(baseTest.getDriver());
     }
 
     public static void renameItem(BaseTest baseTest, String currentName, String newName) {
@@ -186,10 +172,8 @@ public final class TestUtils {
         List<WebElement> displayedProjects = driver.findElements(
                 By.xpath("//table[@id='projectstatus']//button/preceding-sibling::span"));
 
-        boolean isDisplayed = displayedProjects.stream()
+        return displayedProjects.stream()
                 .anyMatch(el -> el.getText().equals(projectName));
-
-        return isDisplayed;
     }
 
     public enum Job {

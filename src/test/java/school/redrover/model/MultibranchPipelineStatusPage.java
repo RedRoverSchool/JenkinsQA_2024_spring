@@ -10,11 +10,13 @@ import school.redrover.model.base.BasePage;
 
 public class MultibranchPipelineStatusPage extends BasePage {
 
+
     @FindBy(xpath = "//span[.='Configure the project']")
     private WebElement configureButton;
 
     @FindBy(name = "Submit")
-    private WebElement disableMPButton;
+    private WebElement disableEnableMPButton;
+
 
     @FindBy(id = "enable-project")
     private WebElement disableMPMessage;
@@ -41,11 +43,16 @@ public class MultibranchPipelineStatusPage extends BasePage {
         return new MultibranchPipelineConfigPage(getDriver());
     }
 
-    public MultibranchPipelineStatusPage clickDisableMultibranchPipeline() {
-        disableMPButton.click();
+    public MultibranchPipelineStatusPage clickDisableEnableMultibranchPipeline() {
+        disableEnableMPButton.click();
 
         return this;
     }
+    public String getDisableMultibranchPipelineButtonText(){
+       return disableEnableMPButton.getText().trim();
+    }
+
+
 
     public String getDisableMultibranchPipelineText() {
         return disableMPMessage.getDomProperty("innerText").split(" Enable")[0];

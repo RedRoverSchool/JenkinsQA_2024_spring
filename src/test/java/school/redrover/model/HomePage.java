@@ -8,7 +8,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
-import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
@@ -52,6 +51,8 @@ public class HomePage extends BasePage {
 
     @FindBy(css = "a[href $= '/move']")
     private WebElement dropdownMove;
+    @FindBy(xpath = "//*[@href='job/MultibranchPipeline/']/span")
+    private WebElement multibranchPipelineName;
 
     @FindBy(css = "div#breadcrumbBar a[href = '/']")
     private WebElement dashboardBreadcrumbs;
@@ -129,7 +130,10 @@ public class HomePage extends BasePage {
     private WebElement configureTooltipButton;
 
     @FindBy(xpath = "//a[@href='/asynchPeople/']")
-    WebElement peopleButton;
+    private WebElement peopleButton;
+
+    @FindBy(css = "button[href $= '/doDelete']")
+    WebElement dropdownDelete;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -169,7 +173,7 @@ public class HomePage extends BasePage {
     }
 
     public DeleteDialog clickDeleteInDropdown(DeleteDialog dialog) {
-        getDriver().findElement(TestUtils.DROPDOWN_DELETE).click();
+        dropdownDelete.click();
         return dialog;
     }
 
@@ -392,6 +396,15 @@ public class HomePage extends BasePage {
         renameFromDropdown.click();
 
         return new MultibranchPipelineRenamePage(getDriver());
+    }
+
+    public <T> T clickJobByName(String name, T page) {
+        getDriver().findElement(By.xpath(
+                "//td/a[@href='job/" + name.replace(" ", "%20") + "/']")).click();
+        return page;
+    }
+    public String getMultibranchPipelineNameText(){
+        return multibranchPipelineName.getText();
     }
 
     public boolean isDisplayedAboutJenkinsDropdownItem() {
