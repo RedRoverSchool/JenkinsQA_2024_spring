@@ -38,7 +38,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         Assert.assertEquals(newProjectName,
                 "Project " + PROJECT_NAME + "New",
-                "Project name has not been changed" );
+                "Project name has not been changed");
     }
 
     @Test(dependsOnMethods = "testCreateMCP")
@@ -188,12 +188,15 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testMCPDisableByToggle() {
-        TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
 
-        getDriver().findElement(By.className("jenkins-toggle-switch__label")).click();
-        getDriver().findElement(By.name("Apply")).click();
-
-        Assert.assertFalse(getDriver().findElement(By.id("enable-disable-project")).isSelected());
+        Assert.assertFalse(new HomePage(getDriver())
+                .clickNewItem()
+                .createNewItem(PROJECT_NAME, "MultiConfiguration")
+                .clickMCPName(PROJECT_NAME)
+                .clickConfigureButton()
+                .clickToggleSwitch()
+                .clickApply()
+                .getStatusToggle());
     }
 
     @Test(dependsOnMethods = "testMCPDisableByToggle")
