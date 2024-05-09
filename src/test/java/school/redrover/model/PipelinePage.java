@@ -71,6 +71,9 @@ public class PipelinePage extends BasePage {
     @FindBy(css = "[class*='dropdown'] [href$='rename']")
     private WebElement breadcrumbsRenameButton;
 
+    @FindBy(xpath = "//th[contains(@class, 'stage-header-name')]")
+    private List<WebElement> stageHeader;
+
     @FindBy(className = "stage-total-0")
     private WebElement avgStageTime;
 
@@ -251,6 +254,11 @@ public class PipelinePage extends BasePage {
         breadcrumbsRenameButton.click();
 
         return new PipelineRenamePage(getDriver());
+    }
+
+    public int getSagesQtt() {
+
+        return stageHeader.size();
     }
 
     public void waitStageTable() {
