@@ -135,6 +135,18 @@ public class HomePage extends BasePage {
     @FindBy(css = "button[href $= '/doDelete']")
     WebElement dropdownDelete;
 
+    @FindBy(id = "description-link")
+    WebElement descriptionButton;
+
+    @FindBy(name = "description")
+    WebElement descriptionInput;
+
+    @FindBy(css = "button[name='Submit']")
+    WebElement saveButton;
+
+    @FindBy(css = "div[id='description'] div:nth-child(1)")
+    WebElement actualAddedDescriptionText;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -541,5 +553,34 @@ public class HomePage extends BasePage {
 
         return new CreateNewItemPage(getDriver());
     }
+
+    public HomePage clickAddDescriptionButton() {
+        descriptionButton.click();
+
+        return this;
+    }
+
+    public HomePage descriptionInput(String input) {
+        descriptionInput.sendKeys(input);
+
+        return  this;
+    }
+
+    public HomePage clickSaveButton() {
+        saveButton.click();
+
+        return  this;
+
+    }
+
+    public String actualAddedDescriptionGetText() {
+        return actualAddedDescriptionText.getText();
+
+    }
+
+    public String descriptionButtonGetText() {
+        return descriptionButton.getText();
+    }
+
 
 }
