@@ -91,7 +91,7 @@ public class FolderTest extends BaseTest {
                 "The Folder name is not equal to " + NEW_FOLDER_NAME);
     }
 
-    @Test(dependsOnMethods = "testCreateFolderViaCreateAJob")
+    @Test(dependsOnMethods = {"testCreateFolderViaCreateAJob", "testRenameFolderViaFolderBreadcrumbsDropdownMenu"})
     public void testRenameFolderViaMainPageDropdownMenu() {
         WebElement dashboardFolderName = getDriver().findElement(By.cssSelector("td>[href^='job']"));
         new Actions(getDriver())
