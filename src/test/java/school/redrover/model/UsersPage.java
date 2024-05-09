@@ -96,4 +96,17 @@ public class UsersPage extends BasePage {
                 .map(WebElement::getText)
                 .toList();
     }
+
+    public UsersPage createUser(String username, String password, String fullName, String email) {
+
+        clickCreateUser()
+                .setUserName(username)
+                .setPassword(password)
+                .setConfirmPassword(password)
+                .setFullName(fullName)
+                .setEmailAddress(email)
+                .clickCreateUser();
+
+        return this;
+    }
 }

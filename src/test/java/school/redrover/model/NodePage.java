@@ -13,11 +13,18 @@ public class NodePage extends BasePage {
     @FindBy(xpath = "//div[@class='jenkins-!-margin-bottom-3']")
     private WebElement labels;
 
+    @FindBy(id = "description")
+    private WebElement descriptionArea;
+
     public NodePage(WebDriver driver) {
         super(driver);
     }
 
     public String getLabels() {
         return labels.getText();
+    }
+
+    public String getDescription(){
+        return descriptionArea.getText();
     }
 }

@@ -2,14 +2,11 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.*;
 import org.testng.annotations.*;
 import school.redrover.model.HomePage;
 import school.redrover.runner.*;
 
-import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 
 public class FreestyleProjectTest extends BaseTest {
@@ -271,7 +268,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(newProjectName)
                 .setItemNameInCopyForm(oldProjectName1.substring(0, 1))
-                .copyFormElementsList();
+                .getCopyFormElementsList();
 
         Assert.assertTrue(elementsList.contains(oldProjectName1));
     }
