@@ -16,6 +16,13 @@ public class CreateNewViewPage extends BasePage {
     @FindBy(id = "ok")
     WebElement createButton;
 
+    @FindBy (xpath = "//label[text() = 'My View']")
+    WebElement myViewRadioButton;
+
+    @FindBy (xpath = "//div[@class='tab active']")
+    WebElement newViewName;
+
+
     public CreateNewViewPage(WebDriver driver) { super(driver); }
 
     public CreateNewViewPage setViewName(String viewName) {
@@ -35,4 +42,11 @@ public class CreateNewViewPage extends BasePage {
 
         return new ViewMyListConfigPage(getDriver());
     }
+
+    public CreateNewViewPage clickMyViewRadioButton() {
+        myViewRadioButton.click();
+
+        return this;
+    }
+
 }

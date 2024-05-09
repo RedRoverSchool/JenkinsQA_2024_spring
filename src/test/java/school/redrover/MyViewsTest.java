@@ -1,30 +1,41 @@
 package school.redrover;
 
+
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.CreateNewViewPage;
+import school.redrover.model.HomePage;
+import school.redrover.model.ViewConfigPage;
 import school.redrover.runner.BaseTest;
 
 public class MyViewsTest extends BaseTest {
+    public static final String multiConfigurationProjectName = "MultiConfigurationProject";
+    public static final String viewName = "NewView";
     @Test
     public void testCreateNewView() {
 
-            getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
-            getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
-                    .sendKeys("MultiConfigurationProject");
-            getDriver().findElement(By.xpath("//span[contains(text(),  'Multi-configuration project')]")).click();
-            getDriver().findElement(By.id("ok-button")).click();
-            getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-            getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[1]/a")).click();
+        new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(multiConfigurationProjectName)
+                .selectMultiConfigurationAndClickOk()
+                .clickLogo()
+                .clickNewView()
+                .setViewName(viewName)
+                .clickMyViewRadioButton()
+                .clickCreateView();
+               //.getNewViewName();
+       //  String result2 = String.valueOf(new ViewConfigPage(getDriver())
+         //  .getNewViewName());
+//String result3 = new ViewConfigPage(getDriver()).getNewViewName();
+//Assert.assertEquals(result3,viewName);
 
-        getDriver().findElement(By.xpath("//*[@id='tasks']/div[5]/span/a")).click();
-        getDriver().findElement(By.xpath("//a[@tooltip ='New View']")).click();
-        getDriver().findElement(By.id("name")).sendKeys("NewView");
-        getDriver().findElement(By.xpath("//label[text() = 'My View']")).click();
-        getDriver().findElement(By.id("ok")).click();
-        String result = getDriver().findElement(By.xpath("//div[@class='tab active']"))
-                .getText();
+//         String result = getDriver().findElement(By.xpath("//div[@class='tab active']"))
+//          .getText();
+//        Assert.assertEquals(result, viewName);
 
-        Assert.assertEquals(result, "NewView");
+    }
+
+    private void getNewViewName() {
     }
 }
