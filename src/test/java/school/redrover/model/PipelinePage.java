@@ -71,6 +71,9 @@ public class PipelinePage extends BasePage {
     @FindBy(css = "[class*='dropdown'] [href$='rename']")
     private WebElement breadcrumbsRenameButton;
 
+    @FindBy(xpath = "//th[contains(@class, 'stage-header-name')]")
+    private List<WebElement> stageHeader;
+
     public PipelinePage(WebDriver driver) {
         super(driver);
     }
@@ -245,5 +248,10 @@ public class PipelinePage extends BasePage {
         breadcrumbsRenameButton.click();
 
         return new PipelineRenamePage(getDriver());
+    }
+
+    public int getSagesQtt() {
+
+        return stageHeader.size();
     }
 }
