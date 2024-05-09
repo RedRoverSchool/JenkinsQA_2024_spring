@@ -24,24 +24,27 @@ public class Folder7Test extends BaseTest {
                 .setItemName(NAME)
                 .selectFolderAndClickOk()
                 .clickSaveButton()
-                .getPageTopic();
+                .getPageHeading();
 
         Assert.assertEquals(name, NAME);
     }
 
     @Test
-    public void testAddFolderDescription() {
+    public void testAddFolderDescription(){
 
         final String newText = "Hello";
 
-        TestUtils.createNewItemAndReturnToDashboard(this, NAME, TestUtils.Item.FOLDER);
+        String description = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(NAME)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .clickAddOrEditDescription()
+                .setDescription(newText)
+                .clickSaveButton()
+                .getDescriptionText();
 
-        getDriver().findElement(By.cssSelector("td>a[href= 'job/19%20April/']")).click();
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.name("description")).sendKeys(newText);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertTrue(getDriver().findElement(By.id("description")).getText().contains(newText));
+        Assert.assertEquals(description, newText);
     }
 
     @Test

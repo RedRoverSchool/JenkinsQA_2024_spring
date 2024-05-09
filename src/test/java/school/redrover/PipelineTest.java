@@ -1,8 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.Keys;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.FullStageViewPage;
@@ -345,5 +344,25 @@ public class PipelineTest extends BaseTest {
                 .getSagesQtt();
 
         Assert.assertEquals(actualSagesQtt, stagesQtt);
+    }
+
+    @Test
+    public void testAvgStageTimeBuildTimeIsDisplayed() {
+
+        new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .scrollToPipelineScript()
+                .selectSamplePipelineScript("hello")
+                .clickSaveButton()
+                .clickBuild()
+                .waitBuildToFinish()
+                .waitStageTable();
+
+        boolean avgTime = new PipelinePage(getDriver()).avgStageTimeAppear();
+        boolean buildTime = new PipelinePage(getDriver()).buildTimeAppear(1);
+
+        Assert.assertTrue(avgTime && buildTime);
     }
 }

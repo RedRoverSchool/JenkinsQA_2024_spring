@@ -126,8 +126,6 @@ public final class TestUtils {
         int chevronWidth = baseTest.getDriver().findElement(dropdownChevron).getSize().getWidth();
         action.moveToElement(baseTest.getDriver().findElement(dropdownChevron), chevronWidth, chevronHeight).click()
                 .perform();
-
-        baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(DROPDOWN_DELETE));
     }
 
     public static void deleteJobViaDropdowm(BaseTest baseTest, String jobName) {

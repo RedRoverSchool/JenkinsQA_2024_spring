@@ -1,10 +1,10 @@
 package school.redrover;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -13,10 +13,22 @@ import school.redrover.model.NodeBuiltInStatusPage;
 import school.redrover.model.NodeManagePage;
 import school.redrover.model.NodesTablePage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 public class NodesTest extends BaseTest {
 
     private static final String NODE_NAME = "FirstNode";
+
+    public void createNewNode(String nodeName) {
+
+        getDriver().findElement(By.linkText("Manage Jenkins")).click();
+        getDriver().findElement(By.xpath("//a[@href='computer']")).click();
+        getDriver().findElement(By.xpath("//a[@href='new']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(nodeName);
+        getDriver().findElement(By.xpath("//label[@class='jenkins-radio__label']")).click();
+        getDriver().findElement(By.id("ok")).click();
+        getDriver().findElement(By.name("Submit")).click();
+    }
 
     @Test
     public void testAddNode() {
@@ -216,5 +228,138 @@ public class NodesTest extends BaseTest {
                 .clickBringThisNodeBackOnlineBtn();
 
         Assert.assertTrue(nodeStatus.nodeOnlineStatusText().isEmpty());
+    }
+
+    @Test
+    public void testCreateNewNode() {
+
+        final String expectedResult = "Node-1";
+
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+        getDriver().findElement(By.xpath("//a[@href='computer']")).click();
+        getDriver().findElement(By.xpath("//a[@href='new']")).click();
+
+        getDriver().findElement(By.id("name")).sendKeys("Node-1");
+        getDriver().findElement(By.xpath("//label[@for='hudson.slaves.DumbSlave']")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate' and @name='Submit']")).click();
+
+        String actualResult = getDriver().findElement(By.xpath("//tr[@id='node_Node-1']//a[text()='Node-1']")).getText();
+
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void testCreateNewNodeWithInvalidData() throws InterruptedException {
+
+        final String expectedResult = "‘!’ is an unsafe character";
+
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+        getDriver().findElement(By.xpath("//a[@href='computer']")).click();
+        getDriver().findElement(By.xpath("//a[@href='new']")).click();
+
+        getDriver().findElement(By.id("name")).sendKeys("!");
+        getDriver().findElement(By.xpath("//label[@for='hudson.slaves.DumbSlave']")).click();
+
+        Thread.sleep(500);
+        String actualResult = getDriver().findElement(By.className("error")).getText();
+
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void testCreateNodeFromManageJenkins() {
+        String nodeName = "NewNode";
+        getDriver().findElement(By.xpath("//*[@href='/manage']")).click();
+        getDriver().findElement(By.xpath("//dt[text() ='Nodes']")).click();
+        getDriver().findElement(By.xpath("//a[@href='new']")).click();
+        getDriver().findElement(By.xpath("//input[@ id='name']")).sendKeys(nodeName);
+        getDriver().findElement(By.xpath("//label[@for='hudson.slaves.DumbSlave' and contains(@class, 'jenkins-radio__label')]")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok' and contains(@class, 'jenkins-button--primary')]")).click();
+        getDriver().findElement(By.xpath("//button[normalize-space(text())='Save']")).click();
+
+        String actualResult = getDriver().findElement(By.xpath("//a[normalize-space(text())='" + nodeName + "']")).getText();
+        String expectedResult = "NewNode";
+
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void testCreateNewNodeWithName() {
+
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+        getDriver().findElement(By.xpath("//dt[text()='Nodes']")).click();
+        getDriver().findElement(By.xpath("//a[@href='new']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(NODE_NAME);
+        getDriver().findElement(By.xpath("//label[text()='Permanent Agent']")).click();
+        getDriver().findElement(By.id("ok")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        String actualResult = getDriver().findElement(By.xpath("//a[@href='../computer/" + NODE_NAME.replaceAll(" ", "%20") + "/']")).getText();
+
+        Assert.assertTrue(actualResult.contains(NODE_NAME));
+    }
+
+    @Test
+    public void testDeleteNode() {
+        final String nodeName = "NewNode";
+        createNewNode(nodeName);
+
+        WebElement createdNode = getDriver().findElement(
+                By.cssSelector("a[href*='../computer/" + nodeName + "/']"));
+
+        TestUtils.openElementDropdown(this, createdNode);
+        WebElement deleteButton = getDriver().findElement(By.xpath("//button[@href='/manage/computer/" + nodeName + "/doDelete']"));
+        deleteButton.click();
+
+        WebElement confirmButton = getDriver().findElement(By.cssSelector("[data-id='ok']"));
+        confirmButton.click();
+
+        boolean result;
+
+        try {
+            getDriver().findElement(By.xpath("//a[contains(@href,'../computer/" + nodeName + "/')]")).isDisplayed();
+            result = false;
+        } catch (Exception e) {
+            result = true;
+        }
+
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testCreateNewNode2() {
+        final String nodeName = "New Node";
+
+        HomePage homePage = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickNodes()
+                .clickNewNodeButton()
+                .setNodeName(nodeName)
+                .selectPermanentAgentRadioButton()
+                .clickOkButton()
+                .clickSaveButton()
+                .clickLogo();
+
+        Assert.assertTrue(homePage.getNodesList().contains(nodeName));
+    }
+
+    @Test
+    public void testDeleteExistingNode() {
+
+        final String searchNode = "TestNode";
+
+        createNewNode(searchNode);
+
+        getDriver().findElement(By.linkText(searchNode)).click();
+        getDriver().findElement(By.xpath("//a[.='Delete Agent']")).click();
+        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+
+        WebElement searchBox = getDriver().findElement(By.id("search-box"));
+        searchBox.sendKeys(searchNode);
+        searchBox.sendKeys(Keys.ENTER);
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='error']")).getText(), "Nothing seems to match.");
     }
 }

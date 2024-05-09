@@ -16,6 +16,9 @@ public class FreestylePage extends BasePage {
     @FindBy(xpath = "//*[@id='main-panel']//h1")
     private WebElement projectName;
 
+    @FindBy (css = "#description > div:first-child")
+    private WebElement projectDescription;
+
     @FindBy(xpath = "//a[contains(@href, 'confirm-rename')]")
     private WebElement renameButton;
 
@@ -37,6 +40,10 @@ public class FreestylePage extends BasePage {
     public String getProjectName() {
 
         return projectName.getText();
+    }
+
+    public String getProjectDescriptionText() {
+        return projectDescription.getText();
     }
 
     public FreestyleRenamePage clickRename() {

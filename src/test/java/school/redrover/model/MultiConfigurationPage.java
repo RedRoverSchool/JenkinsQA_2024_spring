@@ -24,6 +24,9 @@ public class MultiConfigurationPage extends BasePage {
     @FindBy(tagName = "h1")
     private WebElement projectName;
 
+    @FindBy(linkText = "Configure")
+    private WebElement configureButton;
+
     public MultiConfigurationPage(WebDriver driver) {
         super(driver);
     }
@@ -54,5 +57,11 @@ public class MultiConfigurationPage extends BasePage {
     public String getProjectNameText() {
 
         return projectName.getText();
+    }
+
+    public MultiConfigurationConfigPage clickConfigureButton() {
+        configureButton.click();
+
+        return new MultiConfigurationConfigPage(getDriver());
     }
 }
