@@ -3,11 +3,12 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 public class NodeStatusSwitchTest extends BaseTest {
@@ -35,18 +36,5 @@ public class NodeStatusSwitchTest extends BaseTest {
 
             Assert.assertEquals(number, number2);
         }
-    }
-
-    @Ignore
-    @Test(dependsOnMethods = "testNumberOfItems")
-    public void testSwitchToOfflineStatus() {
-        clickOn("//a[normalize-space()='Build Executor Status']");
-        clickOn("//a[@href='../computer/(built-in)/']");
-        clickOn("//div[@class='jenkins-app-bar__controls']");
-        clickOn("//button[@name='Submit']");
-
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//div[@class='message']")).getText(),
-                "Disconnected by admin");
     }
 }

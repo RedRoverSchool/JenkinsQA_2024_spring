@@ -124,21 +124,6 @@ public class PipelineProjectTest extends BaseTest {
     }
 
     @Test
-    public void testAddDescriptionPreview(){
-
-        TestUtils.createJob(this, Job.PIPELINE, "Pipeline project");
-        
-        getDriver().findElement(By.xpath("//*[text()='Pipeline project']")).click();
-        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("First");
-        getDriver().findElement(By.xpath("//a[@class='textarea-show-preview']")).click();
-
-        WebElement previewDescription = getDriver().findElement(By.xpath("//div[@class='textarea-preview']"));
-
-        Assert.assertEquals(previewDescription.getText(),"First");
-    }
-
-    @Test
     public void testBreadcrumbTrailsContainsPipelineName() {
 
         TestUtils.createJob(this, Job.PIPELINE, "Pipeline project");

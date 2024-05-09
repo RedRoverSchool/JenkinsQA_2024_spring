@@ -58,7 +58,7 @@ public class HomePage extends BasePage {
     @FindBy(css = "[class='tippy-box'] [href='/manage']")
     private WebElement manageFromDashboardBreadcrumbsMenu;
 
-    @FindBy(id="executors")
+    @FindBy(id = "executors")
     private WebElement buildExecutorStatus;
 
     @FindBy(xpath = "//td[text()='Idle']")
@@ -66,6 +66,9 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
     private WebElement fullStageViewButton;
+
+    @FindBy(css =  "a.jenkins-table__link.model-link.inside")
+    private List<WebElement> allExistingJobs;
 
     @FindBy(css = ".tab.active a")
     private WebElement activeViewName;
@@ -81,6 +84,33 @@ public class HomePage extends BasePage {
 
     @FindBy(className = "jenkins-dropdown__item")
     private List<WebElement> dropDownElements;
+
+    @FindBy(xpath = "//*[@class=' job-status-']/td[3]/a")
+    private WebElement createdElementInTable;
+
+    @FindBy(tagName = "h1")
+    private WebElement heading;
+
+    @FindBy(xpath = "//a[@class='jenkins-table__link model-link inside']")
+    private List<WebElement> listNamesOfItems;
+
+    @FindBy(xpath = "//td//button[@class='jenkins-menu-dropdown-chevron']")
+    private List<WebElement> jenkinsMenuDropdownChevron;
+
+    @FindBy(xpath = "//a[contains(@href, '/move')]")
+    private WebElement moveOption;
+
+    @FindBy(css = "[class$='am-button security-am']")
+    private WebElement warningIcon;
+
+    @FindBy(xpath = "//div[@role='alert']")
+    private WebElement warningTooltipLocator;
+
+    @FindBy(xpath = "//a[contains(text(),'Manage Jenkins')]")
+    private WebElement manageJenkinsTooltipLink;
+
+    @FindBy(xpath = "//button[@name='configure']")
+    private WebElement configureTooltipButton;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -304,6 +334,23 @@ public class HomePage extends BasePage {
         return new FullStageViewPage(getDriver());
     }
 
+    public List<String> allExistingJobsNames() {
+        return allExistingJobs
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+    }
+
+    public List<String> getJobsBeginningFromThisFirstLetters(String firstLetters) {
+        return allExistingJobs
+                .stream()
+                .map(WebElement::getText)
+                .toList()
+                .stream()
+                .filter(el-> el.substring(0,firstLetters.length()).equalsIgnoreCase(firstLetters))
+                .toList();
+    }
+
     public MultibranchPipelineRenamePage clickRenameFromDropdownMP() {
         renameFromDropdown.click();
 
@@ -345,6 +392,12 @@ public class HomePage extends BasePage {
         return new BuildHistoryPage(getDriver());
     }
 
+    public FolderStatusPage clickFolderName() {
+        createdElementInTable.click();
+
+        return new FolderStatusPage(getDriver());
+    }
+
     public HomePage clickVersion() {
         version.click();
 
@@ -358,9 +411,47 @@ public class HomePage extends BasePage {
         }
         return actualDropDownElementsValues;
     }
+
     public List<WebElement> getTheListOfFreestyleProjects(String freestyleProjectName){
         return getDriver().findElements(
                 By.xpath("//span[text() = '" + freestyleProjectName + "']"));
+    }
+
+    public String getHeadingValue() {
+
+        return heading.getText();
+    }
+    public HomePage createNewFolder(String folderName) {
+        clickNewItem()
+                .setItemName(folderName)
+                .selectFolderAndClickOk()
+                .clickSaveButton();
+        return this;
+    }
+
+    public MovePage chooseFolderToMove() {
+        getWait5().until(ExpectedConditions.visibilityOf(moveOption)).click();
+        return new MovePage(getDriver());
+    }
+
+    public HomePage clickWarningIcon() {
+        warningIcon.click();
+        return this;
+    }
+
+    public String getWarningTooltipText() {
+        WebElement warningTooltipText = getWait5().until(ExpectedConditions.visibilityOf(warningTooltipLocator));
+        return warningTooltipText.getText();
+    }
+
+    public ManageJenkinsPage clickManageJenkinsTooltipLink() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(manageJenkinsTooltipLink)).click();
+        return new ManageJenkinsPage(getDriver());
+    }
+
+    public SecurityPage clickConfigureTooltipButton() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(configureTooltipButton)).click();
+        return new SecurityPage(getDriver());
     }
 
 }

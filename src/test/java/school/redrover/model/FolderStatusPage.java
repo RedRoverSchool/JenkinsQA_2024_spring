@@ -39,6 +39,9 @@ public class FolderStatusPage extends BasePage {
     @FindBy(xpath = "//*[@name='Submit']")
     private WebElement saveButton;
 
+    @FindBy(xpath = "//tr[contains(@id,'job_')]/td[3]/a")
+    private WebElement itemInTable;
+
     public FolderStatusPage(WebDriver driver) {
         super(driver);
     }
@@ -91,5 +94,9 @@ public class FolderStatusPage extends BasePage {
 
     public String getDescriptionText() {
         return description.getText();
+    }
+
+    public String getItemInTableName() {
+        return itemInTable.getText();
     }
 }
