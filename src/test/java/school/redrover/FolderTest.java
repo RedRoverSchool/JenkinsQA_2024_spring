@@ -21,7 +21,6 @@ public class FolderTest extends BaseTest {
     private static final String NEW_FOLDER_NAME = "Renamed_First_Folder";
     private static final String THIRD_FOLDER_NAME = "Dependant_Test_Folder";
     private static final String FOLDER_TO_MOVE = "Folder_to_move_into_the_first";
-    private static final By NEW_NAME = By.name("newName");
     private static final String PIPELINE_NAME = "Pipeline Sv";
 
     private void clickOnDropdownArrow(By locator) {
