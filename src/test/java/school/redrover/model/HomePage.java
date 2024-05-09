@@ -318,6 +318,14 @@ public class HomePage extends BasePage {
 
         return new FreestylePage(getDriver());
     }
+
+    public OrganizationFolderPage chooseOrganizationFolder(String projectName) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/"
+                + projectName.replaceAll(" ", "%20") + "/']"))).click();
+
+        return new OrganizationFolderPage(getDriver());
+    }
+
     public HomePage openDashboardBreadcrumbsDropdown() {
         WebElement chevron = dashboardBreadcrumbs.findElement(By.cssSelector("[class$='chevron']"));
         ((JavascriptExecutor) getDriver()).executeScript(
