@@ -91,4 +91,9 @@ public class NodesTablePage extends BasePage {
 
         return new NodePage(getDriver());
     }
+
+    public NodeManagePage clickOnBuiltInNode() {
+        builtInNode.click();
+        return new NodeManagePage(getDriver());
+    }
 }

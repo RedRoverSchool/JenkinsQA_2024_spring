@@ -227,24 +227,6 @@ public class Pipeline1Test extends BaseTest {
         }
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testCreatePipeline")
-    public void testAvgStageTimeBuildTimeIsDisplayed() {
-        int number_of_stages = 1;
-
-        chooseProjectAndClick(PIPELINE_NAME);
-        getDriver().findElement(By.xpath("//*[@href='/job/NewPipeline/configure']")).click();
-        sendScript(number_of_stages);
-        getDriver().findElement(By.name("Submit")).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@data-build-success='Build scheduled']"))).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='table-box']")));
-
-        boolean avgTime = getDriver().findElement(By.xpath("//td[@class='stage-total-0']")).isDisplayed();
-        boolean buildTime = getDriver().findElement(By.xpath("//tr[@data-runid='1']//td[@data-stageid='6']")).isDisplayed();
-
-        Assert.assertTrue(avgTime && buildTime);
-    }
-
     @Test
     public void testCreatePipelineProject() {
         TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
@@ -362,17 +344,18 @@ public class Pipeline1Test extends BaseTest {
         Assert.assertEquals(actualOrder, expectedOrder);
     }
 
-    @Ignore
     @Test
     public void testBuildColorGreen() {
 
         int number_of_stages = 1;
 
-        createPipelineProject(PIPELINE_NAME);
+        turnNodeOnIfOffline();
 
+        createPipelineProject(PIPELINE_NAME);
         sendScript(number_of_stages);
 
         getDriver().findElement(By.name("Submit")).click();
+
         WebElement button = getDriver().findElement(By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/build?delay=0sec']"));
         for (int i = 1; i <= 2; i++) {
             button.click();

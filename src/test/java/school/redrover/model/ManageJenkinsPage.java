@@ -2,6 +2,7 @@ package school.redrover.model;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.runner.TestUtils;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -34,6 +35,9 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(xpath = "//div[@aria-describedby='tippy-6']")
     private WebElement searchHint;
 
+
+    @FindBy(tagName = "h1")
+    private WebElement pageTitle;
 
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
@@ -99,5 +103,9 @@ public class ManageJenkinsPage extends BasePage {
         nodesButton.click();
 
         return new NodesTablePage(getDriver());
+    }
+
+    public String getPageTitleText() {
+        return pageTitle.getText();
     }
 }

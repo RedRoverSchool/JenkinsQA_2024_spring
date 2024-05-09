@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.FullStageViewPage;
@@ -160,7 +161,7 @@ public class PipelineTest extends BaseTest {
                 .clickSaveButton()
                 .getHeadlineDisplayedName();
 
-             Assert.assertEquals(getH1HeaderText, PIPELINE_NAME);
+        Assert.assertEquals(getH1HeaderText, PIPELINE_NAME);
     }
 
     @Test
@@ -292,5 +293,76 @@ public class PipelineTest extends BaseTest {
                 .getPageHeading();
 
         Assert.assertEquals(actualPageHeading, "Changes");
+    }
+
+    @Test
+    public void testRenameJobViaBreadcrumbs() {
+        String displayedNewName = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickBreadcrumbsDropdownArrow()
+                .clickBreadcrumbsRenameButton()
+                .clearNameInputField()
+                .setNewName(NEW_PIPELINE_NAME)
+                .clickSaveRenameButton()
+                .getHeadlineDisplayedName();
+
+        Assert.assertEquals(displayedNewName, NEW_PIPELINE_NAME);
+    }
+
+    @Test
+    public void testAddDescriptionPreview() {
+        String previewDescription = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .addDescription(DESCRIPTION)
+                .clickPreview()
+                .getTextareaPreviewText();
+
+        Assert.assertEquals(previewDescription, DESCRIPTION);
+    }
+
+    @Test
+    public void testStagesQtt() {
+        final int stagesQtt = 5;
+        final int buildsQtt = 1;
+
+        int actualSagesQtt = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickNodes()
+                .clickBuiltInNodeName()
+                .turnNodeOnIfOffline()
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .sendScript(stagesQtt)
+                .clickSaveButton()
+                .makeBuilds(buildsQtt)
+                .getSagesQtt();
+
+        Assert.assertEquals(actualSagesQtt, stagesQtt);
+    }
+
+    @Test
+    public void testAvgStageTimeBuildTimeIsDisplayed() {
+
+        new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .scrollToPipelineScript()
+                .selectSamplePipelineScript("hello")
+                .clickSaveButton()
+                .clickBuild()
+                .waitBuildToFinish()
+                .waitStageTable();
+
+        boolean avgTime = new PipelinePage(getDriver()).avgStageTimeAppear();
+        boolean buildTime = new PipelinePage(getDriver()).buildTimeAppear(1);
+
+        Assert.assertTrue(avgTime && buildTime);
     }
 }

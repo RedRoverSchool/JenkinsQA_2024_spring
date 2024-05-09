@@ -3,16 +3,13 @@ package school.redrover.runner;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.base.BasePage;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-
-import java.util.List;
-import java.util.UUID;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 public final class TestUtils {
 

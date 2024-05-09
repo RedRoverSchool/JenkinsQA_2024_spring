@@ -58,7 +58,7 @@ public class HomePage extends BasePage {
     @FindBy(css = "[class='tippy-box'] [href='/manage']")
     private WebElement manageFromDashboardBreadcrumbsMenu;
 
-    @FindBy(id="executors")
+    @FindBy(id = "executors")
     private WebElement buildExecutorStatus;
 
     @FindBy(xpath = "//td[text()='Idle']")
@@ -66,6 +66,21 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
     private WebElement fullStageViewButton;
+
+    @FindBy(css = "[class$='jenkins_ver']")
+    private WebElement jenkinsFooter;
+
+    @FindBy(xpath = "//div/a[@href='/manage/about']")
+    public WebElement aboutJenkinsDropdownItem;
+
+    @FindBy(xpath = "//div/a[@href='https://www.jenkins.io/participate/']")
+    public WebElement involvedDropdownItem;
+
+    @FindBy(xpath = "//div/a[@href='https://www.jenkins.io/']")
+    public WebElement websiteDropdownItem;
+
+    @FindBy(css =  "a.jenkins-table__link.model-link.inside")
+    private List<WebElement> allExistingJobs;
 
     @FindBy(css = ".tab.active a")
     private WebElement activeViewName;
@@ -76,11 +91,44 @@ public class HomePage extends BasePage {
     @FindBy(css = "[href$='builds']")
     private WebElement buildHistoryButton;
 
+    @FindBy(xpath = "//*[@class=' job-status-']/td[3]/a")
+    private WebElement createdElementInTable;
+
     @FindBy(css = "[class$=jenkins_ver]")
     private WebElement version;
 
     @FindBy(className = "jenkins-dropdown__item")
     private List<WebElement> dropDownElements;
+
+    @FindBy(tagName = "h1")
+    private WebElement heading;
+
+    @FindBy(xpath = "//a[@class='jenkins-table__link model-link inside']")
+    private List<WebElement> listNamesOfItems;
+
+    @FindBy(xpath = "//td//button[@class='jenkins-menu-dropdown-chevron']")
+    private List<WebElement> jenkinsMenuDropdownChevron;
+
+    @FindBy(xpath = "//a[contains(@href, '/move')]")
+    private WebElement moveOption;
+
+    @FindBy (xpath = "//*[@href='newJob']")
+    private WebElement createJob;
+
+    @FindBy(css = "[class$='am-button security-am']")
+    private WebElement warningIcon;
+
+    @FindBy(xpath = "//div[@role='alert']")
+    private WebElement warningTooltipLocator;
+
+    @FindBy(xpath = "//a[contains(text(),'Manage Jenkins')]")
+    private WebElement manageJenkinsTooltipLink;
+
+    @FindBy(xpath = "//button[@name='configure']")
+    private WebElement configureTooltipButton;
+
+    @FindBy(xpath = "//a[@href='/asynchPeople/']")
+    WebElement peopleButton;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -264,7 +312,12 @@ public class HomePage extends BasePage {
 
         return new PipelinePage(getDriver());
     }
+    public FreestylePage chooseCreatedFreestyleProject(String projectName) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/"
+                + projectName.replaceAll(" ", "%20") + "/']"))).click();
 
+        return new FreestylePage(getDriver());
+    }
     public HomePage openDashboardBreadcrumbsDropdown() {
         WebElement chevron = dashboardBreadcrumbs.findElement(By.cssSelector("[class$='chevron']"));
         ((JavascriptExecutor) getDriver()).executeScript(
@@ -282,7 +335,7 @@ public class HomePage extends BasePage {
     }
 
     public String getBuildExecutorStatusText() {
-       return buildExecutorStatus.getText();
+        return buildExecutorStatus.getText();
     }
 
     public List<WebElement> getBuildExecutorStatusList() {
@@ -293,10 +346,39 @@ public class HomePage extends BasePage {
         return buildExecutorStatusList.size();
     }
 
+    public HomePage jenkinsFooterClick() {
+        jenkinsFooter.click();
+
+        return this;
+    }
+
+    public AboutJenkinsPage selectAboutJenkins() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(aboutJenkinsDropdownItem)).click();
+
+        return new AboutJenkinsPage(getDriver());
+    }
+
     public FullStageViewPage clickFullStageViewButton() {
         getWait5().until(ExpectedConditions.elementToBeClickable(fullStageViewButton)).click();
 
         return new FullStageViewPage(getDriver());
+    }
+
+    public List<String> allExistingJobsNames() {
+        return allExistingJobs
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+    }
+
+    public List<String> getJobsBeginningFromThisFirstLetters(String firstLetters) {
+        return allExistingJobs
+                .stream()
+                .map(WebElement::getText)
+                .toList()
+                .stream()
+                .filter(el-> el.substring(0,firstLetters.length()).equalsIgnoreCase(firstLetters))
+                .toList();
     }
 
     public MultibranchPipelineRenamePage clickRenameFromDropdownMP() {
@@ -304,6 +386,19 @@ public class HomePage extends BasePage {
 
         return new MultibranchPipelineRenamePage(getDriver());
     }
+
+    public boolean isDisplayedAboutJenkinsDropdownItem() {
+        return getWait5().until(ExpectedConditions.elementToBeClickable(aboutJenkinsDropdownItem)).isDisplayed();
+    }
+
+    public boolean isDisplayedInvolvedDropdownItem() {
+        return involvedDropdownItem.isDisplayed();
+    }
+
+    public boolean isDisplayedWebsiteDropdownItem() {
+        return websiteDropdownItem.isDisplayed();
+    }
+
 
     public HomePage moveMouseToPassiveViewName() {
         new Actions(getDriver())
@@ -340,6 +435,12 @@ public class HomePage extends BasePage {
         return new BuildHistoryPage(getDriver());
     }
 
+    public FolderStatusPage clickFolderName() {
+        createdElementInTable.click();
+
+        return new FolderStatusPage(getDriver());
+    }
+
     public HomePage clickVersion() {
         version.click();
 
@@ -353,4 +454,72 @@ public class HomePage extends BasePage {
         }
         return actualDropDownElementsValues;
     }
+
+    public List<WebElement> getTheListOfFreestyleProjects(String freestyleProjectName){
+        return getDriver().findElements(
+                By.xpath("//span[text() = '" + freestyleProjectName + "']"));
+    }
+
+    public String getHeadingValue() {
+
+        return heading.getText();
+    }
+    public HomePage createNewFolder(String folderName) {
+        clickNewItem()
+                .setItemName(folderName)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .clickLogo();
+        return new HomePage(getDriver());
+    }
+
+    public MovePage chooseFolderToMove() {
+        getWait5().until(ExpectedConditions.visibilityOf(moveOption)).click();
+        return new MovePage(getDriver());
+    }
+
+    public HomePage clickWarningIcon() {
+        warningIcon.click();
+        return this;
+    }
+
+    public String getWarningTooltipText() {
+        WebElement warningTooltipText = getWait5().until(ExpectedConditions.visibilityOf(warningTooltipLocator));
+        return warningTooltipText.getText();
+    }
+
+    public ManageJenkinsPage clickManageJenkinsTooltipLink() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(manageJenkinsTooltipLink)).click();
+        return new ManageJenkinsPage(getDriver());
+    }
+
+    public SecurityPage clickConfigureTooltipButton() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(configureTooltipButton)).click();
+        return new SecurityPage(getDriver());
+    }
+
+    public PeoplePage clickPeopleButton() {
+        peopleButton.click();
+
+        return new PeoplePage(getDriver());
+    }
+    public FolderStatusPage clickSpecificFolderName(String itemName) {
+        getDriver().findElement(
+                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
+
+        return new FolderStatusPage(getDriver());
+    }
+
+    public FolderRenamePage renameFolderFromDropdown() {
+        renameFromDropdown.click();
+
+        return new FolderRenamePage(getDriver());
+    }
+
+    public  CreateNewItemPage clickCreateJob() {
+        createJob.click();
+
+        return new CreateNewItemPage(getDriver());
+    }
+
 }

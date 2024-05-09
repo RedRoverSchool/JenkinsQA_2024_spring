@@ -24,7 +24,7 @@ public class Folder7Test extends BaseTest {
                 .setItemName(NAME)
                 .selectFolderAndClickOk()
                 .clickSaveButton()
-                .getPageTopic();
+                .getPageHeading();
 
         Assert.assertEquals(name, NAME);
     }
