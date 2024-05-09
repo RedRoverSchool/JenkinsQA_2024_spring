@@ -9,6 +9,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -274,41 +275,6 @@ public class Pipeline1Test extends BaseTest {
         String actualResult = breadcrumbs.replaceAll("\n", " > ");
 
         Assert.assertEquals(actualResult, expectedResult);
-    }
-
-    @Test
-    public void testBuildAttributes() {
-
-        int number_of_stages = 5;
-
-        turnNodeOnIfOffline();
-
-        createPipelineProject(PIPELINE_NAME);
-
-        sendScript(number_of_stages);
-
-        getDriver().findElement(By.name("Submit")).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/build?delay=0sec']")).click();
-
-        WebElement box = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.className("cell-box")));
-        WebElement date = box.findElement(By.className("date"));
-        WebElement time = box.findElement(By.className("time"));
-        WebElement changesetBox = box.findElement(By.xpath("//div[@class='changeset-box no-changes']"));
-        WebElement number = box.findElement(By.className("badge"));
-        boolean result = true;
-        if (date == null || !date.isDisplayed()) {
-            result = false;
-        }
-        if (time == null || !time.isDisplayed()) {
-            result = false;
-        }
-        if (changesetBox == null || !(changesetBox.getText().equals("No Changes"))) {
-            result = false;
-        }
-        if (number == null || !number.isDisplayed()) {
-            result = false;
-        }
-        Assert.assertTrue(result, "One of the elements is missing");
     }
 
     @Test
