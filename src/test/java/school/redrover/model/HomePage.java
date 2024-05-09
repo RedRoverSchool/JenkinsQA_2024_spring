@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
 
@@ -67,6 +68,18 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
     private WebElement fullStageViewButton;
 
+    @FindBy(css = "[class$='jenkins_ver']")
+    private WebElement jenkinsFooter;
+
+    @FindBy(xpath = "//div/a[@href='/manage/about']")
+    public WebElement aboutJenkinsDropdownItem;
+
+    @FindBy(xpath = "//div/a[@href='https://www.jenkins.io/participate/']")
+    public WebElement involvedDropdownItem;
+
+    @FindBy(xpath = "//div/a[@href='https://www.jenkins.io/']")
+    public WebElement websiteDropdownItem;
+
     @FindBy(css =  "a.jenkins-table__link.model-link.inside")
     private List<WebElement> allExistingJobs;
 
@@ -111,6 +124,9 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//button[@name='configure']")
     private WebElement configureTooltipButton;
+
+    @FindBy(xpath = "//a[@href='/asynchPeople/']")
+    WebElement peopleButton;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -317,7 +333,7 @@ public class HomePage extends BasePage {
     }
 
     public String getBuildExecutorStatusText() {
-       return buildExecutorStatus.getText();
+        return buildExecutorStatus.getText();
     }
 
     public List<WebElement> getBuildExecutorStatusList() {
@@ -326,6 +342,18 @@ public class HomePage extends BasePage {
 
     public int getBuildExecutorListSize() {
         return buildExecutorStatusList.size();
+    }
+
+    public HomePage jenkinsFooterClick() {
+        jenkinsFooter.click();
+
+        return this;
+    }
+
+    public AboutJenkinsPage selectAboutJenkins() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(aboutJenkinsDropdownItem)).click();
+
+        return new AboutJenkinsPage(getDriver());
     }
 
     public FullStageViewPage clickFullStageViewButton() {
@@ -356,6 +384,19 @@ public class HomePage extends BasePage {
 
         return new MultibranchPipelineRenamePage(getDriver());
     }
+
+    public boolean isDisplayedAboutJenkinsDropdownItem() {
+        return getWait5().until(ExpectedConditions.elementToBeClickable(aboutJenkinsDropdownItem)).isDisplayed();
+    }
+
+    public boolean isDisplayedInvolvedDropdownItem() {
+        return involvedDropdownItem.isDisplayed();
+    }
+
+    public boolean isDisplayedWebsiteDropdownItem() {
+        return websiteDropdownItem.isDisplayed();
+    }
+
 
     public HomePage moveMouseToPassiveViewName() {
         new Actions(getDriver())
@@ -455,6 +496,11 @@ public class HomePage extends BasePage {
         return new SecurityPage(getDriver());
     }
 
+    public PeoplePage clickPeopleButton() {
+        peopleButton.click();
+
+        return new PeoplePage(getDriver());
+    }
     public FolderStatusPage clickSpecificFolderName(String name) {
         getDriver().findElement(By.cssSelector("td>[href^='job/" + name.replace(" ", "%20") + "']")).click();
 
