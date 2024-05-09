@@ -17,7 +17,6 @@ import java.util.List;
 public class FreestyleProject24Test extends BaseTest {
     private static final String FREESTYLE_NAME = "newFreestyleProject";
     private static final String FOLDER = "NewFolder";
-    private static final By SAVE_BUTTON = By.xpath("//button[@formnovalidate]");
     private static final String DESCRIPTION_TEXT = "This project has been added into the folder";
 
     private void dropDown(By xpath) {
