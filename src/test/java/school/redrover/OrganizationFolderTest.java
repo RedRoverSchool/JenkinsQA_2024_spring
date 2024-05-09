@@ -42,6 +42,12 @@ public class OrganizationFolderTest extends BaseTest {
 
     @Test
     public void testOrganizationFolderCreationWithDefaultIcon() {
+        new HomePage(getDriver())
+                .clickNewItem()
+                        .setItemName(ORGANIZATION_FOLDER_NAME)
+                                .selectOrganizationFolderAndClickOk()
+                                        .selectDefaultIcon()
+                                                .clickSave()
         getDriver().findElement(By.cssSelector("[href$='/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(ORGANIZATION_FOLDER_NAME);
         getDriver().findElement(By.cssSelector("[class$='OrganizationFolder']")).click();
