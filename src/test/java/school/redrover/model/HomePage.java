@@ -130,6 +130,9 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@href='/asynchPeople/']")
     WebElement peopleButton;
 
+    @FindBy(css = "button[href $= '/doDelete']")
+    WebElement dropdownDelete;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -168,7 +171,7 @@ public class HomePage extends BasePage {
     }
 
     public DeleteDialog clickDeleteInDropdown(DeleteDialog dialog) {
-        getDriver().findElement(TestUtils.DROPDOWN_DELETE).click();
+        dropdownDelete.click();
         return dialog;
     }
 
