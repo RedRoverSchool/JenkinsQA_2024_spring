@@ -141,7 +141,7 @@ public class OrganizationFolderTest extends BaseTest {
     public void testPipelineSyntaxMenuList(){
 
         List <String> actuallistOfDocumentation = new HomePage(getDriver())
-                .openOrgFolderMenu(ORGANIZATION_FOLDER_NAME)
+                .openOrgFolderPage(ORGANIZATION_FOLDER_NAME)
                 .clickPipelineSyntax()
                 .getActualListOfDocumentation();
 

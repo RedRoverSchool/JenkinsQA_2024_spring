@@ -131,9 +131,6 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@href='/asynchPeople/']")
     WebElement peopleButton;
 
-    @FindBy(xpath = "//div[@class='jenkins-dropdown']/a[7]")
-    private WebElement pipelineSyntaxMenu;
-
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -533,21 +530,11 @@ public class HomePage extends BasePage {
     }
 
 
-    public HomePage openOrgFolderMenu(String organizationFolderName) {
-        WebElement currentOrganizationFolder = getDriver()
-                .findElement(By.xpath("//span[text()='" + organizationFolderName + "']/.."));
-        new Actions(getDriver()).moveToElement(currentOrganizationFolder)
-                .perform();
-        WebElement menuForCurrentOrganizationFolder = getWait10().until(ExpectedConditions
-                .elementToBeClickable(By.xpath("//*[@id='job_" + organizationFolderName + "']/td[3]/a")));
-        menuForCurrentOrganizationFolder.click();
-
-        return new HomePage(getDriver());
+    public OrganizationFolderPage openOrgFolderPage(String organizationFolderName) {
+        getDriver()
+                .findElement(By.xpath("//span[text()='" + organizationFolderName + "']"))
+                .click();
+        return new OrganizationFolderPage(getDriver());
     }
 
-    public PipelineSyntaxPage clickPipelineSyntax() {
-        pipelineSyntaxMenu.click();
-
-        return new PipelineSyntaxPage(getDriver());
-    }
 }
