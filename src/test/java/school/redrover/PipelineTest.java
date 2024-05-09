@@ -162,7 +162,7 @@ public class PipelineTest extends BaseTest {
                 .clickSaveButton()
                 .getHeadlineDisplayedName();
 
-             Assert.assertEquals(getH1HeaderText, PIPELINE_NAME);
+        Assert.assertEquals(getH1HeaderText, PIPELINE_NAME);
     }
 
     @Test
@@ -314,7 +314,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testAddDescriptionPreview(){
+    public void testAddDescriptionPreview() {
         String previewDescription = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
@@ -323,6 +323,27 @@ public class PipelineTest extends BaseTest {
                 .clickPreview()
                 .getTextareaPreviewText();
 
-        Assert.assertEquals(previewDescription,DESCRIPTION);
+        Assert.assertEquals(previewDescription, DESCRIPTION);
+    }
+
+    @Test
+    public void testStagesQtt() {
+        final int stagesQtt = 5;
+        final int buildsQtt = 1;
+
+        int actualSagesQtt = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickNodes()
+                .clickBuiltInNodeName()
+                .turnNodeOnIfOffline()
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .sendScript(stagesQtt)
+                .clickSaveButton()
+                .makeBuilds(buildsQtt)
+                .getSagesQtt();
+
+        Assert.assertEquals(actualSagesQtt, stagesQtt);
     }
 }

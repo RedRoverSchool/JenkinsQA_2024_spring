@@ -297,7 +297,12 @@ public class HomePage extends BasePage {
 
         return new PipelinePage(getDriver());
     }
+    public FreestylePage chooseCreatedFreestyleProject(String projectName) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/"
+                + projectName.replaceAll(" ", "%20") + "/']"))).click();
 
+        return new FreestylePage(getDriver());
+    }
     public HomePage openDashboardBreadcrumbsDropdown() {
         WebElement chevron = dashboardBreadcrumbs.findElement(By.cssSelector("[class$='chevron']"));
         ((JavascriptExecutor) getDriver()).executeScript(
@@ -408,6 +413,11 @@ public class HomePage extends BasePage {
             actualDropDownElementsValues.add(element.getDomProperty("innerText"));
         }
         return actualDropDownElementsValues;
+    }
+
+    public List<WebElement> getTheListOfFreestyleProjects(String freestyleProjectName){
+        return getDriver().findElements(
+                By.xpath("//span[text() = '" + freestyleProjectName + "']"));
     }
 
     public String getHeadingValue() {
