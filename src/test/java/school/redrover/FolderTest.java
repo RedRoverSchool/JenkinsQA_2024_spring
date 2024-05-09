@@ -22,13 +22,6 @@ public class FolderTest extends BaseTest {
     private static final String FOLDER_TO_MOVE = "Folder_to_move_into_the_first";
     private static final String PIPELINE_NAME = "Pipeline Sv";
 
-    private void clickOnDropdownArrow(By locator) {
-        WebElement itemDropdownArrow = getDriver().findElement(locator);
-
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
-                "arguments[0].dispatchEvent(new Event('click'));", itemDropdownArrow);
-    }
-
     public void create() {
         HomePage homePage = new HomePage(getDriver());
 
@@ -91,7 +84,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = {"testCreateFolderViaCreateAJob", "testRenameFolderViaFolderBreadcrumbsDropdownMenu"})
-    public void testRenameFolderViaMainPageDropdownMenu() throws InterruptedException {
+    public void testRenameFolderViaMainPageDropdownMenu() {
         String folderStatusPageHeading = new HomePage(getDriver())
                 .openItemDropdownWithSelenium(NEW_FOLDER_NAME)
                 .renameFolderFromDropdown()
