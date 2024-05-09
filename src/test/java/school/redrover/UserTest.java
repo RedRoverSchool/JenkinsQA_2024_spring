@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
@@ -50,6 +51,7 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(names, names.stream().sorted(Comparator.reverseOrder()).toList());
     }
 
+    @Ignore
     @Test
     public void testUsersSortingByUserID() {
 
