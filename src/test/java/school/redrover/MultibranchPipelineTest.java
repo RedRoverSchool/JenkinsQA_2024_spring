@@ -335,20 +335,22 @@ public class MultibranchPipelineTest extends BaseTest {
                 .selectMultibranchPipelineAndClickOk()
                 .clickOnToggle()
                 .clickSaveButton()
-                 .selectConfigure();
+                .selectConfigure();
 
         Assert.assertEquals(page.getStatusToggle(), "false");
     }
 
     @Test
     public void testCreatingMultibranchPipeline(){
-        HomePage multibranchPipelinePage = new HomePage(getDriver())
+        String multibranchPipelinePage = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(MULTI_PIPELINE_NAME)
                 .selectMultibranchPipelineAndClickOk()
                 .clickSaveButton()
-                .clickLogo();
-        Assert.assertEquals(multibranchPipelinePage.getMultibranchPipelineNameText(),MULTI_PIPELINE_NAME);
+                .clickLogo()
+                .getMultibranchPipelineNameText();
+
+        Assert.assertEquals(multibranchPipelinePage,MULTI_PIPELINE_NAME);
     }
 
     @Test(dependsOnMethods = "testCreatingMultibranchPipeline")
