@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.FolderStatusPage;
@@ -92,20 +91,15 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = {"testCreateFolderViaCreateAJob", "testRenameFolderViaFolderBreadcrumbsDropdownMenu"})
-    public void testRenameFolderViaMainPageDropdownMenu() {
-        WebElement dashboardFolderName = getDriver().findElement(By.cssSelector("td>[href^='job']"));
-        new Actions(getDriver())
-                .moveToElement(dashboardFolderName)
-                .perform();
+    public void testRenameFolderViaMainPageDropdownMenu() throws InterruptedException {
+        String folderStatusPageHeading = new HomePage(getDriver())
+                .openItemDropdownWithSelenium(NEW_FOLDER_NAME)
+                .renameFolderFromDropdown()
+                .setNewName(THIRD_FOLDER_NAME)
+                .clickRename()
+                .getPageHeading();
 
-        clickOnDropdownArrow(By.cssSelector("[href^='job'] [class$='dropdown-chevron']"));
-        getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='rename']")).click();
-        getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys(THIRD_FOLDER_NAME);
-        getDriver().findElement(By.name("Submit")).click();
-
-        String folderPageHeading = getDriver().findElement(By.tagName("h1")).getText();
-        Assert.assertEquals(folderPageHeading, THIRD_FOLDER_NAME,
+        Assert.assertEquals(folderStatusPageHeading, THIRD_FOLDER_NAME,
                 "The Folder name is not equal to " + THIRD_FOLDER_NAME);
     }
 

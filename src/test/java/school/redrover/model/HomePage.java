@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.Assert;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
 
@@ -238,7 +237,7 @@ public class HomePage extends BasePage {
     public HomePage openItemDropdownWithSelenium(String projectName) {
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(By.linkText(projectName)))
-                .pause(1000)
+                .pause(3000)
                 .scrollToElement(getDriver().findElement(By.cssSelector(String.format("[data-href*='/job/%s/']", projectName))))
                 .click()
                 .perform();
@@ -501,10 +500,16 @@ public class HomePage extends BasePage {
 
         return new PeoplePage(getDriver());
     }
-    public FolderStatusPage clickSpecificFolderName(String name) {
-        getDriver().findElement(By.cssSelector("td>[href^='job/" + name.replace(" ", "%20") + "']")).click();
+    public FolderStatusPage clickSpecificFolderName(String itemName) {
+        getDriver().findElement(
+                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
 
         return new FolderStatusPage(getDriver());
     }
 
+    public FolderRenamePage renameFolderFromDropdown() {
+        renameFromDropdown.click();
+
+        return new FolderRenamePage(getDriver());
+    }
 }
