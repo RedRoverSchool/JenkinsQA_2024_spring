@@ -112,6 +112,9 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//button[@name='configure']")
     private WebElement configureTooltipButton;
 
+    @FindBy(xpath = "//a[@href='/asynchPeople/']")
+    WebElement peopleButton;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -443,5 +446,11 @@ public class HomePage extends BasePage {
     public SecurityPage clickConfigureTooltipButton() {
         getWait5().until(ExpectedConditions.elementToBeClickable(configureTooltipButton)).click();
         return new SecurityPage(getDriver());
+    }
+
+    public PeoplePage clickPeopleButton() {
+        peopleButton.click();
+
+        return new PeoplePage(getDriver());
     }
 }
