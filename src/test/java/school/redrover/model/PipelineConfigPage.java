@@ -99,21 +99,16 @@ public class PipelineConfigPage extends BasePage {
     }
 
     public PipelineConfigPage sendScript(int stagesQtt) {
-        String pipelineScript = "pipeline {\n" +
-                "agent any\n\n" +
-                "stages {\n";
+        String pipelineScript = "pipeline {\nagent any\n\nstages {\n";
 
         getDriver().findElement(By.className("ace_text-input")).sendKeys(pipelineScript);
 
         for (int i = 1; i <= stagesQtt; i++) {
 
-            String stage = "\nstage(\'stage " + i + "\') {\n" +
-                    "steps {\n" +
-                    "echo \'test " + i + "\'\n";
-            getDriver().findElement(By.className("ace_text-input")).sendKeys(stage);
-            getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
-            getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
+            String stage = "\nstage(\'stage " + i + "\') {\nsteps {\necho \'test " + i + "\'\n";
+            getDriver().findElement(By.className("ace_text-input")).sendKeys(stage, Keys.ARROW_DOWN, Keys.ARROW_DOWN);
         }
+
         return this;
     }
     public boolean isPipelineDisplayed() {
