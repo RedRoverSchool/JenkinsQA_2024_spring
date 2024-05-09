@@ -415,8 +415,9 @@ public class HomePage extends BasePage {
         clickNewItem()
                 .setItemName(folderName)
                 .selectFolderAndClickOk()
-                .clickSaveButton();
-        return this;
+                .clickSaveButton()
+                .clickLogo();
+        return new HomePage(getDriver());
     }
 
     public MovePage chooseFolderToMove() {
