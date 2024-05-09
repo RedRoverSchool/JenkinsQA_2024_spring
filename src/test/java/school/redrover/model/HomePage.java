@@ -325,6 +325,12 @@ public class HomePage extends BasePage {
         return this;
     }
 
+    public CreateNewItemPage clickNewJobFromDashboardBreadcrumbsMenu() {
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.tippy-box a[href $= 'newJob']"))).click();
+
+        return new CreateNewItemPage(getDriver());
+    }
+
     public ManageJenkinsPage clickManageFromDashboardBreadcrumbsMenu() {
         manageFromDashboardBreadcrumbsMenu.click();
 
