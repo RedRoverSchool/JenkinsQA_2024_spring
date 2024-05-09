@@ -1,14 +1,14 @@
 package school.redrover;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
+import school.redrover.model.AboutJenkinsPage;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
+
+import java.util.List;
 
 public class FooterTest extends BaseTest {
 
@@ -28,14 +28,11 @@ public class FooterTest extends BaseTest {
 
     @Test
     public void testLinkButtonsListInVersionDropDown() {
-        final List<String> expectedDropDownElementsValues = new ArrayList<>(List.of("About Jenkins", "Get involved", "Website"));
+        final List<String> expectedDropDownElementsValues = List.of("About Jenkins", "Get involved", "Website");
 
-        getDriver().findElement(By.cssSelector("[class$=jenkins_ver]")).click();
-        List<WebElement> dropDownElements = getDriver().findElements(By.className("jenkins-dropdown__item"));
-        List<String> actualDropDownElementsValues = new ArrayList<>();
-        for (WebElement element : dropDownElements) {
-            actualDropDownElementsValues.add(element.getDomProperty("innerText"));
-        }
+        List<String> actualDropDownElementsValues = new HomePage(getDriver())
+                .clickVersion()
+                .getVersionDropDownElementsValues();
 
         Assert.assertEquals(actualDropDownElementsValues, expectedDropDownElementsValues, "Allarm!");
     }
@@ -47,5 +44,34 @@ public class FooterTest extends BaseTest {
         String titleText = getDriver().getTitle();
 
         Assert.assertEquals(titleText, "Remote API [Jenkins]");
+    }
+
+    @Test
+    public void testJenkinsVersion() {
+        AboutJenkinsPage page = new HomePage(getDriver())
+                .jenkinsFooterClick()
+                .selectAboutJenkins();
+
+        Assert.assertTrue(page.isDisplayedVersionJenkins());
+    }
+
+    @Test
+    public void testDropDownLink() {
+        HomePage page = new HomePage(getDriver())
+                .jenkinsFooterClick();
+
+        Assert.assertTrue(page.isDisplayedAboutJenkinsDropdownItem());
+        Assert.assertTrue(page.isDisplayedInvolvedDropdownItem());
+        Assert.assertTrue(page.isDisplayedWebsiteDropdownItem());
+    }
+
+    @Test
+    public void testJenkinsInformationFooter() {
+        boolean isExistJenkinsInformationFooter = new HomePage(getDriver())
+                .jenkinsFooterClick()
+                .selectAboutJenkins()
+                .isExistJenkinsInformationFooter();
+
+        Assert.assertTrue(isExistJenkinsInformationFooter);
     }
 }

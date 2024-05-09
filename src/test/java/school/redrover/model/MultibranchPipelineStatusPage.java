@@ -30,6 +30,9 @@ public class MultibranchPipelineStatusPage extends BasePage {
     @FindBy(xpath = "//div[@id='main-panel']/h1")
     private WebElement projectName;
 
+    @FindBy(css = "a[href$='rename']")
+    private WebElement sidebarRenameButton;
+
     public MultibranchPipelineStatusPage(WebDriver driver) {
         super(driver);
     }
@@ -70,5 +73,11 @@ public class MultibranchPipelineStatusPage extends BasePage {
 
     public String getMultibranchPipelineName(){
        return name.getText();
+    }
+
+    public MultibranchPipelineRenamePage clickSidebarRenameButton() {
+        sidebarRenameButton.click();
+
+        return new MultibranchPipelineRenamePage(getDriver());
     }
 }

@@ -26,4 +26,20 @@ public class MovePage extends BasePage {
 
         return new FreestylePage(getDriver());
     }
+
+    public HomePage chooseFolderFromListAndSave(String folderName) {
+        new Select(selectDestination)
+                .selectByValue("/" + folderName);
+        moveButton.click();
+        clickLogo();
+        return new HomePage(getDriver());
+    }
+
+    public FolderStatusPage chooseDestinationFromListAndSave(String destination) {
+        new Select(selectDestination)
+                .selectByValue("/" + destination);
+        moveButton.click();
+
+        return new FolderStatusPage(getDriver());
+    }
 }
