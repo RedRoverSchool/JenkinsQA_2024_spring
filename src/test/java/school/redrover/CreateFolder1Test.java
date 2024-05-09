@@ -47,7 +47,7 @@ public class CreateFolder1Test extends BaseTest {
     }
 
     @Test
-    public void testRenameFolder() throws InterruptedException {
+    public void testRenameFolder() {
         final String folderName = "ProjectFolder";
         final String newFolderName = "NewProjectFolder";
 
