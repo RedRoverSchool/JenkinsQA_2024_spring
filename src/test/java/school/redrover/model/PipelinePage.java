@@ -87,6 +87,12 @@ public class PipelinePage extends BasePage {
     private WebElement stageStatus;
 
 
+    @FindBy(className = "stage-total-0")
+    private WebElement avgStageTime;
+
+    @FindBy(className = "table-box")
+    private WebElement stageTable;
+
     public PipelinePage(WebDriver driver) {
         super(driver);
     }
@@ -285,4 +291,17 @@ public class PipelinePage extends BasePage {
         return result;
     }
 
+
+    public void waitStageTable() {
+        getWait10().until(ExpectedConditions.visibilityOf(stageTable));
+    }
+
+    public boolean avgStageTimeAppear() {
+        return avgStageTime.isDisplayed();
+    }
+
+    public boolean buildTimeAppear(int buildNumber) {
+        return getDriver().findElement(By.xpath("//tr[@data-runid='"
+                + buildNumber + "']//td[@data-stageid='6']")).isDisplayed();
+    }
 }
