@@ -40,6 +40,12 @@ public class PipelineConfigPage extends BasePage {
     @FindBy(xpath = "//*[@id='pipeline]")
     private WebElement isPiplineDisplayed;
 
+    @FindBy(xpath = "//a[@previewendpoint='/markupFormatter/previewDescription']")
+    private WebElement preview;
+
+    @FindBy(xpath = "//div[@class='textarea-preview']")
+    private WebElement textareaPreview;
+
     public PipelineConfigPage(WebDriver driver) {
         super(driver);
     }
@@ -114,4 +120,14 @@ public class PipelineConfigPage extends BasePage {
     public boolean isPiplineDisplayed() {
         return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='pipeline']"))).isDisplayed();
         }
+
+    public PipelineConfigPage clickPreview() {
+        preview.click();
+
+        return new PipelineConfigPage(getDriver());
+    }
+
+    public String getTextareaPreviewText() {
+        return textareaPreview.getText();
+    }
 }

@@ -312,4 +312,17 @@ public class PipelineTest extends BaseTest {
 
         Assert.assertEquals(displayedNewName, NEW_PIPELINE_NAME);
     }
+
+    @Test
+    public void testAddDescriptionPreview(){
+        String previewDescription = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .addDescription(DESCRIPTION)
+                .clickPreview()
+                .getTextareaPreviewText();
+
+        Assert.assertEquals(previewDescription,DESCRIPTION);
+    }
 }
