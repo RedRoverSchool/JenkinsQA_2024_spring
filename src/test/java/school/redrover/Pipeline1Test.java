@@ -370,7 +370,6 @@ public class Pipeline1Test extends BaseTest {
         turnNodeOnIfOffline();
 
         createPipelineProject(PIPELINE_NAME);
-
         sendScript(number_of_stages);
 
         getDriver().findElement(By.name("Submit")).click();
