@@ -22,7 +22,6 @@ public class CreateNewViewPage extends BasePage {
     @FindBy (xpath = "//div[@class='tab active']")
     WebElement newViewName;
 
-
     public CreateNewViewPage(WebDriver driver) { super(driver); }
 
     public CreateNewViewPage setViewName(String viewName) {
@@ -49,4 +48,9 @@ public class CreateNewViewPage extends BasePage {
         return this;
     }
 
+    public ViewConfigPage clickCreateMyView() {
+        createButton.click();
+
+        return new ViewConfigPage(getDriver());
+    }
 }
