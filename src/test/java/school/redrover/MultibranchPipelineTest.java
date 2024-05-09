@@ -85,6 +85,25 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(actualErrorMessage.getText(),expectedErrorMessage);
     }
 
+    @Test(dependsOnMethods = "testCreate")
+    public void testVerifyMpDisabledOnStatusPage() {
+        String disabledMessage = new HomePage(getDriver())
+                .clickMPName(MULTI_PIPELINE_NAME)
+                .clickDisableMultibranchPipeline()
+                .getDisableMultibranchPipelineText();
+
+        Assert.assertEquals(disabledMessage, "This Multibranch Pipeline is currently disabled");
+    }
+
+    @Test(dependsOnMethods = "testVerifyMpDisabledOnStatusPage")
+    public void testVerifyMpDisabledMessageColorOnStatusPage() {
+        String disabledMessageColor = new HomePage(getDriver())
+                .clickMPName(MULTI_PIPELINE_NAME)
+                .getDisableMultibranchPipelineTextColor();
+
+        Assert.assertEquals(disabledMessageColor, "rgba(254, 130, 10, 1)");
+    }
+
     @Test(dependsOnMethods = "testRenameOnTheSidebar")
     public void testDeleteMpViaBreadcrumbs() {
         getDriver().findElement(MULTI_PIPELINE_ON_DASHBOARD_LOCATOR).click();
@@ -490,24 +509,5 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//h1[contains(text(),MULTIBRANCH_NAME)]")).isDisplayed(), MULTIBRANCH_NAME);
-    }
-
-    @Test(dependsOnMethods = "testCreate")
-    public void testVerifyMpDisabledOnStatusPage() {
-        String disabledMessage = new HomePage(getDriver())
-                .clickMPName(MULTI_PIPELINE_NAME)
-                .clickDisableMultibranchPipeline()
-                .getDisableMultibranchPipelineText();
-
-        Assert.assertEquals(disabledMessage, "This Multibranch Pipeline is currently disabled");
-    }
-
-    @Test(dependsOnMethods = "testVerifyMpDisabledOnStatusPage")
-    public void testVerifyMpDisabledMessageColorOnStatusPage() {
-        String disabledMessageColor = new HomePage(getDriver())
-                .clickMPName(MULTI_PIPELINE_NAME)
-                .getDisableMultibranchPipelineTextColor();
-
-        Assert.assertEquals(disabledMessageColor, "rgba(254, 130, 10, 1)");
     }
 }
