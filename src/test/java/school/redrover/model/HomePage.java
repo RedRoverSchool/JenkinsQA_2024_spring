@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.Assert;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
 
@@ -100,9 +99,6 @@ public class HomePage extends BasePage {
 
     @FindBy(className = "jenkins-dropdown__item")
     private List<WebElement> dropDownElements;
-
-    @FindBy(xpath = "//*[@class=' job-status-']/td[3]/a")
-    private WebElement createdElementInTable;
 
     @FindBy(tagName = "h1")
     private WebElement heading;
