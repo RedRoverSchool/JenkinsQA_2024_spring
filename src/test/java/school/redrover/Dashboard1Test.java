@@ -167,7 +167,7 @@ public class Dashboard1Test extends BaseTest {
 
         Assert.assertEquals(
                 projectNameList,
-                List.of(SELECTED_NAME1, SELECTED_NAME2));
+                List.of(SELECTED_NAME2, SELECTED_NAME1));
     }
 
     @Test(dependsOnMethods = "testAddItemsToView")
