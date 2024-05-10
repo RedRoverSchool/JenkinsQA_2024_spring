@@ -5,8 +5,6 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
-import school.redrover.model.OrganizationFolderConfigPage;
-import school.redrover.model.OrganizationFolderPage;
 import school.redrover.runner.BaseTest;
 
 import java.util.List;
@@ -21,7 +19,7 @@ public class OrganizationFolder2Test extends BaseTest{
                 .clickNewItem()
                 .setItemName(organizationFolderName)
                 .selectOrganizationFolderAndClickOk()
-                .clickSave()
+                .clickSaveButton()
                 .clickLogo()
                 .getItemList();
 

@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.Assert;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
 
@@ -92,14 +91,14 @@ public class HomePage extends BasePage {
     @FindBy(css = "[href$='builds']")
     private WebElement buildHistoryButton;
 
+    @FindBy(xpath = "//*[@class=' job-status-']/td[3]/a")
+    private WebElement createdElementInTable;
+
     @FindBy(css = "[class$=jenkins_ver]")
     private WebElement version;
 
     @FindBy(className = "jenkins-dropdown__item")
     private List<WebElement> dropDownElements;
-
-    @FindBy(xpath = "//*[@class=' job-status-']/td[3]/a")
-    private WebElement createdElementInTable;
 
     @FindBy(tagName = "h1")
     private WebElement heading;
@@ -112,6 +111,9 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href, '/move')]")
     private WebElement moveOption;
+
+    @FindBy (xpath = "//*[@href='newJob']")
+    private WebElement createJob;
 
     @FindBy(css = "[class$='am-button security-am']")
     private WebElement warningIcon;
@@ -126,7 +128,10 @@ public class HomePage extends BasePage {
     private WebElement configureTooltipButton;
 
     @FindBy(xpath = "//a[@href='/asynchPeople/']")
-    WebElement peopleButton;
+    private WebElement peopleButton;
+
+    @FindBy(css = "button[href $= '/doDelete']")
+    WebElement dropdownDelete;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -138,6 +143,12 @@ public class HomePage extends BasePage {
         return new CreateNewItemPage(getDriver());
     }
 
+    public CreateNewItemPage clickCreateAJob() {
+        createAJobLink.click();
+
+        return new CreateNewItemPage(getDriver());
+    }
+
     public List<String> getItemList() {
         return getDriver().findElements(By.cssSelector("tr > td > .jenkins-table__link > span:first-child"))
                 .stream()
@@ -145,16 +156,10 @@ public class HomePage extends BasePage {
                 .toList();
     }
 
-    public CreateNewItemPage clickCreateAJob() {
-        createAJobLink.click();
-
-        return new CreateNewItemPage(getDriver());
-    }
-
-    public FolderStatusPage clickFolder(String name) {
+    public FolderProjectPage clickFolder(String name) {
         getDriver().findElement(By.xpath("//a[.='" + name + "']")).click();
 
-        return new FolderStatusPage(getDriver());
+        return new FolderProjectPage(getDriver());
     }
 
     public HomePage openItemDropdown(String projectName) {
@@ -166,7 +171,7 @@ public class HomePage extends BasePage {
     }
 
     public DeleteDialog clickDeleteInDropdown(DeleteDialog dialog) {
-        getDriver().findElement(TestUtils.DROPDOWN_DELETE).click();
+        dropdownDelete.click();
         return dialog;
     }
 
@@ -192,16 +197,16 @@ public class HomePage extends BasePage {
         return getDriver().findElement(By.cssSelector("[href='/computer/" + name + "/']")).isDisplayed();
     }
 
-    public MultiConfigurationPage clickMCPName(String projectName) {
+    public MultiConfigurationProjectPage clickMCPName(String projectName) {
         getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
 
-        return new MultiConfigurationPage(getDriver());
+        return new MultiConfigurationProjectPage(getDriver());
     }
 
-    public PipelinePage clickCreatedPipelineName() {
+    public PipelineProjectPage clickCreatedPipelineName() {
         pipelineItem.click();
 
-        return new PipelinePage(getDriver());
+        return new PipelineProjectPage(getDriver());
     }
 
     public ViewAllPage clickMyViewsFromDropdown() {
@@ -229,15 +234,15 @@ public class HomePage extends BasePage {
         return new ViewPage(getDriver());
     }
 
-    public FolderStatusPage clickOnCreatedFolder(String name) {
+    public FolderProjectPage clickOnCreatedFolder(String name) {
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tr[@id='job_" + name + "']/td/a"))).click();
 
-        return new FolderStatusPage(getDriver());
+        return new FolderProjectPage(getDriver());
     }
 
     public HomePage openItemDropdownWithSelenium(String projectName) {
         new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.linkText(projectName)))
+                .moveToElement(getDriver().findElement(By.xpath("//a[@href='job/"+ projectName +"/']")))
                 .pause(1000)
                 .scrollToElement(getDriver().findElement(By.cssSelector(String.format("[data-href*='/job/%s/']", projectName))))
                 .click()
@@ -246,7 +251,7 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public MultiConfigurationConfirmRenamePage selectRenameFromDropdown() {
+       public MultiConfigurationConfirmRenamePage selectRenameFromDropdown() {
         renameFromDropdown.click();
 
         return new MultiConfigurationConfirmRenamePage(getDriver());
@@ -264,10 +269,10 @@ public class HomePage extends BasePage {
         return new AppearancePage(getDriver());
     }
 
-    public PipelinePage clickSpecificPipelineName(By locator) {
+    public PipelineProjectPage clickSpecificPipelineName(By locator) {
         getDriver().findElement(locator).click();
 
-        return new PipelinePage(getDriver());
+        return new PipelineProjectPage(getDriver());
     }
 
     public boolean isItemDeleted(String name) {
@@ -278,10 +283,10 @@ public class HomePage extends BasePage {
         return getItemList().contains(name);
     }
 
-    public MultibranchPipelineStatusPage clickMPName(String projectName) {
+    public MultibranchPipelineProjectPage clickMPName(String projectName) {
         getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
 
-        return new MultibranchPipelineStatusPage(getDriver());
+        return new MultibranchPipelineProjectPage(getDriver());
     }
 
     public WebElement getDropdownMenu() {
@@ -304,17 +309,17 @@ public class HomePage extends BasePage {
         return projectIcon.getSize().height;
     }
 
-    public PipelinePage chooseCreatedProject(String projectName) {
+    public PipelineProjectPage chooseCreatedProject(String projectName) {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/"
                 + projectName.replaceAll(" ", "%20") + "/']"))).click();
 
-        return new PipelinePage(getDriver());
+        return new PipelineProjectPage(getDriver());
     }
-    public FreestylePage chooseCreatedFreestyleProject(String projectName) {
+    public FreestyleProjectPage chooseCreatedFreestyleProject(String projectName) {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/"
                 + projectName.replaceAll(" ", "%20") + "/']"))).click();
 
-        return new FreestylePage(getDriver());
+        return new FreestyleProjectPage(getDriver());
     }
     public HomePage openDashboardBreadcrumbsDropdown() {
         WebElement chevron = dashboardBreadcrumbs.findElement(By.cssSelector("[class$='chevron']"));
@@ -324,6 +329,12 @@ public class HomePage extends BasePage {
                 chevron);
 
         return this;
+    }
+
+    public CreateNewItemPage clickNewJobFromDashboardBreadcrumbsMenu() {
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.tippy-box a[href $= 'newJob']"))).click();
+
+        return new CreateNewItemPage(getDriver());
     }
 
     public ManageJenkinsPage clickManageFromDashboardBreadcrumbsMenu() {
@@ -385,6 +396,12 @@ public class HomePage extends BasePage {
         return new MultibranchPipelineRenamePage(getDriver());
     }
 
+    public <T> T clickJobByName(String name, T page) {
+        getDriver().findElement(By.xpath(
+                "//td/a[@href='job/" + name.replace(" ", "%20") + "/']")).click();
+        return page;
+    }
+
     public boolean isDisplayedAboutJenkinsDropdownItem() {
         return getWait5().until(ExpectedConditions.elementToBeClickable(aboutJenkinsDropdownItem)).isDisplayed();
     }
@@ -433,10 +450,10 @@ public class HomePage extends BasePage {
         return new BuildHistoryPage(getDriver());
     }
 
-    public FolderStatusPage clickFolderName() {
+    public FolderProjectPage clickFolderName() {
         createdElementInTable.click();
 
-        return new FolderStatusPage(getDriver());
+        return new FolderProjectPage(getDriver());
     }
 
     public HomePage clickVersion() {
@@ -501,4 +518,23 @@ public class HomePage extends BasePage {
 
         return new PeoplePage(getDriver());
     }
+    public FolderProjectPage clickSpecificFolderName(String itemName) {
+        getDriver().findElement(
+                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
+
+        return new FolderProjectPage(getDriver());
+    }
+
+    public FolderRenamePage renameFolderFromDropdown() {
+        renameFromDropdown.click();
+
+        return new FolderRenamePage(getDriver());
+    }
+
+    public  CreateNewItemPage clickCreateJob() {
+        createJob.click();
+
+        return new CreateNewItemPage(getDriver());
+    }
+
 }

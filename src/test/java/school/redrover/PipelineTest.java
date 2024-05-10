@@ -1,13 +1,11 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.FullStageViewPage;
 import school.redrover.model.HomePage;
-import school.redrover.model.PipelinePage;
+import school.redrover.model.PipelineProjectPage;
 import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
@@ -196,7 +194,7 @@ public class PipelineTest extends BaseTest {
                 .clickLogo()
                 .chooseCreatedProject(pipelineName);
 
-        Assert.assertTrue(new PipelinePage(getDriver()).isBtnPresentInSidebar("Full Stage View"));
+        Assert.assertTrue(new PipelineProjectPage(getDriver()).isBtnPresentInSidebar("Full Stage View"));
     }
 
     @Test(dependsOnMethods = "testCreatePipelineProject")
@@ -221,7 +219,7 @@ public class PipelineTest extends BaseTest {
                 .chooseCreatedProject(PIPELINE_NAME)
                 .getFullStageViewButtonBackgroundColor();
 
-        String backgroundColorAfterHover = new PipelinePage(getDriver())
+        String backgroundColorAfterHover = new PipelineProjectPage(getDriver())
                 .hoverOnFullStageViewButton()
                 .getFullStageViewButtonBackgroundColor();
 

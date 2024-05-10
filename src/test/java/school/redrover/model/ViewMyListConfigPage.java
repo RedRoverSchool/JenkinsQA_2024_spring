@@ -11,16 +11,16 @@ import school.redrover.model.base.BasePage;
 public class ViewMyListConfigPage extends BasePage {
 
     @FindBy(name = "Submit")
-    WebElement okButton;
+    private WebElement okButton;
 
     @FindBy(css = "div.jenkins-dropdown button:last-child")
-    WebElement projectDescriptionFromDropdown;
+    private WebElement projectDescriptionFromDropdown;
 
     @FindBy(css = "[descriptorid$='DescriptionColumn'] .dd-handle")
-    WebElement projectDescriptionColumnHandle;
+    private WebElement projectDescriptionColumnHandle;
 
     @FindBy(css = "[descriptorid$='StatusColumn']")
-    WebElement statusColumn;
+    private WebElement statusColumn;
 
     public ViewMyListConfigPage(WebDriver driver) { super(driver); }
 

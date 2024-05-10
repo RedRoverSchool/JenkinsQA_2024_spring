@@ -2,7 +2,6 @@ package school.redrover.model;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.runner.TestUtils;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -35,9 +34,11 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(xpath = "//div[@aria-describedby='tippy-6']")
     private WebElement searchHint;
 
-
     @FindBy(tagName = "h1")
     private WebElement pageTitle;
+
+    @FindBy(css = "[href='#']")
+    private WebElement reloadConfigurationFromDiskLink;
 
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
@@ -107,5 +108,15 @@ public class ManageJenkinsPage extends BasePage {
 
     public String getPageTitleText() {
         return pageTitle.getText();
+    }
+
+    public ReloadConfigurationDialog clickReloadConfigurationFromDisk() {
+        reloadConfigurationFromDiskLink.click();
+
+        return new ReloadConfigurationDialog(getDriver());
+    }
+
+    public String getSearchInputPlaceholderText() {
+        return searchInput.getDomProperty("placeholder");
     }
 }

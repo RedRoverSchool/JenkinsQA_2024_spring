@@ -7,18 +7,15 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseConfigPage;
 
-public class MultibranchPipelineConfigPage extends BasePage {
+public class MultibranchPipelineConfigPage extends BaseConfigPage<MultibranchPipelineProjectPage> {
 
     @FindBy(css = "[data-title*='Disabled']")
     private WebElement statusToggle;
 
     @FindBy(className = "tippy-box")
     private WebElement tooltip;
-
-    @FindBy(xpath = "//button[@name='Submit']")
-    private WebElement saveButton;
 
     @FindBy(id = "enable-disable-project")
     private WebElement toggleInput;
@@ -27,7 +24,7 @@ public class MultibranchPipelineConfigPage extends BasePage {
     private WebElement multibranchPipelineBreadcrumbs;
 
     public MultibranchPipelineConfigPage(WebDriver driver) {
-        super(driver);
+        super(driver, new MultibranchPipelineProjectPage(driver));
     }
 
     public MultibranchPipelineConfigPage clickToggle() {
@@ -56,11 +53,5 @@ public class MultibranchPipelineConfigPage extends BasePage {
 
     public String getStatusToggle() {
         return toggleInput.getDomProperty("checked");
-    }
-
-    public MultibranchPipelineStatusPage clickSaveButton() {
-        saveButton.click();
-
-        return new MultibranchPipelineStatusPage(getDriver());
     }
 }

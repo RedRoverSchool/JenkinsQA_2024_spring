@@ -1,10 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.*;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
@@ -12,8 +9,6 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
-import javax.swing.*;
-import java.time.Duration;
 import java.util.List;
 
 public class DeletePipelineTest extends BaseTest {
@@ -37,11 +32,11 @@ public class DeletePipelineTest extends BaseTest {
 
     @Ignore
     @Test
-    public void testDeletePipelineDropdown() throws InterruptedException {
+    public void testDeletePipelineDropdown() {
         TestUtils.createJob(this, TestUtils.Job.PIPELINE, pipelineName);
         TestUtils.goToMainPage(getDriver());
 
-        TestUtils.deleteJobViaDropdowm(this, pipelineName);
+        TestUtils.deleteJobViaDropdown(this, pipelineName);
 
         List<WebElement> jobList = getDriver()
                 .findElements(By.xpath("//table//a[@href='job/" + pipelineName + "/']"));
