@@ -13,19 +13,19 @@ public class PipelineSyntaxPage extends BasePage {
     }
 
     @FindBy(xpath = "//span[contains(text(), 'Online Documentation')]/..")
-    private WebElement onlineDocumentationButton;
+    private WebElement onlineDocumentationSidebarItem;
 
     @FindBy(xpath = "//a[contains(@href,'examples')]")
-    private WebElement examplesReferenceButton;
+    private WebElement examplesReferenceSidebarItem;
 
     public PipelineDocumentationPage clickOnlineDocumentation() {
-        onlineDocumentationButton.click();
+        onlineDocumentationSidebarItem.click();
 
         return new PipelineDocumentationPage(getDriver());
     }
 
     public PipelineExamplesPage clickExamplesReference() {
-        examplesReferenceButton.click();
+        examplesReferenceSidebarItem.click();
 
         return new PipelineExamplesPage(getDriver());
     }
