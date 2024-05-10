@@ -22,7 +22,7 @@ public class FreestyleProject33test extends BaseTest {
                 .clickNewItem()
                 .setItemName(projectName)
                 .selectFreestyleAndClickOk()
-                .clickSave()
+                .clickSaveButton()
                 .getProjectName();
 
         Assert.assertEquals(actualProjectName, projectName);

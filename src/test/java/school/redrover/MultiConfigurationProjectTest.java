@@ -299,7 +299,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(RANDOM_PROJECT_NAME)
                 .selectMultiConfigurationAndClickOk()
-                .clickSave()
+                .clickSaveButton()
                 .clickLogo()
                 .getItemList();
 

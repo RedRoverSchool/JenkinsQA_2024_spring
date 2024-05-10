@@ -1,15 +1,11 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.model.FolderConfigPage;
-import school.redrover.model.FolderStatusPage;
+import school.redrover.model.FolderProjectPage;
 import school.redrover.model.HomePage;
-import school.redrover.model.PipelinePage;
+import school.redrover.model.PipelineProjectPage;
 import school.redrover.runner.BaseTest;
 
 import java.util.List;
@@ -153,34 +149,31 @@ public class FolderTest extends BaseTest {
     @Test
     public void testRenameFolder() {
 
-        HomePage homePage = new HomePage(getDriver());
-        homePage
+        List<String> itemList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FOLDER_NAME)
-                .selectTypeAndClickOk("Folder");
-
-        new FolderConfigPage(getDriver())
+                .selectFolderAndClickOk()
                 .clickSaveButton()
                 .clickOnRenameButtonLeft()
                 .renameFolder(NEW_FOLDER_NAME)
-                .clickLogo();
+                .clickLogo()
+                .getItemList();
 
-        List<String> itemList = homePage.getItemList();
-        Assert.assertTrue(itemList.contains(NEW_FOLDER_NAME), "Folder is not renamed!");
+        Assert.assertListContainsObject(itemList, NEW_FOLDER_NAME, "Folder is not renamed!");
     }
 
     @Test
     public void testCreateViaNewItem() {
-        FolderStatusPage folderStatusPage = new HomePage(getDriver())
+        FolderProjectPage folderProjectPage = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FOLDER_NAME)
                 .selectFolderAndClickOk()
                 .clickSaveButton();
-        String folderName = folderStatusPage.getBreadcrumbName();
+        String folderName = folderProjectPage.getBreadcrumbName();
 
         Assert.assertEquals(folderName, FOLDER_NAME);
 
-        List<String> itemList = folderStatusPage
+        List<String> itemList = folderProjectPage
                 .clickLogo()
                 .getItemList();
 
@@ -194,18 +187,18 @@ public class FolderTest extends BaseTest {
 
         create();
 
-        PipelinePage pipelinePage = new HomePage(getDriver())
+        PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
                 .clickFolderName()
                 .clickNewItemInsideFolder()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .clickSaveButton();
 
-        String actualText = pipelinePage.getFullProjectNameLocationText();
+        String actualText = pipelineProjectPage.getFullProjectNameLocationText();
 
         Assert.assertTrue(actualText.contains(expectedText), "The text does not contain the expected project name.");
 
-        String itemName = pipelinePage.clickLogo()
+        String itemName = pipelineProjectPage.clickLogo()
                 .clickFolderName()
                 .getItemInTableName();
 

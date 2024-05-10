@@ -107,7 +107,7 @@ public class Folder7Test extends BaseTest {
                 .clickNewItemInsideFolder()
                 .setItemName(freeStyleProjectName)
                 .selectFreestyleAndClickOk()
-                .clickSave()
+                .clickSaveButton()
                 .getProjectName();
 
         Assert.assertEquals(name, freeStyleProjectName);

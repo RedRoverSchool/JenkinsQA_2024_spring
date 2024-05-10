@@ -15,7 +15,7 @@ import org.testng.annotations.Test;
 import school.redrover.model.DeleteDialog;
 import school.redrover.model.HomePage;
 import school.redrover.model.MultibranchPipelineConfigPage;
-import school.redrover.model.MultibranchPipelineStatusPage;
+import school.redrover.model.MultibranchPipelineProjectPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 import static school.redrover.runner.TestUtils.Job;
@@ -60,7 +60,7 @@ public class MultibranchPipelineTest extends BaseTest {
     @Test
     public void testCreateMultibranchPipeline() {
         String getMultibranchPipelineName = new HomePage(getDriver())
-                .clickCreateAJob()
+                .clickNewItem()
                 .setItemName(MULTI_PIPELINE_NAME)
                 .selectMultibranchPipelineAndClickOk()
                 .clickToggle()
@@ -102,7 +102,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testChangeFromDisabledToEnabledOnStatusPage() {
-        MultibranchPipelineStatusPage multibranchPipelineStatusPage = new HomePage(getDriver())
+        MultibranchPipelineProjectPage multibranchPipelineProjectPage = new HomePage(getDriver())
             .clickCreateAJob()
             .setItemName(MULTI_PIPELINE_NAME)
             .selectMultibranchPipelineAndClickOk()
@@ -110,7 +110,7 @@ public class MultibranchPipelineTest extends BaseTest {
             .clickSaveButton()
             .clickDisableEnableMultibranchPipeline();
 
-        Assert.assertTrue(multibranchPipelineStatusPage.isMultibranchPipelineDisabledTextNotDisplayed(),"Disabled message is displayed!!!");
+        Assert.assertTrue(multibranchPipelineProjectPage.isMultibranchPipelineDisabledTextNotDisplayed(),"Disabled message is displayed!!!");
     }
 
     @Test
@@ -513,22 +513,22 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testCreatingMultibranchPipeline(){
-        String multibranchPipelinePage = new HomePage(getDriver())
+        List<String> itemList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(MULTI_PIPELINE_NAME)
                 .selectMultibranchPipelineAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
-                .getMultibranchPipelineNameText();
+                .getItemList();
 
-        Assert.assertEquals(multibranchPipelinePage,MULTI_PIPELINE_NAME);
+        Assert.assertListContainsObject(itemList, MULTI_PIPELINE_NAME, "Item not found.");
     }
 
     @Test(dependsOnMethods = "testCreatingMultibranchPipeline")
     public void testMultibranchPipelineEnable(){
         String buttonName = new HomePage(getDriver())
                 .clickJobByName(MULTI_PIPELINE_NAME,
-                        new MultibranchPipelineStatusPage(getDriver()))
+                        new MultibranchPipelineProjectPage(getDriver()))
                 .getDisableMultibranchPipelineButtonText();
 
         Assert.assertEquals(buttonName, "Disable Multibranch Pipeline");

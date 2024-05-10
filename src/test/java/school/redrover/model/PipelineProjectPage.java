@@ -5,11 +5,11 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseProjectPage;
 
 import java.util.List;
 
-public class PipelinePage extends BasePage {
+public class PipelineProjectPage extends BaseProjectPage {
 
     @FindBy(id = "description-link")
     private WebElement changeDescriptionButton;
@@ -95,23 +95,22 @@ public class PipelinePage extends BasePage {
     @FindBy(xpath = "//*[@id='main-panel']//h1")
     private WebElement projectName;
 
-    public PipelinePage(WebDriver driver) {
+    public PipelineProjectPage(WebDriver driver) {
         super(driver);
     }
-
-    public PipelinePage clickSaveButton() {
+    public PipelineProjectPage clickSaveButton() {
         saveButton.click();
 
         return this;
     }
 
-    public PipelinePage clickChangeDescription() {
+    public PipelineProjectPage clickChangeDescription() {
         changeDescriptionButton.click();
 
         return this;
     }
 
-    public PipelinePage setDescription(String name) {
+    public PipelineProjectPage setDescription(String name) {
         descriptionInput.sendKeys(name);
 
         return this;
@@ -121,7 +120,7 @@ public class PipelinePage extends BasePage {
         return displayedDescription.getText();
     }
 
-    public PipelinePage waitAddDescriptionButtonDisappears() {
+    public PipelineProjectPage waitAddDescriptionButtonDisappears() {
         getWait2().until(ExpectedConditions.invisibilityOf(changeDescriptionButton));
 
         return this;
@@ -131,13 +130,13 @@ public class PipelinePage extends BasePage {
         return getDriver().switchTo().activeElement().getCssValue("box-shadow").split(" 0px")[0];
     }
 
-    public PipelinePage clickOnDescriptionInput() {
+    public PipelineProjectPage clickOnDescriptionInput() {
         descriptionInput.click();
 
         return this;
     }
 
-    public PipelinePage makeDescriptionFieldNotActive() {
+    public PipelineProjectPage makeDescriptionFieldNotActive() {
         new Actions(getDriver()).sendKeys(Keys.TAB).perform();
 
         return this;
@@ -162,13 +161,13 @@ public class PipelinePage extends BasePage {
         return new DeleteDialog(getDriver());
     }
 
-    public PipelinePage hoverOverBreadcrumbsName() {
+    public PipelineProjectPage hoverOverBreadcrumbsName() {
         hoverOverElement(breadcrumbsName);
 
         return this;
     }
 
-    public PipelinePage clickBreadcrumbsDropdownArrow() {
+    public PipelineProjectPage clickBreadcrumbsDropdownArrow() {
         clickSpecificDropdownArrow(breadcrumbsDropdownArrow);
 
         return this;
@@ -190,13 +189,13 @@ public class PipelinePage extends BasePage {
         return headlineDisplayedName.getText();
     }
 
-    public PipelinePage clickBuild() {
+    public PipelineProjectPage clickBuild() {
         getWait5().until(ExpectedConditions.elementToBeClickable(buildButton)).click();
 
         return this;
     }
 
-    public PipelinePage waitBuildToFinish() {
+    public PipelineProjectPage waitBuildToFinish() {
         getWait10().until(ExpectedConditions.invisibilityOf(buildProgressBar));
 
         return this;
@@ -235,7 +234,7 @@ public class PipelinePage extends BasePage {
         return (String) js.executeScript("return window.getComputedStyle(arguments[0], '::before').getPropertyValue('background-color');", fullStageViewButton);
     }
 
-    public PipelinePage hoverOnFullStageViewButton() {
+    public PipelineProjectPage hoverOnFullStageViewButton() {
         new Actions(getDriver()).scrollToElement(fullStageViewButton)
                 .moveToElement(fullStageViewButton)
                 .pause(2000)
@@ -244,7 +243,7 @@ public class PipelinePage extends BasePage {
         return this;
     }
 
-    public PipelinePage makeBuilds(int buildsQtt) {
+    public PipelineProjectPage makeBuilds(int buildsQtt) {
         for (int i = 1; i <= buildsQtt; i++) {
             getWait5().until(ExpectedConditions.elementToBeClickable(
                     By.xpath("//a[contains(@href, '/build?delay=0sec')]"))).click();

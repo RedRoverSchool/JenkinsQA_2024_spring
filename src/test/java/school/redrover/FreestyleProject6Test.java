@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.FreestylePage;
+import school.redrover.model.FreestyleProjectPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
@@ -20,14 +20,14 @@ public class FreestyleProject6Test extends BaseTest {
     final String FREESTYLE_PROJECT_RENAME = "Renamed Freestyle project Sv";
     final String FOLDER_NAME = "Folder SV";
 
-    public FreestylePage createFreestyleProjectWithDescription() {
+    public FreestyleProjectPage createFreestyleProjectWithDescription() {
 
         return new HomePage(getDriver())
                 .clickCreateJob()
                 .setItemName(FREESTYLE_PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .inputDescription(FREESTYLE_PROJECT_DESCRIPTION)
-                .clickSave();
+                .clickSaveButton();
     }
 
     public void goHome() {
