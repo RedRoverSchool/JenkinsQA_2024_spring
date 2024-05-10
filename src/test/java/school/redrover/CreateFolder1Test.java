@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -63,7 +62,7 @@ public class CreateFolder1Test extends BaseTest {
         List<String> itemList = new HomePage(getDriver())
                         .openItemDropdown(folderName)
                         .selectRenameFromDropdown()
-                        .changeProjectName(newFolderName)
+                        .changeProjectNameWithClear(newFolderName)
                         .clickRenameButton()
                         .clickLogo()
                         .getItemList();

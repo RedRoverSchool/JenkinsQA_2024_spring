@@ -5,9 +5,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseProjectPage;
 
-public class MultiConfigurationPage extends BasePage {
+public class MultiConfigurationProjectPage extends BaseProjectPage {
 
     @FindBy(id = "description-link")
     private WebElement addDescriptionButton;
@@ -27,23 +27,23 @@ public class MultiConfigurationPage extends BasePage {
     @FindBy(linkText = "Configure")
     private WebElement configureButton;
 
-    public MultiConfigurationPage(WebDriver driver) {
+    public MultiConfigurationProjectPage(WebDriver driver) {
         super(driver);
     }
 
-    public MultiConfigurationPage clickAddDescriptionButton() {
+    public MultiConfigurationProjectPage clickAddDescriptionButton() {
         addDescriptionButton.click();
 
         return this;
     }
 
-    public MultiConfigurationPage addOrEditDescription(String description) {
+    public MultiConfigurationProjectPage addOrEditDescription(String description) {
         descriptionField.sendKeys(description);
 
         return this;
     }
 
-    public MultiConfigurationPage clickSaveDescription() {
+    public MultiConfigurationProjectPage clickSaveDescription() {
         saveButton.click();
 
         return this;

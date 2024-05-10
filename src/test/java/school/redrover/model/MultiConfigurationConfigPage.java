@@ -1,12 +1,11 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseConfigPage;
 
-public class MultiConfigurationConfigPage extends BasePage {
+public class MultiConfigurationConfigPage extends BaseConfigPage<MultiConfigurationProjectPage> {
 
     @FindBy(className = "jenkins-toggle-switch__label")
     private WebElement toggleSwitch;
@@ -15,13 +14,7 @@ public class MultiConfigurationConfigPage extends BasePage {
     private WebElement applyButton;
 
     public MultiConfigurationConfigPage(WebDriver driver) {
-        super(driver);
-    }
-
-    public MultiConfigurationPage clickSave() {
-        getDriver().findElement(By.name("Submit")).click();
-
-        return new MultiConfigurationPage(getDriver());
+        super(driver, new MultiConfigurationProjectPage(driver));
     }
 
     public MultiConfigurationConfigPage clickToggleSwitch() {

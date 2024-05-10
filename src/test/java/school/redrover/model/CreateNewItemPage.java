@@ -54,30 +54,11 @@ public class CreateNewItemPage extends BasePage {
         super(driver);
     }
 
-    public HomePage createNewItem(String projectName, String projectType) {
-        setItemName(projectName);
-        switch (projectType) {
-            case "Freestyle" -> freestyleItem.click();
-            case "Pipeline" -> pipelineItem.click();
-            case "MultiConfiguration" -> multiConfigurationItem.click();
-            case "Folder" -> folderItem.click();
-            case "MultibranchPipeline" -> multibranchPipelineItem.click();
-            case "OrganizationFolder" -> organizationFolderItem.click();
-            default -> throw new IllegalArgumentException("Project type name incorrect");
-        }
-        okButton.click();
-        clickLogo();
-
-        return new HomePage(getDriver());
-    }
-
-
     public CreateNewItemPage setItemName(String name) {
         nameText.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
         nameText.sendKeys(name);
         return this;
     }
-
 
     public CreateNewItemPage selectTypeAndClickOk(String type) {
         getDriver().findElement(By.xpath("//span[text()='" + type + "']")).click();
@@ -181,6 +162,20 @@ public class CreateNewItemPage extends BasePage {
         }
         return allJobFromThisLetterName ;
     }
+
+
+    public CreateNewItemPage selectFreeStyleProject() {
+        freestyleItem.click();
+        return this;
+    }
+    public Boolean getOkButtoneState() {
+        if(okButton.getAttribute("disabled") != ""){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
 
     public CreateNewItemPage clearItemNameField() {
         nameText.sendKeys(Keys.CONTROL + "a", Keys.BACK_SPACE);

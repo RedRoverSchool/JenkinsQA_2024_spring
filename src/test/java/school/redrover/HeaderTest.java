@@ -7,17 +7,25 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.ItemPage;
 import school.redrover.runner.BaseTest;
 
 public class HeaderTest extends BaseTest {
 
     @Test
-    public void testLogoJenkins() {
+    public void testElementPeople() {
+        new ItemPage(getDriver())
+                .ElementPeopleClick();
 
-        getDriver().findElement(By.xpath("//a[@href='/asynchPeople/']")).click();
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='jenkins-app-bar__content']")).getText(), "People");
+    }
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Welcome to Jenkins!");
+    @Test
+    public void testElementWelcome() {
+        new ItemPage(getDriver())
+                .ElementWelcomeClic();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[contains(.,'Welcome to Jenkins!')]")).getText(), "Welcome to Jenkins!");
     }
 
     @Ignore

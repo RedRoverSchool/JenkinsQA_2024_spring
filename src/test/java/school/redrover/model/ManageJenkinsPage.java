@@ -115,4 +115,8 @@ public class ManageJenkinsPage extends BasePage {
 
         return new ReloadConfigurationDialog(getDriver());
     }
+
+    public String getSearchInputPlaceholderText() {
+        return searchInput.getDomProperty("placeholder");
+    }
 }

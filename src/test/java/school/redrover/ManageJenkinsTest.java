@@ -114,10 +114,11 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test
     public void testPlaceholderSettingsSearchInput() {
-        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
+        String SearchInputPlaceholderText = new HomePage(getDriver())
+                .clickManageJenkins()
+                .getSearchInputPlaceholderText();
 
-        String placeholderText = getDriver().findElement(By.id("settings-search-bar")).getDomProperty("placeholder");
-        Assert.assertEquals(placeholderText, "Search settings");
+        Assert.assertEquals(SearchInputPlaceholderText, "Search settings");
     }
 
     @Test
