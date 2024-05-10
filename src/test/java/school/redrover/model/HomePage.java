@@ -1,9 +1,6 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -134,6 +131,9 @@ public class HomePage extends BasePage {
 
     @FindBy(css = "button[href $= '/doDelete']")
     WebElement dropdownDelete;
+
+    @FindBy(id = "search-box")
+    WebElement searchBox;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -542,4 +542,24 @@ public class HomePage extends BasePage {
         return new CreateNewItemPage(getDriver());
     }
 
+    public PipelinePage searchPipelineProject(String projectName) {
+        searchBox.sendKeys(projectName + Keys.ENTER);
+
+        return new PipelinePage(getDriver());
+    }
+
+    public PipelinePage redirectPipelinePage(String pipeProjectName) {
+
+        for (WebElement item : listNamesOfItems){
+            if (item.getAttribute("href").contains(pipeProjectName)){
+                item.click();
+                return new PipelinePage(getDriver());
+            }
+        }
+
+        System.out.println("page doesn't contain pipeProjectName");
+
+        return null;
+    }
 }
+

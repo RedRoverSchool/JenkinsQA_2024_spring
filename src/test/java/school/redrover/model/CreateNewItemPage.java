@@ -195,6 +195,11 @@ public class CreateNewItemPage extends BasePage {
         }
     }
 
+    public CreateNewItemPage selectPipeline() {
+        pipelineItem.click();
+        return this;
+    }
+
 
     public CreateNewItemPage clearItemNameField() {
         nameText.sendKeys(Keys.CONTROL + "a", Keys.BACK_SPACE);

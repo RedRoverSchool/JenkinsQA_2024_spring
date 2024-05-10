@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FreestyleProject33test extends BaseTest {
-    String projectName;
+    private String projectName;
     @Test
     public void testCreateNewFreestyleProject() {
         projectName = TestUtils.getUniqueName("testProject");
@@ -68,7 +68,6 @@ public class FreestyleProject33test extends BaseTest {
                 .selectFreeStyleProject()
                 .clickOkAnyway(new CreateItemPage(getDriver()))
                 .getErrorMessageText();
-        System.out.println(errorText);
 
         Assert.assertTrue(errorText.contains("Logging ID="));
     }
@@ -97,7 +96,8 @@ public class FreestyleProject33test extends BaseTest {
 
     @Test(dependsOnMethods = {"testCreateNewFreestyleProject"})
     public void testCreateNewFreestyleProjectHomePageView() {
-        List<String> items = new HomePage(getDriver()).getItemList();
+        List<String> items = new HomePage(getDriver())
+                .getItemList();
 
         Assert.assertTrue(items.contains(projectName));
     }

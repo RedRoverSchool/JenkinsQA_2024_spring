@@ -86,12 +86,14 @@ public class PipelinePage extends BasePage {
     @FindBy(xpath ="//div[@class='changeset-box no-changes']")
     private WebElement stageStatus;
 
-
     @FindBy(className = "stage-total-0")
     private WebElement avgStageTime;
 
     @FindBy(className = "table-box")
     private WebElement stageTable;
+
+    @FindBy(xpath = "//*[@id='main-panel']//h1")
+    private WebElement projectName;
 
     public PipelinePage(WebDriver driver) {
         super(driver);
@@ -303,5 +305,9 @@ public class PipelinePage extends BasePage {
     public boolean buildTimeAppear(int buildNumber) {
         return getDriver().findElement(By.xpath("//tr[@data-runid='"
                 + buildNumber + "']//td[@data-stageid='6']")).isDisplayed();
+    }
+
+    public String getProjectName() {
+        return projectName.getText();
     }
 }
