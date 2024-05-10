@@ -33,13 +33,13 @@ public class OrganizationFolderPipelineSyntaxPage extends BasePage {
 
     public List<String> getCatchErrorTooltipList() {
         return catchErrorTooltipList.stream()
-            .map(element -> {
-                new Actions(getDriver())
-                        .moveToElement(element)
-                        .pause(500)
-                        .perform();
-                return tooltip.getText();
-            })
-            .toList();
+                .map(element -> {
+                    new Actions(getDriver())
+                            .moveToElement(element)
+                            .pause(500)
+                            .perform();
+                    return tooltip.getText();
+                })
+                .toList();
     }
 }
