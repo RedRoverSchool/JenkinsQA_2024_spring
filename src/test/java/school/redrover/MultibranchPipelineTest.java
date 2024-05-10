@@ -253,14 +253,18 @@ public class MultibranchPipelineTest extends BaseTest {
                 "Multibranch Pipeline Events", "Delete Multibranch Pipeline", "People", "Build History", "Move",
                 "Rename", "Pipeline Syntax", "Credentials");
 
-        createFolderForNestedTests();
-        createMultibranchViaFolderSidebar();
+        MultibranchPipelineProjectPage multibranchPipelineProjectPage = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(NESTED_TESTS_FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .clickNewItemInsideFolder()
+                .setItemName(MULTI_PIPELINE_NAME)
+                .selectMultibranchPipelineAndClickOk()
+                .clickSaveButton();
 
-        List<String> actualSidebarTexts = TestUtils.getTexts(
-                getDriver().findElements(By.cssSelector("[class^='task-link-wrapper']")));
-
-        Assert.assertEquals(actualSidebarTexts.size(), 11);
-        Assert.assertEquals(actualSidebarTexts, sidebarTasks);
+        Assert.assertEquals(multibranchPipelineProjectPage.getSidebarTasksSize(), 11);
+        Assert.assertEquals(multibranchPipelineProjectPage.getSidebarTasksListHavingExistingFolder(), sidebarTasks);
     }
 
     @Test
