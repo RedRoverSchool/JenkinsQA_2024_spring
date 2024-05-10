@@ -33,6 +33,9 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage {
     @FindBy(css = "a[href$='rename']")
     private WebElement sidebarRenameButton;
 
+    @FindBy(css = "[class^='task-link-wrapper']")
+    private List<WebElement> sidebarTasksList;
+
     public MultibranchPipelineProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -48,10 +51,10 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage {
 
         return this;
     }
-    public String getDisableMultibranchPipelineButtonText(){
-       return disableEnableMPButton.getText().trim();
-    }
 
+    public String getDisableMultibranchPipelineButtonText() {
+        return disableEnableMPButton.getText().trim();
+    }
 
 
     public String getDisableMultibranchPipelineText() {
@@ -71,13 +74,24 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage {
         return projectName.getText();
     }
 
-    public String getMultibranchPipelineName(){
-       return name.getText();
+    public String getMultibranchPipelineName() {
+        return name.getText();
     }
 
     public MultibranchPipelineRenamePage clickSidebarRenameButton() {
         sidebarRenameButton.click();
 
         return new MultibranchPipelineRenamePage(getDriver());
+    }
+
+    public List<String> getSidebarTasksListHavingExistingFolder() {
+        return sidebarTasksList
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+    }
+
+    public Integer getSidebarTasksSize() {
+        return sidebarTasksList.size();
     }
 }

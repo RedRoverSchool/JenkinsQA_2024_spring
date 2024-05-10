@@ -133,6 +133,9 @@ public class HomePage extends BasePage {
     @FindBy(css = "button[href $= '/doDelete']")
     private WebElement dropdownDelete;
 
+    @FindBy(css = "[href$='pipeline-syntax']")
+    private WebElement dropdownPipelineSyntax;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -242,9 +245,11 @@ public class HomePage extends BasePage {
 
     public HomePage openItemDropdownWithSelenium(String projectName) {
         new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.xpath("//a[@href='job/"+ projectName +"/']")))
+                .moveToElement(getDriver().findElement(
+                        By.xpath("//a[@href='job/" + TestUtils.asURL(projectName) + "/']")))
                 .pause(1000)
-                .scrollToElement(getDriver().findElement(By.cssSelector(String.format("[data-href*='/job/%s/']", projectName))))
+                .scrollToElement(getDriver().findElement(
+                        By.cssSelector(String.format("[data-href*='/job/%s/']", TestUtils.asURL(projectName)))))
                 .click()
                 .perform();
 
@@ -524,5 +529,11 @@ public class HomePage extends BasePage {
         createJob.click();
 
         return new CreateNewItemPage(getDriver());
+    }
+
+    public PipelineSyntaxPage openItemPipelineSyntaxFromDropdown() {
+        dropdownPipelineSyntax.click();
+
+        return new PipelineSyntaxPage(getDriver());
     }
 }

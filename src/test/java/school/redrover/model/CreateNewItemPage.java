@@ -6,7 +6,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.FreeStyleProjectByIrisTest;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
 
@@ -55,30 +54,11 @@ public class CreateNewItemPage extends BasePage {
         super(driver);
     }
 
-    public HomePage createNewItem(String projectName, String projectType) {
-        setItemName(projectName);
-        switch (projectType) {
-            case "Freestyle" -> freestyleItem.click();
-            case "Pipeline" -> pipelineItem.click();
-            case "MultiConfiguration" -> multiConfigurationItem.click();
-            case "Folder" -> folderItem.click();
-            case "MultibranchPipeline" -> multibranchPipelineItem.click();
-            case "OrganizationFolder" -> organizationFolderItem.click();
-            default -> throw new IllegalArgumentException("Project type name incorrect");
-        }
-        okButton.click();
-        clickLogo();
-
-        return new HomePage(getDriver());
-    }
-
-
     public CreateNewItemPage setItemName(String name) {
         nameText.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
         nameText.sendKeys(name);
         return this;
     }
-
 
     public CreateNewItemPage selectTypeAndClickOk(String type) {
         getDriver().findElement(By.xpath("//span[text()='" + type + "']")).click();
@@ -209,5 +189,4 @@ public class CreateNewItemPage extends BasePage {
     public String getItemNameHintColor() {
         return itemNameHint.getCssValue("color");
     }
-
 }

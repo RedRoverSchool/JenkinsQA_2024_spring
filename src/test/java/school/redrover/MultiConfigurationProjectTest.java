@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.CreateNewItemPage;
 import school.redrover.model.HomePage;
 import school.redrover.model.ItemErrorPage;
 
@@ -23,17 +24,17 @@ public class MultiConfigurationProjectTest extends BaseTest {
     private static final String PROJECT_NAME = "MCProject";
     private final String RANDOM_PROJECT_NAME = TestUtils.randomString();
 
-    @Ignore
+
     @Test
     public void testRenameProjectViaMainPageDropdown() {
         String addToProjectName = "New";
+        TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
 
-        String newProjectName = new HomePage(getDriver())
-                .clickNewItem()
-                .createNewItem(PROJECT_NAME, "MultiConfiguration")
+        String newProjectName = new CreateNewItemPage(getDriver())
+                .clickLogo()
                 .openItemDropdownWithSelenium(PROJECT_NAME)
                 .selectRenameFromDropdown()
-                .changeProjectName(addToProjectName)
+                .changeProjectNameWithoutClear(addToProjectName)
                 .clickRenameButton()
                 .getProjectNameText();
 
@@ -189,10 +190,10 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testMCPDisableByToggle() {
+        TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
 
         Assert.assertFalse(new HomePage(getDriver())
-                .clickNewItem()
-                .createNewItem(PROJECT_NAME, "MultiConfiguration")
+                .clickLogo()
                 .clickMCPName(PROJECT_NAME)
                 .clickConfigureButton()
                 .clickToggleSwitch()

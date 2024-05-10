@@ -5,7 +5,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BaseConfigPage;
 import org.openqa.selenium.support.ui.Select;
-import school.redrover.model.base.BasePage;
 
 public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFolderProjectPage> {
 
