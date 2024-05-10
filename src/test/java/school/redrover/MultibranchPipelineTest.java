@@ -41,22 +41,6 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.id("jenkins-home-link")).click();
     }
 
-    private void createFolderForNestedTests() {
-        getDriver().findElement(By.linkText("Create a job")).click();
-        getDriver().findElement(By.id("name")).sendKeys(NESTED_TESTS_FOLDER_NAME);
-        getDriver().findElement(By.cssSelector("[class$='_Folder']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-    }
-
-    private void createMultibranchViaFolderSidebar() {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(MULTI_PIPELINE_NAME);
-        getDriver().findElement(By.cssSelector("[class*='MultiBranch']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-    }
-
     @Test
     public void testCreateMultibranchPipeline() {
         String getMultibranchPipelineName = new HomePage(getDriver())
