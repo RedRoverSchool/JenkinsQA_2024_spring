@@ -59,7 +59,10 @@ public class OrganizationFolderTest extends BaseTest {
     public void testPipelineSyntaxDocumentationAccess() {
         String pageTitle = new HomePage(getDriver())
                 .clickNewItem()
-                .createNewItem(ORGANIZATION_FOLDER_NAME, "OrganizationFolder")
+                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .clickSave()
+                .clickLogo()
                 .chooseOrganizationFolder(ORGANIZATION_FOLDER_NAME)
                 .clickPipelineSyntax()
                 .clickOnlineDocumentation()
@@ -73,7 +76,10 @@ public class OrganizationFolderTest extends BaseTest {
     public void testPipelineSyntaxExamplesAccess() {
         String pageTitle = new HomePage(getDriver())
                 .clickNewItem()
-                .createNewItem(ORGANIZATION_FOLDER_NAME, "OrganizationFolder")
+                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .clickSave()
+                .clickLogo()
                 .chooseOrganizationFolder(ORGANIZATION_FOLDER_NAME)
                 .clickPipelineSyntax()
                 .clickExamplesReference()
