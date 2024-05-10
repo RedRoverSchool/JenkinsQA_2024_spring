@@ -11,7 +11,7 @@ import java.util.List;
 
 public class PiplineProjectsTest extends BaseTest {
 
-    private final String PIPELINE = "PipelineOne";
+    private final String PIPELINE = "PipelineProject";
 
     @Test
     public void testCreatePipline() {
