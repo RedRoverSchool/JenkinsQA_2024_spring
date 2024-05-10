@@ -31,10 +31,7 @@ public class AddDescriptionFreestyleProjectTest extends BaseTest {
                 .descriptionInput(expectedAddedDescription)
                 .clickSaveButton();
 
-        String actualAddedDescription = homePage.actualAddedDescriptionGetText();
-        String actualMessage = homePage.descriptionButtonGetText();
-
-        Assert.assertEquals(actualAddedDescription, expectedAddedDescription);
-        Assert.assertEquals(actualMessage, expectedMessage);
+        Assert.assertEquals(homePage.actualAddedDescriptionGetText(), expectedAddedDescription);
+        Assert.assertEquals(homePage.descriptionButtonGetText(), expectedMessage);
     }
 }
