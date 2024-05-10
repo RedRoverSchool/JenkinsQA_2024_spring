@@ -23,7 +23,7 @@ public class Folder3Test extends BaseTest {
                 .setItemName(FOLDER_NAME_FIRST)
                 .selectFolderType()
                 .clickButtonOK()
-                .clickLogo();
+                .clickLogo(); 
 
         Assert.assertTrue(homePage.isItemExists(FOLDER_NAME_FIRST));
     }
