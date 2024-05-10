@@ -25,13 +25,15 @@ public class MultibranchPipelineTest extends BaseTest {
     private final static String MULTI_PIPELINE_NAME = "MultibranchPipeline";
     private final static String RENAMED_MULTI_PIPELINE = "NewMultibranchPipelineName";
     private final static String NESTED_TESTS_FOLDER_NAME = "NestedTestsFolder";
-    private static final By SEARCH_RESULT_DROPDOWN = By.className("yui-ac-bd");
     private static final String FOLDER_NAME = "Folder";
-    private final static List <String> PIPELINE_MENU =
-            List.of("Status", "Configure", "Scan Multibranch Pipeline Log", "Multibranch Pipeline Events",
-                    "Delete Multibranch Pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
     private static final String WELCOME_PAGE_HEADING ="Welcome to Jenkins!";
-    private static final By MULTI_PIPELINE_ON_DASHBOARD_LOCATOR = By.cssSelector("[href='job/" + RENAMED_MULTI_PIPELINE + "/']");
+    private static final By MULTI_PIPELINE_ON_DASHBOARD_LOCATOR =
+            By.cssSelector("[href='job/" + RENAMED_MULTI_PIPELINE + "/']");
+    private static final By SEARCH_RESULT_DROPDOWN = By.className("yui-ac-bd");
+    private final static List <String> PIPELINE_MENU =
+            List.of("Status", "Configure", "Scan Multibranch Pipeline Log",
+                "Multibranch Pipeline Events", "Delete Multibranch Pipeline",
+                "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
 
     private void createNewMultiPipeline(String multiPipelineName) {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
@@ -499,26 +501,28 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//h1[contains(text(),MULTIBRANCH_NAME)]")).isDisplayed(), MULTIBRANCH_NAME);
     }
 
-    @Test
-    public void testCreatingMultibranchPipeline(){
-        List<String> itemList = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(MULTI_PIPELINE_NAME)
-                .selectMultibranchPipelineAndClickOk()
-                .clickSaveButton()
-                .clickLogo()
-                .getItemList();
-
-        Assert.assertListContainsObject(itemList, MULTI_PIPELINE_NAME, "Item not found.");
-    }
-
-    @Test(dependsOnMethods = "testCreatingMultibranchPipeline")
-    public void testMultibranchPipelineEnable(){
+    @Test(dependsOnMethods = "testCreateMultibranchPipeline")
+    public void testEnableStartFromHomepage(){
         String buttonName = new HomePage(getDriver())
+                .clickLogo()
                 .clickJobByName(MULTI_PIPELINE_NAME,
                         new MultibranchPipelineProjectPage(getDriver()))
-                .getDisableMultibranchPipelineButtonText();
+                .clickDisableEnableMultibranchPipeline()
+                .getDisableButtonText();
 
         Assert.assertEquals(buttonName, "Disable Multibranch Pipeline");
     }
+    @Test(dependsOnMethods = "testCreateMultibranchPipeline")
+    public void testDeleteProjectFromSidebar(){
+        List<String> welcome = new HomePage(getDriver())
+                .clickLogo()
+                .clickJobByName(MULTI_PIPELINE_NAME,
+                        new MultibranchPipelineProjectPage(getDriver()))
+                .clickDeleteAndYesButtons()
+                .getItemList();
+
+        Assert.assertListNotContainsObject(welcome,MULTI_PIPELINE_NAME,"Project not found");
+
+    }
+
 }
