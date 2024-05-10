@@ -9,7 +9,7 @@ import school.redrover.model.base.BasePage;
 
 import java.util.List;
 
-public class OrganizationFolderPipelineSyntaxPage extends BasePage {
+public class PipelineSyntaxPage extends BasePage {
 
     @FindBy(css = "[class$='dropdownList']")
     private WebElement sampleStepDropdownList;
@@ -20,11 +20,11 @@ public class OrganizationFolderPipelineSyntaxPage extends BasePage {
     @FindBy(className = "tippy-content")
     private WebElement tooltip;
 
-    public OrganizationFolderPipelineSyntaxPage(WebDriver driver) {
+    public PipelineSyntaxPage(WebDriver driver) {
         super(driver);
     }
 
-    public OrganizationFolderPipelineSyntaxPage selectCatchError() {
+    public PipelineSyntaxPage selectCatchError() {
         new Select(sampleStepDropdownList)
                 .selectByValue("catchError: Catch error and set build result to failure");
 

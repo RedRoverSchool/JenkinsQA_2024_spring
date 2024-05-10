@@ -531,9 +531,9 @@ public class HomePage extends BasePage {
         return new CreateNewItemPage(getDriver());
     }
 
-    public OrganizationFolderPipelineSyntaxPage openItemPipelineSyntaxFromDropdown() {
+    public PipelineSyntaxPage openItemPipelineSyntaxFromDropdown() {
         dropdownPipelineSyntax.click();
 
-        return new OrganizationFolderPipelineSyntaxPage(getDriver());
+        return new PipelineSyntaxPage(getDriver());
     }
 }
