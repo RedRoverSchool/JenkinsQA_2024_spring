@@ -29,16 +29,10 @@ public class OrganizationFolderConfigPage extends BasePage {
         return sidebarMenu.isDisplayed();
     }
 
-    public OrganizationFolderConfigPage clickIconDropdownList() {
-        iconDropdownList.click();
-
-        return this;
-    }
-
     public OrganizationFolderConfigPage selectDefaultIcon() {
         new Select(iconDropdownList)
                 .selectByVisibleText("Default Icon");
 
-        return new OrganizationFolderConfigPage(getDriver()RF)
+        return new OrganizationFolderConfigPage(getDriver());
     }
 }
