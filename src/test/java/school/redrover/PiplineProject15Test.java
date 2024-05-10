@@ -1,41 +1,42 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HeaderBlock;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
+
+import java.util.List;
 
 public class PiplineProject15Test extends BaseTest {
 
     @Test
     public void testCreatePipline() {
 
-        getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.cssSelector("#name")).sendKeys(TestUtils.PIPELINE);
-        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
-        getDriver().findElement(By.xpath("//*[@id='ok-button']")).click();
-        getDriver().findElement(By.name("Submit")).click();
-        getDriver().findElement(By.xpath("//*[@id='breadcrumbBar']")).click();
+        List<String> itemPipline = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(TestUtils.PIPELINE)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .getItemList();
 
-        Assert.assertEquals(
-                getDriver().findElement(By.linkText(TestUtils.PIPELINE)).getText(),
-                TestUtils.PIPELINE);
+        Assert.assertTrue(itemPipline.contains(TestUtils.PIPELINE));
     }
 
     @Test(dependsOnMethods = "testCreatePipline")
     public void testFindPiplineProject() {
 
-        getDriver().findElement(By.xpath("//*[@id='search-box']")).sendKeys(TestUtils.PIPELINE);
-        getDriver().findElement(By.xpath("//*[@id='search-box']")).sendKeys(Keys.ENTER);
+        String searchResult = new HeaderBlock(getDriver())
+                .enterRequestIntoSearchBox(TestUtils.PIPELINE)
+                .makeClickToSearchBox()
+                .getTitleText();
 
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText(),
-                TestUtils.PIPELINE);
+        Assert.assertEquals(searchResult, TestUtils.PIPELINE);
     }
-    @Ignore
+
     @Test(dependsOnMethods = "testCreatePipline")
     public void testCreatePiplineSameName() {
 
