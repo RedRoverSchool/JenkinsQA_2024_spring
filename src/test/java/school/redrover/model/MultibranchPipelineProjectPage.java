@@ -29,6 +29,10 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage {
 
     @FindBy(xpath = "//div[@id='main-panel']/h1")
     private WebElement projectName;
+    @FindBy(xpath = "//*[contains(@data-title,'Delete')]")
+    private WebElement sidebarDeleteButton;
+    @FindBy(xpath = "//*[contains(@data-id,'ok')]")
+    private WebElement confirmDeleteButton;
 
     @FindBy(css = "a[href$='rename']")
     private WebElement sidebarRenameButton;
@@ -52,7 +56,7 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage {
         return this;
     }
 
-    public String getDisableMultibranchPipelineButtonText() {
+    public String getDisableButtonText() {
         return disableEnableMPButton.getText().trim();
     }
 
@@ -82,6 +86,11 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage {
         sidebarRenameButton.click();
 
         return new MultibranchPipelineRenamePage(getDriver());
+    }
+    public HomePage clickDeleteAndYesButtons(){
+        sidebarDeleteButton.click();
+        confirmDeleteButton.click();
+        return clickLogo();
     }
 
     public List<String> getSidebarTasksListHavingExistingFolder() {
