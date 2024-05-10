@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.model.OrganizationFolderProjectPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
@@ -40,17 +41,15 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
-    public void testOrganizationFolderCreationWithDefaultIcon() {
-        getDriver().findElement(By.cssSelector("[href$='/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(ORGANIZATION_FOLDER_NAME);
-        getDriver().findElement(By.cssSelector("[class$='OrganizationFolder']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+    public void testCreateWithDefaultIcon() {
+        String organizationFolderIcon = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .selectDefaultIcon()
+                .clickSaveButton()
+                .getOrganizationFolderIcon();
 
-        new Select(getDriver().findElement(By.xpath("(//select[contains(@class, 'dropdownList')])[2]")))
-                .selectByVisibleText("Default Icon");
-        getDriver().findElement(By.name("Submit")).click();
-
-        String organizationFolderIcon = getDriver().findElement(By.cssSelector("h1 > svg")).getAttribute("title");
         Assert.assertEquals(organizationFolderIcon, "Folder");
     }
 
@@ -78,7 +77,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1[contains(@id,'examples')]")).getText(), "Pipeline Examples");
     }
 
-    @Test(dependsOnMethods = "testOrganizationFolderCreationWithDefaultIcon")
+    @Test(dependsOnMethods = "testCreateWithDefaultIcon")
     public void testCatchErrorStepTooltipsViaDashboardDropdown() {
         final List<String> expectedTooltipsTexts = List.of("Help for feature: catchError", "Help for feature: Message",
                 "Help for feature: Build result on error", "Help for feature: Stage result on error",
