@@ -34,6 +34,11 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(xpath = "//div[@aria-describedby='tippy-6']")
     private WebElement searchHint;
 
+    @FindBy(tagName = "h1")
+    private WebElement pageTitle;
+
+    @FindBy(css = "[href='#']")
+    private WebElement reloadConfigurationFromDiskLink;
 
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
@@ -99,5 +104,19 @@ public class ManageJenkinsPage extends BasePage {
         nodesButton.click();
 
         return new NodesTablePage(getDriver());
+    }
+
+    public String getPageTitleText() {
+        return pageTitle.getText();
+    }
+
+    public ReloadConfigurationDialog clickReloadConfigurationFromDisk() {
+        reloadConfigurationFromDiskLink.click();
+
+        return new ReloadConfigurationDialog(getDriver());
+    }
+
+    public String getSearchInputPlaceholderText() {
+        return searchInput.getDomProperty("placeholder");
     }
 }

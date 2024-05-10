@@ -1,14 +1,12 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.FullStageViewPage;
 import school.redrover.model.HomePage;
-import school.redrover.model.PipelinePage;
+import school.redrover.model.PipelineProjectPage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,15 +14,14 @@ import java.util.List;
 public class PipelineTest extends BaseTest {
 
     private static final String PIPELINE_NAME = "FirstPipeline";
-    private static final By DASHBOARD_PIPELINE_LOCATOR = By.cssSelector("td [href='job/" + PIPELINE_NAME + "/']");
     private static final String DESCRIPTION = "Lorem ipsum dolor sit amet";
     private static final String NEW_PIPELINE_NAME = "New Pipeline name";
 
     @Test
     public void testPipelineDescriptionTextAreaBacklightColor() {
+        TestUtils.resetJenkinsTheme(this);
+
         String currentTextAreaBorderBacklightColor = new HomePage(getDriver())
-                .resetJenkinsTheme()
-                .clickLogo()
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
@@ -39,9 +36,9 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testPipelineDescriptionTextAreaBacklightDefaultColor() {
+        TestUtils.resetJenkinsTheme(this);
+
         String defaultTextAreaBorderBacklightColor = new HomePage(getDriver())
-                .resetJenkinsTheme()
-                .clickLogo()
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
@@ -55,9 +52,9 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testYesButtonColorDeletingPipelineInSidebar() {
+        TestUtils.resetJenkinsTheme(this);
+
         String yesButtonHexColor = new HomePage(getDriver())
-                .resetJenkinsTheme()
-                .clickLogo()
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
@@ -76,7 +73,7 @@ public class PipelineTest extends BaseTest {
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
-                .clickSpecificPipelineName(DASHBOARD_PIPELINE_LOCATOR)
+                .clickSpecificPipelineName(PIPELINE_NAME)
                 .hoverOverBreadcrumbsName()
                 .clickBreadcrumbsDropdownArrow()
                 .clickBreadcrumbsDeleteButton()
@@ -162,7 +159,7 @@ public class PipelineTest extends BaseTest {
                 .clickSaveButton()
                 .getHeadlineDisplayedName();
 
-             Assert.assertEquals(getH1HeaderText, PIPELINE_NAME);
+        Assert.assertEquals(getH1HeaderText, PIPELINE_NAME);
     }
 
     @Test
@@ -196,7 +193,7 @@ public class PipelineTest extends BaseTest {
                 .clickLogo()
                 .chooseCreatedProject(pipelineName);
 
-        Assert.assertTrue(new PipelinePage(getDriver()).isBtnPresentInSidebar("Full Stage View"));
+        Assert.assertTrue(new PipelineProjectPage(getDriver()).isBtnPresentInSidebar("Full Stage View"));
     }
 
     @Test(dependsOnMethods = "testCreatePipelineProject")
@@ -221,7 +218,7 @@ public class PipelineTest extends BaseTest {
                 .chooseCreatedProject(PIPELINE_NAME)
                 .getFullStageViewButtonBackgroundColor();
 
-        String backgroundColorAfterHover = new PipelinePage(getDriver())
+        String backgroundColorAfterHover = new PipelineProjectPage(getDriver())
                 .hoverOnFullStageViewButton()
                 .getFullStageViewButtonBackgroundColor();
 
@@ -314,7 +311,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testAddDescriptionPreview(){
+    public void testAddDescriptionPreview() {
         String previewDescription = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
@@ -323,6 +320,27 @@ public class PipelineTest extends BaseTest {
                 .clickPreview()
                 .getTextareaPreviewText();
 
-        Assert.assertEquals(previewDescription,DESCRIPTION);
+        Assert.assertEquals(previewDescription, DESCRIPTION);
+    }
+
+    @Test
+    public void testStagesQtt() {
+        final int stagesQtt = 5;
+        final int buildsQtt = 1;
+
+        int actualSagesQtt = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickNodes()
+                .clickBuiltInNodeName()
+                .turnNodeOnIfOffline()
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .sendScript(stagesQtt)
+                .clickSaveButton()
+                .makeBuilds(buildsQtt)
+                .getSagesQtt();
+
+        Assert.assertEquals(actualSagesQtt, stagesQtt);
     }
 }

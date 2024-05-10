@@ -6,15 +6,17 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseProjectPage;
 
-public class MultibranchPipelineStatusPage extends BasePage {
+public class MultibranchPipelineProjectPage extends BaseProjectPage {
+
 
     @FindBy(xpath = "//span[.='Configure the project']")
     private WebElement configureButton;
 
     @FindBy(name = "Submit")
-    private WebElement disableMPButton;
+    private WebElement disableEnableMPButton;
+
 
     @FindBy(id = "enable-project")
     private WebElement disableMPMessage;
@@ -31,7 +33,10 @@ public class MultibranchPipelineStatusPage extends BasePage {
     @FindBy(css = "a[href$='rename']")
     private WebElement sidebarRenameButton;
 
-    public MultibranchPipelineStatusPage(WebDriver driver) {
+    @FindBy(css = "[class^='task-link-wrapper']")
+    private List<WebElement> sidebarTasksList;
+
+    public MultibranchPipelineProjectPage(WebDriver driver) {
         super(driver);
     }
 
@@ -41,11 +46,16 @@ public class MultibranchPipelineStatusPage extends BasePage {
         return new MultibranchPipelineConfigPage(getDriver());
     }
 
-    public MultibranchPipelineStatusPage clickDisableMultibranchPipeline() {
-        disableMPButton.click();
+    public MultibranchPipelineProjectPage clickDisableEnableMultibranchPipeline() {
+        disableEnableMPButton.click();
 
         return this;
     }
+
+    public String getDisableMultibranchPipelineButtonText() {
+        return disableEnableMPButton.getText().trim();
+    }
+
 
     public String getDisableMultibranchPipelineText() {
         return disableMPMessage.getDomProperty("innerText").split(" Enable")[0];
@@ -64,13 +74,24 @@ public class MultibranchPipelineStatusPage extends BasePage {
         return projectName.getText();
     }
 
-    public String getMultibranchPipelineName(){
-       return name.getText();
+    public String getMultibranchPipelineName() {
+        return name.getText();
     }
 
     public MultibranchPipelineRenamePage clickSidebarRenameButton() {
         sidebarRenameButton.click();
 
         return new MultibranchPipelineRenamePage(getDriver());
+    }
+
+    public List<String> getSidebarTasksListHavingExistingFolder() {
+        return sidebarTasksList
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+    }
+
+    public Integer getSidebarTasksSize() {
+        return sidebarTasksList.size();
     }
 }

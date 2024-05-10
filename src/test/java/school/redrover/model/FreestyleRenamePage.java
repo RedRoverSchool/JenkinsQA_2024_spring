@@ -24,10 +24,10 @@ public class FreestyleRenamePage extends BasePage {
         return this;
     }
 
-    public FreestylePage clickRename() {
+    public FreestyleProjectPage clickRename() {
 
         submitButton.click();
 
-        return new FreestylePage(getDriver());
+        return new FreestyleProjectPage(getDriver());
     }
 }

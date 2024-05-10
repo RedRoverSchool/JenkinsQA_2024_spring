@@ -18,6 +18,8 @@ import java.util.List;
 public class ViewsTest extends BaseTest {
 
     private static final String MY_VIEW_NAME = "EmpoyeeView";
+    final String VIEW_NAME = "in progress";
+    final String VISIBLE = "visible";
 
     @Test
     public void testGoToMyViewsFromHeaderUserMenu() {
@@ -38,9 +40,6 @@ public class ViewsTest extends BaseTest {
         Assert.assertTrue(textVisibility,"'My Views' didn't open");
     }
 
-    final String VIEW_NAME = "in progress";
-    final String VISIBLE = "visible";
-
     public void createView(String VIEW_NAME) {
         new HomePage(getDriver())
                 .clickNewView()
@@ -55,9 +54,13 @@ public class ViewsTest extends BaseTest {
 
         List<String> projectNameList = new HomePage(getDriver())
                 .clickNewItem()
-                .createNewItem(VISIBLE, "Folder")
+                .setItemName(VISIBLE)
+                .selectFolderAndClickOk()
+                .clickLogo()
                 .clickNewItem()
-                .createNewItem(INVISIBLE, "Pipeline")
+                .setItemName(INVISIBLE)
+                .selectPipelineAndClickOk()
+                .clickLogo()
                 .clickNewView()
                 .setViewName(VIEW_NAME)
                 .clickListViewRadioButton()

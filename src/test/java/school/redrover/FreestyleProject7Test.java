@@ -14,7 +14,7 @@ public class FreestyleProject7Test extends BaseTest {
                 .clickNewItem()
                 .setItemName(freestyleProjectName)
                 .selectFreestyleAndClickOk()
-                .clickSave()
+                .clickSaveButton()
                 .clickLogo()
                 .getItemList();
 

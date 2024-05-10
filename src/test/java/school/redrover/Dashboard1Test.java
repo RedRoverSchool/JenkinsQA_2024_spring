@@ -12,7 +12,9 @@ import java.util.Collections;
 import java.util.List;
 
 public class Dashboard1Test extends BaseTest {
+
     private final String VIEW_NAME = "RedRover";
+
     private final List<String> PROJECTS_NAMES = Arrays.asList(
             TestUtils.FREESTYLE_PROJECT,
             TestUtils.MULTIBRANCH_PIPELINE,
@@ -155,7 +157,7 @@ public class Dashboard1Test extends BaseTest {
         final String SELECTED_NAME1 = TestUtils.MULTIBRANCH_PIPELINE;
         final String SELECTED_NAME2 = TestUtils.FOLDER;
 
-        List<String> namesFromView = new HomePage(getDriver())
+        List<String> projectNameList = new HomePage(getDriver())
                 .clickViewName(VIEW_NAME)
                 .clickEditViewButton()
                 .selectProjectForAddToView(SELECTED_NAME1)
@@ -163,9 +165,9 @@ public class Dashboard1Test extends BaseTest {
                 .clickOkButton()
                 .getProjectNames();
 
-        Assert.assertTrue(namesFromView.size() == 2
-                && namesFromView.contains(SELECTED_NAME1)
-                && namesFromView.contains(SELECTED_NAME2));
+        Assert.assertEquals(
+                projectNameList,
+                List.of(SELECTED_NAME2, SELECTED_NAME1));
     }
 
     @Test(dependsOnMethods = "testAddItemsToView")

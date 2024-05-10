@@ -18,13 +18,13 @@ public class MovePage extends BasePage {
         super(driver);
     }
 
-    public FreestylePage chooseFolderAndSave(String folderName) {
+    public FreestyleProjectPage chooseFolderAndSave(String folderName) {
 
         Select selectDefinition = new Select(selectDestination);
         selectDefinition.selectByValue("/" + folderName);
         moveButton.click();
 
-        return new FreestylePage(getDriver());
+        return new FreestyleProjectPage(getDriver());
     }
 
     public HomePage chooseFolderFromListAndSave(String folderName) {
@@ -33,5 +33,13 @@ public class MovePage extends BasePage {
         moveButton.click();
         clickLogo();
         return new HomePage(getDriver());
+    }
+
+    public FolderProjectPage chooseDestinationFromListAndSave(String destination) {
+        new Select(selectDestination)
+                .selectByValue("/" + destination);
+        moveButton.click();
+
+        return new FolderProjectPage(getDriver());
     }
 }

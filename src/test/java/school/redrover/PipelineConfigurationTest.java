@@ -10,7 +10,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
-import school.redrover.model.PipelinePage;
+import school.redrover.model.PipelineProjectPage;
 import school.redrover.model.PipelineConfigPage;
 import school.redrover.runner.BaseTest;
 
@@ -75,14 +75,14 @@ public class PipelineConfigurationTest extends BaseTest {
     @Test
     public void testScroll() {
 
-        boolean isPiplineScroll = new HomePage(getDriver())
+        boolean isPipelineScroll = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(JOB_NAME)
                 .selectPipelineAndClickOk()
-                .scrollToPiplineScript()
-                .isPiplineDisplayed();
+                .scrollToPipelineScript()
+                .isPipelineDisplayed();
 
-        Assert.assertTrue(isPiplineScroll, "Pipline doesn't scroll");
+        Assert.assertTrue(isPipelineScroll, "Pipline doesn't scroll");
     }
 
     @Test
@@ -128,22 +128,22 @@ public class PipelineConfigurationTest extends BaseTest {
     @Test
     public void testDiscardOldBuildsByCount() {
 
-        PipelinePage pipelinePage = new HomePage(getDriver())
+        PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(JOB_NAME)
                 .selectPipelineAndClickOk()
                 .clickDiscardOldBuilds()
                 .setNumberBuildsToKeep(1)
-                .scrollToPiplineScript()
-                .selectSamplePiplineScript("hello")
+                .scrollToPipelineScript()
+                .selectSamplePipelineScript("hello")
                 .clickSaveButton()
                 .clickBuild()
                 .waitBuildToFinish()
                 .clickBuild()
                 .waitBuildToFinish();
 
-        Assert.assertTrue(pipelinePage.isBuildAppear(2, JOB_NAME), "there is no second build");
-        Assert.assertEquals(pipelinePage.numberOfBuild(), 1);
+        Assert.assertTrue(pipelineProjectPage.isBuildAppear(2, JOB_NAME), "there is no second build");
+        Assert.assertEquals(pipelineProjectPage.numberOfBuild(), 1);
     }
 
     @Test
@@ -169,7 +169,7 @@ public class PipelineConfigurationTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testAddDescriptionInConfigureMenu")
-    public void testEditDiscription() {
+    public void testEditDescription() {
 
         getDriver().findElement(By.id("description-link")).click();
         WebElement textArea = getDriver().findElement(By.name("description"));

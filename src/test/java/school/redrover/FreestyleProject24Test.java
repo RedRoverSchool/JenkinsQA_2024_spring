@@ -33,7 +33,7 @@ public class FreestyleProject24Test extends BaseTest {
                .clickNewItem()
                .setItemName(FREESTYLE_NAME)
                .selectFreestyleAndClickOk()
-               .clickSave()
+               .clickSaveButton()
                .clickLogo()
                .getItemList();
 
