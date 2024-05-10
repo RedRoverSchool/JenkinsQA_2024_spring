@@ -3,13 +3,14 @@ package school.redrover.model;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseProjectPage;
 
-public class OrganizationFolderPage extends BasePage {
+public class OrganizationFolderProjectPage extends BaseProjectPage {
 
     @FindBy(css = "span > a[href$='configure']")
     private WebElement configureButton;
 
+    public OrganizationFolderProjectPage(WebDriver driver) {
     @FindBy(css = "h1 > svg")
     private WebElement itemIcon;
 

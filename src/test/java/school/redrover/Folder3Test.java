@@ -3,7 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.model.FolderStatusPage;
+import school.redrover.model.FolderProjectPage;
 import school.redrover.model.HomePage;
 import school.redrover.model.ItemPage;
 import school.redrover.runner.BaseTest;
@@ -47,7 +47,7 @@ public class Folder3Test extends BaseTest {
     public void testAddDescription() {
         new HomePage(getDriver()).clickFolder(FOLDER_NAME_FIRST);
 
-        String textInDescription = new FolderStatusPage(getDriver())
+        String textInDescription = new FolderProjectPage(getDriver())
                 .clickAddOrEditDescription()
                 .setDescription(FOLDER_DESCRIPTION_FIRST)
                 .clickSaveButton()

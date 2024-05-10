@@ -6,7 +6,10 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
+
+import java.util.List;
 
 public class CreateFolder1Test extends BaseTest {
 
@@ -48,21 +51,24 @@ public class CreateFolder1Test extends BaseTest {
         final String folderName = "ProjectFolder";
         final String newFolderName = "NewProjectFolder";
 
-        createNewFolder(folderName);
-        openDashboard();
+        new HomePage(getDriver())
+                 .clickNewItem()
+                .setItemName(folderName)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .getItemList();
 
-        getDriver().findElement(By.xpath("//tr[@id='job_" + folderName + "']/td[3]/a/span")).click();
-        getDriver().findElement(By.xpath("//div[@id='tasks']/div[7]/span/a")).click();
+       //HomePage homePage = new HomePage(getDriver());
+        List<String> itemList = new HomePage(getDriver())
+                        .openItemDropdown(folderName)
+                        .selectRenameFromDropdown()
+                        .changeProjectName(newFolderName)
+                        .clickRenameButton()
+                        .clickLogo()
+                        .getItemList();
 
-        WebElement newName = getDriver().findElement(By.xpath("//div[@class='setting-main']/input"));
-        newName.clear();
-        newName.sendKeys(newFolderName);
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-
-        openDashboard();
-
-        String actualResult = getDriver().findElement(By.xpath("//tr[@id='job_" + newFolderName + "']/td[3]/a/span")).getText();
-        Assert.assertEquals(actualResult, newFolderName);
+        Assert.assertTrue(itemList.contains(newFolderName));
     }
 
     @Test
@@ -83,4 +89,5 @@ public class CreateFolder1Test extends BaseTest {
             Assert.assertEquals(actualMessage.getText(), expectMessage, "Message is not displayed");
         }
     }
+
 }

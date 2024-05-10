@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.FreeStyleProjectByIrisTest;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
 
@@ -182,6 +183,20 @@ public class CreateNewItemPage extends BasePage {
         return allJobFromThisLetterName ;
     }
 
+
+    public CreateNewItemPage selectFreeStyleProject() {
+        freestyleItem.click();
+        return this;
+    }
+    public Boolean getOkButtoneState() {
+        if(okButton.getAttribute("disabled") != ""){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+
     public CreateNewItemPage clearItemNameField() {
         nameText.sendKeys(Keys.CONTROL + "a", Keys.BACK_SPACE);
         return this;
@@ -194,4 +209,5 @@ public class CreateNewItemPage extends BasePage {
     public String getItemNameHintColor() {
         return itemNameHint.getCssValue("color");
     }
+
 }

@@ -1,12 +1,10 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.model.CreateNewItemPage;
 import school.redrover.model.DeleteDialog;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
@@ -24,7 +22,7 @@ public class FreestyleProject100Test extends BaseTest {
                 .clickNewItem()
                 .setItemName(projectName)
                 .selectFreestyleAndClickOk()
-                .clickSave()
+                .clickSaveButton()
                 .clickLogo()
                 .getItemList();
 
@@ -51,7 +49,7 @@ public class FreestyleProject100Test extends BaseTest {
 
         final String projectNewName = "Renamed project";
         TestUtils.openElementDropdown(this, TestUtils.getViewItemElement(this, projectName));
-        getDriver().findElement(TestUtils.DROPDOWN_RENAME).click();
+        getDriver().findElement(By.cssSelector("a[href $= '/confirm-rename']")).click();
 
         WebElement newName = getDriver().findElement(By.name("newName"));
         newName.clear();
@@ -70,8 +68,8 @@ public class FreestyleProject100Test extends BaseTest {
 
         TestUtils.clickAtBeginOfElement(this, TestUtils.getViewItemElement(this, projectName));
 
-        getDriver().findElement(TestUtils.SIDE_PANEL_DELETE).click();
-        getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.DIALOG_DEFAULT_BUTTON)).click();
+        getDriver().findElement(By.cssSelector("[data-url $= '/doDelete']")).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.cssSelector("dialog .jenkins-button--primary"))).click();
 
         Assert.assertTrue(getDriver().findElement(TestUtils.EMPTY_STATE_BLOCK).isDisplayed());
     }

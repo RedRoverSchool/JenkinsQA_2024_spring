@@ -1,14 +1,12 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseProjectPage;
 
-public class FreestylePage extends BasePage {
+public class FreestyleProjectPage extends BaseProjectPage {
 
     @FindBy(id = "main-panel")
     private WebElement fullProjectName;
@@ -28,7 +26,7 @@ public class FreestylePage extends BasePage {
     @FindBy(xpath = "//button[@data-id='ok']")
     private WebElement yesButton;
 
-    public FreestylePage(WebDriver driver) {
+    public FreestyleProjectPage(WebDriver driver) {
         super(driver);
     }
 
@@ -53,7 +51,7 @@ public class FreestylePage extends BasePage {
         return new FreestyleRenamePage(getDriver());
     }
 
-    public FreestylePage deleteFreestyleProject (){
+    public FreestyleProjectPage deleteFreestyleProject (){
         getWait10().until(ExpectedConditions.elementToBeClickable(deleteButton)).click();
         return this;
     }

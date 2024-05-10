@@ -3,7 +3,6 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -13,7 +12,7 @@ import school.redrover.runner.TestUtils;
 
 public class Folder7Test extends BaseTest {
 
-    private final String NAME = "19 April";
+    private final String NAME = "19April";
     final String OLD_NAME = "Random Folder";
     final String NEW_NAME = "Renamed Folder";
 
@@ -34,14 +33,17 @@ public class Folder7Test extends BaseTest {
 
         final String newText = "Hello";
 
-        TestUtils.createNewItemAndReturnToDashboard(this, NAME, TestUtils.Item.FOLDER);
+        String description = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(NAME)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .clickAddOrEditDescription()
+                .setDescription(newText)
+                .clickSaveButton()
+                .getDescriptionText();
 
-        getDriver().findElement(By.cssSelector("td>a[href= 'job/19%20April/']")).click();
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.name("description")).sendKeys(newText);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertTrue(getDriver().findElement(By.id("description")).getText().contains(newText));
+        Assert.assertEquals(description, newText);
     }
 
     @Test
@@ -97,17 +99,17 @@ public class Folder7Test extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateNewFolder")
     public void testCreateFreestyleProjectInsideFolder() {
+
         final String freeStyleProjectName = "23 april";
 
-        TestUtils.clickAtBeginOfElement(this, TestUtils.getViewItemElement(this, NAME));
+        String name = new HomePage(getDriver())
+                .clickFolder(NAME)
+                .clickNewItemInsideFolder()
+                .setItemName(freeStyleProjectName)
+                .selectFreestyleAndClickOk()
+                .clickSaveButton()
+                .getProjectName();
 
-        getDriver().findElement(By.cssSelector("[href='newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(freeStyleProjectName);
-        getDriver().findElement(By.className(TestUtils.Item.FREESTYLE_PROJECT)).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertTrue(getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("main-panel")))
-                .getText().contains(NAME + "/" + freeStyleProjectName));
+        Assert.assertEquals(name, freeStyleProjectName);
     }
 }

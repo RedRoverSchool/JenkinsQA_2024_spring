@@ -6,17 +6,11 @@ import org.openqa.selenium.interactions.WheelInput;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseConfigPage;
 
-import javax.swing.*;
-import javax.xml.xpath.XPath;
-import java.security.cert.X509Certificate;
 import java.time.Duration;
 
-public class PipelineConfigPage extends BasePage {
-
-    @FindBy(name = "Submit")
-    private WebElement saveButton;
+public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
 
     @FindBy(xpath = "//textarea[@name='description']")
     private WebElement descriptionTextArea;
@@ -46,13 +40,7 @@ public class PipelineConfigPage extends BasePage {
     private WebElement textareaPreview;
 
     public PipelineConfigPage(WebDriver driver) {
-        super(driver);
-    }
-
-    public PipelinePage clickSaveButton() {
-        saveButton.click();
-
-        return new PipelinePage(getDriver());
+        super(driver, new PipelineProjectPage(driver));
     }
 
     public PipelineConfigPage addDescription(String descriptionText) {
