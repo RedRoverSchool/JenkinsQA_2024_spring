@@ -168,17 +168,6 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreatePipeline")
-    public void testFindPipelineProject() {
-
-        String searchResult = new HeaderBlock(getDriver())
-                .enterRequestIntoSearchBox(PIPELINE_NAME)
-                .makeClickToSearchBox()
-                .getTitleText();
-
-        Assert.assertEquals(searchResult, PIPELINE_NAME);
-    }
-
-    @Test(dependsOnMethods = "testCreatePipeline")
     public void testCreatePipelineSameName() {
 
         String itemPipeline = new HomePage(getDriver())
@@ -200,6 +189,17 @@ public class PipelineTest extends BaseTest {
                 .getItemNameHintText();
 
         Assert.assertEquals(itemPipeline, "» This field cannot be empty, please enter a valid name");
+    }
+
+    @Test(dependsOnMethods = "testCreatePipeline")
+    public void testFindPipelineProject() {
+
+        String searchResult = new HeaderBlock(getDriver())
+                .enterRequestIntoSearchBox(PIPELINE_NAME)
+                .makeClickToSearchBox()
+                .getTitleText();
+
+        Assert.assertEquals(searchResult, PIPELINE_NAME);
     }
 
     @Test

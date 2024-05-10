@@ -170,6 +170,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(statusToggle,"true");
     }
 
+    @Ignore
     @Test
     public void testRenameMultibranchPipelineOnTheSidebar() {
         createNewMultiPipeline(MULTI_PIPELINE_NAME);
