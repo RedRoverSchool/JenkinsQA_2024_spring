@@ -6,9 +6,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseProjectPage;
 
-public class MultibranchPipelineStatusPage extends BasePage {
+public class MultibranchPipelineProjectPage extends BaseProjectPage {
 
 
     @FindBy(xpath = "//span[.='Configure the project']")
@@ -33,7 +33,7 @@ public class MultibranchPipelineStatusPage extends BasePage {
     @FindBy(css = "a[href$='rename']")
     private WebElement sidebarRenameButton;
 
-    public MultibranchPipelineStatusPage(WebDriver driver) {
+    public MultibranchPipelineProjectPage(WebDriver driver) {
         super(driver);
     }
 
@@ -43,7 +43,7 @@ public class MultibranchPipelineStatusPage extends BasePage {
         return new MultibranchPipelineConfigPage(getDriver());
     }
 
-    public MultibranchPipelineStatusPage clickDisableEnableMultibranchPipeline() {
+    public MultibranchPipelineProjectPage clickDisableEnableMultibranchPipeline() {
         disableEnableMPButton.click();
 
         return this;

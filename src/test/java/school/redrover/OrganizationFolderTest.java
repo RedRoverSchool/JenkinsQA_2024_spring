@@ -8,8 +8,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.HomePage;
-import school.redrover.model.OrganizationFolderPage;
+import school.redrover.model.OrganizationFolderProjectPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -116,8 +115,8 @@ public class OrganizationFolderTest extends BaseTest {
     public void testSidebarMenuVisibility() {
         createOrganizationFolder(ORGANIZATION_FOLDER_NAME);
 
-        OrganizationFolderPage organizationFolderPage = new OrganizationFolderPage(getDriver());
-        Assert.assertTrue(organizationFolderPage
+        OrganizationFolderProjectPage organizationFolderProjectPage = new OrganizationFolderProjectPage(getDriver());
+        Assert.assertTrue(organizationFolderProjectPage
                 .clickConfigure()
                 .isSidebarVisible());
     }

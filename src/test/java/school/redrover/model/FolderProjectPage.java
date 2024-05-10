@@ -4,11 +4,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseProjectPage;
 
 import java.util.List;
 
-public class FolderStatusPage extends BasePage {
+public class FolderProjectPage extends BaseProjectPage {
 
     @FindBy(css = "[class*='breadcrumbs']>[href*='job']")
     private WebElement breadcrumbsName;
@@ -61,7 +61,7 @@ public class FolderStatusPage extends BasePage {
     @FindBy(css = "[class*='dropdown'] [href$='rename']")
     private WebElement dropdownRenameButton;
 
-    public FolderStatusPage(WebDriver driver) {
+    public FolderProjectPage(WebDriver driver) {
         super(driver);
     }
 
@@ -102,17 +102,17 @@ public class FolderStatusPage extends BasePage {
                 .toList();
     }
 
-    public FolderStatusPage clickAddOrEditDescription() {
+    public FolderProjectPage clickAddOrEditDescription() {
         descriptionLink.click();
         return this;
     }
 
-    public FolderStatusPage setDescription(String text) {
+    public FolderProjectPage setDescription(String text) {
         textareaDescription.sendKeys(text);
         return this;
     }
 
-    public FolderStatusPage clickSaveButton() {
+    public FolderProjectPage clickSaveButton() {
         saveButton.click();
         return this;
     }
@@ -125,13 +125,13 @@ public class FolderStatusPage extends BasePage {
         return itemInTable.getText();
     }
 
-    public FolderStatusPage hoverOverBreadcrumbsName() {
+    public FolderProjectPage hoverOverBreadcrumbsName() {
         hoverOverElement(breadcrumbsName);
 
         return this;
     }
 
-    public FolderStatusPage clickBreadcrumbsDropdownArrow() {
+    public FolderProjectPage clickBreadcrumbsDropdownArrow() {
         clickSpecificDropdownArrow(breadcrumbsDropdownArrow);
 
         return this;
@@ -143,10 +143,10 @@ public class FolderStatusPage extends BasePage {
         return new MovePage(getDriver());
     }
 
-    public FolderStatusPage clickMainFolderName(String mainFolder) {
+    public FolderProjectPage clickMainFolderName(String mainFolder) {
         getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job/" + mainFolder + "']")).click();
 
-        return new FolderStatusPage(getDriver());
+        return new FolderProjectPage(getDriver());
     }
 
     public String getNestedFolderName() {

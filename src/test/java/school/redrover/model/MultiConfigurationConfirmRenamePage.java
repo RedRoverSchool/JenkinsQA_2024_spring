@@ -22,9 +22,9 @@ public class MultiConfigurationConfirmRenamePage extends BasePage {
         return this;
     }
 
-    public MultiConfigurationPage clickRenameButton() {
+    public MultiConfigurationProjectPage clickRenameButton() {
         renameButton.click();
 
-        return new MultiConfigurationPage(getDriver());
+        return new MultiConfigurationProjectPage(getDriver());
     }
 }

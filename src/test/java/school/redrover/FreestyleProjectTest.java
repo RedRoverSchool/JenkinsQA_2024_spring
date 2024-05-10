@@ -4,7 +4,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.*;
 import org.testng.annotations.*;
-import school.redrover.model.FreestylePage;
+import school.redrover.model.FreestyleProjectPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.*;
 
@@ -132,7 +132,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(FREESTYLE_PROJECT_NAME)
                 .selectFreestyleAndClickOk()
-                .clickSave()
+                .clickSaveButton()
                 .clickRename()
                 .setNewName(NEW_FREESTYLE_PROJECT_NAME)
                 .clickRename()
@@ -211,7 +211,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(projectName)
                 .selectFreestyleAndClickOk()
-                .clickSave()
+                .clickSaveButton()
                 .clickLogo()
                 .openItemDropdown(projectName)
                 .clickMoveInDropdown()
@@ -260,12 +260,12 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(oldProjectName1)
                 .selectFreestyleAndClickOk()
-                .clickSave()
+                .clickSaveButton()
                 .clickLogo()
                 .clickNewItem()
                 .setItemName(oldProjectName2)
                 .selectFreestyleAndClickOk()
-                .clickSave()
+                .clickSaveButton()
                 .clickLogo()
                 .clickNewItem()
                 .setItemName(newProjectName)
@@ -285,13 +285,13 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(projectName1)
                 .selectFreestyleAndClickOk()
-                .clickSave()
+                .clickSaveButton()
                 .clickLogo()
                 .clickNewItem()
                 .setItemName(projectName2)
                 .setItemNameInCopyForm(projectName1)
                 .selectFreestyleAndClickOk()
-                .clickSave()
+                .clickSaveButton()
                 .clickLogo()
                 .getItemList();
 
@@ -322,26 +322,26 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(submitButton().getText(), "Disable Project");
     }
 
-    public FreestylePage createFreestyleProjectWithDescription() {
+    public FreestyleProjectPage createFreestyleProjectWithDescription() {
 
         return new HomePage(getDriver())
                 .clickCreateJob()
                 .setItemName(FREESTYLE_PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .inputDescription(FREESTYLE_PROJECT_DESCRIPTION)
-                .clickSave();
+                .clickSaveButton();
     }
 
     @Test
     public void testCreateFreestyleProjectWithDescription() {
-        FreestylePage freestylePage = createFreestyleProjectWithDescription();
-        String freestyleTitleName = freestylePage.getProjectName();
-        String freestyleDescriptionText = freestylePage.getProjectDescriptionText();
+        FreestyleProjectPage freestyleProjectPage = createFreestyleProjectWithDescription();
+        String freestyleTitleName = freestyleProjectPage.getProjectName();
+        String freestyleDescriptionText = freestyleProjectPage.getProjectDescriptionText();
 
         Assert.assertEquals(freestyleTitleName, FREESTYLE_PROJECT_NAME);
         Assert.assertEquals(freestyleDescriptionText, FREESTYLE_PROJECT_DESCRIPTION);
 
-        List<String> itemList = freestylePage
+        List<String> itemList = freestyleProjectPage
                 .clickLogo()
                 .getItemList();
 

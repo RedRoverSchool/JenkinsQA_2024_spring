@@ -25,17 +25,17 @@ public class FolderRenamePage extends BasePage {
         return this;
     }
 
-    public FolderStatusPage clickRename() {
+    public FolderProjectPage clickRename() {
         submitButton.click();
 
-        return new FolderStatusPage(getDriver());
+        return new FolderProjectPage(getDriver());
     }
 
-    public FolderStatusPage renameFolder (String newName) {
+    public FolderProjectPage renameFolder(String newName) {
         textBox.clear();
         textBox.sendKeys(newName);
         textBox.sendKeys(Keys.ENTER);
 
-        return new FolderStatusPage(getDriver());
+        return new FolderProjectPage(getDriver());
     }
 }
