@@ -71,13 +71,13 @@ public class HomePage extends BasePage {
     private WebElement jenkinsFooter;
 
     @FindBy(xpath = "//div/a[@href='/manage/about']")
-    public WebElement aboutJenkinsDropdownItem;
+    private WebElement aboutJenkinsDropdownItem;
 
     @FindBy(xpath = "//div/a[@href='https://www.jenkins.io/participate/']")
-    public WebElement involvedDropdownItem;
+    private WebElement involvedDropdownItem;
 
     @FindBy(xpath = "//div/a[@href='https://www.jenkins.io/']")
-    public WebElement websiteDropdownItem;
+    private WebElement websiteDropdownItem;
 
     @FindBy(css =  "a.jenkins-table__link.model-link.inside")
     private List<WebElement> allExistingJobs;
@@ -131,7 +131,7 @@ public class HomePage extends BasePage {
     private WebElement peopleButton;
 
     @FindBy(css = "button[href $= '/doDelete']")
-    WebElement dropdownDelete;
+    private WebElement dropdownDelete;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -257,20 +257,9 @@ public class HomePage extends BasePage {
         return new MultiConfigurationConfirmRenamePage(getDriver());
     }
 
-    public AppearancePage resetJenkinsTheme() {
-        clickManageJenkins();
-        getDriver().findElement(By.cssSelector("[href='appearance']")).click();
-
-        WebElement defaultThemeButton = getDriver().findElement(By.cssSelector("[for='radio-block-2']"));
-        if (!defaultThemeButton.isSelected()) {
-            defaultThemeButton.click();
-            getDriver().findElement(By.name("Apply")).click();
-        }
-        return new AppearancePage(getDriver());
-    }
-
-    public PipelineProjectPage clickSpecificPipelineName(By locator) {
-        getDriver().findElement(locator).click();
+    public PipelineProjectPage clickSpecificPipelineName(String itemName) {
+        getDriver().findElement(
+                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
 
         return new PipelineProjectPage(getDriver());
     }
@@ -536,5 +525,4 @@ public class HomePage extends BasePage {
 
         return new CreateNewItemPage(getDriver());
     }
-
 }

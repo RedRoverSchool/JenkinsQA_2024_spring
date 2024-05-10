@@ -7,6 +7,7 @@ import school.redrover.model.FullStageViewPage;
 import school.redrover.model.HomePage;
 import school.redrover.model.PipelineProjectPage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,15 +15,14 @@ import java.util.List;
 public class PipelineTest extends BaseTest {
 
     private static final String PIPELINE_NAME = "FirstPipeline";
-    private static final By DASHBOARD_PIPELINE_LOCATOR = By.cssSelector("td [href='job/" + PIPELINE_NAME + "/']");
     private static final String DESCRIPTION = "Lorem ipsum dolor sit amet";
     private static final String NEW_PIPELINE_NAME = "New Pipeline name";
 
     @Test
     public void testPipelineDescriptionTextAreaBacklightColor() {
+        TestUtils.resetJenkinsTheme(this);
+
         String currentTextAreaBorderBacklightColor = new HomePage(getDriver())
-                .resetJenkinsTheme()
-                .clickLogo()
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
@@ -37,9 +37,9 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testPipelineDescriptionTextAreaBacklightDefaultColor() {
+        TestUtils.resetJenkinsTheme(this);
+
         String defaultTextAreaBorderBacklightColor = new HomePage(getDriver())
-                .resetJenkinsTheme()
-                .clickLogo()
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
@@ -53,9 +53,9 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testYesButtonColorDeletingPipelineInSidebar() {
+        TestUtils.resetJenkinsTheme(this);
+
         String yesButtonHexColor = new HomePage(getDriver())
-                .resetJenkinsTheme()
-                .clickLogo()
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
@@ -74,7 +74,7 @@ public class PipelineTest extends BaseTest {
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
-                .clickSpecificPipelineName(DASHBOARD_PIPELINE_LOCATOR)
+                .clickSpecificPipelineName(PIPELINE_NAME)
                 .hoverOverBreadcrumbsName()
                 .clickBreadcrumbsDropdownArrow()
                 .clickBreadcrumbsDeleteButton()
