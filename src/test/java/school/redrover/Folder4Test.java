@@ -29,7 +29,8 @@ public class Folder4Test extends BaseTest {
         Assert.assertTrue(new HomePage(getDriver())
                 .openDashboardBreadcrumbsDropdown()
                 .clickNewJobFromDashboardBreadcrumbsMenu()
-                .createNewItem(projectName, "Folder")
+                .setItemName(projectName)
+                .selectFolderAndClickOk()
                 .clickLogo()
                 .isItemExists(projectName));
     }
