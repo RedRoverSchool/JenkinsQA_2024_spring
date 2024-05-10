@@ -1,8 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
@@ -29,7 +27,8 @@ public class Folder4Test extends BaseTest {
         Assert.assertTrue(new HomePage(getDriver())
                 .openDashboardBreadcrumbsDropdown()
                 .clickNewJobFromDashboardBreadcrumbsMenu()
-                .createNewItem(projectName, "Folder")
+                .setItemName(projectName)
+                .selectFolderAndClickOk()
                 .clickLogo()
                 .isItemExists(projectName));
     }

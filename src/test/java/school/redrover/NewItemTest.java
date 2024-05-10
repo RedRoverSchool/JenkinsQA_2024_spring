@@ -5,46 +5,62 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.ItemPage;
 import school.redrover.runner.BaseTest;
 
 public class NewItemTest extends BaseTest {
 
-    public WebElement okButton(){
+    public WebElement okButton() {
         return getDriver().findElement(By.id("ok-button"));
-  };
+    }
 
     public WebElement submitButton(){
         return getDriver().findElement(By.xpath("//button[@name = 'Submit']"));
     }
 
-    @Ignore
     @Test
-    public void testCreateNewFreestyleProject() {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
-                .sendKeys("NewFreestyleProject");
-        getDriver().findElement(By.xpath("//span[contains(text(),  'Freestyle project')]")).click();
-        okButton().click();
-        submitButton().click();
-        String result = getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']"))
-                .getText();
+    public void testAddItem() {
+        new ItemPage(getDriver())
+                .NewItemClick()
+                .FreestyleProjectClick()
+                .NewItemName("NewItemName")
+                .clickButtonOK()
+                .clickLogo();
 
-        Assert.assertEquals(result, "NewFreestyleProject");
+        Assert.assertEquals(getDriver().findElement(By.xpath("//span[contains(.,'NewItemName')]")).getText(), "NewItemName");
     }
 
-    @Ignore
+    @Test
+    public void testGoToNewJobPage() {
+        new ItemPage(getDriver())
+                .NewItemClick();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//*[text()='Enter an item name']")).isDisplayed());
+    }
+
+    @Test
+    public void testCreateFreestyleProject() {
+        new ItemPage(getDriver())
+                .NewItemClick()
+                .NewItemName("MyNewProject")
+                .FreestyleProjectClick()
+                .clickButtonOK()
+                .clickSaveBtn();
+
+        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "MyNewProject");
+    }
+
     @Test
     public void testCreateNewPipeline() {
-        getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
-                .sendKeys("NewPipeline");
-        getDriver().findElement(By.xpath("//span[contains(text(),  'Pipeline')]")).click();
-        okButton().click();
-        submitButton().click();
-        String result = getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']"))
-                .getText();
+        new ItemPage(getDriver())
+                .NewItemClick()
+                .NewItemName("NewPipeline")
+                .PipelineClic()
+                .clickButtonOK()
+                .clickSaveBtn();
 
-        Assert.assertEquals(result, "NewPipeline");
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']"))
+                .getText(), "NewPipeline");
     }
 
     @Ignore

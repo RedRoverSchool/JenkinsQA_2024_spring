@@ -15,7 +15,13 @@ public class MultiConfigurationConfirmRenamePage extends BasePage {
 
     public MultiConfigurationConfirmRenamePage(WebDriver driver) { super(driver); }
 
-    public MultiConfigurationConfirmRenamePage changeProjectName(String text) {
+    public MultiConfigurationConfirmRenamePage changeProjectNameWithoutClear(String text) {
+        renameText.sendKeys(text);
+
+        return this;
+    }
+
+    public MultiConfigurationConfirmRenamePage changeProjectNameWithClear(String text) {
         renameText.clear();
         renameText.sendKeys(text);
 

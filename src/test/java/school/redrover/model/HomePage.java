@@ -68,13 +68,13 @@ public class HomePage extends BasePage {
     private WebElement jenkinsFooter;
 
     @FindBy(xpath = "//div/a[@href='/manage/about']")
-    public WebElement aboutJenkinsDropdownItem;
+    private WebElement aboutJenkinsDropdownItem;
 
     @FindBy(xpath = "//div/a[@href='https://www.jenkins.io/participate/']")
-    public WebElement involvedDropdownItem;
+    private WebElement involvedDropdownItem;
 
     @FindBy(xpath = "//div/a[@href='https://www.jenkins.io/']")
-    public WebElement websiteDropdownItem;
+    private WebElement websiteDropdownItem;
 
     @FindBy(css =  "a.jenkins-table__link.model-link.inside")
     private List<WebElement> allExistingJobs;
@@ -128,7 +128,10 @@ public class HomePage extends BasePage {
     private WebElement peopleButton;
 
     @FindBy(css = "button[href $= '/doDelete']")
-    WebElement dropdownDelete;
+    private WebElement dropdownDelete;
+
+    @FindBy(css = "[href$='pipeline-syntax']")
+    private WebElement dropdownPipelineSyntax;
 
     @FindBy(id = "search-box")
     WebElement searchBox;
@@ -242,9 +245,11 @@ public class HomePage extends BasePage {
 
     public HomePage openItemDropdownWithSelenium(String projectName) {
         new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.xpath("//a[@href='job/"+ projectName +"/']")))
+                .moveToElement(getDriver().findElement(
+                        By.xpath("//a[@href='job/" + TestUtils.asURL(projectName) + "/']")))
                 .pause(1000)
-                .scrollToElement(getDriver().findElement(By.cssSelector(String.format("[data-href*='/job/%s/']", projectName))))
+                .scrollToElement(getDriver().findElement(
+                        By.cssSelector(String.format("[data-href*='/job/%s/']", TestUtils.asURL(projectName)))))
                 .click()
                 .perform();
 
@@ -257,20 +262,9 @@ public class HomePage extends BasePage {
         return new MultiConfigurationConfirmRenamePage(getDriver());
     }
 
-    public AppearancePage resetJenkinsTheme() {
-        clickManageJenkins();
-        getDriver().findElement(By.cssSelector("[href='appearance']")).click();
-
-        WebElement defaultThemeButton = getDriver().findElement(By.cssSelector("[for='radio-block-2']"));
-        if (!defaultThemeButton.isSelected()) {
-            defaultThemeButton.click();
-            getDriver().findElement(By.name("Apply")).click();
-        }
-        return new AppearancePage(getDriver());
-    }
-
-    public PipelineProjectPage clickSpecificPipelineName(By locator) {
-        getDriver().findElement(locator).click();
+    public PipelineProjectPage clickSpecificPipelineName(String itemName) {
+        getDriver().findElement(
+                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
 
         return new PipelineProjectPage(getDriver());
     }
@@ -321,6 +315,14 @@ public class HomePage extends BasePage {
 
         return new FreestyleProjectPage(getDriver());
     }
+
+    public OrganizationFolderProjectPage chooseOrganizationFolder(String projectName) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/"
+                + projectName.replaceAll(" ", "%20") + "/']"))).click();
+
+        return new OrganizationFolderProjectPage(getDriver());
+    }
+
     public HomePage openDashboardBreadcrumbsDropdown() {
         WebElement chevron = dashboardBreadcrumbs.findElement(By.cssSelector("[class$='chevron']"));
         ((JavascriptExecutor) getDriver()).executeScript(
@@ -537,6 +539,11 @@ public class HomePage extends BasePage {
         return new CreateNewItemPage(getDriver());
     }
 
+    public PipelineSyntaxPage openItemPipelineSyntaxFromDropdown() {
+        dropdownPipelineSyntax.click();
+
+        return new PipelineSyntaxPage(getDriver());
+    }
     public PipelineProjectPage searchPipelineProject(String projectName) {
         searchBox.sendKeys(projectName + Keys.ENTER);
 

@@ -10,6 +10,12 @@ public class OrganizationFolderProjectPage extends BaseProjectPage {
     @FindBy(css = "span > a[href$='configure']")
     private WebElement configureButton;
 
+    @FindBy(css = "h1 > svg")
+    private WebElement itemIcon;
+
+    @FindBy(xpath = "//a[contains(@href,'pipeline-syntax')]")
+    private WebElement pipelineSyntaxButton;
+
     public OrganizationFolderProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -18,5 +24,15 @@ public class OrganizationFolderProjectPage extends BaseProjectPage {
         configureButton.click();
 
         return new OrganizationFolderConfigPage(getDriver());
+    }
+
+    public String getOrganizationFolderIcon() {
+        return itemIcon.getAttribute("title");
+    }
+
+    public PipelineSyntaxPage clickPipelineSyntax() {
+        pipelineSyntaxButton.click();
+
+        return new PipelineSyntaxPage(getDriver());
     }
 }
