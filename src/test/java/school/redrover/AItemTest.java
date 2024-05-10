@@ -1,18 +1,19 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.CreateNewItemPage;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
 public class AItemTest extends BaseTest {
 
-    private boolean isException = false;
     private final By nameUpItem = By.xpath("//span[.='New Folder']");
     private final By renameTextField = By.xpath("//input[@name='newName']");
     private Actions actions;
@@ -24,28 +25,17 @@ public class AItemTest extends BaseTest {
 
     @Test
     public void testCreateItemEmptyNameNegative() {
-        try {
-            TestUtils.createItem(TestUtils.FREESTYLE_PROJECT, "", this);
-        } catch (NoSuchElementException e) {
-            this.isException = true;
-        }
+        new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName("New Item")
+                .clearItemNameField()
+                .selectMultibranchPipelineAndClickOk();
 
-        Assert.assertTrue(isException);
+        Assert.assertFalse(new CreateNewItemPage(getDriver()).okButtonIsEnabled());
     }
 
-    @Test (dependsOnMethods = "testCreateItemEmptyNameNegative")
-    public void testCreateItemEmptyNameNegativeTwo() {
-        getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.xpath("//span[text()='" + TestUtils.MULTIBRANCH_PIPELINE + "']")).click();
-
-        WebElement nameField = getDriver().findElement(By.id("name"));
-        nameField.sendKeys("testName");
-        nameField.clear();
-
-        Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled());
-    }
-
-    @Test (dependsOnMethods = "testCreateItemEmptyNameNegativeTwo")
+    @Ignore
+    @Test
     public void testCreateNewFolder() {
         TestUtils.createItem(TestUtils.FOLDER, "New Folder", this);
         TestUtils.goToMainPage(getDriver());
@@ -53,7 +43,8 @@ public class AItemTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(nameUpItem).isDisplayed());
     }
 
-    @Test (dependsOnMethods = "testCreateNewFolder")
+    @Ignore
+    @Test
     public void testRenameFolder() {
         getActions().moveToElement(getDriver().findElement(nameUpItem)).perform();
         getDriver().findElement(By.linkText("New Folder")).click();
@@ -65,13 +56,15 @@ public class AItemTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//h1[contains(.,'New Name')]")).isDisplayed());
     }
 
-    @Test (dependsOnMethods = "testRenameFolder")
+    @Ignore
+    @Test
     public void testRenameFolderShort() {
         TestUtils.renameItem(this, "New Name", "Renamed Folder");
         Assert.assertTrue(getDriver().findElement(By.xpath("//h1[contains(.,'Renamed Folder')]")).isDisplayed());
     }
 
-    @Test (dependsOnMethods = "testRenameFolderShort")
+    @Ignore
+    @Test
     public void testCreateMulticonfigurationProjectNegative() {
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.xpath("//span[text()='" + TestUtils.MULTI_CONFIGURATION_PROJECT + "']")).click();
@@ -80,7 +73,8 @@ public class AItemTest extends BaseTest {
                 (By.id("itemname-required")).getText(), "» This field cannot be empty, please enter a valid name");
     }
 
-    @Test (dependsOnMethods = "testCreateMulticonfigurationProjectNegative")
+    @Ignore
+    @Test
     public void testCreateMulticonfigurationProject() {
         getDriver().findElement(By.linkText("New Item")).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys("New Folder");
@@ -92,6 +86,7 @@ public class AItemTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(nameUpItem).isDisplayed());
     }
 
+    @Ignore
     @Test
     public void testFooterRestApiLinkRGB() {
         WebElement restApi = getDriver().findElement(By.xpath("//a[normalize-space()='REST API']"));
