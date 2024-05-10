@@ -514,7 +514,7 @@ public class HomePage extends BasePage {
     }
     public FolderProjectPage clickSpecificFolderName(String itemName) {
         getDriver().findElement(
-                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
+                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']/span")).click();
 
         return new FolderProjectPage(getDriver());
     }
