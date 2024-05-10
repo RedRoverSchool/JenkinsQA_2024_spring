@@ -64,6 +64,10 @@ public final class TestUtils {
     }
 
     public static void createNewItem(BaseTest baseTest, String name, String itemClassName) {
+        new HomePage(baseTest.getDriver())
+                .clickNewItem()
+                        .setItemName(name.trim())
+
         baseTest.getDriver().findElement(By.cssSelector("#side-panel > div > div")).click();
         baseTest.getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(name.trim());
         baseTest.getDriver().findElement(By.className(itemClassName)).click();
