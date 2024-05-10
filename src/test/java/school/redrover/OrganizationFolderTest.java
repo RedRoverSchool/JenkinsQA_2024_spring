@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.model.OrganizationFolderProjectPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
@@ -46,7 +47,7 @@ public class OrganizationFolderTest extends BaseTest {
                 .setItemName(ORGANIZATION_FOLDER_NAME)
                 .selectOrganizationFolderAndClickOk()
                 .selectDefaultIcon()
-                .clickSave()
+                .clickSaveButton()
                 .getOrganizationFolderIcon();
 
         Assert.assertEquals(organizationFolderIcon, "Folder");

@@ -10,11 +10,10 @@ public class OrganizationFolderProjectPage extends BaseProjectPage {
     @FindBy(css = "span > a[href$='configure']")
     private WebElement configureButton;
 
-    public OrganizationFolderProjectPage(WebDriver driver) {
     @FindBy(css = "h1 > svg")
     private WebElement itemIcon;
 
-    public OrganizationFolderPage(WebDriver driver) {
+    public OrganizationFolderProjectPage(WebDriver driver) {
         super(driver);
     }
 
