@@ -77,7 +77,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1[contains(@id,'examples')]")).getText(), "Pipeline Examples");
     }
 
-    @Test(dependsOnMethods = "testOrganizationFolderCreationWithDefaultIcon")
+    @Test(dependsOnMethods = "testCreateWithDefaultIcon")
     public void testCatchErrorStepTooltipsViaDashboardDropdown() {
         final List<String> expectedTooltipsTexts = List.of("Help for feature: catchError", "Help for feature: Message",
                 "Help for feature: Build result on error", "Help for feature: Stage result on error",
