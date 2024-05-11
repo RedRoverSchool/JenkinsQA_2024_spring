@@ -13,9 +13,6 @@ import java.util.List;
 
 public class ManageJenkinsTest extends BaseTest {
 
-    private static final By SETTINGS_SEARCH_BAR_LOCATOR = By.id("settings-search-bar");
-
-
     @Test
     public void testRedirectionToSecurityPage() {
         String pageTitle = new HomePage(getDriver())
