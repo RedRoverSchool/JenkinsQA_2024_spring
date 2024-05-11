@@ -522,29 +522,40 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testVisibilityDisableButton() {
-        TestUtils.createNewJob(this, TestUtils.Job.PIPELINE, "Pipeline1");
-        getDriver().findElement(By.xpath("//table//a[@href='job/Pipeline1/']")).click();
+    public void testVisibilityOfDisableButton() {
+        boolean isDisableButtonDisplayed = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .isDisableButtonVisible();
 
-        Assert.assertTrue(getDriver().findElement(By.name("Submit")).isDisplayed());
-
-        getDriver().findElement(By.name("Submit")).click();
-
-        String actualStatusMessage = getDriver().findElement(By.id("enable-project")).getText();
-
-        Assert.assertTrue(actualStatusMessage.contains("This project is currently disabled"));
+        Assert.assertTrue(isDisableButtonDisplayed, "Can't find the button");
     }
 
-    @Test(dependsOnMethods = "testVisibilityDisableButton")
-    public void testPipelineNotActive() {
-        final String expectedProjectName = "Pipeline1";
+    @Test
+    public void testDisableItem() {
+        final String expectedWarning = "This project is currently disabled";
 
+        String warningMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickDisableButton()
+                .getWarningMessageText();
+
+        Assert.assertTrue(warningMessage.contains(expectedWarning));
+    }
+
+    @Test(dependsOnMethods = "testDisableItem")
+    public void testPipelineNotActive() {
 
         String actualProjectName = getDriver().findElement(By.xpath("//tbody//td[3]//a[contains(@href, 'job/')]/span")).getText();
-        Assert.assertEquals(actualProjectName, expectedProjectName);
+        Assert.assertEquals(actualProjectName, PIPELINE_NAME);
 
         List<WebElement> scheduleABuildArrows = getDriver().findElements(
-                By.xpath("//table//a[@title= 'Schedule a Build for " + expectedProjectName + "']"));
+                By.xpath("//table//a[@title= 'Schedule a Build for " + PIPELINE_NAME + "']"));
         Assert.assertEquals(scheduleABuildArrows.size(), 0);
     }
 
@@ -791,19 +802,6 @@ public class PipelineTest extends BaseTest {
             Assert.assertTrue(element.isDisplayed(), "Pipeline project");
         }
     }
-
-//    @Test
-//    public void testNewPipelineProject() {
-//
-//        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-//        getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys("ProjectPL");
-//        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[2]/label")).click();
-//        getDriver().findElement(By.xpath("//*[@id='ok-button']")).click();
-//        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]")).click();
-//
-//        Assert.assertEquals(getDriver().findElement(
-//                By.xpath("//*[@id='main-panel']/div[1]/div/h1")).getText(),"ProjectPL");
-//    }
 
     @Test(dependsOnMethods = "testCreatePipeline")
     public void testUseSearchToFindProject() {
