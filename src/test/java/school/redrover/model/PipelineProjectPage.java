@@ -291,7 +291,6 @@ public class PipelineProjectPage extends BaseProjectPage {
         return result;
     }
 
-
     public void waitStageTable() {
         getWait10().until(ExpectedConditions.visibilityOf(stageTable));
     }
@@ -303,5 +302,10 @@ public class PipelineProjectPage extends BaseProjectPage {
     public boolean buildTimeAppear(int buildNumber) {
         return getDriver().findElement(By.xpath("//tr[@data-runid='"
                 + buildNumber + "']//td[@data-stageid='6']")).isDisplayed();
+    }
+
+    public boolean isDisableButtonVisible() {
+        return getWait2().until(ExpectedConditions
+                .visibilityOfElementLocated(By.name("Submit"))).isDisplayed();
     }
 }

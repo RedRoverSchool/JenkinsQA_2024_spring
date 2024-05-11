@@ -522,20 +522,23 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testVisibilityDisableButton() {
-        TestUtils.createNewJob(this, TestUtils.Job.PIPELINE, "Pipeline1");
-        getDriver().findElement(By.xpath("//table//a[@href='job/Pipeline1/']")).click();
+    public void testVisibilityOfDisableButton() {
+//        getDriver().findElement(By.name("Submit")).click();
+//
+//        String actualStatusMessage = getDriver().findElement(By.id("enable-project")).getText();
+//
+//        Assert.assertTrue(actualStatusMessage.contains("This project is currently disabled"));
+        boolean isDisableButtonDisplayed = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .isDisableButtonVisible();
 
-        Assert.assertTrue(getDriver().findElement(By.name("Submit")).isDisplayed());
-
-        getDriver().findElement(By.name("Submit")).click();
-
-        String actualStatusMessage = getDriver().findElement(By.id("enable-project")).getText();
-
-        Assert.assertTrue(actualStatusMessage.contains("This project is currently disabled"));
+        Assert.assertTrue(isDisableButtonDisplayed, "Can't find the button");
     }
 
-    @Test(dependsOnMethods = "testVisibilityDisableButton")
+    @Test(dependsOnMethods = "testVisibilityOfDisableButton")
     public void testPipelineNotActive() {
         final String expectedProjectName = "Pipeline1";
 
