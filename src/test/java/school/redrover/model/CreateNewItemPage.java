@@ -189,4 +189,6 @@ public class CreateNewItemPage extends BasePage {
     public String getItemNameHintColor() {
         return itemNameHint.getCssValue("color");
     }
+
+    public Boolean okButtonIsEnabled() { return okButton.isEnabled(); }
 }

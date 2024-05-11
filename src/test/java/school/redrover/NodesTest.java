@@ -329,23 +329,6 @@ public class NodesTest extends BaseTest {
     }
 
     @Test
-    public void testCreateNewNode2() {
-        final String nodeName = "New Node";
-
-        HomePage homePage = new HomePage(getDriver())
-                .clickManageJenkins()
-                .clickNodes()
-                .clickNewNodeButton()
-                .setNodeName(nodeName)
-                .selectPermanentAgentRadioButton()
-                .clickOkButton()
-                .clickSaveButton()
-                .clickLogo();
-
-        Assert.assertTrue(homePage.getNodesList().contains(nodeName));
-    }
-
-    @Test
     public void testDeleteExistingNode() {
 
         final String searchNode = "TestNode";
