@@ -2,6 +2,7 @@ package school.redrover.model;
 
 import java.util.List;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -35,6 +36,12 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage {
 
     @FindBy(css = "[class^='task-link-wrapper']")
     private List<WebElement> sidebarTasksList;
+
+    @FindBy(css = "a[href^='/job'] > button")
+    private WebElement multibranchPipelineBreadcrumbs;
+
+    @FindBy(css = "[class*='dropdown'] [href$='doDelete']")
+    private WebElement deleteMultibranchPipelineInBreadcrumbsLink;
 
     public MultibranchPipelineProjectPage(WebDriver driver) {
         super(driver);
@@ -93,5 +100,18 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage {
 
     public Integer getSidebarTasksSize() {
         return sidebarTasksList.size();
+    }
+
+    public MultibranchPipelineProjectPage clickMultibranchPipelineBreadcrumbs() {
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
+                "arguments[0].dispatchEvent(new Event('click'));", multibranchPipelineBreadcrumbs);
+
+        return this;
+    }
+
+    public DeleteDialog clickDeleteMultibranchPipelineInBreadcrumbs(DeleteDialog dialog) {
+        deleteMultibranchPipelineInBreadcrumbsLink.click();
+
+        return dialog;
     }
 }
