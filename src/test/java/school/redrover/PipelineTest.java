@@ -542,7 +542,7 @@ public class PipelineTest extends BaseTest {
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
-                .clickSaveButton()
+                .clickDisableButton()
                 .getWarningMessageText();
 
         Assert.assertTrue(warningMessage.contains(expectedWarning));

@@ -93,6 +93,9 @@ public class PipelineProjectPage extends BaseProjectPage {
     @FindBy(className = "table-box")
     private WebElement stageTable;
 
+    @FindBy(css = "form > button")
+    private WebElement disablebutton;
+
     public PipelineProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -307,5 +310,11 @@ public class PipelineProjectPage extends BaseProjectPage {
     public boolean isDisableButtonVisible() {
         return getWait2().until(ExpectedConditions
                 .visibilityOfElementLocated(By.name("Submit"))).isDisplayed();
+    }
+
+    public PipelineProjectPage clickDisableButton() {
+        disablebutton.click();
+
+        return this;
     }
 }
