@@ -30,6 +30,18 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
+    public void testCreateViaCreateAJob() {
+        String folderBreadcrumbName = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .getBreadcrumbName();
+
+        Assert.assertEquals(folderBreadcrumbName, FOLDER_NAME, "Breadcrumb name doesn't match " + FOLDER_NAME);
+    }
+
+    @Test
     public void testDotAsFirstFolderNameCharErrorMessage() {
         String errorMessageText = new HomePage(getDriver())
                 .clickNewItem()
@@ -53,19 +65,7 @@ public class FolderTest extends BaseTest {
                 "The error message is different");
     }
 
-    @Test
-    public void testCreateFolderViaCreateAJob() {
-        String folderBreadcrumbName = new HomePage(getDriver())
-                .clickCreateAJob()
-                .setItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
-                .clickSaveButton()
-                .getBreadcrumbName();
-
-        Assert.assertEquals(folderBreadcrumbName, FOLDER_NAME, "Breadcrumb name doesn't match " + FOLDER_NAME);
-    }
-
-    @Test(dependsOnMethods = "testCreateFolderViaCreateAJob")
+    @Test(dependsOnMethods = "testCreateViaCreateAJob")
     public void testRenameFolderViaFolderBreadcrumbsDropdownMenu() {
         String folderStatusPageHeading = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
@@ -80,7 +80,7 @@ public class FolderTest extends BaseTest {
                 "The Folder name is not equal to " + NEW_FOLDER_NAME);
     }
 
-    @Test(dependsOnMethods = {"testCreateFolderViaCreateAJob", "testRenameFolderViaFolderBreadcrumbsDropdownMenu"})
+    @Test(dependsOnMethods = {"testCreateViaCreateAJob", "testRenameFolderViaFolderBreadcrumbsDropdownMenu"})
     public void testRenameFolderViaMainPageDropdownMenu() {
         String folderStatusPageHeading = new HomePage(getDriver())
                 .openItemDropdownWithSelenium(NEW_FOLDER_NAME)

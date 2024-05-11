@@ -15,7 +15,7 @@ public class HeaderTest extends BaseTest {
     @Test
     public void testElementPeople() {
         new ItemPage(getDriver())
-                .ElementPeopleClick();
+                .elementPeopleClick();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='jenkins-app-bar__content']")).getText(), "People");
     }
@@ -23,7 +23,7 @@ public class HeaderTest extends BaseTest {
     @Test
     public void testElementWelcome() {
         new ItemPage(getDriver())
-                .ElementWelcomeClic();
+                .elementWelcomeClic();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1[contains(.,'Welcome to Jenkins!')]")).getText(), "Welcome to Jenkins!");
     }
