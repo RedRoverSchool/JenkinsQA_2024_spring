@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -59,5 +60,12 @@ public class FreestyleProjectPage extends BaseProjectPage {
     public HomePage confirmDeleteFreestyleProject(){
         yesButton.click();
         return new HomePage(getDriver());
+    }
+
+    public FolderProjectPage clickBreadcrumbFolder(String name) {
+
+        getDriver().findElement(By.xpath("//a[@href='/job/" + name + "/']")).click();
+        return new FolderProjectPage(getDriver());
+
     }
 }
