@@ -67,6 +67,18 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateFolderViaCreateAJob")
+    public void testAddDescription() {
+
+        String textInDescription = new FolderProjectPage(getDriver())
+                .clickAddOrEditDescription()
+                .setDescription(FOLDER_DESCRIPTION_FIRST)
+                .clickSaveButton()
+                .getDescriptionText();
+
+        Assert.assertEquals(textInDescription, FOLDER_DESCRIPTION_FIRST);
+    }
+
+    @Test(dependsOnMethods = "testCreateFolderViaCreateAJob")
     public void testRenameFolderViaFolderBreadcrumbsDropdownMenu() {
         String folderStatusPageHeading = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
@@ -206,19 +218,5 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(itemName, PIPELINE_NAME);
 
     }
-
-    @Test
-    public void testAddDescription() {
-        create();
-
-        String textInDescription = new FolderProjectPage(getDriver())
-                .clickAddOrEditDescription()
-                .setDescription(FOLDER_DESCRIPTION_FIRST)
-                .clickSaveButton()
-                .getDescriptionText();
-
-        Assert.assertEquals(textInDescription, FOLDER_DESCRIPTION_FIRST);
-    }
-
 
 }
