@@ -251,21 +251,18 @@ public class NodesTest extends BaseTest {
     }
 
     @Test
-    public void testCreateNewNodeWithInvalidData() throws InterruptedException {
+    public void testCreateNewNodeWithInvalidData() {
 
-        final String expectedResult = "‘!’ is an unsafe character";
+        String actualResult = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickNodes()
+                .clickNewNodeButton()
+                .setNodeName("!")
+                .selectPermanentAgentRadioButton()
+                .clickOkButtonOnError()
+                .getErrorMessageText();
 
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        getDriver().findElement(By.xpath("//a[@href='computer']")).click();
-        getDriver().findElement(By.xpath("//a[@href='new']")).click();
-
-        getDriver().findElement(By.id("name")).sendKeys("!");
-        getDriver().findElement(By.xpath("//label[@for='hudson.slaves.DumbSlave']")).click();
-
-        Thread.sleep(500);
-        String actualResult = getDriver().findElement(By.className("error")).getText();
-
-        Assert.assertEquals(actualResult, expectedResult);
+        Assert.assertEquals(actualResult, "‘!’ is an unsafe character");
     }
 
     @Test
