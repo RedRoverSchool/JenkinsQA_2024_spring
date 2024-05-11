@@ -60,4 +60,8 @@ public class FreestyleProjectPage extends BaseProjectPage {
         yesButton.click();
         return new HomePage(getDriver());
     }
+
+    public boolean isProjectNameDisplayed()  {
+        return projectName.isDisplayed();
+    }
 }
