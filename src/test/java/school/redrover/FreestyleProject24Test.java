@@ -76,6 +76,7 @@ public class FreestyleProject24Test extends BaseTest {
 
     @Test(dependsOnMethods = "testFreestyleProjectMoveToFolder")
     public void testCheckFreestyleProjectViaBreadcrumb() {
+
         dropDown(By.xpath("(//li//button[@class='jenkins-menu-dropdown-chevron'])[1]"));
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class = 'jenkins-dropdown__item'][contains(@href, 'views')]"))).click();
