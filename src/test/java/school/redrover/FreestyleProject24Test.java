@@ -7,13 +7,16 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.FreestylePage;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
+
+import java.util.List;
 
 public class FreestyleProject24Test extends BaseTest {
     private static final String FREESTYLE_NAME = "newFreestyleProject";
     private static final String FOLDER = "NewFolder";
-    private static final By SAVE_BUTTON = By.xpath("//button[@formnovalidate]");
     private static final String DESCRIPTION_TEXT = "This project has been added into the folder";
 
     private void dropDown(By xpath) {
@@ -26,27 +29,26 @@ public class FreestyleProject24Test extends BaseTest {
 
    @Test
    public void testCreateFreestyleProject() {
-        getDriver().findElement(By.xpath("//a[@it]")).click();
+       List<String> itemList = new HomePage(getDriver())
+               .clickNewItem()
+               .setItemName(FREESTYLE_NAME)
+               .selectFreestyleAndClickOk()
+               .clickSaveButton()
+               .clickLogo()
+               .getItemList();
 
-        getDriver().findElement(By.cssSelector("#name")).sendKeys(FREESTYLE_NAME);
-        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.xpath("//*[@id='ok-button']")).click();
-
-        getDriver().findElement(SAVE_BUTTON).click();
-
-        Assert.assertEquals((getDriver().findElement(By.xpath("//h1")).getText()), FREESTYLE_NAME);
+       Assert.assertTrue(itemList.contains(FREESTYLE_NAME));
     }
 
     @Test(dependsOnMethods = "testCreateFreestyleProject")
     public void testAddDescription() {
-        getDriver().findElement(By.xpath("//td//a[@href='job/" + FREESTYLE_NAME + "/']")).click();
+        String currentFreestyleDescription = new FreestylePage(getDriver())
+                .clickAddDescription()
+                .setDescription(DESCRIPTION_TEXT)
+                .clickSaveButton()
+                .getDescriptionText();
 
-        getDriver().findElement(By.id("description-link")).click();
-
-        getDriver().findElement(By.xpath("//textarea")).sendKeys(DESCRIPTION_TEXT);
-        getDriver().findElement(SAVE_BUTTON).click();
-
-        Assert.assertTrue(getDriver().findElement(By.xpath("//div[@id='description']/div")).getText().matches(DESCRIPTION_TEXT));
+        Assert.assertTrue(currentFreestyleDescription.matches(DESCRIPTION_TEXT));
     }
 
     @Test(dependsOnMethods = "testAddDescription")

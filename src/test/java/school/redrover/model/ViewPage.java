@@ -1,6 +1,5 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -11,13 +10,16 @@ import java.util.List;
 public class ViewPage extends BasePage {
 
     @FindBy(linkText = "Edit View")
-    WebElement editViewButton;
+    private WebElement editViewButton;
 
     @FindBy(css = "div.tab.active")
-    WebElement activeViewName;
+    private WebElement activeViewName;
 
     @FindBy(xpath = "//td/a[contains(@href, 'job/')]")
-    List<WebElement> projectNamesList;
+    private List<WebElement> projectNamesList;
+
+    @FindBy(className = "sortheader")
+    private List<WebElement> columnNameList;
 
     public ViewPage(WebDriver driver) { super(driver); }
 
@@ -35,9 +37,16 @@ public class ViewPage extends BasePage {
         return projectNamesList.stream().map(WebElement::getText).toList();
     }
 
-    public int sizeColumnList() {
+    public int getProjectListSize(){
+        return projectNamesList.size();
+    }
 
-        return getDriver().findElements(By.className("sortheader")).size();
+    public int getSizeColumnList() {
+        return columnNameList.size();
+    }
+
+    public List<String> getColumnNameText() {
+         return columnNameList.stream().map(WebElement::getText).toList();
     }
 }
 

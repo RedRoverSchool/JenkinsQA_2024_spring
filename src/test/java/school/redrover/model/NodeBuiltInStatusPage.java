@@ -1,8 +1,10 @@
 package school.redrover.model;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import school.redrover.model.base.BasePage;
 
@@ -16,6 +18,9 @@ public class NodeBuiltInStatusPage extends BasePage {
 
     @FindBy(css = "[class*='jenkins-table'] td:nth-of-type(odd)")
     private List<WebElement> monitoringDataElements;
+
+    @FindBy(xpath = "//button[@class='jenkins-button jenkins-button--primary ']")
+    private WebElement nodeOnlineButton;
 
     public NodeBuiltInStatusPage(WebDriver driver) {
         super(driver);
@@ -42,6 +47,20 @@ public class NodeBuiltInStatusPage extends BasePage {
             Collections.sort(expectedMonitoringDataValues);
             Assert.assertEquals(actualMonitoringDataValues, expectedMonitoringDataValues,
                     "Actual Monitoring Data list is different after sorting expected values alphabetically");
+        }
+    }
+
+    public HomePage turnNodeOnIfOffline() {
+        try {
+            nodeOnlineButton.click();
+            getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+            return new HomePage(getDriver());
+
+        } catch (Exception e) {
+            getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+            return new HomePage(getDriver());
         }
     }
 }

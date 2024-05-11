@@ -84,4 +84,16 @@ public class NodesTablePage extends BasePage {
 
         return new NodeBuiltInStatusPage(getDriver());
     }
+
+    public NodePage clickNode(String nodeName) {
+        getDriver().findElement(By.xpath("//a[@href='../computer/" +
+                nodeName.replaceAll(" ", "%20") + "/']")).click();
+
+        return new NodePage(getDriver());
+    }
+
+    public NodeManagePage clickOnBuiltInNode() {
+        builtInNode.click();
+        return new NodeManagePage(getDriver());
+    }
 }

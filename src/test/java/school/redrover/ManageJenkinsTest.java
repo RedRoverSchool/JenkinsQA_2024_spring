@@ -9,7 +9,6 @@ import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.ManageJenkinsPage;
 import school.redrover.runner.BaseTest;
-
 import java.util.List;
 
 public class ManageJenkinsTest extends BaseTest {
@@ -83,11 +82,12 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test
     public void testAlertMessageClickingReloadConfigurationFromDisk() {
-        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
-        getDriver().findElement(By.cssSelector("[href='#']")).click();
+        boolean isAlertTitleVisible = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickReloadConfigurationFromDisk()
+                .dialogTitleVisibility();
 
-        boolean alertMessageIsDisplayed = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dialog__title"))).isDisplayed();
-        Assert.assertTrue(alertMessageIsDisplayed);
+        Assert.assertTrue(isAlertTitleVisible);
     }
 
     @Test
@@ -114,10 +114,11 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test
     public void testPlaceholderSettingsSearchInput() {
-        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
+        String SearchInputPlaceholderText = new HomePage(getDriver())
+                .clickManageJenkins()
+                .getSearchInputPlaceholderText();
 
-        String placeholderText = getDriver().findElement(By.id("settings-search-bar")).getDomProperty("placeholder");
-        Assert.assertEquals(placeholderText, "Search settings");
+        Assert.assertEquals(SearchInputPlaceholderText, "Search settings");
     }
 
     @Test
@@ -148,5 +149,15 @@ public class ManageJenkinsTest extends BaseTest {
                 .pressSlashKey();
 
         Assert.assertTrue(manageJenkinsPage.isShortcutDisplayed());
+    }
+
+    @Test
+    public void testTooltipAppears() {
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins()
+                .hoverMouseOverTheTooltip();
+
+        Assert.assertTrue(manageJenkinsPage.isSearchHintDisplayed()
+                        && manageJenkinsPage.getSearchHintText().equals("Press / on your keyboard to focus"), "tooltip text is incorrect");
     }
 }
