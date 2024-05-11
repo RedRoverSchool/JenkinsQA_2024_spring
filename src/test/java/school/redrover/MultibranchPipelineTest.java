@@ -3,9 +3,7 @@ package school.redrover;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
@@ -463,7 +461,7 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testDeleteMpViaBreadcrumbs() {
         boolean isMpDeleted = new HomePage(getDriver())
                 .clickMPName(RENAMED_MULTI_PIPELINE)
-                .clickMultibranchPipelineBreadcrumbs()
+                .clickMPDropdownArrow()
                 .clickDeleteMultibranchPipelineInBreadcrumbs(new DeleteDialog(getDriver()))
                 .clickYes(new HomePage(getDriver()))
                 .isItemDeleted(RENAMED_MULTI_PIPELINE);

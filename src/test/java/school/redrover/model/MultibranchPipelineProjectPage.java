@@ -2,7 +2,6 @@ package school.redrover.model;
 
 import java.util.List;
 
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -102,9 +101,8 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage {
         return sidebarTasksList.size();
     }
 
-    public MultibranchPipelineProjectPage clickMultibranchPipelineBreadcrumbs() {
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
-                "arguments[0].dispatchEvent(new Event('click'));", multibranchPipelineBreadcrumbs);
+    public MultibranchPipelineProjectPage clickMPDropdownArrow() {
+        clickSpecificDropdownArrow(multibranchPipelineBreadcrumbs);
 
         return this;
     }
