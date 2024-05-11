@@ -9,7 +9,6 @@ import java.util.List;
 
 public class OrganizationFolder1Test extends BaseTest {
 
-   @Ignore
    @Test
     public void testCreateOrganizationFolder() {
 
@@ -19,7 +18,7 @@ public class OrganizationFolder1Test extends BaseTest {
                 .clickNewItem()
                 .setItemName(organizationFolderName)
                 .selectOrganizationFolderAndClickOk()
-                .clickSave()
+                .clickSaveButton()
                 .clickLogo()
                 .getItemList();
         Assert.assertTrue(itemList.contains(organizationFolderName));
