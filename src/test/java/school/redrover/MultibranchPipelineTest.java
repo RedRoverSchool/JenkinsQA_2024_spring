@@ -506,4 +506,13 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertEquals(buttonName, "Disable Multibranch Pipeline");
     }
+    public void testCreateMulticonfigurationProjectWithoutName(){
+
+        String errorName = new HomePage(getDriver())
+                .clickNewItem()
+                .selectMultiConfigurationAndClickOk()
+                .getErrorRequiresName();
+
+        Assert.assertTrue(errorName.contains("This field cannot be empty, please enter a valid name"));
+    }
 }
