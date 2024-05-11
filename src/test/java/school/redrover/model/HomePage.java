@@ -111,6 +111,9 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href, '/move')]")
     private WebElement moveOption;
+  
+    @FindBy(xpath = "//*[@id='tippy-1']/div/div/div/a[1]")
+    private WebElement about;
 
     @FindBy (xpath = "//*[@href='newJob']")
     private WebElement createJob;
@@ -132,6 +135,9 @@ public class HomePage extends BasePage {
 
     @FindBy(css = "button[href $= '/doDelete']")
     private WebElement dropdownDelete;
+
+    @FindBy(css = "[href$='pipeline-syntax']")
+    private WebElement dropdownPipelineSyntax;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -242,9 +248,11 @@ public class HomePage extends BasePage {
 
     public HomePage openItemDropdownWithSelenium(String projectName) {
         new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.xpath("//a[@href='job/"+ projectName +"/']")))
+                .moveToElement(getDriver().findElement(
+                        By.xpath("//a[@href='job/" + TestUtils.asURL(projectName) + "/']")))
                 .pause(1000)
-                .scrollToElement(getDriver().findElement(By.cssSelector(String.format("[data-href*='/job/%s/']", projectName))))
+                .scrollToElement(getDriver().findElement(
+                        By.cssSelector(String.format("[data-href*='/job/%s/']", TestUtils.asURL(projectName)))))
                 .click()
                 .perform();
 
@@ -310,6 +318,14 @@ public class HomePage extends BasePage {
 
         return new FreestyleProjectPage(getDriver());
     }
+
+    public OrganizationFolderProjectPage chooseOrganizationFolder(String projectName) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/"
+                + projectName.replaceAll(" ", "%20") + "/']"))).click();
+
+        return new OrganizationFolderProjectPage(getDriver());
+    }
+
     public HomePage openDashboardBreadcrumbsDropdown() {
         WebElement chevron = dashboardBreadcrumbs.findElement(By.cssSelector("[class$='chevron']"));
         ((JavascriptExecutor) getDriver()).executeScript(
@@ -482,6 +498,13 @@ public class HomePage extends BasePage {
         return new MovePage(getDriver());
     }
 
+
+    public AboutPage clickAbout() {
+        about.click();
+
+        return new AboutPage(getDriver());
+    } 
+  
     public HomePage clickWarningIcon() {
         warningIcon.click();
         return this;
@@ -524,5 +547,12 @@ public class HomePage extends BasePage {
         createJob.click();
 
         return new CreateNewItemPage(getDriver());
+    }
+
+    public PipelineSyntaxPage openItemPipelineSyntaxFromDropdown() {
+        dropdownPipelineSyntax.click();
+
+        return new PipelineSyntaxPage(getDriver());
+
     }
 }

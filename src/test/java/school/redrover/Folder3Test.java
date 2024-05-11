@@ -23,7 +23,7 @@ public class Folder3Test extends BaseTest {
                 .setItemName(FOLDER_NAME_FIRST)
                 .selectFolderType()
                 .clickButtonOK()
-                .clickLogo();
+                .clickLogo(); 
 
         Assert.assertTrue(homePage.isItemExists(FOLDER_NAME_FIRST));
     }
@@ -46,7 +46,7 @@ public class Folder3Test extends BaseTest {
         HomePage homePage = new HomePage(getDriver());
         homePage.clickFolder(FOLDER_NAME_FIRST);
 
-        new FolderStatusPage(getDriver())
+        new FolderProjectPage(getDriver())
                 .clickOnRenameButton()
                 .setNewName(FOLDER_NAME_NEW)
                 .clickRename()
