@@ -18,6 +18,8 @@ import java.util.List;
 public class ViewsTest extends BaseTest {
 
     private static final String MY_VIEW_NAME = "EmpoyeeView";
+    final String VIEW_NAME = "in progress";
+    final String VISIBLE = "visible";
 
     @Test
     public void testGoToMyViewsFromHeaderUserMenu() {
@@ -38,15 +40,12 @@ public class ViewsTest extends BaseTest {
         Assert.assertTrue(textVisibility,"'My Views' didn't open");
     }
 
-    final String VIEW_NAME = "in progress";
-    final String VISIBLE = "visible";
-
     public void createView(String VIEW_NAME) {
         new HomePage(getDriver())
-                .clickNewView()
+                .clickPlusForCreateView()
                 .setViewName(VIEW_NAME)
                 .clickListViewRadioButton()
-                .clickCreateView();
+                .clickCreateViewButton();
     }
 
     @Test
@@ -55,13 +54,17 @@ public class ViewsTest extends BaseTest {
 
         List<String> projectNameList = new HomePage(getDriver())
                 .clickNewItem()
-                .createNewItem(VISIBLE, "Folder")
+                .setItemName(VISIBLE)
+                .selectFolderAndClickOk()
+                .clickLogo()
                 .clickNewItem()
-                .createNewItem(INVISIBLE, "Pipeline")
-                .clickNewView()
+                .setItemName(INVISIBLE)
+                .selectPipelineAndClickOk()
+                .clickLogo()
+                .clickPlusForCreateView()
                 .setViewName(VIEW_NAME)
                 .clickListViewRadioButton()
-                .clickCreateView()
+                .clickCreateViewButton()
                 .clickProjectName(VISIBLE)
                 .clickOkButton()
                 .getProjectNames();
@@ -103,7 +106,7 @@ public class ViewsTest extends BaseTest {
 
         List<String> columnNameText = new HomePage(getDriver())
                 .clickViewName(VIEW_NAME)
-                .clickEditViewButton()
+                .clickEditViewOnSidebar()
                 .scrollIntoSubmit()
                 .moveDescriptionToStatusColumn()
                 .getColumnNameText();

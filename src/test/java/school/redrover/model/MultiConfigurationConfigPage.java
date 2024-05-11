@@ -1,18 +1,35 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import school.redrover.model.base.BasePage;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import school.redrover.model.base.BaseConfigPage;
 
-public class MultiConfigurationConfigPage extends BasePage {
+public class MultiConfigurationConfigPage extends BaseConfigPage<MultiConfigurationProjectPage> {
+
+    @FindBy(className = "jenkins-toggle-switch__label")
+    private WebElement toggleSwitch;
+
+    @FindBy(name = "Apply")
+    private WebElement applyButton;
 
     public MultiConfigurationConfigPage(WebDriver driver) {
-        super(driver);
+        super(driver, new MultiConfigurationProjectPage(driver));
     }
 
-    public MultiConfigurationPage clickSave() {
-        getDriver().findElement(By.name("Submit")).click();
+    public MultiConfigurationConfigPage clickToggleSwitch() {
+        toggleSwitch.click();
 
-        return new MultiConfigurationPage(getDriver());
+        return this;
+    }
+
+    public MultiConfigurationConfigPage clickApply() {
+        applyButton.click();
+
+        return this;
+    }
+
+    public boolean getStatusToggle() {
+        return toggleSwitch.isSelected();
     }
 }

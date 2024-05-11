@@ -19,7 +19,7 @@ public class Folder1Test extends BaseTest {
                 .setItemName(ROOT_FOLDER_NAME)
                 .selectFolderAndClickOk()
                 .clickSaveButton()
-                .getPageTopic();
+                .getPageHeading();
 
         Assert.assertEquals(pageTopic, ROOT_FOLDER_NAME);
     }

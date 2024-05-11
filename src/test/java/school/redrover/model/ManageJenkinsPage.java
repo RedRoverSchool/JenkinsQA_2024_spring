@@ -2,6 +2,7 @@ package school.redrover.model;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.runner.TestUtils;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -13,7 +14,7 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(css = "[href='configureSecurity']")
     private WebElement securityLink;
 
-    @FindBy(className = "jenkins-search__input")
+    @FindBy(id = "settings-search-bar")
     private WebElement searchInput;
 
     @FindBy(css = "[href='appearance']")
@@ -23,7 +24,7 @@ public class ManageJenkinsPage extends BasePage {
     private WebElement nodesButton;
 
     @FindBy(xpath = "(//div[@class='jenkins-section__items'])[5]/div[contains(@class, 'item')]")
-    List<WebElement> toolsAndActionsSections;
+    private List<WebElement> toolsAndActionsSections;
 
     @FindBy(css = "[href='securityRealm/']")
     private WebElement usersLink;
@@ -34,6 +35,14 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(xpath = "//div[@aria-describedby='tippy-6']")
     private WebElement searchHint;
 
+    @FindBy(tagName = "h1")
+    private WebElement pageHeading;
+
+    @FindBy(css = "[href='#']")
+    private WebElement reloadConfigurationFromDiskLink;
+
+    @FindBy(css = "[class*='search__results__no-results']")
+    private WebElement noSearchResultsPopUp;
 
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
@@ -99,5 +108,29 @@ public class ManageJenkinsPage extends BasePage {
         nodesButton.click();
 
         return new NodesTablePage(getDriver());
+    }
+
+    public String getPageHeadingText() {
+        return pageHeading.getText();
+    }
+
+    public ReloadConfigurationDialog clickReloadConfigurationFromDisk() {
+        reloadConfigurationFromDiskLink.click();
+
+        return new ReloadConfigurationDialog(getDriver());
+    }
+
+    public String getSearchInputPlaceholderText() {
+        return searchInput.getDomProperty("placeholder");
+    }
+
+    public ManageJenkinsPage typeSearchSettingsRequest(String request) {
+        searchInput.sendKeys(request);
+
+        return this;
+    }
+
+    public String getNoSearchResultsPopUpText() {
+        return getWait2().until(ExpectedConditions.visibilityOf(noSearchResultsPopUp)).getText();
     }
 }

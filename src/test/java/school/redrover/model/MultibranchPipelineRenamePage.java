@@ -4,11 +4,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
 public class MultibranchPipelineRenamePage extends BasePage {
@@ -23,11 +18,11 @@ public class MultibranchPipelineRenamePage extends BasePage {
         super(driver);
     }
 
-    public MultibranchPipelineStatusPage changeNameTo(String newName) {
+    public MultibranchPipelineProjectPage changeNameTo(String newName) {
         newNameInput.clear();
         newNameInput.sendKeys(newName);
         renameButton.click();
 
-        return new MultibranchPipelineStatusPage(getDriver());
+        return new MultibranchPipelineProjectPage(getDriver());
     }
 }

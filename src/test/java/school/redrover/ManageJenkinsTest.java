@@ -13,9 +13,6 @@ import java.util.List;
 
 public class ManageJenkinsTest extends BaseTest {
 
-    private static final By SETTINGS_SEARCH_BAR_LOCATOR = By.id("settings-search-bar");
-
-
     @Test
     public void testRedirectionToSecurityPage() {
         String pageTitle = new HomePage(getDriver())
@@ -82,11 +79,12 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test
     public void testAlertMessageClickingReloadConfigurationFromDisk() {
-        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
-        getDriver().findElement(By.cssSelector("[href='#']")).click();
+        boolean isAlertTitleVisible = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickReloadConfigurationFromDisk()
+                .dialogTitleVisibility();
 
-        boolean alertMessageIsDisplayed = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dialog__title"))).isDisplayed();
-        Assert.assertTrue(alertMessageIsDisplayed);
+        Assert.assertTrue(isAlertTitleVisible);
     }
 
     @Test
@@ -113,23 +111,21 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test
     public void testPlaceholderSettingsSearchInput() {
-        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
+        String SearchInputPlaceholderText = new HomePage(getDriver())
+                .clickManageJenkins()
+                .getSearchInputPlaceholderText();
 
-        String placeholderText = getDriver().findElement(By.id("settings-search-bar")).getDomProperty("placeholder");
-        Assert.assertEquals(placeholderText, "Search settings");
+        Assert.assertEquals(SearchInputPlaceholderText, "Search settings");
     }
 
     @Test
-    public void testSearchSettingsInvalidData() {
-        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
+    public void testSearchSettingsWithInvalidData() {
+        String noSearchResultsPopUp = new HomePage(getDriver())
+                .clickManageJenkins()
+                .typeSearchSettingsRequest("admin")
+                .getNoSearchResultsPopUpText();
 
-        getDriver().findElement(SETTINGS_SEARCH_BAR_LOCATOR).click();
-        getDriver().findElement(SETTINGS_SEARCH_BAR_LOCATOR).sendKeys("admin");
-
-        String searchResult = getWait2().until(ExpectedConditions.visibilityOfElementLocated(
-                By.cssSelector("[class='jenkins-search__results'] p"))).getText();
-
-        Assert.assertEquals(searchResult, "No results");
+        Assert.assertEquals(noSearchResultsPopUp, "No results");
     }
 
     @Test

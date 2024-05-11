@@ -10,20 +10,20 @@ import java.util.List;
 public class ViewPage extends BasePage {
 
     @FindBy(linkText = "Edit View")
-    WebElement editViewButton;
+    private WebElement editViewButton;
 
     @FindBy(css = "div.tab.active")
-    WebElement activeViewName;
+    private WebElement activeViewName;
 
     @FindBy(xpath = "//td/a[contains(@href, 'job/')]")
-    List<WebElement> projectNamesList;
+    private List<WebElement> projectNamesList;
 
     @FindBy(className = "sortheader")
-    List<WebElement> columnNameList;
+    private List<WebElement> columnNameList;
 
     public ViewPage(WebDriver driver) { super(driver); }
 
-    public ViewMyListConfigPage clickEditViewButton() {
+    public ViewMyListConfigPage clickEditViewOnSidebar() {
         editViewButton.click();
 
         return new ViewMyListConfigPage(getDriver());

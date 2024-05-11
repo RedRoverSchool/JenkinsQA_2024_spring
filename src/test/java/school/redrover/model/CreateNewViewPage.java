@@ -8,13 +8,19 @@ import school.redrover.model.base.BasePage;
 public class CreateNewViewPage extends BasePage {
 
     @FindBy(id = "name")
-    WebElement viewNameText;
+    private WebElement viewNameText;
 
     @FindBy(css = "[for$='ListView']")
-    WebElement listViewRadioButton;
+    private WebElement listViewRadioButton;
 
     @FindBy(id = "ok")
-    WebElement createButton;
+    private WebElement createButton;
+
+    @FindBy (xpath = "//label[text() = 'My View']")
+    private WebElement myViewRadioButton;
+
+    @FindBy (xpath = "//div[@class='tab active']")
+    private WebElement newViewName;
 
     public CreateNewViewPage(WebDriver driver) { super(driver); }
 
@@ -30,9 +36,21 @@ public class CreateNewViewPage extends BasePage {
         return this;
     }
 
-    public ViewMyListConfigPage clickCreateView() {
+    public ViewMyListConfigPage clickCreateViewButton() {
         createButton.click();
 
         return new ViewMyListConfigPage(getDriver());
+    }
+
+    public CreateNewViewPage clickMyViewRadioButton() {
+        myViewRadioButton.click();
+
+        return this;
+    }
+
+    public ViewConfigPage clickCreateMyView() {
+        createButton.click();
+
+        return new ViewConfigPage(getDriver());
     }
 }

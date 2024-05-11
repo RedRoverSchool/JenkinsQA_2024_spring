@@ -47,34 +47,18 @@ public class CreateNewItemPage extends BasePage {
     @FindBy(xpath = "//div[@class='item-copy']//li[not(@style='display: none;')]")
     private List<WebElement> copyFormElements;
 
+    @FindBy(id = "itemname-required")
+    private WebElement itemNameHint;
+
     public CreateNewItemPage(WebDriver driver) {
         super(driver);
     }
-
-    public HomePage createNewItem(String projectName, String projectType) {
-        setItemName(projectName);
-        switch (projectType) {
-            case "Freestyle" -> freestyleItem.click();
-            case "Pipeline" -> pipelineItem.click();
-            case "MultiConfiguration" -> multiConfigurationItem.click();
-            case "Folder" -> folderItem.click();
-            case "MultibranchPipeline" -> multibranchPipelineItem.click();
-            case "OrganizationFolder" -> organizationFolderItem.click();
-            default -> throw new IllegalArgumentException("Project type name incorrect");
-        }
-        okButton.click();
-        clickLogo();
-
-        return new HomePage(getDriver());
-    }
-
 
     public CreateNewItemPage setItemName(String name) {
         nameText.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
         nameText.sendKeys(name);
         return this;
     }
-
 
     public CreateNewItemPage selectTypeAndClickOk(String type) {
         getDriver().findElement(By.xpath("//span[text()='" + type + "']")).click();
@@ -169,7 +153,6 @@ public class CreateNewItemPage extends BasePage {
         return new CreateItemPage(getDriver());
     }
 
-
     public List<String> getDropdownMenuContent() {
         List<WebElement> allJobFromThisLetter = getWait60().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("li[style='']")));
         List<String> allJobFromThisLetterName = new ArrayList<>();
@@ -180,4 +163,32 @@ public class CreateNewItemPage extends BasePage {
         return allJobFromThisLetterName ;
     }
 
+
+    public CreateNewItemPage selectFreeStyleProject() {
+        freestyleItem.click();
+        return this;
+    }
+    public Boolean getOkButtoneState() {
+        if(okButton.getAttribute("disabled") != ""){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+
+    public CreateNewItemPage clearItemNameField() {
+        nameText.sendKeys(Keys.CONTROL + "a", Keys.BACK_SPACE);
+        return this;
+    }
+
+    public String getItemNameHintText() {
+        return itemNameHint.getText();
+    }
+
+    public String getItemNameHintColor() {
+        return itemNameHint.getCssValue("color");
+    }
+
+    public Boolean okButtonIsEnabled() { return okButton.isEnabled(); }
 }

@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.CreateNewItemPage;
 import school.redrover.model.HomePage;
 import school.redrover.model.ItemErrorPage;
 
@@ -23,22 +24,23 @@ public class MultiConfigurationProjectTest extends BaseTest {
     private static final String PROJECT_NAME = "MCProject";
     private final String RANDOM_PROJECT_NAME = TestUtils.randomString();
 
+
     @Test
     public void testRenameProjectViaMainPageDropdown() {
         String addToProjectName = "New";
+        TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
 
-        String newProjectName = new HomePage(getDriver())
-                .clickNewItem()
-                .createNewItem(PROJECT_NAME, "MultiConfiguration")
+        String newProjectName = new CreateNewItemPage(getDriver())
+                .clickLogo()
                 .openItemDropdownWithSelenium(PROJECT_NAME)
                 .selectRenameFromDropdown()
-                .changeProjectName(addToProjectName)
+                .changeProjectNameWithoutClear(addToProjectName)
                 .clickRenameButton()
                 .getProjectNameText();
 
         Assert.assertEquals(newProjectName,
                 "Project " + PROJECT_NAME + "New",
-                "Project name has not been changed" );
+                "Project name has not been changed");
     }
 
     @Test(dependsOnMethods = "testCreateMCP")
@@ -188,12 +190,15 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testMCPDisableByToggle() {
-        TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+        TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
 
-        getDriver().findElement(By.className("jenkins-toggle-switch__label")).click();
-        getDriver().findElement(By.name("Apply")).click();
-
-        Assert.assertFalse(getDriver().findElement(By.id("enable-disable-project")).isSelected());
+        Assert.assertFalse(new HomePage(getDriver())
+                .clickLogo()
+                .clickMCPName(PROJECT_NAME)
+                .clickConfigureButton()
+                .clickToggleSwitch()
+                .clickApply()
+                .getStatusToggle());
     }
 
     @Test(dependsOnMethods = "testMCPDisableByToggle")
@@ -295,7 +300,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(RANDOM_PROJECT_NAME)
                 .selectMultiConfigurationAndClickOk()
-                .clickSave()
+                .clickSaveButton()
                 .clickLogo()
                 .getItemList();
 
