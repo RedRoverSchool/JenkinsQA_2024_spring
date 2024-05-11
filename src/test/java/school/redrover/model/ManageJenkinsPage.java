@@ -82,6 +82,10 @@ public class ManageJenkinsPage extends BasePage {
         return shortcut.isDisplayed();
     }
 
+    public boolean isSearchFieldActivateElement() {
+        return searchInput.equals(getDriver().switchTo().activeElement());
+    }
+
     public boolean isSearchHintDisplayed() {
         return searchHint.isDisplayed();
     }
