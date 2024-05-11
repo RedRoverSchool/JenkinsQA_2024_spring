@@ -122,16 +122,13 @@ public class ManageJenkinsTest extends BaseTest {
     }
 
     @Test
-    public void testSearchSettingsInvalidData() {
-        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
+    public void testSearchSettingsWithInvalidData() {
+        String noSearchResultsPopUp = new HomePage(getDriver())
+                .clickManageJenkins()
+                .typeSearchSettingsRequest("admin")
+                .getNoSearchResultsPopUpText();
 
-        getDriver().findElement(SETTINGS_SEARCH_BAR_LOCATOR).click();
-        getDriver().findElement(SETTINGS_SEARCH_BAR_LOCATOR).sendKeys("admin");
-
-        String searchResult = getWait2().until(ExpectedConditions.visibilityOfElementLocated(
-                By.cssSelector("[class='jenkins-search__results'] p"))).getText();
-
-        Assert.assertEquals(searchResult, "No results");
+        Assert.assertEquals(noSearchResultsPopUp, "No results");
     }
 
     @Test
