@@ -5,11 +5,17 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import school.redrover.model.HomePage;
+import school.redrover.model.UserPage;
 
 import java.util.List;
 
 public abstract class BasePage extends BaseModel {
+
+
+    @FindBy(css = "a.model-link > span")
+    private WebElement userNameOnHeader;
 
     public BasePage(WebDriver driver) {
         super(driver);
@@ -75,4 +81,11 @@ public abstract class BasePage extends BaseModel {
     public void scrollIntoView(WebElement element) {
         ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView(true);", element);
     }
+
+    public UserPage clickUserNameOnHeader() {
+        userNameOnHeader.click();
+
+        return new UserPage(getDriver());
+    }
+
 }

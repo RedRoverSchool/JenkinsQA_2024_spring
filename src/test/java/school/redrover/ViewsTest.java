@@ -42,10 +42,10 @@ public class ViewsTest extends BaseTest {
 
     public void createView(String VIEW_NAME) {
         new HomePage(getDriver())
-                .clickNewView()
+                .clickPlusForCreateView()
                 .setViewName(VIEW_NAME)
                 .clickListViewRadioButton()
-                .clickCreateView();
+                .clickCreateViewButton();
     }
 
     @Test
@@ -61,10 +61,10 @@ public class ViewsTest extends BaseTest {
                 .setItemName(INVISIBLE)
                 .selectPipelineAndClickOk()
                 .clickLogo()
-                .clickNewView()
+                .clickPlusForCreateView()
                 .setViewName(VIEW_NAME)
                 .clickListViewRadioButton()
-                .clickCreateView()
+                .clickCreateViewButton()
                 .clickProjectName(VISIBLE)
                 .clickOkButton()
                 .getProjectNames();
@@ -106,7 +106,7 @@ public class ViewsTest extends BaseTest {
 
         List<String> columnNameText = new HomePage(getDriver())
                 .clickViewName(VIEW_NAME)
-                .clickEditViewButton()
+                .clickEditViewOnSidebar()
                 .scrollIntoSubmit()
                 .moveDescriptionToStatusColumn()
                 .getColumnNameText();

@@ -36,7 +36,7 @@ public class CreateNewViewPage extends BasePage {
         return this;
     }
 
-    public ViewMyListConfigPage clickCreateView() {
+    public ViewMyListConfigPage clickCreateViewButton() {
         createButton.click();
 
         return new ViewMyListConfigPage(getDriver());
