@@ -69,5 +69,6 @@ public class FreestylePage extends BasePage {
 
         getDriver().findElement(By.xpath("//a[@href='/job/" + name + "/']")).click();
         return new HomePage(getDriver());
+
     }
 }
