@@ -548,16 +548,14 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(warningMessage.contains(expectedWarning));
     }
 
-    @Test(dependsOnMethods = "testVisibilityOfDisableButton")
+    @Test(dependsOnMethods = "testDisableItem")
     public void testPipelineNotActive() {
-        final String expectedProjectName = "Pipeline1";
-
 
         String actualProjectName = getDriver().findElement(By.xpath("//tbody//td[3]//a[contains(@href, 'job/')]/span")).getText();
-        Assert.assertEquals(actualProjectName, expectedProjectName);
+        Assert.assertEquals(actualProjectName, PIPELINE_NAME);
 
         List<WebElement> scheduleABuildArrows = getDriver().findElements(
-                By.xpath("//table//a[@title= 'Schedule a Build for " + expectedProjectName + "']"));
+                By.xpath("//table//a[@title= 'Schedule a Build for " + PIPELINE_NAME + "']"));
         Assert.assertEquals(scheduleABuildArrows.size(), 0);
     }
 
