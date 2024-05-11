@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -62,5 +63,11 @@ public class FreestylePage extends BasePage {
     }
     public String getDescriptionText() {
         return textDescription.getText();
+    }
+
+    public HomePage clickBreadcrumbFolder(String name) {
+
+        getDriver().findElement(By.xpath("//a[@href='/job/" + name + "/']")).click();
+        return new HomePage(getDriver());
     }
 }
