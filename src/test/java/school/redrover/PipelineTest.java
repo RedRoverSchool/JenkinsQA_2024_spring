@@ -523,11 +523,6 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testVisibilityOfDisableButton() {
-//        getDriver().findElement(By.name("Submit")).click();
-//
-//        String actualStatusMessage = getDriver().findElement(By.id("enable-project")).getText();
-//
-//        Assert.assertTrue(actualStatusMessage.contains("This project is currently disabled"));
         boolean isDisableButtonDisplayed = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
@@ -536,6 +531,21 @@ public class PipelineTest extends BaseTest {
                 .isDisableButtonVisible();
 
         Assert.assertTrue(isDisableButtonDisplayed, "Can't find the button");
+    }
+
+    @Test
+    public void testDisableItem() {
+        final String expectedWarning = "This project is currently disabled";
+
+        String warningMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickSaveButton()
+                .getWarningMessageText();
+
+        Assert.assertTrue(warningMessage.contains(expectedWarning));
     }
 
     @Test(dependsOnMethods = "testVisibilityOfDisableButton")
