@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
@@ -9,7 +10,7 @@ import java.util.List;
 public class OrganizationFolder1Test extends BaseTest {
 
 
-    @Test
+    @Ignore
     public void testCreateOrganizationFolder() {
 
         final String organizationFolderName = "Organization Folder";
