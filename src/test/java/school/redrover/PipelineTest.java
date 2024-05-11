@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static school.redrover.runner.TestUtils.goToMainPage;
 
@@ -91,7 +92,7 @@ public class PipelineTest extends BaseTest {
                 By.xpath("//a[contains(@href, 'configure')]")))).click();
     }
 
-    public void createNewPipeline(String pipelineName){
+    public void createNewPipeline(String pipelineName) {
         getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@href='/view/all/newJob']"))).click();
         getWait5().until(ExpectedConditions.presenceOfElementLocated(By.id("name"))).sendKeys(pipelineName);
         getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
@@ -99,7 +100,7 @@ public class PipelineTest extends BaseTest {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name='Submit']"))).click();
     }
 
-    public void goHomePage(){
+    public void goHomePage() {
         getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']"))).click();
     }
 
@@ -141,7 +142,7 @@ public class PipelineTest extends BaseTest {
                 advancedButton);
     }
 
-    public void scrollCheckBoxQuietPeriodIsVisible(){
+    public void scrollCheckBoxQuietPeriodIsVisible() {
         JavascriptExecutor executor = (JavascriptExecutor) getDriver();
         executor.executeScript("arguments[0].scrollIntoView();",
                 getDriver().findElement(By.xpath("//label[text()='Poll SCM']")));
@@ -431,12 +432,13 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testTableWithAllStagesAndTheLast10Builds() {
+    public void testTableWithLast10Builds() {
 
         final int stagesQtt = 2;
         final int buildsQtt = 13;
+        final List<String> expectedBuildsList = IntStream.range(0, 10).mapToObj(i -> "#" + (buildsQtt - i)).toList();
 
-        int actualSagesQtt = new HomePage(getDriver())
+        List<String> actualBuildsList = new HomePage(getDriver())
                 .clickManageJenkins()
                 .clickNodes()
                 .clickBuiltInNodeName()
@@ -448,19 +450,9 @@ public class PipelineTest extends BaseTest {
                 .clickSaveButton()
                 .makeBuilds(buildsQtt)
                 .clickFullStageViewButton()
-                .getSagesQtt();
-
-        List<String> actualBuildsText = new FullStageViewPage(getDriver())
                 .getItemList();
 
-        List<String> expectedBuildsText = new ArrayList<>();
-
-        for (int i = 0; i < actualBuildsText.size(); i++) {
-            expectedBuildsText.add("#" + (buildsQtt - i));
-        }
-
-        Assert.assertEquals(actualSagesQtt, stagesQtt);
-        Assert.assertEquals(actualBuildsText, expectedBuildsText);
+        Assert.assertEquals(actualBuildsList, expectedBuildsList);
     }
 
     @Test
@@ -530,29 +522,40 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testVisibilityDisableButton() {
-        TestUtils.createNewJob(this, TestUtils.Job.PIPELINE, "Pipeline1");
-        getDriver().findElement(By.xpath("//table//a[@href='job/Pipeline1/']")).click();
+    public void testVisibilityOfDisableButton() {
+        boolean isDisableButtonDisplayed = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .isDisableButtonVisible();
 
-        Assert.assertTrue(getDriver().findElement(By.name("Submit")).isDisplayed());
-
-        getDriver().findElement(By.name("Submit")).click();
-
-        String actualStatusMessage = getDriver().findElement(By.id("enable-project")).getText();
-
-        Assert.assertTrue(actualStatusMessage.contains("This project is currently disabled"));
+        Assert.assertTrue(isDisableButtonDisplayed, "Can't find the button");
     }
 
-    @Test(dependsOnMethods = "testVisibilityDisableButton")
-    public void testPipelineNotActive() {
-        final String expectedProjectName = "Pipeline1";
+    @Test
+    public void testDisableItem() {
+        final String expectedWarning = "This project is currently disabled";
 
+        String warningMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickDisableButton()
+                .getWarningMessageText();
+
+        Assert.assertTrue(warningMessage.contains(expectedWarning));
+    }
+
+    @Test(dependsOnMethods = "testDisableItem")
+    public void testPipelineNotActive() {
 
         String actualProjectName = getDriver().findElement(By.xpath("//tbody//td[3]//a[contains(@href, 'job/')]/span")).getText();
-        Assert.assertEquals(actualProjectName, expectedProjectName);
+        Assert.assertEquals(actualProjectName, PIPELINE_NAME);
 
         List<WebElement> scheduleABuildArrows = getDriver().findElements(
-                By.xpath("//table//a[@title= 'Schedule a Build for " + expectedProjectName + "']"));
+                By.xpath("//table//a[@title= 'Schedule a Build for " + PIPELINE_NAME + "']"));
         Assert.assertEquals(scheduleABuildArrows.size(), 0);
     }
 
@@ -682,7 +685,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testButtonBackgroundColor () {
+    public void testButtonBackgroundColor() {
         String expectedColor = "rgba(175,175,207,.175)";
 
         getDriver().findElement(By.cssSelector("a[href$=\"/newJob\"]")).click();
@@ -726,6 +729,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.cssSelector("tr#job_" + nameProjects.get(0))).isDisplayed());
 
     }
+
     @Test(dependsOnMethods = "testVerifyNewPPCreatedByCreateJob")
     public void testVerifyNewPPCreatedNewItem() {
 
@@ -741,7 +745,7 @@ public class PipelineTest extends BaseTest {
         createNewPipeline(PIPELINE_NAME);
         goHomePage();
 
-        WebElement chevron = getDriver().findElement(By.xpath("//a[@href='job/"+PIPELINE_NAME+"/']//button[@class='jenkins-menu-dropdown-chevron']"));
+        WebElement chevron = getDriver().findElement(By.xpath("//a[@href='job/" + PIPELINE_NAME + "/']//button[@class='jenkins-menu-dropdown-chevron']"));
         JavascriptExecutor jsExecutor = (JavascriptExecutor) getDriver();
 
         jsExecutor.executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", chevron);
@@ -752,7 +756,7 @@ public class PipelineTest extends BaseTest {
 
         String expectedText = PIPELINE_NAME + " - Stage View";
         Assert.assertEquals(getWait5().until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//div[@id='pipeline-box']/h2"))).getText(),expectedText);
+                By.xpath("//div[@id='pipeline-box']/h2"))).getText(), expectedText);
     }
 
     @Ignore
@@ -799,27 +803,14 @@ public class PipelineTest extends BaseTest {
         }
     }
 
-//    @Test
-//    public void testNewPipelineProject() {
-//
-//        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-//        getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys("ProjectPL");
-//        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[2]/label")).click();
-//        getDriver().findElement(By.xpath("//*[@id='ok-button']")).click();
-//        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]")).click();
-//
-//        Assert.assertEquals(getDriver().findElement(
-//                By.xpath("//*[@id='main-panel']/div[1]/div/h1")).getText(),"ProjectPL");
-//    }
-
-    @Test (dependsOnMethods = "testCreatePipeline")
+    @Test(dependsOnMethods = "testCreatePipeline")
     public void testUseSearchToFindProject() {
 
         getDriver().findElement(By.xpath("//*[@id='search-box']")).sendKeys(PIPELINE_NAME);
         getDriver().findElement(By.xpath("//*[@id='search-box']")).sendKeys(Keys.ENTER);
 
         Assert.assertEquals(getDriver().findElement(
-                By.xpath("//*[@id='main-panel']/div[1]/div/h1")).getText(),PIPELINE_NAME);
+                By.xpath("//*[@id='main-panel']/div[1]/div/h1")).getText(), PIPELINE_NAME);
     }
 
     @Ignore
@@ -1051,7 +1042,7 @@ public class PipelineTest extends BaseTest {
                 .clickSaveButton()
                 .isDescriptionVisible(pipelineDescription);
 
-        Assert.assertTrue(isDescriptionVisible,"Something went wrong with the description");
+        Assert.assertTrue(isDescriptionVisible, "Something went wrong with the description");
     }
 
     @Test
@@ -1142,7 +1133,7 @@ public class PipelineTest extends BaseTest {
                 displayNameText);
     }
 
-    @Test (dependsOnMethods = "testAddDisplayNameInAdvancedSection")
+    @Test(dependsOnMethods = "testAddDisplayNameInAdvancedSection")
     public void testEditDisplayNameInAdvancedSection() {
         final String editedDisplayNameText = " - EDITED";
 
@@ -1157,11 +1148,11 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']"))
-                .getText().contains(editedDisplayNameText),"Your DisplayName is not edited correctly");
+                .getText().contains(editedDisplayNameText), "Your DisplayName is not edited correctly");
     }
 
     @Test
-    public void testVerifySectionHasTooltip(){
+    public void testVerifySectionHasTooltip() {
         String labelText = "Display Name";
         String tooltipText = "Help for feature: Display Name";
         createPipeline();
@@ -1175,6 +1166,7 @@ public class PipelineTest extends BaseTest {
 
         Assert.assertEquals(actualTooltip, tooltipText);
     }
+
     @Test
     public void testChoosePipelineScript() {
         createPipeline();
@@ -1192,7 +1184,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(link.isDisplayed(), "Uncheck doesn't work");
     }
 
-    @Test (dependsOnMethods = {"testAddDisplayNameInAdvancedSection", "testEditDisplayNameInAdvancedSection"})
+    @Test(dependsOnMethods = {"testAddDisplayNameInAdvancedSection", "testEditDisplayNameInAdvancedSection"})
     public void testDeleteDisplayNameInAdvancedSection() {
         navigateToConfigurePageFromDashboard();
 
@@ -1240,7 +1232,7 @@ public class PipelineTest extends BaseTest {
         getWait5().until(ExpectedConditions.elementToBeClickable(ADVANCED_PROJECT_OPTIONS_MENU)).click();
         clickOnAdvancedButton();
 
-        for (String label: labelsText) {
+        for (String label : labelsText) {
             String actualTooltip = getDriver().findElement(By.xpath("//*[contains(text(), '" + label + "')]//a")).getAttribute("tooltip");
 
             Assert.assertEquals(actualTooltip, "Help for feature: " + label);

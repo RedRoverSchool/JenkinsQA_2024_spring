@@ -23,7 +23,7 @@ public class ViewPage extends BasePage {
 
     public ViewPage(WebDriver driver) { super(driver); }
 
-    public ViewMyListConfigPage clickEditViewButton() {
+    public ViewMyListConfigPage clickEditViewOnSidebar() {
         editViewButton.click();
 
         return new ViewMyListConfigPage(getDriver());

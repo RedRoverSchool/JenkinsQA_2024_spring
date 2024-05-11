@@ -21,9 +21,9 @@ public class NewItemTest extends BaseTest {
     @Test
     public void testAddItem() {
         new ItemPage(getDriver())
-                .NewItemClick()
-                .FreestyleProjectClick()
-                .NewItemName("NewItemName")
+                .newItemClick()
+                .freestyleProjectClick()
+                .newItemName("NewItemName")
                 .clickButtonOK()
                 .clickLogo();
 
@@ -33,7 +33,7 @@ public class NewItemTest extends BaseTest {
     @Test
     public void testGoToNewJobPage() {
         new ItemPage(getDriver())
-                .NewItemClick();
+                .newItemClick();
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//*[text()='Enter an item name']")).isDisplayed());
     }
@@ -41,9 +41,9 @@ public class NewItemTest extends BaseTest {
     @Test
     public void testCreateFreestyleProject() {
         new ItemPage(getDriver())
-                .NewItemClick()
-                .NewItemName("MyNewProject")
-                .FreestyleProjectClick()
+                .newItemClick()
+                .newItemName("MyNewProject")
+                .freestyleProjectClick()
                 .clickButtonOK()
                 .clickSaveBtn();
 
@@ -53,9 +53,9 @@ public class NewItemTest extends BaseTest {
     @Test
     public void testCreateNewPipeline() {
         new ItemPage(getDriver())
-                .NewItemClick()
-                .NewItemName("NewPipeline")
-                .PipelineClic()
+                .newItemClick()
+                .newItemName("NewPipeline")
+                .pipelineClic()
                 .clickButtonOK()
                 .clickSaveBtn();
 

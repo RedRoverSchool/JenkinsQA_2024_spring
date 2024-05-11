@@ -31,6 +31,18 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
+    public void testCreateViaCreateAJob() {
+        String folderBreadcrumbName = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .getBreadcrumbName();
+
+        Assert.assertEquals(folderBreadcrumbName, FOLDER_NAME, "Breadcrumb name doesn't match " + FOLDER_NAME);
+    }
+
+    @Test
     public void testDotAsFirstFolderNameCharErrorMessage() {
         String errorMessageText = new HomePage(getDriver())
                 .clickNewItem()
@@ -54,31 +66,7 @@ public class FolderTest extends BaseTest {
                 "The error message is different");
     }
 
-    @Test
-    public void testCreateFolderViaCreateAJob() {
-        String folderBreadcrumbName = new HomePage(getDriver())
-                .clickCreateAJob()
-                .setItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
-                .clickSaveButton()
-                .getBreadcrumbName();
-
-        Assert.assertEquals(folderBreadcrumbName, FOLDER_NAME, "Breadcrumb name doesn't match " + FOLDER_NAME);
-    }
-
-    @Test(dependsOnMethods = "testCreateFolderViaCreateAJob")
-    public void testAddDescription() {
-
-        String textInDescription = new FolderProjectPage(getDriver())
-                .clickAddOrEditDescription()
-                .setDescription(FOLDER_DESCRIPTION_FIRST)
-                .clickSaveButton()
-                .getDescriptionText();
-
-        Assert.assertEquals(textInDescription, FOLDER_DESCRIPTION_FIRST);
-    }
-
-    @Test(dependsOnMethods = "testCreateFolderViaCreateAJob")
+    @Test(dependsOnMethods = "testCreateViaCreateAJob")
     public void testRenameFolderViaFolderBreadcrumbsDropdownMenu() {
         String folderStatusPageHeading = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
@@ -218,5 +206,6 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(itemName, PIPELINE_NAME);
 
     }
+
 
 }

@@ -3,9 +3,7 @@ package school.redrover;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
@@ -99,28 +97,17 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testVerifyStatusToSwitchingEnableMultibranchPipeline() {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        String enableStatus = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(MULTI_PIPELINE_NAME)
+                .selectMultibranchPipelineAndClickOk()
+                .clickToggle()
+                .clickSaveButton()
+                .clickDisableEnableMultibranchPipeline()
+                .getDisableMultibranchPipelineButtonText();
 
-        getDriver().findElement(By.className("jenkins-input")).sendKeys("Muiltibranch Pipeline project");
-
-        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_multibranch_WorkflowMultiBranchProject")).click();
-
-        getDriver().findElement(By.id("ok-button")).click();
-
-        getDriver().findElement(By.cssSelector("#toggle-switch-enable-disable-project > label")).click();
-
-        WebElement footer = getDriver().findElement(By.xpath("//*[@id='footer']"));
-        int deltaY = footer.getRect().y;
-        new Actions(getDriver()).scrollByAmount(0, deltaY).perform();
-
-        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]")).click();
-
-        getDriver().findElement(By.xpath("//*[@id='enable-project']/button")).click();
-
-        String foundText = getDriver().findElement(By.xpath("//*[@id='disable-project']/button")).getText();
-        Assert.assertEquals(foundText, "Disable Multibranch Pipeline");
+        Assert.assertEquals(enableStatus, "Disable Multibranch Pipeline");
     }
-
 
     @Test
     public void testDisabledTooltip() {
@@ -472,17 +459,14 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test(dependsOnMethods = "testRenameOnTheSidebar")
     public void testDeleteMpViaBreadcrumbs() {
-        getDriver().findElement(MULTI_PIPELINE_ON_DASHBOARD_LOCATOR).click();
+        boolean isMpDeleted = new HomePage(getDriver())
+                .clickMPName(RENAMED_MULTI_PIPELINE)
+                .clickMPDropdownArrow()
+                .clickDeleteMultibranchPipelineInBreadcrumbs(new DeleteDialog(getDriver()))
+                .clickYes(new HomePage(getDriver()))
+                .isItemDeleted(RENAMED_MULTI_PIPELINE);
 
-        WebElement dropdownArrow = getDriver().findElement(By.cssSelector("a[href^='/job'] > button"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
-                "arguments[0].dispatchEvent(new Event('click'));", dropdownArrow);
-
-        getDriver().findElement(By.cssSelector("[class*='dropdown'] [href$='doDelete']")).click();
-        getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
-
-        List<WebElement> projectList = getDriver().findElements(MULTI_PIPELINE_ON_DASHBOARD_LOCATOR);
-        Assert.assertTrue(projectList.isEmpty());
+        Assert.assertTrue(isMpDeleted, RENAMED_MULTI_PIPELINE + " was not deleted");
     }
 
     @Ignore

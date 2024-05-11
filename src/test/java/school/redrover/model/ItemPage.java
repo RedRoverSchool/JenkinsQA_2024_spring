@@ -37,14 +37,23 @@ public class ItemPage extends BasePage {
     @FindBy(name = "Submit")
     private WebElement SaveBtn;
 
+    @FindBy(css = "div#j-add-item-type-nested-projects > ul > li > div:nth-of-type(2) > img")
+    private WebElement imgItem;
+
     public ItemPage setItemName(String name) {
         NewItemName.sendKeys(name);
 
         return this;
     }
 
-    public ItemPage NewItemName(String name) {
+    public ItemPage newItemName(String name) {
         NewItemName.sendKeys(name);
+
+        return this;
+    }
+
+    public ItemPage imgItem() {
+        imgItem.click();
 
         return this;
     }
@@ -61,25 +70,25 @@ public class ItemPage extends BasePage {
         return this;
     }
 
-    public ItemPage NewItemClick() {
+    public ItemPage newItemClick() {
         NewItem.click();
 
         return this;
     }
 
-    public ItemPage FreestyleProjectClick() {
+    public ItemPage freestyleProjectClick() {
         FreestyleProject.click();
 
         return this;
     }
 
-    public ItemPage ElementPeopleClick() {
+    public ItemPage elementPeopleClick() {
         ElementPeople.click();
 
         return this;
     }
 
-    public ItemPage ElementWelcomeClic() {
+    public ItemPage elementWelcomeClic() {
         ElementWelcome.click();
 
         return this;
@@ -91,7 +100,7 @@ public class ItemPage extends BasePage {
         return this;
     }
 
-    public ItemPage PipelineClic() {
+    public ItemPage pipelineClic() {
         Pipeline.click();
 
         return this;
