@@ -64,19 +64,17 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testCreateFreestyleProjectJob() {
-        String expectedHeading = "My First Freestyle project";
+    public void testCreateProject() {
 
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(expectedHeading);
-        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-        getDriver().findElement(By.id("jenkins-home-link")).click();
+        String expectedName = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(FREESTYLE_PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .clickSave()
+                .getProjectName();
 
-        String actualHeading = getDriver()
-                .findElement(By.xpath("//table//a[@href='job/My%20First%20Freestyle%20project/']")).getText();
+        Assert.assertEquals(FREESTYLE_PROJECT_NAME, expectedName);
 
-        Assert.assertEquals(actualHeading, expectedHeading);
     }
 
     @Test
@@ -138,18 +136,6 @@ public class FreestyleProjectTest extends BaseTest {
                 .getItemList();
 
         Assert.assertTrue(actualResult.contains(NEW_FREESTYLE_PROJECT_NAME));
-    }
-
-    @Test
-    public void testFreestyleProjectCreate() {
-        createFreestyleProject(FREESTYLE_PROJECT_NAME);
-
-        WebElement nameOfProject = getDriver().findElement(
-                By.xpath("//h1[@class='job-index-headline page-headline']"));
-
-        String actualResult = nameOfProject.getText();
-
-        Assert.assertEquals(actualResult, FREESTYLE_PROJECT_NAME);
     }
 
     @Ignore
