@@ -1,13 +1,13 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
-
 import java.util.*;
-
 import static school.redrover.runner.TestUtils.goToMainPage;
 
 public class PeopleTest extends BaseTest {
@@ -40,7 +40,6 @@ public class PeopleTest extends BaseTest {
             goToMainPage(getDriver());
         }
     }
-
 
     @Test
     public void testSortPeople() {
@@ -75,12 +74,12 @@ public class PeopleTest extends BaseTest {
                 expectedSecColumnData.add(cellText);
             }
         }
+
         String[] nameArray = expectedSecColumnData.toArray(String[]::new);
 
         Arrays.sort(nameArray, Comparator.reverseOrder());
 
         getDriver().findElement(By.xpath("//a[normalize-space()=\"Name\"]")).click();
-
 
         List<String> secColumnData = new ArrayList<>();
         for (WebElement row : rows) {
@@ -90,6 +89,7 @@ public class PeopleTest extends BaseTest {
                 secColumnData.add(cellText);
             }
         }
+
         String[] nNameArray = secColumnData.toArray(String[]::new);
 
         for (int i = 0; i < nNameArray.length && i < nameArray.length; i++) {
@@ -135,7 +135,6 @@ public class PeopleTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[normalize-space()=\"On\"]")).click();
 
-
         List<String> fourthColumnData = new ArrayList<>();
         for (WebElement row : rows) {
             List<WebElement> cells = row.findElements(By.tagName("td"));
@@ -149,6 +148,34 @@ public class PeopleTest extends BaseTest {
             Assert.assertEquals(fourthColumnData.get(i), expectedFourthColumnData.get(i));
         }
     }
+
+    @Test
+    public void testIconSizeChangeToSmall() {
+        final Dimension actualIconSize = new HomePage(getDriver())
+                .clickPeopleButton()
+                .clickSmallIconButton()
+                .getUserIconSize();
+
+        Assert.assertEquals(actualIconSize, new Dimension(16, 16));
+    }
+
+    @Test
+    public void testIconSizeChangeToMedium() {
+        final Dimension actualIconSize = new HomePage(getDriver())
+                .clickPeopleButton()
+                .clickMediumIconButton()
+                .getUserIconSize();
+
+        Assert.assertEquals(actualIconSize, new Dimension(20, 20));
+    }
+
+    @Test
+    public void testIconSizeChangeToLarge() {
+        final Dimension actualIconSize = new HomePage(getDriver())
+                .clickPeopleButton()
+                .clickLargeIconButton()
+                .getUserIconSize();
+
+        Assert.assertEquals(actualIconSize, new Dimension(24, 24));
+    }
 }
-
-
