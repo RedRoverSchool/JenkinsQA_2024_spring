@@ -31,6 +31,36 @@ public class NodesTest extends BaseTest {
     }
 
     @Test
+    public void testCreatedNodeIsOnMainPage() {
+        HomePage homePage = new HomePage(getDriver())
+                .clickNodesLink()
+                .clickNewNodeButton()
+                .setNodeName(NODE_NAME)
+                .selectPermanentAgentRadioButton()
+                .clickOkButton()
+                .clickSaveButton()
+                .clickLogo();
+
+        Assert.assertTrue(homePage.isNodeDisplayed(NODE_NAME));
+        Assert.assertTrue(homePage.getNodesList().contains(NODE_NAME), "The created node name is not " + NODE_NAME);
+    }
+
+    @Test
+    public void testCreatedNodeIsInNodesTable() {
+        NodesTablePage nodesTablePage = new HomePage(getDriver())
+                .clickNodesLink()
+                .clickNewNodeButton()
+                .setNodeName(NODE_NAME)
+                .selectPermanentAgentRadioButton()
+                .clickOkButton()
+                .clickSaveButton();
+
+        Assert.assertTrue(nodesTablePage.isNodeDisplayedInTable(NODE_NAME));
+        Assert.assertTrue(nodesTablePage.getNodesinTableList().contains(NODE_NAME),
+                "The created node '" + NODE_NAME + "' is not in the Nodes table");
+    }
+
+    @Test
     public void testAddNode() {
         String text;
 
@@ -80,36 +110,6 @@ public class NodesTest extends BaseTest {
 
         new NodeBuiltInStatusPage(getDriver()).
                 assertMonitoringDataValues(actualMonitoringDataValues, expectedMonitoringDataValues);
-    }
-
-    @Test
-    public void testCreatedNodeIsOnMainPage() {
-        HomePage homePage = new HomePage(getDriver())
-                .clickNodesLink()
-                .clickNewNodeButton()
-                .setNodeName(NODE_NAME)
-                .selectPermanentAgentRadioButton()
-                .clickOkButton()
-                .clickSaveButton()
-                .clickLogo();
-
-        Assert.assertTrue(homePage.isNodeDisplayed(NODE_NAME));
-        Assert.assertTrue(homePage.getNodesList().contains(NODE_NAME), "The created node name is not " + NODE_NAME);
-    }
-
-    @Test
-    public void testCreatedNodeIsInNodesTable() {
-        NodesTablePage nodesTablePage = new HomePage(getDriver())
-                .clickNodesLink()
-                .clickNewNodeButton()
-                .setNodeName(NODE_NAME)
-                .selectPermanentAgentRadioButton()
-                .clickOkButton()
-                .clickSaveButton();
-
-        Assert.assertTrue(nodesTablePage.isNodeDisplayedInTable(NODE_NAME));
-        Assert.assertTrue(nodesTablePage.getNodesinTableList().contains(NODE_NAME),
-                "The created node '" + NODE_NAME + "' is not in the Nodes table");
     }
 
     @Test

@@ -17,7 +17,7 @@ public class MyViewsTest extends BaseTest {
                 .setItemName(multiConfigurationProjectName)
                 .selectMultiConfigurationAndClickOk()
                 .clickLogo()
-                .clickNewView()
+                .clickPlusForCreateView()
                 .setViewName(viewName)
                 .clickMyViewRadioButton()
                 .clickCreateMyView()

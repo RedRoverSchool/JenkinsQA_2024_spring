@@ -31,7 +31,7 @@ public class WarningIconTest extends BaseTest {
         String pageTitle = new HomePage(getDriver())
                 .clickWarningIcon()
                 .clickManageJenkinsTooltipLink()
-                .getPageTitleText();
+                .getPageHeadingText();
 
         Assert.assertTrue(pageTitle.contains("Manage Jenkins"));
         Assert.assertTrue(getDriver().getCurrentUrl().contains("/manage/"));
