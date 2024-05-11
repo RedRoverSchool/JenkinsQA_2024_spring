@@ -131,6 +131,22 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
+    public void testMoveFolderToFolder() {
+        List<String> folderNameList = new HomePage(getDriver())
+                .createNewFolder(FOLDER_TO_MOVE)
+                .clickLogo()
+                .createNewFolder(FOLDER_NAME)
+                .clickLogo()
+                .openItemDropdown(FOLDER_TO_MOVE)
+                .chooseFolderToMove()
+                .chooseFolderFromListAndSave(FOLDER_NAME)
+                .clickFolder(FOLDER_NAME)
+                .getItemListInsideFolder();
+
+        Assert.assertEquals(folderNameList.get(0), FOLDER_TO_MOVE);
+    }
+
+    @Test
     public void testRename() {
         create();
 
