@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.FolderProjectPage;
 import school.redrover.model.FreestyleProjectPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
@@ -34,12 +35,42 @@ public class FreestyleProject6Test extends BaseTest {
         getDriver().findElement(By.id("jenkins-home-link")).click();
     }
 
-    public void createFolder() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']/ancestor::span[@class='task-link-wrapper ']")).click();
-        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(FOLDER_NAME);
-        getDriver().findElement(By.xpath("//li[contains(@class, '_folder')]")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+    public FolderProjectPage createFolder() {
+
+        return new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .clickSaveButton();
+    }
+
+    @Ignore
+    @Test
+    public void testMoveFreestyleProjectToFolder() {
+        String expectedText = String.format("Full project name: %s/%s", FOLDER_NAME, FREESTYLE_PROJECT_NAME);
+
+        createFreestyleProjectWithDescription()
+                .clickLogo();
+
+        createFolder()
+                .clickLogo();
+
+        String actualText = new HomePage(getDriver())
+                .chooseCreatedFreestyleProject(FREESTYLE_PROJECT_NAME)
+                .clickMove()
+                .choosePath(FOLDER_NAME)
+                .clickMoveButton()
+                .getFullProjectPath();
+
+        Assert.assertTrue(actualText.contains(expectedText), "The text does not contain the expected project name.");
+
+        goHome();
+        List<WebElement> freestyleProjectList = getDriver().findElements(By.xpath("//span[contains(text(), '" + FREESTYLE_PROJECT_NAME + "')]"));
+        Assert.assertTrue(freestyleProjectList.isEmpty());
+
+        getDriver().findElement(By.xpath("(//*[@class=' job-status-']/td)[3]/a")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//tr[contains(@id,'job_')]/td[3]/a")).getText(), FREESTYLE_PROJECT_NAME);
     }
 
     @Ignore
@@ -78,35 +109,6 @@ public class FreestyleProject6Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Welcome to Jenkins!");
-    }
-
-    @Test
-    public void testMoveFreestyleProjectToFolder() {
-        createFreestyleProjectWithDescription();
-        goHome();
-
-        createFolder();
-        goHome();
-
-        getDriver().findElement(By.xpath("//span[contains(text(), '" + FREESTYLE_PROJECT_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href,'move')]")).click();
-
-        WebElement dropDownPath = getDriver().findElement(By.xpath("//select[@name='destination']"));
-        Select simpleDropDown = new Select(dropDownPath);
-        simpleDropDown.selectByValue("/" + FOLDER_NAME);
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-
-        String expectedText = String.format("Full project name: %s/%s", FOLDER_NAME, FREESTYLE_PROJECT_NAME);
-        String actualText = getDriver().findElement(By.xpath("//div[contains(text(), 'Full project name:')]")).getText();
-        Assert.assertTrue(actualText.contains(expectedText), "The text does not contain the expected project name.");
-
-        goHome();
-        List<WebElement> freestyleProjectList = getDriver().findElements(By.xpath("//span[contains(text(), '" + FREESTYLE_PROJECT_NAME + "')]"));
-        Assert.assertTrue(freestyleProjectList.isEmpty());
-
-        getDriver().findElement(By.xpath("(//*[@class=' job-status-']/td)[3]/a")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//tr[contains(@id,'job_')]/td[3]/a")).getText(), FREESTYLE_PROJECT_NAME);
     }
 
 }

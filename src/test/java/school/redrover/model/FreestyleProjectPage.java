@@ -15,7 +15,7 @@ public class FreestyleProjectPage extends BaseProjectPage {
     @FindBy(xpath = "//*[@id='main-panel']//h1")
     private WebElement projectName;
 
-    @FindBy (css = "#description > div:first-child")
+    @FindBy(css = "#description > div:first-child")
     private WebElement projectDescription;
 
     @FindBy(id = "description-link")
@@ -26,7 +26,8 @@ public class FreestyleProjectPage extends BaseProjectPage {
 
     @FindBy(name = "Submit")
     private WebElement saveButton;
-
+    @FindBy(xpath = "//a[contains(@href,'move')]")
+    private WebElement moveButton;
     @FindBy(xpath = "//a[contains(@href, 'confirm-rename')]")
     private WebElement renameButton;
 
@@ -44,6 +45,9 @@ public class FreestyleProjectPage extends BaseProjectPage {
 
     @FindBy(xpath = "//*[@class='model-link inside build-link display-name']")
     private WebElement buildInfo;
+
+    @FindBy(xpath = "//div[contains(text(), 'Full project name:')]")
+    private WebElement projectPath;
 
     public FreestyleProjectPage(WebDriver driver) {
         super(driver);
@@ -87,6 +91,11 @@ public class FreestyleProjectPage extends BaseProjectPage {
         return projectDescription.getText();
     }
 
+    public FreestyleMovePage clickMove() {
+        moveButton.click();
+        return new FreestyleMovePage(getDriver());
+    }
+
     public FreestyleRenamePage clickRename() {
 
         renameButton.click();
@@ -94,12 +103,12 @@ public class FreestyleProjectPage extends BaseProjectPage {
         return new FreestyleRenamePage(getDriver());
     }
 
-    public FreestyleProjectPage deleteFreestyleProject (){
+    public FreestyleProjectPage deleteFreestyleProject() {
         getWait10().until(ExpectedConditions.elementToBeClickable(deleteButton)).click();
         return this;
     }
 
-    public HomePage confirmDeleteFreestyleProject(){
+    public HomePage confirmDeleteFreestyleProject() {
         yesButton.click();
         return new HomePage(getDriver());
     }
@@ -111,11 +120,11 @@ public class FreestyleProjectPage extends BaseProjectPage {
 
     }
 
-    public boolean isProjectNameDisplayed()  {
+    public boolean isProjectNameDisplayed() {
         return projectName.isDisplayed();
     }
 
-    public FreestyleProjectPage clickBuildNowOnSideBar(){
+    public FreestyleProjectPage clickBuildNowOnSideBar() {
         buildNowSideBar.click();
         return this;
     }
@@ -129,5 +138,9 @@ public class FreestyleProjectPage extends BaseProjectPage {
     public String getBuildInfo() {
         return buildInfo.getText();
 
+    }
+
+    public String getFullProjectPath() {
+        return projectPath.getText();
     }
 }
