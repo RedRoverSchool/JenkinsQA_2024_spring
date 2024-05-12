@@ -142,7 +142,7 @@ public class ManageJenkinsTest extends BaseTest {
                 .clickManageJenkins()
                 .pressSlashKey();
 
-        Assert.assertTrue(manageJenkinsPage.isShortcutDisplayed());
+        Assert.assertTrue(manageJenkinsPage.isSearchFieldActivateElement());
     }
 
     @Test

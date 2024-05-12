@@ -18,6 +18,7 @@ public class FolderTest extends BaseTest {
     private static final String THIRD_FOLDER_NAME = "Dependant_Test_Folder";
     private static final String FOLDER_TO_MOVE = "Folder_to_move_into_the_first";
     private static final String PIPELINE_NAME = "Pipeline Sv";
+    private static final String FOLDER_DESCRIPTION_FIRST = "Some description of the folder.";
 
     public void create() {
         HomePage homePage = new HomePage(getDriver());
@@ -39,6 +40,18 @@ public class FolderTest extends BaseTest {
                 .getBreadcrumbName();
 
         Assert.assertEquals(folderBreadcrumbName, FOLDER_NAME, "Breadcrumb name doesn't match " + FOLDER_NAME);
+    }
+
+    @Test (dependsOnMethods = "testCreateViaCreateAJob")
+    public void testAddDescription() {
+
+        String textInDescription = new FolderProjectPage(getDriver())
+                .clickAddOrEditDescription()
+                .setDescription(FOLDER_DESCRIPTION_FIRST)
+                .clickSaveButton()
+                .getDescriptionText();
+
+        Assert.assertEquals(textInDescription, FOLDER_DESCRIPTION_FIRST);
     }
 
     @Test

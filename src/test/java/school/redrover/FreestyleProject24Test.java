@@ -4,19 +4,20 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.FolderProjectPage;
 import school.redrover.model.FreestylePage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.TestUtils;
-
 import java.util.List;
 
 public class FreestyleProject24Test extends BaseTest {
+
     private static final String FREESTYLE_NAME = "newFreestyleProject";
+
     private static final String FOLDER = "NewFolder";
+
     private static final String DESCRIPTION_TEXT = "This project has been added into the folder";
 
     private void dropDown(By xpath) {
@@ -29,6 +30,7 @@ public class FreestyleProject24Test extends BaseTest {
 
    @Test
    public void testCreateFreestyleProject() {
+
        List<String> itemList = new HomePage(getDriver())
                .clickNewItem()
                .setItemName(FREESTYLE_NAME)
@@ -42,6 +44,7 @@ public class FreestyleProject24Test extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateFreestyleProject")
     public void testAddDescription() {
+
         String currentFreestyleDescription = new FreestylePage(getDriver())
                 .clickAddDescription()
                 .setDescription(DESCRIPTION_TEXT)
@@ -52,29 +55,26 @@ public class FreestyleProject24Test extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testAddDescription")
-    public void testFreestyleMoveToFolder() {
-        TestUtils.createNewJob(this, TestUtils.Job.FOLDER,FOLDER);
+    public void testFreestyleProjectMoveToFolder() {
 
-        dropDown(By.xpath("(//td//button[@class='jenkins-menu-dropdown-chevron'])[2]"));
+        new HomePage(getDriver())
+                .clickLogo()
+                .clickNewItem()
+                .setItemName(FOLDER)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .openItemDropdown(FREESTYLE_NAME)
+                .chooseFolderToMove()
+                .chooseFolderAndSave(FOLDER)
+                .clickBreadcrumbFolder(FOLDER);
 
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@class='jenkins-table__link model-link inside model-link--open']"))).click();
+        List<String> itemListInsideFolder = new FolderProjectPage(getDriver()).getItemListInsideFolder();
 
-        getDriver().findElement(By.xpath("//*[@href='/job/" + FREESTYLE_NAME + "/move']")).click();
-
-        WebElement move = getDriver().findElement(By.name("destination"));
-        Select select = new Select(move);
-        select.selectByValue("/" + FOLDER);
-        getDriver().findElement(By.name("Submit")).click();
-
-        getDriver().findElement(By.className("jenkins-breadcrumbs__list-item")).click();
-
-        getDriver().findElement(By.xpath("//td/*[@href]")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//span[text()='" + FREESTYLE_NAME + "']")).getText(),
-                FREESTYLE_NAME);
+        Assert.assertTrue(itemListInsideFolder.contains(FREESTYLE_NAME));
     }
 
-    @Test(dependsOnMethods = "testFreestyleMoveToFolder")
+    @Test(dependsOnMethods = "testFreestyleProjectMoveToFolder")
     public void testCheckFreestyleProjectViaBreadcrumb() {
         dropDown(By.xpath("(//li//button[@class='jenkins-menu-dropdown-chevron'])[1]"));
 
