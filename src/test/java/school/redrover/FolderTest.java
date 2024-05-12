@@ -7,6 +7,7 @@ import school.redrover.model.FolderProjectPage;
 import school.redrover.model.HomePage;
 import school.redrover.model.PipelineProjectPage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
@@ -14,14 +15,45 @@ import java.util.List;
 public class FolderTest extends BaseTest {
 
     private static final String FOLDER_NAME = "First_Folder";
+
     private static final String NEW_FOLDER_NAME = "Renamed_First_Folder";
+
+    private static final String RENAMED_FOLDER_NAME = "Renamed Folder";
+
     private static final String THIRD_FOLDER_NAME = "Dependant_Test_Folder";
+
     private static final String FOLDER_TO_MOVE = "Folder_to_move_into_the_first";
+
     private static final String PIPELINE_NAME = "Pipeline Sv";
+
     private static final String FOLDER_DESCRIPTION_FIRST = "Some description of the folder.";
 
     @Test
-    public void testCreate() {
+    public void testDotAsFirstFolderNameCharErrorMessage() {
+        String errorMessageText = new HomePage(getDriver())
+                .clickNewItem()
+                .selectFolder()
+                .setItemName(".")
+                .getErrorMessage();
+
+        Assert.assertEquals(errorMessageText, "» “.” is not an allowed name",
+                "The error message is different");
+    }
+
+    @Test(dependsOnMethods = "testDotAsFirstFolderNameCharErrorMessage")
+    public void testDotAsLastFolderNameCharErrorMessage() {
+        String errorMessageText = new HomePage(getDriver())
+                .clickNewItem()
+                .selectFolder()
+                .setItemName("Folder." + Keys.TAB)
+                .getErrorMessage();
+
+        Assert.assertEquals(errorMessageText, "» A name cannot end with ‘.’",
+                "The error message is different");
+    }
+
+    @Test(dependsOnMethods = "testDotAsLastFolderNameCharErrorMessage")
+    public void testCreateViaNewItem() {
         String pageTopic = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FOLDER_NAME)
@@ -29,22 +61,19 @@ public class FolderTest extends BaseTest {
                 .clickSaveButton()
                 .getPageHeading();
 
-        Assert.assertEquals(pageTopic, FOLDER_NAME);
-    }
-
-    @Test
-    public void testCreateViaCreateAJob() {
-        String folderBreadcrumbName = new HomePage(getDriver())
-                .clickCreateAJob()
-                .setItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
-                .clickSaveButton()
+        String onBreadcrumbFolderName = new FolderProjectPage(getDriver())
                 .getBreadcrumbName();
 
-        Assert.assertEquals(folderBreadcrumbName, FOLDER_NAME, "Breadcrumb name doesn't match " + FOLDER_NAME);
+        List<String> onHomePageItemList = new FolderProjectPage(getDriver())
+                .clickLogo()
+                .getItemList();
+
+        Assert.assertEquals(pageTopic, FOLDER_NAME);
+        Assert.assertEquals(onBreadcrumbFolderName, FOLDER_NAME);
+        Assert.assertListContainsObject(onHomePageItemList, FOLDER_NAME, "Folder Not Created");
     }
 
-    @Test(dependsOnMethods = "testCreate")
+    @Test(dependsOnMethods = "testCreateViaNewItem")
     public void testCheckNewFolderIsEmpty() {
         Boolean isFolderEmpty = new HomePage(getDriver())
                 .clickFolder(FOLDER_NAME)
@@ -75,9 +104,68 @@ public class FolderTest extends BaseTest {
                 && itemNames.contains(THIRD_FOLDER_NAME));
     }
 
+    @Test(dependsOnMethods = "testCreateTwoInnerFolder")
+    public void testRename() {
+        String resultName = new HomePage(getDriver())
+                .clickFolder(FOLDER_NAME)
+                .clickOnRenameButton()
+                .setNewName(RENAMED_FOLDER_NAME)
+                .clickRename()
+                .getBreadcrumbName();
+
+        Assert.assertEquals(resultName, RENAMED_FOLDER_NAME);
+    }
+
+    @Test(dependsOnMethods = "testRename")
+    public void testMoveFolderToFolderViaChevron() {
+        List<String> folderNameList = new HomePage(getDriver())
+                .createNewFolder(FOLDER_TO_MOVE)
+                .openItemDropdown(FOLDER_TO_MOVE)
+                .chooseFolderToMove()
+                .chooseDestinationFromListAndMove(RENAMED_FOLDER_NAME)
+                .clickLogo()
+                .clickFolder(RENAMED_FOLDER_NAME)
+                .getItemListInsideFolder();
+
+        Assert.assertListContainsObject(folderNameList, FOLDER_TO_MOVE, "Folder Not Moved");
+    }
+
+    @Test(dependsOnMethods = "testMoveFolderToFolderViaChevron")
+    public void testCreateJobPipelineInFolder() {
+        final String expectedText = String.format("Full project name: %s/%s", RENAMED_FOLDER_NAME, PIPELINE_NAME);
+        PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
+                .clickFolder(RENAMED_FOLDER_NAME)
+                .clickNewItemInsideFolder()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton();
+
+        String actualText = pipelineProjectPage
+                .getFullProjectNameLocationText();
+
+        List<String> insideFolderItemList = pipelineProjectPage
+                .clickLogo()
+                .clickFolder(RENAMED_FOLDER_NAME)
+                .getItemListInsideFolder();
+
+        Assert.assertTrue(actualText.contains(expectedText), "The text does not contain the expected project name.");
+        Assert.assertListContainsObject(insideFolderItemList, PIPELINE_NAME, "Item Not Found:" + PIPELINE_NAME);
+    }
+
+    @Test
+    public void testCreateViaCreateAJob() {
+        String folderBreadcrumbName = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .getBreadcrumbName();
+
+        Assert.assertEquals(folderBreadcrumbName, FOLDER_NAME, "Breadcrumb name doesn't match " + FOLDER_NAME);
+    }
+
     @Test(dependsOnMethods = "testCreateViaCreateAJob")
     public void testAddDescription() {
-
         String textInDescription = new FolderProjectPage(getDriver())
                 .clickAddOrEditDescription()
                 .setDescription(FOLDER_DESCRIPTION_FIRST)
@@ -87,31 +175,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(textInDescription, FOLDER_DESCRIPTION_FIRST);
     }
 
-    @Test
-    public void testDotAsFirstFolderNameCharErrorMessage() {
-        String errorMessageText = new HomePage(getDriver())
-                .clickNewItem()
-                .selectFolder()
-                .setItemName(".")
-                .getErrorMessage();
-
-        Assert.assertEquals(errorMessageText, "» “.” is not an allowed name",
-                "The error message is different");
-    }
-
-    @Test
-    public void testDotAsLastFolderNameCharErrorMessage() {
-        String errorMessageText = new HomePage(getDriver())
-                .clickNewItem()
-                .selectFolder()
-                .setItemName("Folder." + Keys.TAB)
-                .getErrorMessage();
-
-        Assert.assertEquals(errorMessageText, "» A name cannot end with ‘.’",
-                "The error message is different");
-    }
-
-    @Test(dependsOnMethods = "testCreateViaCreateAJob")
+    @Test(dependsOnMethods = "testAddDescription")
     public void testRenameFolderViaFolderBreadcrumbsDropdownMenu() {
         String folderStatusPageHeading = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
@@ -139,13 +203,10 @@ public class FolderTest extends BaseTest {
                 "The Folder name is not equal to " + THIRD_FOLDER_NAME);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testRenameFolderViaMainPageDropdownMenu")
     public void testRenameFolderViaSidebarMenu() {
         String folderRenamedName = new HomePage(getDriver())
-                .clickCreateAJob()
-                .setItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
-                .clickSaveButton()
+                .clickFolder(THIRD_FOLDER_NAME)
                 .clickOnRenameButton()
                 .setNewName(NEW_FOLDER_NAME)
                 .clickRename()
@@ -154,14 +215,9 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(folderRenamedName, NEW_FOLDER_NAME);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testRenameFolderViaSidebarMenu")
     public void testFolderMovedIntoAnotherFolderViaBreadcrumbs() {
         String nestedFolder = new HomePage(getDriver())
-                .clickCreateAJob()
-                .setItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
-                .clickSaveButton()
-                .clickLogo()
                 .clickNewItem()
                 .setItemName(FOLDER_TO_MOVE)
                 .selectFolderAndClickOk()
@@ -169,100 +225,11 @@ public class FolderTest extends BaseTest {
                 .hoverOverBreadcrumbsName()
                 .clickBreadcrumbsDropdownArrow()
                 .clickDropdownMoveButton()
-                .chooseDestinationFromListAndMove(FOLDER_NAME)
-                .clickMainFolderName(FOLDER_NAME)
+                .chooseDestinationFromListAndMove(NEW_FOLDER_NAME)
+                .clickMainFolderName(NEW_FOLDER_NAME)
                 .getNestedFolderName();
 
         Assert.assertEquals(nestedFolder, FOLDER_TO_MOVE, FOLDER_TO_MOVE + " is not in " + FOLDER_NAME);
-    }
-
-    @Test
-    public void testMoveFolderToFolderViaChevron() {
-        List<String> folderNameList = new HomePage(getDriver())
-                .createNewFolder(FOLDER_TO_MOVE)
-                .createNewFolder(FOLDER_NAME)
-                .openItemDropdown(FOLDER_TO_MOVE)
-                .chooseFolderToMove()
-                .chooseDestinationFromListAndMove(FOLDER_NAME)
-                .clickLogo()
-                .clickFolder(FOLDER_NAME)
-                .getItemListInsideFolder();
-
-        Assert.assertEquals(folderNameList.get(0), FOLDER_TO_MOVE);
-    }
-
-    @Test
-    public void testRename() {
-
-        String resultName = new HomePage(getDriver())
-                .createNewFolder(FOLDER_NAME)
-                .clickOnCreatedFolder(FOLDER_NAME)
-                .clickOnRenameButton()
-                .setNewName(NEW_FOLDER_NAME)
-                .clickRename()
-                .getBreadcrumbName();
-
-        Assert.assertEquals(resultName, NEW_FOLDER_NAME);
-    }
-
-    @Test
-    public void testRenameFolder() {
-
-        List<String> itemList = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
-                .clickSaveButton()
-                .clickOnRenameButtonLeft()
-                .renameFolder(NEW_FOLDER_NAME)
-                .clickLogo()
-                .getItemList();
-
-        Assert.assertListContainsObject(itemList, NEW_FOLDER_NAME, "Folder is not renamed!");
-    }
-
-    @Test
-    public void testCreateViaNewItem() {
-        FolderProjectPage folderProjectPage = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
-                .clickSaveButton();
-        String folderName = folderProjectPage.getBreadcrumbName();
-
-        Assert.assertEquals(folderName, FOLDER_NAME);
-
-        List<String> itemList = folderProjectPage
-                .clickLogo()
-                .getItemList();
-
-        Assert.assertTrue((itemList.contains(FOLDER_NAME)));
-
-    }
-
-    @Test
-    public void testCreateJobPipelineInFolder() {
-
-        final String expectedText = String.format("Full project name: %s/%s", FOLDER_NAME, PIPELINE_NAME);
-
-        PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
-                .createNewFolder(FOLDER_NAME)
-                .clickFolderName()
-                .clickNewItemInsideFolder()
-                .setItemName(PIPELINE_NAME)
-                .selectPipelineAndClickOk()
-                .clickSaveButton();
-
-        String actualText = pipelineProjectPage
-                .getFullProjectNameLocationText();
-
-        String actualItemName = pipelineProjectPage
-                .clickLogo()
-                .clickFolderName()
-                .getItemInTableName();
-
-        Assert.assertTrue(actualText.contains(expectedText), "The text does not contain the expected project name.");
-        Assert.assertEquals(actualItemName, PIPELINE_NAME);
     }
 
 }

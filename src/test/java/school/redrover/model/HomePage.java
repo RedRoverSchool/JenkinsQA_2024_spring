@@ -41,9 +41,6 @@ public class HomePage extends BasePage {
     @FindBy(css = "[href*='rename']")
     private WebElement renameFromDropdown;
 
-    @FindBy(css = "div.jenkins-dropdown")
-    private WebElement dropdownMenu;
-
     @FindBy(xpath = "//a[@class='sortheader' and text()='Name']")
     private WebElement columnNameTitle;
 
@@ -95,9 +92,6 @@ public class HomePage extends BasePage {
     @FindBy(css = "[href$='builds']")
     private WebElement buildHistoryButton;
 
-    @FindBy(xpath = "//*[@class=' job-status-']/td[3]/a")
-    private WebElement createdElementInTable;
-
     @FindBy(css = "[class$=jenkins_ver]")
     private WebElement version;
 
@@ -106,12 +100,6 @@ public class HomePage extends BasePage {
 
     @FindBy(tagName = "h1")
     private WebElement heading;
-
-    @FindBy(xpath = "//a[@class='jenkins-table__link model-link inside']")
-    private List<WebElement> listNamesOfItems;
-
-    @FindBy(xpath = "//td//button[@class='jenkins-menu-dropdown-chevron']")
-    private List<WebElement> jenkinsMenuDropdownChevron;
 
     @FindBy(xpath = "//a[contains(@href, '/move')]")
     private WebElement moveOption;
@@ -248,12 +236,6 @@ public class HomePage extends BasePage {
         getDriver().findElement(By.linkText(viewName)).click();
 
         return new ViewPage(getDriver());
-    }
-
-    public FolderProjectPage clickOnCreatedFolder(String name) {
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tr[@id='job_" + name + "']/td/a"))).click();
-
-        return new FolderProjectPage(getDriver());
     }
 
     public HomePage openItemDropdownWithSelenium(String projectName) {
@@ -396,13 +378,6 @@ public class HomePage extends BasePage {
         return new FullStageViewPage(getDriver());
     }
 
-    public List<String> allExistingJobsNames() {
-        return allExistingJobs
-                .stream()
-                .map(WebElement::getText)
-                .toList();
-    }
-
     public List<String> getJobsBeginningFromThisFirstLetters(String firstLetters) {
         return allExistingJobs
                 .stream()
@@ -436,7 +411,6 @@ public class HomePage extends BasePage {
     public boolean isDisplayedWebsiteDropdownItem() {
         return websiteDropdownItem.isDisplayed();
     }
-
 
     public HomePage moveMouseToPassiveViewName() {
         new Actions(getDriver())
@@ -472,12 +446,6 @@ public class HomePage extends BasePage {
         buildHistoryButton.click();
 
         return new BuildHistoryPage(getDriver());
-    }
-
-    public FolderProjectPage clickFolderName() {
-        createdElementInTable.click();
-
-        return new FolderProjectPage(getDriver());
     }
 
     public HomePage clickVersion() {
@@ -574,6 +542,5 @@ public class HomePage extends BasePage {
         dropdownPipelineSyntax.click();
 
         return new PipelineSyntaxPage(getDriver());
-
     }
 }
