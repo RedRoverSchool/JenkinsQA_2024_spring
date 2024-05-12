@@ -20,16 +20,6 @@ public class FolderTest extends BaseTest {
     private static final String PIPELINE_NAME = "Pipeline Sv";
     private static final String FOLDER_DESCRIPTION_FIRST = "Some description of the folder.";
 
-    public void create() {
-        HomePage homePage = new HomePage(getDriver());
-
-        homePage.clickNewItem()
-                .setItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
-                .clickSaveButton()
-                .clickLogo();
-    }
-
     @Test
     public void testCreateViaCreateAJob() {
         String folderBreadcrumbName = new HomePage(getDriver())
@@ -160,11 +150,9 @@ public class FolderTest extends BaseTest {
 
     @Test
     public void testRename() {
-        create();
 
-        HomePage homePage = new HomePage(getDriver());
-
-        String resultName = homePage
+        String resultName = new HomePage(getDriver())
+                .createNewFolder(FOLDER_NAME)
                 .clickOnCreatedFolder(FOLDER_NAME)
                 .clickOnRenameButton()
                 .setNewName(NEW_FOLDER_NAME)
@@ -211,28 +199,27 @@ public class FolderTest extends BaseTest {
 
     @Test
     public void testCreateJobPipelineInFolder() {
-        String expectedText = String.format("Full project name: %s/%s", FOLDER_NAME, PIPELINE_NAME);
 
-        create();
+        final String expectedText = String.format("Full project name: %s/%s", FOLDER_NAME, PIPELINE_NAME);
 
         PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
+                .createNewFolder(FOLDER_NAME)
                 .clickFolderName()
                 .clickNewItemInsideFolder()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .clickSaveButton();
 
-        String actualText = pipelineProjectPage.getFullProjectNameLocationText();
+        String actualText = pipelineProjectPage
+                .getFullProjectNameLocationText();
 
-        Assert.assertTrue(actualText.contains(expectedText), "The text does not contain the expected project name.");
-
-        String itemName = pipelineProjectPage.clickLogo()
+        String actualItemName = pipelineProjectPage
+                .clickLogo()
                 .clickFolderName()
                 .getItemInTableName();
 
-        Assert.assertEquals(itemName, PIPELINE_NAME);
-
+        Assert.assertTrue(actualText.contains(expectedText), "The text does not contain the expected project name.");
+        Assert.assertEquals(actualItemName, PIPELINE_NAME);
     }
-
 
 }
