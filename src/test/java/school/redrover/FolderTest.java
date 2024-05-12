@@ -21,6 +21,18 @@ public class FolderTest extends BaseTest {
     private static final String FOLDER_DESCRIPTION_FIRST = "Some description of the folder.";
 
     @Test
+    public void testCreate() {
+        String pageTopic = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .getPageHeading();
+
+        Assert.assertEquals(pageTopic, FOLDER_NAME);
+    }
+
+    @Test
     public void testCreateViaCreateAJob() {
         String folderBreadcrumbName = new HomePage(getDriver())
                 .clickCreateAJob()
@@ -32,7 +44,38 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(folderBreadcrumbName, FOLDER_NAME, "Breadcrumb name doesn't match " + FOLDER_NAME);
     }
 
-    @Test (dependsOnMethods = "testCreateViaCreateAJob")
+    @Test(dependsOnMethods = "testCreate")
+    public void testCheckNewFolderIsEmpty() {
+        Boolean isFolderEmpty = new HomePage(getDriver())
+                .clickFolder(FOLDER_NAME)
+                .isFolderEmpty();
+
+        Assert.assertTrue(isFolderEmpty);
+    }
+
+    @Test(dependsOnMethods = "testCheckNewFolderIsEmpty")
+    public void testCreateTwoInnerFolder() {
+        List<String> itemNames = new HomePage(getDriver())
+                .clickFolder(FOLDER_NAME)
+                .clickNewItemInsideFolder()
+                .setItemName(NEW_FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .clickFolder(FOLDER_NAME)
+                .clickNewItemInsideFolder()
+                .setItemName(THIRD_FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .clickFolder(FOLDER_NAME)
+                .getItemListInsideFolder();
+
+        Assert.assertTrue(itemNames.contains(NEW_FOLDER_NAME)
+                && itemNames.contains(THIRD_FOLDER_NAME));
+    }
+
+    @Test(dependsOnMethods = "testCreateViaCreateAJob")
     public void testAddDescription() {
 
         String textInDescription = new FolderProjectPage(getDriver())
@@ -83,7 +126,7 @@ public class FolderTest extends BaseTest {
                 "The Folder name is not equal to " + NEW_FOLDER_NAME);
     }
 
-    @Test(dependsOnMethods = {"testCreateViaCreateAJob", "testRenameFolderViaFolderBreadcrumbsDropdownMenu"})
+    @Test(dependsOnMethods = "testRenameFolderViaFolderBreadcrumbsDropdownMenu")
     public void testRenameFolderViaMainPageDropdownMenu() {
         String folderStatusPageHeading = new HomePage(getDriver())
                 .openItemDropdownWithSelenium(NEW_FOLDER_NAME)
