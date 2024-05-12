@@ -258,19 +258,25 @@ public class DashboardTest extends BaseTest {
     @Test(dependsOnMethods = "testBackgroundColorOfViewName")
     public void testSortItemsByNameInTable() {
 
-        List<String> sortedNameList = new HomePage(getDriver())
+        List<String> reverseSortedByClickNameList = new HomePage(getDriver())
                 .clickTitleForSortByName()
                 .getItemList();
 
-        List<String> reversedNameList = new HomePage(getDriver())
+        List<String> sortedByClickNameList = new HomePage(getDriver())
                 .clickTitleForSortByName()
                 .getItemList();
 
-        List<String> twiceReversedNameList = reversedNameList
+        List<String> reverseSortedByStreamNameList = reverseSortedByClickNameList
                 .stream()
                 .sorted(Collections.reverseOrder())
                 .toList();
 
-        Assert.assertEquals(sortedNameList, twiceReversedNameList);
+        List<String> sortedByStreamNameList = reverseSortedByClickNameList
+                .stream()
+                .sorted()
+                .toList();
+
+        Assert.assertEquals(reverseSortedByClickNameList, reverseSortedByStreamNameList);
+        Assert.assertEquals(sortedByClickNameList, sortedByStreamNameList);
     }
 }
