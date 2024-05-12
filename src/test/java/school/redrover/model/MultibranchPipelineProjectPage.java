@@ -93,8 +93,11 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage {
 
         return new MultibranchPipelineRenamePage(getDriver());
     }
-    public HomePage clickDeleteAndYesButtons(){
+    public MultibranchPipelineProjectPage clickDeleteButton(){
         sidebarDeleteButton.click();
+        return this;
+    }
+    public HomePage confirmDeleteButton(){
         confirmDeleteButton.click();
         return clickLogo();
     }
