@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -11,6 +12,12 @@ public class AppearancePage extends BasePage {
 
     @FindBy(className = "app-theme-picker__item")
     private List<WebElement> themesList;
+
+    @FindBy(css = "[for='radio-block-0']")
+    private WebElement darkThemeButton;
+
+    @FindBy(css = "[for='radio-block-1']")
+    private WebElement systemThemeButton;
 
     @FindBy(css = "[for='radio-block-2']")
     private WebElement defaultThemeButton;
@@ -26,6 +33,18 @@ public class AppearancePage extends BasePage {
 
     public boolean isDefaultThemeNotSelected() {
         return !defaultThemeButton.isSelected();
+    }
+
+    public AppearancePage clickDarkThemeButton() {
+        darkThemeButton.click();
+
+        return this;
+    }
+
+    public AppearancePage clickSystemThemeButton() {
+        systemThemeButton.click();
+
+        return this;
     }
 
     public AppearancePage clickDefaultThemeButton() {
@@ -46,5 +65,10 @@ public class AppearancePage extends BasePage {
             clickApplyButton();
         }
             return this;
+    }
+
+    public String getCurrentThemeAttribute() {
+        return getDriver().findElement(By.cssSelector("html[data-theme]"))
+                .getAttribute("data-theme");
     }
 }

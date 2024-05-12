@@ -70,6 +70,10 @@ public class FreestyleProjectPage extends BaseProjectPage {
         return new HomePage(getDriver());
     }
 
+    public boolean isProjectNameDisplayed()  {
+        return projectName.isDisplayed();
+    }
+
     public FreestyleProjectPage clickBuildNowOnSideBar(){
         buildNowSideBar.click();
         return this;
