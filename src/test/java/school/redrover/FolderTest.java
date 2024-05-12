@@ -8,6 +8,7 @@ import school.redrover.model.HomePage;
 import school.redrover.model.PipelineProjectPage;
 import school.redrover.runner.BaseTest;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -123,7 +124,7 @@ public class FolderTest extends BaseTest {
                 .hoverOverBreadcrumbsName()
                 .clickBreadcrumbsDropdownArrow()
                 .clickDropdownMoveButton()
-                .chooseDestinationFromListAndSave(FOLDER_NAME)
+                .chooseDestinationFromListAndMove(FOLDER_NAME)
                 .clickMainFolderName(FOLDER_NAME)
                 .getNestedFolderName();
 
@@ -131,15 +132,14 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
-    public void testMoveFolderToFolder() {
+    public void testMoveFolderToFolderViaChevron() {
         List<String> folderNameList = new HomePage(getDriver())
                 .createNewFolder(FOLDER_TO_MOVE)
-                .clickLogo()
                 .createNewFolder(FOLDER_NAME)
-                .clickLogo()
                 .openItemDropdown(FOLDER_TO_MOVE)
                 .chooseFolderToMove()
-                .chooseFolderFromListAndSave(FOLDER_NAME)
+                .chooseDestinationFromListAndMove(FOLDER_NAME)
+                .clickLogo()
                 .clickFolder(FOLDER_NAME)
                 .getItemListInsideFolder();
 
