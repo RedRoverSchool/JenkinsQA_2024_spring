@@ -103,7 +103,7 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href, '/move')]")
     private WebElement moveOption;
-  
+
     @FindBy(xpath = "//*[@id='tippy-1']/div/div/div/a[1]")
     private WebElement about;
 
@@ -491,8 +491,8 @@ public class HomePage extends BasePage {
         about.click();
 
         return new AboutPage(getDriver());
-    } 
-  
+    }
+
     public HomePage clickWarningIcon() {
         warningIcon.click();
         return this;

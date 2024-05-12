@@ -17,6 +17,9 @@ public abstract class BasePage extends BaseModel {
     @FindBy(css = "a.model-link > span")
     private WebElement userNameOnHeader;
 
+    @FindBy(css = ".jenkins-button.jenkins-button--tertiary.rest-api")
+    private WebElement restapiLink;
+
     public BasePage(WebDriver driver) {
         super(driver);
     }
@@ -88,4 +91,5 @@ public abstract class BasePage extends BaseModel {
         return new UserPage(getDriver());
     }
 
+    public String getRestApiLinkColor() { return restapiLink.getCssValue("color"); }
 }

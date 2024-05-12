@@ -26,6 +26,7 @@ public class FolderTest extends BaseTest {
     private static final String PIPELINE_NAME = "Pipeline Sv";
 
     private static final String FOLDER_DESCRIPTION_FIRST = "Some description of the folder.";
+    private static final String FOLDER_DESCRIPTION_SECOND = "NEW description of the folder.";
 
     @Test
     public void testDotAsFirstFolderNameCharErrorMessage() {
@@ -175,6 +176,43 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testAddDescription")
+    @Test(dependsOnMethods = {"testCreateViaCreateAJob", "testAddDescription"})
+    public void testChangeDescription() {
+        String textInDescription = new FolderProjectPage(getDriver())
+                .clickAddOrEditDescription()
+                .clearDescription()
+                .setDescription(FOLDER_DESCRIPTION_SECOND)
+                .clickSaveButton()
+                .getDescriptionText();
+
+        Assert.assertEquals(textInDescription, FOLDER_DESCRIPTION_SECOND);
+    }
+
+    @Test
+    public void testDotAsFirstFolderNameCharErrorMessage() {
+        String errorMessageText = new HomePage(getDriver())
+                .clickNewItem()
+                .selectFolder()
+                .setItemName(".")
+                .getErrorMessage();
+
+        Assert.assertEquals(errorMessageText, "» “.” is not an allowed name",
+                "The error message is different");
+    }
+
+    @Test
+    public void testDotAsLastFolderNameCharErrorMessage() {
+        String errorMessageText = new HomePage(getDriver())
+                .clickNewItem()
+                .selectFolder()
+                .setItemName("Folder." + Keys.TAB)
+                .getErrorMessage();
+
+        Assert.assertEquals(errorMessageText, "» A name cannot end with ‘.’",
+                "The error message is different");
+    }
+
+    @Test(dependsOnMethods = "testCreateViaCreateAJob")
     public void testRenameFolderViaFolderBreadcrumbsDropdownMenu() {
         String folderStatusPageHeading = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)

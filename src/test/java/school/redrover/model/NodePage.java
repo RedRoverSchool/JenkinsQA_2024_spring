@@ -16,6 +16,12 @@ public class NodePage extends BasePage {
     @FindBy(id = "description")
     private WebElement descriptionArea;
 
+    @FindBy(css = "[data-title*='Delete']")
+    private WebElement deleteAgent;
+
+    @FindBy(css = "[data-id='ok']")
+    private WebElement yesButton;
+
     public NodePage(WebDriver driver) {
         super(driver);
     }
@@ -26,5 +32,17 @@ public class NodePage extends BasePage {
 
     public String getDescription(){
         return descriptionArea.getText();
+    }
+
+    public NodePage clickDeleteAgent() {
+        deleteAgent.click();
+
+        return this;
+    }
+
+    public NodesTablePage clickYesButton() {
+        yesButton.click();
+
+        return new NodesTablePage(getDriver());
     }
 }

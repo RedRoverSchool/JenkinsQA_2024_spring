@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.FolderProjectPage;
-import school.redrover.model.FreestylePage;
+import school.redrover.model.FreestyleProjectPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import java.util.List;
@@ -45,11 +45,11 @@ public class FreestyleProject24Test extends BaseTest {
     @Test(dependsOnMethods = "testCreateFreestyleProject")
     public void testAddDescription() {
 
-        String currentFreestyleDescription = new FreestylePage(getDriver())
-                .clickAddDescription()
+        String currentFreestyleDescription = new FreestyleProjectPage(getDriver())
+                .clickChangeDescription()
                 .setDescription(DESCRIPTION_TEXT)
                 .clickSaveButton()
-                .getDescriptionText();
+                .getProjectDescriptionText();
 
         Assert.assertTrue(currentFreestyleDescription.matches(DESCRIPTION_TEXT));
     }
@@ -76,6 +76,7 @@ public class FreestyleProject24Test extends BaseTest {
 
     @Test(dependsOnMethods = "testFreestyleProjectMoveToFolder")
     public void testCheckFreestyleProjectViaBreadcrumb() {
+
         dropDown(By.xpath("(//li//button[@class='jenkins-menu-dropdown-chevron'])[1]"));
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class = 'jenkins-dropdown__item'][contains(@href, 'views')]"))).click();
