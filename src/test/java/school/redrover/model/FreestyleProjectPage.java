@@ -26,6 +26,15 @@ public class FreestyleProjectPage extends BaseProjectPage {
     @FindBy(xpath = "//button[@data-id='ok']")
     private WebElement yesButton;
 
+    @FindBy(linkText = "Build Now")
+    private WebElement buildNowSideBar;
+
+    @FindBy(xpath = "//td[contains(@class, 'progress-bar')]")
+    private WebElement buildProgressBar;
+
+    @FindBy(xpath = "//*[@class='model-link inside build-link display-name']")
+    private WebElement buildInfo;
+
     public FreestyleProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -59,5 +68,21 @@ public class FreestyleProjectPage extends BaseProjectPage {
     public HomePage confirmDeleteFreestyleProject(){
         yesButton.click();
         return new HomePage(getDriver());
+    }
+
+    public FreestyleProjectPage clickBuildNowOnSideBar(){
+        buildNowSideBar.click();
+        return this;
+    }
+
+    public FreestyleProjectPage waitBuildToFinish() {
+        getWait10().until(ExpectedConditions.invisibilityOf(buildProgressBar));
+
+        return this;
+    }
+
+    public String getBuildInfo() {
+        return buildInfo.getText();
+
     }
 }
