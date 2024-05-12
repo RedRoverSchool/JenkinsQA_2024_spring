@@ -421,7 +421,7 @@ public class HomePage extends BasePage {
 
     public <T> T clickJobByName(String name, T page) {
         getDriver().findElement(By.xpath(
-                "//td/a[@href='job/" + name.replace(" ", "%20") + "/']")).click();
+                "//td/a[@href='job/" + name.replace(" ", "%20") + "/']/span")).click();
         return page;
     }
 
