@@ -20,9 +20,9 @@ import static school.redrover.runner.TestUtils.Job;
 
 public class MultibranchPipelineTest extends BaseTest {
 
-    private final static String MULTI_PIPELINE_NAME = "MultibranchPipeline";
-    private final static String RENAMED_MULTI_PIPELINE = "NewMultibranchPipelineName";
-    private final static String NESTED_TESTS_FOLDER_NAME = "NestedTestsFolder";
+    private static final String MULTI_PIPELINE_NAME = "MultibranchPipeline";
+    private static final String RENAMED_MULTI_PIPELINE = "NewMultibranchPipelineName";
+    private static final String NESTED_TESTS_FOLDER_NAME = "NestedTestsFolder";
     private static final String FOLDER_NAME = "Folder";
     private static final String WELCOME_PAGE_HEADING ="Welcome to Jenkins!";
     private static final By MULTI_PIPELINE_ON_DASHBOARD_LOCATOR =
@@ -470,18 +470,14 @@ public class MultibranchPipelineTest extends BaseTest {
     }
     @Test(dependsOnMethods = "testCreateMultibranchPipeline")
     public void testDeleteProjectFromSidebar(){
-        try {
-            List<String> itemList = new HomePage(getDriver())
+            boolean itemIsDeleted = new HomePage(getDriver())
                     .clickJobByName(MULTI_PIPELINE_NAME,
                             new MultibranchPipelineProjectPage(getDriver()))
                     .clickDeleteButton()
                     .confirmDeleteButton()
-                    .getItemList();
+                    .isItemDeleted(MULTI_PIPELINE_NAME);
 
-        Assert.assertListNotContainsObject(itemList,MULTI_PIPELINE_NAME,"Project not found");
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
+        Assert.assertTrue(itemIsDeleted);
     }
 
     @Test

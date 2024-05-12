@@ -283,7 +283,15 @@ public class HomePage extends BasePage {
     }
 
     public boolean isItemDeleted(String name) {
-        return !getItemList().contains(name);
+        try {
+            List<String> itemList = getItemList();
+            return !itemList.contains(name);
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            return false;
+        }
     }
 
     public boolean isItemExists(String name) {
@@ -421,7 +429,7 @@ public class HomePage extends BasePage {
 
     public <T> T clickJobByName(String name, T page) {
         getDriver().findElement(By.xpath(
-                "//td/a[@href='job/" + name.replace(" ", "%20") + "/']/span")).click();
+                "//td/a[@href='job/" + name.replace(" ", "%20") + "/']")).click();
         return page;
     }
 
