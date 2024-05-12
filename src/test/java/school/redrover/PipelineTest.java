@@ -1077,7 +1077,7 @@ public class PipelineTest extends BaseTest {
         PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .clickDiscardOldBuilds()
                 .setNumberBuildsToKeep(1)
                 .scrollToPipelineScript()

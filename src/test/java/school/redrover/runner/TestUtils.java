@@ -14,6 +14,24 @@ import java.util.UUID;
 
 public final class TestUtils {
 
+    public enum ProjectType {
+        FREESTYLE_PROJECT("Freestyle project"),
+        PIPELINE("Pipeline"),
+        MULTI_CONFIGURATION_PROJECT("Multi-configuration project"),
+        FOLDER("Folder"),
+        MULTIBRANCH_PIPELINE("Multibranch Pipeline"),
+        ORGANIZATION_FOLDER("Organization Folder");
+
+        private final String projectTypeName;
+
+        public String getProjectTypeName() {
+            return projectTypeName;
+        }
+        ProjectType(String projectTypeName) {
+            this.projectTypeName = projectTypeName;
+        }
+    }
+
     public static class Item {
         public static final String FREESTYLE_PROJECT = "hudson_model_FreeStyleProject";
         public static final String PIPELINE = "org_jenkinsci_plugins_workflow_job_WorkflowJob";
