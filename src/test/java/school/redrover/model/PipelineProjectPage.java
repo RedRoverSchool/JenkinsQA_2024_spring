@@ -62,7 +62,7 @@ public class PipelineProjectPage extends BaseProjectPage {
     @FindBy(id = "enable-project")
     private WebElement warningMessage;
 
-    @FindBy(xpath = "//div[contains(text(), 'Full project name:')]")
+    @FindBy(xpath = "//*[@id='main-panel']")
     private WebElement fullProjectNameLocation;
 
     @FindBy(css = "[class*='dropdown__item'][href$='changes']")
