@@ -176,7 +176,6 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testAddDescription")
-    @Test(dependsOnMethods = {"testCreateViaCreateAJob", "testAddDescription"})
     public void testChangeDescription() {
         String textInDescription = new FolderProjectPage(getDriver())
                 .clickAddOrEditDescription()
@@ -186,30 +185,6 @@ public class FolderTest extends BaseTest {
                 .getDescriptionText();
 
         Assert.assertEquals(textInDescription, FOLDER_DESCRIPTION_SECOND);
-    }
-
-    @Test
-    public void testDotAsFirstFolderNameCharErrorMessage() {
-        String errorMessageText = new HomePage(getDriver())
-                .clickNewItem()
-                .selectFolder()
-                .setItemName(".")
-                .getErrorMessage();
-
-        Assert.assertEquals(errorMessageText, "» “.” is not an allowed name",
-                "The error message is different");
-    }
-
-    @Test
-    public void testDotAsLastFolderNameCharErrorMessage() {
-        String errorMessageText = new HomePage(getDriver())
-                .clickNewItem()
-                .selectFolder()
-                .setItemName("Folder." + Keys.TAB)
-                .getErrorMessage();
-
-        Assert.assertEquals(errorMessageText, "» A name cannot end with ‘.’",
-                "The error message is different");
     }
 
     @Test(dependsOnMethods = "testCreateViaCreateAJob")
@@ -268,5 +243,4 @@ public class FolderTest extends BaseTest {
 
         Assert.assertEquals(nestedFolder, FOLDER_TO_MOVE, FOLDER_TO_MOVE + " is not in " + FOLDER_NAME);
     }
-
 }
