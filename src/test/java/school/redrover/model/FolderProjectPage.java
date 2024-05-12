@@ -19,9 +19,6 @@ public class FolderProjectPage extends BaseProjectPage {
     @FindBy(tagName = "h1")
     private WebElement pageHeading;
 
-    @FindBy(xpath = "//span[contains(text(),'Rename')]/../.")
-    private WebElement renameButtonLeft;
-
     @FindBy(css = "h1")
     private WebElement pageTopic;
 
@@ -61,6 +58,7 @@ public class FolderProjectPage extends BaseProjectPage {
     @FindBy(css = "[class*='dropdown'] [href$='rename']")
     private WebElement dropdownRenameButton;
 
+
     public FolderProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -71,12 +69,6 @@ public class FolderProjectPage extends BaseProjectPage {
 
     public FolderRenamePage clickOnRenameButton() {
         renameButton.click();
-
-        return new FolderRenamePage(getDriver());
-    }
-
-    public FolderRenamePage clickOnRenameButtonLeft() {
-        renameButtonLeft.click();
 
         return new FolderRenamePage(getDriver());
     }
