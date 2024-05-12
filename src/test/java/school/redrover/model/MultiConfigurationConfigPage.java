@@ -13,6 +13,9 @@ public class MultiConfigurationConfigPage extends BaseConfigPage<MultiConfigurat
     @FindBy(name = "Apply")
     private WebElement applyButton;
 
+    @FindBy(id = "itemname-required")
+    private WebElement errorRequiresName;
+
     public MultiConfigurationConfigPage(WebDriver driver) {
         super(driver, new MultiConfigurationProjectPage(driver));
     }
@@ -31,5 +34,8 @@ public class MultiConfigurationConfigPage extends BaseConfigPage<MultiConfigurat
 
     public boolean getStatusToggle() {
         return toggleSwitch.isSelected();
+    }
+    public String getErrorRequiresName() {
+        return errorRequiresName.getText();
     }
 }

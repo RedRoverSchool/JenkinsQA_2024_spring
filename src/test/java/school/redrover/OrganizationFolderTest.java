@@ -51,26 +51,36 @@ public class OrganizationFolderTest extends BaseTest {
 
     @Test
     public void testPipelineSyntaxDocumentationAccess() {
-        createNewItemAndReturnToDashboard(this, ORGANIZATION_FOLDER_NAME, TestUtils.Item.ORGANIZATION_FOLDER);
-
-        getDriver().findElement(By.xpath("//span[contains(text(), '" + ORGANIZATION_FOLDER_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href,'pipeline-syntax')]")).click();
-        getDriver().findElement(By.xpath("//span[contains(text(), 'Online Documentation')]/..")).click();
+        String pageTitle = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .chooseOrganizationFolder(ORGANIZATION_FOLDER_NAME)
+                .clickPipelineSyntax()
+                .clickOnlineDocumentation()
+                .getPipelineSyntaxTitle();
 
         Assert.assertTrue(getDriver().getCurrentUrl().contains("/pipeline/"));
-        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='pipeline-syntax']")).getText(), "Pipeline Syntax");
+        Assert.assertEquals(pageTitle, "Pipeline Syntax");
     }
 
     @Test
     public void testPipelineSyntaxExamplesAccess() {
-        createNewItemAndReturnToDashboard(this, ORGANIZATION_FOLDER_NAME, TestUtils.Item.ORGANIZATION_FOLDER);
-
-        getDriver().findElement(By.xpath("//span[contains(text(), '" + ORGANIZATION_FOLDER_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href,'pipeline-syntax')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href,'examples')]")).click();
+        String pageTitle = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .chooseOrganizationFolder(ORGANIZATION_FOLDER_NAME)
+                .clickPipelineSyntax()
+                .clickExamplesReference()
+                .getPipelineExamplesTitle();
 
         Assert.assertTrue(getDriver().getCurrentUrl().contains("/examples/"));
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[contains(@id,'examples')]")).getText(), "Pipeline Examples");
+        Assert.assertEquals(pageTitle, "Pipeline Examples");
     }
 
     @Test(dependsOnMethods = "testCreateWithDefaultIcon")

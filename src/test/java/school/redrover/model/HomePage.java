@@ -11,6 +11,7 @@ import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -27,6 +28,9 @@ public class HomePage extends BasePage {
 
     @FindBy(css = "td > a[href^='job']")
     private WebElement pipelineItem;
+
+    @FindBy(css = "td > a[href^='job']")
+    private WebElement freestyleItem;
 
     @FindBy(css = "[href='/manage']")
     private WebElement manageJenkinsLink;
@@ -79,7 +83,7 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//div/a[@href='https://www.jenkins.io/']")
     private WebElement websiteDropdownItem;
 
-    @FindBy(css =  "a.jenkins-table__link.model-link.inside")
+    @FindBy(css = "a.jenkins-table__link.model-link.inside")
     private List<WebElement> allExistingJobs;
 
     @FindBy(css = ".tab.active a")
@@ -111,8 +115,11 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href, '/move')]")
     private WebElement moveOption;
+  
+    @FindBy(xpath = "//*[@id='tippy-1']/div/div/div/a[1]")
+    private WebElement about;
 
-    @FindBy (xpath = "//*[@href='newJob']")
+    @FindBy(xpath = "//*[@href='newJob']")
     private WebElement createJob;
 
     @FindBy(css = "[class$='am-button security-am']")
@@ -212,6 +219,12 @@ public class HomePage extends BasePage {
         return new PipelineProjectPage(getDriver());
     }
 
+    public FreestyleProjectPage clickCreatedFreestyleName() {
+        freestyleItem.click();
+
+        return new FreestyleProjectPage(getDriver());
+    }
+
     public ViewAllPage clickMyViewsFromDropdown() {
         openHeaderUsernameDropdown();
         getDriver().findElement(By.cssSelector("[href$='admin/my-views']")).click();
@@ -225,7 +238,7 @@ public class HomePage extends BasePage {
         return new ManageJenkinsPage(getDriver());
     }
 
-    public CreateNewViewPage clickNewView() {
+    public CreateNewViewPage clickPlusForCreateView() {
         newView.click();
 
         return new CreateNewViewPage(getDriver());
@@ -256,7 +269,7 @@ public class HomePage extends BasePage {
         return this;
     }
 
-       public MultiConfigurationConfirmRenamePage selectRenameFromDropdown() {
+    public MultiConfigurationConfirmRenamePage selectRenameFromDropdown() {
         renameFromDropdown.click();
 
         return new MultiConfigurationConfirmRenamePage(getDriver());
@@ -283,17 +296,23 @@ public class HomePage extends BasePage {
         return new MultibranchPipelineProjectPage(getDriver());
     }
 
-    public WebElement getDropdownMenu() {
-        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[@class='jenkins-dropdown']")));
+    public List<String> getDropdownMenu() {
+
+        List<String> projectChevronMenu = Arrays.stream(getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                                By.xpath("//div[@class='jenkins-dropdown']")))
+                        .getText()
+                        .split("\\r?\\n"))
+                .toList();
+
+        return projectChevronMenu;
     }
 
-    public HomePage clickColumnNameTitle() {
+    public HomePage clickTitleForSortByName() {
         columnNameTitle.click();
         return new HomePage(getDriver());
     }
 
-    public HomePage clickSizeIcon(int i) {
+    public HomePage clickIconForChangeSize(int i) {
         sizeIcon.get(i).click();
 
         return this;
@@ -309,12 +328,22 @@ public class HomePage extends BasePage {
 
         return new PipelineProjectPage(getDriver());
     }
+
     public FreestyleProjectPage chooseCreatedFreestyleProject(String projectName) {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/"
                 + projectName.replaceAll(" ", "%20") + "/']"))).click();
 
         return new FreestyleProjectPage(getDriver());
     }
+
+
+    public OrganizationFolderProjectPage chooseOrganizationFolder(String projectName) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/"
+                + projectName.replaceAll(" ", "%20") + "/']"))).click();
+
+        return new OrganizationFolderProjectPage(getDriver());
+    }
+
     public HomePage openDashboardBreadcrumbsDropdown() {
         WebElement chevron = dashboardBreadcrumbs.findElement(By.cssSelector("[class$='chevron']"));
         ((JavascriptExecutor) getDriver()).executeScript(
@@ -380,7 +409,7 @@ public class HomePage extends BasePage {
                 .map(WebElement::getText)
                 .toList()
                 .stream()
-                .filter(el-> el.substring(0,firstLetters.length()).equalsIgnoreCase(firstLetters))
+                .filter(el -> el.substring(0, firstLetters.length()).equalsIgnoreCase(firstLetters))
                 .toList();
     }
 
@@ -423,6 +452,7 @@ public class HomePage extends BasePage {
                 .perform();
         return this;
     }
+
     public String getPassiveViewNameBackgroundColor() {
         return passiveViewName.getCssValue("background-color");
     }
@@ -456,7 +486,7 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public List<String> getVersionDropDownElementsValues(){
+    public List<String> getVersionDropDownElementsValues() {
         List<String> actualDropDownElementsValues = new ArrayList<>();
         for (WebElement element : dropDownElements) {
             actualDropDownElementsValues.add(element.getDomProperty("innerText"));
@@ -464,7 +494,7 @@ public class HomePage extends BasePage {
         return actualDropDownElementsValues;
     }
 
-    public List<WebElement> getTheListOfFreestyleProjects(String freestyleProjectName){
+    public List<WebElement> getTheListOfFreestyleProjects(String freestyleProjectName) {
         return getDriver().findElements(
                 By.xpath("//span[text() = '" + freestyleProjectName + "']"));
     }
@@ -473,6 +503,7 @@ public class HomePage extends BasePage {
 
         return heading.getText();
     }
+
     public HomePage createNewFolder(String folderName) {
         clickNewItem()
                 .setItemName(folderName)
@@ -487,6 +518,13 @@ public class HomePage extends BasePage {
         return new MovePage(getDriver());
     }
 
+
+    public AboutPage clickAbout() {
+        about.click();
+
+        return new AboutPage(getDriver());
+    } 
+  
     public HomePage clickWarningIcon() {
         warningIcon.click();
         return this;
@@ -512,6 +550,7 @@ public class HomePage extends BasePage {
 
         return new PeoplePage(getDriver());
     }
+
     public FolderProjectPage clickSpecificFolderName(String itemName) {
         getDriver().findElement(
                 By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']/span")).click();
@@ -525,7 +564,7 @@ public class HomePage extends BasePage {
         return new FolderRenamePage(getDriver());
     }
 
-    public  CreateNewItemPage clickCreateJob() {
+    public CreateNewItemPage clickCreateJob() {
         createJob.click();
 
         return new CreateNewItemPage(getDriver());
@@ -535,5 +574,6 @@ public class HomePage extends BasePage {
         dropdownPipelineSyntax.click();
 
         return new PipelineSyntaxPage(getDriver());
+
     }
 }

@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -17,6 +18,15 @@ public class FreestyleProjectPage extends BaseProjectPage {
     @FindBy (css = "#description > div:first-child")
     private WebElement projectDescription;
 
+    @FindBy(id = "description-link")
+    private WebElement changeDescriptionButton;
+
+    @FindBy(name = "description")
+    private WebElement descriptionInput;
+
+    @FindBy(name = "Submit")
+    private WebElement saveButton;
+
     @FindBy(xpath = "//a[contains(@href, 'confirm-rename')]")
     private WebElement renameButton;
 
@@ -26,6 +36,15 @@ public class FreestyleProjectPage extends BaseProjectPage {
     @FindBy(xpath = "//button[@data-id='ok']")
     private WebElement yesButton;
 
+    @FindBy(linkText = "Build Now")
+    private WebElement buildNowSideBar;
+
+    @FindBy(xpath = "//td[contains(@class, 'progress-bar')]")
+    private WebElement buildProgressBar;
+
+    @FindBy(xpath = "//*[@class='model-link inside build-link display-name']")
+    private WebElement buildInfo;
+
     public FreestyleProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -33,6 +52,30 @@ public class FreestyleProjectPage extends BaseProjectPage {
     public String checkFullProjectName() {
 
         return fullProjectName.getText();
+    }
+
+    public FreestyleProjectPage clickChangeDescription() {
+        changeDescriptionButton.click();
+
+        return this;
+    }
+
+    public FreestyleProjectPage clearOnDescriptionInput() {
+        descriptionInput.clear();
+
+        return this;
+    }
+
+    public FreestyleProjectPage setDescription(String name) {
+        descriptionInput.sendKeys(name);
+
+        return this;
+    }
+
+    public FreestyleProjectPage clickSaveButton() {
+        saveButton.click();
+
+        return this;
     }
 
     public String getProjectName() {
@@ -59,5 +102,32 @@ public class FreestyleProjectPage extends BaseProjectPage {
     public HomePage confirmDeleteFreestyleProject(){
         yesButton.click();
         return new HomePage(getDriver());
+    }
+
+    public FolderProjectPage clickBreadcrumbFolder(String name) {
+
+        getDriver().findElement(By.xpath("//a[@href='/job/" + name + "/']")).click();
+        return new FolderProjectPage(getDriver());
+
+    }
+
+    public boolean isProjectNameDisplayed()  {
+        return projectName.isDisplayed();
+    }
+
+    public FreestyleProjectPage clickBuildNowOnSideBar(){
+        buildNowSideBar.click();
+        return this;
+    }
+
+    public FreestyleProjectPage waitBuildToFinish() {
+        getWait10().until(ExpectedConditions.invisibilityOf(buildProgressBar));
+
+        return this;
+    }
+
+    public String getBuildInfo() {
+        return buildInfo.getText();
+
     }
 }

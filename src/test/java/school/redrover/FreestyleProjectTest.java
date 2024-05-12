@@ -221,15 +221,19 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(actualResult.contains(expectedResult));
     }
 
-    @Ignore
     @Test
     public void testBuildNowFreestyleProject() {
-        createFreestyleProject(FREESTYLE_PROJECT_NAME);
 
-        getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
-        getDriver().navigate().refresh();
-        String actualResult = getDriver().findElement(By.xpath("//*[@href='/job/"
-                + FREESTYLE_PROJECT_NAME.replaceAll(" ", "%20") + "/1/']")).getText();
+        String actualResult = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(FREESTYLE_PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .clickLogo()
+                .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickBuildNowOnSideBar()
+                .waitBuildToFinish()
+                .waitBuildToFinish()
+                .getBuildInfo();
 
         Assert.assertEquals(actualResult, "#1");
     }
@@ -346,5 +350,23 @@ public class FreestyleProjectTest extends BaseTest {
                 .getItemList();
 
         Assert.assertTrue(itemList.contains(FREESTYLE_PROJECT_NAME));
+    }
+
+    @Test
+    public void testEditDescriptionFreestyleProject() {
+        String addedToDescription = "Create one more build apps";
+
+        FreestyleProjectPage freestyleTest = createFreestyleProjectWithDescription();
+
+        String editDescription = freestyleTest
+                .clickLogo()
+                .clickCreatedFreestyleName()
+                .clickChangeDescription()
+                .clearOnDescriptionInput()
+                .setDescription(addedToDescription)
+                .clickSaveButton()
+                .getProjectDescriptionText();
+
+        Assert.assertEquals(editDescription, addedToDescription);
     }
 }

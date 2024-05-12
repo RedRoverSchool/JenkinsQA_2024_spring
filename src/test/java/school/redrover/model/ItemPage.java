@@ -12,65 +12,97 @@ public class ItemPage extends BasePage {
     }
 
     @FindBy(xpath = "//a[@href='/asynchPeople/']")
-    WebElement ElementPeople;
+    private WebElement ElementPeople;
 
     @FindBy(xpath = "//h1[contains(.,'Welcome to Jenkins!')]")
-    WebElement ElementWelcome;
+    private WebElement ElementWelcome;
 
     @FindBy(linkText = "New Item")
-    WebElement NewItem;
+    private WebElement NewItem;
 
     @FindBy(xpath = "//img[@class='icon-freestyle-project icon-xlg']")
-    WebElement FreestyleProject;
+    private WebElement FreestyleProject;
 
+    @FindBy(xpath = "//span[contains(text(),  'Pipeline')]")
+    private WebElement Pipeline;
     @FindBy(xpath = "//button[@class='jenkins-button jenkins-button--primary jenkins-buttons-row--equal-width']")
-    WebElement btnOK;
+    private WebElement btnOK;
 
     @FindBy(id = "name")
-    WebElement NewItemName;
+    private WebElement NewItemName;
 
     @FindBy(xpath = "//li[@class='com_cloudbees_hudson_plugins_folder_Folder']")
-    WebElement Folder;
+    private WebElement Folder;
+
+    @FindBy(name = "Submit")
+    private WebElement SaveBtn;
+
+    @FindBy(css = "div#j-add-item-type-nested-projects > ul > li > div:nth-of-type(2) > img")
+    private WebElement imgItem;
 
     public ItemPage setItemName(String name) {
         NewItemName.sendKeys(name);
+
         return this;
     }
 
-    public ItemPage NewItemName() {
-        NewItemName.sendKeys("NewItemName");
+    public ItemPage newItemName(String name) {
+        NewItemName.sendKeys(name);
+
+        return this;
+    }
+
+    public ItemPage imgItem() {
+        imgItem.click();
+
         return this;
     }
 
     public ItemPage clickButtonOK() {
         btnOK.click();
+
         return this;
     }
 
-    public ItemPage NewItemClick() {
+    public ItemPage clickSaveBtn() {
+        SaveBtn.click();
+
+        return this;
+    }
+
+    public ItemPage newItemClick() {
         NewItem.click();
+
         return this;
     }
 
-    public ItemPage FreestyleProjectClick() {
+    public ItemPage freestyleProjectClick() {
         FreestyleProject.click();
+
         return this;
     }
 
-    public ItemPage ElementPeopleClick() {
+    public ItemPage elementPeopleClick() {
         ElementPeople.click();
+
         return this;
     }
 
-    public ItemPage ElementWelcomeClic() {
+    public ItemPage elementWelcomeClic() {
         ElementWelcome.click();
+
         return this;
     }
 
     public ItemPage selectFolderType() {
         Folder.click();
+
         return this;
     }
 
+    public ItemPage pipelineClic() {
+        Pipeline.click();
 
+        return this;
+    }
 }

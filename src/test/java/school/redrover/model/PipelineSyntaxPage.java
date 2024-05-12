@@ -11,6 +11,9 @@ import java.util.List;
 
 public class PipelineSyntaxPage extends BasePage {
 
+    public PipelineSyntaxPage(WebDriver driver) {
+        super(driver);
+    }
     @FindBy(css = "[class$='dropdownList']")
     private WebElement sampleStepDropdownList;
 
@@ -20,9 +23,11 @@ public class PipelineSyntaxPage extends BasePage {
     @FindBy(className = "tippy-content")
     private WebElement tooltip;
 
-    public PipelineSyntaxPage(WebDriver driver) {
-        super(driver);
-    }
+    @FindBy(xpath = "//span[contains(text(), 'Online Documentation')]/..")
+    private WebElement onlineDocumentationSidebarItem;
+
+    @FindBy(xpath = "//a[contains(@href,'examples')]")
+    private WebElement examplesReferenceSidebarItem;
 
     public PipelineSyntaxPage selectCatchError() {
         new Select(sampleStepDropdownList)
@@ -41,5 +46,17 @@ public class PipelineSyntaxPage extends BasePage {
                     return tooltip.getText();
                 })
                 .toList();
+    }
+
+    public PipelineDocumentationPage clickOnlineDocumentation() {
+        onlineDocumentationSidebarItem.click();
+
+        return new PipelineDocumentationPage(getDriver());
+    }
+
+    public PipelineExamplesPage clickExamplesReference() {
+        examplesReferenceSidebarItem.click();
+
+        return new PipelineExamplesPage(getDriver());
     }
 }

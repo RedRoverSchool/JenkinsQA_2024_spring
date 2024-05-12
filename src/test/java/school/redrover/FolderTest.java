@@ -18,6 +18,8 @@ public class FolderTest extends BaseTest {
     private static final String THIRD_FOLDER_NAME = "Dependant_Test_Folder";
     private static final String FOLDER_TO_MOVE = "Folder_to_move_into_the_first";
     private static final String PIPELINE_NAME = "Pipeline Sv";
+    private static final String FOLDER_DESCRIPTION_FIRST = "Some description of the folder.";
+    private static final String FOLDER_DESCRIPTION_SECOND = "NEW description of the folder.";
 
     public void create() {
         HomePage homePage = new HomePage(getDriver());
@@ -27,6 +29,42 @@ public class FolderTest extends BaseTest {
                 .selectFolderAndClickOk()
                 .clickSaveButton()
                 .clickLogo();
+    }
+
+    @Test
+    public void testCreateViaCreateAJob() {
+        String folderBreadcrumbName = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .getBreadcrumbName();
+
+        Assert.assertEquals(folderBreadcrumbName, FOLDER_NAME, "Breadcrumb name doesn't match " + FOLDER_NAME);
+    }
+
+    @Test (dependsOnMethods = "testCreateViaCreateAJob")
+    public void testAddDescription() {
+
+        String textInDescription = new FolderProjectPage(getDriver())
+                .clickAddOrEditDescription()
+                .setDescription(FOLDER_DESCRIPTION_FIRST)
+                .clickSaveButton()
+                .getDescriptionText();
+
+        Assert.assertEquals(textInDescription, FOLDER_DESCRIPTION_FIRST);
+    }
+
+    @Test(dependsOnMethods = {"testCreateViaCreateAJob", "testAddDescription"})
+    public void testChangeDescription() {
+        String textInDescription = new FolderProjectPage(getDriver())
+                .clickAddOrEditDescription()
+                .clearDescription()
+                .setDescription(FOLDER_DESCRIPTION_SECOND)
+                .clickSaveButton()
+                .getDescriptionText();
+
+        Assert.assertEquals(textInDescription, FOLDER_DESCRIPTION_SECOND);
     }
 
     @Test
@@ -53,19 +91,7 @@ public class FolderTest extends BaseTest {
                 "The error message is different");
     }
 
-    @Test
-    public void testCreateFolderViaCreateAJob() {
-        String folderBreadcrumbName = new HomePage(getDriver())
-                .clickCreateAJob()
-                .setItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
-                .clickSaveButton()
-                .getBreadcrumbName();
-
-        Assert.assertEquals(folderBreadcrumbName, FOLDER_NAME, "Breadcrumb name doesn't match " + FOLDER_NAME);
-    }
-
-    @Test(dependsOnMethods = "testCreateFolderViaCreateAJob")
+    @Test(dependsOnMethods = "testCreateViaCreateAJob")
     public void testRenameFolderViaFolderBreadcrumbsDropdownMenu() {
         String folderStatusPageHeading = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
@@ -80,7 +106,7 @@ public class FolderTest extends BaseTest {
                 "The Folder name is not equal to " + NEW_FOLDER_NAME);
     }
 
-    @Test(dependsOnMethods = {"testCreateFolderViaCreateAJob", "testRenameFolderViaFolderBreadcrumbsDropdownMenu"})
+    @Test(dependsOnMethods = {"testCreateViaCreateAJob", "testRenameFolderViaFolderBreadcrumbsDropdownMenu"})
     public void testRenameFolderViaMainPageDropdownMenu() {
         String folderStatusPageHeading = new HomePage(getDriver())
                 .openItemDropdownWithSelenium(NEW_FOLDER_NAME)
@@ -123,11 +149,26 @@ public class FolderTest extends BaseTest {
                 .hoverOverBreadcrumbsName()
                 .clickBreadcrumbsDropdownArrow()
                 .clickDropdownMoveButton()
-                .chooseDestinationFromListAndSave(FOLDER_NAME)
+                .chooseDestinationFromListAndMove(FOLDER_NAME)
                 .clickMainFolderName(FOLDER_NAME)
                 .getNestedFolderName();
 
         Assert.assertEquals(nestedFolder, FOLDER_TO_MOVE, FOLDER_TO_MOVE + " is not in " + FOLDER_NAME);
+    }
+
+    @Test
+    public void testMoveFolderToFolderViaChevron() {
+        List<String> folderNameList = new HomePage(getDriver())
+                .createNewFolder(FOLDER_TO_MOVE)
+                .createNewFolder(FOLDER_NAME)
+                .openItemDropdown(FOLDER_TO_MOVE)
+                .chooseFolderToMove()
+                .chooseDestinationFromListAndMove(FOLDER_NAME)
+                .clickLogo()
+                .clickFolder(FOLDER_NAME)
+                .getItemListInsideFolder();
+
+        Assert.assertEquals(folderNameList.get(0), FOLDER_TO_MOVE);
     }
 
     @Test

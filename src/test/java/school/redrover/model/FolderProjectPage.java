@@ -112,6 +112,11 @@ public class FolderProjectPage extends BaseProjectPage {
         return this;
     }
 
+    public FolderProjectPage clearDescription() {
+        textareaDescription.clear();
+        return this;
+    }
+
     public FolderProjectPage clickSaveButton() {
         saveButton.click();
         return this;

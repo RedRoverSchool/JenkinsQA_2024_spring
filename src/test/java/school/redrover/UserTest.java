@@ -18,8 +18,17 @@ public class UserTest extends BaseTest {
     private static final String FULL_NAME = "User";
     private static final String EMAIL_ADDRESS = "test@gmail.com";
 
-
     @Test
+    public void testCheckUserID() {
+
+        String userID = new HomePage(getDriver())
+                .clickUserNameOnHeader()
+                .getUserID();
+
+        Assert.assertEquals(userID, "admin");
+    }
+
+    @Test(dependsOnMethods = "testCheckUserID")
     public void testCreateUserViaManageJenkins() {
         List<String> userName = new HomePage(getDriver())
                 .clickManageJenkins()
