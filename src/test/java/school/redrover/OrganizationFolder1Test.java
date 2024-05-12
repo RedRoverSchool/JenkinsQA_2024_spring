@@ -18,6 +18,7 @@ public class OrganizationFolder1Test extends BaseTest {
                 .clickNewItem()
                 .setItemName(organizationFolderName)
                 .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
                 .clickLogo()
                 .getItemList();
         Assert.assertTrue(itemList.contains(organizationFolderName));
