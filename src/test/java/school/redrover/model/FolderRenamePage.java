@@ -30,12 +30,4 @@ public class FolderRenamePage extends BasePage {
 
         return new FolderProjectPage(getDriver());
     }
-
-    public FolderProjectPage renameFolder(String newName) {
-        textBox.clear();
-        textBox.sendKeys(newName);
-        textBox.sendKeys(Keys.ENTER);
-
-        return new FolderProjectPage(getDriver());
-    }
 }
