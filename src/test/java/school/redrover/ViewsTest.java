@@ -121,7 +121,7 @@ public class ViewsTest extends BaseTest {
         final List<String> expectedPipelineViewHeader =
                 List.of("S", "W", "Name" + "\n" + "  ↓", "Last Success", "Last Failure", "Last Duration", "Description");
 
-        TestUtils.createNewItemAndReturnToDashboard(this, pipelineName, TestUtils.Item.PIPELINE);
+        TestUtils.createNewItem(this, pipelineName, TestUtils.Item.PIPELINE);
 
         getDriver().findElement(By.xpath("//a[@href='/newView']")).click();
         getDriver().findElement(By.id("name")).sendKeys(MY_VIEW_NAME);

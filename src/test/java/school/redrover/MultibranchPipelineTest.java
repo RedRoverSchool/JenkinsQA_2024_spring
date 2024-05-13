@@ -253,8 +253,8 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testMoveInFolderViaSidebarMenu() {
-        TestUtils.createNewItemAndReturnToDashboard(this, FOLDER_NAME, TestUtils.Item.FOLDER);
-        TestUtils.createNewItemAndReturnToDashboard(this, MULTI_PIPELINE_NAME, TestUtils.Item.MULTI_BRANCH_PIPELINE);
+        TestUtils.createNewItem(this, FOLDER_NAME, TestUtils.Item.FOLDER);
+        TestUtils.createNewItem(this, MULTI_PIPELINE_NAME, TestUtils.Item.MULTI_BRANCH_PIPELINE);
 
         getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']")).click();
         getDriver().findElement(By.cssSelector("[href $='move']")).click();

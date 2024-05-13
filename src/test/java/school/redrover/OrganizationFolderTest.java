@@ -8,12 +8,8 @@ import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.OrganizationFolderProjectPage;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.TestUtils;
 
 import java.util.List;
-
-import static school.redrover.runner.TestUtils.createNewItemAndReturnToDashboard;
-
 
 public class OrganizationFolderTest extends BaseTest {
     private static final String ORGANIZATION_FOLDER_NAME = "Organization Folder";

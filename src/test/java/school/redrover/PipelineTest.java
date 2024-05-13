@@ -733,7 +733,7 @@ public class PipelineTest extends BaseTest {
     @Test(dependsOnMethods = "testVerifyNewPPCreatedByCreateJob")
     public void testVerifyNewPPCreatedNewItem() {
 
-        TestUtils.createNewItemAndReturnToDashboard(this, nameProjects.get(1), TestUtils.Item.PIPELINE);
+        TestUtils.createNewItem(this, nameProjects.get(1), TestUtils.Item.PIPELINE);
 
         for (String nameProject : nameProjects) {
             Assert.assertTrue(getDriver().findElement(By.cssSelector("tr#job_" + nameProject)).isDisplayed());

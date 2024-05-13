@@ -81,68 +81,80 @@ public final class TestUtils {
                 .replaceAll("%7E", "~");
     }
 
-    public static void createNewItem(BaseTest baseTest, String projectName, String itemClassName) {
+    public static HomePage createNewItem(BaseTest baseTest, String projectName, String itemClassName) {
         switch (itemClassName) {
-            case Item.FREESTYLE_PROJECT -> createFreestyleProject(baseTest, projectName);
-            case Item.PIPELINE -> createPipelineProject(baseTest, projectName);
-            case Item.MULTI_CONFIGURATION_PROJECT -> createMultiConfigurationProject(baseTest, projectName);
-            case Item.FOLDER -> createFolderProject(baseTest, projectName);
-            case Item.MULTI_BRANCH_PIPELINE -> createMultibranchProject(baseTest, projectName);
-            case Item.ORGANIZATION_FOLDER -> createOrganizationFolderProject(baseTest, projectName);
+            case Item.FREESTYLE_PROJECT -> {
+                return createFreestyleProject(baseTest, projectName);
+            }
+            case Item.PIPELINE -> {
+                return createPipelineProject(baseTest, projectName);
+            }
+            case Item.MULTI_CONFIGURATION_PROJECT -> {
+                return createMultiConfigurationProject(baseTest, projectName);
+            }
+            case Item.FOLDER -> {
+                return createFolderProject(baseTest, projectName);
+            }
+            case Item.MULTI_BRANCH_PIPELINE -> {
+                return createMultibranchProject(baseTest, projectName);
+            }
+            case Item.ORGANIZATION_FOLDER -> {
+                return createOrganizationFolderProject(baseTest, projectName);
+            }
             default -> throw new IllegalArgumentException("Project type name incorrect");
         }
     }
 
-    public static void createFreestyleProject(BaseTest baseTest, String name) {
-        new HomePage(baseTest.getDriver())
+    public static HomePage createFreestyleProject(BaseTest baseTest, String name) {
+        return new HomePage(baseTest.getDriver())
                 .clickNewItem()
                 .setItemName(name.trim())
-                .selectFreestyleAndClickOk();
+                .selectFreestyleAndClickOk()
+                .clickLogo();
     }
 
-    public static void createPipelineProject(BaseTest baseTest, String name) {
-        new HomePage(baseTest.getDriver())
+    public static HomePage createPipelineProject(BaseTest baseTest, String name) {
+        return new HomePage(baseTest.getDriver())
                 .clickNewItem()
                 .setItemName(name.trim())
-                .selectPipelineAndClickOk();
+                .selectPipelineAndClickOk()
+                .clickLogo();
     }
 
-    public static void createMultiConfigurationProject(BaseTest baseTest, String name) {
-        new HomePage(baseTest.getDriver())
+    public static HomePage createMultiConfigurationProject(BaseTest baseTest, String name) {
+        return new HomePage(baseTest.getDriver())
                 .clickNewItem()
                 .setItemName(name.trim())
-                .selectMultiConfigurationAndClickOk();
+                .selectMultiConfigurationAndClickOk()
+                .clickLogo();
     }
 
-    public static void createFolderProject(BaseTest baseTest, String name) {
-        new HomePage(baseTest.getDriver())
+    public static HomePage createFolderProject(BaseTest baseTest, String name) {
+        return new HomePage(baseTest.getDriver())
                 .clickNewItem()
                 .setItemName(name.trim())
-                .selectFolderAndClickOk();
+                .selectFolderAndClickOk()
+                .clickLogo();
     }
 
-    public static void createMultibranchProject(BaseTest baseTest, String name) {
-        new HomePage(baseTest.getDriver())
+    public static HomePage createMultibranchProject(BaseTest baseTest, String name) {
+        return new HomePage(baseTest.getDriver())
                 .clickNewItem()
                 .setItemName(name.trim())
-                .selectMultibranchPipelineAndClickOk();
+                .selectMultibranchPipelineAndClickOk()
+                .clickLogo();
     }
 
-    public static void createOrganizationFolderProject(BaseTest baseTest, String name) {
-        new HomePage(baseTest.getDriver())
+    public static HomePage createOrganizationFolderProject(BaseTest baseTest, String name) {
+        return new HomePage(baseTest.getDriver())
                 .clickNewItem()
                 .setItemName(name.trim())
-                .selectOrganizationFolderAndClickOk();
+                .selectOrganizationFolderAndClickOk()
+                .clickLogo();
     }
-
 
     public static void returnToDashBoard(BaseTest baseTest) {
         baseTest.getDriver().findElement(By.cssSelector("a#jenkins-home-link")).click();
-    }
-
-    public static void createNewItemAndReturnToDashboard(BaseTest baseTest, String name, String itemClassName) {
-        createNewItem(baseTest, name, itemClassName);
-        returnToDashBoard(baseTest);
     }
 
     public static WebElement getViewItemElement(BaseTest baseTest, String name) {
