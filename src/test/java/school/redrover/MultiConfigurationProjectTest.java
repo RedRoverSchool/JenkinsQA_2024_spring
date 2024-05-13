@@ -9,7 +9,6 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.CreateNewItemPage;
 import school.redrover.model.HomePage;
 import school.redrover.model.ItemErrorPage;
 

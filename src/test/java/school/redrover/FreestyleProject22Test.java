@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.TestUtils;
 
 import static school.redrover.runner.TestUtils.*;
 
