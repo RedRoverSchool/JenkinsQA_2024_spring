@@ -59,26 +59,24 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testEditDescriptionWithoutDelete() {
-        final String text = "qwerty123";
-        final String additionText = "AAA";
+        final String TEXT = "qwerty123";
+        final String ADDITION_TEXT = "AAA";
 
         TestUtils.createNewItemAndReturnToDashboard(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(String.format("[href = 'job/%s/']", PROJECT_NAME)))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).sendKeys(text);
-        getDriver().findElement(By.name("Submit")).click();
+        String DescriptionText = new HomePage(getDriver())
+                .clickMCPName(PROJECT_NAME)
+                .clickAddDescriptionButton()
+                .addOrEditDescription(TEXT)
+                .clickSaveDescription()
+                .clickLogo()
+                .clickMCPName(PROJECT_NAME)
+                .clickAddDescriptionButton()
+                .addOrEditDescription(ADDITION_TEXT)
+                .clickSaveDescription()
+                .getDescriptionText();
 
-        TestUtils.returnToDashBoard(this);
-
-        getDriver().findElement(By.cssSelector("[href = 'job/" + PROJECT_NAME + "/']")).click();
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.name("description")).sendKeys(additionText);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertTrue(
-                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#description div:not([class])")))
-                        .getText().equals(additionText + text));
+        Assert.assertEquals(DescriptionText, ADDITION_TEXT + TEXT);
     }
 
     @Test
