@@ -6,6 +6,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.CredentialProvidersPage;
 import school.redrover.model.HomePage;
 import school.redrover.model.ManageJenkinsPage;
 import school.redrover.runner.BaseTest;
@@ -153,5 +154,16 @@ public class ManageJenkinsTest extends BaseTest {
 
         Assert.assertTrue(manageJenkinsPage.isSearchHintDisplayed()
                         && manageJenkinsPage.getSearchHintText().equals("Press / on your keyboard to focus"), "tooltip text is incorrect");
+    }
+
+    @Test
+    public void testRedirectionToNotFirstSearchResult() {
+        String pageToNavigateHeading = new HomePage(getDriver())
+                .clickManageJenkins()
+                .typeSearchSettingsRequest("Credential")
+                .clickSecondSearchResult(new CredentialProvidersPage(getDriver()))
+                .getPageHeading();
+
+        Assert.assertEquals(pageToNavigateHeading, "Credential Providers");
     }
 }
