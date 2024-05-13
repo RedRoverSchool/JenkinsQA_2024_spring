@@ -63,7 +63,7 @@ public class CreateFolder1Test extends BaseTest {
     }
 
     @Test
-    public void testCreateFolderSpecialCharacters() {
+    public void testMessageWhenCreateItemUsingSpecialCharactersInName() {
         String[] specialCharacters = {"!", "%", "&", "#", "@", "*", "$", "?", "^", "|", "/", "]", "["};
 
         new HomePage(getDriver())
