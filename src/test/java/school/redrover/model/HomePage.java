@@ -152,6 +152,9 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//h1[contains(text(),'Welcome to Jenkins')]")
     private WebElement welcomeJenkinsHeader;
 
+    @FindBy(xpath = "//td[@class='jenkins-table__cell--tight']//a[contains(@tooltip,'Schedule')]")
+    private WebElement greenBuildArrow;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -581,8 +584,14 @@ public class HomePage extends BasePage {
         return viewNameList.size();
     }
 
-        public String getWelcomeJenkinsHeader () {
+    public String getWelcomeJenkinsHeader() {
 
-            return welcomeJenkinsHeader.getText();
-        }
+        return welcomeJenkinsHeader.getText();
     }
+
+    public String getBuildStatus() {
+
+        return greenBuildArrow.getAttribute("tooltip");
+       // String buildStatus = greenBuildArrow.getAttribute("tooltip");
+    }
+}

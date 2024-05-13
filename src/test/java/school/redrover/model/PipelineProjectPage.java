@@ -99,6 +99,9 @@ public class PipelineProjectPage extends BaseProjectPage {
     @FindBy(css = "form > button")
     private WebElement disablebutton;
 
+    @FindBy(xpath = "//button[@name='Submit']")
+    private WebElement enableButton;
+
     public PipelineProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -323,6 +326,12 @@ public class PipelineProjectPage extends BaseProjectPage {
 
     public PipelineProjectPage clickDisableButton() {
         disablebutton.click();
+
+        return this;
+    }
+
+    public PipelineProjectPage clickEnableButton() {
+        enableButton.click();
 
         return this;
     }
