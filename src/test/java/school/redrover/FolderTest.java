@@ -25,6 +25,8 @@ public class FolderTest extends BaseTest {
 
     private static final String PIPELINE_NAME = "Pipeline Sv";
 
+    private static final String IVAN_S_FREE_STYLE_PROJECT = "Ivan's Freestyle";
+
     private static final String FOLDER_DESCRIPTION_FIRST = "Some description of the folder.";
 
     private static final String FOLDER_DESCRIPTION_SECOND = "NEW description of the folder.";
@@ -239,6 +241,21 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateTwoInnerFolder")
+    public void testCreateFreeStyleProjectInsideRootFolder() {
+        List<String> insideFilderItemList = new HomePage(getDriver())
+                .clickFolder(FOLDER_NAME)
+                .clickNewItemInsideFolder()
+                .setItemName(IVAN_S_FREE_STYLE_PROJECT)
+                .selectFreestyleAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .clickFolder(FOLDER_NAME)
+                .getItemListInsideFolder();
+
+        Assert.assertListContainsObject(insideFilderItemList, IVAN_S_FREE_STYLE_PROJECT, "FreeStyle Project was not created");
+    }
+
+    @Test(dependsOnMethods = "testCreateFreeStyleProjectInsideRootFolder")
     public void testDeleteFolder() {
         List<String> jobList =new HomePage(getDriver())
                 .clickFolder(FOLDER_NAME)
