@@ -3,7 +3,6 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -27,7 +26,7 @@ public class FreestyleProject6Test extends BaseTest {
                 .clickCreateJob()
                 .setItemName(FREESTYLE_PROJECT_NAME)
                 .selectFreestyleAndClickOk()
-                .inputDescription(FREESTYLE_PROJECT_DESCRIPTION)
+                .setDescription(FREESTYLE_PROJECT_DESCRIPTION)
                 .clickSaveButton();
     }
 

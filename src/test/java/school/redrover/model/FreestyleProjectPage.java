@@ -26,8 +26,13 @@ public class FreestyleProjectPage extends BaseProjectPage {
 
     @FindBy(name = "Submit")
     private WebElement saveButton;
+
     @FindBy(xpath = "//a[contains(@href,'move')]")
     private WebElement moveButton;
+
+    @FindBy(xpath = "//a[contains(@href, 'configure')]")
+    private WebElement configureButton;
+
     @FindBy(xpath = "//a[contains(@href, 'confirm-rename')]")
     private WebElement renameButton;
 
@@ -94,6 +99,13 @@ public class FreestyleProjectPage extends BaseProjectPage {
     public FreestyleMovePage clickMove() {
         moveButton.click();
         return new FreestyleMovePage(getDriver());
+    }
+
+    public FreestyleConfigPage clickConfigure() {
+
+        configureButton.click();
+
+        return new FreestyleConfigPage(getDriver());
     }
 
     public FreestyleRenamePage clickRename() {

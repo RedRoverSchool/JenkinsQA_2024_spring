@@ -3,20 +3,21 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 public class FreestyleProject8Test extends BaseTest {
+
     @Test
     public void testCreateProject(){
-        getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys("Freestyle project");
-        getDriver().findElement(By.xpath("//*[contains(@class,'FreeStyleProject')]")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-        getWait10();
-        Assert.assertEquals(getDriver().findElement(By.xpath(
-                        "//*[@id='main-panel']/div[1]/div/h1"))
-                .getText(), "Freestyle project");
+        String name = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName("Freestyle project")
+                .selectFreestyleAndClickOk()
+                .clickSaveButton()
+                .getProjectName();
+
+        Assert.assertEquals(name, "Freestyle project");
     }
 
     @Test(dependsOnMethods = "testCreateProject")

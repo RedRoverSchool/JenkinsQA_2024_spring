@@ -71,9 +71,6 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
     private WebElement fullStageViewButton;
 
-    @FindBy(css = "[class$='jenkins_ver']")
-    private WebElement jenkinsFooter;
-
     @FindBy(xpath = "//div/a[@href='/manage/about']")
     private WebElement aboutJenkinsDropdownItem;
 
@@ -142,6 +139,9 @@ public class HomePage extends BasePage {
 
     @FindBy(css = "[href$='pipeline-syntax']")
     private WebElement dropdownPipelineSyntax;
+
+    @FindBy(xpath = "//a[@href='api/']")
+    private WebElement apiLink;
 
     @FindBy(xpath = "//div[@class='tabBar']/div")
     private List<WebElement> viewNameList;
@@ -378,12 +378,6 @@ public class HomePage extends BasePage {
         return buildExecutorStatusList.size();
     }
 
-    public HomePage jenkinsFooterClick() {
-        jenkinsFooter.click();
-
-        return this;
-    }
-
     public AboutJenkinsPage selectAboutJenkins() {
         getWait5().until(ExpectedConditions.elementToBeClickable(aboutJenkinsDropdownItem)).click();
 
@@ -584,6 +578,11 @@ public class HomePage extends BasePage {
         return viewNameList.size();
     }
 
+    public ApiPage clickApiLink() {
+        apiLink.click();
+        return new ApiPage(getDriver());
+    }
+
     public String getWelcomeJenkinsHeader() {
 
         return welcomeJenkinsHeader.getText();
@@ -592,6 +591,5 @@ public class HomePage extends BasePage {
     public String getBuildStatus() {
 
         return greenBuildArrow.getAttribute("tooltip");
-       // String buildStatus = greenBuildArrow.getAttribute("tooltip");
     }
 }
