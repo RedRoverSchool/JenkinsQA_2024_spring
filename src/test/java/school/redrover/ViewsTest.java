@@ -1,9 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -12,7 +10,6 @@ import school.redrover.model.ViewMyListConfigPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ViewsTest extends BaseTest {
@@ -37,7 +34,7 @@ public class ViewsTest extends BaseTest {
                 .clickMyViewsFromDropdown()
                 .isThereTextInBreadcrumbs(views);
 
-        Assert.assertTrue(textVisibility,"'My Views' didn't open");
+        Assert.assertTrue(textVisibility, "'My Views' didn't open");
     }
 
     public void createView(String VIEW_NAME) {
@@ -115,91 +112,38 @@ public class ViewsTest extends BaseTest {
     }
 
     @Test
-    public void testAddDescriptionColumnToPipelineView() {
+    public void testAddColumnToPipelineView() {
         final String pipelineName = "NewPipeline";
+        final List<String> expectedPipelineViewList =
+                List.of("S", "W", "Name" + "\n" + "  ↓", "Last Success", "Last Failure", "Last Duration", "Git Branches");
 
-        final List<String> expectedPipelineViewHeader =
-                List.of("S", "W", "Name" + "\n" + "  ↓", "Last Success", "Last Failure", "Last Duration", "Description");
+        List<String> actualPipelineViewList = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(pipelineName)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .clickPlusForCreateView()
+                .setViewName(MY_VIEW_NAME)
+                .clickListViewRadioButton()
+                .clickCreateViewButton()
+                .clickProjectName(pipelineName)
+                .scrollIntoSubmit()
+                .clickAddColumn()
+                .clickGitBranchColumn()
+                .clickOkButton()
+                .getProjectViewTitleList();
 
-        TestUtils.createNewItemAndReturnToDashboard(this, pipelineName, TestUtils.Item.PIPELINE);
-
-        getDriver().findElement(By.xpath("//a[@href='/newView']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(MY_VIEW_NAME);
-        getDriver().findElement(By.xpath("//label[contains(text(),'List View')]")).click();
-        getDriver().findElement(By.id("ok")).click();
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//label[@title='" + pipelineName + "']"))).click();
-
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        WebElement scrollStopPoint = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//button[@name='Submit']")));
-        js.executeScript("arguments[0].scrollIntoView();", scrollStopPoint);
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@suffix='columns']"))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("(//button[@class='jenkins-dropdown__item'])[last()]"))).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-
-        List<String> actualPipelineViewHeader = new ArrayList<>();
-        List<WebElement> projectViewTitles = getWait10().until(ExpectedConditions.numberOfElementsToBeMoreThan(
-                By.xpath("//table[@id='projectstatus']//thead//tr/th"), 7));
-        for (WebElement headerTitle : projectViewTitles) {
-            String header = headerTitle.getText();
-            if (!header.isEmpty()) {
-                actualPipelineViewHeader.add(headerTitle.getText());
-            }
-        }
-
-        Assert.assertTrue(projectViewTitles.get(projectViewTitles.size() - 1).getText().contains("Description"));
-        Assert.assertEquals(actualPipelineViewHeader, expectedPipelineViewHeader);
+        Assert.assertEquals(actualPipelineViewList, expectedPipelineViewList);
     }
 
-    @Test(dependsOnMethods = "testAddDescriptionColumnToPipelineView")
-    public void testAlterOrderViewTitles() {
-        final List<String> expectedAlteredPipelineViewHeader = List.of("Description", "S", "W", "Name" + "\n" + "  ↓", "Last Success", "Last Failure", "Last Duration");
-        getDriver().findElement(By.xpath("//a[@href='/view/" + MY_VIEW_NAME + "/']")).click();
-        getDriver().findElement(By.xpath("//a[@href='/view/" + MY_VIEW_NAME + "/configure']")).click();
-
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        WebElement scrollStopPoint = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//button[@name='Submit']")));
-        js.executeScript("arguments[0].scrollIntoView();", scrollStopPoint);
-
-        WebElement sourceElementDescription = getDriver().findElement(
-                By.xpath("//div[@descriptorid='jenkins.branch.DescriptionColumn']//div[@class='dd-handle']"));
-
-        WebElement targetElementStatus = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[@descriptorid='hudson.views.StatusColumn']")));
-
-        Actions actions = new Actions(getDriver());
-        actions.clickAndHold(sourceElementDescription)
-                .moveToElement(targetElementStatus)
-                .release(targetElementStatus)
-                .build()
-                .perform();
-
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-
-        List<String> actualAlteredPipelineViewHeader = new ArrayList<>();
-        List<WebElement> projectViewTitles = getWait5().until(ExpectedConditions.numberOfElementsToBe(
-                By.xpath("//table[@id='projectstatus']//thead//tr/th"), 8));
-        for (WebElement headerTitle : projectViewTitles) {
-            String header = headerTitle.getText();
-            if (!header.isEmpty()) {
-                actualAlteredPipelineViewHeader.add(headerTitle.getText());
-            }
-        }
-
-        Assert.assertTrue(actualAlteredPipelineViewHeader.get(0).contains("Description"));
-        Assert.assertEquals(actualAlteredPipelineViewHeader, expectedAlteredPipelineViewHeader);
-    }
-
-    @Test(dependsOnMethods = "testAlterOrderViewTitles")
+    @Test(dependsOnMethods = "testAddColumnToPipelineView")
     public void testDeletePipelineView() {
-        getDriver().findElement(By.xpath("//a[@href='/view/" + MY_VIEW_NAME + "/']")).click();
-        getDriver().findElement(By.xpath("//a[@data-title='Delete View']")).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@data-id='ok']"))).click();
+        int viewNameListSize = new HomePage(getDriver())
+                .clickViewName(MY_VIEW_NAME)
+                .clickDeleteViewSideBarAndConfirmDeletion()
+                .getSizeViewNameList();
 
-        Assert.assertEquals(getDriver().findElements(By.xpath("//div[@class='tabBar']/div")).size(), 2);
+        Assert.assertEquals(viewNameListSize, 2);
     }
 }

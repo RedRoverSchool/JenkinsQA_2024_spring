@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 public class ViewMyListConfigPage extends BasePage {
@@ -21,6 +22,9 @@ public class ViewMyListConfigPage extends BasePage {
 
     @FindBy(css = "[descriptorid$='StatusColumn']")
     private WebElement statusColumn;
+
+    @FindBy(xpath = "//button[contains(text(),' Git Branches')]")
+    private WebElement gitBranchesColumn;
 
     public ViewMyListConfigPage(WebDriver driver) { super(driver); }
 
@@ -46,6 +50,12 @@ public class ViewMyListConfigPage extends BasePage {
 
     public ViewMyListConfigPage clickColumnName() {
         projectDescriptionFromDropdown.click();
+
+        return this;
+    }
+
+    public ViewMyListConfigPage clickGitBranchColumn() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(gitBranchesColumn)).click();
 
         return this;
     }

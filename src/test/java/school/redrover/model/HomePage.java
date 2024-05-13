@@ -143,6 +143,9 @@ public class HomePage extends BasePage {
     @FindBy(css = "[href$='pipeline-syntax']")
     private WebElement dropdownPipelineSyntax;
 
+    @FindBy(xpath = "//div[@class='tabBar']/div")
+    private List<WebElement> viewNameList;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -518,7 +521,6 @@ public class HomePage extends BasePage {
         return new MovePage(getDriver());
     }
 
-
     public AboutPage clickAbout() {
         about.click();
 
@@ -574,6 +576,9 @@ public class HomePage extends BasePage {
         dropdownPipelineSyntax.click();
 
         return new PipelineSyntaxPage(getDriver());
+    }
 
+    public int getSizeViewNameList() {
+        return viewNameList.size();
     }
 }
