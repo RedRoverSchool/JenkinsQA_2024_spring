@@ -143,6 +143,12 @@ public class HomePage extends BasePage {
     @FindBy(css = "[href$='pipeline-syntax']")
     private WebElement dropdownPipelineSyntax;
 
+    @FindBy(xpath = "//a[@class='jenkins-table__link model-link inside']")
+    private WebElement createdItemNameInList;
+
+    @FindBy(xpath = "//h1[contains(text(),'Welcome to Jenkins')]")
+    private WebElement welcomeJenkinsHeader;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -575,5 +581,17 @@ public class HomePage extends BasePage {
 
         return new PipelineSyntaxPage(getDriver());
 
+    }
+
+    public FreestyleProjectPage clickCreatedItemName() {
+
+        createdItemNameInList.click();
+
+        return new FreestyleProjectPage(getDriver());
+    }
+
+    public String getWelcomeJenkinsHeader() {
+
+        return welcomeJenkinsHeader.getText();
     }
 }
