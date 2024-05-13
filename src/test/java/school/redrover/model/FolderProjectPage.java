@@ -177,17 +177,14 @@ public class FolderProjectPage extends BaseProjectPage {
     }
 
     public String getMessageFromEmptyFolder() {
-
         return messageFromEmptyFolder.getText();
     }
 
     public String getTextWhereClickForCreateJob() {
-
         return createJobLink.getText();
     }
 
     public Boolean isLinkForCreateJobDisplayed() {
-
         return createJobLink.isDisplayed();
     }
 }
