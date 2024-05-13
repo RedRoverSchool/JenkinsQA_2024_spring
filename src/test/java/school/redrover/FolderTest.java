@@ -198,6 +198,32 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCheckNewFolderIsEmpty")
+    public void testNewlyCreatedFolderIsEmptyAJ() {
+        final String folderName = "NewProjectFolder";
+        final String thisFolderIsEmptyMessage = "This folder is empty";
+        final String createAJobLinkText = "Create a job";
+
+        String actualFolderName = new HomePage(getDriver())
+                .createNewFolder(folderName)
+                .clickFolder(folderName)
+                .getPageHeading();
+
+        String actualEmptyStateMessage = new FolderProjectPage(getDriver())
+                .getMessageFromEmptyFolder();
+
+        String actualCreateJobLinkText = new FolderProjectPage(getDriver())
+                .getTextWhereClickForCreateJob();
+
+        Boolean isLinkForCreateJobDisplayed = new FolderProjectPage(getDriver())
+                .isLinkForCreateJobDisplayed();
+
+        Assert.assertEquals(actualFolderName, folderName);
+        Assert.assertEquals(actualEmptyStateMessage, thisFolderIsEmptyMessage);
+        Assert.assertEquals(actualCreateJobLinkText, createAJobLinkText);
+        Assert.assertTrue(isLinkForCreateJobDisplayed, "newJobLink is NOT displayed");
+    }
+
+    @Test(dependsOnMethods = "testNewlyCreatedFolderIsEmptyAJ")
     public void testCreateJobPipelineInFolder() {
         String expectedText = String.format("Full project name: %s/%s", FOLDER_NAME, PIPELINE_NAME);
 

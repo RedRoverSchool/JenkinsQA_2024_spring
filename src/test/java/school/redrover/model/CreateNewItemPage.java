@@ -51,6 +51,9 @@ public class CreateNewItemPage extends BasePage {
     @FindBy(id = "itemname-required")
     private WebElement itemNameHint;
 
+    @FindBy(css = "label.h3")
+    private WebElement titleOfNameField;
+
     public CreateNewItemPage(WebDriver driver) {
         super(driver);
     }
@@ -58,12 +61,6 @@ public class CreateNewItemPage extends BasePage {
     public CreateNewItemPage setItemName(String name) {
         nameText.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
         nameText.sendKeys(name);
-        return this;
-    }
-
-    public CreateNewItemPage selectTypeAndClickOk(String type) {
-        getDriver().findElement(By.xpath("//span[text()='" + type + "']")).click();
-        okButton.click();
         return this;
     }
 
@@ -136,7 +133,6 @@ public class CreateNewItemPage extends BasePage {
 
     public String getErrorMessage() {
         return errorMessage.getText();
-
     }
 
     public String getCreateNewItemPageUrl() {
@@ -183,7 +179,6 @@ public class CreateNewItemPage extends BasePage {
         }
     }
 
-
     public CreateNewItemPage clearItemNameField() {
         nameText.sendKeys(Keys.CONTROL + "a", Keys.BACK_SPACE);
         return this;
@@ -198,4 +193,9 @@ public class CreateNewItemPage extends BasePage {
     }
 
     public Boolean okButtonIsEnabled() { return okButton.isEnabled(); }
+
+    public String getTitleOfNameField() {
+        return titleOfNameField.getText();
+    }
+
 }
