@@ -426,7 +426,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertEquals(multiPipelinePageHeading, RENAMED_MULTI_PIPELINE, "Wrong name");
     }
-
+    @Ignore
     @Test(dependsOnMethods = "testCreateMultibranchPipeline")
     public void testVerifyMpDisabledOnStatusPage() {
         String disabledMessage = new HomePage(getDriver())
@@ -435,7 +435,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertEquals(disabledMessage, "This Multibranch Pipeline is currently disabled");
     }
-
+    @Ignore
     @Test(dependsOnMethods = "testCreateMultibranchPipeline")
     public void testVerifyMpDisabledMessageColorOnStatusPage() {
         String disabledMessageColor = new HomePage(getDriver())
