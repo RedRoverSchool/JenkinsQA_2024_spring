@@ -5,6 +5,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.CreateNewItemPage;
+import school.redrover.model.FolderProjectPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
@@ -12,37 +14,30 @@ import java.util.List;
 
 public class CreateFolder1Test extends BaseTest {
 
-    private void createNewFolder(String folderName) {
-        getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.name("name")).sendKeys(folderName);
-        getDriver().findElement(By.xpath("//label/span[text() ='Folder']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-    }
-
-    private void openDashboard() {
-        getDriver().findElement(By.id("jenkins-head-icon")).click();
-    }
-
     @Test
     public void testNewlyCreatedFolderIsEmptyAJ() {
         final String folderName = "NewProjectFolder";
         final String thisFolderIsEmptyMessage = "This folder is empty";
         final String createAJobLinkText = "Create a job";
 
-        createNewFolder(folderName);
-        openDashboard();
+        String actualFolderName = new HomePage(getDriver())
+                .createNewFolder(folderName)
+                .clickFolder(folderName)
+                .getPageHeading();
 
-        getDriver().findElement(By.linkText(folderName)).click();
+        String actualEmptyStateMessage = new FolderProjectPage(getDriver())
+                .getMessageFromEmptyFolder();
 
-        final String actualFolderName = getDriver().findElement(By.xpath("//h1")).getText();
-        final String actualEmptyStateMessage = getDriver().findElement(By.xpath("//section[@class='empty-state-section']/h2")).getText();
-        final WebElement newJobLink = getDriver().findElement(By.xpath("//a[@href='newJob']"));
-        final String actualNewJobLinkText = newJobLink.getText();
+        String actualCreateJobLinkText = new FolderProjectPage(getDriver())
+                .getTextWhereClickForCreateJob();
+
+        Boolean isLinkForCreateJobDisplayed = new FolderProjectPage(getDriver())
+                .isLinkForCreateJobDisplayed();
 
         Assert.assertEquals(actualFolderName, folderName);
         Assert.assertEquals(actualEmptyStateMessage, thisFolderIsEmptyMessage);
-        Assert.assertEquals(actualNewJobLinkText, createAJobLinkText);
-        Assert.assertTrue(newJobLink.isDisplayed(), "newJobLink is NOT displayed");
+        Assert.assertEquals(actualCreateJobLinkText, createAJobLinkText);
+        Assert.assertTrue(isLinkForCreateJobDisplayed, "newJobLink is NOT displayed");
     }
 
     @Test
@@ -51,21 +46,21 @@ public class CreateFolder1Test extends BaseTest {
         final String newFolderName = "NewProjectFolder";
 
         new HomePage(getDriver())
-                 .clickNewItem()
+                .clickNewItem()
                 .setItemName(folderName)
                 .selectFolderAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
                 .getItemList();
 
-       //HomePage homePage = new HomePage(getDriver());
+        //HomePage homePage = new HomePage(getDriver());
         List<String> itemList = new HomePage(getDriver())
-                        .openItemDropdown(folderName)
-                        .selectRenameFromDropdown()
-                        .changeProjectNameWithClear(newFolderName)
-                        .clickRenameButton()
-                        .clickLogo()
-                        .getItemList();
+                .openItemDropdown(folderName)
+                .selectRenameFromDropdown()
+                .changeProjectNameWithClear(newFolderName)
+                .clickRenameButton()
+                .clickLogo()
+                .getItemList();
 
         Assert.assertTrue(itemList.contains(newFolderName));
     }
@@ -74,19 +69,18 @@ public class CreateFolder1Test extends BaseTest {
     public void testCreateFolderSpecialCharacters() {
         String[] specialCharacters = {"!", "%", "&", "#", "@", "*", "$", "?", "^", "|", "/", "]", "["};
 
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
-        WebElement nameField = getDriver().findElement(By.id("name"));
+        new HomePage(getDriver())
+                .clickNewItem();
 
-        for (String specChar: specialCharacters) {
-            nameField.clear();
-            nameField.sendKeys("Fold" + specChar + "erdate");
-
-            WebElement actualMessage = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='itemname-invalid']")));
+        for (String specChar : specialCharacters) {
+            String actualErrorMessage = new CreateNewItemPage(getDriver())
+                    .clearItemNameField()
+                    .setItemName("Fold" + specChar + "erdate")
+                    .getErrorMessage();
 
             String expectMessage = "» ‘" + specChar + "’ is an unsafe character";
-            Assert.assertEquals(actualMessage.getText(), expectMessage, "Message is not displayed");
+
+            Assert.assertEquals(actualErrorMessage, expectMessage, "Message is not displayed");
         }
     }
-
 }
