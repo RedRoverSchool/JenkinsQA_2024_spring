@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 
@@ -13,29 +14,33 @@ public class FreestyleProject17Test extends BaseTest {
     private final String JOB_NAME = "YS_jenkins_ui";
 
     @Test
-    void createNewFreestyleProjectTest() {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(JOB_NAME);
-        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.cssSelector("[type='submit']")).click();
-        getDriver().findElement(By.cssSelector("[name='description']"))
-                .sendKeys("This test is trying to create a new freestyle job");
-        getDriver().findElement(By.cssSelector("[name='Submit']")).click();
+    void testCreateNewFreestyleProject() {
+        final String projectDescription = "This test is trying to create a new freestyle job";
 
-        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), JOB_NAME);
+        String projectName = new HomePage(getDriver())
+                .clickNewItem().setItemName(JOB_NAME)
+                .selectFreestyleAndClickOk()
+                .setDescription(projectDescription)
+                .clickSaveButton()
+                .getProjectName();
+
+        Assert.assertEquals(projectName, JOB_NAME);
     }
 
     @Test
     public void testAddDescriptionOfConfiguration() {
-        createNewFreestyleProjectTest();
-        getDriver().findElement(By.xpath("//a[@id = 'jenkins-home-link']")).click();
-        getDriver().findElement(By.xpath("//td/a[@href='job/" + JOB_NAME + "/']")).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + JOB_NAME + "/configure']")).click();
-        WebElement textarea = getDriver().findElement(By.xpath("//textarea[@name='description']"));
-        textarea.clear();
-        textarea.sendKeys("Description of " + JOB_NAME);
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        final String projectDescription = "This test is trying to create a new freestyle job";
 
-        Assert.assertEquals(getDriver().findElement(By.cssSelector("#description>:first-child")).getText(), "Description of " + JOB_NAME);
+        String projectDescriptionText = new HomePage(getDriver())
+                .clickNewItem().setItemName(JOB_NAME)
+                .selectFreestyleAndClickOk()
+                .setDescription(projectDescription)
+                .clickSaveButton()
+                .clickConfigure()
+                .clearAndSetDescription("Description of " + JOB_NAME)
+                .clickSaveButton()
+                .getProjectDescriptionText();
+
+        Assert.assertEquals(projectDescriptionText, "Description of " + JOB_NAME);
     }
 }

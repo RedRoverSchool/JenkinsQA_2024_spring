@@ -8,7 +8,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
+
+import java.util.List;
 
 public class FreestyleProject2Test extends BaseTest {
     private static final By NEW_ITEM = By.xpath("//a[.='New Item']");
@@ -30,13 +33,14 @@ public class FreestyleProject2Test extends BaseTest {
 
     @Test
     public void testCreateFreestyleProject() {
-        getDriver().findElement(NEW_ITEM).click();
-        getDriver().findElement(ITEM_NAME_INPUT_FIELD).sendKeys(PROJECT_NAME);
-        getDriver().findElement(By.xpath("//li[contains(@class, '_FreeStyleProject')]")).click();
-        getDriver().findElement(OK_BUTTON).click();
-        getDriver().findElement(DASHBOARD_BUTTON).click();
+        List<String> itemList = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .clickLogo()
+                .getItemList();
 
-        Assert.assertTrue(getDriver().findElement(PROJECT_ITEM_ON_PROJECTSTATUS_TABLE).isDisplayed());
+        Assert.assertTrue(itemList.contains(PROJECT_NAME));
     }
 
     @Test(dependsOnMethods = "testCreateFreestyleProject")
@@ -53,7 +57,7 @@ public class FreestyleProject2Test extends BaseTest {
     @Test(dependsOnMethods = "testDescriptionAddedByUsingAddDescriptionButton")
     public void testProjectMovedToFolder() {
         Actions action = new Actions(getDriver());
-        JavascriptExecutor js = (JavascriptExecutor)getDriver();
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
         getDriver().findElement(DASHBOARD_BUTTON).click();
         createFolder(FOLDER_NAME);
 
@@ -64,14 +68,14 @@ public class FreestyleProject2Test extends BaseTest {
         js.executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
-                        .xpath("//a[contains(@href, '/move')]"))).click();
+                .xpath("//a[contains(@href, '/move')]"))).click();
 
-        new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" +  FOLDER_NAME);
+        new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" + FOLDER_NAME);
         getDriver().findElement(By.name("Submit")).click();
         getDriver().findElement(DASHBOARD_BUTTON).click();
 
         action.click(getDriver().findElement(By.xpath("//td/a[@href='job/" + FOLDER_NAME + "/']"))).
-               perform();
+                perform();
 
         Assert.assertTrue(getDriver().getTitle().contains("Folder"));
         Assert.assertTrue(getDriver().findElement(PROJECT_ITEM_ON_PROJECTSTATUS_TABLE).isDisplayed());
