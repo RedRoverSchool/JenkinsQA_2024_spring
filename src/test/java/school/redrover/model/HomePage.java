@@ -41,9 +41,6 @@ public class HomePage extends BasePage {
     @FindBy(css = "[href*='rename']")
     private WebElement renameFromDropdown;
 
-    @FindBy(css = "div.jenkins-dropdown")
-    private WebElement dropdownMenu;
-
     @FindBy(xpath = "//a[@class='sortheader' and text()='Name']")
     private WebElement columnNameTitle;
 
@@ -145,6 +142,12 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//div[@class='tabBar']/div")
     private List<WebElement> viewNameList;
+
+    @FindBy(xpath = "//a[@class='jenkins-table__link model-link inside']")
+    private WebElement createdItemNameInList;
+
+    @FindBy(xpath = "//h1[contains(text(),'Welcome to Jenkins')]")
+    private WebElement welcomeJenkinsHeader;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -253,12 +256,6 @@ public class HomePage extends BasePage {
         return new ViewPage(getDriver());
     }
 
-    public FolderProjectPage clickOnCreatedFolder(String name) {
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tr[@id='job_" + name + "']/td/a"))).click();
-
-        return new FolderProjectPage(getDriver());
-    }
-
     public HomePage openItemDropdownWithSelenium(String projectName) {
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(
@@ -357,12 +354,6 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public CreateNewItemPage clickNewJobFromDashboardBreadcrumbsMenu() {
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.tippy-box a[href $= 'newJob']"))).click();
-
-        return new CreateNewItemPage(getDriver());
-    }
-
     public ManageJenkinsPage clickManageFromDashboardBreadcrumbsMenu() {
         manageFromDashboardBreadcrumbsMenu.click();
 
@@ -399,13 +390,6 @@ public class HomePage extends BasePage {
         return new FullStageViewPage(getDriver());
     }
 
-    public List<String> allExistingJobsNames() {
-        return allExistingJobs
-                .stream()
-                .map(WebElement::getText)
-                .toList();
-    }
-
     public List<String> getJobsBeginningFromThisFirstLetters(String firstLetters) {
         return allExistingJobs
                 .stream()
@@ -439,7 +423,6 @@ public class HomePage extends BasePage {
     public boolean isDisplayedWebsiteDropdownItem() {
         return websiteDropdownItem.isDisplayed();
     }
-
 
     public HomePage moveMouseToPassiveViewName() {
         new Actions(getDriver())
@@ -578,7 +561,20 @@ public class HomePage extends BasePage {
         return new PipelineSyntaxPage(getDriver());
     }
 
+    public FreestyleProjectPage clickCreatedItemName() {
+
+        createdItemNameInList.click();
+
+        return new FreestyleProjectPage(getDriver());
+    }
+
     public int getSizeViewNameList() {
+
         return viewNameList.size();
     }
-}
+
+        public String getWelcomeJenkinsHeader () {
+
+            return welcomeJenkinsHeader.getText();
+        }
+    }

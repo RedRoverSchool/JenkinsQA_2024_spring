@@ -733,7 +733,7 @@ public class PipelineTest extends BaseTest {
     @Test(dependsOnMethods = "testVerifyNewPPCreatedByCreateJob")
     public void testVerifyNewPPCreatedNewItem() {
 
-        TestUtils.createNewItemAndReturnToDashboard(this, nameProjects.get(1), TestUtils.Item.PIPELINE);
+        TestUtils.createNewItem(this, nameProjects.get(1), TestUtils.Item.PIPELINE);
 
         for (String nameProject : nameProjects) {
             Assert.assertTrue(getDriver().findElement(By.cssSelector("tr#job_" + nameProject)).isDisplayed());
@@ -1077,7 +1077,7 @@ public class PipelineTest extends BaseTest {
         PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .clickDiscardOldBuilds()
                 .setNumberBuildsToKeep(1)
                 .scrollToPipelineScript()

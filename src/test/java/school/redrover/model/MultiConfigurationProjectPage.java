@@ -27,6 +27,12 @@ public class MultiConfigurationProjectPage extends BaseProjectPage {
     @FindBy(linkText = "Configure")
     private WebElement configureButton;
 
+    @FindBy(className = "textarea-show-preview")
+    private WebElement previewButton;
+
+    @FindBy(className = "textarea-preview")
+    private WebElement previewTextArea;
+
     public MultiConfigurationProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -63,5 +69,16 @@ public class MultiConfigurationProjectPage extends BaseProjectPage {
         configureButton.click();
 
         return new MultiConfigurationConfigPage(getDriver());
+    }
+
+    public MultiConfigurationProjectPage clickPreview() {
+        previewButton.click();
+
+        return this;
+    }
+
+    public String getPreviewText() {
+
+        return previewTextArea.getText();
     }
 }

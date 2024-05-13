@@ -44,6 +44,9 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(css = "[class*='search__results__no-results']")
     private WebElement noSearchResultsPopUp;
 
+    @FindBy(css = ".jenkins-search__results a:nth-child(2)")
+    private WebElement secondSearchResult;
+
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
@@ -76,10 +79,6 @@ public class ManageJenkinsPage extends BasePage {
         usersLink.click();
 
         return new UsersPage(getDriver());
-    }
-
-    public boolean isShortcutDisplayed() {
-        return shortcut.isDisplayed();
     }
 
     public boolean isSearchFieldActivateElement() {
@@ -136,5 +135,11 @@ public class ManageJenkinsPage extends BasePage {
 
     public String getNoSearchResultsPopUpText() {
         return getWait2().until(ExpectedConditions.visibilityOf(noSearchResultsPopUp)).getText();
+    }
+
+    public <T> T clickSecondSearchResult(T page) {
+        getWait2().until(ExpectedConditions.visibilityOf(secondSearchResult)).click();
+
+        return page;
     }
 }

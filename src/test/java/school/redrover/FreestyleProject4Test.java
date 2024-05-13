@@ -27,23 +27,20 @@ public class FreestyleProject4Test extends BaseTest {
     }
 
     @Test
-    public void testDeleteNewFreestyleProject() {
+    public void testDeleteNewFreestyleProject2() {
 
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@href='/view/all/newJob']"))).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='name']"))).sendKeys(PROJECT_NAME);
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'Freestyle project')]"))).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@type='submit']"))).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@name='Submit']"))).click();
+        String theFirstGreetings = new HomePage(getDriver())
+                .clickCreateJob()
+                .setItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .clickCreatedItemName()
+                .deleteFreestyleProject()
+                .confirmDeleteFreestyleProject()
+                .getWelcomeJenkinsHeader();
 
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(text(),'Dashboard')]"))).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]"))).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'Delete Project')]"))).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@data-id='ok']"))).click();
-
-        WebElement welcomeToJenkinsTitle = getWait2().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[contains(text(),'Welcome to Jenkins')]")));
-
-        Assert.assertTrue(welcomeToJenkinsTitle.isDisplayed());
+        Assert.assertEquals(theFirstGreetings, "Welcome to Jenkins!");
     }
 
     @Test
