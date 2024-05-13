@@ -57,7 +57,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testEditDescriptionWithoutDelete() {
-        final String test = "qwerty123";
+        final String text = "qwerty123";
         final String additionalText = "AAA";
 
         TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
@@ -65,7 +65,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         String DescriptionText = new HomePage(getDriver())
                 .clickMCPName(PROJECT_NAME)
                 .clickAddDescriptionButton()
-                .addOrEditDescription(test)
+                .addOrEditDescription(text)
                 .clickSaveDescription()
                 .clickLogo()
                 .clickMCPName(PROJECT_NAME)
@@ -74,21 +74,22 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickSaveDescription()
                 .getDescriptionText();
 
-        Assert.assertEquals(DescriptionText, additionalText + test);
+        Assert.assertEquals(DescriptionText, additionalText + text);
     }
 
     @Test
     public void testDescriptionPreview() {
-        TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
-
-        TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
         final String text = "I want to see preview";
-        getDriver().findElement(By.id("job_" + PROJECT_NAME)).click();
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.name("description")).sendKeys(text);
-        getDriver().findElement(By.className("textarea-show-preview")).click();
 
-        Assert.assertEquals(text, getDriver().findElement(By.className("textarea-preview")).getText());
+        String previewText =
+                TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
+                .clickMCPName(PROJECT_NAME)
+                .clickAddDescriptionButton()
+                .addOrEditDescription(text)
+                 .clickPreview()
+                .getPreviewText();
+
+        Assert.assertEquals(previewText, text);
     }
 
     @Test
