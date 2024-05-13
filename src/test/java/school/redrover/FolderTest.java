@@ -237,4 +237,15 @@ public class FolderTest extends BaseTest {
 
         Assert.assertTrue(itemNames.contains(FOLDER_TO_MOVE) && itemNames.contains(FOLDER_TO_MOVE_2));
     }
+
+    @Test(dependsOnMethods = "testCreateTwoInnerFolder")
+    public void testDeleteFolder() {
+        List<String> jobList =new HomePage(getDriver())
+                .clickFolder(FOLDER_NAME)
+                .clickDeleteOnSidebar()
+                .clickYesForDeleteFolder()
+                .getItemList();
+
+        Assert.assertTrue(jobList.isEmpty());
+    }
 }

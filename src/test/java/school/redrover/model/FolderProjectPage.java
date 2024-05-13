@@ -55,6 +55,13 @@ public class FolderProjectPage extends BaseProjectPage {
     @FindBy(css = "[class*='dropdown'] [href$='rename']")
     private WebElement dropdownRenameButton;
 
+    @FindBy(css = "a[data-title='Delete Folder']")
+    private WebElement deleteOnSidebar;
+
+    @FindBy(css = "button[data-id='ok']")
+    private WebElement yesButtonOnDeleteFolderAlert;
+
+
     public FolderProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -150,5 +157,17 @@ public class FolderProjectPage extends BaseProjectPage {
         dropdownRenameButton.click();
 
         return new FolderRenamePage(getDriver());
+    }
+
+    public FolderProjectPage clickDeleteOnSidebar() {
+        deleteOnSidebar.click();
+
+        return this;
+    }
+
+    public HomePage clickYesForDeleteFolder() {
+        yesButtonOnDeleteFolderAlert.click();
+
+        return new HomePage(getDriver());
     }
 }
