@@ -95,3 +95,4 @@ public class OrganizationFolderProjectPage extends BaseProjectPage {
         return description.getText();
     }
 }
+

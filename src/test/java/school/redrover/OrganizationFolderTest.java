@@ -140,6 +140,7 @@ public class OrganizationFolderTest extends BaseTest {
 
     @Test
     public void testDeleteOrganizationFolder() {
+
         final String newOrganizationFolderName = "New Organization Folder";
 
         List<String> itemList = new HomePage(getDriver())
