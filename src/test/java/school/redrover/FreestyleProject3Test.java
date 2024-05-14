@@ -12,6 +12,7 @@ import school.redrover.runner.TestUtils;
 import java.util.List;
 
 public class FreestyleProject3Test extends BaseTest {
+
     private final static String FREESTYLE_PROJECT_NAME = "new Freestyle project";
     private final static String RENAMED_PROJECT_NAME = "old Freestyle project";
 

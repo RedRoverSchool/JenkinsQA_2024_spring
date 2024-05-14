@@ -47,6 +47,7 @@ public class FreestyleProject100Test extends BaseTest {
     public void testRenameProjectUsingDropdown() {
 
         final String projectName = "This is the project to be renamed";
+
         TestUtils.createNewItem(this, projectName, TestUtils.Item.FREESTYLE_PROJECT);
 
         final String projectNewName = "Renamed project";
@@ -67,6 +68,7 @@ public class FreestyleProject100Test extends BaseTest {
     public void testDeleteUsingSidePanel() {
 
         final String projectName = "This is the project to be deleted";
+
         TestUtils.createNewItem(this, projectName, TestUtils.Item.FREESTYLE_PROJECT);
 
         TestUtils.clickAtBeginOfElement(this, TestUtils.getViewItemElement(this, projectName));
