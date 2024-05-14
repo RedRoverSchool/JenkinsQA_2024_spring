@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.FreestyleConfigPage;
@@ -34,7 +35,8 @@ public class FreestyleProject1Test extends BaseTest {
 
     @Test
     public void testAddProject() {
-        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), FREESTYLE_PROJECT_NAME, true);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), FREESTYLE_PROJECT_NAME, false);
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
 
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//h1[text()='" + FREESTYLE_PROJECT_NAME + "']")).getText(),
