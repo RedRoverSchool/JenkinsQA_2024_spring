@@ -3,23 +3,22 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
-public class FreeStyleProjectDSTest  extends BaseTest {
+import java.util.List;
 
-    private void openDashboard() {
-        getDriver().findElement(By.id("jenkins-head-icon")).click();
-    }
+public class FreeStyleProjectDSTest extends BaseTest {
 
     @Test
-    public void testCreateFreeStyleProjectDS () {
+    public void testCreateFreeStyleProjectDS() {
         final String projectName = "FreeStyleProjectDS";
+        List<String> name = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(projectName)
+                .selectFreestyleAndClickOk().clickLogo()
+                .getItemList();
 
-        getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.name("name")).sendKeys(projectName);
-        getDriver().findElement(By.xpath("//label/span[text() ='Freestyle project']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        openDashboard();
-        Assert.assertTrue(getDriver().findElement(By.linkText(projectName)).isDisplayed());
+        Assert.assertTrue(name.contains(projectName));
     }
 }

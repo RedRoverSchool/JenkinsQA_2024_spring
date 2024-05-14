@@ -20,6 +20,9 @@ public class BuildHistoryPage extends BasePage {
     @FindBy(css = "td [class$='link'][href*='job']")
     private List<WebElement> buildsList;
 
+    @FindBy(css = "[class*='_button'] [href$='/1/console']")
+    private WebElement buildConsole;
+
     public BuildHistoryPage(WebDriver driver) {
         super(driver);
     }
@@ -55,6 +58,12 @@ public class BuildHistoryPage extends BasePage {
 
     public boolean isBuildDeleted(String name) {
         return !getBuildsList().contains(name);
+    }
+
+    public BuildConsoleOutputPage clickBuild1Console(int buildNumber) {
+        buildConsole.click();
+
+        return new BuildConsoleOutputPage(getDriver());
     }
 
 }

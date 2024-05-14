@@ -5,6 +5,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.FreestyleProjectPage;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 public class FreestyleProject4Test extends BaseTest {
@@ -14,37 +16,31 @@ public class FreestyleProject4Test extends BaseTest {
     @Test
     public void testCreateNewFreestyleProject() {
 
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@href='/view/all/newJob']"))).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='name']"))).sendKeys(PROJECT_NAME);
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'Freestyle project')]"))).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@type='submit']"))).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@name='Submit']"))).click();
+        FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
+                .clickCreateJob()
+                .setItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .clickSaveButton();
 
-        WebElement newProjectHeader = getWait2().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-app-bar__content jenkins-build-caption']")));
-
-        Assert.assertTrue(newProjectHeader.isDisplayed());
-        Assert.assertEquals(newProjectHeader.getText(),PROJECT_NAME);
+        Assert.assertTrue(freestyleProjectPage.isProjectNameDisplayed());
+        Assert.assertEquals(freestyleProjectPage.getProjectName(),PROJECT_NAME);
     }
 
     @Test
-    public void testDeleteNewFreestyleProject() {
+    public void testDeleteNewFreestyleProject2() {
 
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@href='/view/all/newJob']"))).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='name']"))).sendKeys(PROJECT_NAME);
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'Freestyle project')]"))).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@type='submit']"))).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@name='Submit']"))).click();
+        String theFirstGreetings = new HomePage(getDriver())
+                .clickCreateJob()
+                .setItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .clickCreatedItemName()
+                .deleteFreestyleProject()
+                .confirmDeleteFreestyleProject()
+                .getWelcomeJenkinsHeader();
 
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(text(),'Dashboard')]"))).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]"))).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'Delete Project')]"))).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@data-id='ok']"))).click();
-
-        WebElement welcomeToJenkinsTitle = getWait2().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[contains(text(),'Welcome to Jenkins')]")));
-
-        Assert.assertTrue(welcomeToJenkinsTitle.isDisplayed());
+        Assert.assertEquals(theFirstGreetings, "Welcome to Jenkins!");
     }
 
     @Test

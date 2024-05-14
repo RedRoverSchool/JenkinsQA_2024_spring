@@ -4,14 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.model.HomePage;
-import school.redrover.model.NodeBuiltInStatusPage;
-import school.redrover.model.NodeManagePage;
-import school.redrover.model.NodesTablePage;
+import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -19,15 +15,47 @@ public class NodesTest extends BaseTest {
 
     private static final String NODE_NAME = "FirstNode";
 
-    public void createNewNode(String nodeName) {
+    public NodesTablePage createNewNode(String nodeName) {
 
-        getDriver().findElement(By.linkText("Manage Jenkins")).click();
-        getDriver().findElement(By.xpath("//a[@href='computer']")).click();
-        getDriver().findElement(By.xpath("//a[@href='new']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(nodeName);
-        getDriver().findElement(By.xpath("//label[@class='jenkins-radio__label']")).click();
-        getDriver().findElement(By.id("ok")).click();
-        getDriver().findElement(By.name("Submit")).click();
+        new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickNodes()
+                .clickNewNodeButton()
+                .setNodeName(nodeName)
+                .selectPermanentAgentRadioButton()
+                .clickOkButton()
+                .clickSaveButton();
+        return new NodesTablePage(getDriver());
+    }
+
+    @Test
+    public void testCreatedNodeIsOnMainPage() {
+        HomePage homePage = new HomePage(getDriver())
+                .clickNodesLink()
+                .clickNewNodeButton()
+                .setNodeName(NODE_NAME)
+                .selectPermanentAgentRadioButton()
+                .clickOkButton()
+                .clickSaveButton()
+                .clickLogo();
+
+        Assert.assertTrue(homePage.isNodeDisplayed(NODE_NAME));
+        Assert.assertTrue(homePage.getNodesList().contains(NODE_NAME), "The created node name is not " + NODE_NAME);
+    }
+
+    @Test
+    public void testCreatedNodeIsInNodesTable() {
+        NodesTablePage nodesTablePage = new HomePage(getDriver())
+                .clickNodesLink()
+                .clickNewNodeButton()
+                .setNodeName(NODE_NAME)
+                .selectPermanentAgentRadioButton()
+                .clickOkButton()
+                .clickSaveButton();
+
+        Assert.assertTrue(nodesTablePage.isNodeDisplayedInTable(NODE_NAME));
+        Assert.assertTrue(nodesTablePage.getNodesinTableList().contains(NODE_NAME),
+                "The created node '" + NODE_NAME + "' is not in the Nodes table");
     }
 
     @Test
@@ -80,36 +108,6 @@ public class NodesTest extends BaseTest {
 
         new NodeBuiltInStatusPage(getDriver()).
                 assertMonitoringDataValues(actualMonitoringDataValues, expectedMonitoringDataValues);
-    }
-
-    @Test
-    public void testCreatedNodeIsOnMainPage() {
-        HomePage homePage = new HomePage(getDriver())
-                .clickNodesLink()
-                .clickNewNodeButton()
-                .setNodeName(NODE_NAME)
-                .selectPermanentAgentRadioButton()
-                .clickOkButton()
-                .clickSaveButton()
-                .clickLogo();
-
-        Assert.assertTrue(homePage.isNodeDisplayed(NODE_NAME));
-        Assert.assertTrue(homePage.getNodesList().contains(NODE_NAME), "The created node name is not " + NODE_NAME);
-    }
-
-    @Test
-    public void testCreatedNodeIsInNodesTable() {
-        NodesTablePage nodesTablePage = new HomePage(getDriver())
-                .clickNodesLink()
-                .clickNewNodeButton()
-                .setNodeName(NODE_NAME)
-                .selectPermanentAgentRadioButton()
-                .clickOkButton()
-                .clickSaveButton();
-
-        Assert.assertTrue(nodesTablePage.isNodeDisplayedInTable(NODE_NAME));
-        Assert.assertTrue(nodesTablePage.getNodesinTableList().contains(NODE_NAME),
-                "The created node '" + NODE_NAME + "' is not in the Nodes table");
     }
 
     @Test
@@ -231,58 +229,34 @@ public class NodesTest extends BaseTest {
     }
 
     @Test
-    public void testCreateNewNode() {
+    public void testCreateNewNodeWithInvalidData() {
 
-        final String expectedResult = "Node-1";
+        String actualResult = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickNodes()
+                .clickNewNodeButton()
+                .setNodeName("!")
+                .selectPermanentAgentRadioButton()
+                .clickOkButtonOnError()
+                .getErrorMessageText();
 
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        getDriver().findElement(By.xpath("//a[@href='computer']")).click();
-        getDriver().findElement(By.xpath("//a[@href='new']")).click();
-
-        getDriver().findElement(By.id("name")).sendKeys("Node-1");
-        getDriver().findElement(By.xpath("//label[@for='hudson.slaves.DumbSlave']")).click();
-        getDriver().findElement(By.name("Submit")).click();
-
-        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate' and @name='Submit']")).click();
-
-        String actualResult = getDriver().findElement(By.xpath("//tr[@id='node_Node-1']//a[text()='Node-1']")).getText();
-
-        Assert.assertEquals(actualResult, expectedResult);
-    }
-
-    @Test
-    public void testCreateNewNodeWithInvalidData() throws InterruptedException {
-
-        final String expectedResult = "‘!’ is an unsafe character";
-
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        getDriver().findElement(By.xpath("//a[@href='computer']")).click();
-        getDriver().findElement(By.xpath("//a[@href='new']")).click();
-
-        getDriver().findElement(By.id("name")).sendKeys("!");
-        getDriver().findElement(By.xpath("//label[@for='hudson.slaves.DumbSlave']")).click();
-
-        Thread.sleep(500);
-        String actualResult = getDriver().findElement(By.className("error")).getText();
-
-        Assert.assertEquals(actualResult, expectedResult);
+        Assert.assertEquals(actualResult, "‘!’ is an unsafe character");
     }
 
     @Test
     public void testCreateNodeFromManageJenkins() {
-        String nodeName = "NewNode";
-        getDriver().findElement(By.xpath("//*[@href='/manage']")).click();
-        getDriver().findElement(By.xpath("//dt[text() ='Nodes']")).click();
-        getDriver().findElement(By.xpath("//a[@href='new']")).click();
-        getDriver().findElement(By.xpath("//input[@ id='name']")).sendKeys(nodeName);
-        getDriver().findElement(By.xpath("//label[@for='hudson.slaves.DumbSlave' and contains(@class, 'jenkins-radio__label')]")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok' and contains(@class, 'jenkins-button--primary')]")).click();
-        getDriver().findElement(By.xpath("//button[normalize-space(text())='Save']")).click();
 
-        String actualResult = getDriver().findElement(By.xpath("//a[normalize-space(text())='" + nodeName + "']")).getText();
-        String expectedResult = "NewNode";
+        List<String> nodesList = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickNodes()
+                .clickNewNodeButton()
+                .setNodeName(NODE_NAME)
+                .selectPermanentAgentRadioButton()
+                .clickOkButton()
+                .clickSaveButton()
+                .getNodesinTableList();
 
-        Assert.assertEquals(actualResult, expectedResult);
+        Assert.assertTrue(nodesList.contains(NODE_NAME));
     }
 
     @Test
@@ -329,37 +303,17 @@ public class NodesTest extends BaseTest {
     }
 
     @Test
-    public void testCreateNewNode2() {
-        final String nodeName = "New Node";
-
-        HomePage homePage = new HomePage(getDriver())
-                .clickManageJenkins()
-                .clickNodes()
-                .clickNewNodeButton()
-                .setNodeName(nodeName)
-                .selectPermanentAgentRadioButton()
-                .clickOkButton()
-                .clickSaveButton()
-                .clickLogo();
-
-        Assert.assertTrue(homePage.getNodesList().contains(nodeName));
-    }
-
-    @Test
     public void testDeleteExistingNode() {
 
-        final String searchNode = "TestNode";
+        createNewNode(NODE_NAME)
+                .clickNode(NODE_NAME)
+                .clickDeleteAgent()
+                .clickYesButton();
 
-        createNewNode(searchNode);
+        String searchResult = new HeaderBlock(getDriver())
+                .typeSearchQueryPressEnter(NODE_NAME)
+                .getNoMatchText();
 
-        getDriver().findElement(By.linkText(searchNode)).click();
-        getDriver().findElement(By.xpath("//a[.='Delete Agent']")).click();
-        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
-
-        WebElement searchBox = getDriver().findElement(By.id("search-box"));
-        searchBox.sendKeys(searchNode);
-        searchBox.sendKeys(Keys.ENTER);
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='error']")).getText(), "Nothing seems to match.");
+        Assert.assertEquals(searchResult, "Nothing seems to match.");
     }
 }

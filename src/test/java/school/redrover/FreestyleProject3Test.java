@@ -30,7 +30,7 @@ public class FreestyleProject3Test extends BaseTest {
                 .clickNewItem()
                 .setItemName(FREESTYLE_PROJECT_NAME)
                 .selectFreestyleAndClickOk()
-                .clickSave()
+                .clickSaveButton()
                 .getProjectName();
 
         Assert.assertEquals(newProjectName, FREESTYLE_PROJECT_NAME);
@@ -57,7 +57,7 @@ public class FreestyleProject3Test extends BaseTest {
                 .clickNewItem()
                 .setItemName(FREESTYLE_PROJECT_NAME)
                 .selectFreestyleAndClickOk()
-                .clickSave()
+                .clickSaveButton()
                 .clickLogo()
                 .chooseCreatedFreestyleProject(FREESTYLE_PROJECT_NAME)
                 .deleteFreestyleProject()

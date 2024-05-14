@@ -4,7 +4,8 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.*;
 import org.testng.annotations.*;
-import school.redrover.model.FreestylePage;
+import school.redrover.model.FolderProjectPage;
+import school.redrover.model.FreestyleProjectPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.*;
 
@@ -13,7 +14,8 @@ import java.util.List;
 public class FreestyleProjectTest extends BaseTest {
     private static final String FREESTYLE_PROJECT_NAME = "Freestyle Project Name";
     private static final String NEW_FREESTYLE_PROJECT_NAME = "New Freestyle Project Name";
-    final String FREESTYLE_PROJECT_DESCRIPTION = "Some description text";
+    private static final String FREESTYLE_PROJECT_DESCRIPTION = "Some description text";
+    private static final String FOLDER_NAME = "Folder SV";
 
     private WebElement okButton() {
         return getDriver().findElement(By.id("ok-button"));
@@ -36,28 +38,23 @@ public class FreestyleProjectTest extends BaseTest {
         submitButton().click();
     }
 
-    public void createFolder(String folderName) {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(
-                By.xpath("//input[@name='name']")))).sendKeys(folderName);
-        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.id("ok-button")))).click();
-        submitButton().click();
+    public FreestyleProjectPage createFreestyleProjectWithDescription() {
+
+        return new HomePage(getDriver())
+                .clickCreateJob()
+                .setItemName(FREESTYLE_PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .setDescription(FREESTYLE_PROJECT_DESCRIPTION)
+                .clickSaveButton();
     }
 
-    public void createNewItemFromOtherExisting(String newProjectName, String existingProjectName) {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(newProjectName);
-        getDriver().findElement(By.xpath("//input[@name='from']")).sendKeys(existingProjectName);
-        okButton().click();
-        submitButton().click();
-    }
+    public FolderProjectPage createFolder() {
 
-    public void openElementDropdown(WebElement element) {
-        JavascriptExecutor openElementDropdown = (JavascriptExecutor) getDriver();
-
-        openElementDropdown.executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", element);
-        openElementDropdown.executeScript("arguments[0].dispatchEvent(new Event('click'));", element);
+        return new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(FOLDER_NAME)
+                .selectFolderAndClickOk()
+                .clickSaveButton();
     }
 
     public void clickDisableEnableButton() {
@@ -132,7 +129,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(FREESTYLE_PROJECT_NAME)
                 .selectFreestyleAndClickOk()
-                .clickSave()
+                .clickSaveButton()
                 .clickRename()
                 .setNewName(NEW_FREESTYLE_PROJECT_NAME)
                 .clickRename()
@@ -211,7 +208,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(projectName)
                 .selectFreestyleAndClickOk()
-                .clickSave()
+                .clickSaveButton()
                 .clickLogo()
                 .openItemDropdown(projectName)
                 .clickMoveInDropdown()
@@ -221,15 +218,19 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(actualResult.contains(expectedResult));
     }
 
-    @Ignore
     @Test
     public void testBuildNowFreestyleProject() {
-        createFreestyleProject(FREESTYLE_PROJECT_NAME);
 
-        getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
-        getDriver().navigate().refresh();
-        String actualResult = getDriver().findElement(By.xpath("//*[@href='/job/"
-                + FREESTYLE_PROJECT_NAME.replaceAll(" ", "%20") + "/1/']")).getText();
+        String actualResult = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(FREESTYLE_PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .clickLogo()
+                .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickBuildNowOnSideBar()
+                .waitBuildToFinish()
+                .waitBuildToFinish()
+                .getBuildInfo();
 
         Assert.assertEquals(actualResult, "#1");
     }
@@ -260,12 +261,12 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(oldProjectName1)
                 .selectFreestyleAndClickOk()
-                .clickSave()
+                .clickSaveButton()
                 .clickLogo()
                 .clickNewItem()
                 .setItemName(oldProjectName2)
                 .selectFreestyleAndClickOk()
-                .clickSave()
+                .clickSaveButton()
                 .clickLogo()
                 .clickNewItem()
                 .setItemName(newProjectName)
@@ -285,13 +286,13 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(projectName1)
                 .selectFreestyleAndClickOk()
-                .clickSave()
+                .clickSaveButton()
                 .clickLogo()
                 .clickNewItem()
                 .setItemName(projectName2)
                 .setItemNameInCopyForm(projectName1)
                 .selectFreestyleAndClickOk()
-                .clickSave()
+                .clickSaveButton()
                 .clickLogo()
                 .getItemList();
 
@@ -322,29 +323,58 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(submitButton().getText(), "Disable Project");
     }
 
-    public FreestylePage createFreestyleProjectWithDescription() {
-
-        return new HomePage(getDriver())
-                .clickCreateJob()
-                .setItemName(FREESTYLE_PROJECT_NAME)
-                .selectFreestyleAndClickOk()
-                .inputDescription(FREESTYLE_PROJECT_DESCRIPTION)
-                .clickSave();
-    }
-
     @Test
     public void testCreateFreestyleProjectWithDescription() {
-        FreestylePage freestylePage = createFreestyleProjectWithDescription();
-        String freestyleTitleName = freestylePage.getProjectName();
-        String freestyleDescriptionText = freestylePage.getProjectDescriptionText();
+        FreestyleProjectPage freestyleProjectPage = createFreestyleProjectWithDescription();
+        String freestyleTitleName = freestyleProjectPage.getProjectName();
+        String freestyleDescriptionText = freestyleProjectPage.getProjectDescriptionText();
 
         Assert.assertEquals(freestyleTitleName, FREESTYLE_PROJECT_NAME);
         Assert.assertEquals(freestyleDescriptionText, FREESTYLE_PROJECT_DESCRIPTION);
 
-        List<String> itemList = freestylePage
+        List<String> itemList = freestyleProjectPage
                 .clickLogo()
                 .getItemList();
 
         Assert.assertTrue(itemList.contains(FREESTYLE_PROJECT_NAME));
+    }
+
+    @Test
+    public void testEditDescriptionFreestyleProject() {
+        String addedToDescription = "Create one more build apps";
+
+        FreestyleProjectPage freestyleTest = createFreestyleProjectWithDescription();
+
+        String editDescription = freestyleTest
+                .clickLogo()
+                .clickCreatedFreestyleName()
+                .clickChangeDescription()
+                .clearOnDescriptionInput()
+                .setDescription(addedToDescription)
+                .clickSaveButton()
+                .getProjectDescriptionText();
+
+        Assert.assertEquals(editDescription, addedToDescription);
+    }
+
+    @Test
+    public void testMoveFreestyleProjectToFolder() {
+        String expectedText = String.format("Full project name: %s/%s", FOLDER_NAME, FREESTYLE_PROJECT_NAME);
+
+        createFreestyleProjectWithDescription()
+                .clickLogo();
+
+        createFolder()
+                .clickLogo();
+
+        String actualText = new HomePage(getDriver())
+                .chooseCreatedFreestyleProject(FREESTYLE_PROJECT_NAME)
+                .clickMove()
+                .choosePath(FOLDER_NAME)
+                .clickMoveButton()
+                .getFullProjectPath();
+
+        Assert.assertTrue(actualText.contains(expectedText), "The text does not contain the expected project name.");
+
     }
 }
