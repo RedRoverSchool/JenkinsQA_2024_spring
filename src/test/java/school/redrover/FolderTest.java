@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.Keys;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.DeleteDialog;
 import school.redrover.model.FolderProjectPage;
 import school.redrover.model.HomePage;
 import school.redrover.model.PipelineProjectPage;
@@ -154,6 +155,34 @@ public class FolderTest extends BaseTest {
                 .getNestedFolderName();
 
         Assert.assertEquals(nestedFolder, FOLDER_TO_MOVE, FOLDER_TO_MOVE + " is not in " + FOLDER_NAME);
+    }
+
+    @Test(dependsOnMethods = "testFolderMovedIntoAnotherFolderViaBreadcrumbs")
+    public void testCreateMultiConfigurationProjectInFolder(){
+        final String MULTI_CONFIGURATION_NAME = "MultiConfigurationProject_1";
+
+        FolderProjectPage folderProjectPage = new HomePage(getDriver())
+                .clickFolder(FOLDER_NAME)
+                .clickNewItemInsideFolder()
+                .setItemName(MULTI_CONFIGURATION_NAME)
+                .selectFreestyleAndClickOk()
+                .clickLogo()
+                .clickFolder(FOLDER_NAME);
+
+        Assert.assertTrue(folderProjectPage.isItemExistsInsideFolder(MULTI_CONFIGURATION_NAME));
+    }
+
+    @Test(dependsOnMethods = "testCreateMultiConfigurationProjectInFolder")
+    public void testDeleteFolderViaDropdown() {
+
+        boolean isFolderDeleted = new FolderProjectPage(getDriver())
+                .clickLogo()
+                .openItemDropdown(FOLDER_NAME)
+                .clickDeleteInDropdown(new DeleteDialog(getDriver()))
+                .clickYes(new HomePage(getDriver()))
+                .isItemDeleted(FOLDER_NAME);
+
+        Assert.assertTrue(isFolderDeleted);
     }
 
     @Test

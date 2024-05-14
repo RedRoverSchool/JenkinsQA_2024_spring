@@ -33,6 +33,12 @@ public class MultiConfigurationProjectPage extends BaseProjectPage {
     @FindBy(className = "textarea-preview")
     private WebElement previewTextArea;
 
+    @FindBy(css = "#disable-project button")
+    private WebElement disableProjectButton;
+
+    @FindBy(css = "#breadcrumbBar li:last-child")
+    private WebElement breadcrumbs;
+
     public MultiConfigurationProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -80,5 +86,15 @@ public class MultiConfigurationProjectPage extends BaseProjectPage {
     public String getPreviewText() {
 
         return previewTextArea.getText();
+    }
+
+    public MultiConfigurationProjectPage clickDisableProject() {
+        disableProjectButton.click();
+
+        return this;
+    }
+
+    public boolean isProjectInsideFolder(String projectName, String folderName) {
+        return breadcrumbs.getAttribute("data-href").contains(folderName + "/job/" + projectName);
     }
 }

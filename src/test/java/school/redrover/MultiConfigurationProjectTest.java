@@ -5,7 +5,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -13,16 +12,23 @@ import school.redrover.model.HomePage;
 import school.redrover.model.ItemErrorPage;
 
 
+import school.redrover.model.MultiConfigurationProjectPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
 import java.util.List;
+import java.util.Random;
 
 public class MultiConfigurationProjectTest extends BaseTest {
 
     private static final String PROJECT_NAME = "MCProject";
     private final String RANDOM_PROJECT_NAME = TestUtils.randomString();
 
+    private String generateRandomNumber(){
+        Random r = new Random();
+        int randomNumber = r.nextInt(100) + 1;
+        return String.valueOf(randomNumber);
+    }
 
     @Test
     public void testRenameProjectViaMainPageDropdown() {
@@ -263,16 +269,15 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testCreateMCProject() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys("MCProject");
-        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[3]/label")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]")).click();
-        getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[1]/a")).click();
+        List<String> projectNameList = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PROJECT_NAME)
+                .selectMultiConfigurationAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .getItemList();
 
-        Assert.assertEquals(getDriver().findElement(By
-                .xpath("//*[@id='job_MCProject']/td[3]/a/span")).getText(), "MCProject");
-
+        Assert.assertTrue(projectNameList.contains(PROJECT_NAME));
     }
 
     @Test(dependsOnMethods = "testCreateMCProject")
@@ -336,18 +341,17 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testMoveProjectToFolderViaDropdown() {
+
         final String folderName = "Folder";
+
         TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
         TestUtils.createNewItem(this, folderName, TestUtils.Item.FOLDER);
-        new HomePage(getDriver()).openItemDropdownWithSelenium(PROJECT_NAME);
 
-        getDriver().findElement(By.linkText("Move")).click();
-        new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" + folderName);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertTrue(
-                getDriver().findElement(By.linkText(folderName)).isDisplayed(),
-                "Project not moved to folder");
+        Assert.assertTrue(new HomePage(getDriver()).openItemDropdownWithSelenium(PROJECT_NAME)
+                .selectMoveFromDropdown()
+                .selectFolder(folderName)
+                .clickMove()
+                .isProjectInsideFolder(PROJECT_NAME, folderName));
     }
 
     @Test
@@ -358,5 +362,58 @@ public class MultiConfigurationProjectTest extends BaseTest {
         TestUtils.deleteItem(this, RANDOM_PROJECT_NAME);
 
         Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "Welcome to Jenkins!");
+    }
+
+    @Test
+    public void testAddDiscardOldBuildsConfigurationsToProject(){
+        final String daysToKeep = generateRandomNumber();
+        final String numToKeep = generateRandomNumber();
+        final String artifactDaysToKeep = generateRandomNumber();
+        final String artifactNumToKeep = generateRandomNumber();
+
+        List<String> discardOldBuildsList = TestUtils
+                .createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
+                .clickMCPName(PROJECT_NAME)
+                .clickConfigureButton()
+                .clickDiscardOldBuilds()
+                .setDaysToKeep(daysToKeep)
+                .setMaxNumberOfBuildsToKeep(numToKeep)
+                .clickAdvancedButton()
+                .setArtifactDaysToKeepStr(artifactDaysToKeep)
+                .setArtifactNumToKeepStr(artifactNumToKeep)
+                .clickSaveButton()
+                .clickConfigureButton()
+                .clickAdvancedButton()
+                .getDiscardOldBuildsListText();
+
+        Assert.assertEquals(
+                discardOldBuildsList,
+                List.of(daysToKeep, numToKeep, artifactDaysToKeep, artifactNumToKeep));
+    }
+
+    @Test
+    public void testSearchForCreatedProject(){
+
+        String currentUrl = TestUtils
+                .createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
+                .searchProjectByName(PROJECT_NAME, new MultiConfigurationProjectPage(getDriver()))
+                .getCurrentUrl();
+
+        Assert.assertTrue(currentUrl.contains(PROJECT_NAME));
+    }
+
+    @Test
+    public void testVerifyThatDisabledIconIsDisplayedOnDashboard(){
+
+        List<String> disabledProjectList = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PROJECT_NAME)
+                .selectMultiConfigurationAndClickOk()
+                .clickBreadcrumbsProjectName(PROJECT_NAME)
+                .clickDisableProject()
+                .clickLogo()
+                .getDisabledProjectListText();
+
+        Assert.assertTrue(disabledProjectList.contains(PROJECT_NAME));
     }
 }

@@ -548,6 +548,17 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(scheduleABuildArrows.size(), 0);
     }
 
+    @Test(dependsOnMethods = "testPipelineNotActive")
+    public void testEnableBack() {
+        String pipelineStatus = new HomePage(getDriver())
+                .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
+                .clickEnableButton()
+                .clickLogo()
+                .getBuildStatus();
+
+        Assert.assertEquals(pipelineStatus, "Schedule a Build for " + PIPELINE_NAME);
+    }
+
     @Ignore
     @Test
     public void testConsoleOutputValue() {
@@ -801,30 +812,6 @@ public class PipelineTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(
                 By.xpath("//*[@id='main-panel']/div[1]/div/h1")).getText(), PIPELINE_NAME);
-    }
-
-    @Ignore
-    @Test(dependsOnMethods = "testEditDescription")
-    public void testDisablePipelineAndEnableBack() {
-        getDriver().findElement(By.xpath("//td/a[@href='job/" + PIPELINE_NAME + "/']")).click();
-
-        getDriver().findElement(By.xpath("//form[@id='disable-project']/button")).click();
-        getDriver().findElement(By.id("jenkins-head-icon")).click();
-
-        WebElement desabledGreyButton = getWait5().until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//td/div/*[@title='Disabled']")));
-        String pipelineStatus = desabledGreyButton.getAttribute("tooltip");
-
-        Assert.assertEquals(pipelineStatus, "Disabled");
-
-        getDriver().findElement(By.xpath("//td/a[@href='job/" + PIPELINE_NAME + "/']")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-        getDriver().findElement(By.id("jenkins-head-icon")).click();
-
-        WebElement greenBuildArrow = getDriver().findElement(By.xpath("//td[@class='jenkins-table__cell--tight']//a[contains(@tooltip,'Schedule')]"));
-        String buildStatus = greenBuildArrow.getAttribute("tooltip");
-
-        Assert.assertEquals(buildStatus, "Schedule a Build for " + PIPELINE_NAME);
     }
 
     @Ignore

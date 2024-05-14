@@ -44,7 +44,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickCreateJob()
                 .setItemName(FREESTYLE_PROJECT_NAME)
                 .selectFreestyleAndClickOk()
-                .inputDescription(FREESTYLE_PROJECT_DESCRIPTION)
+                .setDescription(FREESTYLE_PROJECT_DESCRIPTION)
                 .clickSaveButton();
     }
 
@@ -55,21 +55,6 @@ public class FreestyleProjectTest extends BaseTest {
                 .setItemName(FOLDER_NAME)
                 .selectFolderAndClickOk()
                 .clickSaveButton();
-    }
-
-    public void createNewItemFromOtherExisting(String newProjectName, String existingProjectName) {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(newProjectName);
-        getDriver().findElement(By.xpath("//input[@name='from']")).sendKeys(existingProjectName);
-        okButton().click();
-        submitButton().click();
-    }
-
-    public void openElementDropdown(WebElement element) {
-        JavascriptExecutor openElementDropdown = (JavascriptExecutor) getDriver();
-
-        openElementDropdown.executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", element);
-        openElementDropdown.executeScript("arguments[0].dispatchEvent(new Event('click'));", element);
     }
 
     public void clickDisableEnableButton() {

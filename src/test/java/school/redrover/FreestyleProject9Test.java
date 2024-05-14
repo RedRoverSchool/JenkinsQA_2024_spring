@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 public class FreestyleProject9Test extends BaseTest {
@@ -12,15 +13,12 @@ public class FreestyleProject9Test extends BaseTest {
     private final String expectedFreestyleProjectDescription = "This is very important freestyle project";
 
     public void createFreestyleProjectWithoutDescription() {
-        getDriver().findElement(By.cssSelector
-                ("#tasks > div:nth-child(1) > span > a > span.task-icon-link > svg > path")).click();
-        getDriver().findElement(By.cssSelector("#name")).sendKeys(freestyleProjectName);
-        getDriver().findElement(By.cssSelector
-                ("#j-add-item-type-standalone-projects > ul > li.hudson_model_FreeStyleProject > div.desc")).click();
-        getDriver().findElement(By.cssSelector("#ok-button")).click();
-        getDriver().findElement(By.cssSelector
-                ("#bottom-sticker > div > button.jenkins-button.jenkins-button--primary")).click();
-        getDriver().findElement(By.cssSelector("#breadcrumbs > li:nth-child(1) > a")).click();
+        new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(freestyleProjectName)
+                .selectFreestyleAndClickOk()
+                .clickSaveButton()
+                .clickLogo();
     }
 
     public void createFreestyleProjectWithDescription() {
@@ -36,6 +34,7 @@ public class FreestyleProject9Test extends BaseTest {
         getDriver().findElement(By.cssSelector
                 ("#bottom-sticker > div > button.jenkins-button.jenkins-button--primary")).click();
     }
+
     @Test
     public void testCreateFreestyleProjectWithoutDescription() {
         createFreestyleProjectWithoutDescription();

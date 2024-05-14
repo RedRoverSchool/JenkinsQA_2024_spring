@@ -14,7 +14,14 @@ public class FreestyleConfigPage extends BaseConfigPage<FreestyleProjectPage> {
         super(driver, new FreestyleProjectPage(driver));
     }
 
-    public FreestyleConfigPage inputDescription(String description) {
+    public FreestyleConfigPage setDescription(String description) {
+        descriptionField.sendKeys(description);
+
+        return new FreestyleConfigPage(getDriver());
+    }
+
+    public FreestyleConfigPage clearAndSetDescription(String description) {
+        descriptionField.clear();
         descriptionField.sendKeys(description);
 
         return new FreestyleConfigPage(getDriver());

@@ -41,6 +41,9 @@ public class HomePage extends BasePage {
     @FindBy(css = "[href*='rename']")
     private WebElement renameFromDropdown;
 
+    @FindBy(css = "[href*='move']")
+    private WebElement moveFromDropdown;
+
     @FindBy(xpath = "//a[@class='sortheader' and text()='Name']")
     private WebElement columnNameTitle;
 
@@ -70,9 +73,6 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
     private WebElement fullStageViewButton;
-
-    @FindBy(css = "[class$='jenkins_ver']")
-    private WebElement jenkinsFooter;
 
     @FindBy(xpath = "//div/a[@href='/manage/about']")
     private WebElement aboutJenkinsDropdownItem;
@@ -143,6 +143,9 @@ public class HomePage extends BasePage {
     @FindBy(css = "[href$='pipeline-syntax']")
     private WebElement dropdownPipelineSyntax;
 
+    @FindBy(xpath = "//a[@href='api/']")
+    private WebElement apiLink;
+
     @FindBy(xpath = "//div[@class='tabBar']/div")
     private List<WebElement> viewNameList;
 
@@ -151,6 +154,12 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//h1[contains(text(),'Welcome to Jenkins')]")
     private WebElement welcomeJenkinsHeader;
+
+    @FindBy(xpath = "//td[@class='jenkins-table__cell--tight']//a[contains(@tooltip,'Schedule')]")
+    private WebElement greenBuildArrow;
+
+    @FindBy(css = ".disabledJob a")
+    private List <WebElement> disabledProjectList;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -278,6 +287,12 @@ public class HomePage extends BasePage {
         return new MultiConfigurationConfirmRenamePage(getDriver());
     }
 
+    public MultiConfigurationMovePage selectMoveFromDropdown() {
+        moveFromDropdown.click();
+
+        return new MultiConfigurationMovePage(getDriver());
+    }
+
     public PipelineProjectPage clickSpecificPipelineName(String itemName) {
         getDriver().findElement(
                 By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
@@ -373,12 +388,6 @@ public class HomePage extends BasePage {
 
     public int getBuildExecutorListSize() {
         return buildExecutorStatusList.size();
-    }
-
-    public HomePage jenkinsFooterClick() {
-        jenkinsFooter.click();
-
-        return this;
     }
 
     public AboutJenkinsPage selectAboutJenkins() {
@@ -581,8 +590,23 @@ public class HomePage extends BasePage {
         return viewNameList.size();
     }
 
-        public String getWelcomeJenkinsHeader () {
-
-            return welcomeJenkinsHeader.getText();
-        }
+    public ApiPage clickApiLink() {
+        apiLink.click();
+        return new ApiPage(getDriver());
     }
+
+    public String getWelcomeJenkinsHeader() {
+
+        return welcomeJenkinsHeader.getText();
+    }
+
+    public String getBuildStatus() {
+
+        return greenBuildArrow.getAttribute("tooltip");
+    }
+
+    public List<String> getDisabledProjectListText() {
+
+        return disabledProjectList.stream().map(WebElement::getText).toList();
+    }
+}
