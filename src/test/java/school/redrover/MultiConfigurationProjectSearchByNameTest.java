@@ -19,7 +19,7 @@ public class MultiConfigurationProjectSearchByNameTest extends BaseTest {
     @Ignore
     @Test
     public void testSearchMultiConfigurationProjectByName() {
-        TestUtils.createProjectItem(ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), projectName);
+        TestUtils.createProjectItem(ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), projectName, true);
 
         WebElement searchBox = getDriver().findElement(By.id("search-box"));
         searchBox.sendKeys(projectName);

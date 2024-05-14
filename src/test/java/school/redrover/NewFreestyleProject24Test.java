@@ -43,7 +43,7 @@ public class NewFreestyleProject24Test extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateFreestyleProject")
     public void testFreestyleMoveToFolder() {
-        TestUtils.createProjectItem(TestUtils.ProjectType.FOLDER,this, new FolderConfigPage(getDriver()),FOLDER);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FOLDER,this, new FolderConfigPage(getDriver()),FOLDER, true);
 
         WebElement dropdownChevron = getDriver().findElement(By.xpath("(//td//button[@class='jenkins-menu-dropdown-chevron'])[2]"));
         ((JavascriptExecutor) getDriver()).executeScript(

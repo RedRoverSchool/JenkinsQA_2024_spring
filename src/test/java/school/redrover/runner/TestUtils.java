@@ -40,15 +40,17 @@ public final class TestUtils {
         return driver.findElement(By.xpath("//a[contains(@href, 'user')]")).getText();
     }
 
-    public static void createProjectItem(TestUtils.ProjectType projectType, BaseTest baseTest, BaseConfigPage<?> projectConfigPage, String name) {
+    public static void createProjectItem(TestUtils.ProjectType projectType, BaseTest baseTest, BaseConfigPage<?> projectConfigPage, String name, boolean goToMainPage) {
         WebDriver driver = baseTest.getDriver();
 
         new HomePage(driver)
                 .clickNewItem()
                 .setItemName(name)
-                .selectProjectTypeAndClickOk(projectType, projectConfigPage)
-                .clickSaveButton()
-                .clickLogo();
+                .selectProjectTypeAndClickOk(projectType, projectConfigPage);
+
+        if(goToMainPage) {
+            projectConfigPage.clickLogo();
+        }
     }
 
     public static void goToMainPage(WebDriver driver) {

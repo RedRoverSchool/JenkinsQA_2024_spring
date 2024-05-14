@@ -39,7 +39,7 @@ public class DashboardTest extends BaseTest {
 
         String FOLDER_NAME = "A Folder";
 
-        TestUtils.createProjectItem(TestUtils.ProjectType.FOLDER, this, new FolderConfigPage(getDriver()), FOLDER_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FOLDER, this, new FolderConfigPage(getDriver()), FOLDER_NAME, true);
 
         final List<String> FOLDER_MENU = List.of(
                 "Configure",
@@ -63,7 +63,7 @@ public class DashboardTest extends BaseTest {
 
         String FREESTYLE_PROJECT_NAME = "FREESTYLE";
 
-        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), FREESTYLE_PROJECT_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), FREESTYLE_PROJECT_NAME, true);
 
         final List<String> FREESTYLE_PROJECT_MENU = List.of(
                 "Changes",
@@ -85,7 +85,7 @@ public class DashboardTest extends BaseTest {
     @Test(dependsOnMethods = "testFreestyleProjectChevronMenu")
     public void testPipelineChevronMenu() {
 
-        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), PIPELINE_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), PIPELINE_NAME, true);
 
         final List<String> PIPELINE_MENU = List.of(
                 "Changes",
@@ -108,7 +108,7 @@ public class DashboardTest extends BaseTest {
     @Test(dependsOnMethods = "testPipelineChevronMenu")
     public void testMultiConfigurationProjectChevronMenu() {
 
-        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), MULTI_CONFIGURATION_PROJECT_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), MULTI_CONFIGURATION_PROJECT_NAME, true);
 
         final List<String> MULTI_CONFIGURATION_PROJECT_MENU = List.of(
                 "Changes",
@@ -132,7 +132,7 @@ public class DashboardTest extends BaseTest {
 
         String MULTIBRANCH_PIPELINE_NAME = "MULTIBRANCH_PIPELINE";
 
-        TestUtils.createProjectItem(TestUtils.ProjectType.MULTIBRANCH_PIPELINE, this, new MultibranchPipelineConfigPage(getDriver()), MULTIBRANCH_PIPELINE_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.MULTIBRANCH_PIPELINE, this, new MultibranchPipelineConfigPage(getDriver()), MULTIBRANCH_PIPELINE_NAME, true);
 
         final List<String> MULTIBRANCH_PIPELINE_MENU = List.of(
                 "Configure",
@@ -159,7 +159,7 @@ public class DashboardTest extends BaseTest {
 
         String ORGANIZATION_FOLDER_NAME = "RedRover Organization";
 
-        TestUtils.createProjectItem(TestUtils.ProjectType.ORGANIZATION_FOLDER, this, new OrganizationFolderConfigPage(getDriver()), ORGANIZATION_FOLDER_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.ORGANIZATION_FOLDER, this, new OrganizationFolderConfigPage(getDriver()), ORGANIZATION_FOLDER_NAME, true);
 
         final List<String> ORGANIZATION_FOLDER_MENU = List.of(
                 "Configure",

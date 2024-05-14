@@ -597,7 +597,7 @@ public class PipelineTest extends BaseTest {
 
         turnNodeOnIfOffline();
 
-        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), PIPELINE_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), PIPELINE_NAME, true);
         clickConfigButton();
         sendScript(number_of_stages);
         getDriver().findElement(By.name("Submit")).click();
@@ -649,7 +649,7 @@ public class PipelineTest extends BaseTest {
     @Test
     public void testFullStageViewPopUpWindowIsDisplayed() {
         int number_of_stages = 2;
-        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), PIPELINE_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), PIPELINE_NAME, true);
 
         sendScript(number_of_stages);
 
@@ -670,7 +670,7 @@ public class PipelineTest extends BaseTest {
 
         int number_of_stages = 2;
 
-        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), PIPELINE_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), PIPELINE_NAME, true);
         clickConfigButton();
         sendScript(number_of_stages);
         getDriver().findElement(By.name("Submit")).click();
@@ -704,7 +704,7 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testHideDescriptionPreview() {
-        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), "Pipeline3");
+        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), "Pipeline3", true);
 
         getDriver().findElement(By.name("description")).sendKeys("Pipeline description");
         getDriver().findElement(By.cssSelector(".textarea-show-preview")).click();
@@ -732,7 +732,7 @@ public class PipelineTest extends BaseTest {
     @Test(dependsOnMethods = "testVerifyNewPPCreatedByCreateJob")
     public void testVerifyNewPPCreatedNewItem() {
 
-        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), nameProjects.get(1));
+        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), nameProjects.get(1), true);
 
         for (String nameProject : nameProjects) {
             Assert.assertTrue(getDriver().findElement(By.cssSelector("tr#job_" + nameProject)).isDisplayed());
@@ -789,7 +789,7 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testBreadcrumbTrailsContainsPipelineName() {
-        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), "Pipeline project");
+        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), "Pipeline project", true);
 
         List<WebElement> breadcrumbBarElements = List.of(
                 getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[1]")),
@@ -965,7 +965,7 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testDeletePipelineSideMenu() {
-        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), PIPELINE_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), PIPELINE_NAME, true);
 
         TestUtils.goToMainPage(getDriver());
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table//a[@href='job/"
@@ -982,7 +982,7 @@ public class PipelineTest extends BaseTest {
     @Ignore
     @Test
     public void testDeletePipelineDropdown() {
-        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), PIPELINE_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), PIPELINE_NAME, true);
 
         TestUtils.deleteJobViaDropdown(this, PIPELINE_NAME);
 

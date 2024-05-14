@@ -11,9 +11,9 @@ import java.util.List;
 public class CopyFromExistingJobTest extends BaseTest{
     @Test
     public void testCopyFromNotExistingJob() {
-        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), "ppp");
-        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), "fff");
-        TestUtils.createProjectItem(TestUtils.ProjectType.FOLDER, this, new FolderConfigPage(getDriver()), "Folder1");
+        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), "ppp", true);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), "fff", true);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FOLDER, this, new FolderConfigPage(getDriver()), "Folder1", true);
         String notExistingName ="AAA";
 
         CreateItemPage errorPage = new HomePage(getDriver())

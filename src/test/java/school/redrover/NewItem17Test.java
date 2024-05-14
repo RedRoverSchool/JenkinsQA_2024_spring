@@ -33,7 +33,7 @@ public class NewItem17Test extends BaseTest {
 
     @Test
     public void testCreateNewItemFPTU() {
-        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), PROJECT_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), PROJECT_NAME, true);
         getDriver().findElement(By.linkText(PROJECT_NAME)).click();
         
         String configurationHeaderH1 = getDriver().findElement(By.tagName("h1")).getText();

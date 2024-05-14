@@ -127,7 +127,7 @@ public class MultibranchPipelineTest extends BaseTest {
         final String MULTIBRANCH_PIPELINE_NAME = "First Multibranch Pipeline project";
         final String expectedErrorMessage = "The new name is the same as the current name.";
 
-        TestUtils.createProjectItem(TestUtils.ProjectType.MULTIBRANCH_PIPELINE, this, new MultibranchPipelineConfigPage(getDriver()), MULTIBRANCH_PIPELINE_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.MULTIBRANCH_PIPELINE, this, new MultibranchPipelineConfigPage(getDriver()), MULTIBRANCH_PIPELINE_NAME, true);
 
         getDriver().findElement(By.cssSelector("#breadcrumbs > li:nth-child(3")).click();
         getDriver().findElement(By.cssSelector("#tasks > div:nth-child(8) > span > a")).click();
@@ -250,8 +250,8 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testMoveInFolderViaSidebarMenu() {
-        TestUtils.createProjectItem(TestUtils.ProjectType.FOLDER, this, new FolderConfigPage(getDriver()), FOLDER_NAME);
-        TestUtils.createProjectItem(ProjectType.MULTIBRANCH_PIPELINE, this, new MultibranchPipelineConfigPage(getDriver()), MULTI_PIPELINE_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FOLDER, this, new FolderConfigPage(getDriver()), FOLDER_NAME, true);
+        TestUtils.createProjectItem(ProjectType.MULTIBRANCH_PIPELINE, this, new MultibranchPipelineConfigPage(getDriver()), MULTI_PIPELINE_NAME, true);
 
         getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']")).click();
         getDriver().findElement(By.cssSelector("[href $='move']")).click();

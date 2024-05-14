@@ -46,7 +46,7 @@ public class FreestyleProject100Test extends BaseTest {
     @Test
     public void testRenameProjectUsingDropdown() {
         final String projectName = "This is the project to be renamed";
-        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), projectName);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), projectName, true);
 
         final String projectNewName = "Renamed project";
         TestUtils.openElementDropdown(this, TestUtils.getViewItemElement(this, projectName));
@@ -65,7 +65,7 @@ public class FreestyleProject100Test extends BaseTest {
     @Test
     public void testDeleteUsingSidePanel() {
         final String projectName = "This is the project to be deleted";
-        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), projectName);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), projectName, true);
 
         TestUtils.clickAtBeginOfElement(this, TestUtils.getViewItemElement(this, projectName));
 

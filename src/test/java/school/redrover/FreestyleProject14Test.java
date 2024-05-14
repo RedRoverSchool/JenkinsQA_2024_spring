@@ -15,7 +15,7 @@ public class FreestyleProject14Test extends BaseTest {
 
         final String FREESTYLE_PROJECT_NAME = "Random freestyle project";
 
-        TestUtils.createProjectItem(ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), FREESTYLE_PROJECT_NAME);
+        TestUtils.createProjectItem(ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), FREESTYLE_PROJECT_NAME, false);
 
         getDriver().findElement(By.name(
                 "description")).sendKeys("Some desc for Freestyle project");

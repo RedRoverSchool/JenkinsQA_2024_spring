@@ -17,7 +17,7 @@ public class FreestyleProject22Test extends BaseTest {
     public void testEditDescription(){
         final String editDescribe = "Create one more build apps";
 
-        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), PROJECT_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), PROJECT_NAME, true);
         getDriver().findElement(By.linkText(PROJECT_NAME)).click();
         getDriver().findElement(By.linkText("Configure")).click();
         getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/div[2]/div/div[2]/textarea")).sendKeys(PROJECT_DESCRIPTION);

@@ -32,7 +32,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Test
     public void testRenameProjectViaMainPageDropdown() {
         String addToProjectName = "New";
-        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME, true);
 
         String newProjectName = new HomePage(getDriver())
                 .openItemDropdownWithSelenium(PROJECT_NAME)
@@ -65,7 +65,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         final String text = "qwerty123";
         final String additionalText = "AAA";
 
-        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME, true);
 
         String DescriptionText = new HomePage(getDriver())
                 .clickMCPName(PROJECT_NAME)
@@ -86,7 +86,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     public void testDescriptionPreview() {
         final String text = "I want to see preview";
 
-        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME, true);
 
         String previewText =
                 new MultiConfigurationProjectPage(getDriver())
@@ -103,7 +103,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         final String oldText = "The text to be replaced";
         final String newText = "Replacement text";
 
-        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME, true);
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(String.format("[href = 'job/%s/']", PROJECT_NAME)))).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
@@ -121,7 +121,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Test
     public void testMakeCopyMultiConfigurationProject() {
         final String newProjectName = "MCProject copy";
-        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME, true);
 
         getDriver().findElement(By.cssSelector("[href $= 'newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(newProjectName);
@@ -145,7 +145,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Test
     public void testDeleteProjectDescription() {
         final String description = "This is project description";
-        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME, true);
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(String.format("[href = 'job/%s/']", PROJECT_NAME)))).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
@@ -179,7 +179,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Test
     public void testAddDescriptionOnConfigurationPage() {
         final String description = "This is project description";
-        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME, true);
 
         getDriver().findElement(By.linkText(PROJECT_NAME)).click();
         getDriver().findElement(By.linkText("Configure")).click();
@@ -194,9 +194,10 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testMCPDisableByToggle() {
-        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME, false);
 
-        Assert.assertFalse(new MultiConfigurationProjectPage(getDriver())
+        Assert.assertFalse(new MultiConfigurationConfigPage(getDriver())
+                .clickSaveButton()
                 .clickConfigureButton()
                 .clickToggleSwitch()
                 .clickApply()
@@ -219,7 +220,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testYesButtonColorDeletingMCPInSidebar() {
-        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME, true);
         getDriver().findElement(By.linkText(PROJECT_NAME)).click();
         getDriver().findElement(By.cssSelector("[data-message^='Delete']")).click();
 
@@ -257,7 +258,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         final String projectName = "MultiBuild";
         final String errorMessage = "A job already exists with the name " + "‘" + projectName + "’";
 
-        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME, true);
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
@@ -325,7 +326,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testDeleteProjectViaDropdown() {
-        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME, true);
         getDriver().findElement(By.linkText(PROJECT_NAME)).click();
 
         TestUtils.openElementDropdown(this, getDriver().findElement(By.linkText(PROJECT_NAME)));
@@ -342,8 +343,8 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Test
     public void testMoveProjectToFolderViaDropdown() {
         final String folderName = "Folder";
-        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME);
-        TestUtils.createProjectItem(TestUtils.ProjectType.FOLDER, this, new FolderConfigPage(getDriver()), folderName);
+        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME, true);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FOLDER, this, new FolderConfigPage(getDriver()), folderName, true);
 
         new HomePage(getDriver()).openItemDropdownWithSelenium(PROJECT_NAME);
 
@@ -358,8 +359,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testDeleteMultiConfigurationProjectFromMenu() {
-        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), RANDOM_PROJECT_NAME);
-        getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[3]/a")).click();
+        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), RANDOM_PROJECT_NAME, true);
 
         TestUtils.deleteItem(this, RANDOM_PROJECT_NAME);
 
@@ -373,7 +373,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         final String artifactDaysToKeep = generateRandomNumber();
         final String artifactNumToKeep = generateRandomNumber();
 
-        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME, true);
 
         List<String> discardOldBuildsList =
                 new HomePage(getDriver())

@@ -34,7 +34,7 @@ public class FreestyleProject1Test extends BaseTest {
 
     @Test
     public void testAddProject() {
-        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), FREESTYLE_PROJECT_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), FREESTYLE_PROJECT_NAME, true);
 
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//h1[text()='" + FREESTYLE_PROJECT_NAME + "']")).getText(),
@@ -85,7 +85,7 @@ public class FreestyleProject1Test extends BaseTest {
 
     @Test
     public void testEditFreestyleProjectDescription() {
-        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), FREESTYLE_PROJECT_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), FREESTYLE_PROJECT_NAME, true);
         getDriver().findElement(By.id("jenkins-home-link")).click();
 
         getDriver().findElement(By.xpath("//span[text() = '"+ FREESTYLE_PROJECT_NAME + "']")).click();
