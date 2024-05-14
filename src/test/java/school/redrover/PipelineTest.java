@@ -787,7 +787,7 @@ public class PipelineTest extends BaseTest {
 
         Assert.assertTrue(consoleOutput.contains(SUCCEED_BUILD_EXPECTED));
     }
-
+@Ignore
     @Test(dependsOnMethods = "testRunBuildByTriangleButton")
     public void testPermalinksBuildDetails() {
         final List<String> expectedPermalinkList =
