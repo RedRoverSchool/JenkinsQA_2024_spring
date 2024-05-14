@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseProjectPage;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PipelineProjectPage extends BaseProjectPage {
 
@@ -60,6 +61,7 @@ public class PipelineProjectPage extends BaseProjectPage {
             @FindBy(id = "tasks"),
             @FindBy(className = "task-link-text")
     })
+
     private List<WebElement> taskLinkTextElements;
 
     @FindBy(id = "enable-project")
@@ -77,16 +79,16 @@ public class PipelineProjectPage extends BaseProjectPage {
     @FindBy(xpath = "//th[contains(@class, 'stage-header-name')]")
     private List<WebElement> stageHeader;
 
-    @FindBy(className ="date")
+    @FindBy(className = "date")
     private WebElement stageDate;
 
-    @FindBy(className ="time")
+    @FindBy(className = "time")
     private WebElement stageTime;
 
-    @FindBy(className ="badge")
+    @FindBy(className = "badge")
     private WebElement stageBadge;
 
-    @FindBy(xpath ="//div[@class='changeset-box no-changes']")
+    @FindBy(xpath = "//div[@class='changeset-box no-changes']")
     private WebElement stageStatus;
 
 
@@ -101,6 +103,12 @@ public class PipelineProjectPage extends BaseProjectPage {
 
     @FindBy(xpath = "//button[@name='Submit']")
     private WebElement enableButton;
+
+    @FindBy(xpath = "//li[@class='permalink-item']")
+    private List<WebElement> permalinkList;
+
+    @FindBy(xpath = "//*[@tooltip='Success']")
+    private WebElement buildStatusMark;
 
     public PipelineProjectPage(WebDriver driver) {
         super(driver);
@@ -289,20 +297,20 @@ public class PipelineProjectPage extends BaseProjectPage {
         return stageHeader.size();
     }
 
-    public boolean getBuildAttributeStatus(){
+    public boolean getBuildAttributeStatus() {
         boolean result = true;
-            if (stageDate == null || !stageDate.isDisplayed()) {
-                result = false;
-            }
-            if (stageTime == null || !stageTime.isDisplayed()) {
-                result = false;
-            }
-            if (stageStatus == null || !(stageStatus.getText().equals("No Changes"))) {
-                result = false;
-            }
-            if (stageBadge == null || !stageBadge.isDisplayed()) {
-                result = false;
-            }
+        if (stageDate == null || !stageDate.isDisplayed()) {
+            result = false;
+        }
+        if (stageTime == null || !stageTime.isDisplayed()) {
+            result = false;
+        }
+        if (stageStatus == null || !(stageStatus.getText().equals("No Changes"))) {
+            result = false;
+        }
+        if (stageBadge == null || !stageBadge.isDisplayed()) {
+            result = false;
+        }
         return result;
     }
 
@@ -334,5 +342,21 @@ public class PipelineProjectPage extends BaseProjectPage {
         enableButton.click();
 
         return this;
+    }
+
+    public List<String> getPermalinkList() {
+
+        return permalinkList.stream()
+                .map(permalink -> permalink.getText().split(",")[0].trim())
+                .collect(Collectors.toList());
+    }
+
+    public String getHexColorSuccessMark() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        WebElement statusMark = getWait10().until(ExpectedConditions.visibilityOf(buildStatusMark));
+
+        return (String) js.executeScript(
+                "return window.getComputedStyle(arguments[0]).getPropertyValue('--success');",
+                statusMark);
     }
 }

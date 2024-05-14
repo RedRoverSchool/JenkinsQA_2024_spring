@@ -788,6 +788,30 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(consoleOutput.contains(SUCCEED_BUILD_EXPECTED));
     }
 
+    @Test(dependsOnMethods = "testRunBuildByTriangleButton")
+    public void testPermalinksBuildDetails() {
+        final List<String> expectedPermalinkList =
+                List.of("Last build (#1)", "Last stable build (#1)", "Last successful build (#1)", "Last completed build (#1)");
+
+        List<String> actualPermalinkList = new HomePage(getDriver())
+                .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
+                .getPermalinkList();
+
+        Assert.assertEquals(actualPermalinkList, expectedPermalinkList);
+    }
+
+    @Test(dependsOnMethods = "testPermalinksBuildDetails")
+    public void testGreenBuildSuccessColor() {
+        final String greenHexColor = "#1ea64b";
+
+        String actualHexColor = new HomePage(getDriver())
+                .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
+                .getHexColorSuccessMark();
+
+        Assert.assertEquals(actualHexColor, greenHexColor);
+    }
+
+
     @Test
     public void testBreadcrumbTrailsContainsPipelineName() {
 
@@ -812,54 +836,6 @@ public class PipelineTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(
                 By.xpath("//*[@id='main-panel']/div[1]/div/h1")).getText(), PIPELINE_NAME);
-    }
-
-    @Ignore
-    @Test(dependsOnMethods = "testDisablePipelineAndEnableBack")
-    public void testPipelineBuildSuccessFromConsole() {
-        getDriver().findElement((By.xpath("//td[@class='jenkins-table__cell--tight']//a[contains(@tooltip,'Schedule')]"))).click();
-        getDriver().findElement(By.xpath("//td/a[@href='job/" + PIPELINE_NAME + "/']")).click();
-
-        getWait60().until(ExpectedConditions.attributeToBe(
-                By.xpath("//a[@title='Success > Console Output']"), "tooltip", "Success > Console Output"));
-        getDriver().findElement(By.xpath("//a[@title='Success > Console Output']")).click();
-
-        WebElement consoleOutput = getDriver().findElement(By.xpath("//pre[@class='console-output']"));
-
-        Assert.assertTrue(consoleOutput.getText().contains("Finished: SUCCESS"));
-    }
-
-    @Ignore
-    @Test(dependsOnMethods = "testPipelineBuildSuccessFromConsole")
-    public void testPermalinksBuildDetails() {
-        final List<String> expectedPermalinks =
-                List.of("Last build (#1)", "Last stable build (#1)", "Last successful build (#1)", "Last completed build (#1)");
-
-        getDriver().findElement(By.xpath("//td/a[@href='job/" + PIPELINE_NAME + "/']")).click();
-
-        List<String> actualPermalinks = getDriver()
-                .findElements(By.xpath("//li[@class='permalink-item']"))
-                .stream()
-                .map(permalink -> permalink.getText().split(",")[0].trim())
-                .collect(Collectors.toList());
-
-        Assert.assertEquals(actualPermalinks, expectedPermalinks);
-    }
-
-    @Ignore
-    @Test(dependsOnMethods = "testPermalinksBuildDetails")
-    public void testGreenBuildSuccessColor() {
-        final String greenHexColor = "#1ea64b";
-
-        getDriver().findElement(By.xpath("//td/a[@href='job/" + PIPELINE_NAME + "/']")).click();
-
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        WebElement statusMark = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@tooltip='Success']")));
-        String actualHexColor = (String) js.executeScript(
-                "return window.getComputedStyle(arguments[0]).getPropertyValue('--success');",
-                statusMark);
-
-        Assert.assertEquals(actualHexColor, greenHexColor);
     }
 
     @Ignore
