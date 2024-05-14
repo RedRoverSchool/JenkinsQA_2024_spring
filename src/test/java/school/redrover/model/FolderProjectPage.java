@@ -170,4 +170,8 @@ public class FolderProjectPage extends BaseProjectPage {
 
         return new HomePage(getDriver());
     }
+
+    public boolean isItemExistsInsideFolder(String nameItem) {
+        return getItemListInsideFolder().contains(nameItem);
+    }
 }

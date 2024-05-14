@@ -155,6 +155,21 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(nestedFolder, FOLDER_TO_MOVE, FOLDER_TO_MOVE + " is not in " + FOLDER_NAME);
     }
 
+    @Test(dependsOnMethods = "testFolderMovedIntoAnotherFolderViaBreadcrumbs")
+    public void testCreateMultiConfigurationProjectInFolder(){
+        final String MULTI_CONFIGURATION_NAME = "MultiConfigurationProject_1";
+
+        FolderProjectPage folderProjectPage = new HomePage(getDriver())
+                .clickFolder(FOLDER_NAME)
+                .clickNewItemInsideFolder()
+                .setItemName(MULTI_CONFIGURATION_NAME)
+                .selectFreestyleAndClickOk()
+                .clickLogo()
+                .clickFolder(FOLDER_NAME);
+
+        Assert.assertTrue(folderProjectPage.isItemExistsInsideFolder(MULTI_CONFIGURATION_NAME));
+    }
+
     @Test
     public void testMoveFolderToFolderViaChevron() {
         List<String> folderNameList = new HomePage(getDriver())

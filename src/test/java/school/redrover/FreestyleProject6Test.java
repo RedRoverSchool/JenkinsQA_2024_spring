@@ -26,7 +26,7 @@ public class FreestyleProject6Test extends BaseTest {
                 .clickCreateJob()
                 .setItemName(FREESTYLE_PROJECT_NAME)
                 .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
-                .inputDescription(FREESTYLE_PROJECT_DESCRIPTION)
+                .setDescription(FREESTYLE_PROJECT_DESCRIPTION)
                 .clickSaveButton();
     }
 
