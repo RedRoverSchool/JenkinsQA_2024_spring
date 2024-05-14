@@ -4,12 +4,15 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.WheelInput;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseConfigPage;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,21 +117,28 @@ public class CreateNewItemPage extends BasePage {
         return new MultibranchPipelineConfigPage(getDriver());
     }
 
-    public OrganizationFolderConfigPage selectOrganizationFolderAndClickOk() {
-        organizationFolderItem.click();
-        okButton.click();
-
-        return new OrganizationFolderConfigPage(getDriver());
-    }
-
     public <T> T clickOkAnyway(T page) {
         okButton.click();
 
         return page;
     }
 
+    public CreateNewItemPage selectProjectType(TestUtils.ProjectType projectType) {
+        WebElement projectTypeButton = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + projectType.getProjectTypeName() + "']")));
+
+        WheelInput.ScrollOrigin scrollFromDuildField = WheelInput.ScrollOrigin.fromElement(projectTypeButton);
+        new Actions(getDriver())
+                .scrollFromOrigin(scrollFromDuildField, 0, 100)
+                .pause(Duration.ofMillis(200))
+                .perform();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(projectTypeButton)).click();
+
+        return this;
+    }
+
     public <T extends BaseConfigPage<?>> T selectProjectTypeAndClickOk(TestUtils.ProjectType projectType, T projectConfigPage) {
-        getDriver().findElement(By.xpath("//span[text()='" + projectType.getProjectTypeName() + "']")).click();
+        selectProjectType(projectType);
         okButton.click();
 
         return projectConfigPage;

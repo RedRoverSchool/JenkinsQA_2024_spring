@@ -4,6 +4,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.HomePage;
+import school.redrover.model.OrganizationFolderConfigPage;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -149,7 +150,7 @@ public final class TestUtils {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
                 .setItemName(name.trim())
-                .selectOrganizationFolderAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.ORGANIZATION_FOLDER, new OrganizationFolderConfigPage(baseTest.getDriver()))
                 .clickLogo();
     }
 
