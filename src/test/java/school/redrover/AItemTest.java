@@ -2,9 +2,10 @@ package school.redrover;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.model.CreateNewItemPage;
-import school.redrover.model.HomePage;
+import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
+
 import java.util.List;
 
 public class AItemTest extends BaseTest {
@@ -20,7 +21,7 @@ public class AItemTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(NAME)
                 .clearItemNameField()
-                .selectMultibranchPipelineAndClickOk();
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.MULTIBRANCH_PIPELINE, new MultibranchPipelineConfigPage(getDriver()));
 
         Assert.assertFalse(new CreateNewItemPage(getDriver()).okButtonIsEnabled());
     }
@@ -30,7 +31,7 @@ public class AItemTest extends BaseTest {
         itemsList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(NAME)
-                .selectFolderAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FOLDER, new FolderConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .getItemList();
@@ -43,7 +44,7 @@ public class AItemTest extends BaseTest {
         itemsList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(NAME)
-                .selectFolderAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FOLDER, new FolderConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .openItemDropdownWithSelenium(NAME)
@@ -60,7 +61,7 @@ public class AItemTest extends BaseTest {
     public void testCreateMulticonfigurationProjectNegative() {
         new HomePage(getDriver())
                 .clickNewItem()
-                .selectMultiConfigurationAndClickOk();
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, new MultiConfigurationConfigPage(getDriver()));
 
         Assert.assertEquals(new CreateNewItemPage(getDriver()).getItemNameHintText(), ITEM_NAME_HINT_TEXT);
     }
@@ -70,7 +71,7 @@ public class AItemTest extends BaseTest {
         itemsList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(NAME)
-                .selectMultiConfigurationAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, new MultiConfigurationConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .getItemList();

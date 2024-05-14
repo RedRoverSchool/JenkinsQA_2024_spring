@@ -4,9 +4,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.*;
 import org.testng.annotations.*;
-import school.redrover.model.FolderProjectPage;
-import school.redrover.model.FreestyleProjectPage;
-import school.redrover.model.HomePage;
+import school.redrover.model.*;
 import school.redrover.runner.*;
 
 import java.util.List;
@@ -43,7 +41,7 @@ public class FreestyleProjectTest extends BaseTest {
         return new HomePage(getDriver())
                 .clickCreateJob()
                 .setItemName(FREESTYLE_PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                 .inputDescription(FREESTYLE_PROJECT_DESCRIPTION)
                 .clickSaveButton();
     }
@@ -53,7 +51,7 @@ public class FreestyleProjectTest extends BaseTest {
         return new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FOLDER, new FolderConfigPage(getDriver()))
                 .clickSaveButton();
     }
 
@@ -143,7 +141,7 @@ public class FreestyleProjectTest extends BaseTest {
         List<String> actualResult = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FREESTYLE_PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickRename()
                 .setNewName(NEW_FREESTYLE_PROJECT_NAME)
@@ -217,12 +215,12 @@ public class FreestyleProjectTest extends BaseTest {
         String actualResult = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(folderName)
-                .selectFolderAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FOLDER, new FolderConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .clickNewItem()
                 .setItemName(projectName)
-                .selectFreestyleAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .openItemDropdown(projectName)
@@ -239,7 +237,7 @@ public class FreestyleProjectTest extends BaseTest {
         String actualResult = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FREESTYLE_PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                 .clickLogo()
                 .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickBuildNowOnSideBar()
@@ -275,12 +273,12 @@ public class FreestyleProjectTest extends BaseTest {
         List<String> elementsList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(oldProjectName1)
-                .selectFreestyleAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .clickNewItem()
                 .setItemName(oldProjectName2)
-                .selectFreestyleAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .clickNewItem()
@@ -300,13 +298,13 @@ public class FreestyleProjectTest extends BaseTest {
         List<String> projectList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(projectName1)
-                .selectFreestyleAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .clickNewItem()
                 .setItemName(projectName2)
                 .setItemNameInCopyForm(projectName1)
-                .selectFreestyleAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .getItemList();

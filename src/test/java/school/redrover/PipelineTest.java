@@ -149,7 +149,7 @@ public class PipelineTest extends BaseTest {
         List<String> itemPipeline = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .getItemList();
@@ -199,7 +199,7 @@ public class PipelineTest extends BaseTest {
         String currentTextAreaBorderBacklightColor = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickChangeDescription()
                 .waitAddDescriptionButtonDisappears()
@@ -216,7 +216,7 @@ public class PipelineTest extends BaseTest {
         String defaultTextAreaBorderBacklightColor = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickChangeDescription()
                 .makeDescriptionFieldNotActive()
@@ -232,7 +232,7 @@ public class PipelineTest extends BaseTest {
         String yesButtonHexColor = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickSidebarDeleteButton()
                 .getYesButtonColorDeletingViaSidebar();
@@ -245,7 +245,7 @@ public class PipelineTest extends BaseTest {
         boolean isPipelineDeleted = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .clickSpecificPipelineName(PIPELINE_NAME)
@@ -263,7 +263,7 @@ public class PipelineTest extends BaseTest {
         boolean isBuildDeleted = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .scheduleBuildForItem(PIPELINE_NAME)
@@ -283,7 +283,7 @@ public class PipelineTest extends BaseTest {
         String descriptionText = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickChangeDescription()
                 .setDescription(DESCRIPTION)
@@ -314,7 +314,7 @@ public class PipelineTest extends BaseTest {
         String displayedName = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickSidebarRenameButton()
                 .clearNameInputField()
@@ -330,7 +330,7 @@ public class PipelineTest extends BaseTest {
         String getH1HeaderText = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .clickSaveButton()
                 .getHeadlineDisplayedName();
 
@@ -346,7 +346,7 @@ public class PipelineTest extends BaseTest {
         String h2HeadingText = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(pipelineName)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .chooseCreatedProject(pipelineName)
@@ -363,7 +363,7 @@ public class PipelineTest extends BaseTest {
         new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(pipelineName)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .chooseCreatedProject(pipelineName);
@@ -410,7 +410,7 @@ public class PipelineTest extends BaseTest {
         String h2HeadingText = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(pipelineName)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .openItemDropdown(pipelineName)
@@ -434,7 +434,7 @@ public class PipelineTest extends BaseTest {
                 .turnNodeOnIfOffline()
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .sendScript(stagesQtt)
                 .clickSaveButton()
                 .makeBuilds(buildsQtt)
@@ -449,7 +449,7 @@ public class PipelineTest extends BaseTest {
         String actualPageHeading = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .clickSaveButton()
                 .hoverOverBreadcrumbsName()
                 .clickBreadcrumbsDropdownArrow()
@@ -464,7 +464,7 @@ public class PipelineTest extends BaseTest {
         String displayedNewName = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickBreadcrumbsDropdownArrow()
                 .clickBreadcrumbsRenameButton()
@@ -481,7 +481,7 @@ public class PipelineTest extends BaseTest {
         String previewDescription = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .addDescription(DESCRIPTION)
                 .clickPreview()
                 .getTextareaPreviewText();
@@ -501,7 +501,7 @@ public class PipelineTest extends BaseTest {
                 .turnNodeOnIfOffline()
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .sendScript(stagesQtt)
                 .clickSaveButton()
                 .makeBuilds(buildsQtt)
@@ -515,7 +515,7 @@ public class PipelineTest extends BaseTest {
         boolean isDisableButtonDisplayed = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .clickSaveButton()
                 .isDisableButtonVisible();
 
@@ -529,7 +529,7 @@ public class PipelineTest extends BaseTest {
         String warningMessage = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickDisableButton()
                 .getWarningMessageText();
@@ -586,7 +586,7 @@ public class PipelineTest extends BaseTest {
 
         turnNodeOnIfOffline();
 
-        TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
+        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), PIPELINE_NAME);
         clickConfigButton();
         sendScript(number_of_stages);
         getDriver().findElement(By.name("Submit")).click();
@@ -638,7 +638,7 @@ public class PipelineTest extends BaseTest {
     @Test
     public void testFullStageViewPopUpWindowIsDisplayed() {
         int number_of_stages = 2;
-        TestUtils.createJob(this, TestUtils.Job.PIPELINE, PIPELINE_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), PIPELINE_NAME);
 
         sendScript(number_of_stages);
 
@@ -659,7 +659,7 @@ public class PipelineTest extends BaseTest {
 
         int number_of_stages = 2;
 
-        TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
+        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), PIPELINE_NAME);
         clickConfigButton();
         sendScript(number_of_stages);
         getDriver().findElement(By.name("Submit")).click();
@@ -693,8 +693,7 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testHideDescriptionPreview() {
-
-        TestUtils.createJob(this, TestUtils.Job.PIPELINE, "Pipeline3");
+        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), "Pipeline3");
 
         getDriver().findElement(By.name("description")).sendKeys("Pipeline description");
         getDriver().findElement(By.cssSelector(".textarea-show-preview")).click();
@@ -722,7 +721,7 @@ public class PipelineTest extends BaseTest {
     @Test(dependsOnMethods = "testVerifyNewPPCreatedByCreateJob")
     public void testVerifyNewPPCreatedNewItem() {
 
-        TestUtils.createNewItem(this, nameProjects.get(1), TestUtils.Item.PIPELINE);
+        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), nameProjects.get(1));
 
         for (String nameProject : nameProjects) {
             Assert.assertTrue(getDriver().findElement(By.cssSelector("tr#job_" + nameProject)).isDisplayed());
@@ -779,8 +778,7 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testBreadcrumbTrailsContainsPipelineName() {
-
-        TestUtils.createJob(this, TestUtils.Job.PIPELINE, "Pipeline project");
+        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), "Pipeline project");
 
         List<WebElement> breadcrumbBarElements = List.of(
                 getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[1]")),
@@ -980,7 +978,7 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testDeletePipelineSideMenu() {
-        TestUtils.createJob(this, TestUtils.Job.PIPELINE, PIPELINE_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), PIPELINE_NAME);
 
         TestUtils.goToMainPage(getDriver());
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table//a[@href='job/"
@@ -997,8 +995,7 @@ public class PipelineTest extends BaseTest {
     @Ignore
     @Test
     public void testDeletePipelineDropdown() {
-        TestUtils.createJob(this, TestUtils.Job.PIPELINE, PIPELINE_NAME);
-        TestUtils.goToMainPage(getDriver());
+        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), PIPELINE_NAME);
 
         TestUtils.deleteJobViaDropdown(this, PIPELINE_NAME);
 
@@ -1014,7 +1011,7 @@ public class PipelineTest extends BaseTest {
         boolean isPipelineScroll = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .scrollToPipelineScript()
                 .isPipelineDisplayed();
 

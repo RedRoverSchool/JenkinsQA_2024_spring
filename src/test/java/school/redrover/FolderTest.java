@@ -3,10 +3,9 @@ package school.redrover;
 import org.openqa.selenium.Keys;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.model.FolderProjectPage;
-import school.redrover.model.HomePage;
-import school.redrover.model.PipelineProjectPage;
+import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
@@ -37,7 +36,7 @@ public class FolderTest extends BaseTest {
         String folderBreadcrumbName = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FOLDER, new FolderConfigPage(getDriver()))
                 .clickSaveButton()
                 .getBreadcrumbName();
 
@@ -71,7 +70,7 @@ public class FolderTest extends BaseTest {
     public void testDotAsFirstFolderNameCharErrorMessage() {
         String errorMessageText = new HomePage(getDriver())
                 .clickNewItem()
-                .selectFolder()
+                .selectProjectType(TestUtils.ProjectType.FOLDER)
                 .setItemName(".")
                 .getErrorMessage();
 
@@ -83,7 +82,7 @@ public class FolderTest extends BaseTest {
     public void testDotAsLastFolderNameCharErrorMessage() {
         String errorMessageText = new HomePage(getDriver())
                 .clickNewItem()
-                .selectFolder()
+                .selectProjectType(TestUtils.ProjectType.FOLDER)
                 .setItemName("Folder." + Keys.TAB)
                 .getErrorMessage();
 
@@ -124,7 +123,7 @@ public class FolderTest extends BaseTest {
         String folderRenamedName = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FOLDER, new FolderConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickOnRenameButton()
                 .setNewName(NEW_FOLDER_NAME)
@@ -139,12 +138,12 @@ public class FolderTest extends BaseTest {
         String nestedFolder = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FOLDER, new FolderConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .clickNewItem()
                 .setItemName(FOLDER_TO_MOVE)
-                .selectFolderAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FOLDER, new FolderConfigPage(getDriver()))
                 .clickSaveButton()
                 .hoverOverBreadcrumbsName()
                 .clickBreadcrumbsDropdownArrow()
@@ -159,8 +158,16 @@ public class FolderTest extends BaseTest {
     @Test
     public void testMoveFolderToFolderViaChevron() {
         List<String> folderNameList = new HomePage(getDriver())
-                .createNewFolder(FOLDER_TO_MOVE)
-                .createNewFolder(FOLDER_NAME)
+                .clickNewItem()
+                .setItemName(FOLDER_TO_MOVE)
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FOLDER, new FolderConfigPage(getDriver()))
+                .clickSaveButton()
+                .clickLogo()
+                .clickNewItem()
+                .setItemName(FOLDER_NAME)
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FOLDER, new FolderConfigPage(getDriver()))
+                .clickSaveButton()
+                .clickLogo()
                 .openItemDropdown(FOLDER_TO_MOVE)
                 .chooseFolderToMove()
                 .chooseDestinationFromListAndMove(FOLDER_NAME)
@@ -176,7 +183,7 @@ public class FolderTest extends BaseTest {
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FOLDER, new FolderConfigPage(getDriver()))
                 .clickSaveButton();
         String folderName = folderProjectPage.getBreadcrumbName();
 
@@ -205,7 +212,7 @@ public class FolderTest extends BaseTest {
                 .clickFolder(FOLDER_NAME)
                 .clickNewItemInsideFolder()
                 .setItemName(PIPELINE_NAME)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .clickSaveButton();
 
         String actualText = pipelineProjectPage.getFullProjectNameLocationText();
@@ -225,13 +232,13 @@ public class FolderTest extends BaseTest {
                 .clickFolder(FOLDER_NAME)
                 .clickNewItemInsideFolder()
                 .setItemName(FOLDER_TO_MOVE)
-                .selectFolderAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FOLDER, new FolderConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .clickFolder(FOLDER_NAME)
                 .clickNewItemInsideFolder()
                 .setItemName(FOLDER_TO_MOVE_2)
-                .selectFolderAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FOLDER, new FolderConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .clickFolder(FOLDER_NAME)
@@ -246,7 +253,7 @@ public class FolderTest extends BaseTest {
                 .clickFolder(FOLDER_NAME)
                 .clickNewItemInsideFolder()
                 .setItemName(IVAN_S_FREE_STYLE_PROJECT)
-                .selectFreestyleAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .clickFolder(FOLDER_NAME)

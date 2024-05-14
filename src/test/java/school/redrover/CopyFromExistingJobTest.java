@@ -1,25 +1,19 @@
 package school.redrover;
 
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.CreateItemPage;
-import school.redrover.model.CreateNewItemPage;
-import school.redrover.model.HomePage;
+import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.runner.TestUtils.*;
 import school.redrover.runner.TestUtils;
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class CopyFromExistingJobTest extends BaseTest{
     @Test
     public void testCopyFromNotExistingJob() {
-        TestUtils.createNewJob(this, Job.PIPELINE, "ppp");
-        TestUtils.createNewJob(this, Job.FREESTYLE, "fff");
-        TestUtils.createNewJob(this, Job.FOLDER, "Folder1");
+        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), "ppp");
+        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), "fff");
+        TestUtils.createProjectItem(TestUtils.ProjectType.FOLDER, this, new FolderConfigPage(getDriver()), "Folder1");
         String notExistingName ="AAA";
 
         CreateItemPage errorPage = new HomePage(getDriver())
@@ -37,28 +31,28 @@ public class CopyFromExistingJobTest extends BaseTest{
     public void testDropdownMenuContent()  {
         String freestyle1 = "folff";
         String freestyle2 = "folff00";
-        String folder1 = "Folder1";
+        String folder1 = "folder1";
         String folder2 = "bFolder2";
 
-        String firstLetters ="foL";
+        String firstLetters ="fol";
         String newItemName  ="someName";
 
         List<String> firstLettersJobs = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(freestyle1)
-                .selectFreestyleAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                 .clickLogo()
                 .clickNewItem()
                 .setItemName(folder1)
-                .selectFolderAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FOLDER, new FolderConfigPage(getDriver()))
                 .clickLogo()
                 .clickNewItem()
                 .setItemName(folder2)
-                .selectFolderAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FOLDER, new FolderConfigPage(getDriver()))
                 .clickLogo()
                 .clickNewItem()
                 .setItemName(freestyle2)
-                .selectFreestyleAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                 .clickLogo()
                 .getJobsBeginningFromThisFirstLetters(firstLetters);
 

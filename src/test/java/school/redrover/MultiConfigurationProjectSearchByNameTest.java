@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.FreestyleConfigPage;
+import school.redrover.model.MultiConfigurationConfigPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -17,7 +19,7 @@ public class MultiConfigurationProjectSearchByNameTest extends BaseTest {
     @Ignore
     @Test
     public void testSearchMultiConfigurationProjectByName() {
-        createNewItem(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+        TestUtils.createProjectItem(ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), projectName);
 
         WebElement searchBox = getDriver().findElement(By.id("search-box"));
         searchBox.sendKeys(projectName);

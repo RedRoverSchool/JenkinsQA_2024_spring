@@ -7,10 +7,9 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.FolderProjectPage;
-import school.redrover.model.FreestyleProjectPage;
-import school.redrover.model.HomePage;
+import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
@@ -26,7 +25,7 @@ public class FreestyleProject6Test extends BaseTest {
         return new HomePage(getDriver())
                 .clickCreateJob()
                 .setItemName(FREESTYLE_PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                 .inputDescription(FREESTYLE_PROJECT_DESCRIPTION)
                 .clickSaveButton();
     }
@@ -40,7 +39,7 @@ public class FreestyleProject6Test extends BaseTest {
         return new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FOLDER, new FolderConfigPage(getDriver()))
                 .clickSaveButton();
     }
 

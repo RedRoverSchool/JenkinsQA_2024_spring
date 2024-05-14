@@ -6,6 +6,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.DeleteDialog;
+import school.redrover.model.FreestyleConfigPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
@@ -21,7 +22,7 @@ public class FreestyleProject100Test extends BaseTest {
         List<String> itemList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(projectName)
-                .selectFreestyleAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .getItemList();
@@ -45,7 +46,7 @@ public class FreestyleProject100Test extends BaseTest {
     @Test
     public void testRenameProjectUsingDropdown() {
         final String projectName = "This is the project to be renamed";
-        TestUtils.createNewItem(this, projectName, TestUtils.Item.FREESTYLE_PROJECT);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), projectName);
 
         final String projectNewName = "Renamed project";
         TestUtils.openElementDropdown(this, TestUtils.getViewItemElement(this, projectName));
@@ -64,7 +65,7 @@ public class FreestyleProject100Test extends BaseTest {
     @Test
     public void testDeleteUsingSidePanel() {
         final String projectName = "This is the project to be deleted";
-        TestUtils.createNewItem(this, projectName, TestUtils.Item.FREESTYLE_PROJECT);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), projectName);
 
         TestUtils.clickAtBeginOfElement(this, TestUtils.getViewItemElement(this, projectName));
 

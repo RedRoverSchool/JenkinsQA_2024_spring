@@ -10,13 +10,10 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
-import school.redrover.model.DeleteDialog;
-import school.redrover.model.HomePage;
-import school.redrover.model.MultibranchPipelineConfigPage;
-import school.redrover.model.MultibranchPipelineProjectPage;
+import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
-import static school.redrover.runner.TestUtils.Job;
+import static school.redrover.runner.TestUtils.ProjectType;
 
 public class MultibranchPipelineTest extends BaseTest {
 
@@ -44,7 +41,7 @@ public class MultibranchPipelineTest extends BaseTest {
         String getMultibranchPipelineName = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(MULTI_PIPELINE_NAME)
-                .selectMultibranchPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(ProjectType.MULTIBRANCH_PIPELINE, new MultibranchPipelineConfigPage(getDriver()))
                 .clickToggle()
                 .clickSaveButton()
                 .getProjectNameText();
@@ -72,7 +69,7 @@ public class MultibranchPipelineTest extends BaseTest {
         String newNameMultibranchPipeline = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(MULTI_PIPELINE_NAME)
-                .selectMultibranchPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(ProjectType.MULTIBRANCH_PIPELINE, new MultibranchPipelineConfigPage(getDriver()))
                 .clickToggle()
                 .clickSaveButton()
                 .clickSidebarRenameButton()
@@ -87,7 +84,7 @@ public class MultibranchPipelineTest extends BaseTest {
         MultibranchPipelineProjectPage multibranchPipelineProjectPage = new HomePage(getDriver())
             .clickCreateAJob()
             .setItemName(MULTI_PIPELINE_NAME)
-            .selectMultibranchPipelineAndClickOk()
+            .selectProjectTypeAndClickOk(ProjectType.MULTIBRANCH_PIPELINE, new MultibranchPipelineConfigPage(getDriver()))
             .clickToggle()
             .clickSaveButton()
             .clickDisableEnableMultibranchPipeline();
@@ -100,7 +97,7 @@ public class MultibranchPipelineTest extends BaseTest {
         String enableStatus = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(MULTI_PIPELINE_NAME)
-                .selectMultibranchPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(ProjectType.MULTIBRANCH_PIPELINE, new MultibranchPipelineConfigPage(getDriver()))
                 .clickToggle()
                 .clickSaveButton()
                 .clickDisableEnableMultibranchPipeline()
@@ -116,7 +113,7 @@ public class MultibranchPipelineTest extends BaseTest {
         MultibranchPipelineConfigPage multibranchPipelineConfigPage = new HomePage(getDriver())
             .clickCreateAJob()
             .setItemName(MULTI_PIPELINE_NAME)
-            .selectMultibranchPipelineAndClickOk()
+            .selectProjectTypeAndClickOk(ProjectType.MULTIBRANCH_PIPELINE, new MultibranchPipelineConfigPage(getDriver()))
             .clickToggle()
             .hoverOverToggle();
 
@@ -130,7 +127,7 @@ public class MultibranchPipelineTest extends BaseTest {
         final String MULTIBRANCH_PIPELINE_NAME = "First Multibranch Pipeline project";
         final String expectedErrorMessage = "The new name is the same as the current name.";
 
-        TestUtils.createJob(this, Job.MULTI_BRUNCH_PIPELINE, MULTIBRANCH_PIPELINE_NAME);
+        TestUtils.createProjectItem(TestUtils.ProjectType.MULTIBRANCH_PIPELINE, this, new MultibranchPipelineConfigPage(getDriver()), MULTIBRANCH_PIPELINE_NAME);
 
         getDriver().findElement(By.cssSelector("#breadcrumbs > li:nth-child(3")).click();
         getDriver().findElement(By.cssSelector("#tasks > div:nth-child(8) > span > a")).click();
@@ -179,7 +176,7 @@ public class MultibranchPipelineTest extends BaseTest {
         String multibranchPipelineName = new HomePage(getDriver())
             .clickCreateAJob()
             .setItemName(MULTI_PIPELINE_NAME)
-            .selectMultibranchPipelineAndClickOk()
+            .selectProjectTypeAndClickOk(ProjectType.MULTIBRANCH_PIPELINE, new MultibranchPipelineConfigPage(getDriver()))
             .clickLogo()
             .openItemDropdown(MULTI_PIPELINE_NAME)
             .clickRenameFromDropdownMP()
@@ -228,11 +225,11 @@ public class MultibranchPipelineTest extends BaseTest {
         MultibranchPipelineProjectPage multibranchPipelineProjectPage = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(NESTED_TESTS_FOLDER_NAME)
-                .selectFolderAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FOLDER, new FolderConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickNewItemInsideFolder()
                 .setItemName(MULTI_PIPELINE_NAME)
-                .selectMultibranchPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(ProjectType.MULTIBRANCH_PIPELINE, new MultibranchPipelineConfigPage(getDriver()))
                 .clickSaveButton();
 
         Assert.assertEquals(multibranchPipelineProjectPage.getSidebarTasksSize(), 11);
@@ -253,8 +250,8 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testMoveInFolderViaSidebarMenu() {
-        TestUtils.createNewItem(this, FOLDER_NAME, TestUtils.Item.FOLDER);
-        TestUtils.createNewItem(this, MULTI_PIPELINE_NAME, TestUtils.Item.MULTI_BRANCH_PIPELINE);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FOLDER, this, new FolderConfigPage(getDriver()), FOLDER_NAME);
+        TestUtils.createProjectItem(ProjectType.MULTIBRANCH_PIPELINE, this, new MultibranchPipelineConfigPage(getDriver()), MULTI_PIPELINE_NAME);
 
         getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']")).click();
         getDriver().findElement(By.cssSelector("[href $='move']")).click();
@@ -282,7 +279,7 @@ public class MultibranchPipelineTest extends BaseTest {
         String actualPageHeading = new HomePage(getDriver())
             .clickCreateAJob()
             .setItemName(MULTI_PIPELINE_NAME)
-            .selectMultibranchPipelineAndClickOk()
+            .selectProjectTypeAndClickOk(ProjectType.MULTIBRANCH_PIPELINE, new MultibranchPipelineConfigPage(getDriver()))
             .clickLogo()
             .openItemDropdown(MULTI_PIPELINE_NAME)
             .clickDeleteInDropdown(new DeleteDialog(getDriver()))
@@ -296,7 +293,7 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testEnableMultibranchPipeline() {
         MultibranchPipelineConfigPage page = new HomePage(getDriver()).clickCreateAJob()
                 .setItemName("TextName")
-                .selectMultibranchPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(ProjectType.MULTIBRANCH_PIPELINE, new MultibranchPipelineConfigPage(getDriver()))
                 .clickOnToggle()
                 .clickSaveButton()
                 .selectConfigure()
@@ -311,7 +308,7 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testDisabledMultibranchPipeline() {
         MultibranchPipelineConfigPage page = new HomePage(getDriver()).clickCreateAJob()
                 .setItemName("TextName1")
-                .selectMultibranchPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(ProjectType.MULTIBRANCH_PIPELINE, new MultibranchPipelineConfigPage(getDriver()))
                 .clickOnToggle()
                 .clickSaveButton()
                 .selectConfigure();
@@ -489,7 +486,7 @@ public class MultibranchPipelineTest extends BaseTest {
         List<String> itemList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(MULTI_PIPELINE_NAME)
-                .selectMultibranchPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(ProjectType.MULTIBRANCH_PIPELINE, new MultibranchPipelineConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .getItemList();
@@ -511,7 +508,7 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testCreateMulticonfigurationProjectWithoutName(){
         String errorName = new HomePage(getDriver())
                 .clickNewItem()
-                .selectMultiConfigurationAndClickOk()
+                .selectProjectTypeAndClickOk(ProjectType.MULTI_CONFIGURATION_PROJECT, new MultiConfigurationConfigPage(getDriver()))
                 .getErrorRequiresName();
 
         Assert.assertTrue(errorName.contains("This field cannot be empty, please enter a valid name"));

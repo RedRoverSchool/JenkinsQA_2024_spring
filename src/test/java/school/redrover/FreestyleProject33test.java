@@ -21,7 +21,7 @@ public class FreestyleProject33test extends BaseTest {
         String actualProjectName = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(projectName)
-                .selectFreestyleAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                 .clickSaveButton()
                 .getProjectName();
 

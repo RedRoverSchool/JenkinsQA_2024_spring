@@ -6,10 +6,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.model.FolderProjectPage;
-import school.redrover.model.FreestyleProjectPage;
-import school.redrover.model.HomePage;
+import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
+
 import java.util.List;
 
 public class FreestyleProject24Test extends BaseTest {
@@ -34,7 +34,7 @@ public class FreestyleProject24Test extends BaseTest {
        List<String> itemList = new HomePage(getDriver())
                .clickNewItem()
                .setItemName(FREESTYLE_NAME)
-               .selectFreestyleAndClickOk()
+               .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                .clickSaveButton()
                .clickLogo()
                .getItemList();
@@ -61,7 +61,7 @@ public class FreestyleProject24Test extends BaseTest {
                 .clickLogo()
                 .clickNewItem()
                 .setItemName(FOLDER)
-                .selectFolderAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FOLDER, new FolderConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .openItemDropdown(FREESTYLE_NAME)

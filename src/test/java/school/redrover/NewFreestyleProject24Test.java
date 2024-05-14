@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.FolderConfigPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -42,7 +43,7 @@ public class NewFreestyleProject24Test extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateFreestyleProject")
     public void testFreestyleMoveToFolder() {
-        TestUtils.createNewJob(this, TestUtils.Job.FOLDER,FOLDER);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FOLDER,this, new FolderConfigPage(getDriver()),FOLDER);
 
         WebElement dropdownChevron = getDriver().findElement(By.xpath("(//td//button[@class='jenkins-menu-dropdown-chevron'])[2]"));
         ((JavascriptExecutor) getDriver()).executeScript(

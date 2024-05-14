@@ -3,6 +3,8 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.FreestyleConfigPage;
+import school.redrover.model.MultibranchPipelineConfigPage;
 import school.redrover.runner.BaseTest;
 
 import school.redrover.runner.TestUtils;
@@ -31,7 +33,7 @@ public class NewItem17Test extends BaseTest {
 
     @Test
     public void testCreateNewItemFPTU() {
-        TestUtils.createNewItem(this,PROJECT_NAME, TestUtils.Item.FREESTYLE_PROJECT);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), PROJECT_NAME);
         getDriver().findElement(By.linkText(PROJECT_NAME)).click();
         
         String configurationHeaderH1 = getDriver().findElement(By.tagName("h1")).getText();

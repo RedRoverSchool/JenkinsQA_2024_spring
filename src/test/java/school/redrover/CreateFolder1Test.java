@@ -5,18 +5,21 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.FolderConfigPage;
+import school.redrover.model.FreestyleConfigPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
 public class CreateFolder1Test extends BaseTest {
 
     private void createNewFolder(String folderName) {
-        getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.name("name")).sendKeys(folderName);
-        getDriver().findElement(By.xpath("//label/span[text() ='Folder']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(folderName)
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FOLDER, new FolderConfigPage(getDriver()));
     }
 
     private void openDashboard() {
@@ -53,7 +56,7 @@ public class CreateFolder1Test extends BaseTest {
         new HomePage(getDriver())
                  .clickNewItem()
                 .setItemName(folderName)
-                .selectFolderAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FOLDER, new FolderConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .getItemList();

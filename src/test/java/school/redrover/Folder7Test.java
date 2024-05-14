@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.FolderConfigPage;
+import school.redrover.model.FreestyleConfigPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
@@ -21,7 +23,7 @@ public class Folder7Test extends BaseTest {
         String name = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(NAME)
-                .selectFolderAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FOLDER, new FolderConfigPage(getDriver()))
                 .clickSaveButton()
                 .getPageHeading();
 
@@ -36,7 +38,7 @@ public class Folder7Test extends BaseTest {
         String description = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(NAME)
-                .selectFolderAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FOLDER, new FolderConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickAddOrEditDescription()
                 .setDescription(newText)
@@ -106,7 +108,7 @@ public class Folder7Test extends BaseTest {
                 .clickFolder(NAME)
                 .clickNewItemInsideFolder()
                 .setItemName(freeStyleProjectName)
-                .selectFreestyleAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                 .clickSaveButton()
                 .getProjectName();
 

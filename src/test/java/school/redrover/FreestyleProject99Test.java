@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.FreestyleConfigPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -16,7 +17,7 @@ public class FreestyleProject99Test extends BaseTest {
     @Test
     public void testCreatExistingFreestyleProject() {
 
-        TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.FREESTYLE_PROJECT);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), PROJECT_NAME);
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.className("jenkins-input")).sendKeys(PROJECT_NAME);
 
@@ -26,7 +27,7 @@ public class FreestyleProject99Test extends BaseTest {
     @Test
     public void testAddProjectDescription() {
 
-        TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.FREESTYLE_PROJECT);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), PROJECT_NAME);
         TestUtils.addProjectDescription(this, PROJECT_NAME, "Project Description");
 
         assertTrue(getDriver().findElement(By.xpath("//*[@id=\"description\"]/div[1]")).isDisplayed());
@@ -35,7 +36,7 @@ public class FreestyleProject99Test extends BaseTest {
     @Test
     public void testRenameProjectToSameName() {
 
-        TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.FREESTYLE_PROJECT);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), PROJECT_NAME);
         TestUtils.renameItem(this, PROJECT_NAME, PROJECT_NAME);
 
         assertTrue(getDriver().findElement(By.xpath("//*[text()='Error']")).isDisplayed());
@@ -44,7 +45,7 @@ public class FreestyleProject99Test extends BaseTest {
     @Test
     public void testDeleteProject() {
 
-        TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.FREESTYLE_PROJECT);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), PROJECT_NAME);
         TestUtils.deleteItem(this, PROJECT_NAME);
 
         assertTrue(getDriver().findElement(By.className("empty-state-block")).isDisplayed());
@@ -53,7 +54,7 @@ public class FreestyleProject99Test extends BaseTest {
     @Test
     public void testCreateNewProject() {
 
-        TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.FREESTYLE_PROJECT);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), PROJECT_NAME);
 
         assertEquals(getDriver().findElement(By.linkText(PROJECT_NAME)).getText(), PROJECT_NAME);
     }

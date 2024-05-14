@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.FreestyleConfigPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -33,7 +34,7 @@ public class FreestyleProject1Test extends BaseTest {
 
     @Test
     public void testAddProject() {
-        TestUtils.createItem(TestUtils.FREESTYLE_PROJECT, FREESTYLE_PROJECT_NAME, this);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), FREESTYLE_PROJECT_NAME);
 
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//h1[text()='" + FREESTYLE_PROJECT_NAME + "']")).getText(),
@@ -84,7 +85,7 @@ public class FreestyleProject1Test extends BaseTest {
 
     @Test
     public void testEditFreestyleProjectDescription() {
-        TestUtils.createItem(TestUtils.FREESTYLE_PROJECT, FREESTYLE_PROJECT_NAME, this);
+        TestUtils.createProjectItem(TestUtils.ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), FREESTYLE_PROJECT_NAME);
         getDriver().findElement(By.id("jenkins-home-link")).click();
 
         getDriver().findElement(By.xpath("//span[text() = '"+ FREESTYLE_PROJECT_NAME + "']")).click();

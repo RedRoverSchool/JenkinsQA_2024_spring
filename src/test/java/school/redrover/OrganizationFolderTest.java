@@ -5,9 +5,12 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.FolderConfigPage;
 import school.redrover.model.HomePage;
+import school.redrover.model.OrganizationFolderConfigPage;
 import school.redrover.model.OrganizationFolderProjectPage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
@@ -37,7 +40,7 @@ public class OrganizationFolderTest extends BaseTest {
         String organizationFolderIcon = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(ORGANIZATION_FOLDER_NAME)
-                .selectOrganizationFolderAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.ORGANIZATION_FOLDER, new OrganizationFolderConfigPage(getDriver()))
                 .selectDefaultIcon()
                 .clickSaveButton()
                 .getOrganizationFolderIcon();
@@ -50,7 +53,7 @@ public class OrganizationFolderTest extends BaseTest {
         String pageTitle = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(ORGANIZATION_FOLDER_NAME)
-                .selectOrganizationFolderAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.ORGANIZATION_FOLDER, new OrganizationFolderConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .chooseOrganizationFolder(ORGANIZATION_FOLDER_NAME)
@@ -67,7 +70,7 @@ public class OrganizationFolderTest extends BaseTest {
         String pageTitle = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(ORGANIZATION_FOLDER_NAME)
-                .selectOrganizationFolderAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.ORGANIZATION_FOLDER, new OrganizationFolderConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .chooseOrganizationFolder(ORGANIZATION_FOLDER_NAME)

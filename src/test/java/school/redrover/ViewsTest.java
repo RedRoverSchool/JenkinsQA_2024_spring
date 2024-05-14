@@ -5,7 +5,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.FolderConfigPage;
 import school.redrover.model.HomePage;
+import school.redrover.model.PipelineConfigPage;
 import school.redrover.model.ViewMyListConfigPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
@@ -52,11 +54,11 @@ public class ViewsTest extends BaseTest {
         List<String> projectNameList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(VISIBLE)
-                .selectFolderAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FOLDER, new FolderConfigPage(getDriver()))
                 .clickLogo()
                 .clickNewItem()
                 .setItemName(INVISIBLE)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .clickLogo()
                 .clickPlusForCreateView()
                 .setViewName(VIEW_NAME)
@@ -80,7 +82,7 @@ public class ViewsTest extends BaseTest {
         new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(VISIBLE)
-                .selectFolderAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FOLDER, new FolderConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo();
 
@@ -120,7 +122,7 @@ public class ViewsTest extends BaseTest {
         List<String> actualPipelineViewList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(pipelineName)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .clickPlusForCreateView()

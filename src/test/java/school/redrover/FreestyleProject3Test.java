@@ -29,7 +29,7 @@ public class FreestyleProject3Test extends BaseTest {
         String newProjectName = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FREESTYLE_PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                 .clickSaveButton()
                 .getProjectName();
 
@@ -56,7 +56,7 @@ public class FreestyleProject3Test extends BaseTest {
         List<WebElement> projectList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FREESTYLE_PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .chooseCreatedFreestyleProject(FREESTYLE_PROJECT_NAME)

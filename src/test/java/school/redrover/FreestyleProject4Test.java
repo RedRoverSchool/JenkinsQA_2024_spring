@@ -5,9 +5,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.FreestyleConfigPage;
 import school.redrover.model.FreestyleProjectPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 public class FreestyleProject4Test extends BaseTest {
 
@@ -19,7 +21,7 @@ public class FreestyleProject4Test extends BaseTest {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
                 .clickCreateJob()
                 .setItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                 .clickSaveButton();
 
         Assert.assertTrue(freestyleProjectPage.isProjectNameDisplayed());
@@ -32,7 +34,7 @@ public class FreestyleProject4Test extends BaseTest {
         String theFirstGreetings = new HomePage(getDriver())
                 .clickCreateJob()
                 .setItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .clickCreatedItemName()

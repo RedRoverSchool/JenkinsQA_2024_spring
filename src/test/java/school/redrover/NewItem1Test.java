@@ -7,7 +7,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.CreateNewItemPage;
 import school.redrover.model.HomePage;
+import school.redrover.model.PipelineConfigPage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
@@ -61,7 +63,7 @@ public class NewItem1Test extends BaseTest {
         List<String> projectList = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(nameProject)
-                .selectPipelineAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .getItemList();

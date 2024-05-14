@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.FreestyleConfigPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils.*;
 import school.redrover.runner.TestUtils;
@@ -14,7 +15,7 @@ public class FreestyleProject14Test extends BaseTest {
 
         final String FREESTYLE_PROJECT_NAME = "Random freestyle project";
 
-        TestUtils.createJob(this, Job.FREESTYLE, FREESTYLE_PROJECT_NAME);
+        TestUtils.createProjectItem(ProjectType.FREESTYLE_PROJECT, this, new FreestyleConfigPage(getDriver()), FREESTYLE_PROJECT_NAME);
 
         getDriver().findElement(By.name(
                 "description")).sendKeys("Some desc for Freestyle project");

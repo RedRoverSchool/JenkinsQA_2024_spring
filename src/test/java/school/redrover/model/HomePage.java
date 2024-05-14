@@ -498,15 +498,6 @@ public class HomePage extends BasePage {
         return heading.getText();
     }
 
-    public HomePage createNewFolder(String folderName) {
-        clickNewItem()
-                .setItemName(folderName)
-                .selectFolderAndClickOk()
-                .clickSaveButton()
-                .clickLogo();
-        return new HomePage(getDriver());
-    }
-
     public MovePage chooseFolderToMove() {
         getWait5().until(ExpectedConditions.visibilityOf(moveOption)).click();
         return new MovePage(getDriver());
