@@ -6,7 +6,6 @@ import org.openqa.selenium.support.FindBy;
 import school.redrover.model.HomePage;
 import school.redrover.model.UserPage;
 
-import java.security.Key;
 import java.util.List;
 
 public abstract class BasePage extends BaseModel {
