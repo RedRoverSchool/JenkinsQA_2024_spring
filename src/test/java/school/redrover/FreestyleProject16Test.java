@@ -75,8 +75,6 @@ public class FreestyleProject16Test extends BaseTest {
     public void testDeleteFirstProject() {
 
         getDriver().findElement(By.xpath
-                ("//span[text()='" + NEW_PROJECT_NAME + "']")).click();
-        getDriver().findElement(By.xpath
                 ("//span[text()='Delete Project']")).click();
         getDriver().findElement(By.xpath("//*[@id='jenkins']/dialog/div[3]/button[1]")).click();
         getDriver().findElement(By.id("search-box")).sendKeys(NEW_PROJECT_NAME, Keys.RETURN);

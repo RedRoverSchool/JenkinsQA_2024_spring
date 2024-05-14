@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.model.FolderProjectPage;
 import school.redrover.model.FreestyleProjectPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
@@ -46,7 +45,7 @@ public class FreestyleProject24Test extends BaseTest {
     public void testAddDescription() {
 
         String currentFreestyleDescription = new FreestyleProjectPage(getDriver())
-                .clickChangeDescription()
+                .clickAddDescription()
                 .setDescription(DESCRIPTION_TEXT)
                 .clickSaveButton()
                 .getProjectDescriptionText();
@@ -57,7 +56,7 @@ public class FreestyleProject24Test extends BaseTest {
     @Test(dependsOnMethods = "testAddDescription")
     public void testFreestyleProjectMoveToFolder() {
 
-        new HomePage(getDriver())
+        List<String> itemListInsideFolder = new HomePage(getDriver())
                 .clickLogo()
                 .clickNewItem()
                 .setItemName(FOLDER)
@@ -67,9 +66,8 @@ public class FreestyleProject24Test extends BaseTest {
                 .openItemDropdown(FREESTYLE_NAME)
                 .chooseFolderToMove()
                 .chooseFolderAndSave(FOLDER)
-                .clickBreadcrumbFolder(FOLDER);
-
-        List<String> itemListInsideFolder = new FolderProjectPage(getDriver()).getItemListInsideFolder();
+                .clickBreadcrumbFolder(FOLDER)
+                .getItemListInsideFolder();
 
         Assert.assertTrue(itemListInsideFolder.contains(FREESTYLE_NAME));
     }
