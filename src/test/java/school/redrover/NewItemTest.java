@@ -13,24 +13,16 @@ import java.util.List;
 public class NewItemTest extends BaseTest {
 
     @Test
-    public void testAddItem() {
-        List<String> itemList = new HomePage(getDriver())
+    public void testOpenCreateNewItemPage(){
+        String newItemHeader = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName("NewItemName")
-                .selectFreestyleAndClickOk()
-                .clickLogo()
-                .getItemList();
+                .getPageTitle();
 
-        Assert.assertListContainsObject(itemList, "NewItemName", "Item not displayed");
-    }
-
-    @Test
-    public void testGoToNewJobPage() {
-        String pageHeading = new HomePage(getDriver())
-                .clickNewItem()
+        String TextAboveNameField = new CreateNewItemPage(getDriver())
                 .getTitleOfNameField();
 
-        Assert.assertEquals(pageHeading,"Enter an item name");
+        Assert.assertEquals(newItemHeader, "New Item [Jenkins]");
+        Assert.assertEquals(TextAboveNameField, "Enter an item name");
     }
 
     @Test

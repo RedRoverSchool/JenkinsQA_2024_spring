@@ -202,4 +202,8 @@ public class CreateNewItemPage extends BasePage {
         return titleOfNameField.getText();
     }
 
+    public String getPageTitle() {
+        return getDriver().getTitle();
+    }
+
 }
