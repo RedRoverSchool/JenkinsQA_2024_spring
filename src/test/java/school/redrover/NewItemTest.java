@@ -8,8 +8,6 @@ import school.redrover.model.HomePage;
 import school.redrover.model.ItemPage;
 import school.redrover.runner.BaseTest;
 
-import java.util.List;
-
 public class NewItemTest extends BaseTest {
 
     @Test
