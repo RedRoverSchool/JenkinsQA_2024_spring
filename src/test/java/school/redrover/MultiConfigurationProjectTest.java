@@ -5,7 +5,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -342,19 +341,16 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testMoveProjectToFolderViaDropdown() {
+
         final String folderName = "Folder";
         TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME, true);
         TestUtils.createProjectItem(TestUtils.ProjectType.FOLDER, this, new FolderConfigPage(getDriver()), folderName, true);
 
-        new HomePage(getDriver()).openItemDropdownWithSelenium(PROJECT_NAME);
-
-        getDriver().findElement(By.linkText("Move")).click();
-        new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" + folderName);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertTrue(
-                getDriver().findElement(By.linkText(folderName)).isDisplayed(),
-                "Project not moved to folder");
+        Assert.assertTrue(new HomePage(getDriver()).openItemDropdownWithSelenium(PROJECT_NAME)
+                .selectMoveFromDropdown()
+                .selectFolder(folderName)
+                .clickMove()
+                .isProjectInsideFolder(PROJECT_NAME, folderName));
     }
 
     @Test
@@ -393,5 +389,31 @@ public class MultiConfigurationProjectTest extends BaseTest {
         Assert.assertEquals(
                 discardOldBuildsList,
                 List.of(daysToKeep, numToKeep, artifactDaysToKeep, artifactNumToKeep));
+    }
+
+    @Test
+    public void testSearchForCreatedProject(){
+
+        String currentUrl = TestUtils
+                .createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
+                .searchProjectByName(PROJECT_NAME, new MultiConfigurationProjectPage(getDriver()))
+                .getCurrentUrl();
+
+        Assert.assertTrue(currentUrl.contains(PROJECT_NAME));
+    }
+
+    @Test
+    public void testVerifyThatDisabledIconIsDisplayedOnDashboard(){
+
+        List<String> disabledProjectList = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PROJECT_NAME)
+                .selectMultiConfigurationAndClickOk()
+                .clickBreadcrumbsProjectName(PROJECT_NAME)
+                .clickDisableProject()
+                .clickLogo()
+                .getDisabledProjectListText();
+
+        Assert.assertTrue(disabledProjectList.contains(PROJECT_NAME));
     }
 }

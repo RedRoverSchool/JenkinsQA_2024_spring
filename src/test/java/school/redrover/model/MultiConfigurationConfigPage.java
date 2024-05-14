@@ -39,6 +39,9 @@ public class MultiConfigurationConfigPage extends BaseConfigPage<MultiConfigurat
     @FindBy(css = "[name='strategy'] input.positive-number")
     private List<WebElement> discardOldBuildsList;
 
+    @FindBy(css = "[href*='job']")
+    private WebElement breadcrumbsProjectName;
+
     public MultiConfigurationConfigPage(WebDriver driver) {
         super(driver, new MultiConfigurationProjectPage(driver));
     }
@@ -104,5 +107,11 @@ public class MultiConfigurationConfigPage extends BaseConfigPage<MultiConfigurat
                 .stream()
                 .map(e -> e.getAttribute("value"))
                 .toList();
+    }
+
+    public MultiConfigurationProjectPage clickBreadcrumbsProjectName(String projectName) {
+        breadcrumbsProjectName.click();
+
+        return new MultiConfigurationProjectPage(getDriver());
     }
 }
