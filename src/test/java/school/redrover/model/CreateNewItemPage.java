@@ -132,7 +132,7 @@ public class CreateNewItemPage extends BasePage {
     }
 
     public String getErrorMessage() {
-        return errorMessage.getText();
+        return itemNameHint.getText();
     }
 
     public String getCreateNewItemPageUrl() {

@@ -238,6 +238,18 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testCreateProjectWithoutName() {
+        String errorMessage = "This field cannot be empty";
+
+        String createWithoutName = new HomePage(getDriver())
+                .clickNewItem()
+                .selectMultiConfiguration()
+                .getErrorMessage();
+
+        Assert.assertTrue(createWithoutName.contains(errorMessage));
+    }
+
+    @Test
+    public void testCreateProjectWithoutName1() {
         final String errorMessage = "This field cannot be empty";
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
