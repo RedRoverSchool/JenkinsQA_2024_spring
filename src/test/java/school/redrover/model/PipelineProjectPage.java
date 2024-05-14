@@ -7,6 +7,8 @@ import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseProjectPage;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,6 +55,9 @@ public class PipelineProjectPage extends BaseProjectPage {
 
     @FindBy(xpath = "//div[@id = 'buildHistory']//tr[@class != 'build-search-row']")
     private List<WebElement> listOfBuilds;
+
+    @FindBy(xpath = "//div[@class='pane-content']//a[contains(text(),'#')]")
+    private List<WebElement> buildHistoryNumberList;
 
     @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
     private WebElement fullStageViewButton;
@@ -358,5 +363,21 @@ public class PipelineProjectPage extends BaseProjectPage {
         return (String) js.executeScript(
                 "return window.getComputedStyle(arguments[0]).getPropertyValue('--success');",
                 statusMark);
+    }
+
+    public List<String> getBuildHistoryList() {
+        List<String> buildOrderList = new ArrayList<>();
+        for (WebElement buildNumber : buildHistoryNumberList) {
+            buildOrderList.add(buildNumber.getText());
+        }
+
+        return buildOrderList;
+    }
+
+    public List<String> getExpectedBuildHistoryDescendingList() {
+        List<String> buildOrderList = new ArrayList<>(getBuildHistoryList());
+        buildOrderList.sort(Collections.reverseOrder());
+
+        return buildOrderList;
     }
 }
