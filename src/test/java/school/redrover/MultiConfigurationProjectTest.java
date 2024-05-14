@@ -258,7 +258,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         final String projectName = "MultiBuild";
         final String errorMessage = "A job already exists with the name " + "‘" + projectName + "’";
 
-        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME, true);
+        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), projectName, true);
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();

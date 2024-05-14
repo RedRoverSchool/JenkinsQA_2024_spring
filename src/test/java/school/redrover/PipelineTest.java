@@ -84,11 +84,6 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
     }
 
-    private void clickConfigButton() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
-                By.xpath("//a[contains(@href, 'configure')]")))).click();
-    }
-
     public void createNewPipeline(String pipelineName) {
         getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@href='/view/all/newJob']"))).click();
         getWait5().until(ExpectedConditions.presenceOfElementLocated(By.id("name"))).sendKeys(pipelineName);
@@ -597,8 +592,7 @@ public class PipelineTest extends BaseTest {
 
         turnNodeOnIfOffline();
 
-        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), PIPELINE_NAME, true);
-        clickConfigButton();
+        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), PIPELINE_NAME, false);
         sendScript(number_of_stages);
         getDriver().findElement(By.name("Submit")).click();
 
@@ -670,8 +664,8 @@ public class PipelineTest extends BaseTest {
 
         int number_of_stages = 2;
 
-        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), PIPELINE_NAME, true);
-        clickConfigButton();
+        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), PIPELINE_NAME, false);
+
         sendScript(number_of_stages);
         getDriver().findElement(By.name("Submit")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/build?delay=0sec']")).click();
@@ -704,7 +698,7 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testHideDescriptionPreview() {
-        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), "Pipeline3", true);
+        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), "Pipeline3", false);
 
         getDriver().findElement(By.name("description")).sendKeys("Pipeline description");
         getDriver().findElement(By.cssSelector(".textarea-show-preview")).click();
@@ -789,7 +783,7 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testBreadcrumbTrailsContainsPipelineName() {
-        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), "Pipeline project", true);
+        TestUtils.createProjectItem(TestUtils.ProjectType.PIPELINE, this, new PipelineConfigPage(getDriver()), "Pipeline project", false);
 
         List<WebElement> breadcrumbBarElements = List.of(
                 getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[1]")),

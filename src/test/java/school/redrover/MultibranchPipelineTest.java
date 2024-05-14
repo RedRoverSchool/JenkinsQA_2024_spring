@@ -127,7 +127,7 @@ public class MultibranchPipelineTest extends BaseTest {
         final String MULTIBRANCH_PIPELINE_NAME = "First Multibranch Pipeline project";
         final String expectedErrorMessage = "The new name is the same as the current name.";
 
-        TestUtils.createProjectItem(TestUtils.ProjectType.MULTIBRANCH_PIPELINE, this, new MultibranchPipelineConfigPage(getDriver()), MULTIBRANCH_PIPELINE_NAME, true);
+        TestUtils.createProjectItem(TestUtils.ProjectType.MULTIBRANCH_PIPELINE, this, new MultibranchPipelineConfigPage(getDriver()), MULTIBRANCH_PIPELINE_NAME, false);
 
         getDriver().findElement(By.cssSelector("#breadcrumbs > li:nth-child(3")).click();
         getDriver().findElement(By.cssSelector("#tasks > div:nth-child(8) > span > a")).click();
