@@ -15,6 +15,7 @@ public class FreestyleProject33test extends BaseTest {
 
     @Test
     public void testCreateNewFreestyleProject() {
+
         projectName = TestUtils.getUniqueName("testProject");
 
         String actualProjectName = new HomePage(getDriver())
@@ -29,6 +30,7 @@ public class FreestyleProject33test extends BaseTest {
 
     @Test
     public void testCreateFreeStyleProjectWithSpecialSymbol() {
+
         projectName = TestUtils.getUniqueName("testproject/");
 
         String errorText = new HomePage(getDriver())
@@ -67,13 +69,13 @@ public class FreestyleProject33test extends BaseTest {
                 .selectFreeStyleProject()
                 .clickOkAnyway(new CreateItemPage(getDriver()))
                 .getErrorMessageText();
-        System.out.println(errorText);
 
         Assert.assertTrue(errorText.contains("Logging ID="));
     }
 
     @Test(dependsOnMethods = {"testCreateNewFreestyleProject"})
     public void testCreateNewFreestyleProjectWithDuplicateName() {
+
         String errorMessage = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(projectName)
@@ -86,6 +88,7 @@ public class FreestyleProject33test extends BaseTest {
 
     @Test
     public void testCreateNewFreestyleProjectWithEmptyName() {
+
         Boolean errorMessage = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName("")
@@ -97,7 +100,9 @@ public class FreestyleProject33test extends BaseTest {
 
     @Test(dependsOnMethods = {"testCreateNewFreestyleProject"})
     public void testCreateNewFreestyleProjectHomePageView() {
-        List<String> items = new HomePage(getDriver()).getItemList();
+
+        List<String> items = new HomePage(getDriver())
+                .getItemList();
 
         Assert.assertTrue(items.contains(projectName));
     }
