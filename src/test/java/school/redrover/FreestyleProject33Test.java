@@ -59,9 +59,8 @@ public class FreestyleProject33Test extends BaseTest {
 
     @Test
     public void testCreateFreeStyleProjectWithLongestName() {
-        for (int i = 0; i < 260; i++) {
-            projectName += "a";
-        }
+
+        projectName += "a".repeat(260);
 
         String errorText = new HomePage(getDriver())
                 .clickNewItem()
