@@ -352,7 +352,8 @@ public class PipelineProjectPage extends BaseProjectPage {
     public List<String> getPermalinkList() {
 
         return permalinkList.stream()
-                .map(permalink -> permalink.getText().split(",")[0].trim())
+                .map(WebElement::getText)
+                .map(permalink -> permalink.split(",")[0].trim())
                 .collect(Collectors.toList());
     }
 
