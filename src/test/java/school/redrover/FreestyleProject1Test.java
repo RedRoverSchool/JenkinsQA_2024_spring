@@ -60,6 +60,11 @@ public class FreestyleProject1Test extends BaseTest {
         new Actions(getDriver()).moveToElement(getDriver().findElement(
                 By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]"))).perform();
 
+        WebElement dropdownChevron = getDriver().findElement(
+                By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]/following-sibling::button"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
+                "arguments[0].dispatchEvent(new Event('click'));", dropdownChevron);
+        getDriver().findElement(By.partialLinkText("Rename")).click();
 
         getDriver().findElement(nameInputField).clear();
         getDriver().findElement(nameInputField).sendKeys(NEW_FREESTYLE_PROJECT_NAME);
