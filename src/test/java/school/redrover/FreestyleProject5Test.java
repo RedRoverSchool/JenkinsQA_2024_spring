@@ -11,7 +11,9 @@ public class FreestyleProject5Test extends BaseTest {
 
     @Test
     public void testCheckFreestyleProjectNameOnTheDashboard() {
+
         String PROJECT_NAME = "ProjectName";
+
         List<String> itemList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(PROJECT_NAME)

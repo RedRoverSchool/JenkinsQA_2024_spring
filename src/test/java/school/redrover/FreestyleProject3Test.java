@@ -4,11 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.CreateNewItemPage;
-import school.redrover.model.CreateNewViewPage;
-import school.redrover.model.FreestyleConfigPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
@@ -53,6 +49,7 @@ public class FreestyleProject3Test extends BaseTest {
 
     @Test
     public void deleteFreestyleProject() {
+
         List<WebElement> projectList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FREESTYLE_PROJECT_NAME)

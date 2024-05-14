@@ -9,6 +9,7 @@ public class FreestyleProject7Test extends BaseTest {
 
     @Test
     public void testCreateFreestyleProject() {
+
         final String freestyleProjectName = "FreestyleProjectTest";
 
         List<String> itemList = new HomePage(getDriver())

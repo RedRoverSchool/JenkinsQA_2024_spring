@@ -30,10 +30,6 @@ public class FreestyleProject6Test extends BaseTest {
                 .clickSaveButton();
     }
 
-    public void goHome() {
-        getDriver().findElement(By.id("jenkins-home-link")).click();
-    }
-
     public FolderProjectPage createFolder() {
 
         return new HomePage(getDriver())
@@ -41,6 +37,10 @@ public class FreestyleProject6Test extends BaseTest {
                 .setItemName(FOLDER_NAME)
                 .selectFolderAndClickOk()
                 .clickSaveButton();
+    }
+
+    public void goHome() {
+        getDriver().findElement(By.id("jenkins-home-link")).click();
     }
 
     @Ignore

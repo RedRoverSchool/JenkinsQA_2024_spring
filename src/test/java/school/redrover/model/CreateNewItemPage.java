@@ -12,6 +12,7 @@ import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CreateNewItemPage extends BasePage {
 
@@ -172,11 +173,7 @@ public class CreateNewItemPage extends BasePage {
         return this;
     }
     public Boolean getOkButtoneState() {
-        if(okButton.getAttribute("disabled") != ""){
-            return false;
-        }else{
-            return true;
-        }
+        return Objects.equals(okButton.getAttribute("disabled"), "");
     }
 
     public CreateNewItemPage clearItemNameField() {

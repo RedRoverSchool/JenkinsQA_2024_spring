@@ -22,19 +22,6 @@ public class FreestyleProjectTest extends BaseTest {
         return getDriver().findElement(By.xpath("//button[@name = 'Submit']"));
     }
 
-    private WebElement jenkinsHomeLink() {
-
-        return getDriver().findElement(By.id("jenkins-home-link"));
-    }
-
-//    public void createFreestyleProject(String newName) {
-//        new HomePage(getDriver())
-//                .clickNewItem()
-//                .setItemName(newName)
-//                .selectFreestyleAndClickOk()
-//                .clickSaveButton();
-//    }
-
     public FreestyleProjectPage createFreestyleProjectWithDescription() {
 
         return new HomePage(getDriver())
@@ -54,13 +41,9 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickSaveButton();
     }
 
-    public void clickDisableEnableButton() {
-        getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).click();
-        submitButton().click();
-    }
-
     @Test
     public void testCreateFreestyleProjectJob() {
+
         String expectedHeading = "My First Freestyle project";
 
         List<String> itemName = new HomePage(getDriver())
@@ -75,6 +58,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testRenameFreestyleProjectFromConfigurationPage() {
+
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FREESTYLE_PROJECT_NAME)
@@ -135,6 +119,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testFreestyleProjectCreate() {
+
         new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FREESTYLE_PROJECT_NAME)
@@ -152,6 +137,7 @@ public class FreestyleProjectTest extends BaseTest {
     @Ignore
     @Test
     public void testAddDescription() {
+
         final String projectName = "New Freestyle project";
         final String description = "Text description of the project";
 
@@ -172,6 +158,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testRenameWithEmptyName() {
+
         new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FREESTYLE_PROJECT_NAME)
@@ -239,6 +226,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testDeleteFreestyleProjectFromConfigurationPage() {
+
         new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FREESTYLE_PROJECT_NAME)
@@ -261,7 +249,6 @@ public class FreestyleProjectTest extends BaseTest {
         String oldProjectName1 = "Race Cars";
         String oldProjectName2 = "Race Bikes";
         String newProjectName = "Vintage Cars";
-
 
         List<String> elementsList = new HomePage(getDriver())
                 .clickNewItem()
@@ -307,6 +294,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testDisableProject() {
+
         new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FREESTYLE_PROJECT_NAME)
@@ -323,6 +311,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testEnableFreestyleProject() {
+
         String disableButtonText = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FREESTYLE_PROJECT_NAME)
@@ -341,6 +330,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testCreateFreestyleProjectWithDescription() {
+
         FreestyleProjectPage freestyleProjectPage = createFreestyleProjectWithDescription();
         String freestyleTitleName = freestyleProjectPage.getProjectName();
         String freestyleDescriptionText = freestyleProjectPage.getProjectDescriptionText();
@@ -357,6 +347,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testEditDescriptionFreestyleProject() {
+
         String addedToDescription = "Create one more build apps";
 
         FreestyleProjectPage freestyleTest = createFreestyleProjectWithDescription();
@@ -375,6 +366,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testMoveFreestyleProjectToFolder() {
+
         String expectedText = String.format("Full project name: %s/%s", FOLDER_NAME, FREESTYLE_PROJECT_NAME);
 
         createFreestyleProjectWithDescription()
@@ -391,6 +383,5 @@ public class FreestyleProjectTest extends BaseTest {
                 .getFullProjectPath();
 
         Assert.assertTrue(actualText.contains(expectedText), "The text does not contain the expected project name.");
-
     }
 }

@@ -13,6 +13,7 @@ import school.redrover.runner.TestUtils;
 import java.util.List;
 
 public class FreestyleProject100Test extends BaseTest {
+
     final String projectName = "This is the project name";
 
     @Test
@@ -44,6 +45,7 @@ public class FreestyleProject100Test extends BaseTest {
 
     @Test
     public void testRenameProjectUsingDropdown() {
+
         final String projectName = "This is the project to be renamed";
         TestUtils.createNewItem(this, projectName, TestUtils.Item.FREESTYLE_PROJECT);
 
@@ -63,6 +65,7 @@ public class FreestyleProject100Test extends BaseTest {
 
     @Test
     public void testDeleteUsingSidePanel() {
+
         final String projectName = "This is the project to be deleted";
         TestUtils.createNewItem(this, projectName, TestUtils.Item.FREESTYLE_PROJECT);
 

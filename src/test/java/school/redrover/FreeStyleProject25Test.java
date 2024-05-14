@@ -1,40 +1,45 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
 
 public class FreeStyleProject25Test extends BaseTest {
+
     @Test
-    public void testCreate(){
+    public void testCreate() {
+
+        final String name = "StasM";
+
         List<String> jobList = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName("StasM")
+                .setItemName(name)
                 .selectFreestyleAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
                 .getItemList();
 
-        Assert.assertTrue(jobList.contains("StasM"));
+        Assert.assertTrue(jobList.contains(name));
     }
 
-       @Test(dependsOnMethods = "testCreate")
-        public void testCreateFolder(){
-            getDriver().findElement(By.linkText("New Item")).click();
-            getDriver().findElement(By.id("name")).sendKeys("Folder_1");
-            getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
-            getDriver().findElement(By.id("ok-button")).click();
-            getDriver().findElement(By.name("Submit")).click();
-            TestUtils.returnToDashBoard(this);
-            Assert.assertEquals(
-                    getDriver().findElement(By.xpath("//*[@id=\"job_Folder_1\"]/td[3]/a/span")).getText(),
-                    "Folder_1");
+    @Test(dependsOnMethods = "testCreate")
+    public void testCreateFolder() {
+
+        final String name = "Folder_1";
+
+        List<String> itemList = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(name)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .getItemList();
+
+        Assert.assertTrue(itemList.contains(name));
     }
 }
 

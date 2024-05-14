@@ -1,19 +1,18 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.model.*;
+import school.redrover.model.CreateItemPage;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FreestyleProject33test extends BaseTest {
+
     String projectName;
+
     @Test
     public void testCreateNewFreestyleProject() {
         projectName = TestUtils.getUniqueName("testProject");
@@ -72,8 +71,9 @@ public class FreestyleProject33test extends BaseTest {
 
         Assert.assertTrue(errorText.contains("Logging ID="));
     }
+
     @Test(dependsOnMethods = {"testCreateNewFreestyleProject"})
-    public void testCreateNewFreestyleProjectWithDuplicateName(){
+    public void testCreateNewFreestyleProjectWithDuplicateName() {
         String errorMessage = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(projectName)

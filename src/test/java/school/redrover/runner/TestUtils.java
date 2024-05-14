@@ -41,19 +41,10 @@ public final class TestUtils {
         public static final String ORGANIZATION_FOLDER = "jenkins_branch_OrganizationFolder";
     }
 
-    public static final String FREESTYLE_PROJECT = "Freestyle project";
     public static final String PIPELINE = "Pipeline";
-    public static final String MULTI_CONFIGURATION_PROJECT = "Multi-configuration project";
-    public static final String FOLDER = "Folder";
-    public static final String MULTIBRANCH_PIPELINE = "Multibranch Pipeline";
-    public static final String ORGANIZATION_FOLDER = "Organization Folder";
     public static final By DROPDOWN_DELETE = By.cssSelector("button[href $= '/doDelete']");
     public static final By EMPTY_STATE_BLOCK = By.cssSelector("div.empty-state-block");
     public static final String JOB_XPATH = "//*[text()='%s']";
-
-    public static String getUserID(WebDriver driver) {
-        return driver.findElement(By.xpath("//a[contains(@href, 'user')]")).getText();
-    }
 
     public static void createItem(String type, String name, BaseTest baseTest) {
         baseTest.getDriver().findElement(By.linkText("New Item")).click();

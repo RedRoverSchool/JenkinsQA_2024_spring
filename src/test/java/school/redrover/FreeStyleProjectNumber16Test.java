@@ -1,7 +1,5 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
@@ -13,6 +11,7 @@ public class FreeStyleProjectNumber16Test extends BaseTest {
 
     @Test
     public void testFreeStyleProjectExists() {
+
         String projectName = "New FreeStyle Project";
 
         List<String> name = new HomePage(getDriver())

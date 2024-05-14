@@ -20,6 +20,7 @@ public class FreestyleProject24Test extends BaseTest {
     private static final String DESCRIPTION_TEXT = "This project has been added into the folder";
 
     private void dropDown(By xpath) {
+
         WebElement dropdownChevron = getDriver().findElement(xpath);
         ((JavascriptExecutor) getDriver()).executeScript(
                 "arguments[0].dispatchEvent(new Event('mouseenter'));", dropdownChevron);
@@ -91,6 +92,7 @@ public class FreestyleProject24Test extends BaseTest {
 
     @Test(dependsOnMethods = "testCheckFreestyleProjectViaBreadcrumb")
     public void testDeleteFreestyleProjectViaDropdown() {
+
         getDriver().findElement(By.xpath("//tr//a[@href='job/NewFolder/']")).click();
 
         dropDown(By.xpath("//td//button[@class='jenkins-menu-dropdown-chevron']"));

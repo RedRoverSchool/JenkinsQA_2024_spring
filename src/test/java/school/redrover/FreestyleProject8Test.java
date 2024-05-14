@@ -1,6 +1,5 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
@@ -10,6 +9,7 @@ public class FreestyleProject8Test extends BaseTest {
 
     @Test
     public void testCreateProject() {
+
         String projectName = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName("Freestyle project")
@@ -22,6 +22,7 @@ public class FreestyleProject8Test extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateProject")
     public void testRenamingFreestyleProject() {
+
         final String newName = "New name";
 
         String projectName = new HomePage(getDriver())

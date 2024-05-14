@@ -22,6 +22,7 @@ public class FreestyleProject1Test extends BaseTest {
 
     @Test
     public void testAddProject() {
+
         String projectName = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FREESTYLE_PROJECT_NAME)
@@ -44,6 +45,7 @@ public class FreestyleProject1Test extends BaseTest {
 
     @Test(dependsOnMethods = "testAddProject")
     public void testOpenConfigurePageOfProject() {
+
         String headerText = new HomePage(getDriver())
                 .clickCreatedFreestyleName()
                 .clickConfigure()
@@ -57,6 +59,7 @@ public class FreestyleProject1Test extends BaseTest {
 
     @Test(dependsOnMethods = {"testOpenConfigurePageOfProject", "testAddedProjectIsDisplayedOnTheDashboardPanel"})
     public void testRenameProjectFromTheBoard() {
+
         new Actions(getDriver()).moveToElement(getDriver().findElement(
                 By.xpath("//span[text()=('" + FREESTYLE_PROJECT_NAME + "')]"))).perform();
 
@@ -80,6 +83,7 @@ public class FreestyleProject1Test extends BaseTest {
 
     @Test
     public void testEditFreestyleProjectDescription() {
+
         String projectDescriptionText = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FREESTYLE_PROJECT_NAME)

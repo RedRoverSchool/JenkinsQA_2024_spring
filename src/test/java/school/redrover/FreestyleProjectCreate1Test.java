@@ -11,6 +11,7 @@ import school.redrover.runner.TestUtils;
 
 
 public class FreestyleProjectCreate1Test extends BaseTest {
+
     private final static String FREESTYLE_PROJECT_NAME = "FreeStyleFirst";
 
     @Test

@@ -11,11 +11,13 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 
 public class FreestyleProject20Test extends BaseTest {
+
     final String projectName = "Freestyle-" + UUID.randomUUID();
     final String newProjectName = "New" + projectName;
     final String folderName = "Folder-" + UUID.randomUUID();
 
     public void createItem(String itemName, String item) {
+
         getDriver().findElement(By.linkText("New Item")).click();
 
         getDriver().findElement(By.id("name")).sendKeys(itemName);
@@ -37,6 +39,7 @@ public class FreestyleProject20Test extends BaseTest {
 
     @Test
     public void testCreateFreestyleProject() {
+
         createItem(projectName,"Freestyle project");
 
         getDriver().findElement(By.linkText(projectName)).click();
@@ -46,6 +49,7 @@ public class FreestyleProject20Test extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateFreestyleProject")
     public void testAddDescription() {
+
         getDriver().findElement(By.linkText("Dashboard")).click();
         getDriver().findElement(By.linkText(projectName)).click();
 
@@ -60,6 +64,7 @@ public class FreestyleProject20Test extends BaseTest {
 
     @Test(dependsOnMethods = "testAddDescription")
     public void testRenameProject() {
+
         getDriver().findElement(By.linkText("Dashboard")).click();
         getDriver().findElement(By.linkText(projectName)).click();
 
@@ -73,6 +78,7 @@ public class FreestyleProject20Test extends BaseTest {
 
     @Test(dependsOnMethods = "testRenameProject")
     public void testMoveToFolder() {
+
         getDriver().findElement(By.linkText("Dashboard")).click();
         createItem(folderName,"Folder");
         getDriver().findElement(By.linkText(newProjectName)).click();
@@ -96,6 +102,7 @@ public class FreestyleProject20Test extends BaseTest {
 
     @Test(dependsOnMethods = "testMoveToFolder")
     public void testDeleteProject() {
+
         getDriver().findElement(By.linkText(folderName)).click();
         getDriver().findElement(By.linkText(newProjectName)).click();
 
