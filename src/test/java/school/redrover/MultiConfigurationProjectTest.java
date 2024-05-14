@@ -383,7 +383,6 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .setArtifactNumToKeepStr(artifactNumToKeep)
                 .clickSaveButton()
                 .clickConfigureButton()
-                .clickAdvancedButton()
                 .getDiscardOldBuildsListText();
 
         Assert.assertEquals(
@@ -394,8 +393,9 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Test
     public void testSearchForCreatedProject(){
 
-        String currentUrl = TestUtils
-                .createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
+        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME, true);
+
+        String currentUrl = new HomePage(getDriver())
                 .searchProjectByName(PROJECT_NAME, new MultiConfigurationProjectPage(getDriver()))
                 .getCurrentUrl();
 
@@ -408,7 +408,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         List<String> disabledProjectList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(PROJECT_NAME)
-                .selectMultiConfigurationAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, new MultiConfigurationConfigPage(getDriver()))
                 .clickBreadcrumbsProjectName(PROJECT_NAME)
                 .clickDisableProject()
                 .clickLogo()
