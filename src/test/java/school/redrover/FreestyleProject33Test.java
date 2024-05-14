@@ -9,7 +9,7 @@ import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
-public class FreestyleProject33test extends BaseTest {
+public class FreestyleProject33Test extends BaseTest {
 
     String projectName;
 
