@@ -163,7 +163,7 @@ public class FolderTest extends BaseTest {
                 .clickFolder(FOLDER_NAME)
                 .clickNewItemInsideFolder()
                 .setItemName(MULTI_CONFIGURATION_NAME)
-                .selectFreestyleAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                 .clickLogo()
                 .clickFolder(FOLDER_NAME);
 

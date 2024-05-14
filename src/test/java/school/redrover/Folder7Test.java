@@ -53,8 +53,9 @@ public class Folder7Test extends BaseTest {
     @Test
     public void testRenameFolder() {
 
+        TestUtils.createProjectItem(TestUtils.ProjectType.FOLDER, this, new FolderConfigPage(getDriver()), OLD_NAME);
+
         List<String> folderList = new HomePage(getDriver())
-                .createNewFolder(OLD_NAME)
                 .clickFolder(OLD_NAME)
                 .clickOnRenameButton()
                 .setNewName(NEW_NAME)

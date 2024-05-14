@@ -3,8 +3,10 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.FreestyleConfigPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 public class FreestyleProject8Test extends BaseTest {
 
@@ -13,7 +15,7 @@ public class FreestyleProject8Test extends BaseTest {
         String name = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName("Freestyle project")
-                .selectFreestyleAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                 .clickSaveButton()
                 .getProjectName();
 

@@ -5,8 +5,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.FreestyleConfigPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 
 public class FreestyleProject17Test extends BaseTest {
@@ -19,7 +21,7 @@ public class FreestyleProject17Test extends BaseTest {
 
         String projectName = new HomePage(getDriver())
                 .clickNewItem().setItemName(JOB_NAME)
-                .selectFreestyleAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                 .setDescription(projectDescription)
                 .clickSaveButton()
                 .getProjectName();
@@ -33,7 +35,7 @@ public class FreestyleProject17Test extends BaseTest {
 
         String projectDescriptionText = new HomePage(getDriver())
                 .clickNewItem().setItemName(JOB_NAME)
-                .selectFreestyleAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                 .setDescription(projectDescription)
                 .clickSaveButton()
                 .clickConfigure()

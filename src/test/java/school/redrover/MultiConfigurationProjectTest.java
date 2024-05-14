@@ -273,7 +273,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         List<String> projectNameList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(PROJECT_NAME)
-                .selectMultiConfigurationAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, new MultiConfigurationConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .getItemList();
@@ -373,8 +373,10 @@ public class MultiConfigurationProjectTest extends BaseTest {
         final String artifactDaysToKeep = generateRandomNumber();
         final String artifactNumToKeep = generateRandomNumber();
 
+        TestUtils.createProjectItem(TestUtils.ProjectType.MULTI_CONFIGURATION_PROJECT, this, new MultiConfigurationConfigPage(getDriver()), PROJECT_NAME);
+
         List<String> discardOldBuildsList =
-                TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
+                new HomePage(getDriver())
                 .clickMCPName(PROJECT_NAME)
                 .clickConfigureButton()
                 .clickDiscardOldBuilds()

@@ -4,8 +4,10 @@ import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.FreestyleConfigPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 public class FreestyleProject10Test extends BaseTest {
     private static final String NEW_PROJECT_NAME = "New freestyle project";
@@ -15,7 +17,7 @@ public class FreestyleProject10Test extends BaseTest {
         new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(projectName)
-                .selectFreestyleAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo();
     }

@@ -5,8 +5,10 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.FreestyleConfigPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 public class FreestyleProject9Test extends BaseTest {
     private final String freestyleProjectName = "Freestyle Project";
@@ -16,7 +18,7 @@ public class FreestyleProject9Test extends BaseTest {
         new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(freestyleProjectName)
-                .selectFreestyleAndClickOk()
+                .selectProjectTypeAndClickOk(TestUtils.ProjectType.FREESTYLE_PROJECT, new FreestyleConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo();
     }
