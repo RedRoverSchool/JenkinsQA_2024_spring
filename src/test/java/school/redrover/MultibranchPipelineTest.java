@@ -447,11 +447,11 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertEquals(disabledMessage, "This Multibranch Pipeline is currently disabled");
     }
-    @Ignore
     @Test(dependsOnMethods = "testVerifyMpDisabledOnStatusPage")
     public void testVerifyMpDisabledMessageColorOnStatusPage() {
         String disabledMessageColor = new HomePage(getDriver())
                 .clickMPName(MULTI_PIPELINE_NAME)
+//                .clickDisableEnableMultibranchPipeline()
                 .getDisableMultibranchPipelineTextColor();
 
         Assert.assertEquals(disabledMessageColor, "rgba(254, 130, 10, 1)");
@@ -494,7 +494,8 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertEquals(buttonName, "Disable Multibranch Pipeline");
     }
-    @Test(dependsOnMethods = "testCreateMultibranchPipeline")
+
+    @Test(dependsOnMethods = "testMultibranchPipelineEnable")
     public void testDeleteProject(){
         boolean itemIsDeleted = new HomePage(getDriver())
                 .clickJobByName(MULTI_PIPELINE_NAME,
