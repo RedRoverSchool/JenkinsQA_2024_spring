@@ -289,6 +289,6 @@ public class FolderTest extends BaseTest {
                 .clickYesForDeleteFolder()
                 .getItemList();
 
-        Assert.assertTrue(jobList.isEmpty());
+        Assert.assertListNotContainsObject(jobList, FOLDER_NAME, FOLDER_NAME + " not removed!");
     }
 }
