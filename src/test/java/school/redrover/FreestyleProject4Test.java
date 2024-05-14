@@ -1,8 +1,5 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.FreestyleProjectPage;
@@ -14,6 +11,8 @@ import java.util.List;
 public class FreestyleProject4Test extends BaseTest {
 
     private static final String PROJECT_NAME = "JavaHashGroupProject";
+
+    private final String projectItemDescription = "This is first Project";
 
     @Test
     public void testCreateNewFreestyleProject() {
@@ -45,12 +44,12 @@ public class FreestyleProject4Test extends BaseTest {
         Assert.assertEquals(welcomeJenkinsHeader, "Welcome to Jenkins!");
     }
 
+
     @Test
-    public void testCreateNewFreestyleProjectWithDescription() {
-        final String projectItemDescription = "This is first Project";
+    public void testCreateNewFreestyleProjectWithDescription () {
 
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
-                .clickNewItem()
+                .clickCreateJob()
                 .setItemName(PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .setDescription(projectItemDescription)
@@ -58,11 +57,21 @@ public class FreestyleProject4Test extends BaseTest {
 
         Assert.assertEquals(freestyleProjectPage.getProjectName(), PROJECT_NAME);
         Assert.assertEquals(freestyleProjectPage.getProjectDescriptionText(), projectItemDescription);
+    }
 
-        List<String> itemList = freestyleProjectPage
-                .clickLogo()
+    @Test (dependsOnMethods = "testCreateNewFreestyleProjectWithDescription")
+    public void testCheckExistedNewFreestyleProject() {
+        List<String> itemList = new HomePage(getDriver())
                 .getItemList();
 
-        Assert.assertTrue(itemList.contains(PROJECT_NAME));
+        Assert.assertTrue((itemList.contains(PROJECT_NAME)));
+    }
+    @Test (dependsOnMethods = "testCreateNewFreestyleProjectWithDescription")
+    public void testCheckNewFreestyleProjectDescription() {
+        String description = new HomePage(getDriver())
+                .clickCreatedFreestyleName()
+                .getProjectDescriptionText();
+
+        Assert.assertEquals(description, projectItemDescription);
     }
 }
