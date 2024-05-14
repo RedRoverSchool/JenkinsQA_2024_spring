@@ -192,7 +192,11 @@ public class CreateNewItemPage extends BasePage {
         return itemNameHint.getCssValue("color");
     }
 
-    public Boolean okButtonIsEnabled() { return okButton.isEnabled(); }
+    public String getErrorMessageColor() {
+        return errorMessage.getCssValue("color");
+    }
+
+    public Boolean isOkButtonEnabled() { return okButton.isEnabled(); }
 
     public String getTitleOfNameField() {
         return titleOfNameField.getText();

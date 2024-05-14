@@ -22,7 +22,7 @@ public class AItemTest extends BaseTest {
                 .clearItemNameField()
                 .selectMultibranchPipelineAndClickOk();
 
-        Assert.assertFalse(new CreateNewItemPage(getDriver()).okButtonIsEnabled());
+        Assert.assertFalse(new CreateNewItemPage(getDriver()).isOkButtonEnabled());
     }
 
     @Test
