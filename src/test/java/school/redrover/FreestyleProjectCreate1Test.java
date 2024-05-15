@@ -33,7 +33,7 @@ public class FreestyleProjectCreate1Test extends BaseTest {
                 .setItemName(FREESTYLE_PROJECT_NAME)
                 .getErrorMessageInvalidCharacterOrDuplicateName();
 
-       Boolean isEnabled = new CreateNewItemPage(getDriver()).okButtonIsEnabled();
+       Boolean isEnabled = new CreateNewItemPage(getDriver()).isOkButtonEnabled();
 
        getDriver().findElement(By.id("name")).sendKeys(Keys.ENTER);
 

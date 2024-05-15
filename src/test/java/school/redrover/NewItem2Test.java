@@ -62,7 +62,7 @@ public class NewItem2Test extends BaseTest {
         String actualHintText = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(restrictedChar + PROJECT_NAME)
-                .getErrorMessageInvalidCharacter();
+                .getColorOfErrorMessageWhenUnsafeChar();
 
         String actualHintColor = new CreateNewItemPage(getDriver())
                 .getColorOfErrorMessageWhenUnsafeChar();
