@@ -1,6 +1,7 @@
 package school.redrover.model;
 
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -39,6 +40,12 @@ public class MultiConfigurationProjectPage extends BaseProjectPage {
     @FindBy(css = "#breadcrumbBar li:last-child")
     private WebElement breadcrumbs;
 
+    @FindBy(xpath = "//*[span = 'Delete Multi-configuration project']")
+    private WebElement menuDelete;
+
+    @FindBy(xpath = "//*[contains(@href, 'rename')]")
+    private WebElement menuRename;
+
     public MultiConfigurationProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -52,6 +59,11 @@ public class MultiConfigurationProjectPage extends BaseProjectPage {
     public MultiConfigurationProjectPage addOrEditDescription(String description) {
         descriptionField.sendKeys(description);
 
+        return this;
+    }
+
+    public MultiConfigurationProjectPage clearDescription() {
+        descriptionField.clear();
         return this;
     }
 
@@ -96,5 +108,19 @@ public class MultiConfigurationProjectPage extends BaseProjectPage {
 
     public boolean isProjectInsideFolder(String projectName, String folderName) {
         return breadcrumbs.getAttribute("data-href").contains(folderName + "/job/" + projectName);
+    }
+
+    public DeleteDialog clickDeleteInMenu(DeleteDialog dialog) {
+        menuDelete.click();
+        return dialog;
+    }
+
+    public MultiConfigurationConfirmRenamePage clickRenameInMenu() {
+        menuRename.click();
+        return new MultiConfigurationConfirmRenamePage(getDriver());
+    }
+
+    public boolean isDescriptionEmpty() {
+        return getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div#description>div")));
     }
 }
