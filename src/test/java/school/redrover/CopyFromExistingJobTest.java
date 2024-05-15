@@ -63,5 +63,4 @@ public class CopyFromExistingJobTest extends BaseTest {
         Assert.assertEquals(jobsFromDropdownMenu, firstLettersJobs);
     }
 
-
 }
