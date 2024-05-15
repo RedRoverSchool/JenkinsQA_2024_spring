@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.DeleteDialog;
 import school.redrover.model.HomePage;
 import school.redrover.model.ItemErrorPage;
 
@@ -356,12 +357,18 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testDeleteMultiConfigurationProjectFromMenu() {
-        TestUtils.createJob(this, TestUtils.Job.MULTI_CONFIGURATION, RANDOM_PROJECT_NAME);
-        getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[3]/a")).click();
+        
+        String actualPageHeading = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(RANDOM_PROJECT_NAME)
+                .selectMultiConfigurationAndClickOk()
+                .clickLogo()
+                .openItemDropdown(RANDOM_PROJECT_NAME)
+                .clickDeleteInDropdown(new DeleteDialog(getDriver()))
+                .clickYes(new HomePage(getDriver()))
+                .getHeadingValue();
 
-        TestUtils.deleteItem(this, RANDOM_PROJECT_NAME);
-
-        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "Welcome to Jenkins!");
+        Assert.assertEquals(actualPageHeading, "Welcome to Jenkins!");
     }
 
     @Test
