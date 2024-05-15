@@ -178,6 +178,7 @@ public class CreateNewItemPage extends BasePage {
         nameTextInCopyForm.sendKeys(name);
         okButton.click();
         return new CreateItemPage(getDriver());
+    }    
 
     public boolean isOkButtonNotActive() {
         try
