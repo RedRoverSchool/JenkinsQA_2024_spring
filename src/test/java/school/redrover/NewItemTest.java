@@ -49,7 +49,7 @@ public class NewItemTest extends BaseTest {
     }
 
     @Test
-    public void testOkButtonUsingValidName() {
+    public void testOkButtonUsingValidNameWithoutType() {
         boolean okButtonIsEnabled = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName("Test Project")
