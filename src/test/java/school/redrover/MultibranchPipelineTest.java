@@ -29,7 +29,6 @@ public class MultibranchPipelineTest extends BaseTest {
             List.of("Status", "Configure", "Scan Multibranch Pipeline Log", "Multibranch Pipeline Events",
                     "Delete Multibranch Pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
     private static final By SEARCH_RESULT_DROPDOWN = By.className("yui-ac-bd");
-    private static final By MULTI_PIPELINE_ON_DASHBOARD_LOCATOR = By.cssSelector("[href='job/" + RENAMED_MULTI_PIPELINE + "/']");
 
     private void createNewMultiPipeline(String multiPipelineName) {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
