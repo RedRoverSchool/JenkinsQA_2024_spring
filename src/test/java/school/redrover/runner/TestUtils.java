@@ -275,14 +275,6 @@ public final class TestUtils {
         }
     }
 
-    public static String getFooterVersionText(BaseTest baseTest) {
-        return baseTest.getDriver().findElement(By.xpath("//button[@type='button']")).getText();
-    }
-    
-    public static void openPageInNewTab(BaseTest baseTest, String url) {
-        baseTest.getDriver().switchTo().newWindow(WindowType.TAB).navigate().to(url);
-    }
-
     public static String getBaseUrl() {
         return ProjectUtils.getUrl();
     }
@@ -294,7 +286,4 @@ public final class TestUtils {
                 .switchToDefaultTheme()
                 .clickLogo();
     }
-
-
-
 }

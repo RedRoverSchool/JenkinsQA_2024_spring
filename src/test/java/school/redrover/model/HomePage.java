@@ -98,9 +98,6 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//*[@class=' job-status-']/td[3]/a")
     private WebElement createdElementInTable;
 
-    @FindBy(css = "[class$=jenkins_ver]")
-    private WebElement version;
-
     @FindBy(className = "jenkins-dropdown__item")
     private List<WebElement> dropDownElements;
 
@@ -115,9 +112,6 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href, '/move')]")
     private WebElement moveOption;
-
-    @FindBy(xpath = "//*[@id='tippy-1']/div/div/div/a[1]")
-    private WebElement about;
 
     @FindBy(xpath = "//*[@href='newJob']")
     private WebElement createJob;
@@ -159,7 +153,10 @@ public class HomePage extends BasePage {
     private WebElement greenBuildArrow;
 
     @FindBy(css = ".disabledJob a")
-    private List <WebElement> disabledProjectList;
+    private List<WebElement> disabledProjectList;
+
+    @FindBy(xpath = "//a[@href='/me/my-views']")
+    private WebElement myViewsOnSidebar;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -390,7 +387,7 @@ public class HomePage extends BasePage {
         return buildExecutorStatusList.size();
     }
 
-    public AboutJenkinsPage selectAboutJenkins() {
+    public AboutJenkinsPage selectAboutJenkinsAndClick() {
         getWait5().until(ExpectedConditions.elementToBeClickable(aboutJenkinsDropdownItem)).click();
 
         return new AboutJenkinsPage(getDriver());
@@ -483,12 +480,6 @@ public class HomePage extends BasePage {
         return new FolderProjectPage(getDriver());
     }
 
-    public HomePage clickVersion() {
-        version.click();
-
-        return this;
-    }
-
     public List<String> getVersionDropDownElementsValues() {
         List<String> actualDropDownElementsValues = new ArrayList<>();
         for (WebElement element : dropDownElements) {
@@ -519,12 +510,6 @@ public class HomePage extends BasePage {
     public MovePage chooseFolderToMove() {
         getWait5().until(ExpectedConditions.visibilityOf(moveOption)).click();
         return new MovePage(getDriver());
-    }
-
-    public AboutPage clickAbout() {
-        about.click();
-
-        return new AboutPage(getDriver());
     }
 
     public HomePage clickWarningIcon() {
@@ -618,5 +603,11 @@ public class HomePage extends BasePage {
     public List<String> getDisabledProjectListText() {
 
         return disabledProjectList.stream().map(WebElement::getText).toList();
+    }
+
+    public MyViewsPage clickMyViewsOnSidebar() {
+        myViewsOnSidebar.click();
+
+        return new MyViewsPage(getDriver());
     }
 }
