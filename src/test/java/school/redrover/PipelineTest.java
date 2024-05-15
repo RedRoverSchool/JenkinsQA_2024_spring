@@ -558,6 +558,64 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(pipelineStatus, "Schedule a Build for " + PIPELINE_NAME);
     }
 
+    @Test(dependsOnMethods = "testEnableBack")
+    public void testPermalinksBuildDetails() {
+        final List<String> expectedPermalinkList =
+                List.of("Last build (#1)", "Last stable build (#1)", "Last successful build (#1)", "Last completed build (#1)");
+
+        List<String> actualPermalinkList = new HomePage(getDriver())
+                .scheduleBuildForItem(PIPELINE_NAME)
+                .waitForBuildSchedulePopUp()
+                .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
+                .getPermalinkList();
+
+        Assert.assertEquals(actualPermalinkList, expectedPermalinkList);
+    }
+
+    @Test(dependsOnMethods = "testPermalinksBuildDetails")
+    public void testGreenBuildSuccessColor() {
+        final String greenHexColor = "#1ea64b";
+
+        String actualHexColor = new HomePage(getDriver())
+                .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
+                .getHexColorSuccessMark();
+
+        Assert.assertEquals(actualHexColor, greenHexColor);
+    }
+
+    @Test(dependsOnMethods = "testGreenBuildSuccessColor")
+    public void testCheckBuildsHistoryDescendingOrder() {
+        List<String> actualBuildsOrderList = new HomePage(getDriver())
+                .scheduleBuildForItem(PIPELINE_NAME)
+                .waitForBuildSchedulePopUp()
+                .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
+                .getBuildHistoryList();
+
+        List<String> expectedBuildOrderList = new PipelineProjectPage(getDriver())
+                .getExpectedBuildHistoryDescendingList();
+
+        Assert.assertEquals(actualBuildsOrderList, expectedBuildOrderList, "Elements are not in descending order");
+    }
+
+    @Test(dependsOnMethods = "testCheckBuildsHistoryDescendingOrder")
+    public void testSetNumberBuildsToKeep() {
+        final int maxNumberBuildsToKeep = 1;
+
+        List<String> buildList = new HomePage(getDriver())
+                .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
+                .clickSidebarConfigureButton(PIPELINE_NAME)
+                .clickDiscardOldBuilds()
+                .setNumberBuildsToKeep(maxNumberBuildsToKeep)
+                .clickSaveButton()
+                .clickLogo()
+                .scheduleBuildForItem(PIPELINE_NAME)
+                .waitForBuildSchedulePopUp()
+                .clickBuildHistory()
+                .getBuildsList();
+
+        Assert.assertEquals(buildList.size(), maxNumberBuildsToKeep);
+    }
+
     @Ignore
     @Test
     public void testConsoleOutputValue() {
@@ -786,68 +844,6 @@ public class PipelineTest extends BaseTest {
 
         Assert.assertTrue(consoleOutput.contains(SUCCEED_BUILD_EXPECTED));
     }
-
-    @Test(dependsOnMethods = "testRunBuildByTriangleButton")
-    public void testPermalinksBuildDetails() {
-        final List<String> expectedPermalinkList =
-                List.of("Last build (#1)", "Last stable build (#1)", "Last successful build (#1)", "Last completed build (#1)");
-
-        List<String> actualPermalinkList = new HomePage(getDriver())
-                .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
-                .getPermalinkList();
-
-        Assert.assertEquals(actualPermalinkList, expectedPermalinkList);
-    }
-
-    @Test(dependsOnMethods = "testPermalinksBuildDetails")
-    public void testGreenBuildSuccessColor() {
-        final String greenHexColor = "#1ea64b";
-
-        String actualHexColor = new HomePage(getDriver())
-                .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
-                .getHexColorSuccessMark();
-
-        Assert.assertEquals(actualHexColor, greenHexColor);
-    }
-
-    @Test(dependsOnMethods = "testGreenBuildSuccessColor")
-    public void testCheckBuildsHistoryDescendingOrder() {
-        List<String> actualBuildsOrderList = new HomePage(getDriver())
-                .scheduleBuildForItem(PIPELINE_NAME)
-                .waitForBuildSchedulePopUp()
-                .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
-                .getBuildHistoryList();
-
-        List<String> expectedBuildOrderList = new PipelineProjectPage(getDriver())
-                .getExpectedBuildHistoryDescendingList();
-
-        Assert.assertEquals(actualBuildsOrderList, expectedBuildOrderList, "Elements are not in descending order");
-    }
-
-    @Ignore
-    @Test(dependsOnMethods = "testCheckBuildsHistoryDescendingOrder")
-    public void testSetPipelineNumberBuildsToKeep() {
-        final String maxNumberBuildsToKeep = "2";
-
-        getDriver().findElement(By.xpath("//td/a[@href='job/" + PIPELINE_NAME + "/']")).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/configure']")).click();
-
-        getDriver().findElement(By.xpath("//label[contains(text(),'Discard')]")).click();
-        getDriver().findElement(By.xpath("//input[@name='_.numToKeepStr']")).sendKeys(maxNumberBuildsToKeep);
-        getDriver().findElement(By.xpath("//button[@name='Apply']")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-
-        getDriver().findElement(By.id("jenkins-head-icon")).click();
-
-        getDriver().findElement((By.xpath("//td[@class='jenkins-table__cell--tight']//a[contains(@tooltip,'Schedule')]"))).click();
-        getDriver().navigate().refresh();
-        getDriver().findElement(By.xpath("//a[@href='/view/all/builds']")).click();
-
-        List<WebElement> numberBuilds = getDriver().findElements(By.xpath("//td[contains(text(),'stable')]"));
-
-        Assert.assertEquals(String.valueOf(numberBuilds.size()), maxNumberBuildsToKeep);
-    }
-
 
     @Test
     public void testBreadcrumbTrailsContainsPipelineName() {

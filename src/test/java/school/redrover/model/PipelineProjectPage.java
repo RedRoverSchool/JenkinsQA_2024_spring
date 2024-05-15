@@ -182,6 +182,12 @@ public class PipelineProjectPage extends BaseProjectPage {
         return new DeleteDialog(getDriver());
     }
 
+    public PipelineConfigPage clickSidebarConfigureButton(String jobName) {
+        getDriver().findElement(By.xpath("//a[@href='/job/" + jobName + "/configure']")).click();
+
+        return new PipelineConfigPage(getDriver());
+    }
+
     public PipelineProjectPage hoverOverBreadcrumbsName() {
         hoverOverElement(breadcrumbsName);
 
