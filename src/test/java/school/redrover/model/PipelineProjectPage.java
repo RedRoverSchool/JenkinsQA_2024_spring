@@ -350,7 +350,8 @@ public class PipelineProjectPage extends BaseProjectPage {
 
     public List<String> getPermalinkList() {
 
-        return permalinkList.stream()
+        return getWait10().until(ExpectedConditions.visibilityOfAllElements(permalinkList))
+                .stream()
                 .map(WebElement::getText)
                 .map(permalink -> permalink.split(",")[0].trim())
                 .collect(Collectors.toList());

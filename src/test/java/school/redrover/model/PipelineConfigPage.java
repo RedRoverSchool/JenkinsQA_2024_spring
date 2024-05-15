@@ -39,6 +39,9 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
     @FindBy(xpath = "//div[@class='textarea-preview']")
     private WebElement textareaPreview;
 
+    @FindBy(xpath = "(//span[@class='ace_string'])[2]")
+    private WebElement echoScript;
+
     public PipelineConfigPage(WebDriver driver) {
         super(driver, new PipelineProjectPage(driver));
     }
@@ -110,6 +113,12 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
     }
 
     public String getTextareaPreviewText() {
+
         return textareaPreview.getText();
+    }
+
+    public String getScriptText() {
+
+        return echoScript.getText();
     }
 }
