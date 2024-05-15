@@ -74,7 +74,7 @@ public class FolderTest extends BaseTest {
                 .clickNewItem()
                 .selectFolder()
                 .setItemName(".")
-                .getErrorMessageInvalidCharacter();
+                .getErrorMessageInvalidCharacterOrDuplicateName();
 
         Assert.assertEquals(errorMessageText, "» “.” is not an allowed name",
                 "The error message is different");
@@ -86,7 +86,7 @@ public class FolderTest extends BaseTest {
                 .clickNewItem()
                 .selectFolder()
                 .setItemName("Folder." + Keys.TAB)
-                .getErrorMessageInvalidCharacter();
+                .getErrorMessageInvalidCharacterOrDuplicateName();
 
         Assert.assertEquals(errorMessageText, "» A name cannot end with ‘.’",
                 "The error message is different");

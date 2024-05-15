@@ -26,6 +26,10 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage {
 
     @FindBy(tagName = "h1")
     private WebElement name;
+    @FindBy(xpath = "//*[contains(@data-title,'Delete')]")
+    private WebElement sidebarDeleteButton;
+    @FindBy(xpath = "//*[contains(@data-id,'ok')]")
+    private WebElement confirmDeleteButton;
 
     @FindBy(xpath = "//div[@id='main-panel']/h1")
     private WebElement projectName;
@@ -99,6 +103,14 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage {
 
     public Integer getSidebarTasksSize() {
         return sidebarTasksList.size();
+    }
+    public MultibranchPipelineProjectPage clickDeleteButton(){
+        sidebarDeleteButton.click();
+        return this;
+    }
+    public HomePage confirmDeleteButton(){
+        confirmDeleteButton.click();
+        return clickLogo();
     }
 
     public MultibranchPipelineProjectPage clickMPDropdownArrow() {

@@ -39,4 +39,5 @@ public class FreestyleConfigPage extends BaseConfigPage<FreestyleProjectPage> {
 
         return new FreestyleConfigPage(getDriver());
     }
+
 }

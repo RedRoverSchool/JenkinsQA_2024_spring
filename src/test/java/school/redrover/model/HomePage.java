@@ -600,6 +600,18 @@ public class HomePage extends BasePage {
         return welcomeJenkinsHeader.getText();
     }
 
+    public HomePage clickDeleteItemAndConfirm(String itemName) {
+        
+        WebElement itemName1 = getDriver().findElement(By.id("job_" + itemName ));
+        openElementDropdown(itemName1);
+        getDriver().findElement(By.xpath("//button[@href='/job/" + itemName +"/doDelete']")).click();
+        getDriver().findElement(By.cssSelector("button[data-id='ok']")).click();
+
+        return this;
+    }
+
+
+
     public String getBuildStatus() {
 
         return greenBuildArrow.getAttribute("tooltip");

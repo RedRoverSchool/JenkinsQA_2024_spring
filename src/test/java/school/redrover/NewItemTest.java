@@ -69,7 +69,7 @@ public class NewItemTest extends BaseTest {
             String actualErrorMessage = new CreateNewItemPage(getDriver())
                     .clearItemNameField()
                     .setItemName("Fold" + specChar + "erdate")
-                    .getErrorMessageInvalidCharacter();
+                    .getErrorMessageInvalidCharacterOrDuplicateName();
 
             String expectMessage = "» ‘" + specChar + "’ is an unsafe character";
 
