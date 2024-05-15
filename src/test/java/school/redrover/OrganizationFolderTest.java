@@ -138,6 +138,34 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertTrue(itemList.contains(newOrganizationFolderName));
     }
 
+    @Test(dependsOnMethods = "testCreateViaNewItem")
+    public void testScanOrganizationFolder(){
+        getDriver().findElement(By.xpath(
+                "//*[@href='job/" + ORGANIZATION_FOLDER_NAME + "/']/span")).click();
+        getDriver().findElement(By.xpath("//*[contains(@href,'console')]")).click();
+
+        Assert.assertNotNull(getDriver().findElements(By.xpath(
+                "//*[contains(@class,'lds-ellipsis')]/div[1]")));
+    }
+
+    @Test(dependsOnMethods = "testCreateViaNewItem")
+    public void testFindOrganizationFolderOnDashboard(){
+        HomePage homePage = new HomePage(getDriver());
+
+        Assert.assertListContainsObject(homePage.getItemList(), ORGANIZATION_FOLDER_NAME,
+                ORGANIZATION_FOLDER_NAME + "is not on the dashboard");
+    }
+
+    @Test(dependsOnMethods = "testCreateViaNewItem")
+    public void testViewEmptyOrganizationFolderEvents() {
+
+        getDriver().findElement(By.linkText(ORGANIZATION_FOLDER_NAME)).click();
+        getDriver().findElement(By.linkText("Organization Folder Events")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//*[@id='out']/div")).getText()
+                .matches("No events as of.+waiting for events\\.{3}"), "Messages not equals!");
+    }
+
     @Test
     public void testDeleteOrganizationFolder () {
 
