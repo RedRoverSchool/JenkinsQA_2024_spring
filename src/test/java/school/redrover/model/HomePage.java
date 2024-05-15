@@ -41,6 +41,9 @@ public class HomePage extends BasePage {
     @FindBy(css = "[href*='rename']")
     private WebElement renameFromDropdown;
 
+    @FindBy(css = "[href*='move']")
+    private WebElement moveFromDropdown;
+
     @FindBy(xpath = "//a[@class='sortheader' and text()='Name']")
     private WebElement columnNameTitle;
 
@@ -154,6 +157,9 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//td[@class='jenkins-table__cell--tight']//a[contains(@tooltip,'Schedule')]")
     private WebElement greenBuildArrow;
+
+    @FindBy(css = ".disabledJob a")
+    private List <WebElement> disabledProjectList;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -279,6 +285,12 @@ public class HomePage extends BasePage {
         renameFromDropdown.click();
 
         return new MultiConfigurationConfirmRenamePage(getDriver());
+    }
+
+    public MultiConfigurationMovePage selectMoveFromDropdown() {
+        moveFromDropdown.click();
+
+        return new MultiConfigurationMovePage(getDriver());
     }
 
     public PipelineProjectPage clickSpecificPipelineName(String itemName) {
@@ -591,5 +603,10 @@ public class HomePage extends BasePage {
     public String getBuildStatus() {
 
         return greenBuildArrow.getAttribute("tooltip");
+    }
+
+    public List<String> getDisabledProjectListText() {
+
+        return disabledProjectList.stream().map(WebElement::getText).toList();
     }
 }

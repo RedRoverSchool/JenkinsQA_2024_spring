@@ -1,11 +1,9 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
@@ -48,41 +46,6 @@ public class MulticonfigurationProject1Test extends BaseTest {
         }
 
         return sb.toString();
-    }
-
-    @Test
-    public void testSearchForCreatedProject(){
-        createMulticonfigurationProject();
-
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
-        getDriver().findElement(By.id("search-box")).sendKeys(PROJECT_NAME);
-        getDriver().findElement(By.id("search-box")).sendKeys(Keys.ENTER);
-
-        Assert.assertTrue(getDriver().getCurrentUrl().contains("/job/" + PROJECT_NAME + "/"));
-    }
-
-    @Test
-    public void testAddDescriptionToMulticonfigurationProject(){
-        final String randomText = generateRandomText(100);
-        createMulticonfigurationProject();
-
-        getDriver().findElement(By.xpath("//*[@href='/job/" + PROJECT_NAME + "/']")).click();
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.cssSelector(".jenkins-input   ")).sendKeys(randomText);
-        getDriver().findElement(By.xpath("//*[@class='jenkins-button jenkins-button--primary ']")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("(//*[@id='description']/div)[1]")).getText(), randomText);
-    }
-
-    @Test
-    public void testVerifyThatDisabledIconIsDisplayedOnDashboard(){
-        createMulticonfigurationProject();
-
-        getDriver().findElement(By.xpath("//*[@href='/job/" + PROJECT_NAME + "/']")).click();
-        getDriver().findElement(By.xpath("//*[@id=\"disable-project\"]/button")).click();
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
-
-        Assert.assertTrue(getDriver().findElement(By.xpath("//*[@tooltip='Disabled']")).isDisplayed());
     }
 
     @Test

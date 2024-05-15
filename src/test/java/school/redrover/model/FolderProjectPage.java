@@ -61,6 +61,11 @@ public class FolderProjectPage extends BaseProjectPage {
     @FindBy(css = "button[data-id='ok']")
     private WebElement yesButtonOnDeleteFolderAlert;
 
+    @FindBy(css = "h2.h4")
+    private WebElement messageFromEmptyFolder;
+
+    @FindBy(css = "a.content-block__link")
+    private WebElement createJobLink;
 
     public FolderProjectPage(WebDriver driver) {
         super(driver);
@@ -173,5 +178,17 @@ public class FolderProjectPage extends BaseProjectPage {
 
     public boolean isItemExistsInsideFolder(String nameItem) {
         return getItemListInsideFolder().contains(nameItem);
+    }
+
+    public String getMessageFromEmptyFolder() {
+        return messageFromEmptyFolder.getText();
+    }
+
+    public String getTextWhereClickForCreateJob() {
+        return createJobLink.getText();
+    }
+
+    public Boolean isLinkForCreateJobDisplayed() {
+        return createJobLink.isDisplayed();
     }
 }

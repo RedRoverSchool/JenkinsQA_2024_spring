@@ -13,6 +13,7 @@ import java.util.List;
 
 public class OrganizationFolderTest extends BaseTest {
     private static final String ORGANIZATION_FOLDER_NAME = "Organization Folder";
+    private static final String ORGANIZATION_FOLDER_DESCRIPTION = "Some description of the organization folder.";
 
     private void createOrganizationFolder(String name) {
         getDriver().findElement(By.xpath("//a[.='New Item']")).click();
@@ -43,6 +44,36 @@ public class OrganizationFolderTest extends BaseTest {
                 .getOrganizationFolderIcon();
 
         Assert.assertEquals(organizationFolderIcon, "Folder");
+    }
+
+    @Test(dependsOnMethods = "testCreateWithDefaultIcon")
+    public void testAddDescription(){
+
+        String textInDescription = new OrganizationFolderProjectPage(getDriver())
+                .clickAddOrEditDescription()
+                .setDescription(ORGANIZATION_FOLDER_DESCRIPTION)
+                .clickSaveButton()
+                .getDescriptionText();
+
+        Assert.assertEquals(textInDescription, ORGANIZATION_FOLDER_DESCRIPTION);
+    }
+
+    @Test(dependsOnMethods = "testAddDescription")
+    public void testCatchErrorStepTooltipsViaDashboardDropdown() {
+        final List<String> expectedTooltipList = List.of(
+                "Help for feature: catchError",
+                "Help for feature: Message",
+                "Help for feature: Build result on error",
+                "Help for feature: Stage result on error",
+                "Help for feature: Catch Pipeline interruptions");
+
+        List<String> actualTooltipList = new HomePage(getDriver())
+                .openItemDropdownWithSelenium(ORGANIZATION_FOLDER_NAME)
+                .openItemPipelineSyntaxFromDropdown()
+                .selectCatchError()
+                .getCatchErrorTooltipList();
+
+        Assert.assertEquals(actualTooltipList, expectedTooltipList);
     }
 
     @Test
@@ -79,24 +110,6 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(pageTitle, "Pipeline Examples");
     }
 
-    @Test(dependsOnMethods = "testCreateWithDefaultIcon")
-    public void testCatchErrorStepTooltipsViaDashboardDropdown() {
-        final List<String> expectedTooltipList = List.of(
-                "Help for feature: catchError",
-                "Help for feature: Message",
-                "Help for feature: Build result on error",
-                "Help for feature: Stage result on error",
-                "Help for feature: Catch Pipeline interruptions");
-
-        List<String> actualTooltipList = new HomePage(getDriver())
-                .openItemDropdownWithSelenium(ORGANIZATION_FOLDER_NAME)
-                .openItemPipelineSyntaxFromDropdown()
-                .selectCatchError()
-                .getCatchErrorTooltipList();
-
-        Assert.assertEquals(actualTooltipList, expectedTooltipList);
-    }
-
     @Test
     public void testSidebarMenuVisibility() {
         createOrganizationFolder(ORGANIZATION_FOLDER_NAME);
@@ -105,5 +118,23 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertTrue(organizationFolderProjectPage
                 .clickConfigure()
                 .isSidebarVisible());
+    }
+
+    @Test
+    public void testRenameOrganizationFolder() {
+        final String newOrganizationFolderName = "New Organization Folder";
+
+        List<String> itemList = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
+                .clickOnRenameButton()
+                .setNewName(newOrganizationFolderName)
+                .clickRename()
+                .clickLogo()
+                .getItemList();
+
+        Assert.assertTrue(itemList.contains(newOrganizationFolderName));
     }
 }
