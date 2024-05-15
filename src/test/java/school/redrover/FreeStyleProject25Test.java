@@ -1,28 +1,28 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
+
+import java.util.List;
 
 
 public class FreeStyleProject25Test extends BaseTest {
     @Test
     public void testCreate(){
+        List<String> jobList = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName("StasM")
+                .selectFreestyleAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .getItemList();
 
-        getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
-        getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys("StasM");
-        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[1]/label/span")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-        TestUtils.returnToDashBoard(this);
-
-        String actualProjectName = getDriver().findElement(By.xpath("//*[@id='job_StasM']/td[3]/a/span")).getText();
-        Assert.assertEquals(actualProjectName,"StasM");
+        Assert.assertTrue(jobList.contains("StasM"));
     }
-
 
        @Test(dependsOnMethods = "testCreate")
         public void testCreateFolder(){

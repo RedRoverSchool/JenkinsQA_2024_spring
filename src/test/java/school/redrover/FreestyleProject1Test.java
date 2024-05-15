@@ -6,8 +6,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
+
+import java.util.List;
 
 public class FreestyleProject1Test extends BaseTest {
 
@@ -16,46 +19,39 @@ public class FreestyleProject1Test extends BaseTest {
     private final By nameInputField = By.name("newName");
     final String PROJECT_DESCRIPTION = "Project description";
     final String PROJECT_NEW_DESCRIPTION = "Project new description";
-    final String SAVE_BUTTON = "//form/div[2]/button";
-
-    private void createDescription(String description) {
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.xpath("//div/textarea")).sendKeys(description);
-        getDriver().findElement(By.xpath(SAVE_BUTTON)).click();
-    }
-
-    private void editDescription(String description) {
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.xpath("//div/textarea")).clear();
-        getDriver().findElement(By.xpath("//div/textarea")).sendKeys(description);
-        getDriver().findElement(By.xpath(SAVE_BUTTON)).click();
-    }
 
     @Test
     public void testAddProject() {
-        TestUtils.createItem(TestUtils.FREESTYLE_PROJECT, FREESTYLE_PROJECT_NAME, this);
+        String projectName = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(FREESTYLE_PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .clickSaveButton()
+                .getProjectName();
 
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//h1[text()='" + FREESTYLE_PROJECT_NAME + "']")).getText(),
-                FREESTYLE_PROJECT_NAME);
+        Assert.assertEquals(projectName, FREESTYLE_PROJECT_NAME);
     }
 
     @Test(dependsOnMethods = "testAddProject")
     public void testAddedProjectIsDisplayedOnTheDashboardPanel() {
+        List<String> itemList = new HomePage(getDriver())
+                .getItemList();
+
         Assert.assertTrue(
-                TestUtils.checkIfProjectIsOnTheBoard(getDriver(), FREESTYLE_PROJECT_NAME),
+                itemList.contains(FREESTYLE_PROJECT_NAME),
                 "Project with '" + FREESTYLE_PROJECT_NAME + "' name is not in the list");
     }
 
     @Test(dependsOnMethods = "testAddProject")
     public void testOpenConfigurePageOfProject() {
-        getDriver().findElement(By.xpath("//span[text()=('Freestyle project')]")).click();
+        String headerText = new HomePage(getDriver())
+                .clickCreatedFreestyleName()
+                .clickConfigure()
+                .getHeaderSidePanelText();
 
-        getDriver().findElement(
-                By.xpath("//*[@id='side-panel']//*[text()='Configure']//ancestor::a")).click();
-
-        Assert.assertTrue(
-                getDriver().findElement(By.xpath("//h1[text()='Configure']")).isDisplayed(),
+        Assert.assertEquals(
+                headerText,
+                "Configure",
                 "Configure page of the project is not opened");
     }
 
@@ -84,17 +80,23 @@ public class FreestyleProject1Test extends BaseTest {
 
     @Test
     public void testEditFreestyleProjectDescription() {
-        TestUtils.createItem(TestUtils.FREESTYLE_PROJECT, FREESTYLE_PROJECT_NAME, this);
-        getDriver().findElement(By.id("jenkins-home-link")).click();
+        String projectDescriptionText = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(FREESTYLE_PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .clickCreatedFreestyleName()
+                .clickAddDescription()
+                .setDescription(PROJECT_DESCRIPTION)
+                .clickSaveButton()
+                .clickAddDescription()
+                .clearDescription()
+                .setDescription(PROJECT_NEW_DESCRIPTION)
+                .clickSaveButton()
+                .getProjectDescriptionText();
 
-        getDriver().findElement(By.xpath("//span[text() = '"+ FREESTYLE_PROJECT_NAME + "']")).click();
-        createDescription(PROJECT_DESCRIPTION);
-        editDescription(PROJECT_NEW_DESCRIPTION);
-        getDriver().findElement(By.id("description-link")).click();
-
-        Assert.assertTrue(
-                getDriver().findElement(By.id("description")).isDisplayed(),
-                PROJECT_NEW_DESCRIPTION);
+        Assert.assertEquals(projectDescriptionText, PROJECT_NEW_DESCRIPTION);
     }
 }
 

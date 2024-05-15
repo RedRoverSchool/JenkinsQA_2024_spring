@@ -9,15 +9,15 @@ public class FreestyleProject13Test extends BaseTest {
 
     @Test
     private void testNewFreestyleProjectCreated() {
-        final String projectName = "Freestyle1";
+        final String name = "Freestyle1";
 
-        String actualName = new HomePage(getDriver())
+        String projectName = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(projectName)
+                .setItemName(name)
                 .selectFreestyleAndClickOk()
                 .clickSaveButton()
                 .getProjectName();
 
-        Assert.assertEquals(actualName, projectName);
+        Assert.assertEquals(projectName, name);
     }
 }

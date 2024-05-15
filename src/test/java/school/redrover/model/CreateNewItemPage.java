@@ -46,7 +46,10 @@ public class CreateNewItemPage extends BasePage {
     private WebElement okButton;
 
     @FindBy(id = "itemname-invalid")
-    private WebElement errorMessage;
+    private WebElement errorMessageInvalidCharacter;
+
+    @FindBy(id = "itemname-required")
+    private WebElement errorMessageEmptyName;
 
     @FindBy(xpath = "//div[@class='item-copy']//li[not(@style='display: none;')]")
     private List<WebElement> copyFormElements;
@@ -54,7 +57,8 @@ public class CreateNewItemPage extends BasePage {
     @FindBy(id = "itemname-required")
     private WebElement itemNameHint;
 
-
+    @FindBy(css = "label.h3")
+    private WebElement titleOfNameField;
 
     public CreateNewItemPage(WebDriver driver) {
         super(driver);
@@ -139,9 +143,12 @@ public class CreateNewItemPage extends BasePage {
         return projectConfigPage;
     }
 
-    public String getErrorMessage() {
-        return errorMessage.getText();
+    public String getErrorMessageInvalidCharacter() {
+        return errorMessageInvalidCharacter.getText();
+    }
 
+    public String getErrorMessageEmptyName() {
+        return errorMessageEmptyName.getText();
     }
 
     public String getCreateNewItemPageUrl() {
@@ -171,6 +178,18 @@ public class CreateNewItemPage extends BasePage {
         nameTextInCopyForm.sendKeys(name);
         okButton.click();
         return new CreateItemPage(getDriver());
+
+    public boolean isOkButtonNotActive() {
+        try
+        {
+            getDriver().findElement(By.xpath("//button[contains(@class, 'disabled') and text()='OK']"));
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+
     }
 
     public List<String> getDropdownMenuContent() {
@@ -201,7 +220,6 @@ public class CreateNewItemPage extends BasePage {
         }
     }
 
-
     public CreateNewItemPage clearItemNameField() {
         nameText.sendKeys(Keys.CONTROL + "a", Keys.BACK_SPACE);
         return this;
@@ -216,4 +234,9 @@ public class CreateNewItemPage extends BasePage {
     }
 
     public Boolean okButtonIsEnabled() { return okButton.isEnabled(); }
+
+    public String getTitleOfNameField() {
+        return titleOfNameField.getText();
+    }
+
 }

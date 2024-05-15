@@ -11,25 +11,20 @@ public class FreestyleProject10Test extends BaseTest {
     private static final String NEW_PROJECT_NAME = "New freestyle project";
     private static final String PROJECT_DESCRIPTION = "This is project description";
 
-    private void createNewFreestyleProject(String projectName) {
-        new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(projectName)
-                .selectFreestyleAndClickOk()
-                .clickSaveButton()
-                .clickLogo();
-    }
-
-    @Ignore
     @Test
     public void testAddDescription() {
-        createNewFreestyleProject(NEW_PROJECT_NAME);
-        getDriver().findElement(By.xpath("//*[@class='jenkins-table__link model-link inside']")).click();
-        getDriver().findElement(By.xpath("//*[@id='description-link']")).click();
-        getDriver().findElement(By.xpath("//*[@name='description']")).sendKeys(PROJECT_DESCRIPTION);
-        getDriver().findElement(By.xpath("//*[@class='jenkins-button jenkins-button--primary ']")).click();
+        String projectDescriptionText = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(NEW_PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .clickCreatedFreestyleName()
+                .clickAddDescription()
+                .setDescription(PROJECT_DESCRIPTION)
+                .clickSaveButton()
+                .getProjectDescriptionText();
 
-        String descriptionText = getDriver().findElement(By.xpath("//*[@id='description']/div")).getText();
-        Assert.assertEquals(descriptionText, PROJECT_DESCRIPTION);
+        Assert.assertEquals(projectDescriptionText, PROJECT_DESCRIPTION);
     }
 }

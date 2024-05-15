@@ -74,7 +74,7 @@ public class FolderTest extends BaseTest {
                 .clickNewItem()
                 .selectFolder()
                 .setItemName(".")
-                .getErrorMessage();
+                .getErrorMessageInvalidCharacter();
 
         Assert.assertEquals(errorMessageText, "» “.” is not an allowed name",
                 "The error message is different");
@@ -86,7 +86,7 @@ public class FolderTest extends BaseTest {
                 .clickNewItem()
                 .selectFolder()
                 .setItemName("Folder." + Keys.TAB)
-                .getErrorMessage();
+                .getErrorMessageInvalidCharacter();
 
         Assert.assertEquals(errorMessageText, "» A name cannot end with ‘.’",
                 "The error message is different");
@@ -227,6 +227,32 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCheckNewFolderIsEmpty")
+    public void testNewlyCreatedFolderIsEmptyAJ() {
+        final String folderName = "NewProjectFolder";
+        final String thisFolderIsEmptyMessage = "This folder is empty";
+        final String createAJobLinkText = "Create a job";
+
+        String actualFolderName = new HomePage(getDriver())
+                .createNewFolder(folderName)
+                .clickFolder(folderName)
+                .getPageHeading();
+
+        String actualEmptyStateMessage = new FolderProjectPage(getDriver())
+                .getMessageFromEmptyFolder();
+
+        String actualCreateJobLinkText = new FolderProjectPage(getDriver())
+                .getTextWhereClickForCreateJob();
+
+        Boolean isLinkForCreateJobDisplayed = new FolderProjectPage(getDriver())
+                .isLinkForCreateJobDisplayed();
+
+        Assert.assertEquals(actualFolderName, folderName);
+        Assert.assertEquals(actualEmptyStateMessage, thisFolderIsEmptyMessage);
+        Assert.assertEquals(actualCreateJobLinkText, createAJobLinkText);
+        Assert.assertTrue(isLinkForCreateJobDisplayed, "newJobLink is NOT displayed");
+    }
+
+    @Test(dependsOnMethods = "testNewlyCreatedFolderIsEmptyAJ")
     public void testCreateJobPipelineInFolder() {
         String expectedText = String.format("Full project name: %s/%s", FOLDER_NAME, PIPELINE_NAME);
 
@@ -292,6 +318,6 @@ public class FolderTest extends BaseTest {
                 .clickYesForDeleteFolder()
                 .getItemList();
 
-        Assert.assertTrue(jobList.isEmpty());
+        Assert.assertListNotContainsObject(jobList, FOLDER_NAME, FOLDER_NAME + " not removed!");
     }
 }
