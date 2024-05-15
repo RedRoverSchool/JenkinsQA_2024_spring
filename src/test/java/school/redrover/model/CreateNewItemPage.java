@@ -10,8 +10,11 @@ import school.redrover.model.base.BaseConfigPage;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
 
+import javax.management.relation.Role;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.openqa.selenium.By.*;
 
 public class CreateNewItemPage extends BasePage {
 
@@ -51,6 +54,8 @@ public class CreateNewItemPage extends BasePage {
     @FindBy(id = "itemname-required")
     private WebElement itemNameHint;
 
+
+
     public CreateNewItemPage(WebDriver driver) {
         super(driver);
     }
@@ -62,7 +67,7 @@ public class CreateNewItemPage extends BasePage {
     }
 
     public CreateNewItemPage selectTypeAndClickOk(String type) {
-        getDriver().findElement(By.xpath("//span[text()='" + type + "']")).click();
+        getDriver().findElement(xpath("//span[text()='" + type + "']")).click();
         okButton.click();
         return this;
     }
@@ -148,6 +153,8 @@ public class CreateNewItemPage extends BasePage {
         return this;
     }
 
+
+
     public List<String> getCopyFormElementsList() {
         return copyFormElements
                 .stream()
@@ -160,14 +167,25 @@ public class CreateNewItemPage extends BasePage {
         return new CreateItemPage(getDriver());
     }
 
+    public CreateItemPage setNotExistingJobNameAndClickOkButton(String name) {
+        nameTextInCopyForm.sendKeys(name);
+        okButton.click();
+        return new CreateItemPage(getDriver());
+    }
+
     public List<String> getDropdownMenuContent() {
-        List<WebElement> allJobFromThisLetter = getWait60().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("li[style='']")));
+        List<WebElement> allJobFromThisLetter = getWait60().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(cssSelector("li[style='']")));
         List<String> allJobFromThisLetterName = new ArrayList<>();
 
         for (WebElement el : allJobFromThisLetter) {
             allJobFromThisLetterName.add(el.getText());
         }
         return allJobFromThisLetterName ;
+    }
+
+    public CreateNewItemPage selectJobForCopy() {
+        getWait60().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("li[style='']:nth-child(1)"))).click();
+             return this;
     }
 
 
