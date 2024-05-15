@@ -16,9 +16,6 @@ public class FolderProjectPage extends BaseProjectPage {
     @FindBy(css = "[href*='confirm-rename']")
     private WebElement renameButton;
 
-    @FindBy(tagName = "h1")
-    private WebElement pageHeading;
-
     @FindBy(css = ".empty-state-section")
     private WebElement emptyStateSection;
 
@@ -79,10 +76,6 @@ public class FolderProjectPage extends BaseProjectPage {
         renameButton.click();
 
         return new FolderRenamePage(getDriver());
-    }
-
-    public String getPageHeading() {
-        return pageHeading.getText();
     }
 
     public Boolean isFolderEmpty() {

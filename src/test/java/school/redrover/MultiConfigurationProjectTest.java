@@ -38,7 +38,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .selectRenameFromDropdown()
                 .changeProjectNameWithoutClear(addToProjectName)
                 .clickRenameButton()
-                .getProjectNameText();
+                .getProjectName();
 
         Assert.assertEquals(newProjectName,
                 "Project " + PROJECT_NAME + "New",

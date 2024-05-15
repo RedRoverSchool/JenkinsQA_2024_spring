@@ -17,7 +17,6 @@ import school.redrover.runner.TestUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static school.redrover.runner.TestUtils.goToMainPage;
@@ -320,7 +319,7 @@ public class PipelineTest extends BaseTest {
                 .clearNameInputField()
                 .setNewName(NEW_PIPELINE_NAME)
                 .clickSaveRenameButton()
-                .getHeadlineDisplayedName();
+                .getProjectName();
 
         Assert.assertEquals(displayedName, NEW_PIPELINE_NAME);
     }
@@ -332,7 +331,7 @@ public class PipelineTest extends BaseTest {
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
-                .getHeadlineDisplayedName();
+                .getProjectName();
 
         Assert.assertEquals(getH1HeaderText, PIPELINE_NAME);
     }
@@ -471,7 +470,7 @@ public class PipelineTest extends BaseTest {
                 .clearNameInputField()
                 .setNewName(NEW_PIPELINE_NAME)
                 .clickSaveRenameButton()
-                .getHeadlineDisplayedName();
+                .getProjectName();
 
         Assert.assertEquals(displayedNewName, NEW_PIPELINE_NAME);
     }

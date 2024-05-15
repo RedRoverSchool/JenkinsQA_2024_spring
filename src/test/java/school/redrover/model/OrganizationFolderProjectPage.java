@@ -7,7 +7,7 @@ import school.redrover.model.base.BaseProjectPage;
 
 public class OrganizationFolderProjectPage extends BaseProjectPage {
 
-    @FindBy(css = "span > a[href$='configure']")
+    @FindBy(css = ".task [href$='configure']")
     private WebElement configureButton;
 
     @FindBy(css = "h1 > svg")

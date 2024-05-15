@@ -29,7 +29,6 @@ public class MultibranchPipelineTest extends BaseTest {
             List.of("Status", "Configure", "Scan Multibranch Pipeline Log", "Multibranch Pipeline Events",
                     "Delete Multibranch Pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
     private static final By SEARCH_RESULT_DROPDOWN = By.className("yui-ac-bd");
-    private static final By MULTI_PIPELINE_ON_DASHBOARD_LOCATOR = By.cssSelector("[href='job/" + RENAMED_MULTI_PIPELINE + "/']");
 
     private void createNewMultiPipeline(String multiPipelineName) {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
@@ -47,7 +46,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .selectMultibranchPipelineAndClickOk()
                 .clickToggle()
                 .clickSaveButton()
-                .getProjectNameText();
+                .getProjectName();
 
         Assert.assertEquals(getMultibranchPipelineName,MULTI_PIPELINE_NAME);
     }
@@ -77,7 +76,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .clickSaveButton()
                 .clickSidebarRenameButton()
                 .changeNameTo(RENAMED_MULTI_PIPELINE)
-                .getProjectNameText();
+                .getProjectName();
 
         Assert.assertEquals(newNameMultibranchPipeline, RENAMED_MULTI_PIPELINE);
     }
@@ -184,7 +183,7 @@ public class MultibranchPipelineTest extends BaseTest {
             .openItemDropdown(MULTI_PIPELINE_NAME)
             .clickRenameFromDropdownMP()
             .changeNameTo(RENAMED_MULTI_PIPELINE)
-            .getMultibranchPipelineName();
+            .getProjectName();
 
         Assert.assertEquals(multibranchPipelineName,RENAMED_MULTI_PIPELINE, "чтото пошло не так");
     }

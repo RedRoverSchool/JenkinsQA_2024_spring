@@ -610,8 +610,6 @@ public class HomePage extends BasePage {
         return this;
     }
 
-
-
     public String getBuildStatus() {
 
         return greenBuildArrow.getAttribute("tooltip");

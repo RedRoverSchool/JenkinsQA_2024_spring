@@ -1,15 +1,8 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.FolderProjectPage;
-import school.redrover.model.FreestyleProjectPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
@@ -58,7 +51,7 @@ public class FreestyleProject2Test extends BaseTest {
                 .clickLogo()
                 .clickFolderName();
 
-        Assert.assertTrue(folderProjectPage.getPageHeading().contains(FOLDER_NAME));
+        Assert.assertTrue(folderProjectPage.getProjectName().contains(FOLDER_NAME));
         Assert.assertTrue(folderProjectPage.isItemExistsInsideFolder(PROJECT_NAME));
     }
 }
