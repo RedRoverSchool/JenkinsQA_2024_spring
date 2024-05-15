@@ -32,8 +32,8 @@ public class NewItem17Test extends BaseTest {
     @Test
     public void testCreateNewItemFPTU() {
         TestUtils.createNewItem(this,PROJECT_NAME, TestUtils.Item.FREESTYLE_PROJECT);
-        getDriver().findElement(By.name("Submit")).click();
-
+        getDriver().findElement(By.linkText(PROJECT_NAME)).click();
+        
         String configurationHeaderH1 = getDriver().findElement(By.tagName("h1")).getText();
         Assert.assertEquals(configurationHeaderH1, PROJECT_NAME);
     }

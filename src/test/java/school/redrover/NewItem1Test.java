@@ -1,13 +1,15 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.Color;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.CreateNewItemPage;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.TestUtils;
+
+import java.util.List;
 
 public class NewItem1Test extends BaseTest {
 
@@ -55,10 +57,17 @@ public class NewItem1Test extends BaseTest {
     }
     @Test
     public void testNewItemIsDisplayedOnMainPage() {
-       final String nameProject = "firstProjectPipline";
+        final String nameProject = "firstProjectPipline";
+        List<String> projectList = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(nameProject)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .getItemList();
 
-        TestUtils.createNewItemAndReturnToDashboard(this, nameProject, TestUtils.Item.PIPELINE);
-        Assert.assertTrue(getDriver().findElement(By.cssSelector("tr#job_" + nameProject)).isDisplayed());
+
+        Assert.assertTrue(projectList.contains(nameProject));
     }
 
     @Test
@@ -71,15 +80,18 @@ public class NewItem1Test extends BaseTest {
     }
     @Test
     public void testEmptyNameFieldHints() {
-        getDriver().findElement(By.linkText("New Item")).click();
+        HomePage homePage = new HomePage(getDriver());
+        CreateNewItemPage createNewItemPage = new CreateNewItemPage(getDriver());
 
-        String hintText = getDriver().findElement(By.cssSelector("[class='input-help']")).getText();
-        String hintColor = getDriver().findElement(By.cssSelector("[class='input-help']")).getCssValue("color");
+        final String testInput = "a";
+        final String itemNameHintText = homePage.clickNewItem().getItemNameHintText();
+        final String itemNameHintColor = createNewItemPage.getItemNameHintColor();
 
-        getDriver().findElement(By.id("name")).sendKeys("a");
-        getDriver().findElement(By.id("name")).sendKeys(Keys.BACK_SPACE);
+        createNewItemPage
+                .setItemName(testInput)
+                .clearItemNameField();
 
-        Assert.assertNotSame(hintText, getDriver().findElement(By.id("itemname-required")).getText());
-        Assert.assertNotSame(hintColor, getDriver().findElement(By.id("itemname-required")).getCssValue("color"));
+        Assert.assertNotSame(itemNameHintText, createNewItemPage.getItemNameHintText());
+        Assert.assertNotSame(itemNameHintColor, createNewItemPage.getItemNameHintColor());
     }
 }

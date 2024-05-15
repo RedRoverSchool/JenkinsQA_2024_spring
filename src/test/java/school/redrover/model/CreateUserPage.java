@@ -64,4 +64,5 @@ public class CreateUserPage extends BasePage {
 
         return new UsersPage(getDriver());
     }
+
 }

@@ -1,37 +1,26 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
-
-import java.time.Duration;
-
-import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import java.util.List;
 
 public class FreeStyleProjectByIrisTest extends BaseTest {
 
     @Test
-    public void testCreateFreestyleProject() {
+    public void testCreate() {
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        final String newFreestyleProject = "new Freestyle project";
 
-        WebElement text = wait.until(visibilityOfElementLocated(By.xpath("//h1[contains(text(),'Welcome to Jenkins!')]")));
-        assertTrue(text.isDisplayed());
+        List<String> itemList = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(newFreestyleProject)
+                .selectFreestyleAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .getItemList();
 
-        wait.until(visibilityOfElementLocated(By.xpath("//*[@id='tasks']/div[1]/span/a"))).click();
-        wait.until(visibilityOfElementLocated(By.className("jenkins-input"))).sendKeys("new Freestyle project");
-        wait.until(visibilityOfElementLocated(By.xpath("//button[@type = 'submit']"))).click();
-        wait.until(visibilityOfElementLocated(By.xpath("//span[contains(text(),'Freestyle project')]"))).click();
-        wait.until(visibilityOfElementLocated(By.xpath("//button[@type= 'submit']"))).click();
-        wait.until(visibilityOfElementLocated(By.xpath("//h1[contains(text(),'Configure')]")));
-        wait.until(visibilityOfElementLocated(By.xpath("//button[contains(text(),'Save')]"))).click();
-        WebElement textWebElement = wait.until(visibilityOfElementLocated(By.xpath("//h1[contains(text(),'new Freestyle project')]")));
-
-        assertEquals(textWebElement.getText(), "new Freestyle project");
-        assertTrue(textWebElement.isDisplayed());
+        Assert.assertTrue(itemList.contains(newFreestyleProject));
     }
 }

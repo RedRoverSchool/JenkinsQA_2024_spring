@@ -1,18 +1,31 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import school.redrover.model.base.BasePage;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import school.redrover.model.base.BaseConfigPage;
+import org.openqa.selenium.support.ui.Select;
 
-public class OrganizationFolderConfigPage extends BasePage {
+public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFolderProjectPage> {
+
+    @FindBy(id = "tasks")
+    private WebElement sidebarMenu;
+
+    @FindBy(xpath = "(//select[contains(@class, 'dropdownList')])[2]")
+    private WebElement iconDropdownList;
 
     public OrganizationFolderConfigPage(WebDriver driver) {
-        super(driver);
+        super(driver, new OrganizationFolderProjectPage(driver));
     }
 
-    public OrganizationFolderPage clickSave() {
-        getDriver().findElement(By.name("Submit")).click();
+    public boolean isSidebarVisible() {
+        return sidebarMenu.isDisplayed();
+    }
 
-        return new OrganizationFolderPage(getDriver());
+    public OrganizationFolderConfigPage selectDefaultIcon() {
+        new Select(iconDropdownList)
+                .selectByVisibleText("Default Icon");
+
+        return new OrganizationFolderConfigPage(getDriver());
     }
 }

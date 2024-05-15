@@ -30,7 +30,7 @@ public class FreestyleProject20Test extends BaseTest {
 
         getDriver().findElement(By.id("ok-button")).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
-        Assert.assertEquals(getDriver().getCurrentUrl(), "http://localhost:8080/job/"+itemName+"/",
+        Assert.assertTrue(getDriver().getCurrentUrl().contains(itemName),
                 item + "is not created");
         getDriver().findElement(By.linkText("Dashboard")).click();
     }

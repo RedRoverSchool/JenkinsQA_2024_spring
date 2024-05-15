@@ -4,7 +4,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
+
+import java.util.List;
 
 public class FreeStyleProjectNumber16Test extends BaseTest {
 
@@ -12,15 +15,12 @@ public class FreeStyleProjectNumber16Test extends BaseTest {
     public void testFreeStyleProjectExists() {
         String projectName = "New FreeStyle Project";
 
-        getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(projectName);
-        getDriver().findElement(By.xpath("//*[@class='hudson_model_FreeStyleProject']")).click();
-        getDriver().findElement(By.xpath("//*[@type='submit']")).click();
-        getDriver().findElement(By.xpath("//button[contains(@class, 'jenkins-button--primary')]")).click();
-        getDriver().findElement(By.xpath("//a[text()='Dashboard']")).click();
+        List<String> name = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(projectName)
+                .selectFreestyleAndClickOk().clickLogo()
+                .getItemList();
 
-        Assert.assertTrue(getDriver()
-                .findElement(By.xpath("//span[text()='" + projectName + "']"))
-                .isDisplayed());
+        Assert.assertTrue(name.contains(projectName));
     }
 }

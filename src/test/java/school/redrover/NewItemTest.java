@@ -1,115 +1,89 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.CreateNewItemPage;
+import school.redrover.model.HomePage;
+import school.redrover.model.ItemPage;
 import school.redrover.runner.BaseTest;
+
+import java.util.List;
 
 public class NewItemTest extends BaseTest {
 
-    public WebElement okButton(){
-        return getDriver().findElement(By.id("ok-button"));
-  };
-
-    public WebElement submitButton(){
-        return getDriver().findElement(By.xpath("//button[@name = 'Submit']"));
-    }
-
-    @Ignore
     @Test
-    public void testCreateNewFreestyleProject() {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
-                .sendKeys("NewFreestyleProject");
-        getDriver().findElement(By.xpath("//span[contains(text(),  'Freestyle project')]")).click();
-        okButton().click();
-        submitButton().click();
-        String result = getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']"))
-                .getText();
+    public void testAddItem() {
+        List<String> itemList = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName("NewItemName")
+                .selectFreestyleAndClickOk()
+                .clickLogo()
+                .getItemList();
 
-        Assert.assertEquals(result, "NewFreestyleProject");
+        Assert.assertListContainsObject(itemList, "NewItemName", "Item not displayed");
     }
 
-    @Ignore
+    @Test
+    public void testGoToNewJobPage() {
+        String pageHeading = new HomePage(getDriver())
+                .clickNewItem()
+                .getTitleOfNameField();
+
+        Assert.assertEquals(pageHeading,"Enter an item name");
+    }
+
+    @Test
+    public void testCreateFreestyleProject() {
+        new ItemPage(getDriver())
+                .newItemClick()
+                .newItemName("MyNewProject")
+                .freestyleProjectClick()
+                .clickButtonOK()
+                .clickSaveBtn();
+
+        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "MyNewProject");
+    }
+
     @Test
     public void testCreateNewPipeline() {
-        getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
-                .sendKeys("NewPipeline");
-        getDriver().findElement(By.xpath("//span[contains(text(),  'Pipeline')]")).click();
-        okButton().click();
-        submitButton().click();
-        String result = getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']"))
-                .getText();
+        new ItemPage(getDriver())
+                .newItemClick()
+                .newItemName("NewPipeline")
+                .pipelineClic()
+                .clickButtonOK()
+                .clickSaveBtn();
 
-        Assert.assertEquals(result, "NewPipeline");
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']"))
+                .getText(), "NewPipeline");
     }
 
-    @Ignore
     @Test
-    public void testCreateMultiConfigurationProject() {
-        getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
-                .sendKeys("MultiConfigurationProject");
-        getDriver().findElement(By.xpath("//span[contains(text(),  'Multi-configuration project')]")).click();
-        okButton().click();
-        submitButton().click();
-        String result = getDriver().findElement(By.xpath("//h1[@class='matrix-project-headline page-headline']")).getText();
+    public void testOkButtonUsingValidName() {
+        boolean okButtonIsEnabled = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName("Test Project")
+                .okButtonIsEnabled();
 
-        Assert.assertEquals(result, "Project MultiConfigurationProject");
+        Assert.assertFalse(okButtonIsEnabled);
     }
 
-    @Ignore
     @Test
-    public void testCreateFolder() {
-        getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
-                .sendKeys("Folder");
-        getDriver().findElement(By.xpath("//span[contains(text(),  'Folder')]")).click();
-        okButton().click();
-        submitButton().click();
-        String result = getDriver().findElement(By.xpath("//h1[contains (text(), 'Folder')]")).getText();
+    public void testMessageWhenCreateItemUsingSpecialCharactersInName() {
+        String[] specialCharacters = {"!", "%", "&", "#", "@", "*", "$", "?", "^", "|", "/", "]", "["};
 
-        Assert.assertEquals(result, "Folder");
-    }
+        new HomePage(getDriver())
+                .clickNewItem();
 
-    @Ignore
-    @Test
-    public void testCreateMultibranchPipeline() {
-        getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
-                .sendKeys("MultibranchPipeline");
-        getDriver().findElement(By.xpath("//span[contains(text(),  'Multibranch Pipeline')]")).click();
-        okButton().click();
-        submitButton().click();
-        String result = getDriver().findElement(By.xpath("//h1")).getText();
+        for (String specChar : specialCharacters) {
+            String actualErrorMessage = new CreateNewItemPage(getDriver())
+                    .clearItemNameField()
+                    .setItemName("Fold" + specChar + "erdate")
+                    .getErrorMessageInvalidCharacter();
 
-        Assert.assertEquals(result, "MultibranchPipeline");
-    }
+            String expectMessage = "» ‘" + specChar + "’ is an unsafe character";
 
-    @Ignore
-    @Test
-    public void testOrganizationFolder() {
-        getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
-                .sendKeys("OrganizationFolder");
-        getDriver().findElement(By.xpath("//span[contains(text(),  'Organization Folder')]")).click();
-        okButton().click();
-        submitButton().click();
-        String result = getDriver().findElement(By.xpath("//h1")).getText();
-
-        Assert.assertEquals(result, "OrganizationFolder");
-    }
-    @Test
-    public void testCheckPage() {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
-                .sendKeys("Test Project");
-        boolean okButtonIsEnable = getDriver().findElement(By.xpath("//button[@id='ok-button']")).isEnabled();
-        Assert.assertFalse(okButtonIsEnable);
-
-
+            Assert.assertEquals(actualErrorMessage, expectMessage, "Message is not displayed");
+        }
     }
 }

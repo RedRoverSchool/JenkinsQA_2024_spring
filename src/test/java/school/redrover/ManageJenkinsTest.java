@@ -6,16 +6,13 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.CredentialProvidersPage;
 import school.redrover.model.HomePage;
 import school.redrover.model.ManageJenkinsPage;
 import school.redrover.runner.BaseTest;
-
 import java.util.List;
 
 public class ManageJenkinsTest extends BaseTest {
-
-    private static final By SETTINGS_SEARCH_BAR_LOCATOR = By.id("settings-search-bar");
-
 
     @Test
     public void testRedirectionToSecurityPage() {
@@ -83,11 +80,12 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test
     public void testAlertMessageClickingReloadConfigurationFromDisk() {
-        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
-        getDriver().findElement(By.cssSelector("[href='#']")).click();
+        boolean isAlertTitleVisible = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickReloadConfigurationFromDisk()
+                .dialogTitleVisibility();
 
-        boolean alertMessageIsDisplayed = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dialog__title"))).isDisplayed();
-        Assert.assertTrue(alertMessageIsDisplayed);
+        Assert.assertTrue(isAlertTitleVisible);
     }
 
     @Test
@@ -114,23 +112,21 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test
     public void testPlaceholderSettingsSearchInput() {
-        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
+        String SearchInputPlaceholderText = new HomePage(getDriver())
+                .clickManageJenkins()
+                .getSearchInputPlaceholderText();
 
-        String placeholderText = getDriver().findElement(By.id("settings-search-bar")).getDomProperty("placeholder");
-        Assert.assertEquals(placeholderText, "Search settings");
+        Assert.assertEquals(SearchInputPlaceholderText, "Search settings");
     }
 
     @Test
-    public void testSearchSettingsInvalidData() {
-        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
+    public void testSearchSettingsWithInvalidData() {
+        String noSearchResultsPopUp = new HomePage(getDriver())
+                .clickManageJenkins()
+                .typeSearchSettingsRequest("admin")
+                .getNoSearchResultsPopUpText();
 
-        getDriver().findElement(SETTINGS_SEARCH_BAR_LOCATOR).click();
-        getDriver().findElement(SETTINGS_SEARCH_BAR_LOCATOR).sendKeys("admin");
-
-        String searchResult = getWait2().until(ExpectedConditions.visibilityOfElementLocated(
-                By.cssSelector("[class='jenkins-search__results'] p"))).getText();
-
-        Assert.assertEquals(searchResult, "No results");
+        Assert.assertEquals(noSearchResultsPopUp, "No results");
     }
 
     @Test
@@ -139,5 +135,35 @@ public class ManageJenkinsTest extends BaseTest {
                 .clickManageJenkins();
 
         Assert.assertTrue(manageJenkinsPage.isSearchInputDisplayed());
+    }
+
+    @Test
+    public void testActivatingSearchPressingSlash() {
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins()
+                .pressSlashKey();
+
+        Assert.assertTrue(manageJenkinsPage.isSearchFieldActivateElement());
+    }
+
+    @Test
+    public void testTooltipAppears() {
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins()
+                .hoverMouseOverTheTooltip();
+
+        Assert.assertTrue(manageJenkinsPage.isSearchHintDisplayed()
+                        && manageJenkinsPage.getSearchHintText().equals("Press / on your keyboard to focus"), "tooltip text is incorrect");
+    }
+
+    @Test
+    public void testRedirectionToNotFirstSearchResult() {
+        String pageToNavigateHeading = new HomePage(getDriver())
+                .clickManageJenkins()
+                .typeSearchSettingsRequest("Credential")
+                .clickSecondSearchResult(new CredentialProvidersPage(getDriver()))
+                .getPageHeading();
+
+        Assert.assertEquals(pageToNavigateHeading, "Credential Providers");
     }
 }

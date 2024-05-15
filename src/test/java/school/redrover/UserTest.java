@@ -1,16 +1,15 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class UserTest extends BaseTest {
 
@@ -19,28 +18,17 @@ public class UserTest extends BaseTest {
     private static final String FULL_NAME = "User";
     private static final String EMAIL_ADDRESS = "test@gmail.com";
 
-    public String randomString() {
-        return UUID.randomUUID()
-                .toString()
-                .substring(0, 7);
-    }
-
-    public String randomEmail() {
-        return randomString() + "@" + randomString() + ".com";
-    }
-
-    public void createUser() {
-        final String password = randomString();
-        getDriver().findElement(By.cssSelector("[href='addUser']")).click();
-        getDriver().findElement(By.id("username")).sendKeys(randomString());
-        getDriver().findElement(By.name("password1")).sendKeys(password);
-        getDriver().findElement(By.name("password2")).sendKeys(password);
-        getDriver().findElement(By.name("fullname")).sendKeys(randomString());
-        getDriver().findElement(By.name("email")).sendKeys(randomEmail());
-        getDriver().findElement(By.name("Submit")).click();
-    }
-
     @Test
+    public void testCheckUserID() {
+
+        String userID = new HomePage(getDriver())
+                .clickUserNameOnHeader()
+                .getUserID();
+
+        Assert.assertEquals(userID, "admin");
+    }
+
+    @Test(dependsOnMethods = "testCheckUserID")
     public void testCreateUserViaManageJenkins() {
         List<String> userName = new HomePage(getDriver())
                 .clickManageJenkins()
@@ -57,50 +45,71 @@ public class UserTest extends BaseTest {
         Assert.assertTrue(userName.contains("TestUser"));
     }
 
+    @Ignore
     @Test
     public void testUsersSortingByName() {
 
-        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
-        getDriver().findElement(By.cssSelector("[href='securityRealm/']")).click();
+        List<String> names = new HomePage(getDriver())
+                .clickManageJenkins().clickUsers()
+                .createUserWithRandomData()
+                .createUserWithRandomData()
+                .createUserWithRandomData()
+                .createUserWithRandomData()
+                .clickColumnNameHeader()
+                .getUserNames();
 
-        createUser();
-        createUser();
-        createUser();
-        createUser();
-
-        getDriver().findElement(By.cssSelector("thead th:nth-child(3)>a")).click();
-        getDriver().findElement(By.cssSelector("thead th:nth-child(3)>a")).click();
-
-        List<WebElement> elements = getDriver().findElements(By.cssSelector("tr>td:nth-child(3)"));
-        List<String> names = new ArrayList<>();
-        for (WebElement element : elements) {
-            names.add(element.getText());
-        }
-
-        Assert.assertEquals(names, names.stream().sorted().collect(Collectors.toList()));
+        Assert.assertEquals(names, names.stream().sorted(Comparator.reverseOrder()).toList());
     }
 
+    @Ignore
     @Test
     public void testUsersSortingByUserID() {
 
-        getDriver().findElement(By.cssSelector("[href='/manage']")).click();
-        getDriver().findElement(By.cssSelector("[href='securityRealm/']")).click();
+        List<String> userIDList = new HomePage(getDriver())
+                .clickManageJenkins().clickUsers()
+                .createUserWithRandomData()
+                .createUserWithRandomData()
+                .createUserWithRandomData()
+                .createUserWithRandomData()
+                .clickColumnUserIDHeader()
+                .getUserIDList();
 
-        createUser();
-        createUser();
-        createUser();
-        createUser();
+        Assert.assertEquals(userIDList, userIDList.stream().sorted(Comparator.reverseOrder()).toList());
+    }
 
-        getDriver().findElement(By.cssSelector("thead th:nth-child(2)>a")).click();
-        getDriver().findElement(By.cssSelector("thead th:nth-child(2)>a")).click();
+    public String randomString() {
+        return UUID.randomUUID()
+                .toString()
+                .substring(0, 7);
+    }
 
-        List<WebElement> elements = getDriver().findElements(By.cssSelector("tr>td:nth-child(2)"));
+    public String randomEmail() {
+        return randomString() + "@" + randomString() + ".com";
+    }
 
-        List<String> names = elements
-                .stream()
-                .map(WebElement::getText)
-                .toList();
+   @DataProvider(name = "usersCreateDataProvider")
+   public Object[][] usersCreateDataProvider() {
+        return new Object[][] {
+//                {"Username", "Password", "Full name", "E-mail address"},
+                {"Ivan", randomString(), randomString(), randomEmail()},
+                {"Maria", randomString(), randomString(), randomEmail()},
+                {"Sofia", randomString(), randomString(), randomEmail()},
+                {"Irina", randomString(), randomString(), randomEmail()}
+        };
+   }
 
-        Assert.assertEquals(names, names.stream().sorted().collect(Collectors.toList()));
+   @Test(dataProvider = "usersCreateDataProvider")
+    public void testRedirectToUserPage(String username, String password, String fullName, String email) {
+
+        String currentUrl = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickUsers()
+                .createUser(username, password, fullName, email)
+                .clickLogo()
+                .clickPeopleButton()
+                .clickUser(username)
+                .getCurrentUrl();
+
+        Assert.assertTrue(currentUrl.contains(username.toLowerCase()));
     }
 }

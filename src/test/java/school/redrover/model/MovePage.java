@@ -18,12 +18,20 @@ public class MovePage extends BasePage {
         super(driver);
     }
 
-    public FreestylePage chooseFolderAndSave(String folderName) {
+    public FreestyleProjectPage chooseFolderAndSave(String folderName) {
 
         Select selectDefinition = new Select(selectDestination);
         selectDefinition.selectByValue("/" + folderName);
         moveButton.click();
 
-        return new FreestylePage(getDriver());
+        return new FreestyleProjectPage(getDriver());
+    }
+
+    public FolderProjectPage chooseDestinationFromListAndMove(String destination) {
+        new Select(selectDestination)
+                .selectByValue("/" + destination);
+        moveButton.click();
+
+        return new FolderProjectPage(getDriver());
     }
 }

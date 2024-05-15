@@ -1,12 +1,16 @@
 package school.redrover.model;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.model.base.BaseConfigPage;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CreateNewItemPage extends BasePage {
@@ -39,43 +43,27 @@ public class CreateNewItemPage extends BasePage {
     private WebElement okButton;
 
     @FindBy(id = "itemname-invalid")
-    private WebElement errorMessage;
+    private WebElement errorMessageInvalidCharacter;
+
+    @FindBy(id = "itemname-required")
+    private WebElement errorMessageEmptyName;
 
     @FindBy(xpath = "//div[@class='item-copy']//li[not(@style='display: none;')]")
     private List<WebElement> copyFormElements;
+
+    @FindBy(id = "itemname-required")
+    private WebElement itemNameHint;
+
+    @FindBy(css = "label.h3")
+    private WebElement titleOfNameField;
 
     public CreateNewItemPage(WebDriver driver) {
         super(driver);
     }
 
-    public HomePage createNewItem(String projectName, String projectType) {
-        setItemName(projectName);
-        switch (projectType) {
-            case "Freestyle" -> freestyleItem.click();
-            case "Pipeline" -> pipelineItem.click();
-            case "MultiConfiguration" -> multiConfigurationItem.click();
-            case "Folder" -> folderItem.click();
-            case "MultibranchPipeline" -> multibranchPipelineItem.click();
-            case "OrganizationFolder" -> organizationFolderItem.click();
-            default -> throw new IllegalArgumentException("Project type name incorrect");
-         }
-        okButton.click();
-        clickLogo();
-
-        return new HomePage(getDriver());
-    }
-
-
     public CreateNewItemPage setItemName(String name) {
+        nameText.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
         nameText.sendKeys(name);
-        return this;
-    }
-
-
-
-    public CreateNewItemPage selectTypeAndClickOk(String type) {
-        getDriver().findElement(By.xpath("//span[text()='" + type + "']")).click();
-        okButton.click();
         return this;
     }
 
@@ -139,10 +127,19 @@ public class CreateNewItemPage extends BasePage {
         return page;
     }
 
+    public <T extends BaseConfigPage<?>> T selectProjectTypeAndClickOk(TestUtils.ProjectType projectType, T projectConfigPage) {
+        getDriver().findElement(By.xpath("//span[text()='" + projectType.getProjectTypeName() + "']")).click();
+        okButton.click();
 
-    public String getErrorMessage() {
-        return errorMessage.getText();
+        return projectConfigPage;
+    }
 
+    public String getErrorMessageInvalidCharacter() {
+        return errorMessageInvalidCharacter.getText();
+    }
+
+    public String getErrorMessageEmptyName() {
+        return errorMessageEmptyName.getText();
     }
 
     public String getCreateNewItemPageUrl() {
@@ -154,7 +151,7 @@ public class CreateNewItemPage extends BasePage {
         return this;
     }
 
-    public List<String> copyFormElementsList() {
+    public List<String> getCopyFormElementsList() {
         return copyFormElements
                 .stream()
                 .map(WebElement::getText)
@@ -165,4 +162,59 @@ public class CreateNewItemPage extends BasePage {
         okButton.click();
         return new CreateItemPage(getDriver());
     }
+
+    public boolean isOkButtonNotActive() {
+        try
+        {
+            getDriver().findElement(By.xpath("//button[contains(@class, 'disabled') and text()='OK']"));
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
+
+    public List<String> getDropdownMenuContent() {
+        List<WebElement> allJobFromThisLetter = getWait60().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("li[style='']")));
+        List<String> allJobFromThisLetterName = new ArrayList<>();
+
+        for (WebElement el : allJobFromThisLetter) {
+            allJobFromThisLetterName.add(el.getText());
+        }
+        return allJobFromThisLetterName ;
+    }
+
+
+    public CreateNewItemPage selectFreeStyleProject() {
+        freestyleItem.click();
+        return this;
+    }
+    public Boolean getOkButtoneState() {
+        if(okButton.getAttribute("disabled") != ""){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    public CreateNewItemPage clearItemNameField() {
+        nameText.sendKeys(Keys.CONTROL + "a", Keys.BACK_SPACE);
+        return this;
+    }
+
+    public String getItemNameHintText() {
+        return itemNameHint.getText();
+    }
+
+    public String getItemNameHintColor() {
+        return itemNameHint.getCssValue("color");
+    }
+
+    public Boolean okButtonIsEnabled() { return okButton.isEnabled(); }
+
+    public String getTitleOfNameField() {
+        return titleOfNameField.getText();
+    }
+
 }

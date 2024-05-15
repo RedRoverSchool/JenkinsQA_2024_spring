@@ -1,17 +1,42 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import school.redrover.model.base.BasePage;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import school.redrover.model.base.BaseConfigPage;
 
-public class FreestyleConfigPage extends BasePage {
+public class FreestyleConfigPage extends BaseConfigPage<FreestyleProjectPage> {
+
+    @FindBy(css = "#side-panel h1")
+    private WebElement headerSidePanel;
+
+    @FindBy (xpath = "//*[@name='description']")
+    private WebElement descriptionField;
+
     public FreestyleConfigPage(WebDriver driver) {
-        super(driver);
+        super(driver, new FreestyleProjectPage(driver));
     }
 
-    public FreestylePage clickSave() {
-        getDriver().findElement(By.name("Submit")).click();
+    public String getHeaderSidePanelText() {
+        return headerSidePanel.getText();
+    }
 
-        return new FreestylePage(getDriver());
+    public FreestyleConfigPage setDescription(String description) {
+        descriptionField.sendKeys(description);
+
+        return new FreestyleConfigPage(getDriver());
+    }
+
+    public FreestyleConfigPage clearDescription() {
+        descriptionField.clear();
+
+        return new FreestyleConfigPage(getDriver());
+    }
+
+    public FreestyleConfigPage clearAndSetDescription(String description) {
+        descriptionField.clear();
+        descriptionField.sendKeys(description);
+
+        return new FreestyleConfigPage(getDriver());
     }
 }

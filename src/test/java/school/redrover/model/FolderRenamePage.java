@@ -24,9 +24,9 @@ public class FolderRenamePage extends BasePage {
         return this;
     }
 
-    public FolderStatusPage clickRename() {
+    public FolderProjectPage clickRename() {
         submitButton.click();
 
-        return new FolderStatusPage(getDriver());
+        return new FolderProjectPage(getDriver());
     }
 }

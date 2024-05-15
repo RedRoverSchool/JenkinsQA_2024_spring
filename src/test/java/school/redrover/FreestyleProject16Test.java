@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 
@@ -14,7 +15,7 @@ public class FreestyleProject16Test extends BaseTest {
 
 
     @Test
-    public void testCreateFirstTest(){
+    public void testCreateFirstTest() {
 
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
@@ -34,7 +35,7 @@ public class FreestyleProject16Test extends BaseTest {
     }
 
     @Test
-    public void testAddDescription(){
+    public void testAddDescription() {
 
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
@@ -55,8 +56,8 @@ public class FreestyleProject16Test extends BaseTest {
         Assert.assertEquals(description, PROJECT_DESCRIPTION);
     }
 
-    @Test (dependsOnMethods = {"testCreateFirstTest"})
-    public void testRenameFirstProject(){
+    @Test(dependsOnMethods = {"testCreateFirstTest"})
+    public void testRenameFirstProject() {
 
         getDriver().findElement(By.linkText("Dashboard")).click();
         getDriver().findElement(By.xpath
@@ -69,8 +70,9 @@ public class FreestyleProject16Test extends BaseTest {
 
         Assert.assertEquals(newProjectName, NEW_PROJECT_NAME);
     }
-    @Test (dependsOnMethods = "testRenameFirstProject")
-    public void testDeleteFirstProject(){
+
+    @Test(dependsOnMethods = "testRenameFirstProject")
+    public void testDeleteFirstProject() {
 
         getDriver().findElement(By.xpath
                 ("//span[text()='" + NEW_PROJECT_NAME + "']")).click();
