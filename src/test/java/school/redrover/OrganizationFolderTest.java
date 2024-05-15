@@ -195,4 +195,21 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//*[@id='out']/div")).getText()
                 .matches("No events as of.+waiting for events\\.{3}"), "Messages not equals!");
     }
+
+    @Test
+    public void testDeleteOrganizationFolder () {
+
+        final String newOrganizationFolderName = "New Organization Folder";
+
+        List<String> itemList = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
+                .clickDeleteOnSidebar()
+                .clickYesForDeleteOrganizationFolder()
+                .getItemList();
+
+        Assert.assertListNotContainsObject(itemList, ORGANIZATION_FOLDER_NAME, "Did not removed!");
+    }
 }
