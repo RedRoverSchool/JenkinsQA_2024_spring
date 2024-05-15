@@ -28,8 +28,15 @@ public class OrganizationFolderProjectPage extends BaseProjectPage {
     @FindBy(xpath = "//*[@name='Submit']")
     private WebElement saveButton;
 
+    @FindBy(xpath = "//a[@data-title='Delete Organization Folder']")
+    private WebElement deleteOnSidebar;
+
+    @FindBy(xpath = "//button[@data-id='ok']")
+    private WebElement yesButtonOnDeleteOrganizationFolderAlert;
+
     @FindBy(xpath = "//*[@id='description']/div")
     private WebElement description;
+
 
     public OrganizationFolderProjectPage(WebDriver driver) {
         super(driver);
@@ -71,6 +78,16 @@ public class OrganizationFolderProjectPage extends BaseProjectPage {
     public OrganizationFolderProjectPage clickSaveButton() {
         saveButton.click();
         return this;
+    }
+
+    public OrganizationFolderProjectPage clickDeleteOnSidebar() {
+        deleteOnSidebar.click();
+        return this;
+    }
+
+    public HomePage clickYesForDeleteOrganizationFolder() {
+        yesButtonOnDeleteOrganizationFolderAlert.click();
+        return new HomePage(getDriver());
     }
 
     public String getDescriptionText() {

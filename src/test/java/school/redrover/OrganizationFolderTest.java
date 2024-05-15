@@ -137,4 +137,21 @@ public class OrganizationFolderTest extends BaseTest {
 
         Assert.assertTrue(itemList.contains(newOrganizationFolderName));
     }
+
+    @Test
+    public void testDeleteOrganizationFolder () {
+
+        final String newOrganizationFolderName = "New Organization Folder";
+
+        List<String> itemList = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
+                .clickDeleteOnSidebar()
+                .clickYesForDeleteOrganizationFolder()
+                .getItemList();
+
+        Assert.assertListNotContainsObject(itemList, ORGANIZATION_FOLDER_NAME, "Did not removed!");
+    }
 }
