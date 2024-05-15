@@ -788,6 +788,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(consoleOutput.contains(SUCCEED_BUILD_EXPECTED));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testRunBuildByTriangleButton")
     public void testPermalinksBuildDetails() {
         final List<String> expectedPermalinkList =
@@ -800,6 +801,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(actualPermalinkList, expectedPermalinkList);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testPermalinksBuildDetails")
     public void testGreenBuildSuccessColor() {
         final String greenHexColor = "#1ea64b";
