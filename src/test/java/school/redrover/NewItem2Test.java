@@ -62,10 +62,10 @@ public class NewItem2Test extends BaseTest {
         String actualHintText = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(restrictedChar + PROJECT_NAME)
-                .getErrorMessage();
+                .getErrorMessageInvalidCharacter();
 
         String actualHintColor = new CreateNewItemPage(getDriver())
-                .getErrorMessageColor();
+                .getColorOfErrorMessageWhenUnsafeChar();
 
         Assert.assertEquals(actualHintText, String.format("» ‘%s’ is an unsafe character", restrictedChar));
         Assert.assertEquals(actualHintColor, "rgba(255, 0, 0, 1)");

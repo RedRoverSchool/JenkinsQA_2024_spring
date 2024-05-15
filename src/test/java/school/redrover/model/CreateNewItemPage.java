@@ -211,8 +211,8 @@ public class CreateNewItemPage extends BasePage {
         return itemNameHint.getCssValue("color");
     }
 
-    public String getErrorMessageColor() {
-        return errorMessage.getCssValue("color");
+    public String getColorOfErrorMessageWhenUnsafeChar() {
+        return errorMessageInvalidCharacter.getCssValue("color");
     }
 
     public Boolean isOkButtonEnabled() { return okButton.isEnabled(); }

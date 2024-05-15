@@ -26,7 +26,7 @@ public class NewItemErrorsVerificationTest extends BaseTest {
         String errorMessage = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName("*")
-                .getErrorMessage();
+                .getErrorMessageInvalidCharacter();
 
         Assert.assertEquals(errorMessage, "» ‘*’ is an unsafe character");
     }
