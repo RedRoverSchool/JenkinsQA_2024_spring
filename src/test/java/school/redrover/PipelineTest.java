@@ -17,6 +17,7 @@ import school.redrover.runner.TestUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static school.redrover.runner.TestUtils.goToMainPage;
@@ -43,12 +44,9 @@ public class PipelineTest extends BaseTest {
     }
 
     private void sendScript(int number_of_stages) {
-        String pipelineScript = """
-                pipeline {
-                agent any
-
-                stages {
-                """;
+        String pipelineScript = "pipeline {\n" +
+                "agent any\n\n" +
+                "stages {\n";
 
         getDriver().findElement(By.className("ace_text-input")).sendKeys(pipelineScript);
 
