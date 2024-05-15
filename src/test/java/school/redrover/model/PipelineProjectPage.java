@@ -41,9 +41,6 @@ public class PipelineProjectPage extends BaseProjectPage {
     @FindBy(css = "a[href$='rename']")
     private WebElement sidebarRenameButton;
 
-    @FindBy(css = "div > h1")
-    private WebElement headlineDisplayedName;
-
     @FindBy(xpath = "//a[@data-build-success = 'Build scheduled']")
     private WebElement buildButton;
 
@@ -210,10 +207,6 @@ public class PipelineProjectPage extends BaseProjectPage {
         sidebarRenameButton.click();
 
         return new PipelineRenamePage(getDriver());
-    }
-
-    public String getHeadlineDisplayedName() {
-        return headlineDisplayedName.getText();
     }
 
     public PipelineProjectPage clickBuild() {

@@ -21,7 +21,7 @@ public class FreestyleProjectPage extends BaseProjectPage {
     @FindBy(id = "main-panel")
     private WebElement fullProjectName;
 
-    @FindBy(xpath = "//*[@id='main-panel']//h1")
+    @FindBy(tagName = "h1")
     private WebElement projectName;
 
     @FindBy(css = "#description > div:first-child")
@@ -111,11 +111,6 @@ public class FreestyleProjectPage extends BaseProjectPage {
         saveButton.click();
 
         return this;
-    }
-
-    public String getProjectName() {
-
-        return projectName.getText();
     }
 
     public String getProjectNameFromBreadcrumbs() {

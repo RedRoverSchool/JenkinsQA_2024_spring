@@ -58,7 +58,7 @@ public class FreestyleProject2Test extends BaseTest {
                 .clickLogo()
                 .clickFolderName();
 
-        Assert.assertTrue(folderProjectPage.getPageHeading().contains(FOLDER_NAME));
+        Assert.assertTrue(folderProjectPage.getProjectName().contains(FOLDER_NAME));
         Assert.assertTrue(folderProjectPage.isItemExistsInsideFolder(PROJECT_NAME));
     }
 }

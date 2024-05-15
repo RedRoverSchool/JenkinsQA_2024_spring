@@ -47,7 +47,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .selectMultibranchPipelineAndClickOk()
                 .clickToggle()
                 .clickSaveButton()
-                .getProjectNameText();
+                .getProjectName();
 
         Assert.assertEquals(getMultibranchPipelineName,MULTI_PIPELINE_NAME);
     }
@@ -77,7 +77,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .clickSaveButton()
                 .clickSidebarRenameButton()
                 .changeNameTo(RENAMED_MULTI_PIPELINE)
-                .getProjectNameText();
+                .getProjectName();
 
         Assert.assertEquals(newNameMultibranchPipeline, RENAMED_MULTI_PIPELINE);
     }
@@ -184,7 +184,7 @@ public class MultibranchPipelineTest extends BaseTest {
             .openItemDropdown(MULTI_PIPELINE_NAME)
             .clickRenameFromDropdownMP()
             .changeNameTo(RENAMED_MULTI_PIPELINE)
-            .getMultibranchPipelineName();
+            .getProjectName();
 
         Assert.assertEquals(multibranchPipelineName,RENAMED_MULTI_PIPELINE, "чтото пошло не так");
     }

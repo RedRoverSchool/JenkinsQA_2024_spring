@@ -22,9 +22,6 @@ public class MultiConfigurationProjectPage extends BaseProjectPage {
     @FindBy(css = "#description>div:first-child")
     private WebElement description;
 
-    @FindBy(tagName = "h1")
-    private WebElement projectName;
-
     @FindBy(linkText = "Configure")
     private WebElement configureButton;
 
@@ -76,11 +73,6 @@ public class MultiConfigurationProjectPage extends BaseProjectPage {
     public String getDescriptionText() {
 
         return getWait2().until(ExpectedConditions.visibilityOf(description)).getText();
-    }
-
-    public String getProjectNameText() {
-
-        return projectName.getText();
     }
 
     public MultiConfigurationConfigPage clickConfigureButton() {
