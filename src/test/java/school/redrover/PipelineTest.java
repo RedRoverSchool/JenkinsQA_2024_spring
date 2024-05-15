@@ -815,7 +815,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Ignore
-    @Test(dependsOnMethods = "testDisablePipelineAndEnableBack")
+    @Test(dependsOnMethods = "testEnableBack")
     public void testPipelineBuildSuccessFromConsole() {
         getDriver().findElement((By.xpath("//td[@class='jenkins-table__cell--tight']//a[contains(@tooltip,'Schedule')]"))).click();
         getDriver().findElement(By.xpath("//td/a[@href='job/" + PIPELINE_NAME + "/']")).click();
