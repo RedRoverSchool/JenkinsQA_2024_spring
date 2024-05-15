@@ -357,7 +357,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testDeleteMultiConfigurationProjectFromMenu() {
-        
+
         String actualPageHeading = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(RANDOM_PROJECT_NAME)
@@ -368,7 +368,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickYes(new HomePage(getDriver()))
                 .getHeadingValue();
 
-        Assert.assertEquals(actualPageHeading, "Welcome to Jenkins!");
+        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "Welcome to Jenkins!");
     }
 
     @Test
