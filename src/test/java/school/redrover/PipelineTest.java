@@ -447,7 +447,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(scheduleABuildArrows.size(), 0);
     }
 
-    @Test(dependsOnMethods = "testPipelineNotActive")
+    @Test(dependsOnMethods = {"testPipelineNotActive", "testDisableItem"})
     public void testEnableBack() {
         String pipelineStatus = new HomePage(getDriver())
                 .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
