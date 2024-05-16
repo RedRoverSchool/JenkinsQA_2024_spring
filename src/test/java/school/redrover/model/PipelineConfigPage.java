@@ -52,12 +52,6 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
         return this;
     }
 
-    public PipelineConfigPage clickToggleSwitchEnableDisable() {
-        getWait2().until(ExpectedConditions.visibilityOf(toggleSwitchEnableDisable)).click();
-
-        return this;
-    }
-
     public PipelineConfigPage clickDiscardOldBuilds() {
         getWait5().until(ExpectedConditions.elementToBeClickable(discardOldBuildsCheckbox)).click();
 
