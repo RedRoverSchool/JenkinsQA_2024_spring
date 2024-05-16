@@ -15,9 +15,6 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
     @FindBy(xpath = "//textarea[@name='description']")
     private WebElement descriptionTextArea;
 
-    @FindBy(xpath = "//label[@data-title='Disabled']")
-    private WebElement toggleSwitchEnableDisable;
-
     @FindBy(xpath = "//label[text() = 'Discard old builds']")
     private WebElement discardOldBuildsCheckbox;
 
@@ -77,6 +74,12 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
 
     public PipelineConfigPage setDisplayNameDescription(String name) {
         getWait5().until(ExpectedConditions.elementToBeClickable(displayNameTextField)).sendKeys(name);
+
+        return this;
+    }
+
+    public PipelineConfigPage clearDisplayNameDescription() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(displayNameTextField)).clear();
 
         return this;
     }
