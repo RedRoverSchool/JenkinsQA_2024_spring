@@ -3,8 +3,6 @@ package school.redrover.model;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.testng.Assert;
-import org.testng.annotations.Test;
 import school.redrover.model.base.BasePage;
 
 import java.util.ArrayList;
@@ -27,22 +25,4 @@ public class DashboardPage extends BasePage {
 
         return menuList;
     }
-
-    @Test
-    public void testPeopleOnSidebar() {
-        String actualHeading = new HomePage(getDriver())
-                .clickPeopleOnSidebar()
-                .getPageHeading();
-
-        Assert.assertEquals(actualHeading, "People");
-    }
-
-    @Test
-    public void testStartPageHeading() {
-        String actualHeading = new HomePage(getDriver())
-                .getHeadingValue();
-
-        Assert.assertEquals(actualHeading, "Welcome to Jenkins!");
-    }
-
 }

@@ -7,7 +7,6 @@ import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 public class BuildHistoryTest extends BaseTest{
-    private final String PROJECT_NAME = "My freestyle project";
 
         @Test
         public void testGetTableBuildHistory() {

@@ -294,4 +294,21 @@ public class DashboardTest extends BaseTest {
 
         Assert.assertEquals(newViewName, VIEW_NAME);
     }
+
+    @Test
+    public void testPeopleOnSidebar() {
+        String actualHeading = new HomePage(getDriver())
+                .clickPeopleOnSidebar()
+                .getPageHeading();
+
+        Assert.assertEquals(actualHeading, "People");
+    }
+
+    @Test
+    public void testStartPageHeading() {
+        String actualHeading = new HomePage(getDriver())
+                .getHeadingValue();
+
+        Assert.assertEquals(actualHeading, "Welcome to Jenkins!");
+    }
 }

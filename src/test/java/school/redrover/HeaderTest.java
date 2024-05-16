@@ -1,7 +1,5 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
@@ -11,11 +9,11 @@ public class HeaderTest extends BaseTest {
 
     @Test
     public void testTooltipAccessible() {
-        String warningTooltiptext = new HomePage(getDriver())
+        String warningTooltipText = new HomePage(getDriver())
                 .clickWarningIcon()
                 .getWarningTooltipText();
 
-        Assert.assertTrue(warningTooltiptext.contains("Warnings"));
+        Assert.assertTrue(warningTooltipText.contains("Warnings"));
     }
 
     @Test
