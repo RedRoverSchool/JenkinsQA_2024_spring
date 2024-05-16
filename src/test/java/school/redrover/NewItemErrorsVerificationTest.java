@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.model.ItemPage;
 import school.redrover.runner.BaseTest;
 
@@ -18,6 +19,16 @@ public class NewItemErrorsVerificationTest extends BaseTest {
                 .freestyleProjectClick();
 //
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='itemname-invalid']")).getText(), "» ‘*’ is an unsafe character");
+    }
+
+    @Test
+    public void testErrorMessageWhenUnsafeCharInName() {
+        String errorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName("*")
+                .getErrorMessageInvalidCharacterOrDuplicateName();
+
+        Assert.assertEquals(errorMessage, "» ‘*’ is an unsafe character");
     }
 
     @Test

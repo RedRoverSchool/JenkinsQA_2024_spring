@@ -7,7 +7,7 @@ import school.redrover.model.base.BaseProjectPage;
 
 public class OrganizationFolderProjectPage extends BaseProjectPage {
 
-    @FindBy(css = "span > a[href$='configure']")
+    @FindBy(css = ".task [href$='configure']")
     private WebElement configureButton;
 
     @FindBy(css = "h1 > svg")
@@ -15,6 +15,27 @@ public class OrganizationFolderProjectPage extends BaseProjectPage {
 
     @FindBy(xpath = "//a[contains(@href,'pipeline-syntax')]")
     private WebElement pipelineSyntaxButton;
+
+    @FindBy(xpath = "//a[contains(.,'Rename')]")
+    private WebElement renameButton;
+
+    @FindBy(xpath = "//*[@id='description-link']")
+    private WebElement descriptionLink;
+
+    @FindBy(xpath = "//textarea[@name='description']")
+    private WebElement textareaDescription;
+
+    @FindBy(xpath = "//*[@name='Submit']")
+    private WebElement saveButton;
+
+    @FindBy(xpath = "//*[@id='description']/div")
+    private WebElement description;
+
+    @FindBy(xpath = "//a[@data-title='Delete Organization Folder']")
+    private WebElement deleteOnSidebar;
+
+    @FindBy(xpath = "//button[@data-id='ok']")
+    private WebElement yesButtonOnDeleteOrganizationFolderAlert;
 
     public OrganizationFolderProjectPage(WebDriver driver) {
         super(driver);
@@ -34,5 +55,41 @@ public class OrganizationFolderProjectPage extends BaseProjectPage {
         pipelineSyntaxButton.click();
 
         return new PipelineSyntaxPage(getDriver());
+    }
+
+
+    public OrganizationFolderRenamePage clickOnRenameButton() {
+        renameButton.click();
+
+        return new OrganizationFolderRenamePage(getDriver());
+    }
+
+    public OrganizationFolderProjectPage clickAddOrEditDescription() {
+        descriptionLink.click();
+        return this;
+    }
+
+    public OrganizationFolderProjectPage setDescription(String text) {
+        textareaDescription.sendKeys(text);
+        return this;
+    }
+
+    public OrganizationFolderProjectPage clickSaveButton() {
+        saveButton.click();
+        return this;
+    }
+
+    public String getDescriptionText() {
+        return description.getText();
+    }
+
+    public OrganizationFolderProjectPage clickDeleteOnSidebar() {
+        deleteOnSidebar.click();
+        return this;
+    }
+
+    public HomePage clickYesForDeleteOrganizationFolder() {
+        yesButtonOnDeleteOrganizationFolderAlert.click();
+        return new HomePage(getDriver());
     }
 }

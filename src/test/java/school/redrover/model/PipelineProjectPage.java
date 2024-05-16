@@ -7,7 +7,10 @@ import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseProjectPage;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PipelineProjectPage extends BaseProjectPage {
 
@@ -38,9 +41,6 @@ public class PipelineProjectPage extends BaseProjectPage {
     @FindBy(css = "a[href$='rename']")
     private WebElement sidebarRenameButton;
 
-    @FindBy(css = "div > h1")
-    private WebElement headlineDisplayedName;
-
     @FindBy(xpath = "//a[@data-build-success = 'Build scheduled']")
     private WebElement buildButton;
 
@@ -53,6 +53,9 @@ public class PipelineProjectPage extends BaseProjectPage {
     @FindBy(xpath = "//div[@id = 'buildHistory']//tr[@class != 'build-search-row']")
     private List<WebElement> listOfBuilds;
 
+    @FindBy(xpath = "//div[@class='pane-content']//a[contains(text(),'#')]")
+    private List<WebElement> buildHistoryNumberList;
+
     @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
     private WebElement fullStageViewButton;
 
@@ -60,6 +63,7 @@ public class PipelineProjectPage extends BaseProjectPage {
             @FindBy(id = "tasks"),
             @FindBy(className = "task-link-text")
     })
+
     private List<WebElement> taskLinkTextElements;
 
     @FindBy(id = "enable-project")
@@ -77,16 +81,16 @@ public class PipelineProjectPage extends BaseProjectPage {
     @FindBy(xpath = "//th[contains(@class, 'stage-header-name')]")
     private List<WebElement> stageHeader;
 
-    @FindBy(className ="date")
+    @FindBy(className = "date")
     private WebElement stageDate;
 
-    @FindBy(className ="time")
+    @FindBy(className = "time")
     private WebElement stageTime;
 
-    @FindBy(className ="badge")
+    @FindBy(className = "badge")
     private WebElement stageBadge;
 
-    @FindBy(xpath ="//div[@class='changeset-box no-changes']")
+    @FindBy(xpath = "//div[@class='changeset-box no-changes']")
     private WebElement stageStatus;
 
 
@@ -101,6 +105,12 @@ public class PipelineProjectPage extends BaseProjectPage {
 
     @FindBy(xpath = "//button[@name='Submit']")
     private WebElement enableButton;
+
+    @FindBy(xpath = "//li[@class='permalink-item']")
+    private List<WebElement> permalinkList;
+
+    @FindBy(xpath = "//*[@tooltip='Success']")
+    private WebElement buildStatusMark;
 
     public PipelineProjectPage(WebDriver driver) {
         super(driver);
@@ -169,6 +179,12 @@ public class PipelineProjectPage extends BaseProjectPage {
         return new DeleteDialog(getDriver());
     }
 
+    public PipelineConfigPage clickSidebarConfigureButton(String jobName) {
+        getDriver().findElement(By.xpath("//a[@href='/job/" + jobName + "/configure']")).click();
+
+        return new PipelineConfigPage(getDriver());
+    }
+
     public PipelineProjectPage hoverOverBreadcrumbsName() {
         hoverOverElement(breadcrumbsName);
 
@@ -191,10 +207,6 @@ public class PipelineProjectPage extends BaseProjectPage {
         sidebarRenameButton.click();
 
         return new PipelineRenamePage(getDriver());
-    }
-
-    public String getHeadlineDisplayedName() {
-        return headlineDisplayedName.getText();
     }
 
     public PipelineProjectPage clickBuild() {
@@ -289,20 +301,20 @@ public class PipelineProjectPage extends BaseProjectPage {
         return stageHeader.size();
     }
 
-    public boolean getBuildAttributeStatus(){
+    public boolean getBuildAttributeStatus() {
         boolean result = true;
-            if (stageDate == null || !stageDate.isDisplayed()) {
-                result = false;
-            }
-            if (stageTime == null || !stageTime.isDisplayed()) {
-                result = false;
-            }
-            if (stageStatus == null || !(stageStatus.getText().equals("No Changes"))) {
-                result = false;
-            }
-            if (stageBadge == null || !stageBadge.isDisplayed()) {
-                result = false;
-            }
+        if (stageDate == null || !stageDate.isDisplayed()) {
+            result = false;
+        }
+        if (stageTime == null || !stageTime.isDisplayed()) {
+            result = false;
+        }
+        if (stageStatus == null || !(stageStatus.getText().equals("No Changes"))) {
+            result = false;
+        }
+        if (stageBadge == null || !stageBadge.isDisplayed()) {
+            result = false;
+        }
         return result;
     }
 
@@ -334,5 +346,39 @@ public class PipelineProjectPage extends BaseProjectPage {
         enableButton.click();
 
         return this;
+    }
+
+    public List<String> getPermalinkList() {
+
+        return getWait10().until(ExpectedConditions.visibilityOfAllElements(permalinkList))
+                .stream()
+                .map(WebElement::getText)
+                .map(permalink -> permalink.split(",")[0].trim())
+                .collect(Collectors.toList());
+    }
+
+    public String getHexColorSuccessMark() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        WebElement statusMark = getWait10().until(ExpectedConditions.visibilityOf(buildStatusMark));
+
+        return (String) js.executeScript(
+                "return window.getComputedStyle(arguments[0]).getPropertyValue('--success');",
+                statusMark);
+    }
+
+    public List<String> getBuildHistoryList() {
+        List<String> buildOrderList = new ArrayList<>();
+        for (WebElement buildNumber : buildHistoryNumberList) {
+            buildOrderList.add(buildNumber.getText());
+        }
+
+        return buildOrderList;
+    }
+
+    public List<String> getExpectedBuildHistoryDescendingList() {
+        List<String> buildOrderList = new ArrayList<>(getBuildHistoryList());
+        buildOrderList.sort(Collections.reverseOrder());
+
+        return buildOrderList;
     }
 }

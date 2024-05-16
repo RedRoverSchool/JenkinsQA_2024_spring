@@ -61,16 +61,4 @@ public class FreestyleProject100Test extends BaseTest {
                 projectNewName);
     }
 
-    @Test
-    public void testDeleteUsingSidePanel() {
-        final String projectName = "This is the project to be deleted";
-        TestUtils.createNewItem(this, projectName, TestUtils.Item.FREESTYLE_PROJECT);
-
-        TestUtils.clickAtBeginOfElement(this, TestUtils.getViewItemElement(this, projectName));
-
-        getDriver().findElement(By.cssSelector("[data-url $= '/doDelete']")).click();
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.cssSelector("dialog .jenkins-button--primary"))).click();
-
-        Assert.assertTrue(getDriver().findElement(TestUtils.EMPTY_STATE_BLOCK).isDisplayed());
-    }
 }

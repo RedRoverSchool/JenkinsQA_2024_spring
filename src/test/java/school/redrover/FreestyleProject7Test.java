@@ -6,9 +6,10 @@ import school.redrover.runner.BaseTest;
 import java.util.List;
 
 public class FreestyleProject7Test extends BaseTest {
-    final String freestyleProjectName = "FreestyleProjectTest";
+
     @Test
     public void testCreateFreestyleProject() {
+        final String freestyleProjectName = "FreestyleProjectTest";
 
         List<String> itemList = new HomePage(getDriver())
                 .clickNewItem()

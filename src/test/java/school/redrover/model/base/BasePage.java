@@ -19,6 +19,9 @@ public abstract class BasePage extends BaseModel {
     @FindBy(id = "search-box")
     private WebElement searchBox;
 
+    @FindBy(css = "[class$=jenkins_ver]")
+    private WebElement version;
+
     public BasePage(WebDriver driver) {
         super(driver);
     }
@@ -101,4 +104,15 @@ public abstract class BasePage extends BaseModel {
     public String getCurrentUrl() {
         return getDriver().getCurrentUrl();
     }
+
+    public String getVersionOnFooter() {
+        return version.getText().split(" ")[1];
+    }
+
+    public HomePage clickVersion() {
+        version.click();
+
+        return new HomePage(getDriver());
+    }
+
 }

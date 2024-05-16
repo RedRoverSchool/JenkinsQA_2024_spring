@@ -37,7 +37,8 @@ public class FreestyleProject17Test extends BaseTest {
                 .setDescription(projectDescription)
                 .clickSaveButton()
                 .clickConfigure()
-                .clearAndSetDescription("Description of " + JOB_NAME)
+                .clearDescription()
+                .setDescription("Description of " + JOB_NAME)
                 .clickSaveButton()
                 .getProjectDescriptionText();
 

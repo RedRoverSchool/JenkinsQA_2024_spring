@@ -8,10 +8,11 @@ import school.redrover.runner.BaseTest;
 import java.util.List;
 
 public class FreestyleProject18Test extends BaseTest {
-    final String projectItemName = "JavaHashGroupProject";
+
 
     @Test
     public void testDeleteProjectAnother() {
+        final String projectItemName = "JavaHashGroupProject";
         final String projectDescription = "test for JavaHashGroupProject ";
 
         List<String> itemList = new HomePage(getDriver())

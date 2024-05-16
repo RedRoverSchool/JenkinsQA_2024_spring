@@ -23,6 +23,10 @@ public class AboutJenkinsPage extends BasePage {
         return versionJenkins.isDisplayed();
     }
 
+    public String getJenkinsVersion() {
+        return versionJenkins.getText().split(" ")[1];
+    }
+
     public boolean isExistJenkinsInformationFooter() {
         List<String> tabBarMenu = List.of("Mavenized dependencies", "Static resources", "License and dependency information for plugins");
         return tabBarMenu.stream().allMatch(x -> jenkinsTabPanel.getText().contains(x));

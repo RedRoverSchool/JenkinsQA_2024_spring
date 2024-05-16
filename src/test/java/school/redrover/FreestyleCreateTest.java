@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 
@@ -10,27 +11,29 @@ public class FreestyleCreateTest extends BaseTest {
 
     @Test
     public void testFreestyleCreate() {
-        getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
-        getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys("project1");
-        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[1]")).click();
-        getDriver().findElement(By.xpath("//*[@id='ok-button']")).click();
-        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]")).click();
+        final String projectName = "project1";
+        String itemName = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(projectName)
+                .selectFreestyleAndClickOk()
+                .clickSaveButton()
+                .getProjectNameFromBreadcrumbs();
 
-        Assert.assertEquals(getDriver().findElement(By
-                .xpath("//*[@id='breadcrumbs']/li[3]/a")).getText(), "project1");
+        Assert.assertEquals(itemName, projectName);
     }
+
     @Test
-    public void testCreateFreestyleProject(){
-        getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys("TestName");
-        getDriver().findElement(By.xpath("//span[@class='label' and text()='Freestyle project']")).click();
-        getDriver().findElement(By.xpath("//*[@id='ok-button']")).click();
-        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]")).click();
+    public void testCreateFreestyleProject() {
+        final String projectName = "TestName";
+        String itemName = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(projectName)
+                .selectFreestyleAndClickOk()
+                .clickSaveButton()
+                .getProjectNameFromBreadcrumbs();
 
-        Assert.assertEquals(getDriver().findElement(By
-                .xpath("//*[@id='breadcrumbs']/li[3]/a")).getText(), "TestName");
+        Assert.assertEquals(itemName, projectName);
     }
-
-    }
+}
 
 

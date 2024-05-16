@@ -15,8 +15,8 @@ import java.util.List;
 public class ViewsTest extends BaseTest {
 
     private static final String MY_VIEW_NAME = "EmpoyeeView";
-    final String VIEW_NAME = "in progress";
-    final String VISIBLE = "visible";
+    private static final String VIEW_NAME = "in progress";
+    private static final String VISIBLE = "visible";
 
     @Test
     public void testGoToMyViewsFromHeaderUserMenu() {
