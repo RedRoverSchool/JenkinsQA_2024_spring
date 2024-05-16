@@ -42,12 +42,41 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
     @FindBy(xpath = "(//span[@class='ace_string'])[2]")
     private WebElement echoScript;
 
+    @FindBy(xpath = "//button[@data-section-id='advanced-project-options']")
+    private WebElement advancedProjectOptionsMenu;
+
+    @FindBy(xpath = "//section[@class='jenkins-section']//button[@type='button']")
+    private WebElement advancedButton;
+
+    @FindBy(xpath = "//div[@class='setting-main']//input[contains(@checkurl, 'checkDisplayName')]")
+    private WebElement displayNameTextField;
+
     public PipelineConfigPage(WebDriver driver) {
         super(driver, new PipelineProjectPage(driver));
     }
 
     public PipelineConfigPage addDescription(String descriptionText) {
         getWait2().until(ExpectedConditions.visibilityOf(descriptionTextArea)).sendKeys(descriptionText);
+
+        return this;
+    }
+
+    public PipelineConfigPage clickAdvancedProjectOptionsMenu() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(advancedProjectOptionsMenu)).click();
+
+        return this;
+    }
+
+    public PipelineConfigPage clickAdvancedButton() {
+        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
+        executor.executeScript("arguments[0].dispatchEvent(new Event('click'));",
+                advancedButton);
+
+        return this;
+    }
+
+    public PipelineConfigPage setDisplayNameDescription(String name) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(displayNameTextField)).sendKeys(name);
 
         return this;
     }
