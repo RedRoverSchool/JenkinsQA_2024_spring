@@ -4,6 +4,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.HomePage;
+import school.redrover.model.SearchResultPage;
 import school.redrover.model.UserPage;
 
 import java.util.List;
@@ -101,6 +102,11 @@ public abstract class BasePage extends BaseModel {
         return projectType;
     }
 
+    public SearchResultPage typeTextToSearchBox(String text) {
+        searchBox.sendKeys(text + Keys.ENTER);
+
+        return new SearchResultPage(getDriver());
+    }
     public String getCurrentUrl() {
         return getDriver().getCurrentUrl();
     }

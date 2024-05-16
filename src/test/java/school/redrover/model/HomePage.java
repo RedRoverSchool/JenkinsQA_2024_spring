@@ -542,7 +542,7 @@ public class HomePage extends BasePage {
         return new SecurityPage(getDriver());
     }
 
-    public PeoplePage clickPeopleButton() {
+    public PeoplePage clickPeopleOnSidebar() {
         peopleButton.click();
 
         return new PeoplePage(getDriver());

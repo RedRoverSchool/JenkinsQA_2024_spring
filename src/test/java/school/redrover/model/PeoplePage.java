@@ -27,6 +27,9 @@ public class PeoplePage extends BasePage {
     @FindBy(css = "[id*='person-admin'] svg")
     private WebElement userTableIcon;
 
+    @FindBy(css = "h1")
+    private WebElement pageHeading;
+
     public PeoplePage(WebDriver driver) {
         super(driver);
     }
@@ -57,6 +60,10 @@ public class PeoplePage extends BasePage {
 
     public Dimension getUserIconSize() {
         return userTableIcon.getSize();
+    }
+
+    public String getPageHeading() {
+        return pageHeading.getText();
     }
 
 }

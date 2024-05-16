@@ -5,7 +5,6 @@ import org.testng.annotations.Test;
 import school.redrover.model.DashboardPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.TestUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -36,8 +35,8 @@ public class DashboardTest extends BaseTest {
 
     @Test(dependsOnMethods = "testDashboardMenu")
     public void testEditDescriptionOnDashboard() {
-
         final String expectedDescription = "RedRover Projects";
+
         final String expectedLinkText = "Edit description";
 
         String actualDescription = new HomePage(getDriver())
@@ -55,10 +54,7 @@ public class DashboardTest extends BaseTest {
 
     @Test(dependsOnMethods = "testDashboardMenu")
     public void testFolderChevronMenu() {
-
         String FOLDER_NAME = "A Folder";
-
-        TestUtils.createFolderProject(this, FOLDER_NAME);
 
         final List<String> FOLDER_MENU = List.of(
                 "Configure",
@@ -70,6 +66,7 @@ public class DashboardTest extends BaseTest {
                 "Credentials");
 
         List<String> chevronMenu = new HomePage(getDriver())
+                .createFolder(FOLDER_NAME)
                 .openItemDropdown(FOLDER_NAME)
                 .getDropdownMenu();
 
@@ -79,10 +76,7 @@ public class DashboardTest extends BaseTest {
 
     @Test(dependsOnMethods = "testFolderChevronMenu")
     public void testFreestyleProjectChevronMenu() {
-
         String FREESTYLE_PROJECT_NAME = "FREESTYLE";
-
-        TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
         final List<String> FREESTYLE_PROJECT_MENU = List.of(
                 "Changes",
@@ -94,6 +88,7 @@ public class DashboardTest extends BaseTest {
                 "Rename");
 
         List<String> chevronMenu = new HomePage(getDriver())
+                .createFreestyleProject(FREESTYLE_PROJECT_NAME)
                 .openItemDropdown(FREESTYLE_PROJECT_NAME)
                 .getDropdownMenu();
 
@@ -103,9 +98,6 @@ public class DashboardTest extends BaseTest {
 
     @Test(dependsOnMethods = "testFreestyleProjectChevronMenu")
     public void testPipelineChevronMenu() {
-
-        TestUtils.createPipelineProject(this, PIPELINE_NAME);
-
         final List<String> PIPELINE_MENU = List.of(
                 "Changes",
                 "Build Now",
@@ -117,6 +109,7 @@ public class DashboardTest extends BaseTest {
                 "Pipeline Syntax");
 
         List<String> chevronMenu = new HomePage(getDriver())
+                .createPipeline(PIPELINE_NAME)
                 .openItemDropdown(PIPELINE_NAME)
                 .getDropdownMenu();
 
@@ -126,9 +119,6 @@ public class DashboardTest extends BaseTest {
 
     @Test(dependsOnMethods = "testPipelineChevronMenu")
     public void testMultiConfigurationProjectChevronMenu() {
-
-        TestUtils.createMultiConfigurationProject(this, MULTI_CONFIGURATION_PROJECT_NAME);
-
         final List<String> MULTI_CONFIGURATION_PROJECT_MENU = List.of(
                 "Changes",
                 "Workspace",
@@ -139,6 +129,7 @@ public class DashboardTest extends BaseTest {
                 "Rename");
 
         List<String> chevronMenu = new HomePage(getDriver())
+                .createMultiConfigurationProject(MULTI_CONFIGURATION_PROJECT_NAME)
                 .openItemDropdown(MULTI_CONFIGURATION_PROJECT_NAME)
                 .getDropdownMenu();
 
@@ -148,10 +139,7 @@ public class DashboardTest extends BaseTest {
 
     @Test(dependsOnMethods = "testMultiConfigurationProjectChevronMenu")
     public void testMultibranchPipelineChevronMenu() {
-
         String MULTIBRANCH_PIPELINE_NAME = "MULTIBRANCH_PIPELINE";
-
-        TestUtils.createMultibranchProject(this, MULTIBRANCH_PIPELINE_NAME);
 
         final List<String> MULTIBRANCH_PIPELINE_MENU = List.of(
                 "Configure",
@@ -166,6 +154,7 @@ public class DashboardTest extends BaseTest {
                 "Credentials");
 
         List<String> chevronMenu = new HomePage(getDriver())
+                .createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME)
                 .openItemDropdown(MULTIBRANCH_PIPELINE_NAME)
                 .getDropdownMenu();
 
@@ -175,10 +164,7 @@ public class DashboardTest extends BaseTest {
 
     @Test(dependsOnMethods = "testMultibranchPipelineChevronMenu")
     public void testOrganizationFolderChevronMenu() {
-
         String ORGANIZATION_FOLDER_NAME = "RedRover Organization";
-
-        TestUtils.createOrganizationFolderProject(this, ORGANIZATION_FOLDER_NAME);
 
         final List<String> ORGANIZATION_FOLDER_MENU = List.of(
                 "Configure",
@@ -193,6 +179,7 @@ public class DashboardTest extends BaseTest {
                 "Credentials");
 
         List<String> chevronMenu = new HomePage(getDriver())
+                .createOrganizationFolder(ORGANIZATION_FOLDER_NAME)
                 .openItemDropdown(ORGANIZATION_FOLDER_NAME)
                 .getDropdownMenu();
 
@@ -201,8 +188,7 @@ public class DashboardTest extends BaseTest {
 
 
     @Test(dependsOnMethods = "testOrganizationFolderChevronMenu")
-    public void testCreateView() {
-
+    public void testCreateListView() {
         String createdViewName = new HomePage(getDriver())
                 .clickPlusForCreateView()
                 .setViewName(VIEW_NAME)
@@ -215,7 +201,7 @@ public class DashboardTest extends BaseTest {
     }
 
 
-    @Test(dependsOnMethods = "testCreateView")
+    @Test(dependsOnMethods = "testCreateListView")
     public void testAddItemsToView() {
 
         List<String> projectNameList = new HomePage(getDriver())
@@ -290,5 +276,22 @@ public class DashboardTest extends BaseTest {
 
         Assert.assertEquals(reverseSortedByClickNameList, reverseSortedByStreamNameList);
         Assert.assertEquals(sortedByClickNameList, sortedByStreamNameList);
+    }
+
+    @Test
+    public void testCreateMyView() {
+        String newViewName =
+                new HomePage(getDriver())
+                        .clickCreateAJob()
+                        .setItemName(MULTI_CONFIGURATION_PROJECT_NAME)
+                        .selectMultiConfigurationAndClickOk()
+                        .clickLogo()
+                        .clickPlusForCreateView()
+                        .setViewName(VIEW_NAME)
+                        .clickMyViewRadioButton()
+                        .clickCreateMyView()
+                        .getNewViewName();
+
+        Assert.assertEquals(newViewName, VIEW_NAME);
     }
 }

@@ -90,7 +90,7 @@ public class FooterTest extends BaseTest {
 
         versionList.add(new HomePage(getDriver())
                 .clickLogo()
-                .clickPeopleButton()
+                .clickPeopleOnSidebar()
                 .getVersionOnFooter());
 
         versionList.add(new HomePage(getDriver())

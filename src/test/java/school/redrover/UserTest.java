@@ -106,7 +106,7 @@ public class UserTest extends BaseTest {
                 .clickUsers()
                 .createUser(username, password, fullName, email)
                 .clickLogo()
-                .clickPeopleButton()
+                .clickPeopleOnSidebar()
                 .clickUser(username)
                 .getCurrentUrl();
 

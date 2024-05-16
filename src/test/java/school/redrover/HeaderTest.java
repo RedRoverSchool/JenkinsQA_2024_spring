@@ -1,68 +1,41 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.ItemPage;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 public class HeaderTest extends BaseTest {
 
     @Test
-    public void testElementPeople() {
-        new ItemPage(getDriver())
-                .elementPeopleClick();
+    public void testTooltipAccessible() {
+        String warningTooltiptext = new HomePage(getDriver())
+                .clickWarningIcon()
+                .getWarningTooltipText();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='jenkins-app-bar__content']")).getText(), "People");
+        Assert.assertTrue(warningTooltiptext.contains("Warnings"));
     }
 
     @Test
-    public void testElementWelcome() {
-        new ItemPage(getDriver())
-                .elementWelcomeClic();
+    public void testWarningsSettingPage() {
+        String pageTitle = new HomePage(getDriver())
+                .clickWarningIcon()
+                .clickConfigureTooltipButton()
+                .getTitleText();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[contains(.,'Welcome to Jenkins!')]")).getText(), "Welcome to Jenkins!");
-    }
-
-    @Ignore
-    @Test
-    public void testSearchBox() {
-
-        getDriver().findElement(By.id("search-box")).sendKeys("ma");
-        getDriver().findElement(By.className("yui-ac-bd")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='yui-ac-content']//li[1]")).getText(),
-                "manage");
-
-        getDriver().findElement(By.id("search-box")).sendKeys(Keys.ENTER);
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Manage Jenkins");
-    }
-
-    @Ignore
-    @Test
-    public void testSearchResult() {
-        String searchText = "i";
-        WebElement headerSearchLine = getDriver().findElement(By.xpath("//input[@id='search-box']"));
-        headerSearchLine.click();
-        headerSearchLine.sendKeys(searchText);
-        headerSearchLine.sendKeys(Keys.ENTER);
-
-        String actualSearchResult = getDriver().findElement(By.xpath("//h1")).getText();
-        String expectedSearchResult = "Search for '%s'".formatted(searchText);
-
-        Assert.assertEquals(actualSearchResult, expectedSearchResult);
+        Assert.assertTrue(pageTitle.contains("Security"));
     }
 
     @Test
-    public void testSearchHelp() {
-        getDriver().findElement(By.xpath("//a[@class='main-search__icon-trailing']")).click();
-        String webLink = getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//link[@rel='canonical']"))).getAttribute("href");
+    public void testAccessToManageJenkinsPage() {
+        String pageTitle = new HomePage(getDriver())
+                .clickWarningIcon()
+                .clickManageJenkinsTooltipLink()
+                .getPageHeadingText();
 
-        Assert.assertEquals(webLink, "https://www.jenkins.io/doc/book/using/searchbox/");
+        Assert.assertTrue(pageTitle.contains("Manage Jenkins"));
+        Assert.assertTrue(getDriver().getCurrentUrl().contains("/manage/"));
     }
 }

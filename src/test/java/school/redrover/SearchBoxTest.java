@@ -127,4 +127,31 @@ public class SearchBoxTest extends BaseTest {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name='Submit']"))).click();
     }
+
+    @Test
+    public void testStartSearchBox() {
+        final String EXPECTED_RESULT_TEXT = "manage";
+        final String SEARCHING_TEXT = "ma";
+
+        String searchResult = new HomePage(getDriver())
+                .typeTextToSearchBox(SEARCHING_TEXT)
+                .getTextFromMainPanel();
+
+        Assert.assertTrue(searchResult.contains(EXPECTED_RESULT_TEXT));
+    }
+
+    @Test
+    public void testSearchResultHeading() {
+        final String SEARCHING_TEXT = "i";
+
+        String resultHeading = new HomePage(getDriver())
+                .typeTextToSearchBox(SEARCHING_TEXT)
+                .getMatchLogResult();
+
+        String expectedSearchResult = "Search for '%s'".formatted(SEARCHING_TEXT);
+
+        Assert.assertEquals(resultHeading, expectedSearchResult);
+    }
+
+
 }
