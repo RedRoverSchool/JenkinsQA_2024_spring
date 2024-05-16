@@ -12,6 +12,7 @@ public class FreestyleProject15Test extends BaseTest {
 
     @Test
     public void testFirst() {
+
         final String firstJobName = "First job";
         final String secondJobName = "Second job";
 

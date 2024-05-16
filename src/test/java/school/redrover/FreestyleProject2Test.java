@@ -9,6 +9,7 @@ import school.redrover.runner.BaseTest;
 import java.util.List;
 
 public class FreestyleProject2Test extends BaseTest {
+
     private static final String PROJECT_NAME = "First project";
     private static final String DESCRIPTION = "My first Freestyle Project";
     private static final String FOLDER_NAME = "Folder";

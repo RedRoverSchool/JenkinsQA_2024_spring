@@ -1,15 +1,10 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
-
 
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
@@ -90,7 +85,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickMCPName(PROJECT_NAME)
                 .clickAddDescriptionButton()
                 .addOrEditDescription(text)
-                 .clickPreview()
+                .clickPreview()
                 .getPreviewText();
 
         Assert.assertEquals(previewText, text);
@@ -99,25 +94,16 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Test
     public void testMakeCopyMultiConfigurationProject() {
         final String newProjectName = "MCProject copy";
-        TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+        List<String> projectList = TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
+                .clickNewItem()
+                .setItemName(newProjectName)
+                .setItemNameInCopyForm(PROJECT_NAME)
+                .clickOkAnyway(new MultibranchPipelineConfigPage(getDriver()))
+                .clickSaveButton()
+                .clickLogo()
+                .getItemList();
 
-        getDriver().findElement(By.cssSelector("[href $= 'newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(newProjectName);
-
-        WebElement copyFrom = getDriver().findElement(By.id("from"));
-        ((JavascriptExecutor) getDriver()).executeScript(
-                "return arguments[0].scrollIntoView(true);",
-                copyFrom);
-        copyFrom.sendKeys(PROJECT_NAME);
-
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-        getDriver().findElement(By.id("jenkins-home-link")).click();
-
-        Assert.assertEquals(
-                getDriver().findElements(By.className("jenkins-table__link")).size(),
-                2,
-                "Copy of the project does not created");
+        Assert.assertTrue(projectList.contains(newProjectName));
     }
 
     @Test
@@ -154,30 +140,26 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testMCPDisableByToggle")
     public void testCheckTooltipEnablingMCP() {
-        getDriver().findElement(By.linkText(PROJECT_NAME)).click();
-        getDriver().findElement(By.linkText("Configure")).click();
 
-        new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.className("jenkins-toggle-switch__label")))
-                .perform();
+        String toggleTooltipText = new HomePage(getDriver())
+                .clickMCPName(PROJECT_NAME)
+                .clickConfigureButton()
+                .hoverOverToggleSwitch()
+                .getToggleTooltipText();
 
-        Assert.assertEquals(
-                getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.tippy-box>div"))).getText(),
-                "Enable or disable the current project");
+        Assert.assertEquals(toggleTooltipText, "Enable or disable the current project");
     }
 
     @Test
     public void testYesButtonColorDeletingMCPInSidebar() {
-        TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
-        getDriver().findElement(By.linkText(PROJECT_NAME)).click();
-        getDriver().findElement(By.cssSelector("[data-message^='Delete']")).click();
-
-        String script = "return window.getComputedStyle(arguments[0]).getPropertyValue('--color')";
-        String actualColor = (String) (((JavascriptExecutor) getDriver()).executeScript(
-                script,
-                getDriver().findElement(By.cssSelector("[data-id='ok']"))));
         String expectedColorNone = "#e6001f";
         String expectedColorDark = "hsl(5, 100%, 60%)";
+
+        String actualColor = TestUtils
+                .createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
+                .clickMCPName(PROJECT_NAME)
+                .clickDeleteInMenu(new DeleteDialog(getDriver()))
+                .getYesButtonColorDeletingViaSidebar();
 
         if (getDriver().findElement(By.tagName("html")).getAttribute("data-theme").equals("none")) {
             Assert.assertEquals(expectedColorNone, actualColor);

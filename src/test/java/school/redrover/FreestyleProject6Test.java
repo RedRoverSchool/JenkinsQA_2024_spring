@@ -95,19 +95,4 @@ public class FreestyleProject6Test extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.cssSelector(".job-status-nobuilt > :nth-child(3)")).getText(), FREESTYLE_PROJECT_RENAME);
     }
 
-    @Test
-    public void testDeleteFreestyleProject() {
-
-        createFreestyleProjectWithDescription();
-        goHome();
-
-        Assert.assertEquals(getDriver().findElement(By.cssSelector(".job-status-nobuilt > :nth-child(3)")).getText(), FREESTYLE_PROJECT_NAME);
-        getDriver().findElement(By.cssSelector(".job-status-nobuilt > :nth-child(3) a")).click();
-
-        getDriver().findElement(By.xpath("//a[@data-title='Delete Project']")).click();
-        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Welcome to Jenkins!");
-    }
-
 }

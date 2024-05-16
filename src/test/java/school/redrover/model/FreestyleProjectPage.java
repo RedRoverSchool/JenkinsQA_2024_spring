@@ -141,12 +141,12 @@ public class FreestyleProjectPage extends BaseProjectPage {
         return new FreestyleRenamePage(getDriver());
     }
 
-    public FreestyleProjectPage deleteFreestyleProject() {
+    public FreestyleProjectPage clickDelete() {
         getWait10().until(ExpectedConditions.elementToBeClickable(deleteButton)).click();
         return this;
     }
 
-    public HomePage confirmDeleteFreestyleProject() {
+    public HomePage clickYesInConfirmDeleteDialog() {
         yesButton.click();
         return new HomePage(getDriver());
     }
