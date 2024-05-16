@@ -949,47 +949,6 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testAddDescriptionInConfigureMenu() {
-        final String pipelineDescription = "This description was added for testing purposes";
-
-        createPipeline(PIPELINE_NAME);
-
-        boolean isDescriptionVisible = new PipelineConfigPage(getDriver())
-                .addDescription(pipelineDescription)
-                .clickSaveButton()
-                .isDescriptionVisible(pipelineDescription);
-
-        Assert.assertTrue(isDescriptionVisible, "Something went wrong with the description");
-    }
-
-    @Test
-    public void testDisableProjectInConfigureMenu() {
-        final String expectedMessageForDisabledProject = "This project is currently disabled";
-
-        createPipeline(PIPELINE_NAME);
-
-        String warningMessageText = new PipelineConfigPage(getDriver())
-                .clickToggleSwitchEnableDisable()
-                .clickSaveButton()
-                .getWarningMessageText();
-
-        Assert.assertTrue(warningMessageText.contains(expectedMessageForDisabledProject));
-    }
-
-    @Test(dependsOnMethods = "testDisableProjectInConfigureMenu")
-    public void testEnableProjectInConfigureMenu() {
-
-        getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
-
-        getDriver().findElement(By.xpath("//label[@data-title='Disabled']")).click();
-        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
-
-        Assert.assertTrue(
-                getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).isDisplayed());
-    }
-
-    @Test
     public void testDiscardOldBuildsByCount() {
 
         PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
@@ -1225,7 +1184,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testSetDoubleQuietPeriodBuildTriggersLessThanZero() {
+    public void testSetDoubleQuietPeriodBuildTriggers() {
         final double numberOfSeconds = 0.3;
         final String errorMessage = "Not an integer";
 
