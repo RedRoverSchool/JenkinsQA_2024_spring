@@ -12,7 +12,6 @@ import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -1035,27 +1034,17 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testAddDisplayNameInAdvancedSection() {
-        final String displayNameText = "This is project's Display name text for Advanced Project Options";
+         String projectsDisplayNameInHeader = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickAdvancedProjectOptionsMenu()
+                .clickAdvancedButton()
+                .setDisplayNameDescription(DESCRIPTION)
+                .clickSaveButton()
+                .getProjectsDisplayNameInHeader();
 
-        createPipeline(PIPELINE_NAME);
-
-        getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(ADVANCED_PROJECT_OPTIONS_MENU)).click();
-
-        WebElement advancedButton = getDriver().findElement(By.xpath("//section[@class='jenkins-section']//button[@type='button']"));
-
-        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
-        executor.executeScript("arguments[0].dispatchEvent(new Event('click'));",
-                advancedButton);
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(DISPLAY_NAME_TEXT_FIELD)).sendKeys(displayNameText);
-        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText(),
-                displayNameText);
+        Assert.assertEquals(projectsDisplayNameInHeader, DESCRIPTION);
     }
 
     @Test(dependsOnMethods = "testAddDisplayNameInAdvancedSection")

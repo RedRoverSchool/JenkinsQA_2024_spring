@@ -93,7 +93,6 @@ public class PipelineProjectPage extends BaseProjectPage {
     @FindBy(xpath = "//div[@class='changeset-box no-changes']")
     private WebElement stageStatus;
 
-
     @FindBy(className = "stage-total-0")
     private WebElement avgStageTime;
 
@@ -111,6 +110,9 @@ public class PipelineProjectPage extends BaseProjectPage {
 
     @FindBy(xpath = "//*[@tooltip='Success']")
     private WebElement buildStatusMark;
+
+    @FindBy(xpath = "//h1[@class='job-index-headline page-headline']")
+    private WebElement projectsDisplayNameInHeader;
 
     public PipelineProjectPage(WebDriver driver) {
         super(driver);
@@ -380,5 +382,10 @@ public class PipelineProjectPage extends BaseProjectPage {
         buildOrderList.sort(Collections.reverseOrder());
 
         return buildOrderList;
+    }
+
+    public String getProjectsDisplayNameInHeader() {
+
+        return projectsDisplayNameInHeader.getText();
     }
 }
