@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -153,16 +152,14 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testYesButtonColorDeletingMCPInSidebar() {
-        TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
-        getDriver().findElement(By.linkText(PROJECT_NAME)).click();
-        getDriver().findElement(By.cssSelector("[data-message^='Delete']")).click();
-
-        String script = "return window.getComputedStyle(arguments[0]).getPropertyValue('--color')";
-        String actualColor = (String) (((JavascriptExecutor) getDriver()).executeScript(
-                script,
-                getDriver().findElement(By.cssSelector("[data-id='ok']"))));
         String expectedColorNone = "#e6001f";
         String expectedColorDark = "hsl(5, 100%, 60%)";
+
+        String actualColor = TestUtils
+                .createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
+                .clickMCPName(PROJECT_NAME)
+                .clickDeleteInMenu(new DeleteDialog(getDriver()))
+                .getYesButtonColorDeletingViaSidebar();
 
         if (getDriver().findElement(By.tagName("html")).getAttribute("data-theme").equals("none")) {
             Assert.assertEquals(expectedColorNone, actualColor);

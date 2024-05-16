@@ -73,6 +73,7 @@ public class FreestyleProject20Test extends BaseTest {
 
     @Test(dependsOnMethods = "testRenameProject")
     public void testMoveToFolder() {
+
         getDriver().findElement(By.linkText("Dashboard")).click();
         createItem(folderName,"Folder");
         getDriver().findElement(By.linkText(newProjectName)).click();
@@ -96,6 +97,7 @@ public class FreestyleProject20Test extends BaseTest {
 
     @Test(dependsOnMethods = "testMoveToFolder")
     public void testDeleteProject() {
+
         getDriver().findElement(By.linkText(folderName)).click();
         getDriver().findElement(By.linkText(newProjectName)).click();
 

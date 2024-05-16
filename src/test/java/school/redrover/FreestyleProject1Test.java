@@ -22,6 +22,7 @@ public class FreestyleProject1Test extends BaseTest {
 
     @Test
     public void testAddProject() {
+
         String projectName = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FREESTYLE_PROJECT_NAME)
@@ -34,6 +35,7 @@ public class FreestyleProject1Test extends BaseTest {
 
     @Test(dependsOnMethods = "testAddProject")
     public void testAddedProjectIsDisplayedOnTheDashboardPanel() {
+
         List<String> itemList = new HomePage(getDriver())
                 .getItemList();
 
@@ -80,6 +82,7 @@ public class FreestyleProject1Test extends BaseTest {
 
     @Test
     public void testEditFreestyleProjectDescription() {
+
         String projectDescriptionText = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FREESTYLE_PROJECT_NAME)

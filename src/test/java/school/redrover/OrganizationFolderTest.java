@@ -16,6 +16,8 @@ public class OrganizationFolderTest extends BaseTest {
 
     private static final String ORGANIZATION_FOLDER_NAME = "OrganizationFolder";
 
+    private static final String SCAN_ORGANIZATION_TEXT = "Scan Organization Folder Log";
+
     private static final String ORGANIZATION_FOLDER_DESCRIPTION = "Some description of the organization folder.";
 
     private List<String> getActualList(){
@@ -146,12 +148,13 @@ public class OrganizationFolderTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateViaNewItem")
     public void testScanOrganizationFolder(){
-        getDriver().findElement(By.xpath(
-                "//*[@href='job/" + ORGANIZATION_FOLDER_NAME + "/']/span")).click();
-        getDriver().findElement(By.xpath("//*[contains(@href,'console')]")).click();
+        String scan = new HomePage(getDriver())
+                .clickJobByName(ORGANIZATION_FOLDER_NAME,
+                        new OrganizationFolderProjectPage(getDriver()))
+                .clickScan()
+                .getScanText();
 
-        Assert.assertNotNull(getDriver().findElements(By.xpath(
-                "//*[contains(@class,'lds-ellipsis')]/div[1]")));
+        Assert.assertEquals(scan, SCAN_ORGANIZATION_TEXT);
     }
 
     @Test(dependsOnMethods = "testCreateViaNewItem")

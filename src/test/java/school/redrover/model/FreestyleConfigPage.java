@@ -13,12 +13,19 @@ public class FreestyleConfigPage extends BaseConfigPage<FreestyleProjectPage> {
     @FindBy (xpath = "//*[@name='description']")
     private WebElement descriptionField;
 
+    @FindBy (css = "#general")
+    private WebElement general;
+
     public FreestyleConfigPage(WebDriver driver) {
         super(driver, new FreestyleProjectPage(driver));
     }
 
     public String getHeaderSidePanelText() {
         return headerSidePanel.getText();
+    }
+
+    public String getGeneralText() {
+        return general.getText();
     }
 
     public FreestyleConfigPage setDescription(String description) {
