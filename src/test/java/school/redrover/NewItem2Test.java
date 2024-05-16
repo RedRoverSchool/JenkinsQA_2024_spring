@@ -15,32 +15,16 @@ public class NewItem2Test extends BaseTest {
 
     private static final String PROJECT_NAME = "NewProject";
 
-    public void verifySubmitButtonIsEnabledAndClickOn() {
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-    }
-
-    public char generateRandomRestrictedChar() {
-        char[] restrictedChars = {'!', '@', '#', '$', '%', '^', '&', '*', '/', '\\', '|', ':', ';', '[', ']'};
-        Random random = new Random();
-        int index = random.nextInt(restrictedChars.length);
-
-        return restrictedChars[index];
-    }
-
-    public int generateRandomIndex(int maxIndex) {
-        Random random = new Random();
-        return random.nextInt(maxIndex) + 1;
-    }
-
     public void selectItemTypeForProjectAndCheckPageTitleAfterSaving(String projectType) {
-        int itemOptionIndex = generateRandomIndex(3);
+        Random random = new Random();
+        int itemOptionIndex = random.nextInt(3) + 1;
 
         WebElement itemOption = getDriver().findElement(
-                By.xpath(String.format("//div[contains(@id, \"%s\")]/ul/li[%d]", projectType, itemOptionIndex)));
+                By.xpath(String.format("//div[contains(@id, '%s')]/ul/li[%d]", projectType, itemOptionIndex)));
         itemOption.click();
         Assert.assertTrue(Boolean.parseBoolean(itemOption.getAttribute("aria-checked")));
 
-        verifySubmitButtonIsEnabledAndClickOn();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
 
         String currentUrl = getDriver().getCurrentUrl();
         Assert.assertEquals(currentUrl, String.format("http://localhost:8080/job/%s/configure", PROJECT_NAME));
@@ -53,32 +37,6 @@ public class NewItem2Test extends BaseTest {
         } else {
             Assert.assertEquals(pageHeadline.getText(), PROJECT_NAME);
         }
-    }
-
-    @Test
-    public void testCreateItemWithUnsafeChar() {
-        char restrictedChar = generateRandomRestrictedChar();
-
-        String actualHintText = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(restrictedChar + PROJECT_NAME)
-                .getErrorMessageInvalidCharacterOrDuplicateName();
-
-        String actualHintColor = new CreateNewItemPage(getDriver())
-                .getColorOfErrorMessageWhenUnsafeChar();
-
-        Assert.assertEquals(actualHintText, String.format("» ‘%s’ is an unsafe character", restrictedChar));
-        Assert.assertEquals(actualHintColor, "rgba(255, 0, 0, 1)");
-    }
-
-    @Test
-    public void testCreateItemWithoutSelectedItemType() {
-        Boolean isOkButtonEnabled = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(PROJECT_NAME)
-                .isOkButtonEnabled();
-
-        Assert.assertFalse(isOkButtonEnabled);
     }
 
     @Test

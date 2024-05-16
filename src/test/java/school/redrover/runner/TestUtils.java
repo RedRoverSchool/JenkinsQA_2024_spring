@@ -41,14 +41,10 @@ public final class TestUtils {
         public static final String ORGANIZATION_FOLDER = "jenkins_branch_OrganizationFolder";
     }
 
-    public static final String FREESTYLE_PROJECT = "Freestyle project";
     public static final String PIPELINE = "Pipeline";
-    public static final String MULTI_CONFIGURATION_PROJECT = "Multi-configuration project";
-    public static final String FOLDER = "Folder";
-    public static final String MULTIBRANCH_PIPELINE = "Multibranch Pipeline";
-    public static final String ORGANIZATION_FOLDER = "Organization Folder";
-    public static final By DROPDOWN_DELETE = By.cssSelector("button[href $= '/doDelete']");
+
     public static final By EMPTY_STATE_BLOCK = By.cssSelector("div.empty-state-block");
+
     public static final String JOB_XPATH = "//*[text()='%s']";
 
     public static String getUserID(WebDriver driver) {
@@ -161,14 +157,6 @@ public final class TestUtils {
         return baseTest.getDriver().findElement(By.cssSelector(String.format("td>a[href = 'job/%s/']", asURL(name))));
     }
 
-    public static void clickAtBeginOfElement(BaseTest baseTest, WebElement element) {
-        Point itemPoint = baseTest.getWait10().until(ExpectedConditions.elementToBeClickable(element)).getLocation();
-        new Actions(baseTest.getDriver())
-                .moveToLocation(itemPoint.getX(), itemPoint.getY())
-                .click()
-                .perform();
-    }
-
     public static void openElementDropdown(BaseTest baseTest, WebElement element) {
         WebElement chevron = element.findElement(By.cssSelector("[class $= 'chevron']"));
 
@@ -194,14 +182,6 @@ public final class TestUtils {
         int chevronWidth = baseTest.getDriver().findElement(dropdownChevron).getSize().getWidth();
         action.moveToElement(baseTest.getDriver().findElement(dropdownChevron), chevronWidth, chevronHeight).click()
                 .perform();
-    }
-
-    public static void deleteJobViaDropdown(BaseTest baseTest, String jobName) {
-        openJobDropdown(baseTest, jobName);
-
-        baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(DROPDOWN_DELETE)).click();
-
-        baseTest.getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
     }
 
     public static void addProjectDescription(BaseTest baseTest, String projectName, String description) {

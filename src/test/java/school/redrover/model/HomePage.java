@@ -158,6 +158,18 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@href='/me/my-views']")
     private WebElement myViewsOnSidebar;
 
+    @FindBy(css = "#description-link")
+    private WebElement editDescriptionLink;
+
+    @FindBy(css = "[name='description']")
+    private WebElement descriptionTextarea;
+
+    @FindBy(css = "[name='Submit']")
+    private WebElement saveButton;
+
+    @FindBy(css = "#description > *:first-child")
+    private WebElement descriptionText;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -498,7 +510,7 @@ public class HomePage extends BasePage {
         return heading.getText();
     }
 
-    public HomePage createNewFolder(String folderName) {
+    public HomePage createFolder(String folderName) {
         clickNewItem()
                 .setItemName(folderName)
                 .selectFolderAndClickOk()
@@ -586,10 +598,10 @@ public class HomePage extends BasePage {
     }
 
     public HomePage clickDeleteItemAndConfirm(String itemName) {
-        
-        WebElement itemName1 = getDriver().findElement(By.id("job_" + itemName ));
+
+        WebElement itemName1 = getDriver().findElement(By.id("job_" + itemName));
         openElementDropdown(itemName1);
-        getDriver().findElement(By.xpath("//button[@href='/job/" + itemName +"/doDelete']")).click();
+        getDriver().findElement(By.xpath("//button[@href='/job/" + itemName + "/doDelete']")).click();
         getDriver().findElement(By.cssSelector("button[data-id='ok']")).click();
 
         return this;
@@ -610,4 +622,77 @@ public class HomePage extends BasePage {
 
         return new MyViewsPage(getDriver());
     }
+
+    public HomePage clickEditDescription() {
+        editDescriptionLink.click();
+
+        return this;
+    }
+
+    public HomePage typeDescription(String text) {
+        descriptionTextarea.clear();
+        descriptionTextarea.sendKeys(text);
+
+        return this;
+    }
+
+    public HomePage clickSaveButton() {
+        saveButton.click();
+
+        return this;
+    }
+
+    public String getDescription() {
+        return descriptionText.getText();
+    }
+
+    public String getEditDescriptionLinkText() {
+        return editDescriptionLink.getText();
+    }
+
+    public HomePage createFreestyleProject(String name) {
+        clickNewItem()
+                .setItemName(name)
+                .selectFreestyleAndClickOk()
+                .clickSaveButton()
+                .clickLogo();
+        return new HomePage(getDriver());
+    }
+
+    public HomePage createPipeline(String name) {
+        clickNewItem()
+                .setItemName(name)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickLogo();
+        return new HomePage(getDriver());
+    }
+
+    public HomePage createMultiConfigurationProject(String name) {
+        clickNewItem()
+                .setItemName(name)
+                .selectMultiConfigurationAndClickOk()
+                .clickSaveButton()
+                .clickLogo();
+        return new HomePage(getDriver());
+    }
+
+    public HomePage createMultibranchPipeline(String name) {
+        clickNewItem()
+                .setItemName(name)
+                .selectMultibranchPipelineAndClickOk()
+                .clickSaveButton()
+                .clickLogo();
+        return new HomePage(getDriver());
+    }
+
+    public HomePage createOrganizationFolder(String name) {
+        clickNewItem()
+                .setItemName(name)
+                .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
+                .clickLogo();
+        return new HomePage(getDriver());
+    }
+
 }

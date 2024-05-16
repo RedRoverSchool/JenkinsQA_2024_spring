@@ -12,35 +12,11 @@ import school.redrover.runner.TestUtils;
 public class BuildHistoryTest extends BaseTest{
     private final String PROJECT_NAME = "My freestyle project";
 
-    @Test
-    public void testCreatFreestyleProject() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("name")));
-
-        getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
-
-        getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(text(),'Classic, general-purpose job')]"))).click();
-
-        getDriver().findElement(By.id("ok-button")).click();
-
-        getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@name='Submit']"))).click();
-
-        String actualMyProject = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-app-bar']"))).getText();
-
-        Assert.assertEquals(actualMyProject, PROJECT_NAME);
-        }
-
-        @Test(dependsOnMethods = "testCreatFreestyleProject")
+        @Test
         public void testGetTableBuildHistory() {
-        getDriver().findElement(By.xpath("//a[contains(@tooltip,'Schedule a Build')]")).click();
-        getDriver().findElement(By.xpath("//a[@href='/view/all/builds']")).click();
-
-        String actualTableTitle = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.cssSelector("h1"))).getText();
+            String actualTableTitle = new HomePage(getDriver())
+                    .clickBuildHistory()
+                    .getPageHeading();
 
         Assert.assertEquals(actualTableTitle, "Build History of Jenkins");
     }
@@ -49,9 +25,8 @@ public class BuildHistoryTest extends BaseTest{
     public void testCheckBuildOnBoard(){
         String FREESTYLE_PROJECT_NAME = "FREESTYLE";
 
-        TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
-
         boolean projectNameOnTimeline = new HomePage(getDriver())
+                .createFreestyleProject(FREESTYLE_PROJECT_NAME)
                 .clickJobByName("FREESTYLE",new FreestyleProjectPage(getDriver()))
                 .clickBuildNowOnSideBar()
                 .waitBuildToFinish()

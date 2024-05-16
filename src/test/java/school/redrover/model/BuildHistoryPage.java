@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
 
@@ -26,6 +25,9 @@ public class BuildHistoryPage extends BasePage {
 
     @FindBy(xpath = "//a[@class='jenkins-table__link model-link']")
     private WebElement buildNameOnTimeline;
+
+    @FindBy(css = "h1")
+    private WebElement pageHeading;
 
     public BuildHistoryPage(WebDriver driver) {
         super(driver);
@@ -70,8 +72,12 @@ public class BuildHistoryPage extends BasePage {
         return new BuildConsoleOutputPage(getDriver());
     }
 
-    public boolean isDisplayedBuildOnTimeline(){
-       return buildNameOnTimeline.isDisplayed();
+    public boolean isDisplayedBuildOnTimeline() {
+        return buildNameOnTimeline.isDisplayed();
 
+    }
+
+    public String getPageHeading() {
+        return pageHeading.getText();
     }
 }

@@ -515,4 +515,23 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertTrue(errorName.contains("This field cannot be empty, please enter a valid name"));
     }
+
+    @Test
+    public void testCreateMultibranchPipelineFromExistingMultibranchPipeline() {
+        final String FIRST_ITEM_NAME = "My first Multibranch Pipeline";
+        final String SECOND_ITEM_NAME = "My second Multibranch Pipeline";
+
+        List<String> itemList = new HomePage(getDriver())
+                .createMultibranchPipeline(FIRST_ITEM_NAME)
+                .clickNewItem()
+                .setItemName(SECOND_ITEM_NAME)
+                .setItemNameInCopyForm(FIRST_ITEM_NAME)
+                .clickOkAnyway(new MultibranchPipelineConfigPage(getDriver()))
+                .clickLogo()
+                .getItemList();
+
+        Assert.assertListContainsObject(itemList, SECOND_ITEM_NAME,
+                "Copy of " + FIRST_ITEM_NAME + "not created!");
+    }
+
 }

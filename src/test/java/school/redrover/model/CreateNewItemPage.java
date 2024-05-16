@@ -57,6 +57,9 @@ public class CreateNewItemPage extends BasePage {
     @FindBy(css = "label.h3")
     private WebElement titleOfNameField;
 
+    @FindBy(css = "#items span")
+    private List<WebElement> typesList;
+
     public CreateNewItemPage(WebDriver driver) {
         super(driver);
     }
@@ -228,6 +231,14 @@ public class CreateNewItemPage extends BasePage {
 
     public String getPageTitle() {
         return getDriver().getTitle();
+    }
+
+    public Boolean isDisplayedNameField() {
+        return nameText.isDisplayed();
+    }
+
+    public List<String> getTypesList() {
+        return typesList.stream().map(WebElement::getText).toList();
     }
 
 }

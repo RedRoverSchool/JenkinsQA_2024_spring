@@ -1,17 +1,19 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import school.redrover.model.CreateItemPage;
 import school.redrover.model.CreateNewItemPage;
 import school.redrover.model.HomePage;
-import school.redrover.model.ItemPage;
 import school.redrover.runner.BaseTest;
+
+import java.util.List;
 
 public class NewItemTest extends BaseTest {
 
     @Test
-    public void testOpenCreateNewItemPage(){
+    public void testOpenCreateNewItemPage() {
         String newItemHeader = new HomePage(getDriver())
                 .clickNewItem()
                 .getPageTitle();
@@ -24,32 +26,7 @@ public class NewItemTest extends BaseTest {
     }
 
     @Test
-    public void testCreateFreestyleProject() {
-        new ItemPage(getDriver())
-                .newItemClick()
-                .newItemName("MyNewProject")
-                .freestyleProjectClick()
-                .clickButtonOK()
-                .clickSaveBtn();
-
-        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "MyNewProject");
-    }
-
-    @Test
-    public void testCreateNewPipeline() {
-        new ItemPage(getDriver())
-                .newItemClick()
-                .newItemName("NewPipeline")
-                .pipelineClic()
-                .clickButtonOK()
-                .clickSaveBtn();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']"))
-                .getText(), "NewPipeline");
-    }
-
-    @Test
-    public void testOkButtonUsingValidNameWithoutType() {
+    public void testCreateItemWithoutSelectedItemType() {
         boolean okButtonIsEnabled = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName("Test Project")
@@ -82,7 +59,7 @@ public class NewItemTest extends BaseTest {
         String hintTextWhenEmptyName = "» This field cannot be empty, please enter a valid name";
         String hintColor = "rgba(255, 0, 0, 1)";
 
-        Boolean okButtonIsEnabled = new HomePage(getDriver())
+        Boolean IsOkButtonEnabled = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName("q")
                 .clearItemNameField()
@@ -94,8 +71,104 @@ public class NewItemTest extends BaseTest {
         String validationMessageColor = new CreateNewItemPage(getDriver())
                 .getItemNameHintColor();
 
-        Assert.assertFalse(okButtonIsEnabled);
+        Assert.assertFalse(IsOkButtonEnabled);
         Assert.assertEquals(validationMessage, hintTextWhenEmptyName);
         Assert.assertEquals(validationMessageColor, hintColor);
+    }
+
+    @Test(dependsOnMethods = "testDropdownMenuContent")
+    public void testCopyFromNotExistingJob() {
+        String notExistingName = "AAA";
+
+        CreateItemPage errorPage = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName("someName")
+                .setItemNameInCopyForm(notExistingName)
+                .clickOkButton();
+
+        Assert.assertTrue(errorPage.getCurrentUrl().endsWith("/createItem"));
+        Assert.assertEquals(errorPage.getPageHeaderText(), "Error");
+        Assert.assertEquals(errorPage.getErrorMessageText(), "No such job: " + notExistingName);
+    }
+
+    @Test
+    public void testDropdownNamesMenuContentWhenCopyProject() {
+        String freestyle1 = "folff";
+        String freestyle2 = "folff00";
+        String folder1 = "Folder1";
+        String folder2 = "bFolder2";
+
+        String firstLetters = "foL";
+        String newItemName = "someName";
+
+        List<String> firstLettersJobs = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(freestyle1)
+                .selectFreestyleAndClickOk()
+                .clickLogo()
+                .clickNewItem()
+                .setItemName(folder1)
+                .selectFolderAndClickOk()
+                .clickLogo()
+                .clickNewItem()
+                .setItemName(folder2)
+                .selectFolderAndClickOk()
+                .clickLogo()
+                .clickNewItem()
+                .setItemName(freestyle2)
+                .selectFreestyleAndClickOk()
+                .clickLogo()
+                .getJobsBeginningFromThisFirstLetters(firstLetters);
+
+        List<String> jobsFromDropdownMenu = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(newItemName)
+                .setItemNameInCopyForm(firstLetters)
+                .getDropdownMenuContent();
+
+        Assert.assertEquals(jobsFromDropdownMenu, firstLettersJobs);
+    }
+
+    @DataProvider(name = "unsafeCharactersProvider")
+    public Object[][] unsafeCharactersProvider() {
+        return new Object[][]{
+                {"!"}, {"#"}, {"$"}, {"%"}, {"&"}, {"*"}, {"/"}, {";"},
+                {">"}, {"<"}, {"?"}, {"@"}, {"["}, {"\\"}, {"]"}, {"^"}, {"|"}
+        };
+    }
+
+    @Test(dataProvider = "unsafeCharactersProvider")
+    public void testInvalidValuesForProjectNameInput(String x) {
+        String errorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(x)
+                .getErrorMessageInvalidCharacterOrDuplicateName();
+
+        Assert.assertEquals(errorMessage, "» ‘" + x + "’ is an unsafe character");
+    }
+
+    @Test
+    public void testUserSeeTheNameEntryField() {
+
+        Assert.assertTrue(new HomePage(getDriver())
+                .clickNewItem()
+                .isDisplayedNameField());
+    }
+
+    @Test
+    public void TestCheckListOfSuggestedForCreationProjectTypes() {
+        List<String> typesList = List.of(
+                "Freestyle project",
+                "Pipeline",
+                "Multi-configuration project",
+                "Folder",
+                "Multibranch Pipeline",
+                "Organization Folder");
+
+        List<String> actualTypesList = new HomePage(getDriver())
+                .clickNewItem()
+                .getTypesList();
+
+        Assert.assertEquals(actualTypesList, typesList);
     }
 }

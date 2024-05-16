@@ -188,8 +188,8 @@ public class FolderTest extends BaseTest {
     @Test
     public void testMoveFolderToFolderViaChevron() {
         List<String> folderNameList = new HomePage(getDriver())
-                .createNewFolder(FOLDER_TO_MOVE)
-                .createNewFolder(FOLDER_NAME)
+                .createFolder(FOLDER_TO_MOVE)
+                .createFolder(FOLDER_NAME)
                 .openItemDropdown(FOLDER_TO_MOVE)
                 .chooseFolderToMove()
                 .chooseDestinationFromListAndMove(FOLDER_NAME)
@@ -233,7 +233,7 @@ public class FolderTest extends BaseTest {
         final String createAJobLinkText = "Create a job";
 
         String actualFolderName = new HomePage(getDriver())
-                .createNewFolder(folderName)
+                .createFolder(folderName)
                 .clickFolder(folderName)
                 .getProjectName();
 

@@ -34,6 +34,24 @@ public class DashboardTest extends BaseTest {
         Assert.assertEquals(actualDashboardMenu, expectedDashboardMenu);
     }
 
+    @Test(dependsOnMethods = "testDashboardMenu")
+    public void testEditDescriptionOnDashboard() {
+
+        final String expectedDescription = "RedRover Projects";
+        final String expectedLinkText = "Edit description";
+
+        String actualDescription = new HomePage(getDriver())
+                .clickEditDescription()
+                .typeDescription(expectedDescription)
+                .clickSaveButton()
+                .getDescription();
+
+        final String actualLinkText = new HomePage(getDriver())
+                .getEditDescriptionLinkText();
+
+        Assert.assertEquals(actualDescription, expectedDescription);
+        Assert.assertEquals(actualLinkText, expectedLinkText);
+    }
 
     @Test(dependsOnMethods = "testDashboardMenu")
     public void testFolderChevronMenu() {
