@@ -90,7 +90,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickMCPName(PROJECT_NAME)
                 .clickAddDescriptionButton()
                 .addOrEditDescription(text)
-                 .clickPreview()
+                .clickPreview()
                 .getPreviewText();
 
         Assert.assertEquals(previewText, text);
@@ -99,25 +99,16 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Test
     public void testMakeCopyMultiConfigurationProject() {
         final String newProjectName = "MCProject copy";
-        TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+        List<String> projectList = TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
+                .clickNewItem()
+                .setItemName(newProjectName)
+                .setItemNameInCopyForm(PROJECT_NAME)
+                .clickOkAnyway(new MultibranchPipelineConfigPage(getDriver()))
+                .clickSaveButton()
+                .clickLogo()
+                .getItemList();
 
-        getDriver().findElement(By.cssSelector("[href $= 'newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(newProjectName);
-
-        WebElement copyFrom = getDriver().findElement(By.id("from"));
-        ((JavascriptExecutor) getDriver()).executeScript(
-                "return arguments[0].scrollIntoView(true);",
-                copyFrom);
-        copyFrom.sendKeys(PROJECT_NAME);
-
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-        getDriver().findElement(By.id("jenkins-home-link")).click();
-
-        Assert.assertEquals(
-                getDriver().findElements(By.className("jenkins-table__link")).size(),
-                2,
-                "Copy of the project does not created");
+        Assert.assertTrue(projectList.contains(newProjectName));
     }
 
     @Test
