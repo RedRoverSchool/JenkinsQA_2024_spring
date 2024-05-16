@@ -11,7 +11,7 @@ public class FreeStyleProjectByIrisTest extends BaseTest {
     @Test
     public void testCreate() {
 
-        final String newFreestyleProject = "new Freestyle project";
+        final String newFreestyleProject = "new Freestyle Project";
 
         List<String> itemList = new HomePage(getDriver())
                 .clickNewItem()

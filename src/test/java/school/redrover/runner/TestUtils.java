@@ -43,13 +43,10 @@ public final class TestUtils {
 
     public static final String PIPELINE = "Pipeline";
 
+    public static final By DROPDOWN_DELETE = By.cssSelector("button[href $= '/doDelete']");
     public static final By EMPTY_STATE_BLOCK = By.cssSelector("div.empty-state-block");
 
     public static final String JOB_XPATH = "//*[text()='%s']";
-
-    public static String getUserID(WebDriver driver) {
-        return driver.findElement(By.xpath("//a[contains(@href, 'user')]")).getText();
-    }
 
     public static void createItem(String type, String name, BaseTest baseTest) {
         baseTest.getDriver().findElement(By.linkText("New Item")).click();
@@ -168,6 +165,30 @@ public final class TestUtils {
         return UUID.randomUUID().toString();
     }
 
+    public static void openJobDropdown(BaseTest baseTest, String jobName) {
+        By dropdownChevron = By.xpath("//table//button[@class='jenkins-menu-dropdown-chevron']");
+
+        Actions action = new Actions(baseTest.getDriver());
+        baseTest.getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table//a[@href='job/" + jobName + "/']")));
+        action.moveToElement(baseTest.getDriver().findElement(
+                By.xpath("//table//a[@href='job/" + jobName + "/']"))).perform();
+
+        action.moveToElement(baseTest.getDriver().findElement(dropdownChevron)).perform();
+        baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(dropdownChevron));
+        int chevronHeight = baseTest.getDriver().findElement(dropdownChevron).getSize().getHeight();
+        int chevronWidth = baseTest.getDriver().findElement(dropdownChevron).getSize().getWidth();
+        action.moveToElement(baseTest.getDriver().findElement(dropdownChevron), chevronWidth, chevronHeight).click()
+                .perform();
+    }
+
+    public static void deleteJobViaDropdown(BaseTest baseTest, String jobName) {
+        openJobDropdown(baseTest, jobName);
+
+        baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(DROPDOWN_DELETE)).click();
+
+        baseTest.getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+    }
+
     public static void addProjectDescription(BaseTest baseTest, String projectName, String description) {
         baseTest.getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
         baseTest.getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
@@ -193,21 +214,6 @@ public final class TestUtils {
     public static void createNewJob(BaseTest baseTest, Job job, String jobName) {
         createJob(baseTest, job, jobName);
         goToMainPage(baseTest.getDriver());
-    }
-
-    public static void renameItem(BaseTest baseTest, String currentName, String newName) {
-        Actions action = new Actions(baseTest.getDriver());
-        baseTest.getDriver().findElement(By.linkText(currentName)).click();
-        baseTest.getDriver().findElement(By.xpath("//a[contains(., 'Rename')]")).click();
-        action.doubleClick(baseTest.getDriver().findElement(By.name("newName"))).perform();
-        baseTest.getDriver().findElement(By.name("newName")).sendKeys(newName);
-        baseTest.getDriver().findElement(By.name("Submit")).click();
-    }
-
-    public static void deleteItem(BaseTest baseTest, String itemName) {
-        baseTest.getDriver().findElement(By.linkText(itemName)).click();
-        baseTest.getDriver().findElement(By.xpath("//a[contains(., 'Delete')]")).click();
-        baseTest.getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
     }
 
     public static boolean checkIfProjectIsOnTheBoard(WebDriver driver, String projectName){

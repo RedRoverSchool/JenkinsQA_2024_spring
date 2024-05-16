@@ -134,6 +134,9 @@ public class HomePage extends BasePage {
     @FindBy(css = "button[href $= '/doDelete']")
     private WebElement dropdownDelete;
 
+    @FindBy(css = "a[href $= '/confirm-rename']")
+    private WebElement dropdownRename;
+
     @FindBy(css = "[href$='pipeline-syntax']")
     private WebElement dropdownPipelineSyntax;
 
@@ -210,6 +213,11 @@ public class HomePage extends BasePage {
     public DeleteDialog clickDeleteInDropdown(DeleteDialog dialog) {
         dropdownDelete.click();
         return dialog;
+    }
+
+    public FreestyleRenamePage clickRenameInDropdown() {
+        dropdownRename.click();
+        return new FreestyleRenamePage(getDriver());
     }
 
     public MovePage clickMoveInDropdown() {

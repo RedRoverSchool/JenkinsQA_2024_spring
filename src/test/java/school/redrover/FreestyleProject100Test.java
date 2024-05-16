@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.DeleteDialog;
@@ -13,6 +12,7 @@ import school.redrover.runner.TestUtils;
 import java.util.List;
 
 public class FreestyleProject100Test extends BaseTest {
+
     final String projectName = "This is the project name";
 
     @Test
@@ -44,21 +44,21 @@ public class FreestyleProject100Test extends BaseTest {
 
     @Test
     public void testRenameProjectUsingDropdown() {
-        final String projectName = "This is the project to be renamed";
-        TestUtils.createNewItem(this, projectName, TestUtils.Item.FREESTYLE_PROJECT);
 
+        final String projectOldName = "This is the project to be renamed";
         final String projectNewName = "Renamed project";
-        TestUtils.openElementDropdown(this, TestUtils.getViewItemElement(this, projectName));
-        getDriver().findElement(By.cssSelector("a[href $= '/confirm-rename']")).click();
 
-        WebElement newName = getDriver().findElement(By.name("newName"));
-        newName.clear();
-        newName.sendKeys(projectNewName);
-        getDriver().findElement(By.name("Submit")).click();
+        String projectName = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(projectOldName)
+                .selectFreestyleAndClickOk()
+                .clickLogo()
+                .openItemDropdown(projectOldName)
+                .clickRenameInDropdown()
+                .setNewName(projectNewName)
+                .clickRename()
+                .getProjectName();
 
-        Assert.assertEquals(
-                getDriver().findElement(By.cssSelector("div#main-panel h1")).getText(),
-                projectNewName);
+        Assert.assertEquals(projectName, projectNewName);
     }
-
 }

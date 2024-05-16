@@ -43,7 +43,7 @@ public class CreateNewItemPage extends BasePage {
     private WebElement okButton;
 
     @FindBy(id = "itemname-invalid")
-    private WebElement errorMessageInvalidCharacter;
+    private WebElement errorItemNameInvalid;
 
     @FindBy(id = "itemname-required")
     private WebElement errorMessageEmptyName;
@@ -138,7 +138,7 @@ public class CreateNewItemPage extends BasePage {
     }
 
     public String getErrorMessageInvalidCharacterOrDuplicateName() {
-        return errorMessageInvalidCharacter.getText();
+        return errorItemNameInvalid.getText();
     }
 
     public String getErrorMessageEmptyName() {
@@ -211,7 +211,7 @@ public class CreateNewItemPage extends BasePage {
     }
 
     public String getColorOfErrorMessageWhenUnsafeChar() {
-        return errorMessageInvalidCharacter.getCssValue("color");
+        return errorItemNameInvalid.getCssValue("color");
     }
 
     public Boolean isOkButtonEnabled() { return okButton.isEnabled(); }
@@ -229,6 +229,9 @@ public class CreateNewItemPage extends BasePage {
         return getDriver().getTitle();
     }
 
+    public Boolean isErrorItemNameInvalidDisplayed() {
+        return errorItemNameInvalid.isDisplayed();
+    }
     public Boolean isDisplayedNameField() {
         return nameText.isDisplayed();
     }

@@ -37,6 +37,12 @@ public class OrganizationFolderProjectPage extends BaseProjectPage {
     @FindBy(xpath = "//button[@data-id='ok']")
     private WebElement yesButtonOnDeleteOrganizationFolderAlert;
 
+    @FindBy(xpath = "//*[contains(@href,'console')]")
+    private WebElement scanButton;
+
+    @FindBy(xpath = "//h1")
+    private WebElement scanText;
+
     public OrganizationFolderProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -86,6 +92,15 @@ public class OrganizationFolderProjectPage extends BaseProjectPage {
     public OrganizationFolderProjectPage clickDeleteOnSidebar() {
         deleteOnSidebar.click();
         return this;
+    }
+
+    public OrganizationFolderProjectPage clickScan(){
+        scanButton.click();
+        return this;
+    }
+
+    public String getScanText(){
+        return scanText.getText();
     }
 
     public HomePage clickYesForDeleteOrganizationFolder() {
