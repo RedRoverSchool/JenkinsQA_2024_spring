@@ -150,8 +150,12 @@ public final class TestUtils {
         baseTest.getDriver().findElement(By.cssSelector("a#jenkins-home-link")).click();
     }
 
-    public static WebElement getViewItemElement(BaseTest baseTest, String name) {
-        return baseTest.getDriver().findElement(By.cssSelector(String.format("td>a[href = 'job/%s/']", asURL(name))));
+    public static void clickAtBeginOfElement(BaseTest baseTest, WebElement element) {
+        Point itemPoint = baseTest.getWait10().until(ExpectedConditions.elementToBeClickable(element)).getLocation();
+        new Actions(baseTest.getDriver())
+                .moveToLocation(itemPoint.getX(), itemPoint.getY())
+                .click()
+                .perform();
     }
 
     public static void openElementDropdown(BaseTest baseTest, WebElement element) {
@@ -179,21 +183,6 @@ public final class TestUtils {
         int chevronWidth = baseTest.getDriver().findElement(dropdownChevron).getSize().getWidth();
         action.moveToElement(baseTest.getDriver().findElement(dropdownChevron), chevronWidth, chevronHeight).click()
                 .perform();
-    }
-
-    public static void deleteJobViaDropdown(BaseTest baseTest, String jobName) {
-        openJobDropdown(baseTest, jobName);
-
-        baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(DROPDOWN_DELETE)).click();
-
-        baseTest.getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
-    }
-
-    public static void addProjectDescription(BaseTest baseTest, String projectName, String description) {
-        baseTest.getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
-        baseTest.getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
-        baseTest.getDriver().findElement(By.name("description")).sendKeys(description);
-        baseTest.getDriver().findElement(By.name("Submit")).click();
     }
 
     public static List<String> getTexts(List<WebElement> elementList) {
