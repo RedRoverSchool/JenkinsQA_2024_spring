@@ -12,6 +12,7 @@ public class FreestyleProject18Test extends BaseTest {
 
     @Test
     public void testDeleteProjectAnother() {
+
         final String projectItemName = "JavaHashGroupProject";
         final String projectDescription = "test for JavaHashGroupProject ";
 

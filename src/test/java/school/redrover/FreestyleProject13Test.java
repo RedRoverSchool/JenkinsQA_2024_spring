@@ -8,7 +8,7 @@ import school.redrover.runner.BaseTest;
 public class FreestyleProject13Test extends BaseTest {
 
     @Test
-    private void testNewFreestyleProjectCreated() {
+    public void testNewFreestyleProjectCreated() {
 
         final String name = "Freestyle1";
 
