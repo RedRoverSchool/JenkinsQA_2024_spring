@@ -26,6 +26,15 @@ public class PipelineProjectPage extends BaseProjectPage {
     @FindBy(css = "#description>:first-child")
     private WebElement displayedDescription;
 
+    @FindBy(css = ".textarea-preview")
+    private WebElement descriptionPreview;
+
+    @FindBy(css = ".textarea-show-preview")
+    private WebElement showDescriptionPreview;
+
+    @FindBy(css = ".textarea-hide-preview")
+    private WebElement hideDescriptionPreview;
+
     @FindBy(css = "[data-title='Delete Pipeline']")
     private WebElement sidebarDeleteButton;
 
@@ -115,6 +124,9 @@ public class PipelineProjectPage extends BaseProjectPage {
     private List<WebElement> taskLinkTextElements;
 
 
+    @FindBy(xpath = "//h1[@class='job-index-headline page-headline']")
+    private WebElement projectsDisplayNameInHeader;
+
     public PipelineProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -145,6 +157,20 @@ public class PipelineProjectPage extends BaseProjectPage {
         getWait2().until(ExpectedConditions.invisibilityOf(changeDescriptionButton));
 
         return this;
+    }
+
+    public PipelineProjectPage clickShowDescriptionPreview() {
+        showDescriptionPreview.click();
+        return this;
+    }
+
+    public PipelineProjectPage clickHideDescriptionPreview() {
+        hideDescriptionPreview.click();
+        return this;
+    }
+
+    public boolean isDescriptionPreviewVisible() {
+        return descriptionPreview.isDisplayed();
     }
 
     public String getTextAreaBorderBacklightColor() {
@@ -392,5 +418,10 @@ public class PipelineProjectPage extends BaseProjectPage {
             headerList.add(stageHeaderElement.getText());
         }
         return headerList;
+    }
+
+    public String getProjectsDisplayNameInHeader() {
+
+        return projectsDisplayNameInHeader.getText();
     }
 }
