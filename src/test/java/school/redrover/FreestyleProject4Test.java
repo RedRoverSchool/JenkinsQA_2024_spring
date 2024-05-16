@@ -37,8 +37,8 @@ public class FreestyleProject4Test extends BaseTest {
                 .clickSaveButton()
                 .clickLogo()
                 .clickCreatedItemName()
-                .deleteFreestyleProject()
-                .confirmDeleteFreestyleProject()
+                .clickDelete()
+                .clickYesInConfirmDeleteDialog()
                 .getWelcomeJenkinsHeader();
 
         Assert.assertEquals(welcomeJenkinsHeader, "Welcome to Jenkins!");
@@ -61,13 +61,16 @@ public class FreestyleProject4Test extends BaseTest {
 
     @Test (dependsOnMethods = "testCreateNewFreestyleProjectWithDescription")
     public void testCheckExistedNewFreestyleProject() {
+
         List<String> itemList = new HomePage(getDriver())
                 .getItemList();
 
         Assert.assertTrue((itemList.contains(PROJECT_NAME)));
     }
+
     @Test (dependsOnMethods = "testCreateNewFreestyleProjectWithDescription")
     public void testCheckNewFreestyleProjectDescription() {
+
         String description = new HomePage(getDriver())
                 .clickCreatedFreestyleName()
                 .getProjectDescriptionText();

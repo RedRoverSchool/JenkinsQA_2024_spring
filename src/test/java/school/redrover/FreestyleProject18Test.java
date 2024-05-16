@@ -23,8 +23,8 @@ public class FreestyleProject18Test extends BaseTest {
                 .clickSaveButton()
                 .clickLogo()
                 .clickCreatedItemName()
-                .deleteFreestyleProject()
-                .confirmDeleteFreestyleProject()
+                .clickDelete()
+                .clickYesInConfirmDeleteDialog()
                 .getItemList();
 
         Assert.assertTrue(itemList.isEmpty());

@@ -4,11 +4,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 
 public class FreestyleProject16Test extends BaseTest {
+
     final String PROJECT_NAME = "MD first project";
     final String NEW_PROJECT_NAME = "Rename MD first project";
     final String PROJECT_DESCRIPTION = "I like my project!";

@@ -8,11 +8,12 @@ import school.redrover.runner.BaseTest;
 import java.util.List;
 
 public class FreestyleProject9Test extends BaseTest {
+
     private final String freestyleProjectName = "Freestyle Project";
-    private final String expectedFreestyleProjectDescription = "This is very important freestyle project";
 
     @Test
     public void testCreateFreestyleProjectWithoutDescription() {
+
         List<String> itemList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(freestyleProjectName)
@@ -26,6 +27,9 @@ public class FreestyleProject9Test extends BaseTest {
 
     @Test
     public void testCreateFreestyleProjectWithDescription() {
+
+        String expectedFreestyleProjectDescription = "This is very important freestyle project";
+
         String projectDescription = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(freestyleProjectName)
@@ -39,6 +43,7 @@ public class FreestyleProject9Test extends BaseTest {
 
     @Test
     public void testOpenFreestyleProject() {
+
         String projectName = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(freestyleProjectName)

@@ -8,13 +8,13 @@ import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 
 
-
-
 public class FreestyleProjectCreate1Test extends BaseTest {
+
     private final static String FREESTYLE_PROJECT_NAME = "FreeStyleFirst";
 
     @Test
     public void testFreestyleProjectCreate() {
+
         String freestyleName = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FREESTYLE_PROJECT_NAME)
@@ -28,17 +28,17 @@ public class FreestyleProjectCreate1Test extends BaseTest {
     @Test(dependsOnMethods = "testFreestyleProjectCreate")
     public void testErrorMessage() {
 
-       String errorMessage = new HomePage(getDriver())
+        String errorMessage = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FREESTYLE_PROJECT_NAME)
                 .getErrorMessageInvalidCharacterOrDuplicateName();
 
-       Boolean isEnabled = new CreateNewItemPage(getDriver()).isOkButtonEnabled();
+        Boolean isEnabled = new CreateNewItemPage(getDriver()).isOkButtonEnabled();
 
-       getDriver().findElement(By.id("name")).sendKeys(Keys.ENTER);
+        getDriver().findElement(By.id("name")).sendKeys(Keys.ENTER);
 
-       Assert.assertEquals(errorMessage,"» A job already exists with the name ‘FreeStyleFirst’");
-       Assert.assertFalse(isEnabled);
+        Assert.assertEquals(errorMessage, "» A job already exists with the name ‘FreeStyleFirst’");
+        Assert.assertFalse(isEnabled);
     }
 
     @Test(dependsOnMethods = "testErrorMessage")
