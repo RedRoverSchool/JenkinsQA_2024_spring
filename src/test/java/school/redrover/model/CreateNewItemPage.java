@@ -194,11 +194,7 @@ public class CreateNewItemPage extends BasePage {
         return this;
     }
     public Boolean getOkButtoneState() {
-        if(okButton.getAttribute("disabled") != ""){
-            return false;
-        }else{
-            return true;
-        }
+        return okButton.getAttribute("disabled") == "";
     }
 
     public CreateNewItemPage clearItemNameField() {

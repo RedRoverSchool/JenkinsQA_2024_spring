@@ -76,7 +76,7 @@ public class NewItemTest extends BaseTest {
         Assert.assertEquals(validationMessageColor, hintColor);
     }
 
-    @Test(dependsOnMethods = "testDropdownMenuContent")
+    @Test(dependsOnMethods = "testDropdownNamesMenuContentWhenCopyProject")
     public void testCopyFromNotExistingJob() {
         String notExistingName = "AAA";
 

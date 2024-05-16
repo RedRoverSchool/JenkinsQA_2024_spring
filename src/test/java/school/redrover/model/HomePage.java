@@ -325,13 +325,11 @@ public class HomePage extends BasePage {
 
     public List<String> getDropdownMenu() {
 
-        List<String> projectChevronMenu = Arrays.stream(getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+        return Arrays.stream(getWait2().until(ExpectedConditions.visibilityOfElementLocated(
                                 By.xpath("//div[@class='jenkins-dropdown']")))
                         .getText()
                         .split("\\r?\\n"))
                 .toList();
-
-        return projectChevronMenu;
     }
 
     public HomePage clickTitleForSortByName() {
