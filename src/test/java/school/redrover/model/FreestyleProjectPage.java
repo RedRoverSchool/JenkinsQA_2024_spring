@@ -181,4 +181,6 @@ public class FreestyleProjectPage extends BaseProjectPage {
     public String getFullProjectPath() {
         return projectPath.getText();
     }
+
+
 }
