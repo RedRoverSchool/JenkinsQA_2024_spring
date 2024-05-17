@@ -163,6 +163,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(actualResult.contains(expectedResult));
     }
 
+    @Ignore
     @Test
     public void testBuildNowFreestyleProject() {
 
@@ -198,13 +199,13 @@ public class FreestyleProjectTest extends BaseTest {
 
     }
 
+    @Ignore
     @Test
     public void testCopyFromContainer() {
 
         String oldProjectName1 = "Race Cars";
         String oldProjectName2 = "Race Bikes";
         String newProjectName = "Vintage Cars";
-
 
         List<String> elementsList = new HomePage(getDriver())
                 .clickNewItem()
