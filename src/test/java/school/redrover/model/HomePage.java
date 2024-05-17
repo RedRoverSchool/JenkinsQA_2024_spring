@@ -475,8 +475,7 @@ public class HomePage extends BasePage {
     }
 
     public HomePage scheduleBuildForItem(String itemName) {
-        getDriver().findElement(By.cssSelector("td [title='Schedule a Build for " +
-                itemName.replace(" ", "%20") + "']")).click();
+        getDriver().findElement(By.xpath("//a[contains(@tooltip,'Schedule a Build for " + itemName + "')]")).click();
 
         return this;
     }

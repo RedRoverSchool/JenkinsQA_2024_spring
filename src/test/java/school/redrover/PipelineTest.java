@@ -749,41 +749,30 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(actualResult.contains("Stage Logs (stage 1)"));
     }
 
-    @Ignore
+
     @Test
     public void testStageColumnHeader() {
 
         int number_of_stages = 2;
-
-        TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
-        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
-                By.xpath("//a[contains(@href, 'configure')]")))).click();
-
-        String pipelineScript = "pipeline {\n" +
-                "agent any\n\n" +
-                "stages {\n";
-
-        getDriver().findElement(By.className("ace_text-input")).sendKeys(pipelineScript);
-
-        for (int i = 1; i <= number_of_stages; i++) {
-
-            String stage = "\nstage(\'stage " + i + "\') {\n" +
-                    "steps {\n" +
-                    "echo \'test " + i + "\'\n";
-            getDriver().findElement(By.className("ace_text-input")).sendKeys(stage);
-            getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
-            getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
+        List<String> expectedHeaderNameList = new ArrayList<>();
+        for (int i = 0; i < number_of_stages; i++) {
+            expectedHeaderNameList.add("stage " + (i + 1));
         }
 
-        getDriver().findElement(By.name("Submit")).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/build?delay=0sec']")).click();
+        List<String> actualStageHeaderNameList = new HomePage(getDriver())
+                .clickNodesLink()
+                .clickBuiltInNodeName()
+                .turnNodeOnIfOffline()
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .scrollToPipelineScript()
+                .sendScript(number_of_stages)
+                .clickSaveButton().clickBuild()
+                .waitBuildToFinish()
+                .getStageHeaderNameList();
 
-        for (int i = 1; i <= number_of_stages; i++) {
-            String actualResult = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("th[class='stage-header-name-" + (i - 1) + "']"))).getText();
-            String expectedResult = "stage " + i;
-
-            Assert.assertEquals(actualResult, expectedResult);
-        }
+        Assert.assertEquals(actualStageHeaderNameList, expectedHeaderNameList);
     }
 
     @Test

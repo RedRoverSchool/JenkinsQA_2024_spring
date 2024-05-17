@@ -59,21 +59,8 @@ public class PipelineProjectPage extends BaseProjectPage {
     @FindBy(css = "[aria-describedby^='tippy'")
     private WebElement buildScheduledPopUp;
 
-    @FindBy(xpath = "//div[@id = 'buildHistory']//tr[@class != 'build-search-row']")
-    private List<WebElement> listOfBuilds;
-
-    @FindBy(xpath = "//div[@class='pane-content']//a[contains(text(),'#')]")
-    private List<WebElement> buildHistoryNumberList;
-
     @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
     private WebElement fullStageViewButton;
-
-    @FindBys({
-            @FindBy(id = "tasks"),
-            @FindBy(className = "task-link-text")
-    })
-
-    private List<WebElement> taskLinkTextElements;
 
     @FindBy(id = "enable-project")
     private WebElement warningMessage;
@@ -86,9 +73,6 @@ public class PipelineProjectPage extends BaseProjectPage {
 
     @FindBy(css = "[class*='dropdown'] [href$='rename']")
     private WebElement breadcrumbsRenameButton;
-
-    @FindBy(xpath = "//th[contains(@class, 'stage-header-name')]")
-    private List<WebElement> stageHeader;
 
     @FindBy(className = "date")
     private WebElement stageDate;
@@ -114,11 +98,31 @@ public class PipelineProjectPage extends BaseProjectPage {
     @FindBy(xpath = "//button[@name='Submit']")
     private WebElement enableButton;
 
+    @FindBy(xpath = "//*[@tooltip='Success']")
+    private WebElement buildStatusMark;
+
     @FindBy(xpath = "//li[@class='permalink-item']")
     private List<WebElement> permalinkList;
 
-    @FindBy(xpath = "//*[@tooltip='Success']")
-    private WebElement buildStatusMark;
+    @FindBy(xpath = "//th[contains(@class,'stage-header-name')]")
+    private List<WebElement> stageHeaderNameList;
+
+    @FindBy(xpath = "//div[@id = 'buildHistory']//tr[@class != 'build-search-row']")
+    private List<WebElement> listOfBuilds;
+
+    @FindBy(xpath = "//div[@class='pane-content']//a[contains(text(),'#')]")
+    private List<WebElement> buildHistoryNumberList;
+
+    @FindBy(xpath = "//th[contains(@class, 'stage-header-name')]")
+    private List<WebElement> stageHeader;
+
+    @FindBys({
+            @FindBy(id = "tasks"),
+            @FindBy(className = "task-link-text")
+    })
+
+    private List<WebElement> taskLinkTextElements;
+
 
     @FindBy(xpath = "//h1[@class='job-index-headline page-headline']")
     private WebElement projectsDisplayNameInHeader;
@@ -405,6 +409,15 @@ public class PipelineProjectPage extends BaseProjectPage {
         buildOrderList.sort(Collections.reverseOrder());
 
         return buildOrderList;
+    }
+
+    public List<String> getStageHeaderNameList() {
+
+        List<String> headerList = new ArrayList<>();
+        for (WebElement stageHeaderElement : getWait10().until(ExpectedConditions.visibilityOfAllElements(stageHeaderNameList))) {
+            headerList.add(stageHeaderElement.getText());
+        }
+        return headerList;
     }
 
     public String getProjectsDisplayNameInHeader() {

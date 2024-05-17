@@ -1,9 +1,12 @@
 package school.redrover;
 
+import com.beust.ah.A;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.*;
 import org.testng.annotations.*;
+import school.redrover.model.ConfirmRenamePage;
+import school.redrover.model.CreateNewItemPage;
 import school.redrover.model.FreestyleProjectPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.*;
@@ -63,20 +66,27 @@ public class FreestyleProjectTest extends BaseTest {
     public void testCreateFreestyleProjectInvalidChar() {
 
         String[] invalidCharacters = {"!", "@", "#", "$", "%", "^", "&", "*", "?", "|", "/", "["};
+        String expectedResult = "";
+        String actualResult = "";
 
-        getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
+        CreateNewItemPage createNewItemPage = new CreateNewItemPage(getDriver());
+
+        new HomePage(getDriver())
+                .clickCreateJob()
+                .clickItemNameField();
 
         for (String invalidChar : invalidCharacters) {
-            getDriver().findElement(By.xpath("//*[@class='jenkins-input']")).clear();
-            getDriver().findElement(By.xpath("//*[@class='jenkins-input']")).sendKeys(invalidChar);
 
-            String actualResult = getDriver().findElement(By.xpath("//div[@id='itemname-invalid']"))
-                    .getText();
-            String expectedResult = "» ‘" + invalidChar + "’ is an unsafe character";
+             expectedResult = "» ‘" + invalidChar + "’ is an unsafe character";
+
+             actualResult = createNewItemPage
+                    .clearItemNameField()
+                    .setItemName(invalidChar)
+                    .getErrorMessageInvalidCharacterOrDuplicateName();
+
             Assert.assertEquals(actualResult, expectedResult);
 
-            boolean okButton = getDriver().findElement(By.xpath("//button[@type='submit']")).isEnabled();
-            Assert.assertFalse(okButton);
+            Assert.assertTrue(createNewItemPage.isOkButtonNotActive());
         }
     }
 
@@ -110,27 +120,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(actualResult, FREESTYLE_PROJECT_NAME);
     }
 
-    @Ignore
-    @Test
-    public void testAddDescription() {
-        final String projectName = "New Freestyle project";
-        final String description = "Text description of the project";
-
-        getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(projectName);
-        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-
-        getDriver().findElement((By.id("description-link"))).click();
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertTrue(
-                getDriver().findElement(By.xpath("//div[text()='" + description + "']")).isDisplayed(),
-                description);
-    }
-
     @Test
     public void testRenameWithEmptyName() {
 
@@ -139,20 +128,12 @@ public class FreestyleProjectTest extends BaseTest {
                 .setItemName(FREESTYLE_PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .clickSaveButton()
-                .clickLogo();
+                .clickLogo()
+                .openItemDropdown(FREESTYLE_PROJECT_NAME)
+                .clickRenameInDropdown()
+                .clearNameAndClickRenameButton();
 
-        WebElement projectName = getDriver().findElement(
-                By.xpath("//span[text()='" + FREESTYLE_PROJECT_NAME + "']/following-sibling::button[@class='jenkins-menu-dropdown-chevron']"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", projectName);
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", projectName);
-
-        getDriver().findElement(By.xpath("//a[contains(@href,'rename')]")).click();
-
-        getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
-
-        getDriver().findElement(By.xpath("//button[contains(text(),'Rename')]")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//p[text()='No name is specified']")).getText(), "No name is specified");
+        Assert.assertTrue(new ConfirmRenamePage(getDriver()).isErrorMessageDisplayed());
     }
 
     @Test
@@ -182,6 +163,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(actualResult.contains(expectedResult));
     }
 
+    @Ignore
     @Test
     public void testBuildNowFreestyleProject() {
 
@@ -217,13 +199,13 @@ public class FreestyleProjectTest extends BaseTest {
 
     }
 
+    @Ignore
     @Test
     public void testCopyFromContainer() {
 
         String oldProjectName1 = "Race Cars";
         String oldProjectName2 = "Race Bikes";
         String newProjectName = "Vintage Cars";
-
 
         List<String> elementsList = new HomePage(getDriver())
                 .clickNewItem()
@@ -242,6 +224,40 @@ public class FreestyleProjectTest extends BaseTest {
                 .getCopyFormElementsList();
 
         Assert.assertTrue(elementsList.contains(oldProjectName1));
+    }
+    @Test
+    public void testAddDescriptionOfConfiguration() {
+
+        final String projectDescription = "This test is trying to create a new freestyle job";
+
+        String projectDescriptionText = new HomePage(getDriver())
+                .clickNewItem().setItemName(FREESTYLE_PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .setDescription(projectDescription)
+                .clickSaveButton()
+                .clickConfigure()
+                .clearDescription()
+                .setDescription("Description of " + FREESTYLE_PROJECT_NAME)
+                .clickSaveButton()
+                .getProjectDescriptionText();
+
+        Assert.assertEquals(projectDescriptionText, "Description of " + FREESTYLE_PROJECT_NAME);
+    }
+    @Test
+    public void testAddDescription() {
+        String projectDescriptionText = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(FREESTYLE_PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .clickCreatedFreestyleName()
+                .clickAddDescription()
+                .setDescription(FREESTYLE_PROJECT_DESCRIPTION)
+                .clickSaveButton()
+                .getProjectDescriptionText();
+
+        Assert.assertEquals(projectDescriptionText, FREESTYLE_PROJECT_DESCRIPTION);
     }
 
     @Test

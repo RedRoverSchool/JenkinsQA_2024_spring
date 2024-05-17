@@ -5,20 +5,38 @@ import org.testng.annotations.Test;
 import school.redrover.model.FreestyleProjectPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
+import java.util.List;
 
 public class BuildHistoryTest extends BaseTest{
+    private final String PROJECT_NAME = "My freestyle project";
 
-        @Test
+    @Test
+    public void testCreateFreestyleProject() {
+        List<String> actualMyProject = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .getItemList();
+
+        Assert.assertTrue(actualMyProject.contains(PROJECT_NAME));
+        }
+
+        @Test(dependsOnMethods = "testCreateFreestyleProject")
         public void testGetTableBuildHistory() {
-            String actualTableTitle = new HomePage(getDriver())
-                    .clickBuildHistory()
-                    .getPageHeading();
 
-        Assert.assertEquals(actualTableTitle, "Build History of Jenkins");
+        List<String> list = new HomePage(getDriver())
+                .scheduleBuildForItem(PROJECT_NAME)
+                .clickBuildHistory()
+                .getBuildsList();
+
+        Assert.assertTrue(list.contains(PROJECT_NAME));
     }
 
     @Test
-    public void testCheckBuildOnBoard(){
+    public void testCheckBuildOnBoard() {
         String FREESTYLE_PROJECT_NAME = "FREESTYLE";
 
         boolean projectNameOnTimeline = new HomePage(getDriver())

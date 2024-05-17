@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseProjectPage;
 
 import java.util.List;
@@ -63,6 +64,9 @@ public class FolderProjectPage extends BaseProjectPage {
 
     @FindBy(css = "a.content-block__link")
     private WebElement createJobLink;
+
+    @FindBy(xpath = "//button[@class='jenkins-dropdown__item'][contains(@href, 'Delete')]")
+    private WebElement deleteProject;
 
     public FolderProjectPage(WebDriver driver) {
         super(driver);
@@ -183,5 +187,24 @@ public class FolderProjectPage extends BaseProjectPage {
 
     public Boolean isLinkForCreateJobDisplayed() {
         return createJobLink.isDisplayed();
+    }
+
+    public FolderProjectPage clickJobNameBreadcrumb(String name) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@class = 'jenkins-dropdown__item'][contains(@href," + name + ")]"))).click();
+
+        return this;
+    }
+
+    public FolderProjectPage openItemDropdown() {
+        WebElement dropdownElement = getDriver().findElement(By.xpath("//td//button[@class='jenkins-menu-dropdown-chevron']"));
+        clickSpecificDropdownArrow(dropdownElement);
+
+        return this;
+    }
+
+    public FolderProjectPage clickDropdownDeleteProject() {
+        deleteProject.click();
+
+        return this;
     }
 }
