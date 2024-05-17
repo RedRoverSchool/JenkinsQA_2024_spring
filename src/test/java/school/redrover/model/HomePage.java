@@ -655,6 +655,17 @@ public class HomePage extends BasePage {
         return editDescriptionLink.getText();
     }
 
+    private WebElement getTooltipLocator(String tooltipText) {
+        return getDriver().findElement(By.cssSelector("a[tooltip='Help for feature: " + tooltipText + "']"));
+    }
+
+    public boolean isTooltipDisplayed(String tooltipText) {
+        WebElement tooltip = getTooltipLocator(tooltipText);
+        hoverOverElement(tooltip);
+
+        return tooltip.isDisplayed();
+    }
+
     public HomePage createFreestyleProject(String name) {
         clickNewItem()
                 .setItemName(name)

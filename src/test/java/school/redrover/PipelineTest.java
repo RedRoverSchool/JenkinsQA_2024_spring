@@ -1099,25 +1099,22 @@ public class PipelineTest extends BaseTest {
                 "The actual numberOfSeconds differs from expected result");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreatePipeline")
     public void testVerifySectionsHaveTooltips() {
-        String[] labelsText = {"Display Name", "Script"};
+        String[] labelsText = {
+                "Display Name",
+                "Script"
+        };
 
-        createPipeline(PIPELINE_NAME);
-        getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
+        new HomePage(getDriver())
+                .clickCreatedPipelineName()
+                .clickSidebarConfigureButton(PIPELINE_NAME)
+                .clickAdvancedProjectOptionsMenu()
+                .clickAdvancedButton();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(ADVANCED_PROJECT_OPTIONS_MENU)).click();
-        WebElement advancedButton = getDriver().findElement(By.xpath("//section[@class='jenkins-section']//button[@type='button']"));
-
-        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
-        executor.executeScript("arguments[0].dispatchEvent(new Event('click'));",
-                advancedButton);
-
-        for (String label : labelsText) {
-            String actualTooltip = getDriver().findElement(By.xpath("//*[contains(text(), '" + label + "')]//a")).getAttribute("tooltip");
-
-            Assert.assertEquals(actualTooltip, "Help for feature: " + label);
+        for (String tooltipText : labelsText) {
+            Assert.assertTrue(new HomePage(getDriver()).isTooltipDisplayed(tooltipText),
+                    "Tooltip '" + tooltipText + "' is not displayed.");
         }
     }
 
