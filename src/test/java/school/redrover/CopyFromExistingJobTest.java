@@ -1,37 +1,14 @@
 package school.redrover;
 
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.CreateItemPage;
-import school.redrover.model.CreateNewItemPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.runner.TestUtils.*;
-import school.redrover.runner.TestUtils;
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class CopyFromExistingJobTest extends BaseTest{
-    @Test
-    public void testCopyFromNotExistingJob() {
-        TestUtils.createNewJob(this, Job.PIPELINE, "ppp");
-        TestUtils.createNewJob(this, Job.FREESTYLE, "fff");
-        TestUtils.createNewJob(this, Job.FOLDER, "Folder1");
-        String notExistingName ="AAA";
-
-        CreateItemPage errorPage = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName("someName")
-                .setItemNameInCopyForm(notExistingName)
-                .clickOkButton();
-
-        Assert.assertTrue(errorPage.getCurrentUrl().endsWith("/createItem"));
-        Assert.assertEquals(errorPage.getPageHeaderText(),"Error");
-        Assert.assertEquals(errorPage.getErrorMessageText(),"No such job: " + notExistingName);
-}
 
     @Test
     public void testDropdownMenuContent()  {
@@ -70,4 +47,21 @@ public class CopyFromExistingJobTest extends BaseTest{
 
         Assert.assertEquals(jobsFromDropdownMenu,firstLettersJobs);
         }
+
+    @Test (dependsOnMethods = "testDropdownMenuContent")
+    public void testCopyFromNotExistingJob() {
+        String notExistingName = "AAA";
+        String newItemName = "someName";
+
+        CreateItemPage errorPage = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(newItemName)
+                .setNotExistingJobNameAndClickOkButton(notExistingName);
+
+        Assert.assertTrue(errorPage.getCurrentUrl().endsWith("/createItem"));
+        Assert.assertEquals(errorPage.getPageHeaderText(), "Error");
+        Assert.assertEquals(errorPage.getErrorMessageText(), "No such job: " + notExistingName);
+    }
+
+
     }
