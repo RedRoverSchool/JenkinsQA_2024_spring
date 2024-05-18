@@ -3,17 +3,34 @@ package school.redrover.runner;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.model.HomePage;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public final class TestUtils {
+
+    public enum ProjectType {
+        FREESTYLE_PROJECT("Freestyle project"),
+        PIPELINE("Pipeline"),
+        MULTI_CONFIGURATION_PROJECT("Multi-configuration project"),
+        FOLDER("Folder"),
+        MULTIBRANCH_PIPELINE("Multibranch Pipeline"),
+        ORGANIZATION_FOLDER("Organization Folder");
+
+        private final String projectTypeName;
+
+        public String getProjectTypeName() {
+            return projectTypeName;
+        }
+        ProjectType(String projectTypeName) {
+            this.projectTypeName = projectTypeName;
+        }
+    }
 
     public static class Item {
         public static final String FREESTYLE_PROJECT = "hudson_model_FreeStyleProject";
@@ -24,24 +41,12 @@ public final class TestUtils {
         public static final String ORGANIZATION_FOLDER = "jenkins_branch_OrganizationFolder";
     }
 
-    public static final String FREESTYLE_PROJECT = "Freestyle project";
     public static final String PIPELINE = "Pipeline";
-    public static final String MULTI_CONFIGURATION_PROJECT = "Multi-configuration project";
-    public static final String FOLDER = "Folder";
-    public static final String MULTIBRANCH_PIPELINE = "Multibranch Pipeline";
-    public static final String ORGANIZATION_FOLDER = "Organization Folder";
 
-    public static final By SIDE_PANEL_DELETE = By.cssSelector("[data-url $= '/doDelete']");
     public static final By DROPDOWN_DELETE = By.cssSelector("button[href $= '/doDelete']");
-    public static final By DROPDOWN_RENAME = By.cssSelector("a[href $= '/confirm-rename']");
-
-    public static final By DIALOG_DEFAULT_BUTTON = By.cssSelector("dialog .jenkins-button--primary");
     public static final By EMPTY_STATE_BLOCK = By.cssSelector("div.empty-state-block");
-    public static final String JOB_XPATH = "//*[text()='%s']";
 
-    public static String getUserID(WebDriver driver) {
-        return driver.findElement(By.xpath("//a[contains(@href, 'user')]")).getText();
-    }
+    public static final String JOB_XPATH = "//*[text()='%s']";
 
     public static void createItem(String type, String name, BaseTest baseTest) {
         baseTest.getDriver().findElement(By.linkText("New Item")).click();
@@ -55,14 +60,8 @@ public final class TestUtils {
         driver.findElement(By.id("jenkins-name-icon")).click();
     }
 
-
     public static String getUniqueName(String value) {
         return value + new SimpleDateFormat("HHmmssSS").format(new Date());
-    }
-
-
-    public static void sleep(BaseTest baseTest, long seconds) {
-        new Actions(baseTest.getDriver()).pause(seconds * 1000).perform();
     }
 
     public static String asURL(String str) {
@@ -75,24 +74,80 @@ public final class TestUtils {
                 .replaceAll("%7E", "~");
     }
 
-    public static void createNewItem(BaseTest baseTest, String name, String itemClassName) {
-        baseTest.getDriver().findElement(By.cssSelector("#side-panel > div > div")).click();
-        baseTest.getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(name.trim());
-        baseTest.getDriver().findElement(By.className(itemClassName)).click();
-        baseTest.getDriver().findElement(By.id("ok-button")).click();
+    public static HomePage createNewItem(BaseTest baseTest, String projectName, String itemClassName) {
+        switch (itemClassName) {
+            case Item.FREESTYLE_PROJECT -> {
+                return createFreestyleProject(baseTest, projectName);
+            }
+            case Item.PIPELINE -> {
+                return createPipelineProject(baseTest, projectName);
+            }
+            case Item.MULTI_CONFIGURATION_PROJECT -> {
+                return createMultiConfigurationProject(baseTest, projectName);
+            }
+            case Item.FOLDER -> {
+                return createFolderProject(baseTest, projectName);
+            }
+            case Item.MULTI_BRANCH_PIPELINE -> {
+                return createMultibranchProject(baseTest, projectName);
+            }
+            case Item.ORGANIZATION_FOLDER -> {
+                return createOrganizationFolderProject(baseTest, projectName);
+            }
+            default -> throw new IllegalArgumentException("Project type name incorrect");
+        }
+    }
+
+    public static HomePage createFreestyleProject(BaseTest baseTest, String name) {
+        return new HomePage(baseTest.getDriver())
+                .clickNewItem()
+                .setItemName(name.trim())
+                .selectFreestyleAndClickOk()
+                .clickLogo();
+    }
+
+    public static HomePage createPipelineProject(BaseTest baseTest, String name) {
+        return new HomePage(baseTest.getDriver())
+                .clickNewItem()
+                .setItemName(name.trim())
+                .selectPipelineAndClickOk()
+                .clickLogo();
+    }
+
+    public static HomePage createMultiConfigurationProject(BaseTest baseTest, String name) {
+        return new HomePage(baseTest.getDriver())
+                .clickNewItem()
+                .setItemName(name.trim())
+                .selectMultiConfigurationAndClickOk()
+                .clickLogo();
+    }
+
+    public static HomePage createFolderProject(BaseTest baseTest, String name) {
+        return new HomePage(baseTest.getDriver())
+                .clickNewItem()
+                .setItemName(name.trim())
+                .selectFolderAndClickOk()
+                .clickLogo();
+    }
+
+    public static HomePage createMultibranchProject(BaseTest baseTest, String name) {
+        return new HomePage(baseTest.getDriver())
+                .clickNewItem()
+                .setItemName(name.trim())
+                .selectMultibranchPipelineAndClickOk()
+                .clickLogo();
+    }
+
+    public static HomePage createOrganizationFolderProject(BaseTest baseTest, String name) {
+        return new HomePage(baseTest.getDriver())
+                .clickNewItem()
+                .setItemName(name.trim())
+                .selectOrganizationFolderAndClickOk()
+                .clickLogo();
     }
 
     public static void returnToDashBoard(BaseTest baseTest) {
         baseTest.getDriver().findElement(By.cssSelector("a#jenkins-home-link")).click();
-    }
-
-    public static void createNewItemAndReturnToDashboard(BaseTest baseTest, String name, String itemClassName) {
-        createNewItem(baseTest, name, itemClassName);
-        returnToDashBoard(baseTest);
-    }
-
-    public static WebElement getViewItemElement(BaseTest baseTest, String name) {
-        return baseTest.getDriver().findElement(By.cssSelector(String.format("td>a[href = 'job/%s/']", asURL(name))));
     }
 
     public static void clickAtBeginOfElement(BaseTest baseTest, WebElement element) {
@@ -128,23 +183,6 @@ public final class TestUtils {
         int chevronWidth = baseTest.getDriver().findElement(dropdownChevron).getSize().getWidth();
         action.moveToElement(baseTest.getDriver().findElement(dropdownChevron), chevronWidth, chevronHeight).click()
                 .perform();
-
-        baseTest.getWait5().until(ExpectedConditions.visibilityOfElementLocated(DROPDOWN_DELETE));
-    }
-
-    public static void deleteJobViaDropdowm(BaseTest baseTest, String jobName) {
-        openJobDropdown(baseTest, jobName);
-
-        baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(DROPDOWN_DELETE)).click();
-
-        baseTest.getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
-    }
-
-    public static void addProjectDescription(BaseTest baseTest, String projectName, String description) {
-        baseTest.getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
-        baseTest.getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
-        baseTest.getDriver().findElement(By.name("description")).sendKeys(description);
-        baseTest.getDriver().findElement(By.name("Submit")).click();
     }
 
     public static List<String> getTexts(List<WebElement> elementList) {
@@ -163,26 +201,8 @@ public final class TestUtils {
     }
 
     public static void createNewJob(BaseTest baseTest, Job job, String jobName) {
-        goToJobPageAndEnterJobName(baseTest, jobName);
-        baseTest.getDriver().findElement(By.xpath(JOB_XPATH.formatted(job))).click();
-        baseTest.getDriver().findElement(By.id("ok-button")).click();
-        baseTest.getDriver().findElement(By.id("jenkins-home-link")).click();
-
-    }
-
-    public static void renameItem(BaseTest baseTest, String currentName, String newName) {
-        Actions action = new Actions(baseTest.getDriver());
-        baseTest.getDriver().findElement(By.linkText(currentName)).click();
-        baseTest.getDriver().findElement(By.xpath("//a[contains(., 'Rename')]")).click();
-        action.doubleClick(baseTest.getDriver().findElement(By.name("newName"))).perform();
-        baseTest.getDriver().findElement(By.name("newName")).sendKeys(newName);
-        baseTest.getDriver().findElement(By.name("Submit")).click();
-    }
-
-    public static void deleteItem(BaseTest baseTest, String itemName) {
-        baseTest.getDriver().findElement(By.linkText(itemName)).click();
-        baseTest.getDriver().findElement(By.xpath("//a[contains(., 'Delete')]")).click();
-        baseTest.getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
+        createJob(baseTest, job, jobName);
+        goToMainPage(baseTest.getDriver());
     }
 
     public static boolean checkIfProjectIsOnTheBoard(WebDriver driver, String projectName){
@@ -190,10 +210,8 @@ public final class TestUtils {
         List<WebElement> displayedProjects = driver.findElements(
                 By.xpath("//table[@id='projectstatus']//button/preceding-sibling::span"));
 
-        boolean isDisplayed = displayedProjects.stream()
+        return displayedProjects.stream()
                 .anyMatch(el -> el.getText().equals(projectName));
-
-        return isDisplayed;
     }
 
     public enum Job {
@@ -214,5 +232,17 @@ public final class TestUtils {
         public String toString() {
             return jobName;
         }
+    }
+
+    public static String getBaseUrl() {
+        return ProjectUtils.getUrl();
+    }
+
+    public static void resetJenkinsTheme(BaseTest baseTest) {
+        new HomePage(baseTest.getDriver())
+                .clickManageJenkins()
+                .clickAppearanceButton()
+                .switchToDefaultTheme()
+                .clickLogo();
     }
 }

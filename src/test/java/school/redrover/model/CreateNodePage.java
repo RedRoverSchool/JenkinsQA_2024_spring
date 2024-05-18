@@ -37,4 +37,10 @@ public class CreateNodePage extends BasePage {
 
         return new NodesCreationConfigurePage(getDriver());
     }
+
+    public NodesErrorPage clickOkButtonOnError() {
+        okButton.click();
+
+        return new NodesErrorPage(getDriver());
+    }
 }

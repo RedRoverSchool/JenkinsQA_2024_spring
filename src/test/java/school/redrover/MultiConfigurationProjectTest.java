@@ -1,229 +1,164 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.HomePage;
-import school.redrover.model.ItemErrorPage;
-
-
+import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
-
 import java.util.List;
+import java.util.Random;
 
 public class MultiConfigurationProjectTest extends BaseTest {
 
     private static final String PROJECT_NAME = "MCProject";
-    private final String RANDOM_PROJECT_NAME = TestUtils.randomString();
+    private static final String RANDOM_PROJECT_NAME = TestUtils.randomString();
+    private static final String FOLDER_NAME = "Folder_name";
 
-    public void openDropdownUsingSelenium(String projectName) {
-        new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.linkText(projectName)))
-                .pause(1000)
-                .scrollToElement(getDriver().findElement(By.cssSelector(String.format("[data-href*='/job/%s/']", projectName))))
-                .click()
-                .perform();
+    private String generateRandomNumber(){
+        Random r = new Random();
+        int randomNumber = r.nextInt(100) + 1;
+        return String.valueOf(randomNumber);
     }
 
     @Test
     public void testRenameProjectViaMainPageDropdown() {
-        TestUtils.createNewItemAndReturnToDashboard(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
-        openDropdownUsingSelenium(PROJECT_NAME);
+        String addToProjectName = "New";
+        TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Rename"))).click();
-        getDriver().findElement(By.name("newName")).sendKeys("New");
-        getDriver().findElement(By.name("Submit")).click();
+        String newProjectName = new HomePage(getDriver())
+                .openItemDropdownWithSelenium(PROJECT_NAME)
+                .selectRenameFromDropdown()
+                .changeProjectNameWithoutClear(addToProjectName)
+                .clickRenameButton()
+                .getProjectName();
 
-        Assert.assertTrue(getDriver().findElement(By.linkText(PROJECT_NAME + "New")).isDisplayed());
+        Assert.assertEquals(newProjectName,
+                "Project " + PROJECT_NAME + "New",
+                "Project name has not been changed");
     }
 
-    @Test(dependsOnMethods = "testCreateMCP")
+    @Test
     public void testAddDescription() {
-        final String text = "❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
+        final String TEXT = "❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
 
-        String description = new HomePage(getDriver())
+        String description = TestUtils.createMultiConfigurationProject(this, RANDOM_PROJECT_NAME)
                 .clickMCPName(RANDOM_PROJECT_NAME)
                 .clickAddDescriptionButton()
-                .addOrEditDescription(text)
+                .addOrEditDescription(TEXT)
                 .clickSaveDescription()
                 .getDescriptionText();
 
-        Assert.assertEquals(description, text);
+        Assert.assertEquals(description, TEXT);
     }
 
     @Test
     public void testEditDescriptionWithoutDelete() {
         final String text = "qwerty123";
-        final String additionText = "AAA";
+        final String additionalText = "AAA";
 
-        TestUtils.createNewItemAndReturnToDashboard(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+        TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(String.format("[href = 'job/%s/']", PROJECT_NAME)))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).sendKeys(text);
-        getDriver().findElement(By.name("Submit")).click();
+        String DescriptionText = new HomePage(getDriver())
+                .clickMCPName(PROJECT_NAME)
+                .clickAddDescriptionButton()
+                .addOrEditDescription(text)
+                .clickSaveDescription()
+                .clickLogo()
+                .clickMCPName(PROJECT_NAME)
+                .clickAddDescriptionButton()
+                .addOrEditDescription(additionalText)
+                .clickSaveDescription()
+                .getDescriptionText();
 
-        TestUtils.returnToDashBoard(this);
-
-        getDriver().findElement(By.cssSelector("[href = 'job/" + PROJECT_NAME + "/']")).click();
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.name("description")).sendKeys(additionText);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertTrue(
-                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#description div:not([class])")))
-                        .getText().equals(additionText + text));
+        Assert.assertEquals(DescriptionText, additionalText + text);
     }
 
     @Test
     public void testDescriptionPreview() {
-        TestUtils.createNewItemAndReturnToDashboard(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
-
         final String text = "I want to see preview";
-        getDriver().findElement(By.id("job_" + PROJECT_NAME)).click();
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.name("description")).sendKeys(text);
-        getDriver().findElement(By.className("textarea-show-preview")).click();
 
-        Assert.assertEquals(text, getDriver().findElement(By.className("textarea-preview")).getText());
-    }
+        String previewText =
+                TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
+                .clickMCPName(PROJECT_NAME)
+                .clickAddDescriptionButton()
+                .addOrEditDescription(text)
+                .clickPreview()
+                .getPreviewText();
 
-    @Test
-    public void testReplacingProjectDescription() {
-        final String oldText = "The text to be replaced";
-        final String newText = "Replacement text";
-
-        TestUtils.createNewItemAndReturnToDashboard(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(String.format("[href = 'job/%s/']", PROJECT_NAME)))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).sendKeys(oldText);
-        getDriver().findElement(By.name("Submit")).click();
-
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.name("description")).clear();
-        getDriver().findElement(By.name("description")).sendKeys(newText);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.cssSelector("#description div:not([class])")).getText(), newText);
+        Assert.assertEquals(previewText, text);
     }
 
     @Test
     public void testMakeCopyMultiConfigurationProject() {
         final String newProjectName = "MCProject copy";
-        TestUtils.createNewItemAndReturnToDashboard(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+        List<String> projectList = TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
+                .clickNewItem()
+                .setItemName(newProjectName)
+                .setItemNameInCopyForm(PROJECT_NAME)
+                .clickOkAnyway(new MultibranchPipelineConfigPage(getDriver()))
+                .clickSaveButton()
+                .clickLogo()
+                .getItemList();
 
-        getDriver().findElement(By.cssSelector("[href $= 'newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(newProjectName);
-
-        WebElement copyFrom = getDriver().findElement(By.id("from"));
-        ((JavascriptExecutor) getDriver()).executeScript(
-                "return arguments[0].scrollIntoView(true);",
-                copyFrom);
-        copyFrom.sendKeys(PROJECT_NAME);
-
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-        getDriver().findElement(By.id("jenkins-home-link")).click();
-
-        Assert.assertEquals(
-                getDriver().findElements(By.className("jenkins-table__link")).size(),
-                2,
-                "Copy of the project does not created");
+        Assert.assertTrue(projectList.contains(newProjectName));
     }
 
     @Test
     public void testDeleteProjectDescription() {
-        final String description = "This is project description";
-        TestUtils.createNewItemAndReturnToDashboard(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+        final String DESCRIPTION_TEXT = "This is project description";
+        TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(String.format("[href = 'job/%s/']", PROJECT_NAME)))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).sendKeys(description);
-        getDriver().findElement(By.name("Submit")).click();
+        MultiConfigurationProjectPage multiConfigurationProjectPage = new MultiConfigurationProjectPage(getDriver());
 
-        TestUtils.returnToDashBoard(this);
+        boolean isDescriptionDeleted = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, multiConfigurationProjectPage)
+                .clickAddDescriptionButton()
+                .addOrEditDescription(DESCRIPTION_TEXT)
+                .clickSaveDescription()
+                .clickLogo()
+                .clickJobByName(PROJECT_NAME, multiConfigurationProjectPage)
+                .clickAddDescriptionButton()
+                .clearDescription()
+                .clickSaveDescription()
+                .isDescriptionEmpty();
 
-        getDriver().findElement(By.cssSelector("[href = 'job/" + PROJECT_NAME + "/']")).click();
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.name("description")).clear();
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertTrue(
-                getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div#description>div"))));
-    }
-
-    private static final String NAME_OF_PROJECT = "The name of Multi-configuration project";
-
-    @Test
-    public void testCreateMultiConfigurationProject() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@id = 'name']")).sendKeys(NAME_OF_PROJECT);
-        getDriver().findElement(By.xpath("//*[@class='hudson_matrix_MatrixProject']")).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@type='submit']"))).click();
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Project " + NAME_OF_PROJECT);
-    }
-
-    @Test
-    public void testAddDescriptionOnConfigurationPage() {
-        final String description = "This is project description";
-        TestUtils.createNewItemAndReturnToDashboard(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
-
-        getDriver().findElement(By.linkText(PROJECT_NAME)).click();
-        getDriver().findElement(By.linkText("Configure")).click();
-        getDriver().findElement(By.name("description")).sendKeys(description);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.cssSelector("#description>div:first-child")).getText(),
-                description,
-                "Project description is not displayed");
+        Assert.assertTrue(isDescriptionDeleted);
     }
 
     @Test
     public void testMCPDisableByToggle() {
-        TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
-
-        getDriver().findElement(By.className("jenkins-toggle-switch__label")).click();
-        getDriver().findElement(By.name("Apply")).click();
-
-        Assert.assertFalse(getDriver().findElement(By.id("enable-disable-project")).isSelected());
+        Assert.assertFalse(TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
+                .clickMCPName(PROJECT_NAME)
+                .clickConfigureButton()
+                .clickToggleSwitch()
+                .clickApply()
+                .getStatusToggle());
     }
 
     @Test(dependsOnMethods = "testMCPDisableByToggle")
     public void testCheckTooltipEnablingMCP() {
-        getDriver().findElement(By.linkText(PROJECT_NAME)).click();
-        getDriver().findElement(By.linkText("Configure")).click();
 
-        new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.className("jenkins-toggle-switch__label")))
-                .perform();
+        String toggleTooltipText = new HomePage(getDriver())
+                .clickMCPName(PROJECT_NAME)
+                .clickConfigureButton()
+                .hoverOverToggleSwitch()
+                .getToggleTooltipText();
 
-        Assert.assertEquals(
-                getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.tippy-box>div"))).getText(),
-                "Enable or disable the current project");
+        Assert.assertEquals(toggleTooltipText, "Enable or disable the current project");
     }
 
     @Test
     public void testYesButtonColorDeletingMCPInSidebar() {
-        TestUtils.createNewItemAndReturnToDashboard(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
-        getDriver().findElement(By.linkText(PROJECT_NAME)).click();
-        getDriver().findElement(By.cssSelector("[data-message^='Delete']")).click();
-
-        String script = "return window.getComputedStyle(arguments[0]).getPropertyValue('--color')";
-        String actualColor = (String) (((JavascriptExecutor) getDriver()).executeScript(
-                script,
-                getDriver().findElement(By.cssSelector("[data-id='ok']"))));
         String expectedColorNone = "#e6001f";
         String expectedColorDark = "hsl(5, 100%, 60%)";
+
+        String actualColor = TestUtils
+                .createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
+                .clickMCPName(PROJECT_NAME)
+                .clickDeleteInMenu(new DeleteDialog(getDriver()))
+                .getYesButtonColorDeletingViaSidebar();
 
         if (getDriver().findElement(By.tagName("html")).getAttribute("data-theme").equals("none")) {
             Assert.assertEquals(expectedColorNone, actualColor);
@@ -234,130 +169,201 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testCreateProjectWithoutName() {
-        final String errorMessage = "This field cannot be empty";
+        final String EMPTY_NAME = "";
+        final String ERROR_MESSAGE = "This field cannot be empty";
 
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
+        CreateNewItemPage createNewItemPage =
+                new HomePage(getDriver())
+                        .clickNewItem()
+                        .setItemName(EMPTY_NAME)
+                        .selectMultiConfiguration();
 
-        String actualErrorMessage = getDriver().findElement(By.id("itemname-required")).getText();
-        WebElement okButton = getDriver().findElement(By.id("ok-button"));
+        boolean isErrorMessageCorrect = createNewItemPage.getErrorMessageEmptyName().contains(ERROR_MESSAGE);
+        boolean isCanNotPressOkButton = createNewItemPage.isOkButtonNotActive();
 
-        Assert.assertTrue(actualErrorMessage.contains(errorMessage));
-        Assert.assertFalse(okButton.isEnabled());
-    }
-
-
-    @Test
-    public void testTryCreateProjectExistName() {
-        final String projectName = "MultiBuild";
-        final String errorMessage = "A job already exists with the name " + "‘" + projectName + "’";
-
-        TestUtils.createNewItemAndReturnToDashboard(this, projectName, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
-
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
-        getDriver().findElement(By.className("jenkins-input")).sendKeys(projectName);
-        getDriver().findElement(By.id("ok-button")).click();
-
-        String actualMessage = getDriver().findElement(By.xpath("//*[@id='main-panel']/p")).getText();
-        Assert.assertEquals(actualMessage, errorMessage);
+        Assert.assertTrue(isErrorMessageCorrect && isCanNotPressOkButton);
     }
 
     @Test
     public void testCreateMCProject() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys("MCProject");
-        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[3]/label")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]")).click();
-        getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[1]/a")).click();
+        List<String> projectNameList = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PROJECT_NAME)
+                .selectMultiConfigurationAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .getItemList();
 
-        Assert.assertEquals(getDriver().findElement(By
-                .xpath("//*[@id='job_MCProject']/td[3]/a/span")).getText(), "MCProject");
-
+        Assert.assertTrue(projectNameList.contains(PROJECT_NAME));
     }
 
     @Test(dependsOnMethods = "testCreateMCProject")
     public void testRenameMCProject() {
-        getDriver().findElement(By.xpath("//*[@id='job_MCProject']/td[3]/a/span")).click();
-        getDriver().findElement(By.xpath("//*[@id='tasks']/div[7]/span/a")).click();
-        getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/div[1]/div[2]/input")).clear();
-        getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/div[1]/div[2]/input")).sendKeys("MCProjectNew");
-        getDriver().findElement(By.name("Submit")).click();
 
+        HomePage homePage = new HomePage(getDriver());
 
-        Assert.assertEquals(getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//*[@id='breadcrumbs']/li[3]/a"))).getText(), "MCProjectNew");
+        homePage
+                .clickJobByName(PROJECT_NAME, new MultiConfigurationProjectPage(getDriver()))
+                .clickRenameInMenu()
+                .changeProjectNameWithClear(RANDOM_PROJECT_NAME)
+                .clickRenameButton().clickLogo();
 
-    }
-
-    @Test
-    public void testCreateMCP() {
-        List<String> itemNames = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(RANDOM_PROJECT_NAME)
-                .selectMultiConfigurationAndClickOk()
-                .clickSave()
-                .clickLogo()
-                .getItemList();
-
-        Assert.assertTrue(itemNames.contains(RANDOM_PROJECT_NAME));
-    }
-
-    @Test(dependsOnMethods = "testCreateMCP")
-    public void testCreateMCPWithSameName() {
-        ItemErrorPage errorPage = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(RANDOM_PROJECT_NAME)
-                .selectMultiConfiguration()
-                .clickOkAnyway(new ItemErrorPage(getDriver()));
-
-
-        Assert.assertEquals(errorPage.getHeaderText(), "Error");
-        Assert.assertEquals(
-                errorPage.getMessageText(),
-                "A job already exists with the name ‘" + RANDOM_PROJECT_NAME + "’");
+        Assert.assertTrue(homePage.isItemExists(RANDOM_PROJECT_NAME) && !homePage.isItemExists(PROJECT_NAME));
     }
 
     @Test
     public void testDeleteProjectViaDropdown() {
-        TestUtils.createNewItemAndReturnToDashboard(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
-        getDriver().findElement(By.linkText(PROJECT_NAME)).click();
 
-        TestUtils.openElementDropdown(this, getDriver().findElement(By.linkText(PROJECT_NAME)));
+        TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
 
-        getDriver().findElement(By.cssSelector(".tippy-box [href$='Delete']")).click();
-        getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
+        List<String> itemsList = new HomePage(getDriver())
+                .clickMCPName(PROJECT_NAME)
+                .clickBreadcrumbsProjectDropdownArrow()
+                .clickDropdownDelete()
+                .clickYes(new HomePage(getDriver()))
+                .getItemList();
 
-        Assert.assertEquals(
-                getDriver().findElement(By.tagName("h1")).getText(),
-                "Welcome to Jenkins!",
+        Assert.assertListNotContainsObject(itemsList, PROJECT_NAME,
                 "Project not deleted");
     }
 
     @Test
     public void testMoveProjectToFolderViaDropdown() {
+
         final String folderName = "Folder";
-        TestUtils.createNewItemAndReturnToDashboard(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
-        TestUtils.createNewItemAndReturnToDashboard(this, folderName, TestUtils.Item.FOLDER);
-        openDropdownUsingSelenium(PROJECT_NAME);
 
-        getDriver().findElement(By.linkText("Move")).click();
-        new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" + folderName);
-        getDriver().findElement(By.name("Submit")).click();
+        TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+        TestUtils.createNewItem(this, folderName, TestUtils.Item.FOLDER);
 
-        Assert.assertTrue(
-                getDriver().findElement(By.linkText(folderName)).isDisplayed(),
-                "Project not moved to folder");
+        Assert.assertTrue(new HomePage(getDriver()).openItemDropdownWithSelenium(PROJECT_NAME)
+                .selectMoveFromDropdown()
+                .selectFolder(folderName)
+                .clickMove()
+                .isProjectInsideFolder(PROJECT_NAME, folderName));
     }
 
     @Test
     public void testDeleteMultiConfigurationProjectFromMenu() {
-        TestUtils.createJob(this, TestUtils.Job.MULTI_CONFIGURATION, RANDOM_PROJECT_NAME);
-        getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[3]/a")).click();
 
-        TestUtils.deleteItem(this, RANDOM_PROJECT_NAME);
+        HomePage homePage = TestUtils.createMultiConfigurationProject(this, RANDOM_PROJECT_NAME);
 
-        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "Welcome to Jenkins!");
+        boolean isProjectDeleted = homePage
+                .clickJobByName(RANDOM_PROJECT_NAME, new MultiConfigurationProjectPage(getDriver()))
+                .clickDeleteInMenu(new DeleteDialog(getDriver()))
+                .clickYes(homePage).isItemDeleted(RANDOM_PROJECT_NAME);
+
+        Assert.assertTrue(isProjectDeleted);
+    }
+
+    @Ignore
+    @Test
+    public void testAddDiscardOldBuildsConfigurationsToProject(){
+        final String daysToKeep = generateRandomNumber();
+        final String numToKeep = generateRandomNumber();
+        final String artifactDaysToKeep = generateRandomNumber();
+        final String artifactNumToKeep = generateRandomNumber();
+
+        List<String> discardOldBuildsList = TestUtils
+                .createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
+                .clickMCPName(PROJECT_NAME)
+                .clickConfigureButton()
+                .clickDiscardOldBuilds()
+                .setDaysToKeep(daysToKeep)
+                .setMaxNumberOfBuildsToKeep(numToKeep)
+                .clickAdvancedButton()
+                .setArtifactDaysToKeepStr(artifactDaysToKeep)
+                .setArtifactNumToKeepStr(artifactNumToKeep)
+                .clickSaveButton()
+                .clickConfigureButton()
+                .clickAdvancedButton()
+                .getDiscardOldBuildsListText();
+
+        Assert.assertEquals(
+                discardOldBuildsList,
+                List.of(daysToKeep, numToKeep, artifactDaysToKeep, artifactNumToKeep));
+    }
+
+    @Test
+    public void testSearchForCreatedProject(){
+
+        String currentUrl = TestUtils
+                .createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
+                .searchProjectByName(PROJECT_NAME, new MultiConfigurationProjectPage(getDriver()))
+                .getCurrentUrl();
+
+        Assert.assertTrue(currentUrl.contains(PROJECT_NAME));
+    }
+
+    @Test
+    public void testVerifyThatDisabledIconIsDisplayedOnDashboard(){
+
+        List<String> disabledProjectList = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PROJECT_NAME)
+                .selectMultiConfigurationAndClickOk()
+                .clickBreadcrumbsProjectName(PROJECT_NAME)
+                .clickDisableProject()
+                .clickLogo()
+                .getDisabledProjectListText();
+
+        Assert.assertTrue(disabledProjectList.contains(PROJECT_NAME));
+    }
+
+    @Test
+    public void testMoveProjectToFolderFromDashboardPage(){
+
+        TestUtils.createFolderProject(this, FOLDER_NAME);
+        TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
+
+        new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new MultiConfigurationProjectPage(getDriver()))
+                .clickMoveOptionInMenu()
+                .selectFolder(FOLDER_NAME)
+                .clickMove()
+                .clickLogo()
+                .clickFolder(FOLDER_NAME);
+
+        boolean isProjectMoved = new FolderProjectPage(getDriver()).getItemListInsideFolder().contains(PROJECT_NAME);
+
+        Assert.assertTrue(isProjectMoved);
+    }
+
+    @Test
+    public void testDisableProjectOnProjectPage() {
+
+        TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
+
+        String disableMessage = new HomePage(getDriver())
+                .clickMCPName(PROJECT_NAME)
+                .clickDisableProject()
+                .getDisableMessage();
+
+        Assert.assertTrue(disableMessage.contains("This project is currently disabled"),
+                "Substring not found");
+    }
+
+    @Test(dependsOnMethods = "testDisableProjectOnProjectPage")
+    public void testEnableProjectOnProjectPage() {
+
+        String enableMessage = new HomePage(getDriver())
+                .clickMCPName(PROJECT_NAME)
+                .clickEnableButton()
+                .clickConfigureButton()
+                .getToggleStatusMessage();
+
+        Assert.assertTrue(enableMessage.matches("Enabled"),
+                "Substring not found");
+    }
+
+    @Test
+    public void testSearchMCPByName() {
+
+        TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
+
+        String searchResult = new HomePage(getDriver())
+                .typeTextToSearchBox(PROJECT_NAME)
+                .getTextFromMainPanel();
+
+        Assert.assertTrue(searchResult.contains(PROJECT_NAME));
     }
 }

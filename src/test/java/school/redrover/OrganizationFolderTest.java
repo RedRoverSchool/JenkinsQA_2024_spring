@@ -3,110 +3,216 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
+import school.redrover.model.OrganizationFolderProjectPage;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static school.redrover.runner.TestUtils.createNewItemAndReturnToDashboard;
-
-
 public class OrganizationFolderTest extends BaseTest {
-    private static final String ORGANIZATION_FOLDER_NAME = "Organization Folder";
 
-    private void createOrganizationFolder(String name) {
-        getDriver().findElement(By.xpath("//a[.='New Item']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(name);
-        getDriver().findElement(By.className("jenkins_branch_OrganizationFolder")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//button[contains(text(), 'Save')]")).click();
-    }
+    private static final String ORGANIZATION_FOLDER_NAME = "OrganizationFolder";
 
-    @Ignore
-    @Test
-    public void testCreateOrganizationFolder() {
-        createOrganizationFolder("Organization Folder");
-        WebElement disableOrganizationFolderButton = getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']"));
+    private static final String SCAN_ORGANIZATION_TEXT = "Scan Organization Folder Log";
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Organization Folder");
-        Assert.assertEquals(disableOrganizationFolderButton.getAttribute("name"), "Submit", "Button name attribute does not match");
+    private static final String ORGANIZATION_FOLDER_DESCRIPTION = "Some description of the organization folder.";
+
+    private List<String> getActualList(){
+        List<String> actualList = new ArrayList<>();
+        for (int i=1; i<=9; i++){
+            String xPath = "//*[@id=\"tasks\"]/div["+ i + "]/span/a/span[2]";
+            actualList.add(getDriver().findElement(By.xpath(xPath)).getText());
+        }
+        return actualList;
     }
 
     @Test
-    public void testOrganizationFolderCreationWithDefaultIcon() {
-        getDriver().findElement(By.cssSelector("[href$='/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(ORGANIZATION_FOLDER_NAME);
-        getDriver().findElement(By.cssSelector("[class$='OrganizationFolder']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+    public void testCreateViaNewItem() {
+        String getItemPageHeading = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
+                .getProjectName();
 
-        new Select(getDriver().findElement(By.xpath("(//select[contains(@class, 'dropdownList')])[2]")))
-                .selectByVisibleText("Default Icon");
-        getDriver().findElement(By.name("Submit")).click();
+        Assert.assertEquals(getItemPageHeading, ORGANIZATION_FOLDER_NAME);
+    }
 
-        String organizationFolderIcon = getDriver().findElement(By.cssSelector("h1 > svg")).getAttribute("title");
+    @Test
+    public void testCreateWithDefaultIcon() {
+        String organizationFolderIcon = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .selectDefaultIcon()
+                .clickSaveButton()
+                .getOrganizationFolderIcon();
+
         Assert.assertEquals(organizationFolderIcon, "Folder");
+    }
+
+    @Test(dependsOnMethods = "testCreateViaNewItem")
+    public void testAddDescription(){
+
+        String textInDescription = new OrganizationFolderProjectPage(getDriver())
+                .clickAddOrEditDescription()
+                .setDescription(ORGANIZATION_FOLDER_DESCRIPTION)
+                .clickSaveButton()
+                .getDescriptionText();
+
+        Assert.assertEquals(textInDescription, ORGANIZATION_FOLDER_DESCRIPTION);
     }
 
     @Test
     public void testPipelineSyntaxDocumentationAccess() {
-        createNewItemAndReturnToDashboard(this, ORGANIZATION_FOLDER_NAME, TestUtils.Item.ORGANIZATION_FOLDER);
-
-        getDriver().findElement(By.xpath("//span[contains(text(), '" + ORGANIZATION_FOLDER_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href,'pipeline-syntax')]")).click();
-        getDriver().findElement(By.xpath("//span[contains(text(), 'Online Documentation')]/..")).click();
+        String pageTitle = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .chooseOrganizationFolder(ORGANIZATION_FOLDER_NAME)
+                .clickPipelineSyntax()
+                .clickOnlineDocumentation()
+                .getPipelineSyntaxTitle();
 
         Assert.assertTrue(getDriver().getCurrentUrl().contains("/pipeline/"));
-        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='pipeline-syntax']")).getText(), "Pipeline Syntax");
+        Assert.assertEquals(pageTitle, "Pipeline Syntax");
     }
 
     @Test
     public void testPipelineSyntaxExamplesAccess() {
-        createNewItemAndReturnToDashboard(this, ORGANIZATION_FOLDER_NAME, TestUtils.Item.ORGANIZATION_FOLDER);
-
-        getDriver().findElement(By.xpath("//span[contains(text(), '" + ORGANIZATION_FOLDER_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href,'pipeline-syntax')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href,'examples')]")).click();
+        String pageTitle = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .chooseOrganizationFolder(ORGANIZATION_FOLDER_NAME)
+                .clickPipelineSyntax()
+                .clickExamplesReference()
+                .getPipelineExamplesTitle();
 
         Assert.assertTrue(getDriver().getCurrentUrl().contains("/examples/"));
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[contains(@id,'examples')]")).getText(), "Pipeline Examples");
+        Assert.assertEquals(pageTitle, "Pipeline Examples");
     }
 
-    @Test(dependsOnMethods = "testOrganizationFolderCreationWithDefaultIcon")
+    @Test(dependsOnMethods = "testCreateViaNewItem")
     public void testCatchErrorStepTooltipsViaDashboardDropdown() {
-        final List<String> expectedTooltipsTexts = List.of("Help for feature: catchError", "Help for feature: Message",
-                "Help for feature: Build result on error", "Help for feature: Stage result on error",
+        final List<String> expectedTooltipList = List.of(
+                "Help for feature: catchError",
+                "Help for feature: Message",
+                "Help for feature: Build result on error",
+                "Help for feature: Stage result on error",
                 "Help for feature: Catch Pipeline interruptions");
 
-        new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.linkText(ORGANIZATION_FOLDER_NAME)))
-                .pause(500)
-                .scrollToElement(getDriver().findElement(By.cssSelector("td [class$='dropdown-chevron']")))
-                .click()
-                .perform();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[href$='pipeline-syntax']"))).click();
+        List<String> actualTooltipList = new HomePage(getDriver())
+                .openItemDropdownWithSelenium(ORGANIZATION_FOLDER_NAME)
+                .openItemPipelineSyntaxFromDropdown()
+                .selectCatchError()
+                .getCatchErrorTooltipList();
 
-        WebElement sampleStepsList = getDriver().findElement(By.cssSelector("[class$='dropdownList']"));
-        new Select(sampleStepsList)
-                .selectByValue("catchError: Catch error and set build result to failure");
+        Assert.assertEquals(actualTooltipList, expectedTooltipList);
+    }
 
-        List<WebElement> tooltipsList = getDriver().findElements(
-                By.cssSelector("[class='jenkins-form-item tr '] [tooltip^='Help for feature:']:not([tooltip*='Exclude'])"));
+    @Test(dependsOnMethods = "testCreateViaNewItem")
+    public void testSidebarMenuVisibility() {
+        boolean isSidebarVisible = new HomePage(getDriver())
+                .chooseOrganizationFolder(ORGANIZATION_FOLDER_NAME)
+                .clickConfigure()
+                .isSidebarVisible();
 
-        List<String> actualTooltipsTexts = new ArrayList<>();
-        for (WebElement element : tooltipsList) {
-            new Actions(getDriver())
-                    .moveToElement(element)
-                    .pause(500)
-                    .perform();
-            actualTooltipsTexts.add(getDriver().findElement(By.className("tippy-content")).getText());
+        Assert.assertTrue(isSidebarVisible);
+    }
+
+    @Test
+    public void testRenameOrganizationFolder() {
+        final String newOrganizationFolderName = "New Organization Folder";
+
+        List<String> itemList = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
+                .clickOnRenameButton()
+                .setNewName(newOrganizationFolderName)
+                .clickRename()
+                .clickLogo()
+                .getItemList();
+
+        Assert.assertTrue(itemList.contains(newOrganizationFolderName));
+    }
+
+    @Test(dependsOnMethods = "testCreateViaNewItem")
+    public void testScanOrganizationFolder(){
+        String scan = new HomePage(getDriver())
+                .clickJobByName(ORGANIZATION_FOLDER_NAME,
+                        new OrganizationFolderProjectPage(getDriver()))
+                .clickScan()
+                .getScanText();
+
+        Assert.assertEquals(scan, SCAN_ORGANIZATION_TEXT);
+    }
+
+    @Test(dependsOnMethods = "testCreateViaNewItem")
+    public void testFindOrganizationFolderOnDashboard(){
+        HomePage homePage = new HomePage(getDriver());
+
+        Assert.assertListContainsObject(homePage.getItemList(), ORGANIZATION_FOLDER_NAME,
+                ORGANIZATION_FOLDER_NAME + "is not on the dashboard");
+    }
+
+    @Test(dependsOnMethods = "testCreateViaNewItem")
+    public void testPipelineSyntaxMenuList(){
+        final List<String> getExpectedList = List.of("Back", "Snippet Generator", "Declarative Directive Generator",
+                "Declarative Online Documentation", "Steps Reference",
+                "Global Variables Reference", "Online Documentation", "Examples Reference",
+                "IntelliJ IDEA GDSL");
+
+        WebElement currentOrganizationFolder = getDriver().
+                findElement(By.xpath("//span[text()='" + ORGANIZATION_FOLDER_NAME + "']/..")) ;
+        new Actions(getDriver()).moveToElement(currentOrganizationFolder).perform();
+
+        WebElement menuForCurrentOrganizationFolder = getDriver().
+                findElement(By.xpath("//*[@id='job_"+ ORGANIZATION_FOLDER_NAME + "']/td[3]/a"));
+        menuForCurrentOrganizationFolder.click();
+
+        WebElement pipelineSyntaxMenu = getDriver().
+                findElement(By.xpath("//*[@href='/job/"+ ORGANIZATION_FOLDER_NAME +"/pipeline-syntax']"));
+        pipelineSyntaxMenu.click();
+
+        for (int i=0; i<getActualList().size(); i++){
+            Assert.assertEquals(getActualList().get(i), getExpectedList.get(i));
         }
+    }
 
-        Assert.assertEquals(actualTooltipsTexts, expectedTooltipsTexts);
+    @Test(dependsOnMethods = "testCreateViaNewItem")
+    public void testViewEmptyOrganizationFolderEvents() {
+
+        getDriver().findElement(By.linkText(ORGANIZATION_FOLDER_NAME)).click();
+        getDriver().findElement(By.linkText("Organization Folder Events")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//*[@id='out']/div")).getText()
+                .matches("No events as of.+waiting for events\\.{3}"), "Messages not equals!");
+    }
+
+    @Test
+    public void testDeleteOrganizationFolder () {
+
+        final String newOrganizationFolderName = "New Organization Folder";
+
+        List<String> itemList = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
+                .clickDeleteOnSidebar()
+                .clickYesForDeleteOrganizationFolder()
+                .getItemList();
+
+        Assert.assertListNotContainsObject(itemList, ORGANIZATION_FOLDER_NAME, "Did not removed!");
     }
 }

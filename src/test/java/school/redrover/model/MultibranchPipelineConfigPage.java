@@ -7,9 +7,9 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseConfigPage;
 
-public class MultibranchPipelineConfigPage extends BasePage {
+public class MultibranchPipelineConfigPage extends BaseConfigPage<MultibranchPipelineProjectPage> {
 
     @FindBy(css = "[data-title*='Disabled']")
     private WebElement statusToggle;
@@ -17,13 +17,24 @@ public class MultibranchPipelineConfigPage extends BasePage {
     @FindBy(className = "tippy-box")
     private WebElement tooltip;
 
+    @FindBy(id = "enable-disable-project")
+    private WebElement toggleInput;
+
+    @FindBy(css = "#breadcrumbs > li:nth-child(3)")
+    private WebElement multibranchPipelineBreadcrumbs;
+
     public MultibranchPipelineConfigPage(WebDriver driver) {
-        super(driver);
+        super(driver, new MultibranchPipelineProjectPage(driver));
     }
 
     public MultibranchPipelineConfigPage clickToggle() {
         statusToggle.click();
         return this;
+    }
+
+    public MultibranchPipelineConfigPage clickOnToggle() {
+        statusToggle.click();
+        return new MultibranchPipelineConfigPage(getDriver());
     }
 
     public MultibranchPipelineConfigPage hoverOverToggle() {
@@ -38,5 +49,9 @@ public class MultibranchPipelineConfigPage extends BasePage {
 
     public boolean isTooltipDisplayed() {
         return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-box"))).isDisplayed();
+    }
+
+    public String getStatusToggle() {
+        return toggleInput.getDomProperty("checked");
     }
 }

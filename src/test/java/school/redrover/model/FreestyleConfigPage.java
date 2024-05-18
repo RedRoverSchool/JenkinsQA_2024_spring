@@ -1,13 +1,22 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.base.BasePage;
 
-public class FreestyleConfigPage extends BasePage {
+import school.redrover.model.base.BaseConfigPage;
+
+public class FreestyleConfigPage extends BaseConfigPage<FreestyleProjectPage> {
+
+    @FindBy(css = "#side-panel h1")
+    private WebElement headerSidePanel;
+
+    @FindBy (xpath = "//*[@name='description']")
+    private WebElement descriptionField;
+
+    @FindBy (css = "#general")
+    private WebElement general;
 
     @FindBy(id = "build-triggers")
     private WebElement buildTriggersHeading;
@@ -28,13 +37,40 @@ public class FreestyleConfigPage extends BasePage {
     private WebElement saveButton;
 
     public FreestyleConfigPage(WebDriver driver) {
-        super(driver);
+        super(driver, new FreestyleProjectPage(driver));
     }
 
-    public FreestylePage clickSaveButton() {
+    public String getHeaderSidePanelText() {
+        return headerSidePanel.getText();
+    }
+
+    public String getGeneralText() {
+        return general.getText();
+    }
+
+    public FreestyleConfigPage setDescription(String description) {
+        descriptionField.sendKeys(description);
+
+        return new FreestyleConfigPage(getDriver());
+    }
+
+    public FreestyleConfigPage clearDescription() {
+        descriptionField.clear();
+
+        return new FreestyleConfigPage(getDriver());
+    }
+
+    public FreestyleConfigPage clearAndSetDescription(String description) {
+        descriptionField.clear();
+        descriptionField.sendKeys(description);
+
+        return new FreestyleConfigPage(getDriver());
+    }
+
+    public FreestyleProjectPage clickSaveButton() {
         saveButton.click();
 
-        return new FreestylePage(getDriver());
+        return new FreestyleProjectPage(getDriver());
     }
 
     protected FreestyleConfigPage scrollToBuildTriggersHeading() {
