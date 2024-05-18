@@ -174,9 +174,14 @@ public class FreestyleProjectPage extends BaseProjectPage {
     }
 
     public String getBuildInfo() {
+        String buildHistoryStatus = getDriver().findElement(By.id("buildHistory")).getAttribute("class");
+
+        if(buildHistoryStatus.contains("collapsed")) {
+            getDriver().findElement(By.xpath("//a[@href='/toggleCollapse?paneId=buildHistory']")).click();
+        }
 
         return buildInfo.getText();
-    }
+      }
 
     public String getFullProjectPath() {
         return projectPath.getText();

@@ -1,6 +1,5 @@
 package school.redrover;
 
-import com.beust.ah.A;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.*;
@@ -10,7 +9,6 @@ import school.redrover.model.CreateNewItemPage;
 import school.redrover.model.FreestyleProjectPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.*;
-
 import java.util.List;
 
 public class FreestyleProjectTest extends BaseTest {
@@ -163,7 +161,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(actualResult.contains(expectedResult));
     }
 
-    @Ignore
     @Test
     public void testBuildNowFreestyleProject() {
 
