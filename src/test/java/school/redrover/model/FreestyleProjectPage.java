@@ -28,7 +28,7 @@ public class FreestyleProjectPage extends BaseProjectPage {
     private WebElement projectDescription;
 
     @FindBy(id = "description-link")
-    private WebElement addDescriptionButton;
+    private WebElement addOrEditDescriptionButton;
 
     @FindBy(name = "description")
     private WebElement descriptionInput;
@@ -63,6 +63,12 @@ public class FreestyleProjectPage extends BaseProjectPage {
     @FindBy(xpath = "//div[contains(text(), 'Full project name:')]")
     private WebElement projectPath;
 
+    @FindBy(xpath = "//form[@id='enable-project']")
+    private WebElement disabledStatusMassage;
+
+    @FindBy(css = "[href^='/job'] [class$='dropdown-chevron']")
+    private WebElement breadcrumbsDropdownArrow;
+
     public FreestyleProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -73,7 +79,13 @@ public class FreestyleProjectPage extends BaseProjectPage {
     }
 
     public FreestyleProjectPage clickAddDescription() {
-        addDescriptionButton.click();
+        addOrEditDescriptionButton.click();
+
+        return this;
+    }
+
+    public FreestyleProjectPage clickEditDescription() {
+        addOrEditDescriptionButton.click();
 
         return this;
     }
@@ -111,6 +123,18 @@ public class FreestyleProjectPage extends BaseProjectPage {
         saveButton.click();
 
         return this;
+    }
+
+    public FreestyleProjectPage clickBreadcrumbsDropdownArrow() {
+        clickSpecificDropdownArrow(breadcrumbsDropdownArrow);
+
+        return this;
+    }
+
+    public RenameDialogPage clickBreadcrumbsDropdownRenameProject(String oldItemName) {
+        getDriver().findElement(By.xpath("//div[@class='jenkins-dropdown']//a[@href='/job/" + oldItemName + "/confirm-rename']")).click();
+
+        return new RenameDialogPage(getDriver());
     }
 
     public String getProjectNameFromBreadcrumbs() {
@@ -158,8 +182,9 @@ public class FreestyleProjectPage extends BaseProjectPage {
 
     }
 
-    public boolean isProjectNameDisplayed() {
-        return projectName.isDisplayed();
+    public boolean isAddDescriptionButtonEnable() {
+
+        return getDriver().findElement(By.xpath("//a[text()='Add description']")).isEnabled();
     }
 
     public FreestyleProjectPage clickBuildNowOnSideBar() {
@@ -176,16 +201,20 @@ public class FreestyleProjectPage extends BaseProjectPage {
     public String getBuildInfo() {
         String buildHistoryStatus = getDriver().findElement(By.id("buildHistory")).getAttribute("class");
 
-        if(buildHistoryStatus.contains("collapsed")) {
+        if (buildHistoryStatus.contains("collapsed")) {
             getDriver().findElement(By.xpath("//a[@href='/toggleCollapse?paneId=buildHistory']")).click();
         }
 
         return buildInfo.getText();
-      }
+    }
 
     public String getFullProjectPath() {
+
         return projectPath.getText();
     }
 
+    public String getDesabledMassageText() {
 
+        return getWait5().until(ExpectedConditions.visibilityOf(disabledStatusMassage)).getText();
+    }
 }
