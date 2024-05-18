@@ -515,15 +515,6 @@ public class HomePage extends BasePage {
         return heading.getText();
     }
 
-    public HomePage createFolder(String folderName) {
-        clickNewItem()
-                .setItemName(folderName)
-                .selectFolderAndClickOk()
-                .clickSaveButton()
-                .clickLogo();
-        return new HomePage(getDriver());
-    }
-
     public MovePage chooseFolderToMove() {
         getWait5().until(ExpectedConditions.visibilityOf(moveOption)).click();
         return new MovePage(getDriver());
@@ -654,50 +645,4 @@ public class HomePage extends BasePage {
     public String getEditDescriptionLinkText() {
         return editDescriptionLink.getText();
     }
-
-    public HomePage createFreestyleProject(String name) {
-        clickNewItem()
-                .setItemName(name)
-                .selectFreestyleAndClickOk()
-                .clickSaveButton()
-                .clickLogo();
-        return new HomePage(getDriver());
-    }
-
-    public HomePage createPipeline(String name) {
-        clickNewItem()
-                .setItemName(name)
-                .selectPipelineAndClickOk()
-                .clickSaveButton()
-                .clickLogo();
-        return new HomePage(getDriver());
-    }
-
-    public HomePage createMultiConfigurationProject(String name) {
-        clickNewItem()
-                .setItemName(name)
-                .selectMultiConfigurationAndClickOk()
-                .clickSaveButton()
-                .clickLogo();
-        return new HomePage(getDriver());
-    }
-
-    public HomePage createMultibranchPipeline(String name) {
-        clickNewItem()
-                .setItemName(name)
-                .selectMultibranchPipelineAndClickOk()
-                .clickSaveButton()
-                .clickLogo();
-        return new HomePage(getDriver());
-    }
-
-    public HomePage createOrganizationFolder(String name) {
-        clickNewItem()
-                .setItemName(name)
-                .selectOrganizationFolderAndClickOk()
-                .clickSaveButton()
-                .clickLogo();
-        return new HomePage(getDriver());
-    }
-
 }

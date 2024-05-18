@@ -5,6 +5,7 @@ import org.testng.annotations.Test;
 import school.redrover.model.DashboardPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -65,8 +66,9 @@ public class DashboardTest extends BaseTest {
                 "Rename",
                 "Credentials");
 
+        TestUtils.createFolderProject(this, FOLDER_NAME);
+
         List<String> chevronMenu = new HomePage(getDriver())
-                .createFolder(FOLDER_NAME)
                 .openItemDropdown(FOLDER_NAME)
                 .getDropdownMenu();
 
@@ -87,8 +89,9 @@ public class DashboardTest extends BaseTest {
                 "Move",
                 "Rename");
 
+        TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
+
         List<String> chevronMenu = new HomePage(getDriver())
-                .createFreestyleProject(FREESTYLE_PROJECT_NAME)
                 .openItemDropdown(FREESTYLE_PROJECT_NAME)
                 .getDropdownMenu();
 
@@ -108,8 +111,9 @@ public class DashboardTest extends BaseTest {
                 "Rename",
                 "Pipeline Syntax");
 
+        TestUtils.createPipelineProject(this, PIPELINE_NAME);
+
         List<String> chevronMenu = new HomePage(getDriver())
-                .createPipeline(PIPELINE_NAME)
                 .openItemDropdown(PIPELINE_NAME)
                 .getDropdownMenu();
 
@@ -128,8 +132,9 @@ public class DashboardTest extends BaseTest {
                 "Move",
                 "Rename");
 
+        TestUtils.createMultiConfigurationProject(this, MULTI_CONFIGURATION_PROJECT_NAME);
+
         List<String> chevronMenu = new HomePage(getDriver())
-                .createMultiConfigurationProject(MULTI_CONFIGURATION_PROJECT_NAME)
                 .openItemDropdown(MULTI_CONFIGURATION_PROJECT_NAME)
                 .getDropdownMenu();
 
@@ -153,8 +158,9 @@ public class DashboardTest extends BaseTest {
                 "Pipeline Syntax",
                 "Credentials");
 
+        TestUtils.createMultibranchProject(this, MULTIBRANCH_PIPELINE_NAME);
+
         List<String> chevronMenu = new HomePage(getDriver())
-                .createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME)
                 .openItemDropdown(MULTIBRANCH_PIPELINE_NAME)
                 .getDropdownMenu();
 
@@ -178,8 +184,9 @@ public class DashboardTest extends BaseTest {
                 "Pipeline Syntax",
                 "Credentials");
 
+        TestUtils.createOrganizationFolderProject(this, ORGANIZATION_FOLDER_NAME);
+
         List<String> chevronMenu = new HomePage(getDriver())
-                .createOrganizationFolder(ORGANIZATION_FOLDER_NAME)
                 .openItemDropdown(ORGANIZATION_FOLDER_NAME)
                 .getDropdownMenu();
 

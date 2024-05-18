@@ -521,8 +521,9 @@ public class MultibranchPipelineTest extends BaseTest {
         final String FIRST_ITEM_NAME = "My first Multibranch Pipeline";
         final String SECOND_ITEM_NAME = "My second Multibranch Pipeline";
 
+        TestUtils.createMultibranchProject(this, FIRST_ITEM_NAME);
+
         List<String> itemList = new HomePage(getDriver())
-                .createMultibranchPipeline(FIRST_ITEM_NAME)
                 .clickNewItem()
                 .setItemName(SECOND_ITEM_NAME)
                 .setItemNameInCopyForm(FIRST_ITEM_NAME)

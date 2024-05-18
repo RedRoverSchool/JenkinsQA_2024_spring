@@ -8,6 +8,7 @@ import school.redrover.model.FolderProjectPage;
 import school.redrover.model.HomePage;
 import school.redrover.model.PipelineProjectPage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
@@ -187,9 +188,10 @@ public class FolderTest extends BaseTest {
 
     @Test
     public void testMoveFolderToFolderViaChevron() {
+        TestUtils.createFolderProject(this, FOLDER_TO_MOVE);
+        TestUtils.createFolderProject(this, FOLDER_NAME);
+
         List<String> folderNameList = new HomePage(getDriver())
-                .createFolder(FOLDER_TO_MOVE)
-                .createFolder(FOLDER_NAME)
                 .openItemDropdown(FOLDER_TO_MOVE)
                 .chooseFolderToMove()
                 .chooseDestinationFromListAndMove(FOLDER_NAME)
@@ -232,8 +234,9 @@ public class FolderTest extends BaseTest {
         final String thisFolderIsEmptyMessage = "This folder is empty";
         final String createAJobLinkText = "Create a job";
 
+        TestUtils.createFolderProject(this, folderName);
+
         String actualFolderName = new HomePage(getDriver())
-                .createFolder(folderName)
                 .clickFolder(folderName)
                 .getProjectName();
 
