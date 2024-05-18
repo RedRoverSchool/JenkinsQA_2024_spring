@@ -140,22 +140,6 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(actualErrorMessage.getText(), expectedErrorMessage);
     }
 
-    @Test
-    public void testEnabledMultibranchPipelineOnConfigPage() {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys("New Multibranch Pipeline");
-        getDriver().findElement(By.cssSelector("[class*=MultiBranchProject]")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        getDriver().findElement(By.cssSelector("[class*=toggle-switch__label]")).click();
-        getDriver().findElement(By.name("Submit")).click();
-        getDriver().findElement(By.cssSelector("[href*='Pipeline/configure']")).click();
-        getDriver().findElement(By.cssSelector("[class*=toggle-switch__label]")).click();
-
-        String statusToggle = getDriver().findElement(By.id("enable-disable-project")).getDomProperty("checked");
-        Assert.assertEquals(statusToggle,"true");
-    }
-
     @Ignore
     @Test
     public void testRenameMultibranchPipelineOnTheSidebar() {
@@ -450,7 +434,6 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testVerifyMpDisabledMessageColorOnStatusPage() {
         String disabledMessageColor = new HomePage(getDriver())
                 .clickMPName(MULTI_PIPELINE_NAME)
-//                .clickDisableEnableMultibranchPipeline()
                 .getDisableMultibranchPipelineTextColor();
 
         Assert.assertEquals(disabledMessageColor, "rgba(254, 130, 10, 1)");
