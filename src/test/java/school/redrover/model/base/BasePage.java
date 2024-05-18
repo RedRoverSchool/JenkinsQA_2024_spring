@@ -26,6 +26,9 @@ public abstract class BasePage extends BaseModel {
     @FindBy(css = "[class$=jenkins_ver]")
     private WebElement version;
 
+    @FindBy(tagName = "h1")
+    private WebElement headerOne;
+
     public BasePage(WebDriver driver) {
         super(driver);
     }
@@ -85,6 +88,10 @@ public abstract class BasePage extends BaseModel {
 
     public String getText(WebElement webElement) {
         return webElement.getText();
+    }
+
+    public String getHeaderOneText() {
+        return headerOne.getText();
     }
 
     public void scrollIntoView(WebElement element) {

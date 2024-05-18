@@ -320,4 +320,14 @@ public class FolderTest extends BaseTest {
 
         Assert.assertListNotContainsObject(jobList, FOLDER_NAME, FOLDER_NAME + " not removed!");
     }
+    @Test
+    public void testSpecialCharactersNameFolder() {
+        String header1Text = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName("Fold%erdate")
+                .selectFolderAndClickOk()
+                .getHeaderOneText();
+
+        Assert.assertEquals(header1Text, "Error");
+    }
 }
