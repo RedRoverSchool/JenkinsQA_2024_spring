@@ -4,6 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HeaderBlock;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
@@ -43,6 +44,16 @@ public class UserTest extends BaseTest {
                 .getUsersList();
 
         Assert.assertTrue(userName.contains("TestUser"));
+    }
+
+    @Test(dependsOnMethods = "testCreateUserViaManageJenkins")
+    public void testSearchForUserThroughSearchBar() {
+
+        String userFullName = new HeaderBlock(getDriver())
+                .enterRequestIntoSearchBox(FULL_NAME)
+                .getSearchBoxResult();
+
+        Assert.assertEquals(userFullName, "User");
     }
 
     @Ignore
