@@ -190,15 +190,14 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testRenamedMultibranchPipelineSeenInBreadcrumbs() {
-        createNewMultiPipeline(MULTI_PIPELINE_NAME);
-
-        getDriver().findElement(By.linkText(MULTI_PIPELINE_NAME)).click();
-        getDriver().findElement(By.cssSelector("[href$='rename']")).click();
-        getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys(RENAMED_MULTI_PIPELINE);
-        getDriver().findElement(By.name("Submit")).click();
-
-        String multiPipelineBreadcrumbName = getDriver().findElement(By.cssSelector("[class*='breadcrumbs'] [href^='/job']")).getText();
+        String multiPipelineBreadcrumbName = new HomePage(getDriver())
+                .clickCreateAJob()
+                .sendItemName(MULTI_PIPELINE_NAME)
+                .selectMultibranchPipelineAndClickOk()
+                .clickSaveButton()
+                .clickSidebarRenameButton()
+                .changeNameTo(RENAMED_MULTI_PIPELINE)
+                .getBreadcrumbsProjectName();
 
         Assert.assertEquals(multiPipelineBreadcrumbName, RENAMED_MULTI_PIPELINE,
                 "Actual multibranch breadcrumb name is not " + RENAMED_MULTI_PIPELINE);

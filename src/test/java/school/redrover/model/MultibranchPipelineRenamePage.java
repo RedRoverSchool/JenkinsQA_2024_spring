@@ -8,7 +8,7 @@ import school.redrover.model.base.BasePage;
 
 public class MultibranchPipelineRenamePage extends BasePage {
 
-    @FindBy(xpath = "//input[@checkdependson='newName']")
+    @FindBy(name = "newName")
     private WebElement newNameInput;
 
     @FindBy(name = "Submit")

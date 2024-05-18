@@ -37,10 +37,13 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage {
     private List<WebElement> sidebarTasksList;
 
     @FindBy(css = "a[href^='/job'] > button")
-    private WebElement multibranchPipelineBreadcrumbs;
+    private WebElement breadcrumbsDropdownArrow;
 
     @FindBy(css = "[class*='dropdown'] [href$='doDelete']")
     private WebElement deleteMultibranchPipelineInBreadcrumbsLink;
+
+    @FindBy(css = "[class*='breadcrumbs'] [href^='/job']")
+    private WebElement breadcrumbsProjectName;
 
     public MultibranchPipelineProjectPage(WebDriver driver) {
         super(driver);
@@ -91,6 +94,7 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage {
     public Integer getSidebarTasksSize() {
         return sidebarTasksList.size();
     }
+
     public MultibranchPipelineProjectPage clickDeleteButton(){
         sidebarDeleteButton.click();
         return this;
@@ -101,7 +105,7 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage {
     }
 
     public MultibranchPipelineProjectPage clickMPDropdownArrow() {
-        clickSpecificDropdownArrow(multibranchPipelineBreadcrumbs);
+        clickSpecificDropdownArrow(breadcrumbsDropdownArrow);
 
         return this;
     }
@@ -110,5 +114,9 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage {
         deleteMultibranchPipelineInBreadcrumbsLink.click();
 
         return dialog;
+    }
+
+    public String getBreadcrumbsProjectName() {
+        return breadcrumbsProjectName.getText();
     }
 }
