@@ -1,7 +1,9 @@
 package school.redrover.model.base;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.AppearancePage;
+import school.redrover.model.FreestylePage;
 import school.redrover.model.HomePage;
 
 import java.util.ArrayList;
@@ -42,7 +44,7 @@ public abstract class BasePage extends BaseModel {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
     }
 
-    public void triggerJobViaHTTPRequest(String token, String user, String projectName) {
+    public FreestylePage triggerJobViaHTTPRequest(String token, String user, String projectName) {
         final String postBuildJob = "http://" + user + ":" + token + "@localhost:8080/job/Project1/build?token=" + projectName;
 
         getDriver().switchTo().newWindow(WindowType.TAB);
@@ -51,5 +53,21 @@ public abstract class BasePage extends BaseModel {
         List<String> tabs = new ArrayList<>(getDriver().getWindowHandles());
 
         getDriver().switchTo().window(tabs.get(0));
+
+        return new FreestylePage(getDriver());
     }
+
+    public void revokeTokenViaHTTPRequest(String token, String uuid, String user) {
+        final String postRevokeToken = "http://" + user + ":" + token + "@localhost:8080/user/" + user
+                + "/descriptorByName/jenkins.security.ApiTokenProperty/revoke?tokenUuid=" + uuid;
+
+        getDriver().switchTo().newWindow(WindowType.TAB);
+        getDriver().navigate().to(postRevokeToken);
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
+
+        List<String> tabs = new ArrayList<>(getDriver().getWindowHandles());
+
+        getDriver().switchTo().window(tabs.get(0));
+    }
+
 }

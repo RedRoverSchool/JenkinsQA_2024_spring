@@ -112,8 +112,7 @@ public class HomePage extends BasePage {
     }
 
     public UserConfigurePage openUserConfigurations() {
-        return clickLogo()
-                .clickPeopleSideMenu()
+        return clickPeopleSideMenu()
                 .clickUserIdLink()
                 .clickConfigureSideMenu();
     }

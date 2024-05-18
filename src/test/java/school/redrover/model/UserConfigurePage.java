@@ -26,6 +26,8 @@ public class UserConfigurePage extends BasePage {
     @FindBy(name = "Submit")
     private WebElement saveButton;
 
+    @FindBy(css = ".token-list-item>div")
+    private WebElement tokenMessage;
 
     public UserConfigurePage(WebDriver driver) {
         super(driver);
@@ -47,5 +49,10 @@ public class UserConfigurePage extends BasePage {
         final String user = getDriver().getCurrentUrl().split("/")[4];
 
         return new String[]{token, uuid, user};
+    }
+
+    public String getTokenMessage() {
+
+        return tokenMessage.getText();
     }
 }

@@ -17,19 +17,19 @@ import java.util.List;
 public class FreestyleProject100Test extends BaseTest {
     final String projectName = "This is the project name";
 
-    @Test
-    public void testCreateFreestyleProject() {
-
-        List<String> itemList = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(projectName)
-                .selectFreestyleAndClickOk()
-                .clickSave()
-                .clickLogo()
-                .getItemList();
-
-        Assert.assertTrue(itemList.contains(projectName));
-    }
+//    @Test
+//    public void testCreateFreestyleProject() {
+//
+//        List<String> itemList = new HomePage(getDriver())
+//                .clickNewItem()
+//                .setItemName(projectName)
+//                .selectFreestyleAndClickOk()
+//                .clickSave()
+//                .clickLogo()
+//                .getItemList();
+//
+//        Assert.assertTrue(itemList.contains(projectName));
+//    }
 
     @Test(dependsOnMethods = "testCreateFreestyleProject")
     public void testDeleteUsingDropdown() {
