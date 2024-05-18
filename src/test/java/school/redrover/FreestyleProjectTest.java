@@ -77,9 +77,9 @@ public class FreestyleProjectTest extends BaseTest {
 
         for (String invalidChar : invalidCharacters) {
 
-             expectedResult = "» ‘" + invalidChar + "’ is an unsafe character";
+            expectedResult = "» ‘" + invalidChar + "’ is an unsafe character";
 
-             actualResult = createNewItemPage
+            actualResult = createNewItemPage
                     .clearItemNameField()
                     .setItemName(invalidChar)
                     .getErrorMessageInvalidCharacterOrDuplicateName();
@@ -163,7 +163,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(actualResult.contains(expectedResult));
     }
 
-    @Ignore
     @Test
     public void testBuildNowFreestyleProject() {
 
@@ -199,7 +198,6 @@ public class FreestyleProjectTest extends BaseTest {
 
     }
 
-    @Ignore
     @Test
     public void testCopyFromContainer() {
 
@@ -225,6 +223,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertTrue(elementsList.contains(oldProjectName1));
     }
+
     @Test
     public void testAddDescriptionOfConfiguration() {
 
@@ -243,6 +242,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(projectDescriptionText, "Description of " + FREESTYLE_PROJECT_NAME);
     }
+
     @Test
     public void testAddDescription() {
         String projectDescriptionText = new HomePage(getDriver())
