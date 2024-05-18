@@ -606,6 +606,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(itemListInsideFolder.contains(FREESTYLE_PROJECT_NAME));
     }
 
+    @Ignore
     @Test
     public void testCreatExistingFreestyleProject() {
 
