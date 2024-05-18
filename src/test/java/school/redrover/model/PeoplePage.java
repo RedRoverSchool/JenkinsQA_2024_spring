@@ -5,14 +5,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.base.BasePage;
 import org.openqa.selenium.Dimension;
 
+import school.redrover.model.base.BaseSideMenuPage;
 import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
-public class PeoplePage extends BasePage {
+public class PeoplePage extends BaseSideMenuPage<PeoplePage> {
 
     @FindBy(css = "tr>td:nth-child(2)")
     private List<WebElement> userIDList;

@@ -8,7 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseProjectPage;
 
-public class MultiConfigurationProjectPage extends BaseProjectPage {
+public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigurationProjectPage> {
 
     @FindBy(id = "description-link")
     private WebElement addDescriptionButton;

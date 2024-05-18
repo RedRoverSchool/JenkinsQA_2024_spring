@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BaseProjectPage;
 
-public class OrganizationFolderProjectPage extends BaseProjectPage {
+public class OrganizationFolderProjectPage extends BaseProjectPage<OrganizationFolderProjectPage> {
 
     @FindBy(css = ".task [href$='configure']")
     private WebElement configureButton;

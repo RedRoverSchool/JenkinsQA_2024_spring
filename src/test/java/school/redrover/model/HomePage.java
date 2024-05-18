@@ -7,14 +7,14 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseSideMenuPage;
 import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class HomePage extends BasePage {
+public class HomePage extends BaseSideMenuPage<HomePage> {
 
     @FindBy(linkText = "Create a job")
     private WebElement createAJobLink;
@@ -172,17 +172,8 @@ public class HomePage extends BasePage {
     @FindBy(css = "#description > *:first-child")
     private WebElement descriptionText;
 
-    @FindBy(linkText = "People")
-    private WebElement peopleSideMenu;
-
-    @FindBy(id = "tasks")
-    private List<WebElement> sideMenus;
-
     @FindBy(xpath = "//h1")
     private WebElement h1Heading;
-
-    @FindBy(linkText = "New Item")
-    private WebElement newItemSideMenu;
 
 
     public HomePage(WebDriver driver) {
@@ -711,23 +702,10 @@ public class HomePage extends BasePage {
         return new HomePage(getDriver());
     }
 
-    private PeoplePage clickPeopleSideMenu() {
-        getWait5().until(ExpectedConditions.visibilityOfAllElements(sideMenus));
-        peopleSideMenu.click();
-
-        return new PeoplePage(getDriver());
-    }
-
     public UserConfigurePage openUserConfigurations() {
         return clickPeopleSideMenu()
                 .clickUserIdLink()
                 .clickConfigureSideMenu();
-    }
-
-    private CreateNewItemPage clickNewItemSideMenu() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(newItemSideMenu)).click();
-
-        return new CreateNewItemPage(getDriver());
     }
 
     public FreestyleProjectPage createFreestyleProjectWithConfigurations(String projectName) {

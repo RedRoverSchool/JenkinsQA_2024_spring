@@ -9,7 +9,7 @@ import school.redrover.model.base.BaseProjectPage;
 
 import java.util.List;
 
-public class FolderProjectPage extends BaseProjectPage {
+public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
 
     @FindBy(css = "[class*='breadcrumbs']>[href*='job']")
     private WebElement breadcrumbsName;

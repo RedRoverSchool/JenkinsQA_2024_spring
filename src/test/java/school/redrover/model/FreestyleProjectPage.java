@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseProjectPage;
 
-public class FreestyleProjectPage extends BaseProjectPage {
+public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> {
 
     @FindBy(xpath = "//*[@id='breadcrumbs']/li[3]/a")
     private WebElement projectNameFromBreadcrumbs;

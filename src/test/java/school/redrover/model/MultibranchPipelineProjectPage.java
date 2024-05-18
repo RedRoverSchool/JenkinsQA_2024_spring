@@ -8,7 +8,7 @@ import org.openqa.selenium.support.FindBy;
 
 import school.redrover.model.base.BaseProjectPage;
 
-public class MultibranchPipelineProjectPage extends BaseProjectPage {
+public class MultibranchPipelineProjectPage extends BaseProjectPage<MultibranchPipelineProjectPage> {
 
 
     @FindBy(xpath = "//span[.='Configure the project']")
