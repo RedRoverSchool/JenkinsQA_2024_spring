@@ -5,10 +5,8 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
-
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
-
 import java.util.List;
 import java.util.Random;
 
@@ -328,5 +326,44 @@ public class MultiConfigurationProjectTest extends BaseTest {
         boolean isProjectMoved = new FolderProjectPage(getDriver()).getItemListInsideFolder().contains(PROJECT_NAME);
 
         Assert.assertTrue(isProjectMoved);
+    }
+
+    @Test
+    public void testDisableProjectOnProjectPage() {
+
+        TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
+
+        String disableMessage = new HomePage(getDriver())
+                .clickMCPName(PROJECT_NAME)
+                .clickDisableProject()
+                .getDisableMessage();
+
+        Assert.assertTrue(disableMessage.contains("This project is currently disabled"),
+                "Substring not found");
+    }
+
+    @Test(dependsOnMethods = "testDisableProjectOnProjectPage")
+    public void testEnableProjectOnProjectPage() {
+
+        String enableMessage = new HomePage(getDriver())
+                .clickMCPName(PROJECT_NAME)
+                .clickEnableButton()
+                .clickConfigureButton()
+                .getToggleStatusMessage();
+
+        Assert.assertTrue(enableMessage.matches("Enabled"),
+                "Substring not found");
+    }
+
+    @Test
+    public void testSearchMCPByName() {
+
+        TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
+
+        String searchResult = new HomePage(getDriver())
+                .typeTextToSearchBox(PROJECT_NAME)
+                .getTextFromMainPanel();
+
+        Assert.assertTrue(searchResult.contains(PROJECT_NAME));
     }
 }

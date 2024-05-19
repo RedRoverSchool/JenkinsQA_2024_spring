@@ -3,9 +3,9 @@ package school.redrover.model;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseSideMenuPage;
 
-public class UserPage extends BasePage {
+public class UserPage extends BaseSideMenuPage<UserPage> {
 
     @FindBy(css = "#description + div")
     private WebElement jenkinsUserID;
@@ -20,4 +20,5 @@ public class UserPage extends BasePage {
 
         return jenkinsUserID.getText().replace("Jenkins User ID:", "").trim();
     }
+
 }

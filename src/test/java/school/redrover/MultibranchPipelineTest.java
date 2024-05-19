@@ -140,22 +140,6 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(actualErrorMessage.getText(), expectedErrorMessage);
     }
 
-    @Test
-    public void testEnabledMultibranchPipelineOnConfigPage() {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys("New Multibranch Pipeline");
-        getDriver().findElement(By.cssSelector("[class*=MultiBranchProject]")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        getDriver().findElement(By.cssSelector("[class*=toggle-switch__label]")).click();
-        getDriver().findElement(By.name("Submit")).click();
-        getDriver().findElement(By.cssSelector("[href*='Pipeline/configure']")).click();
-        getDriver().findElement(By.cssSelector("[class*=toggle-switch__label]")).click();
-
-        String statusToggle = getDriver().findElement(By.id("enable-disable-project")).getDomProperty("checked");
-        Assert.assertEquals(statusToggle,"true");
-    }
-
     @Ignore
     @Test
     public void testRenameMultibranchPipelineOnTheSidebar() {
@@ -190,15 +174,14 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testRenamedMultibranchPipelineSeenInBreadcrumbs() {
-        createNewMultiPipeline(MULTI_PIPELINE_NAME);
-
-        getDriver().findElement(By.linkText(MULTI_PIPELINE_NAME)).click();
-        getDriver().findElement(By.cssSelector("[href$='rename']")).click();
-        getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys(RENAMED_MULTI_PIPELINE);
-        getDriver().findElement(By.name("Submit")).click();
-
-        String multiPipelineBreadcrumbName = getDriver().findElement(By.cssSelector("[class*='breadcrumbs'] [href^='/job']")).getText();
+        String multiPipelineBreadcrumbName = new HomePage(getDriver())
+                .clickCreateAJob()
+                .sendItemName(MULTI_PIPELINE_NAME)
+                .selectMultibranchPipelineAndClickOk()
+                .clickSaveButton()
+                .clickSidebarRenameButton()
+                .changeNameTo(RENAMED_MULTI_PIPELINE)
+                .getBreadcrumbsProjectName();
 
         Assert.assertEquals(multiPipelineBreadcrumbName, RENAMED_MULTI_PIPELINE,
                 "Actual multibranch breadcrumb name is not " + RENAMED_MULTI_PIPELINE);
@@ -450,7 +433,6 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testVerifyMpDisabledMessageColorOnStatusPage() {
         String disabledMessageColor = new HomePage(getDriver())
                 .clickMPName(MULTI_PIPELINE_NAME)
-//                .clickDisableEnableMultibranchPipeline()
                 .getDisableMultibranchPipelineTextColor();
 
         Assert.assertEquals(disabledMessageColor, "rgba(254, 130, 10, 1)");

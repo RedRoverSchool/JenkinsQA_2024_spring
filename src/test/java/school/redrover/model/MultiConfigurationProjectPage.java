@@ -8,7 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseProjectPage;
 
-public class MultiConfigurationProjectPage extends BaseProjectPage {
+public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigurationProjectPage> {
 
     @FindBy(id = "description-link")
     private WebElement addDescriptionButton;
@@ -33,6 +33,12 @@ public class MultiConfigurationProjectPage extends BaseProjectPage {
 
     @FindBy(css = "#disable-project button")
     private WebElement disableProjectButton;
+
+    @FindBy(css = "button[formnovalidate*='NoValidate']")
+    private WebElement enableProjectButton;
+
+    @FindBy(css = "[id='enable-project']")
+    private WebElement disableMessage;
 
     @FindBy(css = "#breadcrumbBar li:last-child")
     private WebElement breadcrumbs;
@@ -105,6 +111,16 @@ public class MultiConfigurationProjectPage extends BaseProjectPage {
         disableProjectButton.click();
 
         return this;
+    }
+
+    public MultiConfigurationProjectPage clickEnableButton() {
+        enableProjectButton.click();
+
+        return this;
+    }
+
+    public String getDisableMessage() {
+        return disableMessage.getText();
     }
 
     public boolean isProjectInsideFolder(String projectName, String folderName) {

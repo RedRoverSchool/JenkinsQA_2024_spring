@@ -19,42 +19,60 @@ public class CreateNewItemPage extends BasePage {
     WebElement newItemName;
     @FindBy(id = "name")
     private WebElement nameText;
+
     @FindBy(css = "[class$='FreeStyleProject']")
     private WebElement freestyleItem;
+
     @FindBy(id = "from")
     private WebElement nameTextInCopyForm;
+
     @FindBy(css = "[class$='WorkflowJob']")
     private WebElement pipelineItem;
+
     @FindBy(css = "[class$='MatrixProject']")
     private WebElement multiConfigurationItem;
+
     @FindBy(css = "[class$='_Folder']")
     private WebElement folderItem;
+
     @FindBy(css = "[class*='WorkflowMultiBranchProject']")
     private WebElement multibranchPipelineItem;
+
     @FindBy(css = "[class$='OrganizationFolder']")
     private WebElement organizationFolderItem;
+
     @FindBy(id = "ok-button")
     private WebElement okButton;
+
     @FindBy(id = "itemname-invalid")
     private WebElement errorItemNameInvalid;
+
     @FindBy(id = "itemname-required")
     private WebElement errorMessageEmptyName;
+
     @FindBy(xpath = "//div[@class='item-copy']//li[not(@style='display: none;')]")
     private List<WebElement> copyFormElements;
+
     @FindBy(id = "itemname-required")
     private WebElement itemNameHint;
+
     @FindBy(css = "label.h3")
     private WebElement titleOfNameField;
+
     @FindBy(css = "#items span")
     private List<WebElement> typesList;
+
+    @FindBy(id = "name")
+    WebElement newItemName;
 
     public CreateNewItemPage(WebDriver driver) {
         super(driver);
     }
 
     public CreateNewItemPage setItemName(String name) {
-        nameText.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
+        getWait5().until(ExpectedConditions.visibilityOf(nameText));
         nameText.sendKeys(name);
+
         return this;
     }
 

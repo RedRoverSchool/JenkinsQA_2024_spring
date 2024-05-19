@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 import static school.redrover.runner.TestUtils.goToMainPage;
+import org.testng.annotations.DataProvider;
 
 public class PipelineTest extends BaseTest {
 
@@ -1119,6 +1120,37 @@ public class PipelineTest extends BaseTest {
 
             Assert.assertEquals(actualTooltip, "Help for feature: " + label);
         }
+    }
+
+    @DataProvider(name = "tooltipTextProvider")
+    public Object[][] tooltipTextProvider() {
+        return new Object[][] {
+                { "Discard old builds" },
+                { "Pipeline speed/durability override" },
+                { "Preserve stashes from completed builds" },
+                { "This project is parameterized" },
+                { "Throttle builds" },
+                {"Build after other projects are built"},
+                {"Build periodically"},
+                {"GitHub hook trigger for GITScm polling"},
+                {"Poll SCM"},
+                {"Quiet period"},
+                {"Trigger builds remotely (e.g., from scripts)"},
+                {"Display Name"},
+                {"Script"}
+        };
+    }
+    @Test(dataProvider = "tooltipTextProvider")
+
+    void testVerifyConfigurationPageHaveTooltips(String tooltipText) {
+        new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickAdvancedButton();
+
+        Assert.assertTrue(new HomePage(getDriver()).isTooltipDisplayed(tooltipText),
+                "Tooltip '" + tooltipText + "' is not displayed.");
     }
 
     @Test

@@ -18,8 +18,6 @@ public class SearchBoxTest extends BaseTest {
     private final static String UPPER_CASE_INPUT = "Log";
     private final static String LOWER_CASE_INPUT = "log";
     private static final String PIPELINE_NAME = "Pipeline";
-    private static final By SEARCH_BOX = By.xpath("//input[@id='search-box']");
-    private static final By SYSTEM_PAGE = By.xpath("//h1[.='System']");
 
     @Test
     public void testSearchWithValidData() {
@@ -33,12 +31,13 @@ public class SearchBoxTest extends BaseTest {
 
     @Test
     public void testSearchUsingSuggestList() {
-        getDriver().findElement(SEARCH_BOX).sendKeys("c");
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[@class='yui-ac-bd']//ul//li[.='config']"))).click();
-        getDriver().findElement(SEARCH_BOX).sendKeys(Keys.ENTER);
+        String systemPageTitle = new HeaderBlock(getDriver())
+                .enterRequestIntoSearchBox("c")
+                .chooseAndClickFirstSuggestListVariant()
+                .makeClickToSearchBox()
+                .getTitleText();
 
-        Assert.assertTrue(getDriver().findElement(SYSTEM_PAGE).isDisplayed());
+        Assert.assertEquals(systemPageTitle, "System");
     }
 
     @Ignore

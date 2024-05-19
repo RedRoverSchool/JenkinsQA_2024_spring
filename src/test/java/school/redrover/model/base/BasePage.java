@@ -1,13 +1,16 @@
 package school.redrover.model.base;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import school.redrover.model.FreestyleProjectPage;
 import school.redrover.model.HomePage;
 import school.redrover.model.SearchResultPage;
 import school.redrover.model.UserPage;
 
 import java.util.List;
+import java.util.ArrayList;
 
 public abstract class BasePage extends BaseModel {
 
@@ -22,6 +25,9 @@ public abstract class BasePage extends BaseModel {
 
     @FindBy(css = "[class$=jenkins_ver]")
     private WebElement version;
+
+    @FindBy(tagName = "h1")
+    private WebElement headerOne;
 
     public BasePage(WebDriver driver) {
         super(driver);
@@ -52,7 +58,7 @@ public abstract class BasePage extends BaseModel {
         return getDriver().findElements(By.className("jenkins-breadcrumbs__list-item"))
                 .stream()
                 .anyMatch(e -> e.getText()
-                .contains(text));
+                        .contains(text));
     }
 
     public void hoverOverElement(WebElement element) {
@@ -82,6 +88,10 @@ public abstract class BasePage extends BaseModel {
 
     public String getText(WebElement webElement) {
         return webElement.getText();
+    }
+
+    public String getHeaderOneText() {
+        return headerOne.getText();
     }
 
     public void scrollIntoView(WebElement element) {
@@ -121,4 +131,33 @@ public abstract class BasePage extends BaseModel {
         return new HomePage(getDriver());
     }
 
+    protected void scrollToElement(WebElement element) {
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
+    }
+
+    public FreestyleProjectPage triggerJobViaHTTPRequest(String token, String user, String projectName) {
+        final String postBuildJob = "http://" + user + ":" + token + "@localhost:8080/job/Project1/build?token=" + projectName;
+
+        getDriver().switchTo().newWindow(WindowType.TAB);
+        getDriver().navigate().to(postBuildJob);
+
+        List<String> tabs = new ArrayList<>(getDriver().getWindowHandles());
+
+        getDriver().switchTo().window(tabs.get(0));
+
+        return new FreestyleProjectPage(getDriver());
+    }
+
+    public void revokeTokenViaHTTPRequest(String token, String uuid, String user) {
+        final String postRevokeToken = "http://" + user + ":" + token + "@localhost:8080/user/" + user
+                + "/descriptorByName/jenkins.security.ApiTokenProperty/revoke?tokenUuid=" + uuid;
+
+        getDriver().switchTo().newWindow(WindowType.TAB);
+        getDriver().navigate().to(postRevokeToken);
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
+
+        List<String> tabs = new ArrayList<>(getDriver().getWindowHandles());
+
+        getDriver().switchTo().window(tabs.get(0));
+    }
 }

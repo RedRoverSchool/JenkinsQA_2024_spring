@@ -65,6 +65,10 @@ public class MultiConfigurationConfigPage extends BaseConfigPage<MultiConfigurat
         return toggleSwitch.isSelected();
     }
 
+    public String getToggleStatusMessage() {
+        return toggleSwitch.getText();
+    }
+
     public String getErrorRequiresName() {
         return errorRequiresName.getText();
     }
