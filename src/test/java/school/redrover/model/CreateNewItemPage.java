@@ -62,9 +62,6 @@ public class CreateNewItemPage extends BasePage {
     @FindBy(css = "#items span")
     private List<WebElement> typesList;
 
-    @FindBy(id = "name")
-    WebElement newItemName;
-
     public CreateNewItemPage(WebDriver driver) {
         super(driver);
     }
