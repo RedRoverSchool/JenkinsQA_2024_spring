@@ -206,7 +206,7 @@ public class CreateNewItemPage extends BasePage {
     }
 
     public Boolean getOkButtoneState() {
-        return okButton.getAttribute("disabled") == "";
+        return okButton.getAttribute("disabled").isEmpty();
     }
 
     public CreateNewItemPage clearItemNameField() {
