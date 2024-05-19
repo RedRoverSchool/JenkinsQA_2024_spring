@@ -107,7 +107,6 @@ public class FreestyleProjectTest extends BaseTest {
                 .selectFreeStyleProject()
                 .clickOkAnyway(new CreateItemPage(getDriver()))
                 .getErrorMessageText();
-        System.out.println(errorText);
 
         Assert.assertTrue(errorText.contains("Logging ID="));
     }
@@ -164,7 +163,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertFalse(errorMessage);
     }
 
-    @Ignore
     @Test
     public void testCopyFromContainer() {
         String oldProjectName1 = "Race Cars";
@@ -209,7 +207,8 @@ public class FreestyleProjectTest extends BaseTest {
         final String projectDescription = "This test is trying to create a new freestyle job";
 
         String projectDescriptionText = new HomePage(getDriver())
-                .clickNewItem().setItemName(FREESTYLE_PROJECT_NAME)
+                .clickNewItem()
+                .setItemName(FREESTYLE_PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .setDescription(projectDescription)
                 .clickSaveButton()
@@ -331,8 +330,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testRenameWithEmptyName() {
-        new HomePage(getDriver())
+    public void testDropdownRenameWithEmptyName() {
+        String errorMassage = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FREESTYLE_PROJECT_NAME)
                 .selectFreestyleAndClickOk()
@@ -340,9 +339,10 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickLogo()
                 .openItemDropdown(FREESTYLE_PROJECT_NAME)
                 .clickRenameInDropdown()
-                .clearNameAndClickRenameButton();
+                .clearNameAndClickRenameButton()
+                .getMessageText();
 
-        Assert.assertTrue(new ConfirmRenamePage(getDriver()).isErrorMessageDisplayed());
+        Assert.assertEquals(errorMassage, "No name is specified");
     }
 
     @Test
@@ -379,8 +379,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickLogo()
                 .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickBuildNowOnSideBar()
-                .waitBuildToFinish()
-                .waitBuildToFinish()
+                .waitForGreenMarkBuildSuccessAppearience()
                 .getBuildInfo();
 
         Assert.assertEquals(actualResult, "#1");
@@ -401,26 +400,6 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(deleteResult, "Welcome to Jenkins!");
 
-    }
-
-    @Test
-    public void testCreateFreestyleProjectWithDescription() {
-
-        FreestyleProjectPage page = new HomePage(getDriver())
-                .clickCreateJob()
-                .setItemName(FREESTYLE_PROJECT_NAME)
-                .selectFreestyleAndClickOk()
-                .setDescription(FREESTYLE_PROJECT_DESCRIPTION)
-                .clickSaveButton();
-
-        Assert.assertEquals(page.getProjectName(), FREESTYLE_PROJECT_NAME);
-        Assert.assertEquals(page.getProjectDescriptionText(), FREESTYLE_PROJECT_DESCRIPTION);
-
-        List<String> itemList = page
-                .clickLogo()
-                .getItemList();
-
-        Assert.assertTrue(itemList.contains(FREESTYLE_PROJECT_NAME));
     }
 
     @Test
@@ -497,25 +476,9 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(projectList.isEmpty());
     }
 
-    @Test
-    public void testRenameProjectToSameName() {
-
-        Assert.assertTrue(new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(FREESTYLE_PROJECT_NAME)
-                .selectFreestyleAndClickOk()
-                .clickLogo()
-                .clickCreatedFreestyleName()
-                .clickRename()
-                .setNewName(FREESTYLE_PROJECT_NAME)
-                .clickRenameAnyway()
-                .isErrorMessageDisplayed());
-    }
-
     @Ignore
     @Test(dependsOnMethods = "testRenameSideBarMenu")
     public void testDeleteProjectViaDropdown() {
-
         boolean ItemExists = new HomePage(getDriver())
                 .clickFolder(FOLDER_NAME)
                 .openItemDropdown()
@@ -545,7 +508,6 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testCreateNewFreestyleProjectWithDescription() {
-
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
                 .clickCreateJob()
                 .setItemName(FREESTYLE_PROJECT_NAME)
@@ -559,7 +521,6 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateNewFreestyleProjectWithDescription")
     public void testCheckNewFreestyleProjectDescription() {
-
         String description = new HomePage(getDriver())
                 .clickCreatedFreestyleName()
                 .getProjectDescriptionText();

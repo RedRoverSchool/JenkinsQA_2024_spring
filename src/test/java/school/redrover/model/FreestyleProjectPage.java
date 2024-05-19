@@ -9,9 +9,6 @@ import school.redrover.model.base.BaseProjectPage;
 
 public class FreestyleProjectPage extends BaseProjectPage {
 
-    @FindBy(xpath = "//*[@id='breadcrumbs']/li[3]/a")
-    private WebElement projectNameFromBreadcrumbs;
-
     @FindBy(css = "#disable-project button")
     private WebElement disableProjectButton;
 
@@ -54,9 +51,6 @@ public class FreestyleProjectPage extends BaseProjectPage {
     @FindBy(linkText = "Build Now")
     private WebElement buildNowSideBar;
 
-    @FindBy(xpath = "//td[contains(@class, 'progress-bar')]")
-    private WebElement buildProgressBar;
-
     @FindBy(xpath = "//*[@class='model-link inside build-link display-name']")
     private WebElement buildInfo;
 
@@ -68,6 +62,12 @@ public class FreestyleProjectPage extends BaseProjectPage {
 
     @FindBy(css = "[href^='/job'] [class$='dropdown-chevron']")
     private WebElement breadcrumbsDropdownArrow;
+
+    @FindBy(xpath = "//div[@class='build-icon']")
+    private WebElement greenMarkBuildSuccess;
+
+    @FindBy(xpath = "//a[text()='Add description']")
+    private WebElement addDescriptionButton;
 
     public FreestyleProjectPage(WebDriver driver) {
         super(driver);
@@ -137,11 +137,6 @@ public class FreestyleProjectPage extends BaseProjectPage {
         return new RenameDialogPage(getDriver());
     }
 
-    public String getProjectNameFromBreadcrumbs() {
-
-        return projectNameFromBreadcrumbs.getText();
-    }
-
     public String getProjectDescriptionText() {
         return projectDescription.getText();
     }
@@ -175,26 +170,13 @@ public class FreestyleProjectPage extends BaseProjectPage {
         return new HomePage(getDriver());
     }
 
-    public FolderProjectPage clickBreadcrumbFolder(String name) {
-
-        getDriver().findElement(By.xpath("//a[@href='/job/" + name + "/']")).click();
-        return new FolderProjectPage(getDriver());
-
-    }
-
     public boolean isAddDescriptionButtonEnable() {
 
-        return getDriver().findElement(By.xpath("//a[text()='Add description']")).isEnabled();
+        return addDescriptionButton.isEnabled();
     }
 
     public FreestyleProjectPage clickBuildNowOnSideBar() {
         buildNowSideBar.click();
-        return this;
-    }
-
-    public FreestyleProjectPage waitBuildToFinish() {
-        getWait10().until(ExpectedConditions.invisibilityOf(buildProgressBar));
-
         return this;
     }
 
@@ -206,6 +188,12 @@ public class FreestyleProjectPage extends BaseProjectPage {
         }
 
         return buildInfo.getText();
+    }
+
+    public FreestyleProjectPage waitForGreenMarkBuildSuccessAppearience() {
+        getWait10().until(ExpectedConditions.visibilityOf(greenMarkBuildSuccess));
+
+        return this;
     }
 
     public String getFullProjectPath() {

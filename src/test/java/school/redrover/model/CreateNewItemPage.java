@@ -12,6 +12,8 @@ import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class CreateNewItemPage extends BasePage {
 
@@ -161,7 +163,7 @@ public class CreateNewItemPage extends BasePage {
         return copyFormElements
                 .stream()
                 .map(WebElement::getText)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public CreateItemPage clickOkButton() {
@@ -208,7 +210,7 @@ public class CreateNewItemPage extends BasePage {
         return this;
     }
     public Boolean getOkButtoneState() {
-        return okButton.getAttribute("disabled") == "";
+        return Objects.equals(okButton.getAttribute("disabled"), "");
     }
 
     public CreateNewItemPage clearItemNameField() {

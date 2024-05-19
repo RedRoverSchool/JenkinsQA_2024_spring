@@ -30,7 +30,7 @@ public class BuildHistoryTest extends BaseTest {
                 .createFreestyleProject(FREESTYLE_PROJECT_NAME)
                 .clickJobByName("FREESTYLE", new FreestyleProjectPage(getDriver()))
                 .clickBuildNowOnSideBar()
-                .waitBuildToFinish()
+                .waitForGreenMarkBuildSuccessAppearience()
                 .clickLogo()
                 .clickBuildHistory()
                 .isDisplayedBuildOnTimeline();
