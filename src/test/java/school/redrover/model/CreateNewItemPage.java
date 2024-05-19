@@ -148,10 +148,6 @@ public class CreateNewItemPage extends BasePage {
         return errorMessageEmptyName.getText();
     }
 
-    public String getCreateNewItemPageUrl() {
-        return TestUtils.getBaseUrl() + "/view/all/newJob";
-    }
-
     public CreateNewItemPage setItemNameInCopyForm(String name) {
         nameTextInCopyForm.sendKeys(name);
         return this;
@@ -165,12 +161,6 @@ public class CreateNewItemPage extends BasePage {
     }
 
     public CreateItemPage clickOkButton() {
-        okButton.click();
-        return new CreateItemPage(getDriver());
-    }
-
-    public CreateItemPage setNotExistingJobNameAndClickOkButton(String name) {
-        nameTextInCopyForm.sendKeys(name);
         okButton.click();
         return new CreateItemPage(getDriver());
     }
@@ -222,17 +212,8 @@ public class CreateNewItemPage extends BasePage {
         return itemNameHint.getCssValue("color");
     }
 
-    public String getColorOfErrorMessageWhenUnsafeChar() {
-        return errorItemNameInvalid.getCssValue("color");
-    }
-
     public Boolean isOkButtonEnabled() {
         return okButton.isEnabled();
-    }
-
-    public CreateNewItemPage clickItemNameField() {
-        nameText.click();
-        return this;
     }
 
     public String getTitleOfNameField() {
