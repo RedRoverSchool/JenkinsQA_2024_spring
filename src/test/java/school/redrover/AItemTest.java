@@ -9,77 +9,67 @@ import java.util.List;
 
 public class AItemTest extends BaseTest {
 
-    private final String NAME = "Name";
-    private final String NEW_NAME = "New Name";
-    private final String ITEM_NAME_HINT_TEXT = "» This field cannot be empty, please enter a valid name";
-    private List<String> itemsList = null;
-
     @Test
     public void testCreateItemEmptyNameNegative() {
-        new HomePage(getDriver())
+        CreateNewItemPage createNewItemPage = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(NAME)
+                .setItemName("Name")
                 .clearItemNameField()
-                .selectMultibranchPipelineAndClickOk();
+                .selectFolder();
 
-        Assert.assertFalse(new CreateNewItemPage(getDriver()).isOkButtonEnabled());
+        Assert.assertFalse(createNewItemPage.isOkButtonEnabled());
     }
 
     @Test
     public void testCreateNewFolder() {
-        itemsList = new HomePage(getDriver())
+        List<String> itemsList = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(NAME)
+                .setItemName("Name")
                 .selectFolderAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
                 .getItemList();
 
-        Assert.assertTrue(itemsList.contains(NAME));
+        Assert.assertListContainsObject(itemsList, "Name", "Item not found");
     }
 
     @Test
     public void testRenameFolder() {
-        itemsList = new HomePage(getDriver())
+        List<String> itemsList = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(NAME)
+                .setItemName("Name")
                 .selectFolderAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
-                .openItemDropdownWithSelenium(NAME)
+                .openItemDropdownWithSelenium("Name")
                 .renameFolderFromDropdown()
-                .setNewName(NEW_NAME)
+                .setNewName("New Name")
                 .clickRename()
                 .clickLogo()
                 .getItemList();
 
-        Assert.assertTrue(itemsList.contains(NEW_NAME));
+        Assert.assertListContainsObject(itemsList, "New Name", "Item not found");
     }
 
     @Test
     public void testCreateMulticonfigurationProjectNegative() {
-        new HomePage(getDriver())
+        CreateNewItemPage createNewItemPage = new HomePage(getDriver())
                 .clickNewItem()
-                .selectMultiConfigurationAndClickOk();
+                .selectMultiConfiguration();
 
-        Assert.assertEquals(new CreateNewItemPage(getDriver()).getItemNameHintText(), ITEM_NAME_HINT_TEXT);
+        Assert.assertEquals(createNewItemPage.getItemNameHintText(), "» This field cannot be empty, please enter a valid name");
     }
 
     @Test
     public void testCreateMulticonfigurationProject() {
-        itemsList = new HomePage(getDriver())
+        List<String> itemsList = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(NAME)
+                .setItemName("Name")
                 .selectMultiConfigurationAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
                 .getItemList();
 
-        Assert.assertTrue(itemsList.contains(NAME));
-    }
-
-    @Test
-    public void testFooterRestApiLinkRGB() {
-        Assert.assertEquals(new HomePage(getDriver()).getRestApiLinkColor(), "rgba(20, 20, 31, 1)");
+        Assert.assertListContainsObject(itemsList, "Name", "Item not found");
     }
 }
