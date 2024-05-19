@@ -63,6 +63,9 @@ public class FreestyleProjectPage extends BaseProjectPage {
     @FindBy(xpath = "//div[contains(text(), 'Full project name:')]")
     private WebElement projectPath;
 
+    @FindBy(tagName = "h1")
+    private WebElement pageHeading;
+
     public FreestyleProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -187,5 +190,8 @@ public class FreestyleProjectPage extends BaseProjectPage {
         return projectPath.getText();
     }
 
+    public String getPageHeadingText() {
+        return pageHeading.getText();
+    }
 
 }

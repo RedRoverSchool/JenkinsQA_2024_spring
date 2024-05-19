@@ -16,52 +16,37 @@ import java.util.List;
 public class CreateNewItemPage extends BasePage {
 
     @FindBy(id = "name")
+    WebElement newItemName;
+    @FindBy(id = "name")
     private WebElement nameText;
-
     @FindBy(css = "[class$='FreeStyleProject']")
     private WebElement freestyleItem;
-
     @FindBy(id = "from")
     private WebElement nameTextInCopyForm;
-
     @FindBy(css = "[class$='WorkflowJob']")
     private WebElement pipelineItem;
-
     @FindBy(css = "[class$='MatrixProject']")
     private WebElement multiConfigurationItem;
-
     @FindBy(css = "[class$='_Folder']")
     private WebElement folderItem;
-
     @FindBy(css = "[class*='WorkflowMultiBranchProject']")
     private WebElement multibranchPipelineItem;
-
     @FindBy(css = "[class$='OrganizationFolder']")
     private WebElement organizationFolderItem;
-
     @FindBy(id = "ok-button")
     private WebElement okButton;
-
     @FindBy(id = "itemname-invalid")
     private WebElement errorItemNameInvalid;
-
     @FindBy(id = "itemname-required")
     private WebElement errorMessageEmptyName;
-
     @FindBy(xpath = "//div[@class='item-copy']//li[not(@style='display: none;')]")
     private List<WebElement> copyFormElements;
-
     @FindBy(id = "itemname-required")
     private WebElement itemNameHint;
-
     @FindBy(css = "label.h3")
     private WebElement titleOfNameField;
-
     @FindBy(css = "#items span")
     private List<WebElement> typesList;
-
-    @FindBy(id = "name")
-    WebElement newItemName;
 
     public CreateNewItemPage(WebDriver driver) {
         super(driver);
@@ -169,20 +154,17 @@ public class CreateNewItemPage extends BasePage {
         return new CreateItemPage(getDriver());
     }
 
-    public CreateItemPage setNotExistingJobNameAndClickOkButton(String name)  {
+    public CreateItemPage setNotExistingJobNameAndClickOkButton(String name) {
         nameTextInCopyForm.sendKeys(name);
         okButton.click();
         return new CreateItemPage(getDriver());
     }
 
     public boolean isOkButtonNotActive() {
-        try
-        {
+        try {
             getDriver().findElement(By.xpath("//button[contains(@class, 'disabled') and text()='OK']"));
             return true;
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             return false;
         }
     }
@@ -196,17 +178,18 @@ public class CreateNewItemPage extends BasePage {
         }
         return allJobFromThisLetterName;
     }
+
     public CreateNewItemPage sendItemName(String name) {
         newItemName.sendKeys(name);
         return this;
     }
 
 
-
     public CreateNewItemPage selectFreeStyleProject() {
         freestyleItem.click();
         return this;
     }
+
     public Boolean getOkButtoneState() {
         return okButton.getAttribute("disabled") == "";
     }
@@ -228,7 +211,9 @@ public class CreateNewItemPage extends BasePage {
         return errorItemNameInvalid.getCssValue("color");
     }
 
-    public Boolean isOkButtonEnabled() { return okButton.isEnabled(); }
+    public Boolean isOkButtonEnabled() {
+        return okButton.isEnabled();
+    }
 
     public CreateNewItemPage clickItemNameField() {
         nameText.click();
@@ -246,6 +231,7 @@ public class CreateNewItemPage extends BasePage {
     public Boolean isErrorItemNameInvalidDisplayed() {
         return errorItemNameInvalid.isDisplayed();
     }
+
     public Boolean isDisplayedNameField() {
         return nameText.isDisplayed();
     }
@@ -254,4 +240,18 @@ public class CreateNewItemPage extends BasePage {
         return typesList.stream().map(WebElement::getText).toList();
     }
 
+    public Boolean isAttributeAriaChecked(String projectType, int itemOptionIndex) {
+
+        return Boolean.parseBoolean(getDriver().findElement(
+                By.xpath(String.format("//div[contains(@id, '%s')]/ul/li[%d]", projectType, itemOptionIndex)))
+                .getAttribute("aria-checked"));
+    }
+
+    public CreateNewItemPage clickItemOption(String projectType, int itemOptionIndex) {
+        getDriver().findElement(
+                        By.xpath(String.format("//div[contains(@id, '%s')]/ul/li[%d]", projectType, itemOptionIndex)))
+                .click();
+
+        return this;
+    }
 }
