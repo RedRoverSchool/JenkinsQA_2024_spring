@@ -12,6 +12,8 @@ import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class CreateNewItemPage extends BasePage {
 
@@ -148,6 +150,10 @@ public class CreateNewItemPage extends BasePage {
         return errorMessageEmptyName.getText();
     }
 
+    public String getCreateNewItemPageUrl() {
+        return TestUtils.getBaseUrl() + "/view/all/newJob";
+    }
+
     public CreateNewItemPage setItemNameInCopyForm(String name) {
         nameTextInCopyForm.sendKeys(name);
         return this;
@@ -157,7 +163,7 @@ public class CreateNewItemPage extends BasePage {
         return copyFormElements
                 .stream()
                 .map(WebElement::getText)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public CreateItemPage clickOkButton() {

@@ -33,7 +33,7 @@ public class BuildHistoryTest extends BaseTest {
         boolean projectNameOnTimeline = new HomePage(getDriver())
                 .clickJobByName("FREESTYLE", new FreestyleProjectPage(getDriver()))
                 .clickBuildNowOnSideBar()
-                .waitBuildToFinish()
+                .waitForGreenMarkBuildSuccessAppearience()
                 .clickLogo()
                 .clickBuildHistory()
                 .isDisplayedBuildOnTimeline();

@@ -39,17 +39,10 @@ public class FreestyleRenamePage extends BasePage {
         return new ConfirmRenamePage(getDriver());
     }
 
-    public FreestyleRenamePage clearNameField() {
-        textBox.clear();
-
-        return this;
-    }
-
-    public ConfirmRenamePage clearNameAndClickRenameButton() {
-
+    public ItemErrorPage clearNameAndClickRenameButton() {
         textBox.clear();
         submitButton.click();
 
-        return new ConfirmRenamePage(getDriver());
+        return new ItemErrorPage(getDriver());
     }
- }
+}
