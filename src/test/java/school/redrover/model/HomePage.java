@@ -169,6 +169,10 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
     @FindBy(xpath = "//h1")
     private WebElement h1Heading;
 
+    @FindBy(css = "#tasks > div")
+    private List<WebElement> sidebarMenuList;
+
+
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -670,5 +674,14 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
                 .inputAuthenticationToken(projectName)
                 .clickAddTimestampsCheckbox()
                 .clickSaveButton();
+    }
+
+    public List<String> getSidebarMenuList() {
+        List<String> menuList = new ArrayList<>();
+        for (WebElement element : sidebarMenuList) {
+            menuList.add(element.getText());
+        }
+
+        return menuList;
     }
 }
