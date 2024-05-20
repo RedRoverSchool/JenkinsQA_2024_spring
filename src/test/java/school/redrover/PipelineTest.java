@@ -1069,34 +1069,22 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testSetQuietPeriodBuildTriggers() {
+    public void testSetQuietPeriodBuildTriggersMoreThanZero() {
         final int numberOfSeconds = 3;
 
-        createPipeline(PIPELINE_NAME);
-        getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
+        String quietPeriodInputFieldText = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .scrollToQuietPeriodCheckbox()
+                .clickQuietPeriodCheckbox()
+                .setNumberOfSecondsInQuietPeriodInputField(numberOfSeconds)
+                .clickSaveButton()
+                .clickSidebarConfigureButton(PIPELINE_NAME)
+                .scrollToQuietPeriodCheckbox()
+                .getQuietPeriodInputFieldText();
 
-        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
-        executor.executeScript("arguments[0].scrollIntoView();",
-                getDriver().findElement(By.xpath("//label[text()='Poll SCM']")));
-
-        WebElement checkBoxQuietPeriod = getDriver().findElement(By.xpath("//label[text()='Quiet period']"));
-        checkBoxQuietPeriod.click();
-
-        WebElement inputField = getDriver().findElement(By.name("quiet_period"));
-        inputField.clear();
-        inputField.sendKeys("" + numberOfSeconds + "");
-        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
-
-        getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
-
-        JavascriptExecutor executor2 = (JavascriptExecutor) getDriver();
-        executor.executeScript("arguments[0].scrollIntoView();",
-                getDriver().findElement(By.xpath("//label[text()='Poll SCM']")));
-
-        Assert.assertTrue(getDriver().findElement(By.xpath("//input[@name='quiet_period']"))
-                        .getAttribute("value").contains("" + numberOfSeconds + ""),
+        Assert.assertEquals(quietPeriodInputFieldText, String.valueOf(numberOfSeconds),
                 "The actual numberOfSeconds differs from expected result");
     }
 

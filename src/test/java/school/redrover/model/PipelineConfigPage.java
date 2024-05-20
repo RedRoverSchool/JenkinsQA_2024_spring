@@ -48,6 +48,12 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
     @FindBy(xpath = "//div[@class='setting-main']//input[contains(@checkurl, 'checkDisplayName')]")
     private WebElement displayNameTextField;
 
+    @FindBy(xpath = "//label[text()='Quiet period']")
+    private WebElement quietPeriodCheckbox;
+
+    @FindBy(name = "quiet_period")
+    private WebElement quietPeriodInputField;
+
     public PipelineConfigPage(WebDriver driver) {
         super(driver, new PipelineProjectPage(driver));
     }
@@ -70,6 +76,31 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
                 advancedButton);
 
         return this;
+    }
+
+    public PipelineConfigPage scrollToQuietPeriodCheckbox() {
+        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
+        executor.executeScript("arguments[0].scrollIntoView();", (quietPeriodCheckbox));
+
+        return this;
+    }
+
+    public PipelineConfigPage clickQuietPeriodCheckbox() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(quietPeriodCheckbox)).click();
+
+        return this;
+    }
+
+    public PipelineConfigPage setNumberOfSecondsInQuietPeriodInputField(int seconds) {
+        quietPeriodInputField.clear();
+        quietPeriodInputField.sendKeys(String.valueOf(seconds));
+
+        return this;
+    }
+
+    public String getQuietPeriodInputFieldText() {
+        return getWait5().until(ExpectedConditions.visibilityOf(quietPeriodInputField)).getAttribute("value");
+
     }
 
     public PipelineConfigPage setDisplayNameDescription(String name) {
