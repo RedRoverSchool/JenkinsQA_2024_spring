@@ -882,7 +882,7 @@ public class PipelineTest extends BaseTest {
                 .waitForBuildScheduledPopUp()
                 .clickLogo()
                 .clickBuildHistory()
-                .clickBuild1Console(1)
+                .clickBuild1Console()
                 .getConsoleOutputMessage();
 
         Assert.assertTrue(consoleOutput.contains(SUCCEED_BUILD_EXPECTED));
@@ -895,7 +895,7 @@ public class PipelineTest extends BaseTest {
                 .scheduleBuildForItem(PIPELINE_NAME)
                 .waitForBuildSchedulePopUp()
                 .clickBuildHistory()
-                .clickBuild1Console(2)
+                .clickBuild1Console()
                 .getConsoleOutputMessage();
 
         Assert.assertTrue(consoleOutput.contains(SUCCEED_BUILD_EXPECTED));
