@@ -882,7 +882,7 @@ public class PipelineTest extends BaseTest {
                 .waitForBuildScheduledPopUp()
                 .clickLogo()
                 .clickBuildHistory()
-                .clickBuild1Console()
+                .clickBuild1Console(1)
                 .getConsoleOutputMessage();
 
         Assert.assertTrue(consoleOutput.contains(SUCCEED_BUILD_EXPECTED));
@@ -895,7 +895,7 @@ public class PipelineTest extends BaseTest {
                 .scheduleBuildForItem(PIPELINE_NAME)
                 .waitForBuildSchedulePopUp()
                 .clickBuildHistory()
-                .clickBuild1Console()
+                .clickBuild1Console(2)
                 .getConsoleOutputMessage();
 
         Assert.assertTrue(consoleOutput.contains(SUCCEED_BUILD_EXPECTED));
@@ -1081,16 +1081,20 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testSetQuietPeriodBuildTriggers() {
+    public void testSetQuietPeriodBuildTriggersMoreThanZero() {
         final int numberOfSeconds = 3;
 
-        createPipeline(PIPELINE_NAME);
-        getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
-
-        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
-        executor.executeScript("arguments[0].scrollIntoView();",
-                getDriver().findElement(By.xpath("//label[text()='Poll SCM']")));
+        String quietPeriodInputFieldText = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .scrollToQuietPeriodCheckbox()
+                .clickQuietPeriodCheckbox()
+                .setNumberOfSecondsInQuietPeriodInputField(numberOfSeconds)
+                .clickSaveButton()
+                .clickSidebarConfigureButton(PIPELINE_NAME)
+                .scrollToQuietPeriodCheckbox()
+                .getQuietPeriodInputFieldText();
 
         WebElement checkBoxQuietPeriod = getDriver().findElement(By.xpath("//label[text()='Quiet period']"));
         checkBoxQuietPeriod.click();
@@ -1108,6 +1112,7 @@ public class PipelineTest extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//input[@name='quiet_period']"))
                         .getAttribute("value").contains("" + numberOfSeconds),
+        Assert.assertEquals(quietPeriodInputFieldText, String.valueOf(numberOfSeconds),
                 "The actual numberOfSeconds differs from expected result");
     }
 
