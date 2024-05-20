@@ -19,6 +19,7 @@ public class CreateNewItemPage extends BasePage {
 
     @FindBy(id = "name")
     WebElement newItemName;
+
     @FindBy(id = "name")
     private WebElement nameText;
 
@@ -148,10 +149,6 @@ public class CreateNewItemPage extends BasePage {
 
     public String getErrorMessageEmptyName() {
         return errorMessageEmptyName.getText();
-    }
-
-    public String getCreateNewItemPageUrl() {
-        return TestUtils.getBaseUrl() + "/view/all/newJob";
     }
 
     public CreateNewItemPage setItemNameInCopyForm(String name) {
