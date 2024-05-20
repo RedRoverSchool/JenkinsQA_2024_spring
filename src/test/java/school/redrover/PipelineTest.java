@@ -1096,22 +1096,6 @@ public class PipelineTest extends BaseTest {
                 .scrollToQuietPeriodCheckbox()
                 .getQuietPeriodInputFieldText();
 
-        WebElement checkBoxQuietPeriod = getDriver().findElement(By.xpath("//label[text()='Quiet period']"));
-        checkBoxQuietPeriod.click();
-
-        WebElement inputField = getDriver().findElement(By.name("quiet_period"));
-        inputField.clear();
-        inputField.sendKeys("" + numberOfSeconds);
-        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
-
-        getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
-
-        executor.executeScript("arguments[0].scrollIntoView();",
-                getDriver().findElement(By.xpath("//label[text()='Poll SCM']")));
-
-        Assert.assertTrue(getDriver().findElement(By.xpath("//input[@name='quiet_period']"))
-                        .getAttribute("value").contains("" + numberOfSeconds),
         Assert.assertEquals(quietPeriodInputFieldText, String.valueOf(numberOfSeconds),
                 "The actual numberOfSeconds differs from expected result");
     }
