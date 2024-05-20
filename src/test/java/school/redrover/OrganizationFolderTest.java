@@ -202,8 +202,6 @@ public class OrganizationFolderTest extends BaseTest {
     @Test
     public void testDeleteOrganizationFolder () {
 
-        final String newOrganizationFolderName = "New Organization Folder";
-
         List<String> itemList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(ORGANIZATION_FOLDER_NAME)
@@ -214,5 +212,23 @@ public class OrganizationFolderTest extends BaseTest {
                 .getItemList();
 
         Assert.assertListNotContainsObject(itemList, ORGANIZATION_FOLDER_NAME, "Did not removed!");
+    }
+
+    @Test
+    public void testProjectRecognizersBoardersFiltersAreDashed() {
+        boolean projectRecognizersBoardersFiltersDashed = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
+                .clickConfigure()
+                .clickProjectsAnchorLink()
+                .scrollToProjectRecognizersBlock()
+                .clickProjectRecognizersAddButton()
+                .addPipelineJenkinsFileFilter()
+                .areProjectRecognizersBoardersFiltersDashed();
+
+        Assert.assertTrue(projectRecognizersBoardersFiltersDashed,
+                "Filters boarders of Project Recognizers block  are not dashed");
     }
 }
