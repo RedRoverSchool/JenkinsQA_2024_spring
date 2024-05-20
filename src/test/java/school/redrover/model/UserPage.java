@@ -12,10 +12,6 @@ public class UserPage extends BaseSideMenuPage<UserPage> {
 
     public UserPage(WebDriver driver) { super(driver); }
 
-    public String getCurrentUrl() {
-        return getDriver().getCurrentUrl();
-    }
-
     public String getUserID() {
 
         return jenkinsUserID.getText().replace("Jenkins User ID:", "").trim();

@@ -17,9 +17,6 @@ public abstract class BasePage extends BaseModel {
     @FindBy(css = "a.model-link > span")
     private WebElement userNameOnHeader;
 
-    @FindBy(css = ".jenkins-button.jenkins-button--tertiary.rest-api")
-    private WebElement restapiLink;
-
     @FindBy(id = "search-box")
     private WebElement searchBox;
 
@@ -103,8 +100,6 @@ public abstract class BasePage extends BaseModel {
 
         return new UserPage(getDriver());
     }
-
-    public String getRestApiLinkColor() { return restapiLink.getCssValue("color"); }
 
     public <T extends BaseProjectPage> T searchProjectByName(String projectName, T projectType) {
         searchBox.sendKeys(projectName + Keys.ENTER);

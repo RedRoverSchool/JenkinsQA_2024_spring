@@ -60,10 +60,6 @@ public class ManageJenkinsPage extends BasePage {
         return new SecurityPage(getDriver());
     }
   
-    public String getManageJenkinsPage() {
-        return TestUtils.getBaseUrl() + "/manage/";
-    }
-
     public boolean isSearchInputDisplayed() {
         return searchInput.isDisplayed();
     }

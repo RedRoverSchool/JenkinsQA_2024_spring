@@ -14,9 +14,6 @@ public class FreestyleConfigPage extends BaseConfigPage<FreestyleProjectPage> {
     @FindBy (xpath = "//*[@name='description']")
     private WebElement descriptionField;
 
-    @FindBy (css = "#general")
-    private WebElement general;
-
     @FindBy(id = "build-triggers")
     private WebElement buildTriggersHeading;
 
@@ -43,10 +40,6 @@ public class FreestyleConfigPage extends BaseConfigPage<FreestyleProjectPage> {
         return headerSidePanel.getText();
     }
 
-    public String getGeneralText() {
-        return general.getText();
-    }
-
     public FreestyleConfigPage setDescription(String description) {
         descriptionField.sendKeys(description);
 
@@ -55,13 +48,6 @@ public class FreestyleConfigPage extends BaseConfigPage<FreestyleProjectPage> {
 
     public FreestyleConfigPage clearDescription() {
         descriptionField.clear();
-
-        return new FreestyleConfigPage(getDriver());
-    }
-
-    public FreestyleConfigPage clearAndSetDescription(String description) {
-        descriptionField.clear();
-        descriptionField.sendKeys(description);
 
         return new FreestyleConfigPage(getDriver());
     }

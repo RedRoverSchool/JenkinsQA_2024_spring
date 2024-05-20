@@ -18,9 +18,6 @@ public class AdminConfigurePage extends BasePage {
     @FindBy(css = "button[name='Apply']")
     private WebElement applyButton;
 
-    @FindBy(css = "[id='search-box']")
-    private WebElement searchBox;
-
     public AdminConfigurePage(WebDriver driver) {
         super(driver);
     }

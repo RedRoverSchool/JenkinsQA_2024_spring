@@ -570,17 +570,20 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.cssSelector("[class$='WorkflowJob']")).click();
         getDriver().findElement(By.id("ok-button")).click();
 
-        String pipelineScript = "pipeline {\n" +
-                "agent any\n\n" +
-                "stages {\n";
+        String pipelineScript = """
+                pipeline {
+                agent any
+
+                stages {
+                """;
 
         getDriver().findElement(By.className("ace_text-input")).sendKeys(pipelineScript);
 
         for (int i = 1; i <= number_of_stages; i++) {
 
-            String stage = "\nstage(\'stage " + i + "\') {\n" +
+            String stage = "\nstage('stage " + i + "') {\n" +
                     "steps {\n" +
-                    "echo \'test " + i + "\'\n";
+                    "echo 'test " + i + "'\n";
             getDriver().findElement(By.className("ace_text-input")).sendKeys(stage);
             getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
             getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
@@ -629,17 +632,20 @@ public class PipelineTest extends BaseTest {
         getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
                 By.xpath("//a[contains(@href, 'configure')]")))).click();
 
-        String pipelineScript = "pipeline {\n" +
-                "agent any\n\n" +
-                "stages {\n";
+        String pipelineScript = """
+                pipeline {
+                agent any
+
+                stages {
+                """;
 
         getDriver().findElement(By.className("ace_text-input")).sendKeys(pipelineScript);
 
         for (int i = 1; i <= number_of_stages; i++) {
 
-            String stage = "\nstage(\'stage " + i + "\') {\n" +
+            String stage = "\nstage('stage " + i + "') {\n" +
                     "steps {\n" +
-                    "echo \'test " + i + "\'\n";
+                    "echo 'test " + i + "'\n";
             getDriver().findElement(By.className("ace_text-input")).sendKeys(stage);
             getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
             getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
@@ -688,17 +694,20 @@ public class PipelineTest extends BaseTest {
 
         createPipeline(PIPELINE_NAME);
 
-        String pipelineScript = "pipeline {\n" +
-                "agent any\n\n" +
-                "stages {\n";
+        String pipelineScript = """
+                pipeline {
+                agent any
+
+                stages {
+                """;
 
         getDriver().findElement(By.className("ace_text-input")).sendKeys(pipelineScript);
 
         for (int i = 1; i <= number_of_stages; i++) {
 
-            String stage = "\nstage(\'stage " + i + "\') {\n" +
+            String stage = "\nstage('stage " + i + "') {\n" +
                     "steps {\n" +
-                    "echo \'test " + i + "\'\n";
+                    "echo 'test " + i + "'\n";
             getDriver().findElement(By.className("ace_text-input")).sendKeys(stage);
             getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
             getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
@@ -723,17 +732,20 @@ public class PipelineTest extends BaseTest {
         int number_of_stages = 2;
         TestUtils.createJob(this, TestUtils.Job.PIPELINE, PIPELINE_NAME);
 
-        String pipelineScript = "pipeline {\n" +
-                "agent any\n\n" +
-                "stages {\n";
+        String pipelineScript = """
+                pipeline {
+                agent any
+
+                stages {
+                """;
 
         getDriver().findElement(By.className("ace_text-input")).sendKeys(pipelineScript);
 
         for (int i = 1; i <= number_of_stages; i++) {
 
-            String stage = "\nstage(\'stage " + i + "\') {\n" +
+            String stage = "\nstage('stage " + i + "') {\n" +
                     "steps {\n" +
-                    "echo \'test " + i + "\'\n";
+                    "echo 'test " + i + "'\n";
             getDriver().findElement(By.className("ace_text-input")).sendKeys(stage);
             getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
             getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
@@ -870,7 +882,7 @@ public class PipelineTest extends BaseTest {
                 .waitForBuildScheduledPopUp()
                 .clickLogo()
                 .clickBuildHistory()
-                .clickBuild1Console(1)
+                .clickBuild1Console()
                 .getConsoleOutputMessage();
 
         Assert.assertTrue(consoleOutput.contains(SUCCEED_BUILD_EXPECTED));
@@ -883,7 +895,7 @@ public class PipelineTest extends BaseTest {
                 .scheduleBuildForItem(PIPELINE_NAME)
                 .waitForBuildSchedulePopUp()
                 .clickBuildHistory()
-                .clickBuild1Console(2)
+                .clickBuild1Console()
                 .getConsoleOutputMessage();
 
         Assert.assertTrue(consoleOutput.contains(SUCCEED_BUILD_EXPECTED));
@@ -1085,18 +1097,17 @@ public class PipelineTest extends BaseTest {
 
         WebElement inputField = getDriver().findElement(By.name("quiet_period"));
         inputField.clear();
-        inputField.sendKeys("" + numberOfSeconds + "");
+        inputField.sendKeys("" + numberOfSeconds);
         getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
 
         getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
         getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
 
-        JavascriptExecutor executor2 = (JavascriptExecutor) getDriver();
         executor.executeScript("arguments[0].scrollIntoView();",
                 getDriver().findElement(By.xpath("//label[text()='Poll SCM']")));
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//input[@name='quiet_period']"))
-                        .getAttribute("value").contains("" + numberOfSeconds + ""),
+                        .getAttribute("value").contains("" + numberOfSeconds),
                 "The actual numberOfSeconds differs from expected result");
     }
 
@@ -1171,7 +1182,7 @@ public class PipelineTest extends BaseTest {
 
         WebElement inputField = getDriver().findElement(By.name("quiet_period"));
         inputField.clear();
-        inputField.sendKeys("" + numberOfSeconds + "");
+        inputField.sendKeys("" + numberOfSeconds);
         getDriver().findElement(By.xpath("//div[text()='Number of seconds']")).click();
 
         WebElement errorElement = getDriver().findElement(By.xpath("//div[@class='form-container tr']//div[@class='error']"));
@@ -1198,7 +1209,7 @@ public class PipelineTest extends BaseTest {
 
         WebElement inputField = getDriver().findElement(By.name("quiet_period"));
         inputField.clear();
-        inputField.sendKeys("" + numberOfSeconds + "");
+        inputField.sendKeys("" + numberOfSeconds);
         getDriver().findElement(By.xpath("//div[text()='Number of seconds']")).click();
 
         WebElement errorElement = getDriver().findElement(By.xpath("//div[@class='form-container tr']//div[@class='error']"));

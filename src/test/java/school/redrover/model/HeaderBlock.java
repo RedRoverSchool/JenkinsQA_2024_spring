@@ -8,8 +8,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
-import java.util.List;
-
 public class HeaderBlock extends BasePage {
     @FindBy(xpath = "//input[@id='search-box']")
     private WebElement searchBox;

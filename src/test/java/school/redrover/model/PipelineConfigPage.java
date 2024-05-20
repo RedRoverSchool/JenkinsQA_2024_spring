@@ -27,9 +27,6 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
     @FindBy(xpath = "//div[@class = 'samples']//select")
     private WebElement samplePipelineScript;
 
-    @FindBy(xpath = "//*[@id='pipeline]")
-    private WebElement isPipelineDisplayed;
-
     @FindBy(xpath = "//a[@previewendpoint='/markupFormatter/previewDescription']")
     private WebElement preview;
 
@@ -122,7 +119,7 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
 
         for (int i = 1; i <= stagesQtt; i++) {
 
-            String stage = "\nstage(\'stage " + i + "\') {\nsteps {\necho \'test " + i + "\'\n";
+            String stage = "\nstage('stage " + i + "') {\nsteps {\necho 'test " + i + "'\n";
             getDriver().findElement(By.className("ace_text-input")).sendKeys(stage, Keys.ARROW_DOWN, Keys.ARROW_DOWN);
         }
 

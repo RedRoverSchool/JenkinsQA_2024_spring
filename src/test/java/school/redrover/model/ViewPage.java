@@ -55,11 +55,6 @@ public class ViewPage extends BasePage {
         return projectNamesList.stream().map(WebElement::getText).toList();
     }
 
-    public int getProjectListSize() {
-
-        return projectNamesList.size();
-    }
-
     public int getSizeColumnList() {
         return columnNameList.size();
     }
