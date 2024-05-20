@@ -1094,10 +1094,30 @@ public class PipelineTest extends BaseTest {
                 .clickSaveButton()
                 .clickSidebarConfigureButton(PIPELINE_NAME)
                 .scrollToQuietPeriodCheckbox()
-                .getQuietPeriodInputFieldText();
+                .getQuietPeriodInputFieldValue();
 
         Assert.assertEquals(quietPeriodInputFieldText, String.valueOf(numberOfSeconds),
                 "The actual numberOfSeconds differs from expected result");
+    }
+
+    @Test
+    public void testSetQuietPeriodBuildTriggersLessThanZero() {
+        final int numberOfSeconds = -5;
+        final String errorMessage = "This value should be larger than 0";
+
+        String validationErrorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .scrollToQuietPeriodCheckbox()
+                .clickQuietPeriodCheckbox()
+                .setNumberOfSecondsInQuietPeriodInputField(numberOfSeconds)
+                .clickSaveButton()
+                .clickSidebarConfigureButton(PIPELINE_NAME)
+                .scrollToQuietPeriodCheckbox()
+                .getQuietPeriodInputErrorText();
+
+        Assert.assertEquals(validationErrorMessage, errorMessage);
     }
 
     @Test
@@ -1151,33 +1171,6 @@ public class PipelineTest extends BaseTest {
 
         Assert.assertTrue(new HomePage(getDriver()).isTooltipDisplayed(tooltipText),
                 "Tooltip '" + tooltipText + "' is not displayed.");
-    }
-
-    @Test
-    public void testSetQuietPeriodBuildTriggersLessThanZero() {
-        final int numberOfSeconds = -5;
-        final String errorMessage = "This value should be larger than 0";
-
-        createPipeline(PIPELINE_NAME);
-        getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
-
-        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
-        executor.executeScript("arguments[0].scrollIntoView();",
-                getDriver().findElement(By.xpath("//label[text()='Poll SCM']")));
-
-        WebElement checkBoxQuietPeriod = getDriver().findElement(By.xpath("//label[text()='Quiet period']"));
-        checkBoxQuietPeriod.click();
-
-        WebElement inputField = getDriver().findElement(By.name("quiet_period"));
-        inputField.clear();
-        inputField.sendKeys("" + numberOfSeconds);
-        getDriver().findElement(By.xpath("//div[text()='Number of seconds']")).click();
-
-        WebElement errorElement = getDriver().findElement(By.xpath("//div[@class='form-container tr']//div[@class='error']"));
-        getWait5().until(ExpectedConditions.visibilityOf(errorElement));
-
-        Assert.assertEquals(errorElement.getText(), errorMessage);
     }
 
     @Test

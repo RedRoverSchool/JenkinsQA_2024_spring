@@ -51,6 +51,9 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
     @FindBy(name = "quiet_period")
     private WebElement quietPeriodInputField;
 
+    @FindBy(xpath = "//div[@class='form-container tr']//div[@class='error']")
+    private WebElement errorMessageForQuietPeriodInputField;
+
     public PipelineConfigPage(WebDriver driver) {
         super(driver, new PipelineProjectPage(driver));
     }
@@ -95,10 +98,15 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
         return this;
     }
 
-    public String getQuietPeriodInputFieldText() {
+    public String getQuietPeriodInputFieldValue() {
         return getWait5().until(ExpectedConditions.visibilityOf(quietPeriodInputField)).getAttribute("value");
 
     }
+
+    public String getQuietPeriodInputErrorText() {
+        return getWait5().until(ExpectedConditions.visibilityOf(errorMessageForQuietPeriodInputField)).getText();
+    }
+
 
     public PipelineConfigPage setDisplayNameDescription(String name) {
         getWait5().until(ExpectedConditions.elementToBeClickable(displayNameTextField)).sendKeys(name);
