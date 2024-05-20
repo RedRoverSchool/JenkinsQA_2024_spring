@@ -51,6 +51,9 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
     @FindBy(name = "quiet_period")
     private WebElement quietPeriodInputField;
 
+    @FindBy(xpath = "//div[text()='Number of seconds']")
+    private WebElement numberOfSecondsHint;
+
     @FindBy(xpath = "//div[@class='form-container tr']//div[@class='error']")
     private WebElement errorMessageForQuietPeriodInputField;
 
@@ -94,6 +97,19 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
     public PipelineConfigPage setNumberOfSecondsInQuietPeriodInputField(int seconds) {
         quietPeriodInputField.clear();
         quietPeriodInputField.sendKeys(String.valueOf(seconds));
+
+        return this;
+    }
+
+    public PipelineConfigPage setNumberOfSecondsInQuietPeriodInputField(double seconds) {
+        quietPeriodInputField.clear();
+        quietPeriodInputField.sendKeys(String.valueOf(seconds));
+
+        return this;
+    }
+
+    public PipelineConfigPage clickNumberOfSecondsHint() {
+        numberOfSecondsHint.click();
 
         return this;
     }

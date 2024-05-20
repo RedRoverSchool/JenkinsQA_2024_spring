@@ -1112,9 +1112,25 @@ public class PipelineTest extends BaseTest {
                 .scrollToQuietPeriodCheckbox()
                 .clickQuietPeriodCheckbox()
                 .setNumberOfSecondsInQuietPeriodInputField(numberOfSeconds)
-                .clickSaveButton()
-                .clickSidebarConfigureButton(PIPELINE_NAME)
+                .clickNumberOfSecondsHint()
+                .getQuietPeriodInputErrorText();
+
+        Assert.assertEquals(validationErrorMessage, errorMessage);
+    }
+
+    @Test
+    public void testSetDoubleQuietPeriodBuildTriggers() {
+        final double numberOfSeconds = 0.3;
+        final String errorMessage = "Not an integer";
+
+        String validationErrorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
                 .scrollToQuietPeriodCheckbox()
+                .clickQuietPeriodCheckbox()
+                .setNumberOfSecondsInQuietPeriodInputField(numberOfSeconds)
+                .clickNumberOfSecondsHint()
                 .getQuietPeriodInputErrorText();
 
         Assert.assertEquals(validationErrorMessage, errorMessage);
@@ -1171,33 +1187,6 @@ public class PipelineTest extends BaseTest {
 
         Assert.assertTrue(new HomePage(getDriver()).isTooltipDisplayed(tooltipText),
                 "Tooltip '" + tooltipText + "' is not displayed.");
-    }
-
-    @Test
-    public void testSetDoubleQuietPeriodBuildTriggers() {
-        final double numberOfSeconds = 0.3;
-        final String errorMessage = "Not an integer";
-
-        createPipeline(PIPELINE_NAME);
-        getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
-
-        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
-        executor.executeScript("arguments[0].scrollIntoView();",
-                getDriver().findElement(By.xpath("//label[text()='Poll SCM']")));
-
-        WebElement checkBoxQuietPeriod = getDriver().findElement(By.xpath("//label[text()='Quiet period']"));
-        checkBoxQuietPeriod.click();
-
-        WebElement inputField = getDriver().findElement(By.name("quiet_period"));
-        inputField.clear();
-        inputField.sendKeys("" + numberOfSeconds);
-        getDriver().findElement(By.xpath("//div[text()='Number of seconds']")).click();
-
-        WebElement errorElement = getDriver().findElement(By.xpath("//div[@class='form-container tr']//div[@class='error']"));
-        getWait5().until(ExpectedConditions.visibilityOf(errorElement));
-
-        Assert.assertEquals(errorElement.getText(), errorMessage);
     }
 
     @Test
