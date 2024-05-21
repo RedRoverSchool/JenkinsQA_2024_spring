@@ -17,9 +17,6 @@ public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFol
     @FindBy(xpath = "(//select[contains(@class, 'dropdownList')])[2]")
     private WebElement iconDropdownList;
 
-    @FindBy(css = "[class='task'] [data-section-id='projects']")
-    private WebElement projectsAnchorLink;
-
     @FindBy(xpath = "//div[text()='Project Recognizers']")
     private WebElement projectRecognizersBlock;
 
@@ -34,9 +31,6 @@ public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFol
 
     @FindBy(css = "[class='task']:not(:first-child)")
     private List<WebElement> sidebarAnchorLinksExceptGeneral;
-
-    @FindBy(css = "[class='task'] [data-section-id='general']")
-    private WebElement sidebarGeneralAnchorLink;
 
     @FindBy(css = "[class='jenkins-section__title'][id]")
     private List<WebElement> blocksHeadings;

@@ -168,7 +168,7 @@ public abstract class BasePage extends BaseModel {
     }
 
     public static ExpectedCondition<Boolean> isElementInViewPort(WebElement element) {
-        return new ExpectedCondition<Boolean>() {
+        return new ExpectedCondition<>() {
             @Override
             public Boolean apply(WebDriver driver) {
                 JavascriptExecutor js = (JavascriptExecutor) driver;
