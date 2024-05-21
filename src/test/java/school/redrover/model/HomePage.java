@@ -686,6 +686,15 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
         return new HomePage(getDriver());
     }
 
+    public HomePage createFolder(String name) {
+        clickNewItem()
+                .setItemName(name)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .clickLogo();
+        return new HomePage(getDriver());
+    }
+
     public HomePage createMultibranchPipeline(String name) {
         clickNewItem()
                 .setItemName(name)
