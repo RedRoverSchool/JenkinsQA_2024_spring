@@ -389,4 +389,30 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertTrue(isItemDeleted);
     }
+
+    @Test
+    public void testCheckQuestion() {
+
+        List<String> expectedList = List.of("Help for feature: Discard old builds",
+                "Help for feature: This project is parameterized",
+                "Help for feature: Throttle builds",
+                "Help for feature: Execute concurrent builds if necessary",
+                "Help for feature: Git",
+                "Help for feature: Trigger builds remotely (e.g., from scripts)",
+                "Help for feature: Build after other projects are built",
+                "Help for feature: Build periodically",
+                "Help for feature: GitHub hook trigger for GITScm polling",
+                "Help for feature: Poll SCM",
+                "Help for feature: Use secret text(s) or file(s)",
+                "Help for feature: With Ant");
+
+        List<String> actualList = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(FREESTYLE_PROJECT_NAME)
+                .selectFreestyleAndClickOk()
+                .getTooltipList();
+
+        Assert.assertEquals(actualList,expectedList);
+
+    }
 }
