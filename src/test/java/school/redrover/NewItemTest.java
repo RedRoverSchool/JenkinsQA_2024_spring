@@ -144,7 +144,7 @@ public class NewItemTest extends BaseTest {
 
     @Test(dependsOnMethods = "testDropdownNamesMenuContentWhenCopyProject")
     public void testCopyFromNotExistingJob() {
-        String notExistingName = "AAA";
+        final String notExistingName = "AAA";
 
         CreateItemPage errorPage = new HomePage(getDriver())
                 .clickNewItem()
@@ -157,33 +157,54 @@ public class NewItemTest extends BaseTest {
         Assert.assertEquals(errorPage.getErrorMessageText(), "No such job: " + notExistingName);
     }
 
+    @DataProvider(name="existingJobsNames")
+    public Object[][] existingJobsNames(){
+        return new Object[][]{
+                {"Freestyle","folff"},
+                {"Freestyle","folff00"},
+                {"Folder","Folder1"},
+                {"Folder","bFolder2"},
+                {"Pipeline","pipe1"},
+                {"MultiConfigurationProject", "multi1"},
+                {"MultiBranchPipe", "multiBranch1"},
+                {"organizationFolder","organizationFolder1"}
+       };
+    }
+    @Test(dependsOnMethods = "testDropdownNamesMenuContentWhenCopyProject" ,dataProvider = "existingJobsNames")
+    public void testCopyFromExistingJob(String type, String jobName) {
+
+        HomePage homePage = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(jobName + "Copy")
+                .setItemNameInCopyForm(jobName)
+                .clickOkButton()
+                .clickLogo();
+        Assert.assertTrue(homePage.isItemExists(jobName + "Copy"));
+        }
+
     @Test
     public void testDropdownNamesMenuContentWhenCopyProject() {
-        String freestyle1 = "folff";
-        String freestyle2 = "folff00";
-        String folder1 = "Folder1";
-        String folder2 = "bFolder2";
+        final String freestyle1 = "folff";
+        final String freestyle2 = "folff00";
+        final String folder1 = "Folder1";
+        final String folder2 = "bFolder2";
+        final String pipeline1 = "pipe1";
+        final String multiConfigurationProject1 = "multi1";
+        final String multiBranchPipe1 = "multiBranch1";
+        final String organizationFolder1 = "organizationFolder1";
 
-        String firstLetters = "foL";
-        String newItemName = "someName";
+        final String firstLetters = "foL";
+        final String newItemName = "someName";
 
         List<String> firstLettersJobs = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(freestyle1)
-                .selectFreestyleAndClickOk()
-                .clickLogo()
-                .clickNewItem()
-                .setItemName(folder1)
-                .selectFolderAndClickOk()
-                .clickLogo()
-                .clickNewItem()
-                .setItemName(folder2)
-                .selectFolderAndClickOk()
-                .clickLogo()
-                .clickNewItem()
-                .setItemName(freestyle2)
-                .selectFreestyleAndClickOk()
-                .clickLogo()
+                .createFreestyleProject(freestyle1)
+                .createFolder(folder1)
+                .createFolder(folder2)
+                .createFreestyleProject(freestyle2)
+                .createPipeline(pipeline1)
+                .createMultiConfigurationProject(multiConfigurationProject1)
+                .createMultibranchPipeline(multiBranchPipe1)
+                .createOrganizationFolder(organizationFolder1)
                 .getJobsBeginningFromThisFirstLetters(firstLetters);
 
         List<String> jobsFromDropdownMenu = new HomePage(getDriver())
