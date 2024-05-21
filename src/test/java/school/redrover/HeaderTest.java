@@ -10,8 +10,8 @@ public class HeaderTest extends BaseTest {
     @Test
     public void testTooltipAccessible() {
         String warningTooltipText = new HomePage(getDriver())
-                .clickWarningIcon()
-                .getWarningTooltipText();
+                .clickWarningIcon(new HomePage(getDriver()))
+                .getWarningTooltipText(getDriver());
 
         Assert.assertTrue(warningTooltipText.contains("Warnings"));
     }
@@ -19,8 +19,8 @@ public class HeaderTest extends BaseTest {
     @Test
     public void testWarningsSettingPage() {
         String pageTitle = new HomePage(getDriver())
-                .clickWarningIcon()
-                .clickConfigureTooltipButton()
+                .clickWarningIcon(new HomePage(getDriver()))
+                .clickConfigureTooltipButton(getDriver())
                 .getTitleText();
 
         Assert.assertTrue(pageTitle.contains("Security"));
@@ -29,8 +29,8 @@ public class HeaderTest extends BaseTest {
     @Test
     public void testAccessToManageJenkinsPage() {
         String pageTitle = new HomePage(getDriver())
-                .clickWarningIcon()
-                .clickManageJenkinsTooltipLink()
+                .clickWarningIcon(new HomePage(getDriver()))
+                .clickManageJenkinsTooltipLink(getDriver())
                 .getPageHeadingText();
 
         Assert.assertTrue(pageTitle.contains("Manage Jenkins"));

@@ -288,7 +288,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         String currentUrl = TestUtils
                 .createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
-                .searchProjectByName(PROJECT_NAME, new MultiConfigurationProjectPage(getDriver()))
+                .searchProjectByName(getDriver(), PROJECT_NAME, new MultiConfigurationProjectPage(getDriver()))
                 .getCurrentUrl();
 
         Assert.assertTrue(currentUrl.contains(PROJECT_NAME));
@@ -361,7 +361,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
 
         String searchResult = new HomePage(getDriver())
-                .typeTextToSearchBox(PROJECT_NAME)
+                .typeTextToSearchBox(getDriver(), PROJECT_NAME)
                 .getTextFromMainPanel();
 
         Assert.assertTrue(searchResult.contains(PROJECT_NAME));

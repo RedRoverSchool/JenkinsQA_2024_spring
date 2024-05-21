@@ -329,7 +329,7 @@ public class FolderTest extends BaseTest {
                 .clickNewItem()
                 .setItemName("Fold%erdate")
                 .selectFolderAndClickOk()
-                .getHeaderOneText();
+                .getHeading();
 
         Assert.assertEquals(header1Text, "Error");
     }

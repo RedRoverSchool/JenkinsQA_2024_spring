@@ -269,7 +269,7 @@ public class MultibranchPipelineTest extends BaseTest {
             .openItemDropdown(MULTI_PIPELINE_NAME)
             .clickDeleteInDropdown(new DeleteDialog(getDriver()))
             .clickYes(new HomePage(getDriver()))
-            .getHeadingValue();
+            .getHeading();
 
         Assert.assertEquals(actualPageHeading, WELCOME_PAGE_HEADING);
     }

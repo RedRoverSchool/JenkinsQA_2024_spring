@@ -6,25 +6,14 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.FreestyleProjectPage;
 import school.redrover.model.HomePage;
-import school.redrover.model.SearchResultPage;
-import school.redrover.model.UserPage;
 
 import java.util.List;
 import java.util.ArrayList;
 
-public abstract class BasePage extends BaseModel {
-
-    @FindBy(css = "a.model-link > span")
-    private WebElement userNameOnHeader;
-
-    @FindBy(id = "search-box")
-    private WebElement searchBox;
-
-    @FindBy(css = "[class$=jenkins_ver]")
-    private WebElement version;
+public abstract class BasePage extends BaseModel implements Header, Footer {
 
     @FindBy(tagName = "h1")
-    private WebElement headerOne;
+    private WebElement heading;
 
     public BasePage(WebDriver driver) {
         super(driver);
@@ -41,14 +30,6 @@ public abstract class BasePage extends BaseModel {
 
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", chevron);
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
-    }
-
-    public void openHeaderUsernameDropdown() {
-        new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.cssSelector("[data-href$='admin']")))
-                .pause(1000)
-                .click()
-                .perform();
     }
 
     public boolean isThereTextInBreadcrumbs(String text) {
@@ -87,43 +68,16 @@ public abstract class BasePage extends BaseModel {
         return webElement.getText();
     }
 
-    public String getHeaderOneText() {
-        return headerOne.getText();
+    public String getHeading() {
+        return heading.getText();
     }
 
     public void scrollIntoView(WebElement element) {
         ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView(true);", element);
     }
 
-    public UserPage clickUserNameOnHeader() {
-        userNameOnHeader.click();
-
-        return new UserPage(getDriver());
-    }
-
-    public <T extends BaseProjectPage> T searchProjectByName(String projectName, T projectType) {
-        searchBox.sendKeys(projectName + Keys.ENTER);
-
-        return projectType;
-    }
-
-    public SearchResultPage typeTextToSearchBox(String text) {
-        searchBox.sendKeys(text + Keys.ENTER);
-
-        return new SearchResultPage(getDriver());
-    }
     public String getCurrentUrl() {
         return getDriver().getCurrentUrl();
-    }
-
-    public String getVersionOnFooter() {
-        return version.getText().split(" ")[1];
-    }
-
-    public HomePage clickVersion() {
-        version.click();
-
-        return new HomePage(getDriver());
     }
 
     protected void scrollToElement(WebElement element) {

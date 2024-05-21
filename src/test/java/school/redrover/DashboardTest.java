@@ -313,7 +313,7 @@ public class DashboardTest extends BaseTest {
     @Test
     public void testStartPageHeading() {
         String actualHeading = new HomePage(getDriver())
-                .getHeadingValue();
+                .getHeading();
 
         Assert.assertEquals(actualHeading, "Welcome to Jenkins!");
     }

@@ -24,7 +24,7 @@ public abstract class BaseModel {
         PageFactory.initElements(driver, this);
     }
 
-    protected WebDriver getDriver() {
+    public WebDriver getDriver() {
         return driver;
     }
 

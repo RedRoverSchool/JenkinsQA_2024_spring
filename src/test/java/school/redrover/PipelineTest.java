@@ -92,7 +92,7 @@ public class PipelineTest extends BaseTest {
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .clickLogo()
-                .searchProjectByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
+                .searchProjectByName(getDriver(), PIPELINE_NAME, new PipelineProjectPage(getDriver()))
                 .getProjectName();
 
         Assert.assertEquals(actualPipelineName, PIPELINE_NAME);

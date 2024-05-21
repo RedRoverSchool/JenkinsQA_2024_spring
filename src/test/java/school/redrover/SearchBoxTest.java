@@ -133,7 +133,7 @@ public class SearchBoxTest extends BaseTest {
         final String SEARCHING_TEXT = "ma";
 
         String searchResult = new HomePage(getDriver())
-                .typeTextToSearchBox(SEARCHING_TEXT)
+                .typeTextToSearchBox(getDriver(), SEARCHING_TEXT)
                 .getTextFromMainPanel();
 
         Assert.assertTrue(searchResult.contains(EXPECTED_RESULT_TEXT));
@@ -144,7 +144,7 @@ public class SearchBoxTest extends BaseTest {
         final String SEARCHING_TEXT = "i";
 
         String resultHeading = new HomePage(getDriver())
-                .typeTextToSearchBox(SEARCHING_TEXT)
+                .typeTextToSearchBox(getDriver(), SEARCHING_TEXT)
                 .getMatchLogResult();
 
         String expectedSearchResult = "Search for '%s'".formatted(SEARCHING_TEXT);

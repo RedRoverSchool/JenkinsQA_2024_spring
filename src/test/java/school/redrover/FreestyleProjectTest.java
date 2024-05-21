@@ -407,7 +407,7 @@ public class FreestyleProjectTest extends BaseTest {
         String expectedText = String.format("Full project name: %s/%s", FOLDER_NAME, FREESTYLE_PROJECT_NAME);
 
         String actualText = new HomePage(getDriver())
-                .clickCreateJob()
+                .clickCreateAJob()
                 .setItemName(FREESTYLE_PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .setDescription(FREESTYLE_PROJECT_DESCRIPTION)
@@ -492,7 +492,7 @@ public class FreestyleProjectTest extends BaseTest {
     @Test
     public void testDeleteProjectViaSideBar() {
         String welcomeJenkinsHeader = new HomePage(getDriver())
-                .clickCreateJob()
+                .clickCreateAJob()
                 .setItemName(FREESTYLE_PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .clickSaveButton()
@@ -509,7 +509,7 @@ public class FreestyleProjectTest extends BaseTest {
     @Test
     public void testCreateNewFreestyleProjectWithDescription() {
         FreestyleProjectPage freestyleProjectPage = new HomePage(getDriver())
-                .clickCreateJob()
+                .clickCreateAJob()
                 .setItemName(FREESTYLE_PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .setDescription(FREESTYLE_PROJECT_DESCRIPTION)
@@ -534,7 +534,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         List<String> itemListInsideFolder = new HomePage(getDriver())
                 .openDashboardBreadcrumbsDropdown()
-                .clickMyViewsFromDropdown()
+                .clickMyViewsFromDropdown(getDriver())
                 .clickBreadcrumbAll()
                 .clickJobNameBreadcrumb(FOLDER_NAME)
                 .getItemListInsideFolder();

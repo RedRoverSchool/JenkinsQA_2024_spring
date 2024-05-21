@@ -19,6 +19,7 @@ public class SearchResultPage extends BasePage {
     public SearchResultPage(WebDriver driver) {
         super(driver);
     }
+
     public String getNoMatchText() {
         return noMatchResult.getText();
     }
