@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -31,6 +32,15 @@ public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFol
     @FindBy(css = "[name='projectFactories'][class='repeated-chunk']")
     private List<WebElement> pipelineJenkinsFileList;
 
+    @FindBy(css = "[class='task']:not(:first-child)")
+    private List<WebElement> sidebarAnchorLinksExceptGeneral;
+
+    @FindBy(css = "[class='task'] [data-section-id='general']")
+    private WebElement sidebarGeneralAnchorLink;
+
+    @FindBy(css = "[class='jenkins-section__title'][id]")
+    private List<WebElement> blocksHeadings;
+
     public OrganizationFolderConfigPage(WebDriver driver) {
         super(driver, new OrganizationFolderProjectPage(driver));
     }
@@ -44,12 +54,6 @@ public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFol
                 .selectByVisibleText("Default Icon");
 
         return new OrganizationFolderConfigPage(getDriver());
-    }
-
-    public OrganizationFolderConfigPage clickProjectsAnchorLink() {
-        projectsAnchorLink.click();
-
-        return this;
     }
 
     public OrganizationFolderConfigPage scrollToProjectRecognizersBlock() {
@@ -70,12 +74,24 @@ public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFol
         return this;
     }
 
-    public boolean areProjectRecognizersBoardersFiltersDashed() {
-        for (WebElement element : pipelineJenkinsFileList) {
-            if (element.getCssValue("border").contains("dashed")) {
-                return true;
+    public boolean areProjectRecognizersFiltersBordersDashed() {
+        return pipelineJenkinsFileList
+                .stream()
+                .allMatch(element -> element.getCssValue("border").contains("dashed"));
+    }
+
+    public boolean isNavigatedToCorrespondingBlockClickingAnchorLink() {
+        for (int i = 0; i < sidebarAnchorLinksExceptGeneral.size(); i++) {
+            scrollToTopOfPage();
+            sidebarAnchorLinksExceptGeneral.get(i).click();
+
+            try {
+                getWait2().until(isElementInViewPort(blocksHeadings.get(i)));
+            } catch (TimeoutException e) {
+                System.err.println(blocksHeadings.get(i).getText() + " is not in the viewport");
+                return false;
             }
         }
-        return false;
+        return true;
     }
 }
