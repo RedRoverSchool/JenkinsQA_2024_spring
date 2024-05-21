@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseConfigPage;
@@ -15,9 +16,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CreateNewItemPage extends BasePage {
-
-    @FindBy(id = "name")
-    WebElement newItemName;
 
     @FindBy(id = "name")
     private WebElement nameText;
@@ -151,6 +149,7 @@ public class CreateNewItemPage extends BasePage {
     }
 
     public CreateNewItemPage setItemNameInCopyForm(String name) {
+        getWait5().until(ExpectedConditions.visibilityOf(nameTextInCopyForm));
         nameTextInCopyForm.sendKeys(name);
         return this;
     }
@@ -185,12 +184,6 @@ public class CreateNewItemPage extends BasePage {
         }
         return allJobFromThisLetterName;
     }
-
-    public CreateNewItemPage sendItemName(String name) {
-        newItemName.sendKeys(name);
-        return this;
-    }
-
 
     public CreateNewItemPage selectFreeStyleProject() {
         freestyleItem.click();

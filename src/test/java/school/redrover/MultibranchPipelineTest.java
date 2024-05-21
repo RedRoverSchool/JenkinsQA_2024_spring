@@ -176,7 +176,7 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testRenamedMultibranchPipelineSeenInBreadcrumbs() {
         String multiPipelineBreadcrumbName = new HomePage(getDriver())
                 .clickCreateAJob()
-                .sendItemName(MULTI_PIPELINE_NAME)
+                .setItemName(MULTI_PIPELINE_NAME)
                 .selectMultibranchPipelineAndClickOk()
                 .clickSaveButton()
                 .clickSidebarRenameButton()
