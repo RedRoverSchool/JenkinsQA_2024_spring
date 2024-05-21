@@ -31,6 +31,7 @@ public class OrganizationFolderTest extends BaseTest {
 
     @Test
     public void testCreateViaNewItem() {
+
         String getItemPageHeading = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(ORGANIZATION_FOLDER_NAME)
@@ -43,6 +44,7 @@ public class OrganizationFolderTest extends BaseTest {
 
     @Test
     public void testCreateWithDefaultIcon() {
+
         String organizationFolderIcon = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(ORGANIZATION_FOLDER_NAME)
@@ -102,6 +104,7 @@ public class OrganizationFolderTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateViaNewItem")
     public void testCatchErrorStepTooltipsViaDashboardDropdown() {
+
         final List<String> expectedTooltipList = List.of(
                 "Help for feature: catchError",
                 "Help for feature: Message",
@@ -215,20 +218,34 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
-    public void testProjectRecognizersBoardersFiltersAreDashed() {
-        boolean projectRecognizersBoardersFiltersDashed = new HomePage(getDriver())
+    public void testProjectRecognizersFiltersBordersAreDashed() {
+
+        boolean projectRecognizersBordersFiltersDashed = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(ORGANIZATION_FOLDER_NAME)
                 .selectOrganizationFolderAndClickOk()
                 .clickSaveButton()
                 .clickConfigure()
-                .clickProjectsAnchorLink()
                 .scrollToProjectRecognizersBlock()
                 .clickProjectRecognizersAddButton()
                 .addPipelineJenkinsFileFilter()
-                .areProjectRecognizersBoardersFiltersDashed();
+                .areProjectRecognizersFiltersBordersDashed();
 
-        Assert.assertTrue(projectRecognizersBoardersFiltersDashed,
+        Assert.assertTrue(projectRecognizersBordersFiltersDashed,
                 "Filters boarders of Project Recognizers block  are not dashed");
+    }
+
+    @Test
+    public void testAnchorLinksLeadToCorrespondingBlocks() {
+
+        boolean isNavigatedToCorrespondingBlock = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
+                .clickConfigure()
+                .isNavigatedToCorrespondingBlockClickingAnchorLink();
+
+        Assert.assertTrue(isNavigatedToCorrespondingBlock, "An anchor link leads to a wrong block");
     }
 }
