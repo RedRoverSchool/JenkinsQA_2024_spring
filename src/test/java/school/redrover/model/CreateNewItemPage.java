@@ -115,6 +115,12 @@ public class CreateNewItemPage extends BasePage {
         return this;
     }
 
+    public CreateNewItemPage selectMultibranchPipeline() {
+        multibranchPipelineItem.click();
+
+        return this;
+    }
+
     public MultibranchPipelineConfigPage selectMultibranchPipelineAndClickOk() {
         multibranchPipelineItem.click();
         okButton.click();

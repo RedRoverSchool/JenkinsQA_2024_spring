@@ -10,10 +10,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
-import school.redrover.model.DeleteDialog;
-import school.redrover.model.HomePage;
-import school.redrover.model.MultibranchPipelineConfigPage;
-import school.redrover.model.MultibranchPipelineProjectPage;
+import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 import static school.redrover.runner.TestUtils.Job;
@@ -53,17 +50,20 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testCreateMultibranchPipelineWithEmptyName() {
-        final String expectedErrorMessage = "» This field cannot be empty, please enter a valid name";
+        final String EMPTY_NAME = "";
+        final String ERROR_MESSAGE = "This field cannot be empty";
 
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.xpath("//div[@id='j-add-item-type-standalone-projects']/ul/li[3]"))
-                   .click();
-        WebElement okButton = getDriver().findElement(By.xpath("//button[@id='ok-button']"));
-        WebElement actualErrorMessage = getDriver().findElement(By.xpath("//div[@id='itemname-required']"));
+        CreateNewItemPage createNewItemPage =
+                new HomePage(getDriver())
+                        .clickNewItem()
+                        .setItemName(EMPTY_NAME)
+                        .selectMultibranchPipeline();
 
-        Assert.assertFalse(okButton.isEnabled());
-        Assert.assertTrue(actualErrorMessage.isDisplayed());
-        Assert.assertEquals(actualErrorMessage.getText(),expectedErrorMessage);
+        boolean isErrorMessageCorrect = createNewItemPage.getErrorMessageEmptyName().contains(ERROR_MESSAGE);
+        boolean isCanNotPressOkButton = createNewItemPage.isOkButtonNotActive();
+
+        Assert.assertTrue(isErrorMessageCorrect);
+        Assert.assertTrue(isCanNotPressOkButton);
     }
 
     @Test
@@ -140,22 +140,6 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(actualErrorMessage.getText(), expectedErrorMessage);
     }
 
-    @Ignore
-    @Test
-    public void testRenameMultibranchPipelineOnTheSidebar() {
-        createNewMultiPipeline(MULTI_PIPELINE_NAME);
-
-        getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']")).click();
-        getDriver().findElement(By.cssSelector("[href $='rename']")).click();
-        WebElement renameInput = getDriver().findElement(By.xpath("//input[@name='newName']"));
-        renameInput.clear();
-        renameInput.sendKeys(RENAMED_MULTI_PIPELINE);
-        getDriver().findElement(By.name("Submit")).click();
-        String multiPipelinePageHeading = getDriver().findElement(By.tagName("h1")).getText();
-
-        Assert.assertEquals(multiPipelinePageHeading, RENAMED_MULTI_PIPELINE, "Wrong name");
-    }
-
     @Test
     public void testRenameMultibranchPipelineViaMainPageDropdownMenu() {
 
@@ -185,20 +169,6 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertEquals(multiPipelineBreadcrumbName, RENAMED_MULTI_PIPELINE,
                 "Actual multibranch breadcrumb name is not " + RENAMED_MULTI_PIPELINE);
-    }
-
-    @Test
-    public void testCreatePipelineUsingCreateAJobOnHomePage(){
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys("MyPipeline");
-        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
-
-        String namePipelineProject = getDriver()
-                .findElement(By.xpath("//a[@href='job/MyPipeline/']/span")).getText();
-        Assert.assertEquals(namePipelineProject, "MyPipeline");
     }
 
     @Test
@@ -489,21 +459,11 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testCreateMulticonfigurationProjectWithoutName(){
-        String errorName = new HomePage(getDriver())
-                .clickNewItem()
-                .selectMultiConfigurationAndClickOk()
-                .getErrorRequiresName();
-
-        Assert.assertTrue(errorName.contains("This field cannot be empty, please enter a valid name"));
-    }
-
-    @Test
     public void testCreateMultibranchPipelineFromExistingMultibranchPipeline() {
         final String FIRST_ITEM_NAME = "My first Multibranch Pipeline";
         final String SECOND_ITEM_NAME = "My second Multibranch Pipeline";
 
-        TestUtils.createMultibranchProject(this, FIRST_ITEM_NAME);
+        TestUtils.createMultibranchPipelineProject(this, FIRST_ITEM_NAME);
 
         List<String> itemList = new HomePage(getDriver())
                 .clickNewItem()

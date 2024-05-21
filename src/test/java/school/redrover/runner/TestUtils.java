@@ -89,7 +89,7 @@ public final class TestUtils {
                 return createFolderProject(baseTest, projectName);
             }
             case Item.MULTI_BRANCH_PIPELINE -> {
-                return createMultibranchProject(baseTest, projectName);
+                return createMultibranchPipelineProject(baseTest, projectName);
             }
             case Item.ORGANIZATION_FOLDER -> {
                 return createOrganizationFolderProject(baseTest, projectName);
@@ -130,7 +130,7 @@ public final class TestUtils {
                 .clickLogo();
     }
 
-    public static HomePage createMultibranchProject(BaseTest baseTest, String name) {
+    public static HomePage createMultibranchPipelineProject(BaseTest baseTest, String name) {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
                 .setItemName(name.trim())

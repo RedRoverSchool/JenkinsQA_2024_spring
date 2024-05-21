@@ -157,7 +157,7 @@ public class DashboardTest extends BaseTest {
                 "Pipeline Syntax",
                 "Credentials");
 
-        TestUtils.createMultibranchProject(this, MULTIBRANCH_PIPELINE_NAME);
+        TestUtils.createMultibranchPipelineProject(this, MULTIBRANCH_PIPELINE_NAME);
 
         List<String> chevronMenu = new HomePage(getDriver())
                 .openItemDropdown(MULTIBRANCH_PIPELINE_NAME)
