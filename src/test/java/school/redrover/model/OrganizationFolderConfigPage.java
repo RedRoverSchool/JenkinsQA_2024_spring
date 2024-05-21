@@ -35,6 +35,18 @@ public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFol
     @FindBy(css = "[class='jenkins-section__title'][id]")
     private List<WebElement> blocksHeadings;
 
+    @FindBy(xpath = "//div[contains(text(), 'Property strategy')]")
+    private WebElement propertyStrategyBlock;
+
+    @FindBy(css = "[suffix='props'][class$='add']")
+    private WebElement addPropertyButton;
+
+    @FindBy(xpath = "//button[contains(text(), 'Throttle builds')]")
+    private WebElement throttleBuildsDropdownOption;
+
+    @FindBy(css = "[class$='select'] [fillurl*='fillDuration']")
+    private WebElement timePeriodDropdown;
+
     public OrganizationFolderConfigPage(WebDriver driver) {
         super(driver, new OrganizationFolderProjectPage(driver));
     }
@@ -87,5 +99,30 @@ public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFol
             }
         }
         return true;
+    }
+
+    public OrganizationFolderConfigPage scrollToPropertyStrategyBlock() {
+        scrollToElement(propertyStrategyBlock);
+
+        return this;
+    }
+
+    public OrganizationFolderConfigPage clickAddPropertyButton() {
+        addPropertyButton.click();
+
+        return this;
+    }
+
+    public OrganizationFolderConfigPage clickThrottleBuildsDropdownOption() {
+        throttleBuildsDropdownOption.click();
+
+        return this;
+    }
+
+    public List<String> getTimePeriodOptions() {
+        return new Select(timePeriodDropdown).getOptions()
+                .stream()
+                .map(WebElement::getText)
+                .toList();
     }
 }
