@@ -485,7 +485,7 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
         return welcomeJenkinsHeader.getText();
     }
 
-    public HomePage clickDeleteItemAndConfirm(String itemName) {
+    public HomePage clickDeleteProjectDropdownAndConfirm(String itemName) {
 
         WebElement itemName1 = getDriver().findElement(By.id("job_" + itemName));
         openElementDropdown(itemName1);

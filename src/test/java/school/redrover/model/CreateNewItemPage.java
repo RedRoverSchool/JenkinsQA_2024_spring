@@ -197,10 +197,6 @@ public class CreateNewItemPage extends BasePage {
         return this;
     }
 
-    public Boolean getOkButtoneState() {
-        return okButton.getAttribute("disabled").isEmpty();
-    }
-
     public CreateNewItemPage clearItemNameField() {
         nameText.sendKeys(Keys.CONTROL + "a", Keys.BACK_SPACE);
         return this;
@@ -241,7 +237,7 @@ public class CreateNewItemPage extends BasePage {
     public Boolean isAttributeAriaChecked(String projectType, int itemOptionIndex) {
 
         return Boolean.parseBoolean(getDriver().findElement(
-                By.xpath(String.format("//div[contains(@id, '%s')]/ul/li[%d]", projectType, itemOptionIndex)))
+                        By.xpath(String.format("//div[contains(@id, '%s')]/ul/li[%d]", projectType, itemOptionIndex)))
                 .getAttribute("aria-checked"));
     }
 
