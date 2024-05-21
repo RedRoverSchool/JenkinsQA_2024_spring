@@ -657,6 +657,62 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
         return tooltip.isDisplayed();
     }
 
+
+    public HomePage createFreestyleProject(String name) {
+        clickNewItem()
+                .setItemName(name)
+                .selectFreestyleAndClickOk()
+                .clickSaveButton()
+                .clickLogo();
+        return new HomePage(getDriver());
+    }
+
+    public HomePage createPipeline(String name) {
+        clickNewItem()
+                .setItemName(name)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickLogo();
+        return new HomePage(getDriver());
+    }
+
+    public HomePage createMultiConfigurationProject(String name) {
+        clickNewItem()
+                .setItemName(name)
+                .selectMultiConfigurationAndClickOk()
+                .clickSaveButton()
+                .clickLogo();
+        return new HomePage(getDriver());
+    }
+
+    public HomePage createFolder(String name) {
+        clickNewItem()
+                .setItemName(name)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .clickLogo();
+        return new HomePage(getDriver());
+    }
+
+    public HomePage createMultibranchPipeline(String name) {
+        clickNewItem()
+                .setItemName(name)
+                .selectMultibranchPipelineAndClickOk()
+                .clickSaveButton()
+                .clickLogo();
+        return new HomePage(getDriver());
+    }
+
+    public HomePage createOrganizationFolder(String name) {
+        clickNewItem()
+                .setItemName(name)
+                .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
+                .clickLogo();
+        return new HomePage(getDriver());
+    }
+
+
     public UserConfigurePage openUserConfigurations() {
         return clickPeopleSideMenu()
                 .clickUserIdLink()

@@ -1,6 +1,7 @@
 package school.redrover.model.base;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
@@ -154,5 +155,25 @@ public abstract class BasePage extends BaseModel {
         List<String> tabs = new ArrayList<>(getDriver().getWindowHandles());
 
         getDriver().switchTo().window(tabs.get(0));
+    }
+
+    public void scrollToTopOfPage() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("window.scrollTo(0, 0);");
+    }
+
+    public static ExpectedCondition<Boolean> isElementInViewPort(WebElement element) {
+        return new ExpectedCondition<>() {
+            @Override
+            public Boolean apply(WebDriver driver) {
+                JavascriptExecutor js = (JavascriptExecutor) driver;
+                return (Boolean) js.executeScript(
+                        "let rect = arguments[0].getBoundingClientRect();" +
+                                "return (rect.top >= 0 && rect.left >= 0 && " +
+                                "rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && " +
+                                "rect.right <= (window.innerWidth || document.documentElement.clientWidth));",
+                        element);
+            }
+        };
     }
 }
