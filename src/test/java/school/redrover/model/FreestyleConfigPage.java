@@ -93,7 +93,7 @@ public class FreestyleConfigPage extends BaseConfigPage<FreestyleProjectPage> {
 
             if (w.isDisplayed()) {
                 ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView({block:'center'});", w);
-                new Actions(getDriver()).pause(700).moveToElement(w).pause(600).perform();
+                new Actions(getDriver()).pause(1100).moveToElement(w).pause(600).perform();
                 result.add(getDriver().findElement(By.xpath("//div[@class='tippy-box']")).getText());
             }
         }
