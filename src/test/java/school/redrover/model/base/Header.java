@@ -21,8 +21,8 @@ public interface Header {
         return new SearchResultPage(driver);
     }
 
-    default <T extends BaseProjectPage> T searchProjectByName(WebDriver driver, String projectName, T projectType) {
-        driver.findElement(By.id("search-box")).sendKeys(projectName + Keys.ENTER);
+    default <T extends BaseProjectPage> T searchProjectByName(String projectName, T projectType) {
+        projectType.getDriver().findElement(By.id("search-box")).sendKeys(projectName + Keys.ENTER);
 
         return projectType;
     }

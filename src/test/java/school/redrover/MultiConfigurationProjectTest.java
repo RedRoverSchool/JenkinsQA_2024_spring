@@ -288,7 +288,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         String currentUrl = TestUtils
                 .createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
-                .searchProjectByName(getDriver(), PROJECT_NAME, new MultiConfigurationProjectPage(getDriver()))
+                .searchProjectByName(PROJECT_NAME, new MultiConfigurationProjectPage(getDriver()))
                 .getCurrentUrl();
 
         Assert.assertTrue(currentUrl.contains(PROJECT_NAME));
