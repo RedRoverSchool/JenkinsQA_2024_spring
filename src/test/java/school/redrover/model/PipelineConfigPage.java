@@ -57,6 +57,12 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
     @FindBy(xpath = "//div[@class='form-container tr']//div[@class='error']")
     private WebElement errorMessageForQuietPeriodInputField;
 
+    @FindBy(xpath = "//label[text()='Pipeline speed/durability override']")
+    private WebElement pipelineSpeedDurabilityOverrideCheckbox;
+
+    @FindBy(xpath = "//select[@class='setting-input']")
+    private WebElement customPipelineSpeedDurabilityLevelInput;
+
     public PipelineConfigPage(WebDriver driver) {
         super(driver, new PipelineProjectPage(driver));
     }
@@ -94,6 +100,12 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
         return this;
     }
 
+    public PipelineConfigPage clickPipelineSpeedDurabilityOverrideCheckbox() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(pipelineSpeedDurabilityOverrideCheckbox)).click();
+
+        return this;
+    }
+
     public PipelineConfigPage setNumberOfSecondsInQuietPeriodInputField(int seconds) {
         quietPeriodInputField.clear();
         quietPeriodInputField.sendKeys(String.valueOf(seconds));
@@ -121,6 +133,18 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
 
     public String getQuietPeriodInputErrorText() {
         return getWait5().until(ExpectedConditions.visibilityOf(errorMessageForQuietPeriodInputField)).getText();
+    }
+
+    public PipelineConfigPage selectCustomPipelineSpeedDurabilityLevel(int index) {
+        Select dropDown = new Select(customPipelineSpeedDurabilityLevelInput);
+        dropDown.selectByIndex(index);
+
+        return this;
+    }
+
+    public String getCustomPipelineSpeedDurabilityLevelText() {
+        Select dropDown = new Select(customPipelineSpeedDurabilityLevelInput);
+        return dropDown.getFirstSelectedOption().getText();
     }
 
 
