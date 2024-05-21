@@ -1,21 +1,14 @@
 package school.redrover.model;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.Dimension;
-
 import school.redrover.model.base.BaseSideMenuPage;
-import school.redrover.runner.TestUtils;
-
-import java.util.List;
 
 public class PeoplePage extends BaseSideMenuPage<PeoplePage> {
-
-    @FindBy(css = "tr>td:nth-child(2)")
-    private List<WebElement> userIDList;
 
     @FindBy(css = "[title='Small']")
     private WebElement smallIconButton;
@@ -40,10 +33,6 @@ public class PeoplePage extends BaseSideMenuPage<PeoplePage> {
 
     public PeoplePage(WebDriver driver) {
         super(driver);
-    }
-
-    public String getPeoplePageUrl() {
-        return TestUtils.getBaseUrl() + "/asynchPeople/";
     }
 
     public UserPage clickUser(String userID) {
@@ -80,5 +69,4 @@ public class PeoplePage extends BaseSideMenuPage<PeoplePage> {
 
         return new UserPage(getDriver());
     }
-
 }

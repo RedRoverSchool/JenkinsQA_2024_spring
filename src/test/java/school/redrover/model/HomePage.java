@@ -103,12 +103,6 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
     @FindBy(tagName = "h1")
     private WebElement heading;
 
-    @FindBy(xpath = "//a[@class='jenkins-table__link model-link inside']")
-    private List<WebElement> listNamesOfItems;
-
-    @FindBy(xpath = "//td//button[@class='jenkins-menu-dropdown-chevron']")
-    private List<WebElement> jenkinsMenuDropdownChevron;
-
     @FindBy(xpath = "//a[contains(@href, '/move')]")
     private WebElement moveOption;
 
@@ -174,6 +168,10 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
 
     @FindBy(xpath = "//h1")
     private WebElement h1Heading;
+
+    @FindBy(css = "#tasks > div")
+    private List<WebElement> sidebarMenuList;
+
 
 
     public HomePage(WebDriver driver) {
@@ -595,7 +593,7 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
         return welcomeJenkinsHeader.getText();
     }
 
-    public HomePage clickDeleteItemAndConfirm(String itemName) {
+    public HomePage clickDeleteProjectDropdownAndConfirm(String itemName) {
 
         WebElement itemName1 = getDriver().findElement(By.id("job_" + itemName));
         openElementDropdown(itemName1);
@@ -659,6 +657,7 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
         return tooltip.isDisplayed();
     }
 
+
     public HomePage createFreestyleProject(String name) {
         clickNewItem()
                 .setItemName(name)
@@ -713,6 +712,7 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
         return new HomePage(getDriver());
     }
 
+
     public UserConfigurePage openUserConfigurations() {
         return clickPeopleSideMenu()
                 .clickUserIdLink()
@@ -730,5 +730,14 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
                 .inputAuthenticationToken(projectName)
                 .clickAddTimestampsCheckbox()
                 .clickSaveButton();
+    }
+
+    public List<String> getSidebarMenuList() {
+        List<String> menuList = new ArrayList<>();
+        for (WebElement element : sidebarMenuList) {
+            menuList.add(element.getText());
+        }
+
+        return menuList;
     }
 }

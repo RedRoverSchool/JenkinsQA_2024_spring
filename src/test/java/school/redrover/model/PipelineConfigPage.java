@@ -27,9 +27,6 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
     @FindBy(xpath = "//div[@class = 'samples']//select")
     private WebElement samplePipelineScript;
 
-    @FindBy(xpath = "//*[@id='pipeline]")
-    private WebElement isPipelineDisplayed;
-
     @FindBy(xpath = "//a[@previewendpoint='/markupFormatter/previewDescription']")
     private WebElement preview;
 
@@ -47,6 +44,18 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
 
     @FindBy(xpath = "//div[@class='setting-main']//input[contains(@checkurl, 'checkDisplayName')]")
     private WebElement displayNameTextField;
+
+    @FindBy(xpath = "//label[text()='Quiet period']")
+    private WebElement quietPeriodCheckbox;
+
+    @FindBy(name = "quiet_period")
+    private WebElement quietPeriodInputField;
+
+    @FindBy(xpath = "//div[text()='Number of seconds']")
+    private WebElement numberOfSecondsHint;
+
+    @FindBy(xpath = "//div[@class='form-container tr']//div[@class='error']")
+    private WebElement errorMessageForQuietPeriodInputField;
 
     public PipelineConfigPage(WebDriver driver) {
         super(driver, new PipelineProjectPage(driver));
@@ -71,6 +80,49 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
 
         return this;
     }
+
+    public PipelineConfigPage scrollToQuietPeriodCheckbox() {
+        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
+        executor.executeScript("arguments[0].scrollIntoView();", (quietPeriodCheckbox));
+
+        return this;
+    }
+
+    public PipelineConfigPage clickQuietPeriodCheckbox() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(quietPeriodCheckbox)).click();
+
+        return this;
+    }
+
+    public PipelineConfigPage setNumberOfSecondsInQuietPeriodInputField(int seconds) {
+        quietPeriodInputField.clear();
+        quietPeriodInputField.sendKeys(String.valueOf(seconds));
+
+        return this;
+    }
+
+    public PipelineConfigPage setNumberOfSecondsInQuietPeriodInputField(double seconds) {
+        quietPeriodInputField.clear();
+        quietPeriodInputField.sendKeys(String.valueOf(seconds));
+
+        return this;
+    }
+
+    public PipelineConfigPage clickNumberOfSecondsHint() {
+        numberOfSecondsHint.click();
+
+        return this;
+    }
+
+    public String getQuietPeriodInputFieldValue() {
+        return getWait5().until(ExpectedConditions.visibilityOf(quietPeriodInputField)).getAttribute("value");
+
+    }
+
+    public String getQuietPeriodInputErrorText() {
+        return getWait5().until(ExpectedConditions.visibilityOf(errorMessageForQuietPeriodInputField)).getText();
+    }
+
 
     public PipelineConfigPage setDisplayNameDescription(String name) {
         getWait5().until(ExpectedConditions.elementToBeClickable(displayNameTextField)).sendKeys(name);
@@ -122,7 +174,7 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
 
         for (int i = 1; i <= stagesQtt; i++) {
 
-            String stage = "\nstage(\'stage " + i + "\') {\nsteps {\necho \'test " + i + "\'\n";
+            String stage = "\nstage('stage " + i + "') {\nsteps {\necho 'test " + i + "'\n";
             getDriver().findElement(By.className("ace_text-input")).sendKeys(stage, Keys.ARROW_DOWN, Keys.ARROW_DOWN);
         }
 

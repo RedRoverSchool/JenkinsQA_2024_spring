@@ -19,9 +19,6 @@ public class CreateNewViewPage extends BasePage {
     @FindBy (xpath = "//label[text() = 'My View']")
     private WebElement myViewRadioButton;
 
-    @FindBy (xpath = "//div[@class='tab active']")
-    private WebElement newViewName;
-
     public CreateNewViewPage(WebDriver driver) { super(driver); }
 
     public CreateNewViewPage setViewName(String viewName) {

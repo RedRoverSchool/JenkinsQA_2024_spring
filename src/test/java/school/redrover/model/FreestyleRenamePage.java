@@ -1,6 +1,5 @@
 package school.redrover.model;
 
-import org.checkerframework.checker.units.qual.C;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -30,13 +29,6 @@ public class FreestyleRenamePage extends BasePage {
         submitButton.click();
 
         return new FreestyleProjectPage(getDriver());
-    }
-
-    public ConfirmRenamePage clickRenameAnyway() {
-
-        submitButton.click();
-
-        return new ConfirmRenamePage(getDriver());
     }
 
     public ItemErrorPage clearNameAndClickRenameButton() {

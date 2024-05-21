@@ -18,9 +18,6 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
     @FindBy(id = "main-panel")
     private WebElement fullProjectName;
 
-    @FindBy(tagName = "h1")
-    private WebElement projectName;
-
     @FindBy(css = "#description > div:first-child")
     private WebElement projectDescription;
 

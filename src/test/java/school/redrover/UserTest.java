@@ -4,6 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.CreateUserPage;
 import school.redrover.model.HeaderBlock;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
@@ -122,5 +123,22 @@ public class UserTest extends BaseTest {
                 .getCurrentUrl();
 
         Assert.assertTrue(currentUrl.contains(username.toLowerCase()));
+    }
+
+    @Test
+    public void testErrorMessageForEmptyField(){
+
+        new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickUsers()
+                .createUser("", "", "", "");
+
+        CreateUserPage createUserPage = new CreateUserPage(getDriver());
+
+        Assert.assertNotNull(createUserPage.getUsernameErrorMsgField());
+        Assert.assertNotNull(createUserPage.getPasswordErrorMsgField());
+        Assert.assertNotNull(createUserPage.getFullNameErrorMsgField());
+        Assert.assertNotNull(createUserPage.getEmailErrorMsgField());
+
     }
 }

@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.model.DashboardPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
@@ -21,17 +20,17 @@ public class DashboardTest extends BaseTest {
 
     @Test
     public void testDashboardMenu() {
-        final List<String> expectedDashboardMenu = List.of(
+        final List<String> expectedSidebarMenu = List.of(
                 "New Item",
                 "People",
                 "Build History",
                 "Manage Jenkins",
                 "My Views");
 
-        List<String> actualDashboardMenu = new DashboardPage(getDriver())
-                .getDashboardMenuList();
+        List<String> actualSidebarMenu = new HomePage(getDriver())
+                .getSidebarMenuList();
 
-        Assert.assertEquals(actualDashboardMenu, expectedDashboardMenu);
+        Assert.assertEquals(actualSidebarMenu, expectedSidebarMenu);
     }
 
     @Test(dependsOnMethods = "testDashboardMenu")
