@@ -20,9 +20,6 @@ public class MultibranchPipelineConfigPage extends BaseConfigPage<MultibranchPip
     @FindBy(id = "enable-disable-project")
     private WebElement toggleInput;
 
-    @FindBy(css = "#breadcrumbs > li:nth-child(3)")
-    private WebElement multibranchPipelineBreadcrumbs;
-
     public MultibranchPipelineConfigPage(WebDriver driver) {
         super(driver, new MultibranchPipelineProjectPage(driver));
     }

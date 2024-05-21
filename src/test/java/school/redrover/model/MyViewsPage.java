@@ -9,8 +9,4 @@ public class MyViewsPage extends BasePage {
     public MyViewsPage(WebDriver driver) {
         super(driver);
     }
-
-    public String getMyViewsPageUrl() {
-        return TestUtils.getBaseUrl() + "/me/my-views/view/all/";
-    }
 }

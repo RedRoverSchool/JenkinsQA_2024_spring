@@ -12,13 +12,13 @@ import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class CreateNewItemPage extends BasePage {
 
     @FindBy(id = "name")
     WebElement newItemName;
+
     @FindBy(id = "name")
     private WebElement nameText;
 
@@ -150,10 +150,6 @@ public class CreateNewItemPage extends BasePage {
         return errorMessageEmptyName.getText();
     }
 
-    public String getCreateNewItemPageUrl() {
-        return TestUtils.getBaseUrl() + "/view/all/newJob";
-    }
-
     public CreateNewItemPage setItemNameInCopyForm(String name) {
         nameTextInCopyForm.sendKeys(name);
         return this;
@@ -201,10 +197,6 @@ public class CreateNewItemPage extends BasePage {
         return this;
     }
 
-    public Boolean getOkButtoneState() {
-        return okButton.getAttribute("disabled").isEmpty();
-    }
-
     public CreateNewItemPage clearItemNameField() {
         nameText.sendKeys(Keys.CONTROL + "a", Keys.BACK_SPACE);
         return this;
@@ -245,7 +237,7 @@ public class CreateNewItemPage extends BasePage {
     public Boolean isAttributeAriaChecked(String projectType, int itemOptionIndex) {
 
         return Boolean.parseBoolean(getDriver().findElement(
-                By.xpath(String.format("//div[contains(@id, '%s')]/ul/li[%d]", projectType, itemOptionIndex)))
+                        By.xpath(String.format("//div[contains(@id, '%s')]/ul/li[%d]", projectType, itemOptionIndex)))
                 .getAttribute("aria-checked"));
     }
 

@@ -26,15 +26,8 @@ public class BuildHistoryPage extends BasePage {
     @FindBy(xpath = "//a[@class='jenkins-table__link model-link']")
     private WebElement buildNameOnTimeline;
 
-    @FindBy(css = "h1")
-    private WebElement pageHeading;
-
     public BuildHistoryPage(WebDriver driver) {
         super(driver);
-    }
-
-    public String getBuildHistoryPageUrl() {
-        return TestUtils.getBaseUrl() + "/view/all/builds";
     }
 
     public BuildHistoryPage hoverOverItemName(String name) {
@@ -66,7 +59,7 @@ public class BuildHistoryPage extends BasePage {
         return !getBuildsList().contains(name);
     }
 
-    public BuildConsoleOutputPage clickBuild1Console(int buildNumber) {
+    public BuildConsoleOutputPage clickBuild1Console() {
         buildConsole.click();
 
         return new BuildConsoleOutputPage(getDriver());
@@ -75,9 +68,5 @@ public class BuildHistoryPage extends BasePage {
     public boolean isDisplayedBuildOnTimeline() {
         return buildNameOnTimeline.isDisplayed();
 
-    }
-
-    public String getPageHeading() {
-        return pageHeading.getText();
     }
 }

@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseProjectPage;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
 
@@ -96,7 +97,7 @@ public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
         return itemsList
                 .stream()
                 .map(WebElement::getText)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public FolderProjectPage clickAddOrEditDescription() {
@@ -194,17 +195,4 @@ public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
 
         return this;
     }
-
-    public FolderProjectPage openItemDropdown() {
-        WebElement dropdownElement = getDriver().findElement(By.xpath("//td//button[@class='jenkins-menu-dropdown-chevron']"));
-        clickSpecificDropdownArrow(dropdownElement);
-
-        return this;
-    }
-
-    public FolderProjectPage clickDropdownDeleteProject() {
-        deleteProject.click();
-
-        return this;
-    }
-}
+   }

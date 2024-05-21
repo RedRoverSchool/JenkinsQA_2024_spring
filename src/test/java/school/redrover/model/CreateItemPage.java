@@ -18,10 +18,6 @@ public class CreateItemPage extends BasePage {
         super(driver);
     }
 
-    public String getCurrentUrl() {
-       return getDriver().getCurrentUrl();
-    }
-
     public String getPageHeaderText() {
         return pageHeader.getText();
     }
