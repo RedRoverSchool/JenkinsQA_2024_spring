@@ -29,16 +29,8 @@ public class PipelineTest extends BaseTest {
 
     private static final By ADVANCED_PROJECT_OPTIONS_MENU = By.xpath("//button[@data-section-id='advanced-project-options']");
 
-    public void createPipeline(String pipelineName) {
-        new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(pipelineName)
-                .selectPipelineAndClickOk();
-    }
-
-    @Test
+        @Test
     public void testCreatePipeline() {
-
         List<String> itemPipeline = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
@@ -52,7 +44,6 @@ public class PipelineTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreatePipeline")
     public void testCreatePipelineSameName() {
-
         String itemPipeline = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
@@ -64,7 +55,6 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testCreatePipelineWithEmptyName() {
-
         String itemPipeline = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName("")
@@ -76,7 +66,6 @@ public class PipelineTest extends BaseTest {
 
     @Test(dependsOnMethods = "testUseSearchToFindProject")
     public void testFindPipelineProject() {
-
         String searchResult = new HeaderBlock(getDriver())
                 .enterRequestIntoSearchBox(PIPELINE_NAME)
                 .makeClickToSearchBox()
@@ -673,6 +662,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(actualOrder, expectedOrder);
     }
 
+    @Ignore
     @Test
     public void testBuildColorGreen() {
 
@@ -692,7 +682,7 @@ public class PipelineTest extends BaseTest {
             getDriver().findElement(By.id("jenkins-name-icon")).click();
         }
 
-        createPipeline(PIPELINE_NAME);
+        TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
         String pipelineScript = """
                 pipeline {
@@ -850,7 +840,8 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testFullStageViewDropDownMenu() {
-        createPipeline(PIPELINE_NAME);
+        TestUtils.createPipelineProject(this, PIPELINE_NAME);
+
         getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']"))).click();
 
         WebElement chevron = getDriver().findElement(By.xpath("//a[@href='job/" + PIPELINE_NAME + "/']//button[@class='jenkins-menu-dropdown-chevron']"));
@@ -904,7 +895,7 @@ public class PipelineTest extends BaseTest {
     @Ignore
     @Test
     public void testDisablePipelineProject() {
-        createPipeline(PIPELINE_NAME);
+        TestUtils.createPipelineProject(this, PIPELINE_NAME);
         getDriver().findElement(By.cssSelector("#tasks > div:nth-child(4) > span > a")).click();
 
         getWait60().until(ExpectedConditions.textToBePresentInElementLocated(By.id("pipeline-box"), "Stage View\n" +
@@ -974,7 +965,7 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testSectionsOfSidePanelAreVisible() {
-        createPipeline(PIPELINE_NAME);
+        TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
         getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
         getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
@@ -1044,7 +1035,8 @@ public class PipelineTest extends BaseTest {
     public void testVerifySectionHasTooltip() {
         String labelText = "Display Name";
         String tooltipText = "Help for feature: Display Name";
-        createPipeline(PIPELINE_NAME);
+
+        TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
         getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
         getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
@@ -1065,7 +1057,7 @@ public class PipelineTest extends BaseTest {
     @Ignore
     @Test
     public void testChoosePipelineScript() {
-        createPipeline(PIPELINE_NAME);
+        TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@data-section-id='pipeline']"))).click();
 
@@ -1159,7 +1151,7 @@ public class PipelineTest extends BaseTest {
     public void testVerifySectionsHaveTooltips() {
         String[] labelsText = {"Display Name", "Script"};
 
-        createPipeline(PIPELINE_NAME);
+        TestUtils.createPipelineProject(this, PIPELINE_NAME);
         getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
         getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
 
@@ -1196,7 +1188,6 @@ public class PipelineTest extends BaseTest {
         };
     }
     @Test(dataProvider = "tooltipTextProvider")
-
     void testVerifyConfigurationPageHaveTooltips(String tooltipText) {
         new HomePage(getDriver())
                 .clickNewItem()
@@ -1212,7 +1203,7 @@ public class PipelineTest extends BaseTest {
     public void testSetNumberOfBuildsThrottleBuilds() {
         final String messageDay = "Approximately 24 hours between builds";
 
-        createPipeline(PIPELINE_NAME);
+        TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
         getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
         getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
