@@ -20,10 +20,10 @@ public class OrganizationFolderTest extends BaseTest {
 
     private static final String ORGANIZATION_FOLDER_DESCRIPTION = "Some description of the organization folder.";
 
-    private List<String> getActualList(){
+    private List<String> getActualList() {
         List<String> actualList = new ArrayList<>();
-        for (int i=1; i<=9; i++){
-            String xPath = "//*[@id=\"tasks\"]/div["+ i + "]/span/a/span[2]";
+        for (int i = 1; i <= 9; i++) {
+            String xPath = "//*[@id=\"tasks\"]/div[" + i + "]/span/a/span[2]";
             actualList.add(getDriver().findElement(By.xpath(xPath)).getText());
         }
         return actualList;
@@ -57,7 +57,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateViaNewItem")
-    public void testAddDescription(){
+    public void testAddDescription() {
 
         String textInDescription = new OrganizationFolderProjectPage(getDriver())
                 .clickAddOrEditDescription()
@@ -150,7 +150,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateViaNewItem")
-    public void testScanOrganizationFolder(){
+    public void testScanOrganizationFolder() {
         String scan = new HomePage(getDriver())
                 .clickJobByName(ORGANIZATION_FOLDER_NAME,
                         new OrganizationFolderProjectPage(getDriver()))
@@ -161,7 +161,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateViaNewItem")
-    public void testFindOrganizationFolderOnDashboard(){
+    public void testFindOrganizationFolderOnDashboard() {
         HomePage homePage = new HomePage(getDriver());
 
         Assert.assertListContainsObject(homePage.getItemList(), ORGANIZATION_FOLDER_NAME,
@@ -169,25 +169,25 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateViaNewItem")
-    public void testPipelineSyntaxMenuList(){
+    public void testPipelineSyntaxMenuList() {
         final List<String> getExpectedList = List.of("Back", "Snippet Generator", "Declarative Directive Generator",
                 "Declarative Online Documentation", "Steps Reference",
                 "Global Variables Reference", "Online Documentation", "Examples Reference",
                 "IntelliJ IDEA GDSL");
 
         WebElement currentOrganizationFolder = getDriver().
-                findElement(By.xpath("//span[text()='" + ORGANIZATION_FOLDER_NAME + "']/..")) ;
+                findElement(By.xpath("//span[text()='" + ORGANIZATION_FOLDER_NAME + "']/.."));
         new Actions(getDriver()).moveToElement(currentOrganizationFolder).perform();
 
         WebElement menuForCurrentOrganizationFolder = getDriver().
-                findElement(By.xpath("//*[@id='job_"+ ORGANIZATION_FOLDER_NAME + "']/td[3]/a"));
+                findElement(By.xpath("//*[@id='job_" + ORGANIZATION_FOLDER_NAME + "']/td[3]/a"));
         menuForCurrentOrganizationFolder.click();
 
         WebElement pipelineSyntaxMenu = getDriver().
-                findElement(By.xpath("//*[@href='/job/"+ ORGANIZATION_FOLDER_NAME +"/pipeline-syntax']"));
+                findElement(By.xpath("//*[@href='/job/" + ORGANIZATION_FOLDER_NAME + "/pipeline-syntax']"));
         pipelineSyntaxMenu.click();
 
-        for (int i=0; i<getActualList().size(); i++){
+        for (int i = 0; i < getActualList().size(); i++) {
             Assert.assertEquals(getActualList().get(i), getExpectedList.get(i));
         }
     }
@@ -203,7 +203,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
-    public void testDeleteOrganizationFolder () {
+    public void testDeleteOrganizationFolder() {
 
         List<String> itemList = new HomePage(getDriver())
                 .clickNewItem()
@@ -247,5 +247,23 @@ public class OrganizationFolderTest extends BaseTest {
                 .isNavigatedToCorrespondingBlockClickingAnchorLink();
 
         Assert.assertTrue(isNavigatedToCorrespondingBlock, "An anchor link leads to a wrong block");
+    }
+
+    @Test
+    public void testThrottleBuildsTimePeriodOptions() {
+        final List<String> expectedTimePeriodOptions = List.of("Second", "Minute", "Hour", "Day", "Week", "Month", "Year");
+
+        List<String> actualTimePeriodOptions = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
+                .clickConfigure()
+                .scrollToPropertyStrategyBlock()
+                .clickAddPropertyButton()
+                .clickThrottleBuildsDropdownOption()
+                .getTimePeriodOptions();
+
+        Assert.assertEquals(actualTimePeriodOptions, expectedTimePeriodOptions);
     }
 }
