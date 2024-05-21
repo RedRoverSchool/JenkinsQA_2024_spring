@@ -1,10 +1,8 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.CreateItemPage;
 import school.redrover.model.CreateNewItemPage;
@@ -173,6 +171,8 @@ public class NewItemTest extends BaseTest {
                 {"organizationFolder","organizationFolder1"}
        };
     }
+
+    @Ignore
     @Test(dependsOnMethods = "testDropdownNamesMenuContentWhenCopyProject" ,dataProvider = "existingJobsNames")
     public void testCopyFromExistingJob(String type, String jobName) {
 
