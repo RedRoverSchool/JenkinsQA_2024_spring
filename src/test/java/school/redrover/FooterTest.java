@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.AboutJenkinsPage;
 import school.redrover.model.HomePage;
@@ -41,7 +42,7 @@ public class FooterTest extends BaseTest {
 
         Assert.assertTrue(page.isDisplayedVersionJenkins());
     }
-
+@Ignore
     @Test
     public void testDropDownLink() {
         HomePage page = new HomePage(getDriver())

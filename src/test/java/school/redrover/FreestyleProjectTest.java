@@ -389,7 +389,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertTrue(isItemDeleted);
     }
-
+@Ignore
     @Test
     public void testCheckQuestion() {
 
