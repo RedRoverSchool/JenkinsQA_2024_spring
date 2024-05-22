@@ -152,9 +152,8 @@ public class ManageJenkinsPage extends BasePage {
         for (WebElement element : sectionsLinksList) {
                 try {
                     getWait2().until(ExpectedConditions.elementToBeClickable(element));
-                    System.out.println("Element is clickable: " + element.getText());
                 } catch (Exception e) {
-                    System.out.println("Element is NOT clickable: " + element);
+                    System.out.println("Element is NOT clickable: " + element.getText());
                     return false;
                 }
         }
@@ -162,7 +161,6 @@ public class ManageJenkinsPage extends BasePage {
     }
 
     public Integer getNumberOfSectionLinks() {
-        return sectionsLinksList
-                .size();
+        return sectionsLinksList.size();
     }
 }
