@@ -47,6 +47,12 @@ public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFol
     @FindBy(css = "[class$='select'] [fillurl*='fillDuration']")
     private WebElement timePeriodDropdown;
 
+    @FindBy(xpath = "//button[contains(text(), 'Untrusted')]")
+    private WebElement untrustedDropdownOption;
+
+    @FindBy(css = "[name='publisherWhitelist'][type='checkbox']")
+    private List<WebElement> untrustedCheckboxesList;
+
     public OrganizationFolderConfigPage(WebDriver driver) {
         super(driver, new OrganizationFolderProjectPage(driver));
     }
@@ -124,5 +130,28 @@ public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFol
                 .stream()
                 .map(WebElement::getText)
                 .toList();
+    }
+
+    public OrganizationFolderConfigPage clickUntrustedDropdownOption() {
+        untrustedDropdownOption.click();
+
+        return this;
+    }
+
+    public OrganizationFolderConfigPage selectUntrustedCheckboxes() {
+        for (WebElement element : untrustedCheckboxesList) {
+            element.click();
+        }
+
+        return this;
+    }
+
+    public boolean areUntrustedCheckboxesSelected() {
+        for (WebElement element : untrustedCheckboxesList) {
+            if (!element.isSelected()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

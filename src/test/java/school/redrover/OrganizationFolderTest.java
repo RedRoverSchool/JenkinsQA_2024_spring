@@ -266,4 +266,25 @@ public class OrganizationFolderTest extends BaseTest {
 
         Assert.assertEquals(actualTimePeriodOptions, expectedTimePeriodOptions);
     }
+
+    @Test
+    public void testUntrustedPropertyCheckboxesSelectedUponSaving() {
+
+        boolean untrustedPropertyCheckboxesSelectedUponSaving = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
+                .clickConfigure()
+                .scrollToPropertyStrategyBlock()
+                .clickAddPropertyButton()
+                .clickUntrustedDropdownOption()
+                .selectUntrustedCheckboxes()
+                .clickSaveButton()
+                .clickConfigure()
+                .scrollToPropertyStrategyBlock()
+                .areUntrustedCheckboxesSelected();
+
+        Assert.assertTrue(untrustedPropertyCheckboxesSelectedUponSaving, "Not all checkboxes are selected");
+    }
 }
