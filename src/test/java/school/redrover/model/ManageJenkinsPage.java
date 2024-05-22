@@ -3,7 +3,6 @@ package school.redrover.model;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.runner.TestUtils;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
@@ -49,6 +48,9 @@ public class ManageJenkinsPage extends BasePage {
 
     @FindBy(xpath ="//html" )
     private WebElement colorSchema;
+
+    @FindBy(css = ".jenkins-section__item")
+    private List<WebElement> sectionsLinksList;
 
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
@@ -144,5 +146,23 @@ public class ManageJenkinsPage extends BasePage {
 
     public String colorSchema(){
         return colorSchema.getAttribute("data-theme");
+    }
+
+    public boolean areSectionsLinksClickable() {
+        for (WebElement element : sectionsLinksList) {
+                try {
+                    getWait2().until(ExpectedConditions.elementToBeClickable(element));
+                    System.out.println("Element is clickable: " + element.getText());
+                } catch (Exception e) {
+                    System.out.println("Element is NOT clickable: " + element);
+                    return false;
+                }
+        }
+        return true;
+    }
+
+    public Integer getNumberOfSectionLinks() {
+        return sectionsLinksList
+                .size();
     }
 }

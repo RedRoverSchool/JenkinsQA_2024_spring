@@ -236,4 +236,13 @@ public class ManageJenkinsTest extends BaseTest {
 
         Assert.assertEquals(actualListName, expectedLinksName);
     }
+
+    @Test
+    public void testSectionsLinksAreClickable() {
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins();
+
+        Assert.assertTrue(manageJenkinsPage.areSectionsLinksClickable(), "Not all links are clickable");
+        Assert.assertEquals(manageJenkinsPage.getNumberOfSectionLinks(), 19);
+    }
 }
