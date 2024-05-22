@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 public class MultibranchPipelineRenamePage extends BasePage {
@@ -18,11 +19,21 @@ public class MultibranchPipelineRenamePage extends BasePage {
         super(driver);
     }
 
-    public MultibranchPipelineProjectPage changeNameTo(String newName) {
+    public MultibranchPipelineRenamePage clearNewNameInput() {
         newNameInput.clear();
-        newNameInput.sendKeys(newName);
-        renameButton.click();
 
-        return new MultibranchPipelineProjectPage(getDriver());
+        return this;
+    }
+
+    public MultibranchPipelineRenamePage setItemName(String newProjectName) {
+        newNameInput.sendKeys(newProjectName);
+
+        return this;
+    }
+
+    public <T> T clickRename(T page) {
+        getWait10().until(ExpectedConditions.elementToBeClickable(renameButton)).click();
+
+        return page;
     }
 }

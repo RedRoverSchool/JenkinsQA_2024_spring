@@ -172,8 +172,6 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
     @FindBy(css = "#tasks > div")
     private List<WebElement> sidebarMenuList;
 
-
-
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -569,13 +567,6 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
         dropdownPipelineSyntax.click();
 
         return new PipelineSyntaxPage(getDriver());
-    }
-
-    public FreestyleProjectPage clickCreatedItemName() {
-
-        createdItemNameInList.click();
-
-        return new FreestyleProjectPage(getDriver());
     }
 
     public int getSizeViewNameList() {
