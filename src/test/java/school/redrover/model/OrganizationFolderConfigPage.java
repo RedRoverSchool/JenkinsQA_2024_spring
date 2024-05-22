@@ -154,4 +154,11 @@ public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFol
         }
         return true;
     }
+
+    public Integer getSelectedCheckboxesSize() {
+        return (int) untrustedCheckboxesList
+                .stream()
+                .filter(WebElement::isSelected)
+                .count();
+    }
 }
