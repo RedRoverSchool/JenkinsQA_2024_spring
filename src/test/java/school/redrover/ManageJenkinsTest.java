@@ -275,11 +275,11 @@ public class ManageJenkinsTest extends BaseTest {
         put("Prepare for Shutdown", "Stops executing new builds, so that the system can be eventually shut down safely.");
         }};
 
-        boolean actualSystemInformationBlockTitlesAndDescriptions = new HomePage(getDriver())
+        boolean areToolsAndActionsBlockTitlesDescriptionsAndOrderMatching = new HomePage(getDriver())
                 .clickManageJenkins()
                 .areToolsAndActionsSectionsAndDescriptionsMatchingInCorrectOrder(expectedTitlesAndDescriptions);
 
-        Assert.assertTrue(actualSystemInformationBlockTitlesAndDescriptions,
+        Assert.assertTrue(areToolsAndActionsBlockTitlesDescriptionsAndOrderMatching,
                 "Title and description pairs or their order are different");
     }
 }
