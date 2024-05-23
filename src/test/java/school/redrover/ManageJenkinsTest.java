@@ -245,4 +245,20 @@ public class ManageJenkinsTest extends BaseTest {
         Assert.assertTrue(manageJenkinsPage.areSectionsLinksClickable(), "Not all links are clickable");
         Assert.assertEquals(manageJenkinsPage.getNumberOfSectionLinks(), 19);
     }
+
+    @Test
+    public void testSystemInformationBlockTitlesAndDescriptions() {
+        final Map<String, String> expectedSystemInformationBlockTitlesAndDescriptions = Map.ofEntries(
+                Map.entry("System Information", "Displays various environmental information to assist trouble-shooting."),
+                Map.entry("System Log", "System log captures output from java.util.logging output related to Jenkins."),
+                Map.entry("Load Statistics","Check your resource utilization and see if you need more computers for your builds."),
+                Map.entry("About Jenkins", "See the version and license information.")
+        );
+
+        Map<String, String> actualSystemInformationBlockTitlesAndDescriptions = new HomePage(getDriver())
+                .clickManageJenkins()
+                .getSystemInformationBlockTitlesAndDescriptions();
+
+        Assert.assertEquals(actualSystemInformationBlockTitlesAndDescriptions, expectedSystemInformationBlockTitlesAndDescriptions);
+    }
 }

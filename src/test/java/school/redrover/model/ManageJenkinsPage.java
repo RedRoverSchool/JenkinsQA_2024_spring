@@ -6,7 +6,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
+
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ManageJenkinsPage extends BasePage {
 
@@ -51,6 +54,12 @@ public class ManageJenkinsPage extends BasePage {
 
     @FindBy(css = ".jenkins-section__item")
     private List<WebElement> sectionsLinksList;
+
+    @FindBy(xpath = "(//div[@class='jenkins-section__items'])[3]//dt")
+    private List<WebElement> systemInformationBlockTitles;
+
+    @FindBy(xpath = "(//div[@class='jenkins-section__items'])[3]//dd [position() mod 2 = 1]")
+    private List<WebElement> systemInformationBlockDescriptions;
 
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
@@ -162,5 +171,16 @@ public class ManageJenkinsPage extends BasePage {
 
     public Integer getNumberOfSectionLinks() {
         return sectionsLinksList.size();
+    }
+
+    public Map<String, String> getSystemInformationBlockTitlesAndDescriptions() {
+        Map<String, String> actualTitlesAndDescriptions = new LinkedHashMap<>();
+        for (int i = 0; i < systemInformationBlockTitles.size(); i++) {
+            String actualTitle = systemInformationBlockTitles.get(i).getText();
+            String actualDescription = systemInformationBlockDescriptions.get(i).getText();
+
+            actualTitlesAndDescriptions.put(actualTitle, actualDescription);
+        }
+        return actualTitlesAndDescriptions;
     }
 }
