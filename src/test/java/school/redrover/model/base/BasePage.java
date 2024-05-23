@@ -12,12 +12,6 @@ import java.util.ArrayList;
 
 public abstract class BasePage extends BaseModel {
 
-    @FindBy(css = "a.model-link > span")
-    private WebElement userNameOnHeader;
-
-    @FindBy(id = "search-box")
-    private WebElement searchBox;
-
     @FindBy(css = "[class$=jenkins_ver]")
     private WebElement version;
 
@@ -47,14 +41,6 @@ public abstract class BasePage extends BaseModel {
 
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", chevron);
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
-    }
-
-    public void openHeaderUsernameDropdown() {
-        new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.cssSelector("[data-href$='admin']")))
-                .pause(1000)
-                .click()
-                .perform();
     }
 
     public boolean isThereTextInBreadcrumbs(String text) {
@@ -101,23 +87,6 @@ public abstract class BasePage extends BaseModel {
         ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView(true);", element);
     }
 
-    public UserPage clickUserNameOnHeader() {
-        userNameOnHeader.click();
-
-        return new UserPage(getDriver());
-    }
-
-    public <T extends BaseProjectPage> T searchProjectByName(String projectName, T projectType) {
-        searchBox.sendKeys(projectName + Keys.ENTER);
-
-        return projectType;
-    }
-
-    public SearchResultPage typeTextToSearchBox(String text) {
-        searchBox.sendKeys(text + Keys.ENTER);
-
-        return new SearchResultPage(getDriver());
-    }
     public String getCurrentUrl() {
         return getDriver().getCurrentUrl();
     }

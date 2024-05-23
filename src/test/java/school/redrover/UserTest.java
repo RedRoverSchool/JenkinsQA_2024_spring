@@ -22,7 +22,7 @@ public class UserTest extends BaseTest {
     public void testCheckUserID() {
 
         String userID = new HomePage(getDriver())
-                .clickUserNameOnHeader()
+                .getHeader().clickUserNameOnHeader()
                 .getUserID();
 
         Assert.assertEquals(userID, "admin");
