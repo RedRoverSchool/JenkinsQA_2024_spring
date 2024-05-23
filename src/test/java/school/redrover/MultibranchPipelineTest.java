@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import school.redrover.model.*;
@@ -251,7 +250,6 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(actualFolderNameInSearch, FOLDER_NAME, MULTI_PIPELINE_NAME + "находится в другой папке");
     }
 
-    @Ignore
     @Test
     public void testDeleteViaDashboardDropdown() {
         String actualPageHeading = new HomePage(getDriver())
@@ -381,7 +379,6 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(disabledMessageColor, "rgba(254, 130, 10, 1)");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testRenameMultibranchPipelineViaSideBar")
     public void testDeleteMpViaBreadcrumbs() {
         boolean isMpDeleted = new HomePage(getDriver())
@@ -405,7 +402,6 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(buttonName, "Disable Multibranch Pipeline");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testMultibranchPipelineEnable")
     public void testDeleteProject() {
         boolean itemIsDeleted = new HomePage(getDriver())
