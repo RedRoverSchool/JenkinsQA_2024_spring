@@ -3,6 +3,8 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.CreateNewItemPage;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 public class FolderDSTest extends BaseTest {
@@ -20,6 +22,24 @@ public class FolderDSTest extends BaseTest {
         getDriver().findElement(By.xpath("//label/span[text()='Folder']/ancestor::li")).click();
         getDriver().findElement(By.id("ok-button")).click();
         openDashboard();
-        Assert.assertTrue(getDriver().findElement(By.linkText(folderName)).isDisplayed());
+        String actualFolderName = getDriver().findElement(By.xpath("//td/a/span")).getText();
+        Assert.assertEquals(actualFolderName, folderName);
+
+        //Assert.assertTrue(getDriver().findElement(By.linkText(folderName)).isDisplayed());
+    }
+    @Test
+    public void testCreateFolderDSSimplePOM() {
+        final String folderName = "FolderDS";
+
+        final HomePage homePage = new HomePage(getDriver());
+        homePage.getNewItemSideMenu().click();
+
+        final CreateNewItemPage itemPage = new CreateNewItemPage(getDriver());
+        itemPage.getNameItemField().sendKeys(folderName);
+        itemPage.getFolderButton().click();
+        itemPage.getOkButton().click();
+        itemPage.clickLogo();
+        String actualFolderName = homePage.getItemName();
+        Assert.assertEquals(actualFolderName, folderName);
     }
 }
