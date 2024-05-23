@@ -266,15 +266,14 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test
     public void testToolsAndActionsBlockSectionsOrderTitlesAndDescriptions() {
-        final Map<String, String> expectedTitlesAndDescriptions = new LinkedHashMap<>();
-        expectedTitlesAndDescriptions.put("Reload Configuration from Disk",
+        final Map<String, String> expectedTitlesAndDescriptions = new LinkedHashMap<>() {{
+        put("Reload Configuration from Disk",
                 "Discard all the loaded data in memory and reload everything from file system. " +
                 "Useful when you modified config files directly on disk.");
-        expectedTitlesAndDescriptions.put("Jenkins CLI", "Access/manage Jenkins from your shell, or from your script.");
-        expectedTitlesAndDescriptions.put("Script Console",
-                "Executes arbitrary script for administration/trouble-shooting/diagnostics.");
-        expectedTitlesAndDescriptions.put("Prepare for Shutdown",
-                "Stops executing new builds, so that the system can be eventually shut down safely.");
+        put("Jenkins CLI", "Access/manage Jenkins from your shell, or from your script.");
+        put("Script Console", "Executes arbitrary script for administration/trouble-shooting/diagnostics.");
+        put("Prepare for Shutdown", "Stops executing new builds, so that the system can be eventually shut down safely.");
+        }};
 
         boolean actualSystemInformationBlockTitlesAndDescriptions = new HomePage(getDriver())
                 .clickManageJenkins()
