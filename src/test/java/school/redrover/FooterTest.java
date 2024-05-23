@@ -74,7 +74,8 @@ public class FooterTest extends BaseTest {
 
     @Test
     public void testVersionOnFooter() {
-        Assert.assertEquals(new HomePage(getDriver()).getVersionOnFooter(), jenkinsVersion);
+        Assert.assertEquals(new HomePage(getDriver()).getFooter().getVersionOnFooter(),
+                jenkinsVersion);
     }
 
     @Test

@@ -5,10 +5,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.model.FreestyleProjectPage;
-import school.redrover.model.HomePage;
-import school.redrover.model.SearchResultPage;
-import school.redrover.model.UserPage;
+import school.redrover.model.*;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -35,6 +32,14 @@ public abstract class BasePage extends BaseModel {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
 
         return new HomePage(getDriver());
+    }
+
+    public HeaderFrame getHeader() {
+        return new HeaderFrame(getDriver());
+    }
+
+    public FooterFrame getFooter() {
+        return new FooterFrame(getDriver());
     }
 
     public void openElementDropdown(WebElement element) {
