@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +58,12 @@ public class ManageJenkinsPage extends BasePage {
 
     @FindBy(xpath = "(//div[@class='jenkins-section__items'])[3]//dd [position() mod 2 = 1]")
     private List<WebElement> systemInformationBlockDescriptions;
+
+    @FindBy(xpath = "(//div[@class='jenkins-section__items'])[5]//dt")
+    private List<WebElement> toolsAndActionsBlockTitles;
+
+    @FindBy(xpath = "(//div[@class='jenkins-section__items'])[5]//dd [position() mod 2 = 1]")
+    private List<WebElement> toolsAndActionsBlockDescriptions;
 
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
@@ -175,5 +182,33 @@ public class ManageJenkinsPage extends BasePage {
             actualTitlesAndDescriptions.put(actualTitle, actualDescription);
         }
         return actualTitlesAndDescriptions;
+    }
+
+    public Map<String, String> getToolsAndActionsBlockTitlesAndDescriptions() {
+        Map<String, String> actualTitlesAndDescriptions = new LinkedHashMap<>();
+        for (int i = 0; i < toolsAndActionsBlockTitles.size(); i++) {
+            String actualTitle = toolsAndActionsBlockTitles.get(i).getText();
+            String actualDescription = toolsAndActionsBlockDescriptions.get(i).getText();
+
+            actualTitlesAndDescriptions.put(actualTitle, actualDescription);
+        }
+        return actualTitlesAndDescriptions;
+    }
+
+    public boolean areToolsAndActionsSectionsAndDescriptionsMatchingInCorrectOrder(Map<String, String> expected) {
+        int index = 0;
+        for (Map.Entry<String, String> expectedEntry : expected.entrySet()) {
+            Iterator<Map.Entry<String, String>> iterator = getToolsAndActionsBlockTitlesAndDescriptions().entrySet().iterator();
+            Map.Entry<String, String> actualEntry = null;
+            for (int i = 0; i <= index; i++) {
+                actualEntry = iterator.next();
+            }
+            if (!expectedEntry.getKey().equals(actualEntry.getKey()) ||
+                    !expectedEntry.getValue().equals(actualEntry.getValue())) {
+                return false;
+            }
+            index++;
+        }
+        return true;
     }
 }

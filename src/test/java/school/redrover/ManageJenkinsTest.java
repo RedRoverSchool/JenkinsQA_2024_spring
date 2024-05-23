@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.LinkedHashMap;
+
 
 public class ManageJenkinsTest extends BaseTest {
 
@@ -260,5 +262,25 @@ public class ManageJenkinsTest extends BaseTest {
                 .getSystemInformationBlockTitlesAndDescriptions();
 
         Assert.assertEquals(actualSystemInformationBlockTitlesAndDescriptions, expectedSystemInformationBlockTitlesAndDescriptions);
+    }
+
+    @Test
+    public void testToolsAndActionsBlockSectionsOrderTitlesAndDescriptions() {
+        final Map<String, String> expectedTitlesAndDescriptions = new LinkedHashMap<>();
+        expectedTitlesAndDescriptions.put("Reload Configuration from Disk",
+                "Discard all the loaded data in memory and reload everything from file system. " +
+                "Useful when you modified config files directly on disk.");
+        expectedTitlesAndDescriptions.put("Jenkins CLI", "Access/manage Jenkins from your shell, or from your script.");
+        expectedTitlesAndDescriptions.put("Script Console",
+                "Executes arbitrary script for administration/trouble-shooting/diagnostics.");
+        expectedTitlesAndDescriptions.put("Prepare for Shutdown",
+                "Stops executing new builds, so that the system can be eventually shut down safely.");
+
+        boolean actualSystemInformationBlockTitlesAndDescriptions = new HomePage(getDriver())
+                .clickManageJenkins()
+                .areToolsAndActionsSectionsAndDescriptionsMatchingInCorrectOrder(expectedTitlesAndDescriptions);
+
+        Assert.assertTrue(actualSystemInformationBlockTitlesAndDescriptions,
+                "Title and description pairs or their order are different");
     }
 }
