@@ -18,10 +18,8 @@ public class FooterTest extends BaseTest {
         final List<String> expectedDropDownElementsValues = List.of("About Jenkins", "Get involved", "Website");
 
         List<String> actualDropDownElementsValues = new HomePage(getDriver())
-                .getFooter()
-                .clickVersion1()
-                .getFooter()
-                .getVersionDropDownElementsValues();
+                .getFooter().clickVersion(new HomePage(getDriver()))
+                .getFooter().getVersionDropDownElementsValues();
 
         Assert.assertEquals(actualDropDownElementsValues, expectedDropDownElementsValues, "Allarm!");
     }

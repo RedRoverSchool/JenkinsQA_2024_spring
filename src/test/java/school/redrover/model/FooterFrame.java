@@ -10,13 +10,10 @@ import school.redrover.model.base.BasePage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FooterFrame<T extends BasePage> extends BaseFrame {
+public class FooterFrame extends BaseFrame {
 
-    private final T currentPage;
-
-    public FooterFrame(WebDriver driver, T currentPage) {
+    public FooterFrame(WebDriver driver) {
         super(driver);
-        this.currentPage = currentPage;
     }
 
     @FindBy(css = "[class$=jenkins_ver]")
@@ -47,12 +44,6 @@ public class FooterFrame<T extends BasePage> extends BaseFrame {
         getWait2().until(ExpectedConditions.visibilityOf(version)).click();
 
         return page;
-    }
-
-    public T clickVersion1() {
-        getWait2().until(ExpectedConditions.visibilityOf(version)).click();
-
-        return currentPage;
     }
 
     public ApiPage clickApiLink() {
@@ -90,5 +81,4 @@ public class FooterFrame<T extends BasePage> extends BaseFrame {
 
         return actualDropDownElementsValues;
     }
-
 }
