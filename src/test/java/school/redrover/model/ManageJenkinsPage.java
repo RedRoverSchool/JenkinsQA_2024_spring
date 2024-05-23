@@ -49,9 +49,6 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(css = ".jenkins-search__results a:nth-child(2)")
     private WebElement secondSearchResult;
 
-    @FindBy(xpath ="//html" )
-    private WebElement colorSchema;
-
     @FindBy(css = ".jenkins-section__item")
     private List<WebElement> sectionsLinksList;
 
