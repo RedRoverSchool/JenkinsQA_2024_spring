@@ -289,4 +289,27 @@ public class OrganizationFolderTest extends BaseTest {
                 "Not all checkboxes are selected");
         Assert.assertEquals(organizationFolderConfigPage.getSelectedCheckboxesSize(), 11);
     }
+
+    @Test
+    public void testStrategyPropertiesOrderCanBeChanged() {
+        final List<String> expectedStrategyPropertiesList = List.of("Untrusted", "Throttle builds");
+
+        List<String> actualStrategyPropertiesList = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
+                .clickConfigure()
+                .scrollToPropertyStrategyBlock()
+                .clickAddPropertyButton()
+                .clickThrottleBuildsDropdownOption()
+                .clickAddPropertyButton()
+                .clickUntrustedDropdownOption()
+                .changeUntrustedAndThrottleBuildsOrder()
+                .clickSaveButton()
+                .clickConfigure()
+                .getAddedStrategyPropertyList();
+
+        Assert.assertEquals(actualStrategyPropertiesList, expectedStrategyPropertiesList);
+    }
 }

@@ -3,6 +3,7 @@ package school.redrover.model;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BaseConfigPage;
 import org.openqa.selenium.support.ui.Select;
@@ -52,6 +53,15 @@ public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFol
 
     @FindBy(css = "[name='publisherWhitelist'][type='checkbox']")
     private List<WebElement> untrustedCheckboxesList;
+
+    @FindBy(css = "[descriptorid*='UntrustedBranchProperty'] .dd-handle")
+    private WebElement untrustedPropertyDragAndDropIcon;
+
+    @FindBy(css = "[descriptorid$='RateLimitBranchProperty'")
+    private WebElement throttleBuildsProperty;
+
+    @FindBy(css = "[name='props'] [class='repeated-chunk__header']")
+    private List<WebElement> addedPropertyStrategyList;
 
     public OrganizationFolderConfigPage(WebDriver driver) {
         super(driver, new OrganizationFolderProjectPage(driver));
@@ -160,5 +170,23 @@ public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFol
                 .stream()
                 .filter(WebElement::isSelected)
                 .count();
+    }
+
+    public OrganizationFolderConfigPage changeUntrustedAndThrottleBuildsOrder() {
+        new Actions(getDriver())
+                .clickAndHold(untrustedPropertyDragAndDropIcon)
+                .moveToElement(throttleBuildsProperty)
+                .release(throttleBuildsProperty)
+                .perform();
+
+        return this;
+    }
+
+    public List<String> getAddedStrategyPropertyList() {
+        return addedPropertyStrategyList
+                .stream()
+                .map(WebElement::getText)
+                .map(text -> text.replace("\n?", ""))
+                .toList();
     }
 }
