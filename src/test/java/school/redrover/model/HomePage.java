@@ -94,9 +94,6 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
     @FindBy(xpath = "//a[contains(@href, '/move')]")
     private WebElement moveOption;
 
-    @FindBy(xpath = "//*[@href='newJob']")
-    private WebElement createJob;
-
     @FindBy(css = "[class$='am-button security-am']")
     private WebElement warningIcon;
 
