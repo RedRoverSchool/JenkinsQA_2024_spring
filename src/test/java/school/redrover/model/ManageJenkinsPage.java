@@ -153,10 +153,6 @@ public class ManageJenkinsPage extends BasePage {
         return page;
     }
 
-    public String colorSchema(){
-        return colorSchema.getAttribute("data-theme");
-    }
-
     public boolean areSectionsLinksClickable() {
         for (WebElement element : sectionsLinksList) {
                 try {
