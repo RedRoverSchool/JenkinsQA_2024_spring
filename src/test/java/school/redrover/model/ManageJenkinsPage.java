@@ -203,8 +203,8 @@ public class ManageJenkinsPage extends BasePage {
             for (int i = 0; i <= index; i++) {
                 actualEntry = iterator.next();
             }
-            if (!expectedEntry.getKey().equals(actualEntry.getKey()) ||
-                    !expectedEntry.getValue().equals(actualEntry.getValue())) {
+            if (!actualEntry.getKey().equals(expectedEntry.getKey()) ||
+                    !actualEntry.getValue().equals(expectedEntry.getValue())) {
                 return false;
             }
             index++;
