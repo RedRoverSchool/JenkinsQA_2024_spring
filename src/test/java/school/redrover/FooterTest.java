@@ -18,7 +18,9 @@ public class FooterTest extends BaseTest {
         final List<String> expectedDropDownElementsValues = List.of("About Jenkins", "Get involved", "Website");
 
         List<String> actualDropDownElementsValues = new HomePage(getDriver())
-                .clickVersion()
+                .getFooter()
+                .clickVersion1()
+                .getFooter()
                 .getVersionDropDownElementsValues();
 
         Assert.assertEquals(actualDropDownElementsValues, expectedDropDownElementsValues, "Allarm!");
@@ -27,7 +29,7 @@ public class FooterTest extends BaseTest {
     @Test
     public void testRestAPIButtonTitle() {
         String titleText = new HomePage(getDriver())
-                .clickApiLink()
+                .getFooter().clickApiLink()
                 .getApiPageTitleText();
 
         Assert.assertEquals(titleText, "Remote API [Jenkins]");
@@ -37,7 +39,7 @@ public class FooterTest extends BaseTest {
     public void testJenkinsVersion() {
         AboutJenkinsPage page = new HomePage(getDriver())
                 .clickVersion()
-                .selectAboutJenkinsAndClick();
+                .getFooter().selectAboutJenkinsAndClick();
 
         Assert.assertTrue(page.isDisplayedVersionJenkins());
     }
@@ -47,16 +49,16 @@ public class FooterTest extends BaseTest {
         HomePage page = new HomePage(getDriver())
                 .clickVersion();
 
-        Assert.assertTrue(page.isDisplayedAboutJenkinsDropdownItem());
-        Assert.assertTrue(page.isDisplayedInvolvedDropdownItem());
-        Assert.assertTrue(page.isDisplayedWebsiteDropdownItem());
+        Assert.assertTrue(page.getFooter().isDisplayedAboutJenkinsDropdownItem());
+        Assert.assertTrue(page.getFooter().isDisplayedInvolvedDropdownItem());
+        Assert.assertTrue(page.getFooter().isDisplayedWebsiteDropdownItem());
     }
 
     @Test
     public void testJenkinsInformationFooter() {
         boolean isExistJenkinsInformationFooter = new HomePage(getDriver())
                 .clickVersion()
-                .selectAboutJenkinsAndClick()
+                .getFooter().selectAboutJenkinsAndClick()
                 .isExistJenkinsInformationFooter();
 
         Assert.assertTrue(isExistJenkinsInformationFooter);
@@ -66,7 +68,7 @@ public class FooterTest extends BaseTest {
     public void testVersionOnAboutJenkinsPage() {
         String versionOnPage = new HomePage(getDriver())
                 .clickVersion()
-                .selectAboutJenkinsAndClick()
+                .getFooter().selectAboutJenkinsAndClick()
                 .getJenkinsVersion();
 
         Assert.assertEquals(versionOnPage, jenkinsVersion);

@@ -38,8 +38,8 @@ public abstract class BasePage extends BaseModel {
         return new HeaderFrame(getDriver());
     }
 
-    public FooterFrame getFooter() {
-        return new FooterFrame(getDriver());
+    public FooterFrame<? extends BasePage> getFooter() {
+        return new FooterFrame<>(getDriver(), this);
     }
 
     public void openElementDropdown(WebElement element) {

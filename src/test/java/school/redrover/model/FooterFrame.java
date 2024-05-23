@@ -1,76 +1,94 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import school.redrover.model.base.BaseFrame;
 import school.redrover.model.base.BasePage;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FooterFrame extends BaseFrame {
+public class FooterFrame<T extends BasePage> extends BaseFrame {
 
-    public FooterFrame(WebDriver driver) {
+    private final T currentPage;
+
+    public FooterFrame(WebDriver driver, T currentPage) {
         super(driver);
+        this.currentPage = currentPage;
     }
+
+    @FindBy(css = "[class$=jenkins_ver]")
+    private WebElement version;
+
+    @FindBy(xpath = "//a[@href='api/']")
+    private WebElement apiLink;
+
+    @FindBy(xpath = "//div/a[@href='/manage/about']")
+    private WebElement aboutJenkinsDropdownItem;
+
+    @FindBy(xpath = "//div/a[@href='https://www.jenkins.io/participate/']")
+    private WebElement involvedDropdownItem;
+
+    @FindBy(xpath = "//div/a[@href='https://www.jenkins.io/']")
+    private WebElement websiteDropdownItem;
+
+    @FindBy(className = "jenkins-dropdown__item")
+    private List<WebElement> dropDownElements;
+
 
     public String getVersionOnFooter() {
 
-        return getDriver().findElement(By.cssSelector("[class$=jenkins_ver]"))
-                .getText()
-                .split(" ")[1];
+        return version.getText().split(" ")[1];
     }
 
-//    public <T extends BasePage> T clickVersion(T page) {
-//        WebDriverWait wait5 = new WebDriverWait(page.getDriver(), Duration.ofSeconds(5));
-//        wait5.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class$=jenkins_ver]"))).click();
-//
-//        return page;
-//    }
-//
-//    public ApiPage clickApiLink() {
-//        getDriver().findElement(By.xpath("//a[@href='api/']")).click();
-//        return new ApiPage(getDriver());
-//    }
-//
-//    public boolean isDisplayedAboutJenkinsDropdownItem(WebDriver driver) {
-//
-//        return driver.findElement(By.xpath(
-//                "//a[@href='/manage/about']")).isDisplayed();
-//    }
-//
-//    public boolean isDisplayedInvolvedDropdownItem(WebDriver driver) {
-//
-//        return driver.findElement(By.xpath(
-//                "//a[@href='https://www.jenkins.io/participate/']")).isDisplayed();
-//    }
-//
-//    public boolean isDisplayedWebsiteDropdownItem(WebDriver driver) {
-//
-//        return driver.findElement(By.xpath(
-//                "//a[@href='https://www.jenkins.io/']")).isDisplayed();
-//    }
-//
-//    public AboutJenkinsPage selectAboutJenkinsAndClick(WebDriver driver) {
-//        driver.findElement(By.xpath("//a[@href='/manage/about']")).click();
-//
-//        return new AboutJenkinsPage(driver);
-//    }
-//
-//    public List<String> getVersionDropDownElementsValues(WebDriver driver) {
-//        List<WebElement> dropDownElements = driver.findElements(By.className("jenkins-dropdown__item"));
-//
-//        List<String> actualDropDownElementsValues = new ArrayList<>();
-//
-//        for (WebElement element : dropDownElements) {
-//            actualDropDownElementsValues.add(element.getDomProperty("innerText"));
-//        }
-//
-//        return actualDropDownElementsValues;
-//    }
+    public <T extends BasePage> T clickVersion(T page) {
+        getWait2().until(ExpectedConditions.visibilityOf(version)).click();
+
+        return page;
+    }
+
+    public T clickVersion1() {
+        getWait2().until(ExpectedConditions.visibilityOf(version)).click();
+
+        return currentPage;
+    }
+
+    public ApiPage clickApiLink() {
+        apiLink.click();
+
+        return new ApiPage(getDriver());
+    }
+
+    public boolean isDisplayedAboutJenkinsDropdownItem() {
+
+        return getWait5().until(ExpectedConditions.elementToBeClickable(aboutJenkinsDropdownItem)).isDisplayed();
+    }
+
+    public boolean isDisplayedInvolvedDropdownItem() {
+
+        return involvedDropdownItem.isDisplayed();
+    }
+
+    public boolean isDisplayedWebsiteDropdownItem() {
+
+        return websiteDropdownItem.isDisplayed();
+    }
+
+    public AboutJenkinsPage selectAboutJenkinsAndClick() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(aboutJenkinsDropdownItem)).click();
+
+        return new AboutJenkinsPage(getDriver());
+    }
+
+    public List<String> getVersionDropDownElementsValues() {
+        List<String> actualDropDownElementsValues = new ArrayList<>();
+        for (WebElement element : dropDownElements) {
+            actualDropDownElementsValues.add(element.getDomProperty("innerText"));
+        }
+
+        return actualDropDownElementsValues;
+    }
 
 }
