@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import school.redrover.model.CredentialProvidersPage;
 import school.redrover.model.HomePage;
 import school.redrover.model.ManageJenkinsPage;
@@ -13,6 +13,27 @@ import school.redrover.runner.BaseTest;
 import java.util.List;
 
 public class ManageJenkinsTest extends BaseTest {
+
+    private static final Object[][] manageLinks = {
+            {"System", "/configure"},
+            {"Tools", "/configureTools"},
+            {"Plugins", "/pluginManager"},
+            {"Nodes", "/computer"},
+            {"Clouds", "/cloud"},
+            {"Appearance", "/appearance"},
+            {"Security", "/configureSecurity"},
+            {"Credentials", "/credentials"},
+            {"Credential Providers", "/configureCredentials"},
+            {"Users", "/securityRealm"},
+            {"System Information", "/systemInfo"},
+            {"System Log", "/log"},
+            {"Load Statistics", "/load-statistics"},
+            {"About Jenkins", "/about"},
+            {"Manage Old Data", "/OldData"},
+            {"Jenkins CLI", "/cli"},
+            {"Script Console", "/script"},
+            {"Prepare for Shutdown", "/prepareShutdown"}
+    };
 
     @Test
     public void testRedirectionToSecurityPage() {
@@ -165,5 +186,18 @@ public class ManageJenkinsTest extends BaseTest {
                 .getPageHeading();
 
         Assert.assertEquals(pageToNavigateHeading, "Credential Providers");
+    }
+
+    @DataProvider(name = "linksDataProvider")
+    public Object[][] linksDataProvider() {
+        return manageLinks;
+    }
+
+    @Test(dataProvider = "linksDataProvider")
+    public void testManageJenkinsLinks(String link, String endpoint) {
+        String actualUrl = new HomePage(getDriver()).clickManageJenkins()
+                .clickManageLink(link);
+
+        Assert.assertTrue(actualUrl.contains(endpoint));
     }
 }

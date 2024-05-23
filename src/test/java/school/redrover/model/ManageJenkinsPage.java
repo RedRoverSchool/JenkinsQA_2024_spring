@@ -1,10 +1,9 @@
 package school.redrover.model;
 
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.runner.TestUtils;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 import java.util.List;
@@ -142,4 +141,12 @@ public class ManageJenkinsPage extends BasePage {
 
         return page;
     }
+
+    public String clickManageLink(String link) {
+        getDriver().findElement(By.xpath("//dt[text()='" + link + "']")).click();
+
+        return getDriver().getCurrentUrl();
+    }
+
+
 }
