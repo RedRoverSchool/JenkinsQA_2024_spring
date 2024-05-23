@@ -83,31 +83,31 @@ public class FooterTest extends BaseTest {
         List<String> versionList = new ArrayList<>();
 
         versionList.add(new HomePage(getDriver())
-                .getVersionOnFooter());
+                .getFooter().getVersionOnFooter());
 
         versionList.add(new HomePage(getDriver())
                 .clickNewItem()
-                .getVersionOnFooter());
+                .getFooter().getVersionOnFooter());
 
         versionList.add(new HomePage(getDriver())
                 .clickLogo()
                 .clickPeopleOnSidebar()
-                .getVersionOnFooter());
+                .getFooter().getVersionOnFooter());
 
         versionList.add(new HomePage(getDriver())
                 .clickLogo()
                 .clickBuildHistory()
-                .getVersionOnFooter());
+                .getFooter().getVersionOnFooter());
 
         versionList.add(new HomePage(getDriver())
                 .clickLogo()
                 .clickManageJenkins()
-                .getVersionOnFooter());
+                .getFooter().getVersionOnFooter());
 
         versionList.add(new HomePage(getDriver())
                 .clickLogo()
                 .clickMyViewsOnSidebar()
-                .getVersionOnFooter());
+                .getFooter().getVersionOnFooter());
 
         Assert.assertTrue(versionList.stream().allMatch(s -> s.equals(jenkinsVersion)));
     }

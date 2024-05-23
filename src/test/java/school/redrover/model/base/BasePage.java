@@ -122,10 +122,6 @@ public abstract class BasePage extends BaseModel {
         return getDriver().getCurrentUrl();
     }
 
-    public String getVersionOnFooter() {
-        return version.getText().split(" ")[1];
-    }
-
     public HomePage clickVersion() {
         version.click();
 
