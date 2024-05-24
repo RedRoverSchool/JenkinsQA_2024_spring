@@ -88,14 +88,16 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
     }
 
     public PipelineConfigPage scrollToQuietPeriodCheckbox() {
-        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
-        executor.executeScript("arguments[0].scrollIntoView();", (quietPeriodCheckbox));
+        new Actions(getDriver())
+                .scrollToElement(quietPeriodCheckbox)
+                .scrollByAmount(0, 150)
+                .perform();
 
         return this;
     }
 
     public PipelineConfigPage clickQuietPeriodCheckbox() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(quietPeriodCheckbox)).click();
+        quietPeriodCheckbox.click();
 
         return this;
     }
