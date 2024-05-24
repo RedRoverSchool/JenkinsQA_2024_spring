@@ -4,6 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.ViewMyListConfigPage;
+import school.redrover.model.ViewPage;
 import school.redrover.runner.BaseTest;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class ViewsTest extends BaseTest {
 
     public void createView(String VIEW_NAME) {
         new HomePage(getDriver())
-                .clickPlusForCreateView()
+                .clickPlusToCreateView()
                 .setViewName(VIEW_NAME)
                 .clickListViewRadioButton()
                 .clickCreateViewButton();
@@ -46,7 +47,7 @@ public class ViewsTest extends BaseTest {
                 .setItemName(INVISIBLE)
                 .selectPipelineAndClickOk()
                 .clickLogo()
-                .clickPlusForCreateView()
+                .clickPlusToCreateView()
                 .setViewName(VIEW_NAME)
                 .clickListViewRadioButton()
                 .clickCreateViewButton()
@@ -111,7 +112,7 @@ public class ViewsTest extends BaseTest {
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
-                .clickPlusForCreateView()
+                .clickPlusToCreateView()
                 .setViewName(MY_VIEW_NAME)
                 .clickListViewRadioButton()
                 .clickCreateViewButton()
@@ -133,5 +134,34 @@ public class ViewsTest extends BaseTest {
                 .getSizeViewNameList();
 
         Assert.assertEquals(viewNameListSize, 2);
+    }
+
+    @Test
+    public void testItemsInViewsSortedAlphabeticallyByDefault() {
+        final List<String> expectedSortedItemsByNameList = List.of("Freestyle", "OrganizationFolder", "Pipeline");
+
+        ViewPage viewPage = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName("Freestyle")
+                .selectFreestyleAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .clickNewItem()
+                .setItemName("Pipeline")
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .clickNewItem()
+                .setItemName("OrganizationFolder")
+                .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .clickPlusToCreateView()
+                .setViewName("ViewToVerifySorting")
+                .clickMyViewRadioButton()
+                .clickCreateButtonUponChoosingMyView();
+
+        Assert.assertEquals(viewPage.getNameColumnText(), "Name ↓");
+        Assert.assertEquals(viewPage.getProjectNames(), expectedSortedItemsByNameList);
     }
 }

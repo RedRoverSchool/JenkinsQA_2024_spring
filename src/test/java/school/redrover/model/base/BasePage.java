@@ -18,6 +18,9 @@ public abstract class BasePage extends BaseModel {
     @FindBy(tagName = "h1")
     private WebElement heading;
 
+    @FindBy(xpath = "//a[@class='main-search__icon-trailing']")
+    private WebElement tutorialIcon;
+
     public BasePage(WebDriver driver) {
         super(driver);
     }
@@ -145,5 +148,11 @@ public abstract class BasePage extends BaseModel {
                         element);
             }
         };
+    }
+
+    public BasePage openTutorial() {
+        getWait5().until(ExpectedConditions.visibilityOf(tutorialIcon)).click();
+
+        return this;
     }
 }

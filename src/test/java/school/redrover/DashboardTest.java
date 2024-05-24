@@ -196,7 +196,7 @@ public class DashboardTest extends BaseTest {
     @Test(dependsOnMethods = "testOrganizationFolderChevronMenu")
     public void testCreateListView() {
         String createdViewName = new HomePage(getDriver())
-                .clickPlusForCreateView()
+                .clickPlusToCreateView()
                 .setViewName(VIEW_NAME)
                 .clickListViewRadioButton()
                 .clickCreateViewButton()
@@ -292,7 +292,7 @@ public class DashboardTest extends BaseTest {
                         .setItemName(MULTI_CONFIGURATION_PROJECT_NAME)
                         .selectMultiConfigurationAndClickOk()
                         .clickLogo()
-                        .clickPlusForCreateView()
+                        .clickPlusToCreateView()
                         .setViewName(VIEW_NAME)
                         .clickMyViewRadioButton()
                         .clickCreateMyView()

@@ -29,6 +29,9 @@ public class ViewPage extends BasePage {
     @FindBy(xpath = "//button[@data-id='ok']")
     private WebElement confirmButton;
 
+    @FindBy(css = "[initialsortdir='down'] [class='sortheader']")
+    private WebElement nameColumnHeading;
+
     public ViewPage(WebDriver driver) {
         super(driver);
     }
@@ -76,6 +79,10 @@ public class ViewPage extends BasePage {
         }
 
         return actualPipelineViewList;
+    }
+
+    public String getNameColumnText() {
+        return nameColumnHeading.getText().replace("\n ", "");
     }
 }
 
