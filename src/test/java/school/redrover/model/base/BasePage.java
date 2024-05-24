@@ -18,7 +18,7 @@ public abstract class BasePage extends BaseModel {
     @FindBy(css = "a.model-link > span")
     private WebElement userNameOnHeader;
 
-    @FindBy(id = "search-box")
+    @FindBy(xpath = "//input[@id = 'search-box']")
     private WebElement searchBox;
 
     @FindBy(css = "[class$=jenkins_ver]")
@@ -26,6 +26,9 @@ public abstract class BasePage extends BaseModel {
 
     @FindBy(tagName = "h1")
     private WebElement headerOne;
+
+    @FindBy(xpath = "//a[@class='main-search__icon-trailing']")
+    private WebElement tutorialIcon;
 
     public BasePage(WebDriver driver) {
         super(driver);
@@ -103,13 +106,13 @@ public abstract class BasePage extends BaseModel {
     }
 
     public <T extends BaseProjectPage> T searchProjectByName(String projectName, T projectType) {
-        searchBox.sendKeys(projectName + Keys.ENTER);
+        getWait5().until(ExpectedConditions.visibilityOf(searchBox)).sendKeys(projectName + Keys.ENTER);
 
         return projectType;
     }
 
     public SearchResultPage typeTextToSearchBox(String text) {
-        searchBox.sendKeys(text + Keys.ENTER);
+        getWait5().until(ExpectedConditions.visibilityOf(searchBox)).sendKeys(text + Keys.ENTER);
 
         return new SearchResultPage(getDriver());
     }
@@ -175,5 +178,11 @@ public abstract class BasePage extends BaseModel {
                         element);
             }
         };
+    }
+
+    public BasePage openTutorial() {
+        getWait5().until(ExpectedConditions.visibilityOf(tutorialIcon)).click();
+
+        return this;
     }
 }

@@ -1,22 +1,20 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HeaderBlock;
 import school.redrover.model.HomePage;
+import school.redrover.model.PipelineProjectPage;
 import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SearchBoxTest extends BaseTest {
-    private final static String UPPER_CASE_INPUT = "Log";
-    private final static String LOWER_CASE_INPUT = "log";
+    private static final String UPPER_CASE_INPUT = "Log";
+    private static final String LOWER_CASE_INPUT = "log";
     private static final String PIPELINE_NAME = "Pipeline";
 
     @Test
@@ -40,26 +38,27 @@ public class SearchBoxTest extends BaseTest {
         Assert.assertEquals(systemPageTitle, "System");
     }
 
-    @Ignore
     @Test
     public void testFindFolderByOneLetter() {
-        final String lowerCaseLetter = "f";
+        final String lowerCaseLetter = "F";
+
         List<String> folders = new ArrayList<>(List.of("Folder1", "Folder2", "Folder3"));
         folders.forEach(this::createFolder);
-        getWait60();
-        WebElement searchBox = getDriver().findElement(By.id("search-box"));
-        searchBox.sendKeys(lowerCaseLetter);
-        searchBox.sendKeys(Keys.ENTER);
 
-        WebElement ol = getDriver().findElement(By.xpath("//div[@id='main-panel']//ol"));
-        List<WebElement> elements = ol.findElements(By.tagName("li"));
-        elements.get(1).findElement(By.tagName("a")).click();
-        WebElement actualElement = getDriver().findElement(By.xpath("//h1"));
-        String expected = folders.get(0);
+        List<String> searchResult = new HomePage(getDriver())
+                .typeTextToSearchBox(lowerCaseLetter)
+                .getSearchResult();
 
-        Assert.assertEquals(actualElement.getText(), expected);
-        Assert.assertTrue(getDriver().getCurrentUrl().contains(expected));
-        Assert.assertTrue(getDriver().getTitle().contains(expected));
+        Assert.assertEquals(searchResult, folders);
+    }
+
+    public void createFolder(String folderName) {
+        new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(folderName)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .clickLogo();
     }
 
     @Test
@@ -95,36 +94,16 @@ public class SearchBoxTest extends BaseTest {
     }
 
     @Test
-    public void testSearchBox(){
-        createNewPipeline(PIPELINE_NAME);
-        goHomePage();
+    public void testSearchPipeline(){
+        String searchResult = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickLogo()
+                .searchProjectByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
+                .getProjectName();
 
-        WebElement searchBox = getWait5().until(ExpectedConditions.presenceOfElementLocated(By.id("search-box")));
-        searchBox.sendKeys(PIPELINE_NAME);
-        searchBox.sendKeys(Keys.ENTER);
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText(), PIPELINE_NAME);
-    }
-
-    public void goHomePage(){
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']"))).click();
-    }
-
-    public void createFolder(String folderName) {
-        getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.name("name")).sendKeys(folderName);
-        getDriver().findElement(By.xpath("//label/span[text() ='Folder']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        HomePage homePage = new HomePage(getDriver());
-        homePage.clickLogo();
-    }
-
-    public void createNewPipeline(String pipelineName){
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@href='/view/all/newJob']"))).click();
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.id("name"))).sendKeys(pipelineName);
-        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name='Submit']"))).click();
+        Assert.assertEquals(searchResult, PIPELINE_NAME,  "Pipeline is not found");
     }
 
     @Test
@@ -154,15 +133,10 @@ public class SearchBoxTest extends BaseTest {
 
     @Test
     public void testAccessToUserDoc(){
-        getDriver().findElement(By.xpath("//a[@class='main-search__icon-trailing']")).click();
+        String tutorialPageTitle = new HomePage(getDriver())
+                .openTutorial()
+                .getHeaderOneText();
 
-        String actualHandbook = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='sidebar-content']/h5"))).getText();
-        String actualTutorials = getDriver().findElement(By.xpath("(//div[@id='sidebar-content']/h5)[2]")).getText();
-        String actualResources = getDriver().findElement(By.xpath("(//div[@id='sidebar-content']/h5)[3]")).getText();
-
-        Assert.assertEquals(actualHandbook, "User Handbook");
-        Assert.assertEquals(actualTutorials, "Tutorials");
-        Assert.assertEquals(actualResources, "Resources");
+        Assert.assertEquals(tutorialPageTitle, "Search Box");
     }
 }

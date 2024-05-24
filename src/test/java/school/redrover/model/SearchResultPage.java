@@ -3,7 +3,10 @@ package school.redrover.model;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
+
+import java.util.List;
 
 public class SearchResultPage extends BasePage {
 
@@ -15,6 +18,9 @@ public class SearchResultPage extends BasePage {
 
     @FindBy(css = "#main-panel")
     private WebElement mainPanel;
+
+    @FindBy(xpath = "//div[@id='main-panel']//li/a")
+    private List<WebElement> searchResultList;
 
     public SearchResultPage(WebDriver driver) {
         super(driver);
@@ -29,6 +35,11 @@ public class SearchResultPage extends BasePage {
 
     public String getTextFromMainPanel() {
         return mainPanel.getText();
+    }
+
+    public List<String> getSearchResult() {
+        return getWait5().until(ExpectedConditions.visibilityOfAllElements(searchResultList)).stream().map(WebElement::getText).toList();
+
     }
 
 }
