@@ -10,8 +10,6 @@ import school.redrover.model.base.BaseFrame;
 import school.redrover.model.base.BasePage;
 import school.redrover.model.base.BaseProjectPage;
 
-import java.util.List;
-
 public class HeaderFrame extends BaseFrame {
 
     @FindBy(css = "a.model-link > span")
