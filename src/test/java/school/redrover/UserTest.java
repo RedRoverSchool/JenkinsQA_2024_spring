@@ -4,9 +4,11 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.*;
+import school.redrover.model.CreateUserPage;
+import school.redrover.model.HomePage;
+import school.redrover.model.JobBuildConsolePage;
+import school.redrover.model.UserConfigurePage;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.TestUtils;
 
 import java.util.Comparator;
 import java.util.List;

@@ -15,9 +15,6 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
     @FindBy(css = "#enable-project button")
     private WebElement enableButton;
 
-    @FindBy(id = "main-panel")
-    private WebElement fullProjectName;
-
     @FindBy(css = "#description > div:first-child")
     private WebElement projectDescription;
 
