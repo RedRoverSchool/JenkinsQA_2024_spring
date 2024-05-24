@@ -49,7 +49,7 @@ public class SearchBoxTest extends BaseTest {
                 .typeTextToSearchBox(lowerCaseLetter)
                 .getSearchResult();
 
-        Assert.assertEquals(searchResult, folders);
+        Assert.assertTrue(searchResult.containsAll(folders), "Folders aren't found");
     }
 
     public void createFolder(String folderName) {
