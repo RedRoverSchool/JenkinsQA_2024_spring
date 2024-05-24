@@ -4,7 +4,17 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.testng.Assert;
-import school.redrover.model.*;
+
+import school.redrover.model.CreateNewItemPage;
+import school.redrover.model.CreateNewViewPage;
+import school.redrover.model.FreestyleConfigPage;
+import school.redrover.model.FreestyleProjectPage;
+import school.redrover.model.HomePage;
+import school.redrover.model.OrganizationFolderConfigPage;
+import school.redrover.model.OrganizationFolderProjectPage;
+import school.redrover.model.PipelineConfigPage;
+import school.redrover.model.PipelineProjectPage;
+import school.redrover.model.ViewPage;
 import school.redrover.runner.CucumberDriver;
 import school.redrover.runner.ProjectUtils;
 
@@ -13,16 +23,23 @@ import java.util.List;
 public class ViewSteps {
 
     private HomePage homePage;
+
     private CreateNewItemPage createNewItemPage;
 
     private FreestyleConfigPage freestyleConfigPage;
 
     private FreestyleProjectPage freestyleProjectPage;
+
     private PipelineConfigPage pipelineConfigPage;
+
     private PipelineProjectPage pipelineProjectPage;
+
     private OrganizationFolderConfigPage organizationFolderConfigPage;
+
     private OrganizationFolderProjectPage organizationFolderProjectPage;
+
     private CreateNewViewPage createNewViewPage;
+
     private ViewPage viewPage;
 
     @When("Go to New Item via Create a job")
