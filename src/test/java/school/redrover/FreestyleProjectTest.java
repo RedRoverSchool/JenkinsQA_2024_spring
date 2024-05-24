@@ -384,7 +384,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         boolean isItemDeleted = new HomePage(getDriver())
                 .openItemDropdown(FREESTYLE_PROJECT_NAME)
-                .clickDeleteOnDropdownAndConfirm(FREESTYLE_PROJECT_NAME)
+                .clickDeleteOnDropdownAndConfirm()
                 .isItemDeleted(FREESTYLE_PROJECT_NAME);
 
         Assert.assertTrue(isItemDeleted);

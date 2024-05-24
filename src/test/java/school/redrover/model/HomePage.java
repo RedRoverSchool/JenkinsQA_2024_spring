@@ -112,9 +112,6 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
     @FindBy(css = "#description > *:first-child")
     private WebElement descriptionText;
 
-    @FindBy(xpath = "//h1")
-    private WebElement h1Heading;
-
     @FindBy(css = "#tasks > div")
     private List<WebElement> sidebarMenuList;
 
@@ -416,7 +413,7 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
         return viewNameList.size();
     }
 
-    public HomePage clickDeleteOnDropdownAndConfirm(String itemName) {
+    public HomePage clickDeleteOnDropdownAndConfirm() {
         dropdownDelete.click();
         getDriver().findElement(By.cssSelector("button[data-id='ok']")).click();
 
@@ -481,19 +478,6 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
         return clickPeople()
                 .clickUserIdLink()
                 .clickConfigureOnSidebar();
-    }
-
-    public FreestyleProjectPage createFreestyleProjectWithConfigurations(String projectName) {
-        getWait5().until(ExpectedConditions.textToBePresentInElement(h1Heading, "Welcome to Jenkins!"));
-
-        return clickNewItemOnSidebar()
-                .setItemName(projectName)
-                .selectFreestyleAndClickOk()
-                .scrollToBuildTriggersHeading()
-                .clickTriggerBuildsRemotelyCheckbox()
-                .inputAuthenticationToken(projectName)
-                .clickAddTimestampsCheckbox()
-                .clickSaveButton();
     }
 
     public List<String> getSidebarMenuList() {

@@ -12,7 +12,7 @@ public class UserConfigurePage extends BasePage {
     private WebElement addNewTokenButton;
 
     @FindBy(name = "tokenName")
-    private WebElement tokenNameInput;
+    private WebElement tokenNameInputField;
 
     @FindBy(id = "api-token-property-token-save")
     private WebElement generateButton;
@@ -42,11 +42,11 @@ public class UserConfigurePage extends BasePage {
     public String[] getTokenUuidUser(String projectName) {
         new Actions(getDriver())
                 .scrollToElement(addNewTokenButton)
-                .scrollByAmount(0,50)
+                .scrollByAmount(0,150)
                 .perform();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(addNewTokenButton)).click();
-        tokenNameInput.sendKeys(projectName);
+        addNewTokenButton.click();
+        tokenNameInputField.sendKeys(projectName);
         generateButton.click();
 
         final String token = getWait5().until(ExpectedConditions.visibilityOf(tokenValue)).getText();

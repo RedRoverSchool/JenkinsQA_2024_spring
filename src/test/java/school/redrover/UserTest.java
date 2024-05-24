@@ -6,6 +6,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.Comparator;
 import java.util.List;
@@ -159,7 +160,14 @@ public class UserTest extends BaseTest {
 
         //Test steps
         final String actualConsoleLogs = new HomePage(getDriver())
-                .createFreestyleProjectWithConfigurations(projectName)
+                .clickNewItem()
+                .setItemName(projectName)
+                .selectFreestyleAndClickOk()
+                .scrollToBuildTriggersHeading()
+                .clickTriggerBuildsRemotelyCheckbox()
+                .inputAuthenticationToken(projectName)
+                .clickAddTimestampsCheckbox()
+                .clickSaveButton()
                 .triggerJobViaHTTPRequest(token, user, projectName)
                 .clickSuccessConsoleOutputButton()
                 .getConsoleLogsText();

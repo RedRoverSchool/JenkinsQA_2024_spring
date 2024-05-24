@@ -76,11 +76,6 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
         super(driver);
     }
 
-    public String checkFullProjectName() {
-
-        return fullProjectName.getText();
-    }
-
     public FreestyleProjectPage clickAddDescription() {
         addOrEditDescriptionButton.click();
 
@@ -206,6 +201,7 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
     public String getPageHeadingText() {
         return pageHeading.getText();
     }
+
     public JobBuildConsolePage clickSuccessConsoleOutputButton() {
         getWait60().until(ExpectedConditions.elementToBeClickable(successConsoleOutputButton)).click();
 
