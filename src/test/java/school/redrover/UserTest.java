@@ -4,7 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.HomePage;
+import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 
 import java.util.Comparator;
@@ -43,6 +43,16 @@ public class UserTest extends BaseTest {
                 .getUsersList();
 
         Assert.assertTrue(userName.contains("TestUser"));
+    }
+
+    @Test(dependsOnMethods = "testCreateUserViaManageJenkins")
+    public void testSearchForUserThroughSearchBar() {
+
+        String userFullName = new HeaderBlock(getDriver())
+                .enterRequestIntoSearchBox(FULL_NAME)
+                .getSearchBoxResult();
+
+        Assert.assertEquals(userFullName, "User");
     }
 
     @Ignore
@@ -106,10 +116,71 @@ public class UserTest extends BaseTest {
                 .clickUsers()
                 .createUser(username, password, fullName, email)
                 .clickLogo()
-                .clickPeopleButton()
+                .clickPeopleOnSidebar()
                 .clickUser(username)
                 .getCurrentUrl();
 
         Assert.assertTrue(currentUrl.contains(username.toLowerCase()));
+    }
+
+    @Test
+    public void testErrorMessageForEmptyField(){
+
+        new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickUsers()
+                .createUser("", "", "", "");
+
+        CreateUserPage createUserPage = new CreateUserPage(getDriver());
+
+        Assert.assertNotNull(createUserPage.getUsernameErrorMsgField());
+        Assert.assertNotNull(createUserPage.getPasswordErrorMsgField());
+        Assert.assertNotNull(createUserPage.getFullNameErrorMsgField());
+        Assert.assertNotNull(createUserPage.getEmailErrorMsgField());
+
+    }
+
+    @Test
+    public void testFreestyleJobRemoteTriggering() {
+        final String projectName = "Project1";
+
+        //Precondition
+        final String[] tokenUuidUser = new HomePage(getDriver())
+                .openUserConfigurations()
+                .getTokenUuidUser(projectName);
+
+        final String token = tokenUuidUser[0];
+        final String uuid = tokenUuidUser[1];
+        final String user = tokenUuidUser[2];
+
+        new UserConfigurePage(getDriver())
+                .clickSaveButton()
+                .clickLogo();
+
+        //Test steps
+        final String actualConsoleLogs = new HomePage(getDriver())
+                .createFreestyleProjectWithConfigurations(projectName)
+                .triggerJobViaHTTPRequest(token, user, projectName)
+                .clickSuccessConsoleOutputButton()
+                .getConsoleLogsText();
+
+        new JobBuildConsolePage(getDriver())
+                .revokeTokenViaHTTPRequest(token, uuid, user);
+
+        Assert.assertTrue(
+                actualConsoleLogs.contains("Started by remote host"),
+                "The build should be triggered remotely."
+        );
+        Assert.assertFalse(
+                actualConsoleLogs.contains("Started by user"),
+                "The build should NOT be triggered by user."
+        );
+
+        final String emptyTokenMessage = new JobBuildConsolePage(getDriver())
+                .clickLogo()
+                .openUserConfigurations()
+                .getTokenMessage();
+
+        Assert.assertEquals(emptyTokenMessage, "There are no registered tokens for this user.");
     }
 }

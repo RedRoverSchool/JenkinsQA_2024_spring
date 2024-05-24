@@ -31,10 +31,10 @@ public class FreestyleRenamePage extends BasePage {
         return new FreestyleProjectPage(getDriver());
     }
 
-    public ConfirmRenamePage clickRenameAnyway() {
-
+    public ItemErrorPage clearNameAndClickRenameButton() {
+        textBox.clear();
         submitButton.click();
 
-        return new ConfirmRenamePage(getDriver());
+        return new ItemErrorPage(getDriver());
     }
 }

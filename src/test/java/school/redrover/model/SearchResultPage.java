@@ -13,6 +13,9 @@ public class SearchResultPage extends BasePage {
     @FindBy(css = "[id*='page'] h1")
     private WebElement matchLogResult;
 
+    @FindBy(css = "#main-panel")
+    private WebElement mainPanel;
+
     public SearchResultPage(WebDriver driver) {
         super(driver);
     }
@@ -23,4 +26,9 @@ public class SearchResultPage extends BasePage {
     public String getMatchLogResult() {
         return matchLogResult.getText();
     }
+
+    public String getTextFromMainPanel() {
+        return mainPanel.getText();
+    }
+
 }

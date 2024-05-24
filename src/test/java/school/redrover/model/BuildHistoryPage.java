@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
 
@@ -29,10 +28,6 @@ public class BuildHistoryPage extends BasePage {
 
     public BuildHistoryPage(WebDriver driver) {
         super(driver);
-    }
-
-    public String getBuildHistoryPageUrl() {
-        return TestUtils.getBaseUrl() + "/view/all/builds";
     }
 
     public BuildHistoryPage hoverOverItemName(String name) {
@@ -64,14 +59,14 @@ public class BuildHistoryPage extends BasePage {
         return !getBuildsList().contains(name);
     }
 
-    public BuildConsoleOutputPage clickBuild1Console(int buildNumber) {
+    public BuildConsoleOutputPage clickBuild1Console() {
         buildConsole.click();
 
         return new BuildConsoleOutputPage(getDriver());
     }
 
-    public boolean isDisplayedBuildOnTimeline(){
-       return buildNameOnTimeline.isDisplayed();
+    public boolean isDisplayedBuildOnTimeline() {
+        return buildNameOnTimeline.isDisplayed();
 
     }
 }

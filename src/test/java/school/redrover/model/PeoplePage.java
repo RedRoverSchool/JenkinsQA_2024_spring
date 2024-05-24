@@ -5,15 +5,10 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.model.base.BasePage;
-import school.redrover.runner.TestUtils;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.model.base.BaseSideMenuPage;
 
-import java.util.List;
-
-public class PeoplePage extends BasePage {
-
-    @FindBy(css = "tr>td:nth-child(2)")
-    private List<WebElement> userIDList;
+public class PeoplePage extends BaseSideMenuPage<PeoplePage> {
 
     @FindBy(css = "[title='Small']")
     private WebElement smallIconButton;
@@ -27,12 +22,17 @@ public class PeoplePage extends BasePage {
     @FindBy(css = "[id*='person-admin'] svg")
     private WebElement userTableIcon;
 
+    @FindBy(css = "h1")
+    private WebElement pageHeading;
+
+    @FindBy(id = "people")
+    private WebElement peopleTable;
+
+    @FindBy(xpath = "//a[contains(@href, '/user/')]")
+    private WebElement userIdLink;
+
     public PeoplePage(WebDriver driver) {
         super(driver);
-    }
-
-    public String getPeoplePageUrl() {
-        return TestUtils.getBaseUrl() + "/asynchPeople/";
     }
 
     public UserPage clickUser(String userID) {
@@ -59,4 +59,14 @@ public class PeoplePage extends BasePage {
         return userTableIcon.getSize();
     }
 
+    public String getPageHeading() {
+        return pageHeading.getText();
+    }
+
+    protected UserPage clickUserIdLink() {
+        getWait5().until(ExpectedConditions.visibilityOf(peopleTable));
+        userIdLink.click();
+
+        return new UserPage(getDriver());
+    }
 }

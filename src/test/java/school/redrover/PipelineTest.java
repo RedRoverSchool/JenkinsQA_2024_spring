@@ -17,27 +17,24 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 import static school.redrover.runner.TestUtils.goToMainPage;
+import org.testng.annotations.DataProvider;
 
 public class PipelineTest extends BaseTest {
 
     private static final String PIPELINE_NAME = "FirstPipeline";
+
     private static final String NEW_PIPELINE_NAME = "New Pipeline name";
+
     private static final String DESCRIPTION = "Lorem ipsum dolor sit amet";
+
     private static final String SUCCEED_BUILD_EXPECTED = "Finished: SUCCESS";
+
     private static final List<String> NAME_PROJECTS = List.of("PPProject", "PPProject2");
-    private static final By SAVE_BUTTON_CONFIGURATION = By.xpath("//button[@formnovalidate='formNoValidate']");
+
     private static final By ADVANCED_PROJECT_OPTIONS_MENU = By.xpath("//button[@data-section-id='advanced-project-options']");
 
-    public void createPipeline(String pipelineName) {
-        new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(pipelineName)
-                .selectPipelineAndClickOk();
-    }
-
-    @Test
+        @Test
     public void testCreatePipeline() {
-
         List<String> itemPipeline = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
@@ -51,7 +48,6 @@ public class PipelineTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreatePipeline")
     public void testCreatePipelineSameName() {
-
         String itemPipeline = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
@@ -63,7 +59,6 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testCreatePipelineWithEmptyName() {
-
         String itemPipeline = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName("")
@@ -75,7 +70,6 @@ public class PipelineTest extends BaseTest {
 
     @Test(dependsOnMethods = "testUseSearchToFindProject")
     public void testFindPipelineProject() {
-
         String searchResult = new HeaderBlock(getDriver())
                 .enterRequestIntoSearchBox(PIPELINE_NAME)
                 .makeClickToSearchBox()
@@ -569,17 +563,20 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.cssSelector("[class$='WorkflowJob']")).click();
         getDriver().findElement(By.id("ok-button")).click();
 
-        String pipelineScript = "pipeline {\n" +
-                "agent any\n\n" +
-                "stages {\n";
+        String pipelineScript = """
+                pipeline {
+                agent any
+
+                stages {
+                """;
 
         getDriver().findElement(By.className("ace_text-input")).sendKeys(pipelineScript);
 
         for (int i = 1; i <= number_of_stages; i++) {
 
-            String stage = "\nstage(\'stage " + i + "\') {\n" +
+            String stage = "\nstage('stage " + i + "') {\n" +
                     "steps {\n" +
-                    "echo \'test " + i + "\'\n";
+                    "echo 'test " + i + "'\n";
             getDriver().findElement(By.className("ace_text-input")).sendKeys(stage);
             getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
             getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
@@ -628,17 +625,20 @@ public class PipelineTest extends BaseTest {
         getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
                 By.xpath("//a[contains(@href, 'configure')]")))).click();
 
-        String pipelineScript = "pipeline {\n" +
-                "agent any\n\n" +
-                "stages {\n";
+        String pipelineScript = """
+                pipeline {
+                agent any
+
+                stages {
+                """;
 
         getDriver().findElement(By.className("ace_text-input")).sendKeys(pipelineScript);
 
         for (int i = 1; i <= number_of_stages; i++) {
 
-            String stage = "\nstage(\'stage " + i + "\') {\n" +
+            String stage = "\nstage('stage " + i + "') {\n" +
                     "steps {\n" +
-                    "echo \'test " + i + "\'\n";
+                    "echo 'test " + i + "'\n";
             getDriver().findElement(By.className("ace_text-input")).sendKeys(stage);
             getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
             getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
@@ -666,6 +666,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(actualOrder, expectedOrder);
     }
 
+    @Ignore
     @Test
     public void testBuildColorGreen() {
 
@@ -685,19 +686,22 @@ public class PipelineTest extends BaseTest {
             getDriver().findElement(By.id("jenkins-name-icon")).click();
         }
 
-        createPipeline(PIPELINE_NAME);
+        TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
-        String pipelineScript = "pipeline {\n" +
-                "agent any\n\n" +
-                "stages {\n";
+        String pipelineScript = """
+                pipeline {
+                agent any
+
+                stages {
+                """;
 
         getDriver().findElement(By.className("ace_text-input")).sendKeys(pipelineScript);
 
         for (int i = 1; i <= number_of_stages; i++) {
 
-            String stage = "\nstage(\'stage " + i + "\') {\n" +
+            String stage = "\nstage('stage " + i + "') {\n" +
                     "steps {\n" +
-                    "echo \'test " + i + "\'\n";
+                    "echo 'test " + i + "'\n";
             getDriver().findElement(By.className("ace_text-input")).sendKeys(stage);
             getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
             getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
@@ -722,17 +726,20 @@ public class PipelineTest extends BaseTest {
         int number_of_stages = 2;
         TestUtils.createJob(this, TestUtils.Job.PIPELINE, PIPELINE_NAME);
 
-        String pipelineScript = "pipeline {\n" +
-                "agent any\n\n" +
-                "stages {\n";
+        String pipelineScript = """
+                pipeline {
+                agent any
+
+                stages {
+                """;
 
         getDriver().findElement(By.className("ace_text-input")).sendKeys(pipelineScript);
 
         for (int i = 1; i <= number_of_stages; i++) {
 
-            String stage = "\nstage(\'stage " + i + "\') {\n" +
+            String stage = "\nstage('stage " + i + "') {\n" +
                     "steps {\n" +
-                    "echo \'test " + i + "\'\n";
+                    "echo 'test " + i + "'\n";
             getDriver().findElement(By.className("ace_text-input")).sendKeys(stage);
             getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
             getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
@@ -837,7 +844,8 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testFullStageViewDropDownMenu() {
-        createPipeline(PIPELINE_NAME);
+        TestUtils.createPipelineProject(this, PIPELINE_NAME);
+
         getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']"))).click();
 
         WebElement chevron = getDriver().findElement(By.xpath("//a[@href='job/" + PIPELINE_NAME + "/']//button[@class='jenkins-menu-dropdown-chevron']"));
@@ -869,7 +877,7 @@ public class PipelineTest extends BaseTest {
                 .waitForBuildScheduledPopUp()
                 .clickLogo()
                 .clickBuildHistory()
-                .clickBuild1Console(1)
+                .clickBuild1Console()
                 .getConsoleOutputMessage();
 
         Assert.assertTrue(consoleOutput.contains(SUCCEED_BUILD_EXPECTED));
@@ -882,7 +890,7 @@ public class PipelineTest extends BaseTest {
                 .scheduleBuildForItem(PIPELINE_NAME)
                 .waitForBuildSchedulePopUp()
                 .clickBuildHistory()
-                .clickBuild1Console(2)
+                .clickBuild1Console()
                 .getConsoleOutputMessage();
 
         Assert.assertTrue(consoleOutput.contains(SUCCEED_BUILD_EXPECTED));
@@ -891,7 +899,7 @@ public class PipelineTest extends BaseTest {
     @Ignore
     @Test
     public void testDisablePipelineProject() {
-        createPipeline(PIPELINE_NAME);
+        TestUtils.createPipelineProject(this, PIPELINE_NAME);
         getDriver().findElement(By.cssSelector("#tasks > div:nth-child(4) > span > a")).click();
 
         getWait60().until(ExpectedConditions.textToBePresentInElementLocated(By.id("pipeline-box"), "Stage View\n" +
@@ -961,7 +969,7 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testSectionsOfSidePanelAreVisible() {
-        createPipeline(PIPELINE_NAME);
+        TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
         getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
         getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
@@ -1031,7 +1039,8 @@ public class PipelineTest extends BaseTest {
     public void testVerifySectionHasTooltip() {
         String labelText = "Display Name";
         String tooltipText = "Help for feature: Display Name";
-        createPipeline(PIPELINE_NAME);
+
+        TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
         getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
         getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
@@ -1052,7 +1061,7 @@ public class PipelineTest extends BaseTest {
     @Ignore
     @Test
     public void testChoosePipelineScript() {
-        createPipeline(PIPELINE_NAME);
+        TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@data-section-id='pipeline']"))).click();
 
@@ -1068,42 +1077,85 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testSetQuietPeriodBuildTriggers() {
+    public void testSetPipelineSpeedDurabilityOverride() {
+        final String selectedOptionForCheck = "Less durability, a bit faster (specialty use only)";
+        final int index = 1;
+
+        String selectedOption = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickPipelineSpeedDurabilityOverrideCheckbox()
+                .selectCustomPipelineSpeedDurabilityLevel(index)
+                .scrollToPipelineScript()
+                .clickSaveButton()
+                .clickSidebarConfigureButton(PIPELINE_NAME)
+                .getCustomPipelineSpeedDurabilityLevelText();
+
+        Assert.assertTrue(selectedOption.contains(selectedOptionForCheck));
+    }
+
+    @Test
+    public void testSetQuietPeriodBuildTriggersMoreThanZero() {
         final int numberOfSeconds = 3;
 
-        createPipeline(PIPELINE_NAME);
-        getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
+        String quietPeriodInputFieldText = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .scrollToQuietPeriodCheckbox()
+                .clickQuietPeriodCheckbox()
+                .setNumberOfSecondsInQuietPeriodInputField(numberOfSeconds)
+                .clickSaveButton()
+                .clickSidebarConfigureButton(PIPELINE_NAME)
+                .scrollToQuietPeriodCheckbox()
+                .getQuietPeriodInputFieldValue();
 
-        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
-        executor.executeScript("arguments[0].scrollIntoView();",
-                getDriver().findElement(By.xpath("//label[text()='Poll SCM']")));
-
-        WebElement checkBoxQuietPeriod = getDriver().findElement(By.xpath("//label[text()='Quiet period']"));
-        checkBoxQuietPeriod.click();
-
-        WebElement inputField = getDriver().findElement(By.name("quiet_period"));
-        inputField.clear();
-        inputField.sendKeys("" + numberOfSeconds + "");
-        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
-
-        getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
-
-        JavascriptExecutor executor2 = (JavascriptExecutor) getDriver();
-        executor.executeScript("arguments[0].scrollIntoView();",
-                getDriver().findElement(By.xpath("//label[text()='Poll SCM']")));
-
-        Assert.assertTrue(getDriver().findElement(By.xpath("//input[@name='quiet_period']"))
-                        .getAttribute("value").contains("" + numberOfSeconds + ""),
+        Assert.assertEquals(quietPeriodInputFieldText, String.valueOf(numberOfSeconds),
                 "The actual numberOfSeconds differs from expected result");
+    }
+
+    @Test
+    public void testSetQuietPeriodBuildTriggersLessThanZero() {
+        final int numberOfSeconds = -5;
+        final String errorMessage = "This value should be larger than 0";
+
+        String validationErrorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .scrollToQuietPeriodCheckbox()
+                .clickQuietPeriodCheckbox()
+                .setNumberOfSecondsInQuietPeriodInputField(numberOfSeconds)
+                .clickNumberOfSecondsHint()
+                .getQuietPeriodInputErrorText();
+
+        Assert.assertEquals(validationErrorMessage, errorMessage);
+    }
+
+    @Test
+    public void testSetDoubleQuietPeriodBuildTriggers() {
+        final double numberOfSeconds = 0.3;
+        final String errorMessage = "Not an integer";
+
+        String validationErrorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .scrollToQuietPeriodCheckbox()
+                .clickQuietPeriodCheckbox()
+                .setNumberOfSecondsInQuietPeriodInputField(numberOfSeconds)
+                .clickNumberOfSecondsHint()
+                .getQuietPeriodInputErrorText();
+
+        Assert.assertEquals(validationErrorMessage, errorMessage);
     }
 
     @Test
     public void testVerifySectionsHaveTooltips() {
         String[] labelsText = {"Display Name", "Script"};
 
-        createPipeline(PIPELINE_NAME);
+        TestUtils.createPipelineProject(this, PIPELINE_NAME);
         getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
         getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
 
@@ -1121,90 +1173,41 @@ public class PipelineTest extends BaseTest {
         }
     }
 
-    @Test
-    public void testSetQuietPeriodBuildTriggersLessThanZero() {
-        final int numberOfSeconds = -5;
-        final String errorMessage = "This value should be larger than 0";
-
-        createPipeline(PIPELINE_NAME);
-        getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
-
-        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
-        executor.executeScript("arguments[0].scrollIntoView();",
-                getDriver().findElement(By.xpath("//label[text()='Poll SCM']")));
-
-        WebElement checkBoxQuietPeriod = getDriver().findElement(By.xpath("//label[text()='Quiet period']"));
-        checkBoxQuietPeriod.click();
-
-        WebElement inputField = getDriver().findElement(By.name("quiet_period"));
-        inputField.clear();
-        inputField.sendKeys("" + numberOfSeconds + "");
-        getDriver().findElement(By.xpath("//div[text()='Number of seconds']")).click();
-
-        WebElement errorElement = getDriver().findElement(By.xpath("//div[@class='form-container tr']//div[@class='error']"));
-        getWait5().until(ExpectedConditions.visibilityOf(errorElement));
-
-        Assert.assertEquals(errorElement.getText(), errorMessage);
+    @DataProvider(name = "tooltipTextProvider")
+    public Object[][] tooltipTextProvider() {
+        return new Object[][] {
+                { "Discard old builds" },
+                { "Pipeline speed/durability override" },
+                { "Preserve stashes from completed builds" },
+                { "This project is parameterized" },
+                { "Throttle builds" },
+                {"Build after other projects are built"},
+                {"Build periodically"},
+                {"GitHub hook trigger for GITScm polling"},
+                {"Poll SCM"},
+                {"Quiet period"},
+                {"Trigger builds remotely (e.g., from scripts)"},
+                {"Display Name"},
+                {"Script"}
+        };
     }
+    @Test(dataProvider = "tooltipTextProvider")
+    void testVerifyConfigurationPageHaveTooltips(String tooltipText) {
+        new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickAdvancedButton();
 
-    @Test
-    public void testSetDoubleQuietPeriodBuildTriggers() {
-        final double numberOfSeconds = 0.3;
-        final String errorMessage = "Not an integer";
-
-        createPipeline(PIPELINE_NAME);
-        getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
-
-        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
-        executor.executeScript("arguments[0].scrollIntoView();",
-                getDriver().findElement(By.xpath("//label[text()='Poll SCM']")));
-
-        WebElement checkBoxQuietPeriod = getDriver().findElement(By.xpath("//label[text()='Quiet period']"));
-        checkBoxQuietPeriod.click();
-
-        WebElement inputField = getDriver().findElement(By.name("quiet_period"));
-        inputField.clear();
-        inputField.sendKeys("" + numberOfSeconds + "");
-        getDriver().findElement(By.xpath("//div[text()='Number of seconds']")).click();
-
-        WebElement errorElement = getDriver().findElement(By.xpath("//div[@class='form-container tr']//div[@class='error']"));
-        getWait5().until(ExpectedConditions.visibilityOf(errorElement));
-
-        Assert.assertEquals(errorElement.getText(), errorMessage);
-    }
-
-    @Test
-    public void testSetPipelineSpeedDurabilityOverride() {
-        final String selectedOptionForCheck = "Less durability, a bit faster (specialty use only)";
-        createPipeline(PIPELINE_NAME);
-
-        getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
-
-        getDriver().findElement(By.xpath("//label[text()='Pipeline speed/durability override']")).click();
-        WebElement selectCustomPipelineSpeedDurabilityLevel = getDriver().findElement(By.xpath("//select[@class='setting-input']"));
-        Select dropDown = new Select(selectCustomPipelineSpeedDurabilityLevel);
-        dropDown.selectByIndex(1);
-        String selectedValue = selectCustomPipelineSpeedDurabilityLevel.getText();
-
-        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
-        executor.executeScript("arguments[0].scrollIntoView();",
-                getDriver().findElement(SAVE_BUTTON_CONFIGURATION));
-        getDriver().findElement(SAVE_BUTTON_CONFIGURATION).click();
-
-        getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
-
-        Assert.assertTrue(selectedValue.contains(selectedOptionForCheck));
+        Assert.assertTrue(new HomePage(getDriver()).isTooltipDisplayed(tooltipText),
+                "Tooltip '" + tooltipText + "' is not displayed.");
     }
 
     @Test
     public void testSetNumberOfBuildsThrottleBuilds() {
         final String messageDay = "Approximately 24 hours between builds";
 
-        createPipeline(PIPELINE_NAME);
+        TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
         getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
         getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();

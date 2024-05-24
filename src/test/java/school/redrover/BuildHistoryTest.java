@@ -6,26 +6,15 @@ import school.redrover.model.FreestyleProjectPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
+
 import java.util.List;
 
-public class BuildHistoryTest extends BaseTest{
+public class BuildHistoryTest extends BaseTest {
     private final String PROJECT_NAME = "My freestyle project";
 
     @Test
-    public void testCreateFreestyleProject() {
-        List<String> actualMyProject = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(PROJECT_NAME)
-                .selectFreestyleAndClickOk()
-                .clickSaveButton()
-                .clickLogo()
-                .getItemList();
-
-        Assert.assertTrue(actualMyProject.contains(PROJECT_NAME));
-        }
-
-        @Test(dependsOnMethods = "testCreateFreestyleProject")
-        public void testGetTableBuildHistory() {
+    public void testGetTableBuildHistory() {
+        TestUtils.createFreestyleProject(this, PROJECT_NAME);
 
         List<String> list = new HomePage(getDriver())
                 .scheduleBuildForItem(PROJECT_NAME)
@@ -42,13 +31,13 @@ public class BuildHistoryTest extends BaseTest{
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
         boolean projectNameOnTimeline = new HomePage(getDriver())
-                .clickJobByName("FREESTYLE",new FreestyleProjectPage(getDriver()))
+                .clickJobByName("FREESTYLE", new FreestyleProjectPage(getDriver()))
                 .clickBuildNowOnSideBar()
-                .waitBuildToFinish()
+                .waitForGreenMarkBuildSuccessAppearience()
                 .clickLogo()
                 .clickBuildHistory()
                 .isDisplayedBuildOnTimeline();
 
-        Assert.assertTrue(projectNameOnTimeline,"FREESTYLE is display");
+        Assert.assertTrue(projectNameOnTimeline, "FREESTYLE is display");
     }
 }

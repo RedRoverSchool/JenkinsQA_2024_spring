@@ -126,11 +126,11 @@ public final class ProjectUtils {
         System.out.println();
     }
 
-    static void takeScreenshot(WebDriver driver, ITestResult testResult) {
+    static void takeScreenshot(WebDriver driver, String instanceName, String methodName) {
         File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         try {
             Files.createDirectories(Paths.get("screenshots"));
-            FileHandler.copy(screenshot, new File("screenshots/" + testResult.getInstanceName() + "." + testResult.getName() + ".png"));
+            FileHandler.copy(screenshot, new File("screenshots/%s.%s.png".formatted(instanceName, methodName)));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -12,8 +12,12 @@ import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CreateNewItemPage extends BasePage {
+
+    @FindBy(id = "name")
+    WebElement newItemName;
 
     @FindBy(id = "name")
     private WebElement nameText;
@@ -57,16 +61,17 @@ public class CreateNewItemPage extends BasePage {
     @FindBy(css = "label.h3")
     private WebElement titleOfNameField;
 
-    @FindBy(id = "name")
-    WebElement newItemName;
+    @FindBy(css = "#items span")
+    private List<WebElement> typesList;
 
     public CreateNewItemPage(WebDriver driver) {
         super(driver);
     }
 
     public CreateNewItemPage setItemName(String name) {
-        nameText.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
+        getWait5().until(ExpectedConditions.visibilityOf(nameText));
         nameText.sendKeys(name);
+
         return this;
     }
 
@@ -145,10 +150,6 @@ public class CreateNewItemPage extends BasePage {
         return errorMessageEmptyName.getText();
     }
 
-    public String getCreateNewItemPageUrl() {
-        return TestUtils.getBaseUrl() + "/view/all/newJob";
-    }
-
     public CreateNewItemPage setItemNameInCopyForm(String name) {
         nameTextInCopyForm.sendKeys(name);
         return this;
@@ -158,7 +159,7 @@ public class CreateNewItemPage extends BasePage {
         return copyFormElements
                 .stream()
                 .map(WebElement::getText)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public CreateItemPage clickOkButton() {
@@ -167,13 +168,10 @@ public class CreateNewItemPage extends BasePage {
     }
 
     public boolean isOkButtonNotActive() {
-        try
-        {
+        try {
             getDriver().findElement(By.xpath("//button[contains(@class, 'disabled') and text()='OK']"));
             return true;
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             return false;
         }
     }
@@ -185,25 +183,18 @@ public class CreateNewItemPage extends BasePage {
         for (WebElement el : allJobFromThisLetter) {
             allJobFromThisLetterName.add(el.getText());
         }
-        return allJobFromThisLetterName ;
+        return allJobFromThisLetterName;
     }
+
     public CreateNewItemPage sendItemName(String name) {
         newItemName.sendKeys(name);
         return this;
     }
 
 
-
     public CreateNewItemPage selectFreeStyleProject() {
         freestyleItem.click();
         return this;
-    }
-    public Boolean getOkButtoneState() {
-        if(okButton.getAttribute("disabled") != ""){
-            return false;
-        }else{
-            return true;
-        }
     }
 
     public CreateNewItemPage clearItemNameField() {
@@ -219,15 +210,8 @@ public class CreateNewItemPage extends BasePage {
         return itemNameHint.getCssValue("color");
     }
 
-    public String getColorOfErrorMessageWhenUnsafeChar() {
-        return errorItemNameInvalid.getCssValue("color");
-    }
-
-    public Boolean isOkButtonEnabled() { return okButton.isEnabled(); }
-
-    public CreateNewItemPage clickItemNameField() {
-        nameText.click();
-        return this;
+    public Boolean isOkButtonEnabled() {
+        return okButton.isEnabled();
     }
 
     public String getTitleOfNameField() {
@@ -240,5 +224,28 @@ public class CreateNewItemPage extends BasePage {
 
     public Boolean isErrorItemNameInvalidDisplayed() {
         return errorItemNameInvalid.isDisplayed();
+    }
+
+    public Boolean isDisplayedNameField() {
+        return nameText.isDisplayed();
+    }
+
+    public List<String> getTypesList() {
+        return typesList.stream().map(WebElement::getText).toList();
+    }
+
+    public Boolean isAttributeAriaChecked(String projectType, int itemOptionIndex) {
+
+        return Boolean.parseBoolean(getDriver().findElement(
+                        By.xpath(String.format("//div[contains(@id, '%s')]/ul/li[%d]", projectType, itemOptionIndex)))
+                .getAttribute("aria-checked"));
+    }
+
+    public CreateNewItemPage clickItemOption(String projectType, int itemOptionIndex) {
+        getDriver().findElement(
+                        By.xpath(String.format("//div[contains(@id, '%s')]/ul/li[%d]", projectType, itemOptionIndex)))
+                .click();
+
+        return this;
     }
 }

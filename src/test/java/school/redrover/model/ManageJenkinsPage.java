@@ -1,12 +1,17 @@
 package school.redrover.model;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.runner.TestUtils;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
+
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ManageJenkinsPage extends BasePage {
 
@@ -46,6 +51,21 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(css = ".jenkins-search__results a:nth-child(2)")
     private WebElement secondSearchResult;
 
+    @FindBy(css = ".jenkins-section__item")
+    private List<WebElement> sectionsLinksList;
+
+    @FindBy(xpath = "(//div[@class='jenkins-section__items'])[3]//dt")
+    private List<WebElement> systemInformationBlockTitles;
+
+    @FindBy(xpath = "(//div[@class='jenkins-section__items'])[3]//dd [position() mod 2 = 1]")
+    private List<WebElement> systemInformationBlockDescriptions;
+
+    @FindBy(xpath = "(//div[@class='jenkins-section__items'])[5]//dt")
+    private List<WebElement> toolsAndActionsBlockTitles;
+
+    @FindBy(xpath = "(//div[@class='jenkins-section__items'])[5]//dd [position() mod 2 = 1]")
+    private List<WebElement> toolsAndActionsBlockDescriptions;
+
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
@@ -54,10 +74,6 @@ public class ManageJenkinsPage extends BasePage {
         securityLink.click();
 
         return new SecurityPage(getDriver());
-    }
-  
-    public String getManageJenkinsPage() {
-        return TestUtils.getBaseUrl() + "/manage/";
     }
 
     public boolean isSearchInputDisplayed() {
@@ -142,11 +158,64 @@ public class ManageJenkinsPage extends BasePage {
         return page;
     }
 
+    public boolean areSectionsLinksClickable() {
+        for (WebElement element : sectionsLinksList) {
+                try {
+                    getWait2().until(ExpectedConditions.elementToBeClickable(element));
+                } catch (Exception e) {
+                    System.out.println("Element is NOT clickable: " + element.getText());
+                    return false;
+                }
+        }
+        return true;
+    }
+
+    public Integer getNumberOfSectionLinks() {
+        return sectionsLinksList.size();
+    }
+
+    public Map<String, String> getSystemInformationBlockTitlesAndDescriptions() {
+        Map<String, String> actualTitlesAndDescriptions = new LinkedHashMap<>();
+        for (int i = 0; i < systemInformationBlockTitles.size(); i++) {
+            String actualTitle = systemInformationBlockTitles.get(i).getText();
+            String actualDescription = systemInformationBlockDescriptions.get(i).getText();
+
+            actualTitlesAndDescriptions.put(actualTitle, actualDescription);
+        }
+        return actualTitlesAndDescriptions;
+    }
+
+    public Map<String, String> getToolsAndActionsBlockTitlesAndDescriptions() {
+        Map<String, String> actualTitlesAndDescriptions = new LinkedHashMap<>();
+        for (int i = 0; i < toolsAndActionsBlockTitles.size(); i++) {
+            String actualTitle = toolsAndActionsBlockTitles.get(i).getText();
+            String actualDescription = toolsAndActionsBlockDescriptions.get(i).getText();
+
+            actualTitlesAndDescriptions.put(actualTitle, actualDescription);
+        }
+        return actualTitlesAndDescriptions;
+    }
+
+    public boolean areToolsAndActionsSectionsAndDescriptionsMatchingInCorrectOrder(Map<String, String> expected) {
+        int index = 0;
+        for (Map.Entry<String, String> expectedEntry : expected.entrySet()) {
+            Iterator<Map.Entry<String, String>> iterator = getToolsAndActionsBlockTitlesAndDescriptions().entrySet().iterator();
+            Map.Entry<String, String> actualEntry = null;
+            for (int i = 0; i <= index; i++) {
+                actualEntry = iterator.next();
+            }
+            if (!actualEntry.getKey().equals(expectedEntry.getKey()) ||
+                    !actualEntry.getValue().equals(expectedEntry.getValue())) {
+                return false;
+            }
+            index++;
+        }
+        return true;
+    }
+
     public String clickManageLink(String link) {
         getDriver().findElement(By.xpath("//dt[text()='" + link + "']")).click();
 
         return getDriver().getCurrentUrl();
     }
-
-
 }

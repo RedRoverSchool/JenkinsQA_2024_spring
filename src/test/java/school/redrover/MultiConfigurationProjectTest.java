@@ -5,17 +5,16 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
-
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
-
 import java.util.List;
 import java.util.Random;
 
 public class MultiConfigurationProjectTest extends BaseTest {
 
     private static final String PROJECT_NAME = "MCProject";
-    private final String RANDOM_PROJECT_NAME = TestUtils.randomString();
+    private static final String RANDOM_PROJECT_NAME = TestUtils.randomString();
+    private static final String FOLDER_NAME = "Folder_name";
 
     private String generateRandomNumber(){
         Random r = new Random();
@@ -214,17 +213,17 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testDeleteProjectViaDropdown() {
-        TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
-        getDriver().findElement(By.linkText(PROJECT_NAME)).click();
 
-        TestUtils.openElementDropdown(this, getDriver().findElement(By.linkText(PROJECT_NAME)));
+        TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
 
-        getDriver().findElement(By.cssSelector(".tippy-box [href$='Delete']")).click();
-        getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
+        List<String> itemsList = new HomePage(getDriver())
+                .clickMCPName(PROJECT_NAME)
+                .clickBreadcrumbsProjectDropdownArrow()
+                .clickDropdownDelete()
+                .clickYes(new HomePage(getDriver()))
+                .getItemList();
 
-        Assert.assertEquals(
-                getDriver().findElement(By.tagName("h1")).getText(),
-                "Welcome to Jenkins!",
+        Assert.assertListNotContainsObject(itemsList, PROJECT_NAME,
                 "Project not deleted");
     }
 
@@ -308,5 +307,63 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .getDisabledProjectListText();
 
         Assert.assertTrue(disabledProjectList.contains(PROJECT_NAME));
+    }
+
+    @Test
+    public void testMoveProjectToFolderFromDashboardPage(){
+
+        TestUtils.createFolderProject(this, FOLDER_NAME);
+        TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
+
+        new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new MultiConfigurationProjectPage(getDriver()))
+                .clickMoveOptionInMenu()
+                .selectFolder(FOLDER_NAME)
+                .clickMove()
+                .clickLogo()
+                .clickFolder(FOLDER_NAME);
+
+        boolean isProjectMoved = new FolderProjectPage(getDriver()).getItemListInsideFolder().contains(PROJECT_NAME);
+
+        Assert.assertTrue(isProjectMoved);
+    }
+
+    @Test
+    public void testDisableProjectOnProjectPage() {
+
+        TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
+
+        String disableMessage = new HomePage(getDriver())
+                .clickMCPName(PROJECT_NAME)
+                .clickDisableProject()
+                .getDisableMessage();
+
+        Assert.assertTrue(disableMessage.contains("This project is currently disabled"),
+                "Substring not found");
+    }
+
+    @Test(dependsOnMethods = "testDisableProjectOnProjectPage")
+    public void testEnableProjectOnProjectPage() {
+
+        String enableMessage = new HomePage(getDriver())
+                .clickMCPName(PROJECT_NAME)
+                .clickEnableButton()
+                .clickConfigureButton()
+                .getToggleStatusMessage();
+
+        Assert.assertTrue(enableMessage.matches("Enabled"),
+                "Substring not found");
+    }
+
+    @Test
+    public void testSearchMCPByName() {
+
+        TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
+
+        String searchResult = new HomePage(getDriver())
+                .typeTextToSearchBox(PROJECT_NAME)
+                .getTextFromMainPanel();
+
+        Assert.assertTrue(searchResult.contains(PROJECT_NAME));
     }
 }

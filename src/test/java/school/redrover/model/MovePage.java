@@ -18,7 +18,7 @@ public class MovePage extends BasePage {
         super(driver);
     }
 
-    public FreestyleProjectPage chooseFolderAndSave(String folderName) {
+    public FreestyleProjectPage chooseFolderAndConfirmMove(String folderName) {
 
         Select selectDefinition = new Select(selectDestination);
         selectDefinition.selectByValue("/" + folderName);

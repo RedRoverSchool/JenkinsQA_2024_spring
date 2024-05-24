@@ -7,10 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseProjectPage;
 
-public class FreestyleProjectPage extends BaseProjectPage {
-
-    @FindBy(xpath = "//*[@id='breadcrumbs']/li[3]/a")
-    private WebElement projectNameFromBreadcrumbs;
+public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> {
 
     @FindBy(css = "#disable-project button")
     private WebElement disableProjectButton;
@@ -21,14 +18,11 @@ public class FreestyleProjectPage extends BaseProjectPage {
     @FindBy(id = "main-panel")
     private WebElement fullProjectName;
 
-    @FindBy(tagName = "h1")
-    private WebElement projectName;
-
     @FindBy(css = "#description > div:first-child")
     private WebElement projectDescription;
 
     @FindBy(id = "description-link")
-    private WebElement addDescriptionButton;
+    private WebElement addOrEditDescriptionButton;
 
     @FindBy(name = "description")
     private WebElement descriptionInput;
@@ -54,14 +48,29 @@ public class FreestyleProjectPage extends BaseProjectPage {
     @FindBy(linkText = "Build Now")
     private WebElement buildNowSideBar;
 
-    @FindBy(xpath = "//td[contains(@class, 'progress-bar')]")
-    private WebElement buildProgressBar;
-
     @FindBy(xpath = "//*[@class='model-link inside build-link display-name']")
     private WebElement buildInfo;
 
     @FindBy(xpath = "//div[contains(text(), 'Full project name:')]")
     private WebElement projectPath;
+
+    @FindBy(tagName = "h1")
+    private WebElement pageHeading;
+
+    @FindBy(xpath = "//a[@tooltip='Success > Console Output']")
+    private WebElement successConsoleOutputButton;
+
+    @FindBy(xpath = "//form[@id='enable-project']")
+    private WebElement disabledStatusMassage;
+
+    @FindBy(css = "[href^='/job'] [class$='dropdown-chevron']")
+    private WebElement breadcrumbsDropdownArrow;
+
+    @FindBy(xpath = "//div[@class='build-icon']")
+    private WebElement greenMarkBuildSuccess;
+
+    @FindBy(xpath = "//a[text()='Add description']")
+    private WebElement addDescriptionButton;
 
     public FreestyleProjectPage(WebDriver driver) {
         super(driver);
@@ -73,7 +82,13 @@ public class FreestyleProjectPage extends BaseProjectPage {
     }
 
     public FreestyleProjectPage clickAddDescription() {
-        addDescriptionButton.click();
+        addOrEditDescriptionButton.click();
+
+        return this;
+    }
+
+    public FreestyleProjectPage clickEditDescription() {
+        addOrEditDescriptionButton.click();
 
         return this;
     }
@@ -113,9 +128,16 @@ public class FreestyleProjectPage extends BaseProjectPage {
         return this;
     }
 
-    public String getProjectNameFromBreadcrumbs() {
+    public FreestyleProjectPage clickBreadcrumbsDropdownArrow() {
+        clickSpecificDropdownArrow(breadcrumbsDropdownArrow);
 
-        return projectNameFromBreadcrumbs.getText();
+        return this;
+    }
+
+    public RenameDialogPage clickBreadcrumbsDropdownRenameProject(String oldItemName) {
+        getDriver().findElement(By.xpath("//div[@class='jenkins-dropdown']//a[@href='/job/" + oldItemName + "/confirm-rename']")).click();
+
+        return new RenameDialogPage(getDriver());
     }
 
     public String getProjectDescriptionText() {
@@ -151,15 +173,9 @@ public class FreestyleProjectPage extends BaseProjectPage {
         return new HomePage(getDriver());
     }
 
-    public FolderProjectPage clickBreadcrumbFolder(String name) {
+    public boolean isAddDescriptionButtonEnable() {
 
-        getDriver().findElement(By.xpath("//a[@href='/job/" + name + "/']")).click();
-        return new FolderProjectPage(getDriver());
-
-    }
-
-    public boolean isProjectNameDisplayed() {
-        return projectName.isDisplayed();
+        return addDescriptionButton.isEnabled();
     }
 
     public FreestyleProjectPage clickBuildNowOnSideBar() {
@@ -167,18 +183,37 @@ public class FreestyleProjectPage extends BaseProjectPage {
         return this;
     }
 
-    public FreestyleProjectPage waitBuildToFinish() {
-        getWait10().until(ExpectedConditions.invisibilityOf(buildProgressBar));
-
-        return this;
-    }
-
     public String getBuildInfo() {
+        String buildHistoryStatus = getDriver().findElement(By.id("buildHistory")).getAttribute("class");
+
+        if (buildHistoryStatus.contains("collapsed")) {
+            getDriver().findElement(By.xpath("//a[@href='/toggleCollapse?paneId=buildHistory']")).click();
+        }
 
         return buildInfo.getText();
     }
 
+    public FreestyleProjectPage waitForGreenMarkBuildSuccessAppearience() {
+        getWait10().until(ExpectedConditions.visibilityOf(greenMarkBuildSuccess));
+
+        return this;
+    }
+
     public String getFullProjectPath() {
         return projectPath.getText();
+    }
+
+    public String getPageHeadingText() {
+        return pageHeading.getText();
+    }
+    public JobBuildConsolePage clickSuccessConsoleOutputButton() {
+        getWait60().until(ExpectedConditions.elementToBeClickable(successConsoleOutputButton)).click();
+
+        return new JobBuildConsolePage(getDriver());
+    }
+
+    public String getDesabledMassageText() {
+
+        return getWait5().until(ExpectedConditions.visibilityOf(disabledStatusMassage)).getText();
     }
 }

@@ -18,8 +18,6 @@ public class SearchBoxTest extends BaseTest {
     private final static String UPPER_CASE_INPUT = "Log";
     private final static String LOWER_CASE_INPUT = "log";
     private static final String PIPELINE_NAME = "Pipeline";
-    private static final By SEARCH_BOX = By.xpath("//input[@id='search-box']");
-    private static final By SYSTEM_PAGE = By.xpath("//h1[.='System']");
 
     @Test
     public void testSearchWithValidData() {
@@ -33,12 +31,13 @@ public class SearchBoxTest extends BaseTest {
 
     @Test
     public void testSearchUsingSuggestList() {
-        getDriver().findElement(SEARCH_BOX).sendKeys("c");
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[@class='yui-ac-bd']//ul//li[.='config']"))).click();
-        getDriver().findElement(SEARCH_BOX).sendKeys(Keys.ENTER);
+        String systemPageTitle = new HeaderBlock(getDriver())
+                .enterRequestIntoSearchBox("c")
+                .chooseAndClickFirstSuggestListVariant()
+                .makeClickToSearchBox()
+                .getTitleText();
 
-        Assert.assertTrue(getDriver().findElement(SYSTEM_PAGE).isDisplayed());
+        Assert.assertEquals(systemPageTitle, "System");
     }
 
     @Ignore
@@ -126,5 +125,44 @@ public class SearchBoxTest extends BaseTest {
         getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name='Submit']"))).click();
+    }
+
+    @Test
+    public void testStartSearchBox() {
+        final String EXPECTED_RESULT_TEXT = "manage";
+        final String SEARCHING_TEXT = "ma";
+
+        String searchResult = new HomePage(getDriver())
+                .typeTextToSearchBox(SEARCHING_TEXT)
+                .getTextFromMainPanel();
+
+        Assert.assertTrue(searchResult.contains(EXPECTED_RESULT_TEXT));
+    }
+
+    @Test
+    public void testSearchResultHeading() {
+        final String SEARCHING_TEXT = "i";
+
+        String resultHeading = new HomePage(getDriver())
+                .typeTextToSearchBox(SEARCHING_TEXT)
+                .getMatchLogResult();
+
+        String expectedSearchResult = "Search for '%s'".formatted(SEARCHING_TEXT);
+
+        Assert.assertEquals(resultHeading, expectedSearchResult);
+    }
+
+    @Test
+    public void testAccessToUserDoc(){
+        getDriver().findElement(By.xpath("//a[@class='main-search__icon-trailing']")).click();
+
+        String actualHandbook = getWait10().until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='sidebar-content']/h5"))).getText();
+        String actualTutorials = getDriver().findElement(By.xpath("(//div[@id='sidebar-content']/h5)[2]")).getText();
+        String actualResources = getDriver().findElement(By.xpath("(//div[@id='sidebar-content']/h5)[3]")).getText();
+
+        Assert.assertEquals(actualHandbook, "User Handbook");
+        Assert.assertEquals(actualTutorials, "Tutorials");
+        Assert.assertEquals(actualResources, "Resources");
     }
 }

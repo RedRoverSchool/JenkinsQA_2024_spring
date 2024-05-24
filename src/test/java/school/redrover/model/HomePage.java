@@ -7,15 +7,14 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseSideMenuPage;
 import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
-public class HomePage extends BasePage {
+public class HomePage extends BaseSideMenuPage<HomePage> {
 
     @FindBy(linkText = "Create a job")
     private WebElement createAJobLink;
@@ -104,12 +103,6 @@ public class HomePage extends BasePage {
     @FindBy(tagName = "h1")
     private WebElement heading;
 
-    @FindBy(xpath = "//a[@class='jenkins-table__link model-link inside']")
-    private List<WebElement> listNamesOfItems;
-
-    @FindBy(xpath = "//td//button[@class='jenkins-menu-dropdown-chevron']")
-    private List<WebElement> jenkinsMenuDropdownChevron;
-
     @FindBy(xpath = "//a[contains(@href, '/move')]")
     private WebElement moveOption;
 
@@ -160,6 +153,24 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//a[@href='/me/my-views']")
     private WebElement myViewsOnSidebar;
+
+    @FindBy(css = "#description-link")
+    private WebElement editDescriptionLink;
+
+    @FindBy(css = "[name='description']")
+    private WebElement descriptionTextarea;
+
+    @FindBy(css = "[name='Submit']")
+    private WebElement saveButton;
+
+    @FindBy(css = "#description > *:first-child")
+    private WebElement descriptionText;
+
+    @FindBy(xpath = "//h1")
+    private WebElement h1Heading;
+
+    @FindBy(css = "#tasks > div")
+    private List<WebElement> sidebarMenuList;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -321,13 +332,11 @@ public class HomePage extends BasePage {
 
     public List<String> getDropdownMenu() {
 
-        List<String> projectChevronMenu = Arrays.stream(getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+        return Arrays.stream(getWait2().until(ExpectedConditions.visibilityOfElementLocated(
                                 By.xpath("//div[@class='jenkins-dropdown']")))
                         .getText()
                         .split("\\r?\\n"))
                 .toList();
-
-        return projectChevronMenu;
     }
 
     public HomePage clickTitleForSortByName() {
@@ -358,7 +367,6 @@ public class HomePage extends BasePage {
 
         return new FreestyleProjectPage(getDriver());
     }
-
 
     public OrganizationFolderProjectPage chooseOrganizationFolder(String projectName) {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/"
@@ -505,15 +513,6 @@ public class HomePage extends BasePage {
         return heading.getText();
     }
 
-    public HomePage createNewFolder(String folderName) {
-        clickNewItem()
-                .setItemName(folderName)
-                .selectFolderAndClickOk()
-                .clickSaveButton()
-                .clickLogo();
-        return new HomePage(getDriver());
-    }
-
     public MovePage chooseFolderToMove() {
         getWait5().until(ExpectedConditions.visibilityOf(moveOption)).click();
         return new MovePage(getDriver());
@@ -539,7 +538,7 @@ public class HomePage extends BasePage {
         return new SecurityPage(getDriver());
     }
 
-    public PeoplePage clickPeopleButton() {
+    public PeoplePage clickPeopleOnSidebar() {
         peopleButton.click();
 
         return new PeoplePage(getDriver());
@@ -570,13 +569,6 @@ public class HomePage extends BasePage {
         return new PipelineSyntaxPage(getDriver());
     }
 
-    public FreestyleProjectPage clickCreatedItemName() {
-
-        createdItemNameInList.click();
-
-        return new FreestyleProjectPage(getDriver());
-    }
-
     public int getSizeViewNameList() {
 
         return viewNameList.size();
@@ -592,11 +584,11 @@ public class HomePage extends BasePage {
         return welcomeJenkinsHeader.getText();
     }
 
-    public HomePage clickDeleteItemAndConfirm(String itemName) {
-        
-        WebElement itemName1 = getDriver().findElement(By.id("job_" + itemName ));
+    public HomePage clickDeleteProjectDropdownAndConfirm(String itemName) {
+
+        WebElement itemName1 = getDriver().findElement(By.id("job_" + itemName));
         openElementDropdown(itemName1);
-        getDriver().findElement(By.xpath("//button[@href='/job/" + itemName +"/doDelete']")).click();
+        getDriver().findElement(By.xpath("//button[@href='/job/" + itemName + "/doDelete']")).click();
         getDriver().findElement(By.cssSelector("button[data-id='ok']")).click();
 
         return this;
@@ -616,5 +608,127 @@ public class HomePage extends BasePage {
         myViewsOnSidebar.click();
 
         return new MyViewsPage(getDriver());
+    }
+
+    public HomePage clickEditDescription() {
+        editDescriptionLink.click();
+
+        return this;
+    }
+
+    public HomePage typeDescription(String text) {
+        descriptionTextarea.clear();
+        descriptionTextarea.sendKeys(text);
+
+        return this;
+    }
+
+    public HomePage clickSaveButton() {
+        saveButton.click();
+
+        return this;
+    }
+
+    public String getDescription() {
+        return descriptionText.getText();
+    }
+
+    public String getEditDescriptionLinkText() {
+        return editDescriptionLink.getText();
+    }
+
+    private WebElement getTooltipLocator(String tooltipText) {
+        return getDriver().findElement(By.cssSelector("a[tooltip='Help for feature: " + tooltipText + "']"));
+    }
+
+    public boolean isTooltipDisplayed(String tooltipText) {
+        WebElement tooltip = getTooltipLocator(tooltipText);
+        hoverOverElement(tooltip);
+
+        return tooltip.isDisplayed();
+    }
+
+
+    public HomePage createFreestyleProject(String name) {
+        clickNewItem()
+                .setItemName(name)
+                .selectFreestyleAndClickOk()
+                .clickSaveButton()
+                .clickLogo();
+        return new HomePage(getDriver());
+    }
+
+    public HomePage createPipeline(String name) {
+        clickNewItem()
+                .setItemName(name)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .clickLogo();
+        return new HomePage(getDriver());
+    }
+
+    public HomePage createMultiConfigurationProject(String name) {
+        clickNewItem()
+                .setItemName(name)
+                .selectMultiConfigurationAndClickOk()
+                .clickSaveButton()
+                .clickLogo();
+        return new HomePage(getDriver());
+    }
+
+    public HomePage createFolder(String name) {
+        clickNewItem()
+                .setItemName(name)
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .clickLogo();
+        return new HomePage(getDriver());
+    }
+
+    public HomePage createMultibranchPipeline(String name) {
+        clickNewItem()
+                .setItemName(name)
+                .selectMultibranchPipelineAndClickOk()
+                .clickSaveButton()
+                .clickLogo();
+        return new HomePage(getDriver());
+    }
+
+    public HomePage createOrganizationFolder(String name) {
+        clickNewItem()
+                .setItemName(name)
+                .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
+                .clickLogo();
+        return new HomePage(getDriver());
+    }
+
+
+    public UserConfigurePage openUserConfigurations() {
+        return clickPeopleSideMenu()
+                .clickUserIdLink()
+                .clickConfigureSideMenu();
+    }
+
+    public FreestyleProjectPage createFreestyleProjectWithConfigurations(String projectName) {
+        getWait5().until(ExpectedConditions.textToBePresentInElement(h1Heading, "Welcome to Jenkins!"));
+
+        return clickNewItemSideMenu()
+                .setItemName(projectName)
+                .selectFreestyleAndClickOk()
+                .scrollToBuildTriggersHeading()
+                .clickTriggerBuildsRemotelyCheckbox()
+                .inputAuthenticationToken(projectName)
+                .clickAddTimestampsCheckbox()
+                .clickSaveButton();
+    }
+
+    public List<String> getSidebarMenuList() {
+        List<String> menuList = new ArrayList<>();
+        for (WebElement element : sidebarMenuList) {
+            menuList.add(element.getText());
+        }
+
+        return menuList;
     }
 }

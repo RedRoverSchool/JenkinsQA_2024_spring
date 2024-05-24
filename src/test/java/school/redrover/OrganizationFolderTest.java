@@ -6,6 +6,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
+import school.redrover.model.OrganizationFolderConfigPage;
 import school.redrover.model.OrganizationFolderProjectPage;
 import school.redrover.runner.BaseTest;
 
@@ -20,10 +21,10 @@ public class OrganizationFolderTest extends BaseTest {
 
     private static final String ORGANIZATION_FOLDER_DESCRIPTION = "Some description of the organization folder.";
 
-    private List<String> getActualList(){
+    private List<String> getActualList() {
         List<String> actualList = new ArrayList<>();
-        for (int i=1; i<=9; i++){
-            String xPath = "//*[@id=\"tasks\"]/div["+ i + "]/span/a/span[2]";
+        for (int i = 1; i <= 9; i++) {
+            String xPath = "//*[@id=\"tasks\"]/div[" + i + "]/span/a/span[2]";
             actualList.add(getDriver().findElement(By.xpath(xPath)).getText());
         }
         return actualList;
@@ -31,6 +32,7 @@ public class OrganizationFolderTest extends BaseTest {
 
     @Test
     public void testCreateViaNewItem() {
+
         String getItemPageHeading = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(ORGANIZATION_FOLDER_NAME)
@@ -43,6 +45,7 @@ public class OrganizationFolderTest extends BaseTest {
 
     @Test
     public void testCreateWithDefaultIcon() {
+
         String organizationFolderIcon = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(ORGANIZATION_FOLDER_NAME)
@@ -55,7 +58,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateViaNewItem")
-    public void testAddDescription(){
+    public void testAddDescription() {
 
         String textInDescription = new OrganizationFolderProjectPage(getDriver())
                 .clickAddOrEditDescription()
@@ -102,6 +105,7 @@ public class OrganizationFolderTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateViaNewItem")
     public void testCatchErrorStepTooltipsViaDashboardDropdown() {
+
         final List<String> expectedTooltipList = List.of(
                 "Help for feature: catchError",
                 "Help for feature: Message",
@@ -147,7 +151,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateViaNewItem")
-    public void testScanOrganizationFolder(){
+    public void testScanOrganizationFolder() {
         String scan = new HomePage(getDriver())
                 .clickJobByName(ORGANIZATION_FOLDER_NAME,
                         new OrganizationFolderProjectPage(getDriver()))
@@ -158,7 +162,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateViaNewItem")
-    public void testFindOrganizationFolderOnDashboard(){
+    public void testFindOrganizationFolderOnDashboard() {
         HomePage homePage = new HomePage(getDriver());
 
         Assert.assertListContainsObject(homePage.getItemList(), ORGANIZATION_FOLDER_NAME,
@@ -166,25 +170,25 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateViaNewItem")
-    public void testPipelineSyntaxMenuList(){
+    public void testPipelineSyntaxMenuList() {
         final List<String> getExpectedList = List.of("Back", "Snippet Generator", "Declarative Directive Generator",
                 "Declarative Online Documentation", "Steps Reference",
                 "Global Variables Reference", "Online Documentation", "Examples Reference",
                 "IntelliJ IDEA GDSL");
 
         WebElement currentOrganizationFolder = getDriver().
-                findElement(By.xpath("//span[text()='" + ORGANIZATION_FOLDER_NAME + "']/..")) ;
+                findElement(By.xpath("//span[text()='" + ORGANIZATION_FOLDER_NAME + "']/.."));
         new Actions(getDriver()).moveToElement(currentOrganizationFolder).perform();
 
         WebElement menuForCurrentOrganizationFolder = getDriver().
-                findElement(By.xpath("//*[@id='job_"+ ORGANIZATION_FOLDER_NAME + "']/td[3]/a"));
+                findElement(By.xpath("//*[@id='job_" + ORGANIZATION_FOLDER_NAME + "']/td[3]/a"));
         menuForCurrentOrganizationFolder.click();
 
         WebElement pipelineSyntaxMenu = getDriver().
-                findElement(By.xpath("//*[@href='/job/"+ ORGANIZATION_FOLDER_NAME +"/pipeline-syntax']"));
+                findElement(By.xpath("//*[@href='/job/" + ORGANIZATION_FOLDER_NAME + "/pipeline-syntax']"));
         pipelineSyntaxMenu.click();
 
-        for (int i=0; i<getActualList().size(); i++){
+        for (int i = 0; i < getActualList().size(); i++) {
             Assert.assertEquals(getActualList().get(i), getExpectedList.get(i));
         }
     }
@@ -200,9 +204,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
-    public void testDeleteOrganizationFolder () {
-
-        final String newOrganizationFolderName = "New Organization Folder";
+    public void testDeleteOrganizationFolder() {
 
         List<String> itemList = new HomePage(getDriver())
                 .clickNewItem()
@@ -214,5 +216,100 @@ public class OrganizationFolderTest extends BaseTest {
                 .getItemList();
 
         Assert.assertListNotContainsObject(itemList, ORGANIZATION_FOLDER_NAME, "Did not removed!");
+    }
+
+    @Test
+    public void testProjectRecognizersFiltersBordersAreDashed() {
+
+        boolean projectRecognizersBordersFiltersDashed = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
+                .clickConfigure()
+                .scrollToProjectRecognizersBlock()
+                .clickProjectRecognizersAddButton()
+                .addPipelineJenkinsFileFilter()
+                .areProjectRecognizersFiltersBordersDashed();
+
+        Assert.assertTrue(projectRecognizersBordersFiltersDashed,
+                "Filters boarders of Project Recognizers block  are not dashed");
+    }
+
+    @Test
+    public void testAnchorLinksLeadToCorrespondingBlocks() {
+
+        boolean isNavigatedToCorrespondingBlock = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
+                .clickConfigure()
+                .isNavigatedToCorrespondingBlockClickingAnchorLink();
+
+        Assert.assertTrue(isNavigatedToCorrespondingBlock, "An anchor link leads to a wrong block");
+    }
+
+    @Test
+    public void testThrottleBuildsTimePeriodOptions() {
+        final List<String> expectedTimePeriodOptions = List.of("Second", "Minute", "Hour", "Day", "Week", "Month", "Year");
+
+        List<String> actualTimePeriodOptions = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
+                .clickConfigure()
+                .scrollToPropertyStrategyBlock()
+                .clickAddPropertyButton()
+                .clickThrottleBuildsDropdownOption()
+                .getTimePeriodOptions();
+
+        Assert.assertEquals(actualTimePeriodOptions, expectedTimePeriodOptions);
+    }
+
+    @Test
+    public void testUntrustedPropertyCheckboxesSelectedUponSaving() {
+
+        OrganizationFolderConfigPage organizationFolderConfigPage = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
+                .clickConfigure()
+                .scrollToPropertyStrategyBlock()
+                .clickAddPropertyButton()
+                .clickUntrustedDropdownOption()
+                .selectUntrustedCheckboxes()
+                .clickSaveButton()
+                .clickConfigure()
+                .scrollToPropertyStrategyBlock();
+
+        Assert.assertTrue(organizationFolderConfigPage.areUntrustedCheckboxesSelected(),
+                "Not all checkboxes are selected");
+        Assert.assertEquals(organizationFolderConfigPage.getSelectedCheckboxesSize(), 11);
+    }
+
+    @Test
+    public void testStrategyPropertiesOrderCanBeChanged() {
+        final List<String> expectedStrategyPropertiesList = List.of("Untrusted", "Throttle builds");
+
+        List<String> actualStrategyPropertiesList = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
+                .clickConfigure()
+                .scrollToPropertyStrategyBlock()
+                .clickAddPropertyButton()
+                .clickThrottleBuildsDropdownOption()
+                .clickAddPropertyButton()
+                .clickUntrustedDropdownOption()
+                .changeUntrustedAndThrottleBuildsOrder()
+                .clickSaveButton()
+                .clickConfigure()
+                .getAddedStrategyPropertyList();
+
+        Assert.assertEquals(actualStrategyPropertiesList, expectedStrategyPropertiesList);
     }
 }

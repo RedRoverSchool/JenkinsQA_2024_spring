@@ -8,7 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseProjectPage;
 
-public class MultiConfigurationProjectPage extends BaseProjectPage {
+public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigurationProjectPage> {
 
     @FindBy(id = "description-link")
     private WebElement addDescriptionButton;
@@ -34,14 +34,29 @@ public class MultiConfigurationProjectPage extends BaseProjectPage {
     @FindBy(css = "#disable-project button")
     private WebElement disableProjectButton;
 
+    @FindBy(css = "button[formnovalidate*='NoValidate']")
+    private WebElement enableProjectButton;
+
+    @FindBy(css = "[id='enable-project']")
+    private WebElement disableMessage;
+
     @FindBy(css = "#breadcrumbBar li:last-child")
     private WebElement breadcrumbs;
+
+    @FindBy(css = "[href^='/job'] [class$='dropdown-chevron']")
+    private WebElement breadcrumbsProjectDropdownArrow;
+
+    @FindBy(css = "button[href $= '/doDelete']")
+    private WebElement breadcrumbsDropdownDelete;
 
     @FindBy(xpath = "//*[span = 'Delete Multi-configuration project']")
     private WebElement menuDelete;
 
     @FindBy(xpath = "//*[contains(@href, 'rename')]")
     private WebElement menuRename;
+
+    @FindBy(xpath = "//*[contains(@href, 'move')]")
+    private WebElement moveOptionInMenu;
 
     public MultiConfigurationProjectPage(WebDriver driver) {
         super(driver);
@@ -98,6 +113,16 @@ public class MultiConfigurationProjectPage extends BaseProjectPage {
         return this;
     }
 
+    public MultiConfigurationProjectPage clickEnableButton() {
+        enableProjectButton.click();
+
+        return this;
+    }
+
+    public String getDisableMessage() {
+        return disableMessage.getText();
+    }
+
     public boolean isProjectInsideFolder(String projectName, String folderName) {
         return breadcrumbs.getAttribute("data-href").contains(folderName + "/job/" + projectName);
     }
@@ -114,5 +139,21 @@ public class MultiConfigurationProjectPage extends BaseProjectPage {
 
     public boolean isDescriptionEmpty() {
         return getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div#description>div")));
+    }
+
+    public MultiConfigurationMovePage clickMoveOptionInMenu() {
+        moveOptionInMenu.click();
+        return new MultiConfigurationMovePage(getDriver());
+    }
+
+    public MultiConfigurationProjectPage clickBreadcrumbsProjectDropdownArrow() {
+        clickSpecificDropdownArrow(breadcrumbsProjectDropdownArrow);
+
+        return this;
+    }
+
+    public DeleteDialog clickDropdownDelete() {
+        breadcrumbsDropdownDelete.click();
+        return new DeleteDialog(getDriver());
     }
 }
