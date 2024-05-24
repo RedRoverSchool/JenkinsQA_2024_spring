@@ -14,11 +14,33 @@ import school.redrover.model.ManageJenkinsPage;
 import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.LinkedHashMap;
+
 
 public class ManageJenkinsTest extends BaseTest {
+
+    private static final Object[][] manageLinks = {
+            {"System", "/configure"},
+            {"Tools", "/configureTools"},
+            {"Plugins", "/pluginManager"},
+            {"Nodes", "/computer"},
+            {"Clouds", "/cloud"},
+            {"Appearance", "/appearance"},
+            {"Security", "/configureSecurity"},
+            {"Credentials", "/credentials"},
+            {"Credential Providers", "/configureCredentials"},
+            {"Users", "/securityRealm"},
+            {"System Information", "/systemInfo"},
+            {"System Log", "/log"},
+            {"Load Statistics", "/load-statistics"},
+            {"About Jenkins", "/about"},
+            {"Manage Old Data", "/OldData"},
+            {"Jenkins CLI", "/cli"},
+            {"Script Console", "/script"},
+            {"Prepare for Shutdown", "/prepareShutdown"}
+    };
 
     @Test
     public void testRedirectionToSecurityPage() {
@@ -173,47 +195,17 @@ public class ManageJenkinsTest extends BaseTest {
         Assert.assertEquals(pageToNavigateHeading, "Credential Providers");
     }
 
-    private static final Map<String, String> manageLinks = new HashMap<>() {{
-        put("System", "/configure");
-        put("Tools", "/configureTools");
-        put("Plugins", "/pluginManager");
-        put("Nodes", "/computer");
-        put("Clouds", "/cloud");
-        put("Appearance", "/appearance");
-        put("Security", "/configureSecurity");
-        put("Credentials", "/credentials");
-        put("Credential Providers", "/configureCredentials");
-        put("Users", "/securityRealm");
-        put("System Information", "/systemInfo");
-        put("System Log", "/log");
-        put("Load Statistics", "/load-statistics");
-        put("About Jenkins", "/about");
-        put("Manage Old Data", "/OldData");
-        put("Jenkins CLI", "/cli");
-        put("Script Console", "/script");
-        put("Prepare for Shutdown", "/prepareShutdown");
-    }};
-
     @DataProvider(name = "linksDataProvider")
     public Object[][] linksDataProvider() {
-        Object[][] data = new Object[manageLinks.size()][2];
-        int index = 0;
-        for (Map.Entry<String, String> entry : manageLinks.entrySet()) {
-            data[index][0] = entry.getKey();
-            data[index][1] = entry.getValue();
-            index++;
-        }
-        return data;
+        return manageLinks;
     }
 
     @Test(dataProvider = "linksDataProvider")
-    public void testManageJenkinsLinks(String key, String value) {
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        getDriver().findElement(By.xpath("//dt[text()='" + key + "']")).click();
+    public void testManageJenkinsLinks(String link, String endpoint) {
+        String actualUrl = new HomePage(getDriver()).clickManageJenkins()
+                .clickManageLink(link);
 
-        String actualUrl = getDriver().getCurrentUrl();
-
-        Assert.assertTrue(actualUrl.contains(value));
+        Assert.assertTrue(actualUrl.contains(endpoint));
     }
 
     @Ignore
@@ -244,5 +236,40 @@ public class ManageJenkinsTest extends BaseTest {
 
         Assert.assertTrue(manageJenkinsPage.areSectionsLinksClickable(), "Not all links are clickable");
         Assert.assertEquals(manageJenkinsPage.getNumberOfSectionLinks(), 19);
+    }
+
+    @Test
+    public void testSystemInformationBlockTitlesAndDescriptions() {
+        final Map<String, String> expectedSystemInformationBlockTitlesAndDescriptions = Map.ofEntries(
+                Map.entry("System Information", "Displays various environmental information to assist trouble-shooting."),
+                Map.entry("System Log", "System log captures output from java.util.logging output related to Jenkins."),
+                Map.entry("Load Statistics","Check your resource utilization and see if you need more computers for your builds."),
+                Map.entry("About Jenkins", "See the version and license information.")
+        );
+
+        Map<String, String> actualSystemInformationBlockTitlesAndDescriptions = new HomePage(getDriver())
+                .clickManageJenkins()
+                .getSystemInformationBlockTitlesAndDescriptions();
+
+        Assert.assertEquals(actualSystemInformationBlockTitlesAndDescriptions, expectedSystemInformationBlockTitlesAndDescriptions);
+    }
+
+    @Test
+    public void testToolsAndActionsBlockSectionsOrderTitlesAndDescriptions() {
+        final Map<String, String> expectedTitlesAndDescriptions = new LinkedHashMap<>() {{
+        put("Reload Configuration from Disk",
+                "Discard all the loaded data in memory and reload everything from file system. " +
+                "Useful when you modified config files directly on disk.");
+        put("Jenkins CLI", "Access/manage Jenkins from your shell, or from your script.");
+        put("Script Console", "Executes arbitrary script for administration/trouble-shooting/diagnostics.");
+        put("Prepare for Shutdown", "Stops executing new builds, so that the system can be eventually shut down safely.");
+        }};
+
+        boolean areToolsAndActionsBlockTitlesDescriptionsAndOrderMatching = new HomePage(getDriver())
+                .clickManageJenkins()
+                .areToolsAndActionsSectionsAndDescriptionsMatchingInCorrectOrder(expectedTitlesAndDescriptions);
+
+        Assert.assertTrue(areToolsAndActionsBlockTitlesDescriptionsAndOrderMatching,
+                "Title and description pairs or their order are different");
     }
 }
