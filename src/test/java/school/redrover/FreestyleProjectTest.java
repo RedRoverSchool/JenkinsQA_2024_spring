@@ -152,7 +152,7 @@ public class FreestyleProjectTest extends BaseTest {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
         String headerText = new HomePage(getDriver())
-                .clickCreatedFreestyleName()
+                .clickSpecificFreestyleProjectName(FREESTYLE_PROJECT_NAME)
                 .clickConfigure()
                 .getHeaderSidePanelText();
 

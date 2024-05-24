@@ -197,7 +197,7 @@ public class PipelineTest extends BaseTest {
         final String expectedDescription = DESCRIPTION + addedToDescription;
 
         String descriptionText = new HomePage(getDriver())
-                .clickCreatedPipelineName()
+                .clickSpecificPipelineName(PIPELINE_NAME)
                 .clickChangeDescription()
                 .clickOnDescriptionInput()
                 .setDescription(addedToDescription)
@@ -805,7 +805,7 @@ public class PipelineTest extends BaseTest {
         TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
         boolean descriptionPreviewIsDisplayed = new HomePage(getDriver())
-                .clickCreatedPipelineName()
+                .clickSpecificPipelineName(PIPELINE_NAME)
                 .clickChangeDescription()
                 .setDescription(DESCRIPTION)
                 .clickShowDescriptionPreview()
@@ -1009,7 +1009,7 @@ public class PipelineTest extends BaseTest {
         final String editedDisplayNameText = " - EDITED";
 
         String projectsDisplayNameInHeader = new HomePage(getDriver())
-                .clickCreatedPipelineName()
+                .clickSpecificPipelineName(PIPELINE_NAME)
                 .clickSidebarConfigureButton(PIPELINE_NAME)
                 .clickAdvancedProjectOptionsMenu()
                 .clickAdvancedButton()
@@ -1023,7 +1023,7 @@ public class PipelineTest extends BaseTest {
     @Test(dependsOnMethods = {"testAddDisplayNameInAdvancedSection", "testEditDisplayNameInAdvancedSection"})
     public void testDeleteDisplayNameInAdvancedSection() {
         String projectsDisplayNameInHeader = new HomePage(getDriver())
-                .clickCreatedPipelineName()
+                .clickSpecificPipelineName(PIPELINE_NAME)
                 .clickSidebarConfigureButton(PIPELINE_NAME)
                 .clickAdvancedProjectOptionsMenu()
                 .clickAdvancedButton()

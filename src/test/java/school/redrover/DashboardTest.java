@@ -305,7 +305,7 @@ public class DashboardTest extends BaseTest {
     public void testPeopleOnSidebar() {
         String actualHeading = new HomePage(getDriver())
                 .clickPeopleOnSidebar()
-                .getPageHeading();
+                .getHeadingText();
 
         Assert.assertEquals(actualHeading, "People");
     }
@@ -313,7 +313,7 @@ public class DashboardTest extends BaseTest {
     @Test
     public void testStartPageHeading() {
         String actualHeading = new HomePage(getDriver())
-                .getHeadingValue();
+                .getHeadingText();
 
         Assert.assertEquals(actualHeading, "Welcome to Jenkins!");
     }

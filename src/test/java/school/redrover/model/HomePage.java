@@ -25,12 +25,6 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
     @FindBy(css = "#executors tr [href]")
     private List<WebElement> nodesList;
 
-    @FindBy(css = "td > a[href^='job']")
-    private WebElement pipelineItem;
-
-    @FindBy(css = "td > a[href^='job']")
-    private WebElement freestyleItem;
-
     @FindBy(css = "[href='/manage']")
     private WebElement manageJenkinsLink;
 
@@ -84,12 +78,6 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
 
     @FindBy(css = "[href$='builds']")
     private WebElement buildHistoryButton;
-
-    @FindBy(xpath = "//*[@class=' job-status-']/td[3]/a")
-    private WebElement createdElementInTable;
-
-    @FindBy(tagName = "h1")
-    private WebElement heading;
 
     @FindBy(xpath = "//a[contains(@href, '/move')]")
     private WebElement moveOption;
@@ -163,12 +151,6 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
                 .toList();
     }
 
-    public FolderProjectPage clickFolder(String name) {
-        getDriver().findElement(By.xpath("//a[.='" + name + "']")).click();
-
-        return new FolderProjectPage(getDriver());
-    }
-
     public HomePage openItemDropdown(String projectName) {
         WebElement element = getDriver().findElement(By.cssSelector(String.format(
                 "td>a[href = 'job/%s/']",
@@ -209,22 +191,11 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
         return getDriver().findElement(By.cssSelector("[href='/computer/" + name + "/']")).isDisplayed();
     }
 
-    public MultiConfigurationProjectPage clickMCPName(String projectName) {
-        getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
+    public MultiConfigurationProjectPage clickSpecificMultiConfigurationProjectName(String itemName) {
+        getDriver().findElement(
+                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
 
         return new MultiConfigurationProjectPage(getDriver());
-    }
-
-    public PipelineProjectPage clickCreatedPipelineName() {
-        pipelineItem.click();
-
-        return new PipelineProjectPage(getDriver());
-    }
-
-    public FreestyleProjectPage clickCreatedFreestyleName() {
-        freestyleItem.click();
-
-        return new FreestyleProjectPage(getDriver());
     }
 
     public ManageJenkinsPage clickManageJenkins() {
@@ -285,8 +256,9 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
         return getItemList().contains(name);
     }
 
-    public MultibranchPipelineProjectPage clickMPName(String projectName) {
-        getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
+    public MultibranchPipelineProjectPage clickSpecificMultibranchPipelineName(String itemName) {
+        getDriver().findElement(
+                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
 
         return new MultibranchPipelineProjectPage(getDriver());
     }
@@ -432,20 +404,9 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
         return this;
     }
 
-    public FolderProjectPage clickFolderName() {
-        createdElementInTable.click();
-
-        return new FolderProjectPage(getDriver());
-    }
-
     public List<WebElement> getTheListOfFreestyleProjects(String freestyleProjectName) {
         return getDriver().findElements(
                 By.xpath("//span[text() = '" + freestyleProjectName + "']"));
-    }
-
-    public String getHeadingValue() {
-
-        return heading.getText();
     }
 
     public MovePage chooseFolderToMove() {
@@ -464,6 +425,13 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
                 By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
 
         return new FolderProjectPage(getDriver());
+    }
+
+    public FreestyleProjectPage clickSpecificFreestyleProjectName(String itemName) {
+        getDriver().findElement(
+                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
+
+        return new FreestyleProjectPage(getDriver());
     }
 
     public FolderRenamePage renameFolderFromDropdown() {
