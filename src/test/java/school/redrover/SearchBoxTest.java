@@ -1,7 +1,5 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HeaderBlock;
@@ -40,13 +38,13 @@ public class SearchBoxTest extends BaseTest {
 
     @Test
     public void testFindFolderByOneLetter() {
-        final String lowerCaseLetter = "F";
+        final String firstLetterOfFolderName = "F";
 
         List<String> folders = new ArrayList<>(List.of("Folder1", "Folder2", "Folder3"));
         folders.forEach(this::createFolder);
 
         List<String> searchResult = new HomePage(getDriver())
-                .typeTextToSearchBox(lowerCaseLetter)
+                .typeTextToSearchBox(firstLetterOfFolderName)
                 .getSearchResult();
 
         Assert.assertTrue(searchResult.containsAll(folders), "Folders aren't found");

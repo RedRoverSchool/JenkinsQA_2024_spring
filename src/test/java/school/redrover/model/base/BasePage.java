@@ -18,7 +18,7 @@ public abstract class BasePage extends BaseModel {
     @FindBy(css = "a.model-link > span")
     private WebElement userNameOnHeader;
 
-    @FindBy(xpath = "//input[@id = 'search-box']")
+    @FindBy(id = "search-box")
     private WebElement searchBox;
 
     @FindBy(css = "[class$=jenkins_ver]")
