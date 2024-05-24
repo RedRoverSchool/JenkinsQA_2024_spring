@@ -161,7 +161,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .selectMultibranchPipelineAndClickOk()
                 .clickLogo()
                 .openItemDropdown(MULTI_PIPELINE_NAME)
-                .clickRenameFromDropdownMP()
+                .clickRenameOnDropdownForMultibranchPipeline()
                 .clearNewNameInput()
                 .setItemName(RENAMED_MULTI_PIPELINE)
                 .clickRename(new MultibranchPipelineProjectPage(getDriver()))

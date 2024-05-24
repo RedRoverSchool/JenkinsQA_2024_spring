@@ -235,7 +235,7 @@ public class PipelineTest extends BaseTest {
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
-                .chooseCreatedProject(pipelineName)
+                .clickSpecificPipelineName(pipelineName)
                 .clickFullStageViewButton()
                 .getH2HeadingText();
 
@@ -252,7 +252,7 @@ public class PipelineTest extends BaseTest {
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
-                .chooseCreatedProject(pipelineName);
+                .clickSpecificPipelineName(pipelineName);
 
         Assert.assertTrue(new PipelineProjectPage(getDriver()).isBtnPresentInSidebar("Full Stage View"));
     }
@@ -267,7 +267,7 @@ public class PipelineTest extends BaseTest {
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
-                .chooseCreatedProject(PIPELINE_NAME)
+                .clickSpecificPipelineName(PIPELINE_NAME)
                 .clickFullStageViewButton()
                 .getBreadcrumbsText();
 
@@ -280,7 +280,7 @@ public class PipelineTest extends BaseTest {
         final String expectedColor = "rgba(175, 175, 207, 0.15)";
 
         String backgroundColorBeforeHover = new HomePage(getDriver())
-                .chooseCreatedProject(PIPELINE_NAME)
+                .clickSpecificPipelineName(PIPELINE_NAME)
                 .getFullStageViewButtonBackgroundColor();
 
         String backgroundColorAfterHover = new PipelineProjectPage(getDriver())

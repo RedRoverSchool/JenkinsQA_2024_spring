@@ -112,7 +112,7 @@ public class FolderTest extends BaseTest {
     public void testRenameFolderViaMainPageDropdownMenu() {
         String folderStatusPageHeading = new HomePage(getDriver())
                 .openItemDropdownWithSelenium(NEW_FOLDER_NAME)
-                .renameFolderFromDropdown()
+                .clickRenameOnDropdownForFolder()
                 .setNewName(THIRD_FOLDER_NAME)
                 .clickRename()
                 .getProjectName();
@@ -176,8 +176,7 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateMultiConfigurationProjectInFolder")
     public void testDeleteFolderViaDropdown() {
 
-        boolean isFolderDeleted = new FolderProjectPage(getDriver())
-                .clickLogo()
+        boolean isFolderDeleted = new HomePage(getDriver())
                 .openItemDropdown(FOLDER_NAME)
                 .clickDeleteInDropdown(new DeleteDialog(getDriver()))
                 .clickYes(new HomePage(getDriver()))

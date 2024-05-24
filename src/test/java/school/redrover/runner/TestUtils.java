@@ -198,4 +198,12 @@ public final class TestUtils {
                 .switchToDefaultTheme()
                 .clickLogo();
     }
+
+    public static List<String> getJobsBeginningFromThisFirstLetters(BaseTest baseTest, String firstLetters) {
+
+        return new HomePage(baseTest.getDriver()).getItemList()
+                .stream()
+                .filter(el -> el.substring(0, firstLetters.length()).equalsIgnoreCase(firstLetters))
+                .toList();
+    }
 }

@@ -8,45 +8,40 @@ import school.redrover.model.CreateNewItemPage;
 import school.redrover.model.PeoplePage;
 import school.redrover.model.UserConfigurePage;
 
-import java.util.List;
-
 public abstract class BaseSideMenuPage<T extends BasePage> extends BasePage {
 
     @FindBy(id = "tasks")
-    private List<WebElement> sideMenus;
-
-    @FindBy(id = "tasks")
-    private WebElement sideMenu;
+    private WebElement sidebar;
 
     @FindBy(linkText = "People")
-    private WebElement peopleSideMenu;
+    private WebElement peopleOnSidebar;
 
     @FindBy(linkText = "New Item")
-    private WebElement newItemSideMenu;
+    private WebElement newItemOnSidebar;
 
     @FindBy(linkText = "Configure")
-    private WebElement configureSideMenu;
+    private WebElement configureOnSidebar;
 
     public BaseSideMenuPage(WebDriver driver) {
         super(driver);
     }
 
-    public PeoplePage clickPeopleSideMenu() {
-        getWait5().until(ExpectedConditions.visibilityOfAllElements(sideMenus));
-        peopleSideMenu.click();
+    public PeoplePage clickPeople() {
+        getWait5().until(ExpectedConditions.visibilityOfAllElements(sidebar));
+        peopleOnSidebar.click();
 
         return new PeoplePage(getDriver());
     }
 
-    public CreateNewItemPage clickNewItemSideMenu() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(newItemSideMenu)).click();
+    public CreateNewItemPage clickNewItemOnSidebar() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(newItemOnSidebar)).click();
 
         return new CreateNewItemPage(getDriver());
     }
 
-    public UserConfigurePage clickConfigureSideMenu() {
-        getWait5().until(ExpectedConditions.visibilityOf(sideMenu));
-        configureSideMenu.click();
+    public UserConfigurePage clickConfigureOnSidebar() {
+        getWait5().until(ExpectedConditions.visibilityOf(sidebar));
+        configureOnSidebar.click();
 
         return new UserConfigurePage(getDriver());
     }

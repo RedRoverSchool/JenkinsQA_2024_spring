@@ -132,9 +132,9 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
         return dialog;
     }
 
-    public MultiConfigurationConfirmRenamePage clickRenameInMenu() {
+    public MultiConfigurationRenamePage clickRenameInMenu() {
         menuRename.click();
-        return new MultiConfigurationConfirmRenamePage(getDriver());
+        return new MultiConfigurationRenamePage(getDriver());
     }
 
     public boolean isDescriptionEmpty() {
