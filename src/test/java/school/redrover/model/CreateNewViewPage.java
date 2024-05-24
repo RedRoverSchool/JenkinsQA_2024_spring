@@ -50,4 +50,10 @@ public class CreateNewViewPage extends BasePage {
 
         return new ViewConfigPage(getDriver());
     }
+
+    public ViewPage clickCreateButtonUponChoosingMyView() {
+        createButton.click();
+
+        return new ViewPage(getDriver());
+    }
 }

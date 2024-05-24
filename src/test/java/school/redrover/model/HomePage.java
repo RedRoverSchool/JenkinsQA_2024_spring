@@ -34,7 +34,7 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
     @FindBy(css = "[href='/manage']")
     private WebElement manageJenkinsLink;
 
-    @FindBy(css = "[tooltip='New View']")
+    @FindBy(css = "[href='/newView']")
     private WebElement newView;
 
     @FindBy(css = "[href*='rename']")
@@ -272,7 +272,7 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
         return new ManageJenkinsPage(getDriver());
     }
 
-    public CreateNewViewPage clickPlusForCreateView() {
+    public CreateNewViewPage clickPlusToCreateView() {
         newView.click();
 
         return new CreateNewViewPage(getDriver());
