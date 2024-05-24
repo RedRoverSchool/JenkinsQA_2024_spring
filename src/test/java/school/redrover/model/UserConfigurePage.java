@@ -2,6 +2,7 @@ package school.redrover.model;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
@@ -39,6 +40,11 @@ public class UserConfigurePage extends BasePage {
     }
 
     public String[] getTokenUuidUser(String projectName) {
+        new Actions(getDriver())
+                .scrollToElement(addNewTokenButton)
+                .scrollByAmount(0,50)
+                .perform();
+
         getWait5().until(ExpectedConditions.elementToBeClickable(addNewTokenButton)).click();
         tokenNameInput.sendKeys(projectName);
         generateButton.click();
