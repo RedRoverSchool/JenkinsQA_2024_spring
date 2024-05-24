@@ -68,7 +68,7 @@ public class ViewSteps {
         homePage = new HomePage(CucumberDriver.getDriver());
     }
 
-    @And("Go to New Job to create {string}")
+    @And("Go to New Job to create another item")
     public void goToNewJobToCreateAnotherItem() {
         createNewItemPage = homePage.clickNewItem();
     }

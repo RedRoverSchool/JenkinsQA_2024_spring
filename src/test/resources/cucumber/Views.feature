@@ -7,13 +7,13 @@ Feature: Views
     And Save configuration and go to Freestyle project page
     And Go to home page
 
-    And Go to New Job to create "Pipeline"
+    And Go to New Job to create another item
     And Enter Item name "Pipeline"
     And Set Item type as Pipeline, click Ok and go to Configure page
     And Save configuration and go to Pipeline project page
     And Go to home page
 
-    And Go to New Job to create "Organization Folder"
+    And Go to New Job to create another item
     And Enter Item name "OrganizationFolder"
     And Set Item type as Organization Folder, click Ok and go to Configure page
     And Save configuration and go to Organization Folder page
