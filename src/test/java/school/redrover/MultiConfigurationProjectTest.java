@@ -361,7 +361,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
 
         String searchResult = new HomePage(getDriver())
-                .getHeader().typeTextToSearchBox(PROJECT_NAME)
+                .getHeader().typeSearchQueryPressEnter(PROJECT_NAME)
                 .getTextFromMainPanel();
 
         Assert.assertTrue(searchResult.contains(PROJECT_NAME));

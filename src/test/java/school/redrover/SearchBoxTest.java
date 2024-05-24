@@ -7,7 +7,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.HeaderBlock;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
@@ -21,21 +20,20 @@ public class SearchBoxTest extends BaseTest {
 
     @Test
     public void testSearchWithValidData() {
-        String systemPageTitle = new HeaderBlock(getDriver())
-                .enterRequestIntoSearchBox("config")
-                .makeClickToSearchBox()
-                .getTitleText();
+        String systemPageTitle = new HomePage(getDriver())
+                .getHeader().typeSearchQueryPressEnter("config")
+                .getHeadingText();
 
         Assert.assertEquals(systemPageTitle,"System");
     }
 
     @Test
     public void testSearchUsingSuggestList() {
-        String systemPageTitle = new HeaderBlock(getDriver())
-                .enterRequestIntoSearchBox("c")
-                .chooseAndClickFirstSuggestListVariant()
-                .makeClickToSearchBox()
-                .getTitleText();
+        String systemPageTitle = new HomePage(getDriver())
+                .getHeader().typeTextToSearchField("c")
+                .getHeader().chooseAndClickFirstSuggestListVariant()
+                .getHeader().pressEnterOnSearchField()
+                .getHeadingText();
 
         Assert.assertEquals(systemPageTitle, "System");
     }
@@ -64,15 +62,16 @@ public class SearchBoxTest extends BaseTest {
 
     @Test
     public void testSearchWithCaseSensitiveOn() {
-        new HeaderBlock(getDriver()).goToAdminConfigurePage()
+        new HomePage(getDriver())
+                .getHeader().goToAdminConfigurePage()
                 .turnInsensitiveSearch(false)
                 .clickApplyButton();
 
-        final String searchResult1 = new HeaderBlock(getDriver())
-                .typeSearchQueryPressEnter(UPPER_CASE_INPUT)
+        final String searchResult1 = new HomePage(getDriver())
+                .getHeader().typeSearchQueryPressEnter(UPPER_CASE_INPUT)
                 .getNoMatchText();
-        final String searchResult2 = new HeaderBlock(getDriver())
-                .typeSearchQueryPressEnter(LOWER_CASE_INPUT)
+        final String searchResult2 = new HomePage(getDriver())
+                .getHeader().typeSearchQueryPressEnter(LOWER_CASE_INPUT)
                 .getMatchLogResult();
 
         Assert.assertFalse(searchResult1.matches(searchResult2));
@@ -80,15 +79,16 @@ public class SearchBoxTest extends BaseTest {
 
     @Test
     public void testSearchWithCaseSensitiveOff() {
-        new HeaderBlock(getDriver()).goToAdminConfigurePage()
+        new HomePage(getDriver())
+                .getHeader().goToAdminConfigurePage()
                 .turnInsensitiveSearch(true)
                 .clickApplyButton();
 
-        final String searchResult1 = new HeaderBlock(getDriver())
-                .typeSearchQueryPressEnter(UPPER_CASE_INPUT)
+        final String searchResult1 = new HomePage(getDriver())
+                .getHeader().typeSearchQueryPressEnter(UPPER_CASE_INPUT)
                 .getMatchLogResult();
-        final String searchResult2 = new HeaderBlock(getDriver())
-                .typeSearchQueryPressEnter(LOWER_CASE_INPUT)
+        final String searchResult2 = new HomePage(getDriver())
+                .getHeader().typeSearchQueryPressEnter(LOWER_CASE_INPUT)
                 .getMatchLogResult();
 
         Assert.assertTrue(searchResult1.matches(searchResult2));
@@ -133,7 +133,7 @@ public class SearchBoxTest extends BaseTest {
         final String SEARCHING_TEXT = "ma";
 
         String searchResult = new HomePage(getDriver())
-                .getHeader().typeTextToSearchBox(SEARCHING_TEXT)
+                .getHeader().typeSearchQueryPressEnter(SEARCHING_TEXT)
                 .getTextFromMainPanel();
 
         Assert.assertTrue(searchResult.contains(EXPECTED_RESULT_TEXT));
@@ -144,7 +144,7 @@ public class SearchBoxTest extends BaseTest {
         final String SEARCHING_TEXT = "i";
 
         String resultHeading = new HomePage(getDriver())
-                .getHeader().typeTextToSearchBox(SEARCHING_TEXT)
+                .getHeader().typeSearchQueryPressEnter(SEARCHING_TEXT)
                 .getMatchLogResult();
 
         String expectedSearchResult = "Search for '%s'".formatted(SEARCHING_TEXT);

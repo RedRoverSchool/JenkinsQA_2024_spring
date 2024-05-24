@@ -310,8 +310,8 @@ public class NodesTest extends BaseTest {
                 .clickDeleteAgent()
                 .clickYesButton();
 
-        String searchResult = new HeaderBlock(getDriver())
-                .typeSearchQueryPressEnter(NODE_NAME)
+        String searchResult = new HomePage(getDriver())
+                .getHeader().typeSearchQueryPressEnter(NODE_NAME)
                 .getNoMatchText();
 
         Assert.assertEquals(searchResult, "Nothing seems to match.");

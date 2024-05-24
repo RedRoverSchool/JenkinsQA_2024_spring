@@ -16,7 +16,7 @@ public abstract class BasePage extends BaseModel {
     private WebElement version;
 
     @FindBy(tagName = "h1")
-    private WebElement headerOne;
+    private WebElement heading;
 
     public BasePage(WebDriver driver) {
         super(driver);
@@ -79,8 +79,8 @@ public abstract class BasePage extends BaseModel {
         return webElement.getText();
     }
 
-    public String getHeaderOneText() {
-        return headerOne.getText();
+    public String getHeadingText() {
+        return heading.getText();
     }
 
     public void scrollIntoView(WebElement element) {

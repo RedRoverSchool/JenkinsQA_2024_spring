@@ -36,6 +36,18 @@ public class HeaderFrame extends BaseFrame {
     @FindBy(xpath = "//button[@name='configure']")
     private WebElement configureTooltipButton;
 
+    @FindBy(xpath = "//div[@class='yui-ac-bd']//ul//li[1]")
+    private WebElement firstSuggestListVariant;
+
+    @FindBy(css = ".yui-ac-bd li:nth-child(1)")
+    private WebElement searchFieldText;
+
+    @FindBy(css = "[data-href*='user']")
+    private WebElement adminDropdownChevron;
+
+    @FindBy(css = "[href*='configure']")
+    private WebElement adminDropdownConfigureLink;
+
 
     public HeaderFrame(WebDriver driver) {
         super(driver);
@@ -47,10 +59,31 @@ public class HeaderFrame extends BaseFrame {
         return new UserPage(getDriver());
     }
 
-    public SearchResultPage typeTextToSearchBox(String text) {
-        searchBox.sendKeys(text + Keys.ENTER);
+    public HomePage typeTextToSearchField(String text) {
+        searchBox.sendKeys(text);
+
+        return new HomePage(getDriver());
+    }
+
+    public SearchResultPage pressEnterOnSearchField() {
+        searchBox.sendKeys(Keys.ENTER);
 
         return new SearchResultPage(getDriver());
+    }
+
+    public SearchResultPage typeSearchQueryPressEnter(String searchQuery) {
+        searchBox.sendKeys(searchQuery, Keys.ENTER);
+        return new SearchResultPage(getDriver());
+    }
+
+    public HomePage chooseAndClickFirstSuggestListVariant(){
+        getWait5().until(ExpectedConditions.visibilityOf(firstSuggestListVariant)).click();
+
+        return new HomePage(getDriver());
+    }
+
+    public String getSearchFieldText() {
+        return getWait2().until(ExpectedConditions.visibilityOf(searchFieldText)).getText();
     }
 
     public <T extends BaseProjectPage<?>> T searchProjectByName(String projectName, T projectType) {
@@ -96,5 +129,13 @@ public class HeaderFrame extends BaseFrame {
         getWait5().until(ExpectedConditions.elementToBeClickable(configureTooltipButton)).click();
 
         return new SecurityPage(getDriver());
+    }
+
+    public AdminConfigurePage goToAdminConfigurePage() {
+        new Actions(getDriver()).moveToElement(adminDropdownChevron)
+                .click()
+                .perform();
+        adminDropdownConfigureLink.click();
+        return new AdminConfigurePage(getDriver());
     }
 }

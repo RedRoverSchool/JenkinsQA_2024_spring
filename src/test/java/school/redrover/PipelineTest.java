@@ -70,10 +70,9 @@ public class PipelineTest extends BaseTest {
 
     @Test(dependsOnMethods = "testUseSearchToFindProject")
     public void testFindPipelineProject() {
-        String searchResult = new HeaderBlock(getDriver())
-                .enterRequestIntoSearchBox(PIPELINE_NAME)
-                .makeClickToSearchBox()
-                .getTitleText();
+        String searchResult = new HomePage(getDriver())
+                .getHeader().typeSearchQueryPressEnter(PIPELINE_NAME)
+                .getHeadingText();
 
         Assert.assertEquals(searchResult, PIPELINE_NAME);
     }

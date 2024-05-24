@@ -48,9 +48,9 @@ public class UserTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateUserViaManageJenkins")
     public void testSearchForUserThroughSearchBar() {
 
-        String userFullName = new HeaderBlock(getDriver())
-                .enterRequestIntoSearchBox(FULL_NAME)
-                .getSearchBoxResult();
+        String userFullName = new HomePage(getDriver())
+                .getHeader().typeTextToSearchField(FULL_NAME)
+                .getHeader().getSearchFieldText();
 
         Assert.assertEquals(userFullName, "User");
     }
