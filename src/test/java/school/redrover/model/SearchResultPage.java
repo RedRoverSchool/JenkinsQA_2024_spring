@@ -38,8 +38,10 @@ public class SearchResultPage extends BasePage {
     }
 
     public List<String> getSearchResult() {
-        return getWait5().until(ExpectedConditions.visibilityOfAllElements(searchResultList)).stream().map(WebElement::getText).toList();
 
+        return getWait5().until(ExpectedConditions.visibilityOfAllElements(searchResultList))
+                .stream()
+                .map(WebElement::getText)
+                .toList();
     }
-
 }

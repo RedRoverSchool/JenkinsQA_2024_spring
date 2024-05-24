@@ -42,7 +42,8 @@ public class SearchBoxTest extends BaseTest {
         folders.forEach(this::createFolder);
 
         List<String> searchResult = new HomePage(getDriver())
-                .typeTextToSearchBox(firstLetterOfFolderName)
+                .getHeader().typeTextToSearchField(firstLetterOfFolderName)
+                .getHeader().pressEnterOnSearchField()
                 .getSearchResult();
 
         Assert.assertTrue(searchResult.containsAll(folders), "Folders aren't found");
@@ -98,8 +99,8 @@ public class SearchBoxTest extends BaseTest {
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .clickLogo()
-                .searchProjectByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
-                .getProjectName();
+                .getHeader().searchProjectByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
+                .getHeadingText();
 
         Assert.assertEquals(searchResult, PIPELINE_NAME,  "Pipeline is not found");
     }
@@ -133,7 +134,7 @@ public class SearchBoxTest extends BaseTest {
     public void testAccessToUserDoc(){
         String tutorialPageTitle = new HomePage(getDriver())
                 .openTutorial()
-                .getHeaderOneText();
+                .getHeadingText();
 
         Assert.assertEquals(tutorialPageTitle, "Search Box");
     }
