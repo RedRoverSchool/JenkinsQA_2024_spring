@@ -4,7 +4,10 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.*;
+import school.redrover.model.CreateUserPage;
+import school.redrover.model.HomePage;
+import school.redrover.model.JobBuildConsolePage;
+import school.redrover.model.UserConfigurePage;
 import school.redrover.runner.BaseTest;
 
 import java.util.Comparator;
@@ -22,7 +25,7 @@ public class UserTest extends BaseTest {
     public void testCheckUserID() {
 
         String userID = new HomePage(getDriver())
-                .clickUserNameOnHeader()
+                .getHeader().clickUserNameOnHeader()
                 .getUserID();
 
         Assert.assertEquals(userID, "admin");
@@ -48,9 +51,9 @@ public class UserTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateUserViaManageJenkins")
     public void testSearchForUserThroughSearchBar() {
 
-        String userFullName = new HeaderBlock(getDriver())
-                .enterRequestIntoSearchBox(FULL_NAME)
-                .getSearchBoxResult();
+        String userFullName = new HomePage(getDriver())
+                .getHeader().typeTextToSearchField(FULL_NAME)
+                .getHeader().getSearchFieldText();
 
         Assert.assertEquals(userFullName, "User");
     }
@@ -159,7 +162,14 @@ public class UserTest extends BaseTest {
 
         //Test steps
         final String actualConsoleLogs = new HomePage(getDriver())
-                .createFreestyleProjectWithConfigurations(projectName)
+                .clickNewItem()
+                .setItemName(projectName)
+                .selectFreestyleAndClickOk()
+                .scrollToBuildTriggersHeading()
+                .clickTriggerBuildsRemotelyCheckbox()
+                .inputAuthenticationToken(projectName)
+                .clickAddTimestampsCheckbox()
+                .clickSaveButton()
                 .triggerJobViaHTTPRequest(token, user, projectName)
                 .clickSuccessConsoleOutputButton()
                 .getConsoleLogsText();

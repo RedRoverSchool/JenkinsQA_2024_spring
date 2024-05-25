@@ -112,7 +112,7 @@ public class FolderTest extends BaseTest {
     public void testRenameFolderViaMainPageDropdownMenu() {
         String folderStatusPageHeading = new HomePage(getDriver())
                 .openItemDropdownWithSelenium(NEW_FOLDER_NAME)
-                .renameFolderFromDropdown()
+                .clickRenameOnDropdownForFolder()
                 .setNewName(THIRD_FOLDER_NAME)
                 .clickRename()
                 .getProjectName();
@@ -163,12 +163,12 @@ public class FolderTest extends BaseTest {
         final String MULTI_CONFIGURATION_NAME = "MultiConfigurationProject_1";
 
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
-                .clickFolder(FOLDER_NAME)
+                .clickSpecificFolderName(FOLDER_NAME)
                 .clickNewItemInsideFolder()
                 .setItemName(MULTI_CONFIGURATION_NAME)
                 .selectFreestyleAndClickOk()
                 .clickLogo()
-                .clickFolder(FOLDER_NAME);
+                .clickSpecificFolderName(FOLDER_NAME);
 
         Assert.assertTrue(folderProjectPage.isItemExistsInsideFolder(MULTI_CONFIGURATION_NAME));
     }
@@ -176,8 +176,7 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateMultiConfigurationProjectInFolder")
     public void testDeleteFolderViaDropdown() {
 
-        boolean isFolderDeleted = new FolderProjectPage(getDriver())
-                .clickLogo()
+        boolean isFolderDeleted = new HomePage(getDriver())
                 .openItemDropdown(FOLDER_NAME)
                 .clickDeleteInDropdown(new DeleteDialog(getDriver()))
                 .clickYes(new HomePage(getDriver()))
@@ -196,7 +195,7 @@ public class FolderTest extends BaseTest {
                 .chooseFolderToMove()
                 .chooseDestinationFromListAndMove(FOLDER_NAME)
                 .clickLogo()
-                .clickFolder(FOLDER_NAME)
+                .clickSpecificFolderName(FOLDER_NAME)
                 .getItemListInsideFolder();
 
         Assert.assertEquals(folderNameList.get(0), FOLDER_TO_MOVE);
@@ -222,7 +221,7 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateViaNewItem")
     public void testCheckNewFolderIsEmpty() {
         Boolean isFolderEmpty = new HomePage(getDriver())
-                .clickFolder(FOLDER_NAME)
+                .clickSpecificFolderName(FOLDER_NAME)
                 .isFolderEmpty();
 
         Assert.assertTrue(isFolderEmpty);
@@ -237,7 +236,7 @@ public class FolderTest extends BaseTest {
         TestUtils.createFolderProject(this, folderName);
 
         String actualFolderName = new HomePage(getDriver())
-                .clickFolder(folderName)
+                .clickSpecificFolderName(folderName)
                 .getProjectName();
 
         String actualEmptyStateMessage = new FolderProjectPage(getDriver())
@@ -260,7 +259,7 @@ public class FolderTest extends BaseTest {
         String expectedText = String.format("Full project name: %s/%s", FOLDER_NAME, PIPELINE_NAME);
 
         PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
-                .clickFolder(FOLDER_NAME)
+                .clickSpecificFolderName(FOLDER_NAME)
                 .clickNewItemInsideFolder()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
@@ -268,31 +267,31 @@ public class FolderTest extends BaseTest {
 
         String actualText = pipelineProjectPage.getFullProjectNameLocationText();
 
-        Assert.assertTrue(actualText.contains(expectedText), "The text does not contain the expected project name.");
-
-        String itemName = pipelineProjectPage.clickLogo()
-                .clickFolderName()
+        String itemName = pipelineProjectPage
+                .clickLogo()
+                .clickSpecificFolderName(FOLDER_NAME)
                 .getItemInTableName();
 
+        Assert.assertTrue(actualText.contains(expectedText), "The text does not contain the expected project name.");
         Assert.assertEquals(itemName, PIPELINE_NAME);
     }
 
     @Test(dependsOnMethods = "testCreateJobPipelineInFolder")
     public void testCreateTwoInnerFolder() {
         List<String> itemNames = new HomePage(getDriver())
-                .clickFolder(FOLDER_NAME)
+                .clickSpecificFolderName(FOLDER_NAME)
                 .clickNewItemInsideFolder()
                 .setItemName(FOLDER_TO_MOVE)
                 .selectFolderAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
-                .clickFolder(FOLDER_NAME)
+                .clickSpecificFolderName(FOLDER_NAME)
                 .clickNewItemInsideFolder()
                 .setItemName(FOLDER_TO_MOVE_2)
                 .selectFolderAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
-                .clickFolder(FOLDER_NAME)
+                .clickSpecificFolderName(FOLDER_NAME)
                 .getItemListInsideFolder();
 
         Assert.assertTrue(itemNames.contains(FOLDER_TO_MOVE) && itemNames.contains(FOLDER_TO_MOVE_2));
@@ -301,13 +300,13 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateTwoInnerFolder")
     public void testCreateFreeStyleProjectInsideRootFolder() {
         List<String> insideFilderItemList = new HomePage(getDriver())
-                .clickFolder(FOLDER_NAME)
+                .clickSpecificFolderName(FOLDER_NAME)
                 .clickNewItemInsideFolder()
                 .setItemName(IVAN_S_FREE_STYLE_PROJECT)
                 .selectFreestyleAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
-                .clickFolder(FOLDER_NAME)
+                .clickSpecificFolderName(FOLDER_NAME)
                 .getItemListInsideFolder();
 
         Assert.assertListContainsObject(insideFilderItemList, IVAN_S_FREE_STYLE_PROJECT, "FreeStyle Project was not created");
@@ -316,7 +315,7 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateFreeStyleProjectInsideRootFolder")
     public void testDeleteFolder() {
         List<String> jobList =new HomePage(getDriver())
-                .clickFolder(FOLDER_NAME)
+                .clickSpecificFolderName(FOLDER_NAME)
                 .clickDeleteOnSidebar()
                 .clickYesForDeleteFolder()
                 .getItemList();
@@ -329,7 +328,7 @@ public class FolderTest extends BaseTest {
                 .clickNewItem()
                 .setItemName("Fold%erdate")
                 .selectFolderAndClickOk()
-                .getHeaderOneText();
+                .getHeadingText();
 
         Assert.assertEquals(header1Text, "Error");
     }

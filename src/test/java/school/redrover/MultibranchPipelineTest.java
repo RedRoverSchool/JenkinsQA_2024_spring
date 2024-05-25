@@ -161,7 +161,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .selectMultibranchPipelineAndClickOk()
                 .clickLogo()
                 .openItemDropdown(MULTI_PIPELINE_NAME)
-                .clickRenameFromDropdownMP()
+                .clickRenameOnDropdownForMultibranchPipeline()
                 .clearNewNameInput()
                 .setItemName(RENAMED_MULTI_PIPELINE)
                 .clickRename(new MultibranchPipelineProjectPage(getDriver()))
@@ -260,7 +260,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .openItemDropdown(MULTI_PIPELINE_NAME)
                 .clickDeleteInDropdown(new DeleteDialog(getDriver()))
                 .clickYes(new HomePage(getDriver()))
-                .getHeadingValue();
+                .getHeadingText();
 
         Assert.assertEquals(actualPageHeading, "Welcome to Jenkins!");
     }
@@ -363,7 +363,7 @@ public class MultibranchPipelineTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateProjectViaSidebarMenu")
     public void testVerifyMpDisabledOnStatusPage() {
         String disabledMessage = new HomePage(getDriver())
-                .clickMPName(MULTI_PIPELINE_NAME)
+                .clickSpecificMultibranchPipelineName(MULTI_PIPELINE_NAME)
                 .clickDisableEnableMultibranchPipeline()
                 .getDisableMultibranchPipelineText();
 
@@ -373,7 +373,7 @@ public class MultibranchPipelineTest extends BaseTest {
     @Test(dependsOnMethods = "testVerifyMpDisabledOnStatusPage")
     public void testVerifyMpDisabledMessageColorOnStatusPage() {
         String disabledMessageColor = new HomePage(getDriver())
-                .clickMPName(MULTI_PIPELINE_NAME)
+                .clickSpecificMultibranchPipelineName(MULTI_PIPELINE_NAME)
                 .getDisableMultibranchPipelineTextColor();
 
         Assert.assertEquals(disabledMessageColor, "rgba(254, 130, 10, 1)");
@@ -382,7 +382,7 @@ public class MultibranchPipelineTest extends BaseTest {
     @Test(dependsOnMethods = "testRenameMultibranchPipelineViaSideBar")
     public void testDeleteMpViaBreadcrumbs() {
         boolean isMpDeleted = new HomePage(getDriver())
-                .clickMPName(RENAMED_MULTI_PIPELINE)
+                .clickSpecificMultibranchPipelineName(RENAMED_MULTI_PIPELINE)
                 .clickMPDropdownArrow()
                 .clickDeleteMultibranchPipelineInBreadcrumbs(new DeleteDialog(getDriver()))
                 .clickYes(new HomePage(getDriver()))

@@ -29,7 +29,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         String newProjectName = new HomePage(getDriver())
                 .openItemDropdownWithSelenium(PROJECT_NAME)
-                .selectRenameFromDropdown()
+                .clickRenameOnDropdownForMultiConfigurationProject()
                 .changeProjectNameWithoutClear(addToProjectName)
                 .clickRenameButton()
                 .getProjectName();
@@ -44,7 +44,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         final String TEXT = "❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
 
         String description = TestUtils.createMultiConfigurationProject(this, RANDOM_PROJECT_NAME)
-                .clickMCPName(RANDOM_PROJECT_NAME)
+                .clickSpecificMultiConfigurationProjectName(RANDOM_PROJECT_NAME)
                 .clickAddDescriptionButton()
                 .addOrEditDescription(TEXT)
                 .clickSaveDescription()
@@ -61,12 +61,12 @@ public class MultiConfigurationProjectTest extends BaseTest {
         TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
 
         String DescriptionText = new HomePage(getDriver())
-                .clickMCPName(PROJECT_NAME)
+                .clickSpecificMultiConfigurationProjectName(PROJECT_NAME)
                 .clickAddDescriptionButton()
                 .addOrEditDescription(text)
                 .clickSaveDescription()
                 .clickLogo()
-                .clickMCPName(PROJECT_NAME)
+                .clickSpecificMultiConfigurationProjectName(PROJECT_NAME)
                 .clickAddDescriptionButton()
                 .addOrEditDescription(additionalText)
                 .clickSaveDescription()
@@ -81,7 +81,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         String previewText =
                 TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
-                .clickMCPName(PROJECT_NAME)
+                .clickSpecificMultiConfigurationProjectName(PROJECT_NAME)
                 .clickAddDescriptionButton()
                 .addOrEditDescription(text)
                 .clickPreview()
@@ -130,7 +130,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Test
     public void testMCPDisableByToggle() {
         Assert.assertFalse(TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
-                .clickMCPName(PROJECT_NAME)
+                .clickSpecificMultiConfigurationProjectName(PROJECT_NAME)
                 .clickConfigureButton()
                 .clickToggleSwitch()
                 .clickApply()
@@ -141,7 +141,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     public void testCheckTooltipEnablingMCP() {
 
         String toggleTooltipText = new HomePage(getDriver())
-                .clickMCPName(PROJECT_NAME)
+                .clickSpecificMultiConfigurationProjectName(PROJECT_NAME)
                 .clickConfigureButton()
                 .hoverOverToggleSwitch()
                 .getToggleTooltipText();
@@ -156,7 +156,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         String actualColor = TestUtils
                 .createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
-                .clickMCPName(PROJECT_NAME)
+                .clickSpecificMultiConfigurationProjectName(PROJECT_NAME)
                 .clickDeleteInMenu(new DeleteDialog(getDriver()))
                 .getYesButtonColorDeletingViaSidebar();
 
@@ -217,7 +217,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
 
         List<String> itemsList = new HomePage(getDriver())
-                .clickMCPName(PROJECT_NAME)
+                .clickSpecificMultiConfigurationProjectName(PROJECT_NAME)
                 .clickBreadcrumbsProjectDropdownArrow()
                 .clickDropdownDelete()
                 .clickYes(new HomePage(getDriver()))
@@ -265,7 +265,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         List<String> discardOldBuildsList = TestUtils
                 .createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
-                .clickMCPName(PROJECT_NAME)
+                .clickSpecificMultiConfigurationProjectName(PROJECT_NAME)
                 .clickConfigureButton()
                 .clickDiscardOldBuilds()
                 .setDaysToKeep(daysToKeep)
@@ -288,7 +288,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         String currentUrl = TestUtils
                 .createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
-                .searchProjectByName(PROJECT_NAME, new MultiConfigurationProjectPage(getDriver()))
+                .getHeader().searchProjectByName(PROJECT_NAME, new MultiConfigurationProjectPage(getDriver()))
                 .getCurrentUrl();
 
         Assert.assertTrue(currentUrl.contains(PROJECT_NAME));
@@ -321,7 +321,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .selectFolder(FOLDER_NAME)
                 .clickMove()
                 .clickLogo()
-                .clickFolder(FOLDER_NAME);
+                .clickSpecificFolderName(FOLDER_NAME);
 
         boolean isProjectMoved = new FolderProjectPage(getDriver()).getItemListInsideFolder().contains(PROJECT_NAME);
 
@@ -334,7 +334,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
 
         String disableMessage = new HomePage(getDriver())
-                .clickMCPName(PROJECT_NAME)
+                .clickSpecificMultiConfigurationProjectName(PROJECT_NAME)
                 .clickDisableProject()
                 .getDisableMessage();
 
@@ -346,7 +346,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     public void testEnableProjectOnProjectPage() {
 
         String enableMessage = new HomePage(getDriver())
-                .clickMCPName(PROJECT_NAME)
+                .clickSpecificMultiConfigurationProjectName(PROJECT_NAME)
                 .clickEnableButton()
                 .clickConfigureButton()
                 .getToggleStatusMessage();
@@ -361,7 +361,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
 
         String searchResult = new HomePage(getDriver())
-                .typeTextToSearchBox(PROJECT_NAME)
+                .getHeader().typeSearchQueryPressEnter(PROJECT_NAME)
                 .getTextFromMainPanel();
 
         Assert.assertTrue(searchResult.contains(PROJECT_NAME));

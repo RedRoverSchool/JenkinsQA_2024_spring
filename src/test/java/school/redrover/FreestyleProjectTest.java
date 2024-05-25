@@ -1,6 +1,5 @@
 package school.redrover;
 
-import org.openqa.selenium.*;
 import org.testng.*;
 import org.testng.annotations.*;
 import school.redrover.model.*;
@@ -152,7 +151,7 @@ public class FreestyleProjectTest extends BaseTest {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
         String headerText = new HomePage(getDriver())
-                .clickCreatedFreestyleName()
+                .clickSpecificFreestyleProjectName(FREESTYLE_PROJECT_NAME)
                 .clickConfigure()
                 .getHeaderSidePanelText();
 
@@ -170,7 +169,7 @@ public class FreestyleProjectTest extends BaseTest {
         TestUtils.createFolderProject(this, FOLDER_NAME);
 
         String actualText = new HomePage(getDriver())
-                .chooseCreatedFreestyleProject(FREESTYLE_PROJECT_NAME)
+                .clickSpecificFreestyleProjectName(FREESTYLE_PROJECT_NAME)
                 .clickMove()
                 .choosePath(FOLDER_NAME)
                 .clickMoveButton()
@@ -199,7 +198,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testCheckFreestyleProjectViaBreadcrumb() {
         List<String> itemListInsideFolder = new HomePage(getDriver())
                 .openDashboardBreadcrumbsDropdown()
-                .clickMyViewsFromDropdown()
+                .getHeader().clickMyViewsFromDropdown()
                 .clickBreadcrumbAll()
                 .clickJobNameBreadcrumb(FOLDER_NAME)
                 .getItemListInsideFolder();
@@ -301,7 +300,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         String projectName = new HomePage(getDriver())
                 .openItemDropdown(FREESTYLE_PROJECT_NAME)
-                .clickRenameInDropdown()
+                .clickRenameOnDropdownForFreestyleProject()
                 .setNewName(RENAMED_FREESTYLE_PROJECT_NAME)
                 .clickRename()
                 .getProjectName();
@@ -331,7 +330,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         String errorMassage = new HomePage(getDriver())
                 .openItemDropdown(FREESTYLE_PROJECT_NAME)
-                .clickRenameInDropdown()
+                .clickRenameOnDropdownForFreestyleProject()
                 .clearNameAndClickRenameButton()
                 .getMessageText();
 
@@ -342,11 +341,11 @@ public class FreestyleProjectTest extends BaseTest {
     public void testDeleteProjectViaSidebar() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
-        List<WebElement> projectList = new HomePage(getDriver())
+        List<String> projectList = new HomePage(getDriver())
                 .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickDelete()
                 .clickYesInConfirmDeleteDialog()
-                .getTheListOfFreestyleProjects(FREESTYLE_PROJECT_NAME);
+                .getItemList();
 
         Assert.assertTrue(projectList.isEmpty());
     }
@@ -359,7 +358,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickDelete()
                 .clickYesInConfirmDeleteDialog()
-                .getWelcomeJenkinsHeader();
+                .getHeadingText();
 
         Assert.assertEquals(welcomeJenkinsHeader, "Welcome to Jenkins!");
     }
@@ -384,7 +383,8 @@ public class FreestyleProjectTest extends BaseTest {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
         boolean isItemDeleted = new HomePage(getDriver())
-                .clickDeleteProjectDropdownAndConfirm(FREESTYLE_PROJECT_NAME)
+                .openItemDropdown(FREESTYLE_PROJECT_NAME)
+                .clickDeleteOnDropdownAndConfirm()
                 .isItemDeleted(FREESTYLE_PROJECT_NAME);
 
         Assert.assertTrue(isItemDeleted);

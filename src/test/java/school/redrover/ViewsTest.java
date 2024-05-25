@@ -20,7 +20,7 @@ public class ViewsTest extends BaseTest {
         String views = "My Views";
 
         boolean textVisibility = new HomePage(getDriver())
-                .clickMyViewsFromDropdown()
+                .getHeader().clickMyViewsFromDropdown()
                 .isThereTextInBreadcrumbs(views);
 
         Assert.assertTrue(textVisibility, "'My Views' didn't open");

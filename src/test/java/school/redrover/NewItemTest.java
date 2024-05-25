@@ -9,6 +9,7 @@ import school.redrover.model.CreateNewItemPage;
 import school.redrover.model.FreestyleConfigPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.List;
 import java.util.Random;
@@ -60,7 +61,7 @@ public class NewItemTest extends BaseTest {
                 .clickSaveButton()
                 .clickLogo()
                 .openItemDropdownWithSelenium("Name")
-                .renameFolderFromDropdown()
+                .clickRenameOnDropdownForFolder()
                 .setNewName("New Name")
                 .clickRename()
                 .clickLogo()
@@ -199,16 +200,16 @@ public class NewItemTest extends BaseTest {
         final String firstLetters = "foL";
         final String newItemName = "someName";
 
-        List<String> firstLettersJobs = new HomePage(getDriver())
-                .createFreestyleProject(freestyle1)
-                .createFolder(folder1)
-                .createFolder(folder2)
-                .createFreestyleProject(freestyle2)
-                .createPipeline(pipeline1)
-                .createMultiConfigurationProject(multiConfigurationProject1)
-                .createMultibranchPipeline(multiBranchPipe1)
-                .createOrganizationFolder(organizationFolder1)
-                .getJobsBeginningFromThisFirstLetters(firstLetters);
+        TestUtils.createFreestyleProject(this, freestyle1);
+        TestUtils.createFolderProject(this, folder1);
+        TestUtils.createFolderProject(this, folder2);
+        TestUtils.createFreestyleProject(this, freestyle2);
+        TestUtils.createPipelineProject(this, pipeline1);
+        TestUtils.createMultiConfigurationProject(this, multiConfigurationProject1);
+        TestUtils.createMultibranchProject(this,multiBranchPipe1);
+        TestUtils.createOrganizationFolderProject(this,organizationFolder1);
+
+        List<String> firstLettersJobs = TestUtils.getJobsBeginningFromThisFirstLetters(this, firstLetters);
 
         List<String> jobsFromDropdownMenu = new HomePage(getDriver())
                 .clickNewItem()

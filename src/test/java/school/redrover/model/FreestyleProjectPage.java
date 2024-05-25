@@ -15,9 +15,6 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
     @FindBy(css = "#enable-project button")
     private WebElement enableButton;
 
-    @FindBy(id = "main-panel")
-    private WebElement fullProjectName;
-
     @FindBy(css = "#description > div:first-child")
     private WebElement projectDescription;
 
@@ -74,11 +71,6 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
 
     public FreestyleProjectPage(WebDriver driver) {
         super(driver);
-    }
-
-    public String checkFullProjectName() {
-
-        return fullProjectName.getText();
     }
 
     public FreestyleProjectPage clickAddDescription() {
@@ -206,6 +198,7 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
     public String getPageHeadingText() {
         return pageHeading.getText();
     }
+
     public JobBuildConsolePage clickSuccessConsoleOutputButton() {
         getWait60().until(ExpectedConditions.elementToBeClickable(successConsoleOutputButton)).click();
 

@@ -72,10 +72,9 @@ public class PipelineTest extends BaseTest {
 
     @Test(dependsOnMethods = "testUseSearchToFindProject")
     public void testFindPipelineProject() {
-        String searchResult = new HeaderBlock(getDriver())
-                .enterRequestIntoSearchBox(PIPELINE_NAME)
-                .makeClickToSearchBox()
-                .getTitleText();
+        String searchResult = new HomePage(getDriver())
+                .getHeader().typeSearchQueryPressEnter(PIPELINE_NAME)
+                .getHeadingText();
 
         Assert.assertEquals(searchResult, PIPELINE_NAME);
     }
@@ -87,7 +86,7 @@ public class PipelineTest extends BaseTest {
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .clickLogo()
-                .searchProjectByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
+                .getHeader().searchProjectByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
                 .getProjectName();
 
         Assert.assertEquals(actualPipelineName, PIPELINE_NAME);
@@ -200,7 +199,7 @@ public class PipelineTest extends BaseTest {
         final String expectedDescription = DESCRIPTION + addedToDescription;
 
         String descriptionText = new HomePage(getDriver())
-                .clickCreatedPipelineName()
+                .clickSpecificPipelineName(PIPELINE_NAME)
                 .clickChangeDescription()
                 .clickOnDescriptionInput()
                 .setDescription(addedToDescription)
@@ -238,7 +237,7 @@ public class PipelineTest extends BaseTest {
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
-                .chooseCreatedProject(pipelineName)
+                .clickSpecificPipelineName(pipelineName)
                 .clickFullStageViewButton()
                 .getH2HeadingText();
 
@@ -255,7 +254,7 @@ public class PipelineTest extends BaseTest {
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
-                .chooseCreatedProject(pipelineName);
+                .clickSpecificPipelineName(pipelineName);
 
         Assert.assertTrue(new PipelineProjectPage(getDriver()).isBtnPresentInSidebar("Full Stage View"));
     }
@@ -270,7 +269,7 @@ public class PipelineTest extends BaseTest {
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
-                .chooseCreatedProject(PIPELINE_NAME)
+                .clickSpecificPipelineName(PIPELINE_NAME)
                 .clickFullStageViewButton()
                 .getBreadcrumbsText();
 
@@ -283,7 +282,7 @@ public class PipelineTest extends BaseTest {
         final String expectedColor = "rgba(175, 175, 207, 0.15)";
 
         String backgroundColorBeforeHover = new HomePage(getDriver())
-                .chooseCreatedProject(PIPELINE_NAME)
+                .clickSpecificPipelineName(PIPELINE_NAME)
                 .getFullStageViewButtonBackgroundColor();
 
         String backgroundColorAfterHover = new PipelineProjectPage(getDriver())
@@ -795,7 +794,7 @@ public class PipelineTest extends BaseTest {
         TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
         boolean descriptionPreviewIsDisplayed = new HomePage(getDriver())
-                .clickCreatedPipelineName()
+                .clickSpecificPipelineName(PIPELINE_NAME)
                 .clickChangeDescription()
                 .setDescription(DESCRIPTION)
                 .clickShowDescriptionPreview()
@@ -999,7 +998,7 @@ public class PipelineTest extends BaseTest {
         final String editedDisplayNameText = " - EDITED";
 
         String projectsDisplayNameInHeader = new HomePage(getDriver())
-                .clickCreatedPipelineName()
+                .clickSpecificPipelineName(PIPELINE_NAME)
                 .clickSidebarConfigureButton(PIPELINE_NAME)
                 .clickAdvancedProjectOptionsMenu()
                 .clickAdvancedButton()
@@ -1013,7 +1012,7 @@ public class PipelineTest extends BaseTest {
     @Test(dependsOnMethods = {"testAddDisplayNameInAdvancedSection", "testEditDisplayNameInAdvancedSection"})
     public void testDeleteDisplayNameInAdvancedSection() {
         String projectsDisplayNameInHeader = new HomePage(getDriver())
-                .clickCreatedPipelineName()
+                .clickSpecificPipelineName(PIPELINE_NAME)
                 .clickSidebarConfigureButton(PIPELINE_NAME)
                 .clickAdvancedProjectOptionsMenu()
                 .clickAdvancedButton()

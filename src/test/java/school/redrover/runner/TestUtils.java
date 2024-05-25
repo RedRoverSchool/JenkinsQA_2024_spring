@@ -1,7 +1,9 @@
 package school.redrover.runner;
 
-import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.HomePage;
 
@@ -42,9 +44,6 @@ public final class TestUtils {
     }
 
     public static final String PIPELINE = "Pipeline";
-
-    public static final By DROPDOWN_DELETE = By.cssSelector("button[href $= '/doDelete']");
-    public static final By EMPTY_STATE_BLOCK = By.cssSelector("div.empty-state-block");
 
     public static final String JOB_XPATH = "//*[text()='%s']";
 
@@ -146,18 +145,6 @@ public final class TestUtils {
                 .clickLogo();
     }
 
-    public static void returnToDashBoard(BaseTest baseTest) {
-        baseTest.getDriver().findElement(By.cssSelector("a#jenkins-home-link")).click();
-    }
-
-    public static void clickAtBeginOfElement(BaseTest baseTest, WebElement element) {
-        Point itemPoint = baseTest.getWait10().until(ExpectedConditions.elementToBeClickable(element)).getLocation();
-        new Actions(baseTest.getDriver())
-                .moveToLocation(itemPoint.getX(), itemPoint.getY())
-                .click()
-                .perform();
-    }
-
     public static void openElementDropdown(BaseTest baseTest, WebElement element) {
         WebElement chevron = element.findElement(By.cssSelector("[class $= 'chevron']"));
 
@@ -167,22 +154,6 @@ public final class TestUtils {
 
     public static String randomString() {
         return UUID.randomUUID().toString();
-    }
-
-    public static void openJobDropdown(BaseTest baseTest, String jobName) {
-        By dropdownChevron = By.xpath("//table//button[@class='jenkins-menu-dropdown-chevron']");
-
-        Actions action = new Actions(baseTest.getDriver());
-        baseTest.getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table//a[@href='job/" + jobName + "/']")));
-        action.moveToElement(baseTest.getDriver().findElement(
-                By.xpath("//table//a[@href='job/" + jobName + "/']"))).perform();
-
-        action.moveToElement(baseTest.getDriver().findElement(dropdownChevron)).perform();
-        baseTest.getWait5().until(ExpectedConditions.elementToBeClickable(dropdownChevron));
-        int chevronHeight = baseTest.getDriver().findElement(dropdownChevron).getSize().getHeight();
-        int chevronWidth = baseTest.getDriver().findElement(dropdownChevron).getSize().getWidth();
-        action.moveToElement(baseTest.getDriver().findElement(dropdownChevron), chevronWidth, chevronHeight).click()
-                .perform();
     }
 
     public static List<String> getTexts(List<WebElement> elementList) {
@@ -198,20 +169,6 @@ public final class TestUtils {
         goToJobPageAndEnterJobName(baseTest, jobName);
         baseTest.getDriver().findElement(By.xpath(JOB_XPATH.formatted(job))).click();
         baseTest.getDriver().findElement(By.id("ok-button")).click();
-    }
-
-    public static void createNewJob(BaseTest baseTest, Job job, String jobName) {
-        createJob(baseTest, job, jobName);
-        goToMainPage(baseTest.getDriver());
-    }
-
-    public static boolean checkIfProjectIsOnTheBoard(WebDriver driver, String projectName){
-        goToMainPage(driver);
-        List<WebElement> displayedProjects = driver.findElements(
-                By.xpath("//table[@id='projectstatus']//button/preceding-sibling::span"));
-
-        return displayedProjects.stream()
-                .anyMatch(el -> el.getText().equals(projectName));
     }
 
     public enum Job {
@@ -234,15 +191,19 @@ public final class TestUtils {
         }
     }
 
-    public static String getBaseUrl() {
-        return ProjectUtils.getUrl();
-    }
-
     public static void resetJenkinsTheme(BaseTest baseTest) {
         new HomePage(baseTest.getDriver())
                 .clickManageJenkins()
                 .clickAppearanceButton()
                 .switchToDefaultTheme()
                 .clickLogo();
+    }
+
+    public static List<String> getJobsBeginningFromThisFirstLetters(BaseTest baseTest, String firstLetters) {
+
+        return new HomePage(baseTest.getDriver()).getItemList()
+                .stream()
+                .filter(el -> el.substring(0, firstLetters.length()).equalsIgnoreCase(firstLetters))
+                .toList();
     }
 }

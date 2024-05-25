@@ -5,27 +5,18 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.model.FreestyleProjectPage;
-import school.redrover.model.HomePage;
-import school.redrover.model.SearchResultPage;
-import school.redrover.model.UserPage;
+import school.redrover.model.*;
 
 import java.util.List;
 import java.util.ArrayList;
 
 public abstract class BasePage extends BaseModel {
 
-    @FindBy(css = "a.model-link > span")
-    private WebElement userNameOnHeader;
-
-    @FindBy(id = "search-box")
-    private WebElement searchBox;
-
     @FindBy(css = "[class$=jenkins_ver]")
     private WebElement version;
 
     @FindBy(tagName = "h1")
-    private WebElement headerOne;
+    private WebElement heading;
 
     @FindBy(xpath = "//a[@class='main-search__icon-trailing']")
     private WebElement tutorialIcon;
@@ -40,19 +31,19 @@ public abstract class BasePage extends BaseModel {
         return new HomePage(getDriver());
     }
 
+    public HeaderFrame getHeader() {
+        return new HeaderFrame(getDriver());
+    }
+
+    public FooterFrame getFooter() {
+        return new FooterFrame(getDriver());
+    }
+
     public void openElementDropdown(WebElement element) {
         WebElement chevron = element.findElement(By.cssSelector("[class $= 'chevron']"));
 
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", chevron);
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
-    }
-
-    public void openHeaderUsernameDropdown() {
-        new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.cssSelector("[data-href$='admin']")))
-                .pause(1000)
-                .click()
-                .perform();
     }
 
     public boolean isThereTextInBreadcrumbs(String text) {
@@ -91,37 +82,16 @@ public abstract class BasePage extends BaseModel {
         return webElement.getText();
     }
 
-    public String getHeaderOneText() {
-        return headerOne.getText();
+    public String getHeadingText() {
+        return heading.getText();
     }
 
     public void scrollIntoView(WebElement element) {
         ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView(true);", element);
     }
 
-    public UserPage clickUserNameOnHeader() {
-        userNameOnHeader.click();
-
-        return new UserPage(getDriver());
-    }
-
-    public <T extends BaseProjectPage> T searchProjectByName(String projectName, T projectType) {
-        getWait5().until(ExpectedConditions.visibilityOf(searchBox)).sendKeys(projectName + Keys.ENTER);
-
-        return projectType;
-    }
-
-    public SearchResultPage typeTextToSearchBox(String text) {
-        getWait5().until(ExpectedConditions.visibilityOf(searchBox)).sendKeys(text + Keys.ENTER);
-
-        return new SearchResultPage(getDriver());
-    }
     public String getCurrentUrl() {
         return getDriver().getCurrentUrl();
-    }
-
-    public String getVersionOnFooter() {
-        return version.getText().split(" ")[1];
     }
 
     public HomePage clickVersion() {

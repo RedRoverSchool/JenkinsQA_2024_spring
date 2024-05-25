@@ -25,12 +25,6 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
     @FindBy(css = "#executors tr [href]")
     private List<WebElement> nodesList;
 
-    @FindBy(css = "td > a[href^='job']")
-    private WebElement pipelineItem;
-
-    @FindBy(css = "td > a[href^='job']")
-    private WebElement freestyleItem;
-
     @FindBy(css = "[href='/manage']")
     private WebElement manageJenkinsLink;
 
@@ -73,18 +67,6 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
     @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
     private WebElement fullStageViewButton;
 
-    @FindBy(xpath = "//div/a[@href='/manage/about']")
-    private WebElement aboutJenkinsDropdownItem;
-
-    @FindBy(xpath = "//div/a[@href='https://www.jenkins.io/participate/']")
-    private WebElement involvedDropdownItem;
-
-    @FindBy(xpath = "//div/a[@href='https://www.jenkins.io/']")
-    private WebElement websiteDropdownItem;
-
-    @FindBy(css = "a.jenkins-table__link.model-link.inside")
-    private List<WebElement> allExistingJobs;
-
     @FindBy(css = ".tab.active a")
     private WebElement activeViewName;
 
@@ -94,32 +76,8 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
     @FindBy(css = "[href$='builds']")
     private WebElement buildHistoryButton;
 
-    @FindBy(xpath = "//*[@class=' job-status-']/td[3]/a")
-    private WebElement createdElementInTable;
-
-    @FindBy(className = "jenkins-dropdown__item")
-    private List<WebElement> dropDownElements;
-
-    @FindBy(tagName = "h1")
-    private WebElement heading;
-
     @FindBy(xpath = "//a[contains(@href, '/move')]")
     private WebElement moveOption;
-
-    @FindBy(xpath = "//*[@href='newJob']")
-    private WebElement createJob;
-
-    @FindBy(css = "[class$='am-button security-am']")
-    private WebElement warningIcon;
-
-    @FindBy(xpath = "//div[@role='alert']")
-    private WebElement warningTooltipLocator;
-
-    @FindBy(xpath = "//a[contains(text(),'Manage Jenkins')]")
-    private WebElement manageJenkinsTooltipLink;
-
-    @FindBy(xpath = "//button[@name='configure']")
-    private WebElement configureTooltipButton;
 
     @FindBy(xpath = "//a[@href='/asynchPeople/']")
     private WebElement peopleButton;
@@ -127,23 +85,11 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
     @FindBy(css = "button[href $= '/doDelete']")
     private WebElement dropdownDelete;
 
-    @FindBy(css = "a[href $= '/confirm-rename']")
-    private WebElement dropdownRename;
-
     @FindBy(css = "[href$='pipeline-syntax']")
     private WebElement dropdownPipelineSyntax;
 
-    @FindBy(xpath = "//a[@href='api/']")
-    private WebElement apiLink;
-
     @FindBy(xpath = "//div[@class='tabBar']/div")
     private List<WebElement> viewNameList;
-
-    @FindBy(xpath = "//a[@class='jenkins-table__link model-link inside']")
-    private WebElement createdItemNameInList;
-
-    @FindBy(xpath = "//h1[contains(text(),'Welcome to Jenkins')]")
-    private WebElement welcomeJenkinsHeader;
 
     @FindBy(xpath = "//td[@class='jenkins-table__cell--tight']//a[contains(@tooltip,'Schedule')]")
     private WebElement greenBuildArrow;
@@ -166,11 +112,9 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
     @FindBy(css = "#description > *:first-child")
     private WebElement descriptionText;
 
-    @FindBy(xpath = "//h1")
-    private WebElement h1Heading;
-
     @FindBy(css = "#tasks > div")
     private List<WebElement> sidebarMenuList;
+
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -195,12 +139,6 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
                 .toList();
     }
 
-    public FolderProjectPage clickFolder(String name) {
-        getDriver().findElement(By.xpath("//a[.='" + name + "']")).click();
-
-        return new FolderProjectPage(getDriver());
-    }
-
     public HomePage openItemDropdown(String projectName) {
         WebElement element = getDriver().findElement(By.cssSelector(String.format(
                 "td>a[href = 'job/%s/']",
@@ -214,8 +152,9 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
         return dialog;
     }
 
-    public FreestyleRenamePage clickRenameInDropdown() {
-        dropdownRename.click();
+    public FreestyleRenamePage clickRenameOnDropdownForFreestyleProject() {
+        renameFromDropdown.click();
+
         return new FreestyleRenamePage(getDriver());
     }
 
@@ -241,29 +180,11 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
         return getDriver().findElement(By.cssSelector("[href='/computer/" + name + "/']")).isDisplayed();
     }
 
-    public MultiConfigurationProjectPage clickMCPName(String projectName) {
-        getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
+    public MultiConfigurationProjectPage clickSpecificMultiConfigurationProjectName(String itemName) {
+        getDriver().findElement(
+                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
 
         return new MultiConfigurationProjectPage(getDriver());
-    }
-
-    public PipelineProjectPage clickCreatedPipelineName() {
-        pipelineItem.click();
-
-        return new PipelineProjectPage(getDriver());
-    }
-
-    public FreestyleProjectPage clickCreatedFreestyleName() {
-        freestyleItem.click();
-
-        return new FreestyleProjectPage(getDriver());
-    }
-
-    public ViewAllPage clickMyViewsFromDropdown() {
-        openHeaderUsernameDropdown();
-        getDriver().findElement(By.cssSelector("[href$='admin/my-views']")).click();
-
-        return new ViewAllPage(getDriver());
     }
 
     public ManageJenkinsPage clickManageJenkins() {
@@ -297,10 +218,10 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
         return this;
     }
 
-    public MultiConfigurationConfirmRenamePage selectRenameFromDropdown() {
+    public MultiConfigurationRenamePage clickRenameOnDropdownForMultiConfigurationProject() {
         renameFromDropdown.click();
 
-        return new MultiConfigurationConfirmRenamePage(getDriver());
+        return new MultiConfigurationRenamePage(getDriver());
     }
 
     public MultiConfigurationMovePage selectMoveFromDropdown() {
@@ -324,8 +245,9 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
         return getItemList().contains(name);
     }
 
-    public MultibranchPipelineProjectPage clickMPName(String projectName) {
-        getDriver().findElement(By.cssSelector(String.format("[href = 'job/%s/']", projectName))).click();
+    public MultibranchPipelineProjectPage clickSpecificMultibranchPipelineName(String itemName) {
+        getDriver().findElement(
+                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
 
         return new MultibranchPipelineProjectPage(getDriver());
     }
@@ -354,23 +276,9 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
         return projectIcon.getSize().height;
     }
 
-    public PipelineProjectPage chooseCreatedProject(String projectName) {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/"
-                + projectName.replaceAll(" ", "%20") + "/']"))).click();
-
-        return new PipelineProjectPage(getDriver());
-    }
-
-    public FreestyleProjectPage chooseCreatedFreestyleProject(String projectName) {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/"
-                + projectName.replaceAll(" ", "%20") + "/']"))).click();
-
-        return new FreestyleProjectPage(getDriver());
-    }
-
-    public OrganizationFolderProjectPage chooseOrganizationFolder(String projectName) {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/"
-                + projectName.replaceAll(" ", "%20") + "/']"))).click();
+    public OrganizationFolderProjectPage clickSpecificOrganizationFolderName(String itemName) {
+        getDriver().findElement(
+                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
 
         return new OrganizationFolderProjectPage(getDriver());
     }
@@ -403,29 +311,13 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
         return buildExecutorStatusList.size();
     }
 
-    public AboutJenkinsPage selectAboutJenkinsAndClick() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(aboutJenkinsDropdownItem)).click();
-
-        return new AboutJenkinsPage(getDriver());
-    }
-
     public FullStageViewPage clickFullStageViewButton() {
         getWait5().until(ExpectedConditions.elementToBeClickable(fullStageViewButton)).click();
 
         return new FullStageViewPage(getDriver());
     }
 
-    public List<String> getJobsBeginningFromThisFirstLetters(String firstLetters) {
-        return allExistingJobs
-                .stream()
-                .map(WebElement::getText)
-                .toList()
-                .stream()
-                .filter(el -> el.substring(0, firstLetters.length()).equalsIgnoreCase(firstLetters))
-                .toList();
-    }
-
-    public MultibranchPipelineRenamePage clickRenameFromDropdownMP() {
+    public MultibranchPipelineRenamePage clickRenameOnDropdownForMultibranchPipeline() {
         renameFromDropdown.click();
 
         return new MultibranchPipelineRenamePage(getDriver());
@@ -435,18 +327,6 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
         getDriver().findElement(By.xpath(
                 "//td/a[@href='job/" + name.replace(" ", "%20") + "/']")).click();
         return page;
-    }
-
-    public boolean isDisplayedAboutJenkinsDropdownItem() {
-        return getWait5().until(ExpectedConditions.elementToBeClickable(aboutJenkinsDropdownItem)).isDisplayed();
-    }
-
-    public boolean isDisplayedInvolvedDropdownItem() {
-        return involvedDropdownItem.isDisplayed();
-    }
-
-    public boolean isDisplayedWebsiteDropdownItem() {
-        return websiteDropdownItem.isDisplayed();
     }
 
     public HomePage moveMouseToPassiveViewName() {
@@ -486,56 +366,14 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
 
     public HomePage waitForBuildSchedulePopUp() {
         getWait2().until(ExpectedConditions.visibilityOf(builSchedulePopUp));
+
         return this;
-    }
-
-    public FolderProjectPage clickFolderName() {
-        createdElementInTable.click();
-
-        return new FolderProjectPage(getDriver());
-    }
-
-    public List<String> getVersionDropDownElementsValues() {
-        List<String> actualDropDownElementsValues = new ArrayList<>();
-        for (WebElement element : dropDownElements) {
-            actualDropDownElementsValues.add(element.getDomProperty("innerText"));
-        }
-        return actualDropDownElementsValues;
-    }
-
-    public List<WebElement> getTheListOfFreestyleProjects(String freestyleProjectName) {
-        return getDriver().findElements(
-                By.xpath("//span[text() = '" + freestyleProjectName + "']"));
-    }
-
-    public String getHeadingValue() {
-
-        return heading.getText();
     }
 
     public MovePage chooseFolderToMove() {
         getWait5().until(ExpectedConditions.visibilityOf(moveOption)).click();
+
         return new MovePage(getDriver());
-    }
-
-    public HomePage clickWarningIcon() {
-        warningIcon.click();
-        return this;
-    }
-
-    public String getWarningTooltipText() {
-        WebElement warningTooltipText = getWait5().until(ExpectedConditions.visibilityOf(warningTooltipLocator));
-        return warningTooltipText.getText();
-    }
-
-    public ManageJenkinsPage clickManageJenkinsTooltipLink() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(manageJenkinsTooltipLink)).click();
-        return new ManageJenkinsPage(getDriver());
-    }
-
-    public SecurityPage clickConfigureTooltipButton() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(configureTooltipButton)).click();
-        return new SecurityPage(getDriver());
     }
 
     public PeoplePage clickPeopleOnSidebar() {
@@ -551,16 +389,17 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
         return new FolderProjectPage(getDriver());
     }
 
-    public FolderRenamePage renameFolderFromDropdown() {
+    public FreestyleProjectPage clickSpecificFreestyleProjectName(String itemName) {
+        getDriver().findElement(
+                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
+
+        return new FreestyleProjectPage(getDriver());
+    }
+
+    public FolderRenamePage clickRenameOnDropdownForFolder() {
         renameFromDropdown.click();
 
         return new FolderRenamePage(getDriver());
-    }
-
-    public CreateNewItemPage clickCreateJob() {
-        createJob.click();
-
-        return new CreateNewItemPage(getDriver());
     }
 
     public PipelineSyntaxPage openItemPipelineSyntaxFromDropdown() {
@@ -574,21 +413,8 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
         return viewNameList.size();
     }
 
-    public ApiPage clickApiLink() {
-        apiLink.click();
-        return new ApiPage(getDriver());
-    }
-
-    public String getWelcomeJenkinsHeader() {
-
-        return welcomeJenkinsHeader.getText();
-    }
-
-    public HomePage clickDeleteProjectDropdownAndConfirm(String itemName) {
-
-        WebElement itemName1 = getDriver().findElement(By.id("job_" + itemName));
-        openElementDropdown(itemName1);
-        getDriver().findElement(By.xpath("//button[@href='/job/" + itemName + "/doDelete']")).click();
+    public HomePage clickDeleteOnDropdownAndConfirm() {
+        dropdownDelete.click();
         getDriver().findElement(By.cssSelector("button[data-id='ok']")).click();
 
         return this;
@@ -648,79 +474,10 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
         return tooltip.isDisplayed();
     }
 
-
-    public HomePage createFreestyleProject(String name) {
-        clickNewItem()
-                .setItemName(name)
-                .selectFreestyleAndClickOk()
-                .clickSaveButton()
-                .clickLogo();
-        return new HomePage(getDriver());
-    }
-
-    public HomePage createPipeline(String name) {
-        clickNewItem()
-                .setItemName(name)
-                .selectPipelineAndClickOk()
-                .clickSaveButton()
-                .clickLogo();
-        return new HomePage(getDriver());
-    }
-
-    public HomePage createMultiConfigurationProject(String name) {
-        clickNewItem()
-                .setItemName(name)
-                .selectMultiConfigurationAndClickOk()
-                .clickSaveButton()
-                .clickLogo();
-        return new HomePage(getDriver());
-    }
-
-    public HomePage createFolder(String name) {
-        clickNewItem()
-                .setItemName(name)
-                .selectFolderAndClickOk()
-                .clickSaveButton()
-                .clickLogo();
-        return new HomePage(getDriver());
-    }
-
-    public HomePage createMultibranchPipeline(String name) {
-        clickNewItem()
-                .setItemName(name)
-                .selectMultibranchPipelineAndClickOk()
-                .clickSaveButton()
-                .clickLogo();
-        return new HomePage(getDriver());
-    }
-
-    public HomePage createOrganizationFolder(String name) {
-        clickNewItem()
-                .setItemName(name)
-                .selectOrganizationFolderAndClickOk()
-                .clickSaveButton()
-                .clickLogo();
-        return new HomePage(getDriver());
-    }
-
-
     public UserConfigurePage openUserConfigurations() {
-        return clickPeopleSideMenu()
+        return clickPeople()
                 .clickUserIdLink()
-                .clickConfigureSideMenu();
-    }
-
-    public FreestyleProjectPage createFreestyleProjectWithConfigurations(String projectName) {
-        getWait5().until(ExpectedConditions.textToBePresentInElement(h1Heading, "Welcome to Jenkins!"));
-
-        return clickNewItemSideMenu()
-                .setItemName(projectName)
-                .selectFreestyleAndClickOk()
-                .scrollToBuildTriggersHeading()
-                .clickTriggerBuildsRemotelyCheckbox()
-                .inputAuthenticationToken(projectName)
-                .clickAddTimestampsCheckbox()
-                .clickSaveButton();
+                .clickConfigureOnSidebar();
     }
 
     public List<String> getSidebarMenuList() {

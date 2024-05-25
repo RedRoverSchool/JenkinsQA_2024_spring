@@ -6,7 +6,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseConfigPage;
 
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ public class FreestyleConfigPage extends BaseConfigPage<FreestyleProjectPage> {
     private WebElement triggerBuildsRemotelyCheckbox;
 
     @FindBy(name = "authToken")
-    private WebElement authenticationTokenIInput;
+    private WebElement authenticationTokenInput;
 
     @FindBy(id = "build-environment")
     private WebElement buildEnvironmentHeading;
@@ -61,26 +60,25 @@ public class FreestyleConfigPage extends BaseConfigPage<FreestyleProjectPage> {
         return new FreestyleProjectPage(getDriver());
     }
 
-    protected FreestyleConfigPage scrollToBuildTriggersHeading() {
-        super.scrollToElement(buildTriggersHeading);
+    public FreestyleConfigPage scrollToBuildTriggersHeading() {
+        scrollToElement(buildTriggersHeading);
 
         return this;
     }
 
-    protected FreestyleConfigPage clickTriggerBuildsRemotelyCheckbox() {
+    public FreestyleConfigPage clickTriggerBuildsRemotelyCheckbox() {
         triggerBuildsRemotelyCheckbox.click();
 
         return this;
     }
 
-    protected FreestyleConfigPage inputAuthenticationToken(String projectName) {
-        getWait2().until(ExpectedConditions.visibilityOf(authenticationTokenIInput))
-                .sendKeys(projectName);
+    public FreestyleConfigPage inputAuthenticationToken(String projectName) {
+        authenticationTokenInput.sendKeys(projectName);
 
         return this;
     }
 
-    protected FreestyleConfigPage clickAddTimestampsCheckbox() {
+    public FreestyleConfigPage clickAddTimestampsCheckbox() {
         super.scrollToElement(buildEnvironmentHeading);
         addTimestampsCheckbox.click();
 

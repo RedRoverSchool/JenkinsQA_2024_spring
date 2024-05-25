@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class MultiConfigurationConfirmRenamePage extends BasePage {
+public class MultiConfigurationRenamePage extends BasePage {
 
     @FindBy(name = "newName")
     private WebElement renameText;
@@ -13,15 +13,15 @@ public class MultiConfigurationConfirmRenamePage extends BasePage {
     @FindBy(name = "Submit")
     private WebElement renameButton;
 
-    public MultiConfigurationConfirmRenamePage(WebDriver driver) { super(driver); }
+    public MultiConfigurationRenamePage(WebDriver driver) { super(driver); }
 
-    public MultiConfigurationConfirmRenamePage changeProjectNameWithoutClear(String text) {
+    public MultiConfigurationRenamePage changeProjectNameWithoutClear(String text) {
         renameText.sendKeys(text);
 
         return this;
     }
 
-    public MultiConfigurationConfirmRenamePage changeProjectNameWithClear(String text) {
+    public MultiConfigurationRenamePage changeProjectNameWithClear(String text) {
         renameText.clear();
         renameText.sendKeys(text);
 

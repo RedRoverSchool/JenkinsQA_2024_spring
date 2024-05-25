@@ -2,6 +2,7 @@ package school.redrover.model;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
@@ -11,7 +12,7 @@ public class UserConfigurePage extends BasePage {
     private WebElement addNewTokenButton;
 
     @FindBy(name = "tokenName")
-    private WebElement tokenNameInput;
+    private WebElement tokenNameInputField;
 
     @FindBy(id = "api-token-property-token-save")
     private WebElement generateButton;
@@ -39,8 +40,13 @@ public class UserConfigurePage extends BasePage {
     }
 
     public String[] getTokenUuidUser(String projectName) {
-        getWait5().until(ExpectedConditions.elementToBeClickable(addNewTokenButton)).click();
-        tokenNameInput.sendKeys(projectName);
+        new Actions(getDriver())
+                .scrollToElement(addNewTokenButton)
+                .scrollByAmount(0,150)
+                .perform();
+
+        addNewTokenButton.click();
+        tokenNameInputField.sendKeys(projectName);
         generateButton.click();
 
         final String token = getWait5().until(ExpectedConditions.visibilityOf(tokenValue)).getText();

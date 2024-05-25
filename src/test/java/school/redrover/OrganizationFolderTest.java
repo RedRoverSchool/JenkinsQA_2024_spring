@@ -77,7 +77,7 @@ public class OrganizationFolderTest extends BaseTest {
                 .selectOrganizationFolderAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
-                .chooseOrganizationFolder(ORGANIZATION_FOLDER_NAME)
+                .clickSpecificOrganizationFolderName(ORGANIZATION_FOLDER_NAME)
                 .clickPipelineSyntax()
                 .clickOnlineDocumentation()
                 .getPipelineSyntaxTitle();
@@ -94,7 +94,7 @@ public class OrganizationFolderTest extends BaseTest {
                 .selectOrganizationFolderAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
-                .chooseOrganizationFolder(ORGANIZATION_FOLDER_NAME)
+                .clickSpecificOrganizationFolderName(ORGANIZATION_FOLDER_NAME)
                 .clickPipelineSyntax()
                 .clickExamplesReference()
                 .getPipelineExamplesTitle();
@@ -125,7 +125,7 @@ public class OrganizationFolderTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateViaNewItem")
     public void testSidebarMenuVisibility() {
         boolean isSidebarVisible = new HomePage(getDriver())
-                .chooseOrganizationFolder(ORGANIZATION_FOLDER_NAME)
+                .clickSpecificOrganizationFolderName(ORGANIZATION_FOLDER_NAME)
                 .clickConfigure()
                 .isSidebarVisible();
 
