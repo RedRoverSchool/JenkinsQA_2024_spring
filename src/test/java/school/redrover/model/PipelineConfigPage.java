@@ -191,9 +191,7 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
         return this;
     }
 
-    public PipelineConfigPage sendScript(int stagesQtt) {
-        String pipelineScript = "pipeline {\nagent any\n\nstages {\n";
-
+    public PipelineConfigPage sendScript(int stagesQtt, String pipelineScript) {
         getDriver().findElement(By.className("ace_text-input")).sendKeys(pipelineScript);
 
         for (int i = 1; i <= stagesQtt; i++) {
