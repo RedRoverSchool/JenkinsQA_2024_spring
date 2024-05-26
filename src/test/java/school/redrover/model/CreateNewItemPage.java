@@ -38,7 +38,7 @@ public class CreateNewItemPage extends BasePage {
 
         return new OrganizationFolderConfigPage(getDriver());
     }
-    public WebElement getNameItemField(){
+    public WebElement getItemNameField(){
 
         return getWait5().until(ExpectedConditions.visibilityOf(nameItemField));
     }
@@ -51,5 +51,17 @@ public class CreateNewItemPage extends BasePage {
     public WebElement getOkButton() {
 
         return getWait5().until(ExpectedConditions.elementToBeClickable(okButton));
+    }
+
+    public void inputItemName(String folderName) {
+        getItemNameField().sendKeys(folderName);
+    }
+
+    public void ckickFolderButton() {
+        getFolderButton().click();
+    }
+
+    public void clickOkButton() {
+        getOkButton().click();
     }
 }

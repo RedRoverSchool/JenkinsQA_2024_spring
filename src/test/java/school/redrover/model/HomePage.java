@@ -39,6 +39,10 @@ public class HomePage extends BasePage {
     }
     public String getItemName(){
 
-       return getWait5().until(ExpectedConditions.elementToBeClickable(itemName)).getText();
+       return getWait2().until(ExpectedConditions.elementToBeClickable(itemName)).getText();
+    }
+
+    public void ckickNewItemSideMenu() {
+        getNewItemSideMenu().click();
     }
 }

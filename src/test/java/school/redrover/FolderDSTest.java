@@ -35,9 +35,25 @@ public class FolderDSTest extends BaseTest {
         homePage.getNewItemSideMenu().click();
 
         final CreateNewItemPage itemPage = new CreateNewItemPage(getDriver());
-        itemPage.getNameItemField().sendKeys(folderName);
+        itemPage.getItemNameField().sendKeys(folderName);
         itemPage.getFolderButton().click();
         itemPage.getOkButton().click();
+        itemPage.clickLogo();
+        String actualFolderName = homePage.getItemName();
+        Assert.assertEquals(actualFolderName, folderName);
+    }
+
+    @Test
+    public void testCreateFolderDSSimple1POM() {
+        final String folderName = "FolderDS";
+
+        final HomePage homePage = new HomePage(getDriver());
+        homePage.ckickNewItemSideMenu();
+
+        final CreateNewItemPage itemPage = new CreateNewItemPage(getDriver());
+        itemPage.inputItemName(folderName);
+        itemPage.ckickFolderButton();
+        itemPage.clickOkButton();
         itemPage.clickLogo();
         String actualFolderName = homePage.getItemName();
         Assert.assertEquals(actualFolderName, folderName);
