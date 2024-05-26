@@ -550,8 +550,8 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testConsoleOutputValue() {
-
         int number_of_stages = 8;
+        List<String> expectedConsoleOuputForAllStages = List.of("test 1", "test 2", "test 3", "test 4", "test 5", "test 6", "test 7", "test 8");
         String pipelineScript = """
                 pipeline {
                 agent any
@@ -559,27 +559,17 @@ public class PipelineTest extends BaseTest {
                 stages {
                 """;
 
-        new HomePage(getDriver())
+        List<String> actualConsoleOuputForAllStages = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .scrollToPipelineScript()
                 .sendScript(number_of_stages, pipelineScript)
                 .clickSaveButton()
-                .clickBuild();
+                .clickBuild()
+                .getConsoleOuputForAllStages(number_of_stages);
 
-        for (int i = 1; i <= number_of_stages; i++) {
-
-            getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("td[class='stage-cell stage-cell-" + (i - 1) + " SUCCESS']"))).click();
-            getDriver().findElement(By.cssSelector("span[class='glyphicon glyphicon-stats']")).click();
-
-            String actualRes = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("pre[class='console-output']"))).getText();
-            String expectedResult = "test " + i;
-
-            getDriver().findElement(By.cssSelector("span[class='glyphicon glyphicon-remove']")).click();
-            getWait2().until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("span[class='glyphicon glyphicon-remove']")));
-            Assert.assertEquals(actualRes, expectedResult);
-        }
+        Assert.assertEquals(actualConsoleOuputForAllStages, expectedConsoleOuputForAllStages);
     }
 
     @Test

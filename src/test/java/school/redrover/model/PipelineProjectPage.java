@@ -5,6 +5,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
 import school.redrover.model.base.BaseProjectPage;
 
 import java.util.ArrayList;
@@ -121,6 +122,11 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
     @FindBy(xpath = "//h1[@class='job-index-headline page-headline']")
     private WebElement projectsDisplayNameInHeader;
 
+    @FindBy(css = "span[class='glyphicon glyphicon-stats']")
+    private WebElement buildStageLogsButton;
+
+    @FindBy(css = "span[class='glyphicon glyphicon-remove']")
+    private WebElement closeStageLogsButton;
     public PipelineProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -399,5 +405,20 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
     public String getProjectsDisplayNameInHeader() {
 
         return projectsDisplayNameInHeader.getText();
+    }
+
+    public List<String> getConsoleOuputForAllStages(int numberOfStages) {
+        List<String> consoleOuputForAllStages = new ArrayList<>();
+        for (int i = 1; i <= numberOfStages; i++) {
+            getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("td[class='stage-cell stage-cell-" + (i - 1) + " SUCCESS']"))).click();
+            buildStageLogsButton.click();
+
+            consoleOuputForAllStages.add(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("pre[class='console-output']"))).getText());
+
+            closeStageLogsButton.click();
+            getWait2().until(ExpectedConditions.invisibilityOf(closeStageLogsButton));
+        }
+
+        return consoleOuputForAllStages;
     }
 }
