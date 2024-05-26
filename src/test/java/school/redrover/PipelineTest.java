@@ -431,12 +431,9 @@ public class PipelineTest extends BaseTest {
 
     @Test(dependsOnMethods = "testDisableItem")
     public void testPipelineNotActive() {
-        String actualProjectName = getDriver().findElement(By.xpath("//tbody//td[3]//a[contains(@href, 'job/')]/span")).getText();
-        Assert.assertEquals(actualProjectName, PIPELINE_NAME);
 
-        List<WebElement> scheduleABuildArrows = getDriver().findElements(
-                By.xpath("//table//a[@title= 'Schedule a Build for " + PIPELINE_NAME + "']"));
-        Assert.assertEquals(scheduleABuildArrows.size(), 0);
+        Assert.assertTrue(new HomePage(getDriver()).isItemExists(PIPELINE_NAME));
+        Assert.assertEquals(new HomePage(getDriver()).getBuildButtonCountForProject(PIPELINE_NAME), 0);
     }
 
     @Test(dependsOnMethods = {"testPipelineNotActive", "testDisableItem"})

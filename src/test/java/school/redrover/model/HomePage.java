@@ -488,4 +488,9 @@ public class HomePage extends BaseSideMenuPage<HomePage> {
 
         return menuList;
     }
+
+    public int getBuildButtonCountForProject(String projetcName) {
+        return getDriver().findElements(By.xpath("//table//a[@title= 'Schedule a Build for " + projetcName + "']")).size();
+    }
+
 }
