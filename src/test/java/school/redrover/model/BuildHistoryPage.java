@@ -26,6 +26,9 @@ public class BuildHistoryPage extends BasePage {
     @FindBy(xpath = "//a[@class='jenkins-table__link model-link']")
     private WebElement buildNameOnTimeline;
 
+    @FindBy(className = "console-output")
+    private WebElement TextConsoleOutput;
+
     public BuildHistoryPage(WebDriver driver) {
         super(driver);
     }
@@ -67,6 +70,9 @@ public class BuildHistoryPage extends BasePage {
 
     public boolean isDisplayedBuildOnTimeline() {
         return buildNameOnTimeline.isDisplayed();
+    }
 
+    public String getTextConsoleOutput() {
+        return TextConsoleOutput.getText();
     }
 }

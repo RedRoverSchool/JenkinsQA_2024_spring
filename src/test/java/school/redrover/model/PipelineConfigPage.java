@@ -204,9 +204,18 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
 
         return this;
     }
+
+    public PipelineConfigPage selectDropDownDefinition(Integer index) {
+        WebElement dropDownDefinition = getDriver().findElement(By.xpath(
+                "//section[@class = 'jenkins-section']//select[@class = 'jenkins-select__input dropdownList']/option[" + index + "]"));
+
+        getWait5().until(ExpectedConditions.visibilityOf(dropDownDefinition)).click();
+        return this;
+    }
+
     public boolean isPipelineDisplayed() {
         return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='pipeline']"))).isDisplayed();
-        }
+    }
 
     public PipelineConfigPage clickPreview() {
         preview.click();

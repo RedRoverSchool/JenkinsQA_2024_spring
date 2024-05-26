@@ -1,9 +1,7 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
@@ -1210,5 +1208,22 @@ public class PipelineTest extends BaseTest {
         getWait5().until(ExpectedConditions.visibilityOf(dayElement));
 
         Assert.assertEquals(dayElement.getText(), messageDay);
+    }
+
+    @Test
+    public void testBuildNowWithAnError() {
+        String errorMassageConsole = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .selectDropDownDefinition(2)
+                .clickSaveButton()
+                .clickBuild()
+                .clickLogo()
+                .clickBuildHistory()
+                .clickBuild1Console()
+                .getConsoleOutputMessage();
+
+        Assert.assertTrue(errorMassageConsole.contains("Finished: FAILURE"));
     }
 }
