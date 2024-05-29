@@ -8,12 +8,4 @@ public class View {
     private String name;
     private String url;
 
-    @Override
-    public String toString() {
-        return "View{" +
-                "clazz='" + clazz + '\'' +
-                ", name='" + name + '\'' +
-                ", url='" + url + '\'' +
-                '}';
-    }
 }

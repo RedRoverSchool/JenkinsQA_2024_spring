@@ -19,13 +19,4 @@ public class SlimJob {
     public String getColor() {
         return color;
     }
-
-    @Override
-    public String toString() {
-        return "SlimJob{" +
-                "clazz='" + clazz + '\'' +
-                ", name='" + name + '\'' +
-                ", color='" + color + '\'' +
-                '}';
-    }
 }

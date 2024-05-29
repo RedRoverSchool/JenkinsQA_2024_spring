@@ -6,11 +6,4 @@ public class Job extends SlimJob {
     public String getUrl() {
         return url;
     }
-
-    @Override
-    public String toString() {
-        return "Job{" + super.toString() +
-                "url='" + url + '\'' +
-                '}';
-    }
 }

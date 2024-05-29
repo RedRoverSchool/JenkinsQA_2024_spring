@@ -19,6 +19,7 @@ import school.redrover.domain.SlimHudson;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 public class APIJenkinsJobsTest {
@@ -30,7 +31,7 @@ public class APIJenkinsJobsTest {
     @Test
     public void testName() throws UnsupportedEncodingException {
         String url = jenkinsUrl + "/crumbIssuer/api/json?xpath=" +
-                URLEncoder.encode("concat(//crumbRequestField,\":\",//crumb)", "UTF-8");
+                URLEncoder.encode("concat(//crumbRequestField,\":\",//crumb)", StandardCharsets.UTF_8);
         Gson gson = new Gson();
         String response = get(url);
         Crumb crumb = gson.fromJson(get(url), Crumb.class);

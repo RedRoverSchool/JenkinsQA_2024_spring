@@ -17,12 +17,4 @@ public class SlimHudson {
     public List<SlimJob> getJob() {
         return jobs;
     }
-
-    @Override
-    public String toString() {
-        return "SlimHudson{" +
-                "clazz='" + clazz + '\'' +
-                ", jobs=" + jobs +
-                '}';
-    }
 }

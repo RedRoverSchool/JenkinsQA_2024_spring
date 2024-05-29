@@ -6,11 +6,4 @@ public class UnlabeledLoad {
 
     @SerializedName("_class")
     private String clazz;
-
-    @Override
-    public String toString() {
-        return "UnlabeledLoad{" +
-                "clazz='" + clazz + '\'' +
-                '}';
-    }
 }

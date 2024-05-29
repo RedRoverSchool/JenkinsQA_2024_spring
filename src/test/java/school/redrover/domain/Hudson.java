@@ -88,27 +88,4 @@ public class Hudson {
     public List<View> getViews() {
         return views;
     }
-
-    @Override
-    public String toString() {
-        return "Hudson{" +
-                ", assignedLabels=" + assignedLabels + '\n' +
-                ", mode='" + mode + '\n' +
-                ", nodeDescription='" + nodeDescription + '\n' +
-                ", nodeName='" + nodeName + '\n' +
-                ", numExecutors=" + numExecutors + '\n' +
-                ", description='" + description + '\n' +
-                ", jobs=" + jobs + '\n' +
-                ", overallLoad=" + overallLoad + '\n' +
-                ", primaryView=" + primaryView + '\n' +
-                ", quietDownReason='" + quietDownReason + '\n' +
-                ", quietingDown=" + quietingDown + '\n' +
-                ", slaveAgentPort=" + slaveAgentPort + '\n' +
-                ", unlabeledLoad=" + unlabeledLoad + '\n' +
-                ", url='" + url + '\n' +
-                ", useCrumbs=" + useCrumbs + '\n' +
-                ", useSecurity=" + useSecurity + '\n' +
-                ", views=" + views +
-                '}';
-    }
 }
