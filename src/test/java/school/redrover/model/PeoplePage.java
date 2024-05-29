@@ -6,9 +6,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.base.BaseSideMenuPage;
+import school.redrover.model.base.BasePage;
 
-public class PeoplePage extends BaseSideMenuPage<PeoplePage> {
+public class PeoplePage extends BasePage {
 
     @FindBy(css = "[title='Small']")
     private WebElement smallIconButton;
@@ -21,9 +21,6 @@ public class PeoplePage extends BaseSideMenuPage<PeoplePage> {
 
     @FindBy(css = "[id*='person-admin'] svg")
     private WebElement userTableIcon;
-
-    @FindBy(css = "h1")
-    private WebElement pageHeading;
 
     @FindBy(id = "people")
     private WebElement peopleTable;
@@ -59,11 +56,7 @@ public class PeoplePage extends BaseSideMenuPage<PeoplePage> {
         return userTableIcon.getSize();
     }
 
-    public String getPageHeading() {
-        return pageHeading.getText();
-    }
-
-    protected UserPage clickUserIdLink() {
+    public UserPage clickUserIdLink() {
         getWait5().until(ExpectedConditions.visibilityOf(peopleTable));
         userIdLink.click();
 

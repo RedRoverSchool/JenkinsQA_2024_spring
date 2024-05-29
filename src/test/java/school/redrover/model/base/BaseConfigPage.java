@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public abstract class BaseConfigPage<T extends BaseProjectPage<T>> extends BaseSideMenuPage<T> {
+public abstract class BaseConfigPage<T extends BaseProjectPage<T>> extends BasePage {
 
     private final T projectPage;
 

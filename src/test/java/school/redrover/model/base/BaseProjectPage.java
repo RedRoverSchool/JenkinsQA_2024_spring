@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public abstract class BaseProjectPage<T extends BasePage> extends BaseSideMenuPage<T> {
+public abstract class BaseProjectPage<T extends BasePage> extends BasePage {
 
     @FindBy(tagName = "h1")
     private WebElement projectName;
@@ -21,8 +21,4 @@ public abstract class BaseProjectPage<T extends BasePage> extends BaseSideMenuPa
         return projectName.getText();
     }
 
-    public String getErrorText() {
-
-        return error.getText();
-    }
 }
