@@ -58,4 +58,21 @@ public class FolderDSTest extends BaseTest {
         String actualFolderName = homePage.getItemName();
         Assert.assertEquals(actualFolderName, folderName);
     }
+
+    @Test
+    public void testCreateFolderDSChainPOM() {
+        final String folderName = "FolderDS";
+
+        final HomePage homePage = new HomePage(getDriver());
+        homePage
+                .ckickNewItemSideMenuChain()
+                .inputItemNameChain(folderName)
+                .ckickFolderButtonChain()
+                .clickOkButton();
+
+        final CreateNewItemPage itemPage = new CreateNewItemPage(getDriver());
+        itemPage.clickLogo();
+        String actualFolderName = homePage.getItemName();
+        Assert.assertEquals(actualFolderName, folderName);
+    }
 }

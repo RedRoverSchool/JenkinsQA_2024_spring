@@ -45,4 +45,10 @@ public class HomePage extends BasePage {
     public void ckickNewItemSideMenu() {
         getNewItemSideMenu().click();
     }
+
+    public CreateNewItemPage ckickNewItemSideMenuChain() {
+        getNewItemSideMenu().click();
+        return new CreateNewItemPage(getDriver());
+    }
+
 }

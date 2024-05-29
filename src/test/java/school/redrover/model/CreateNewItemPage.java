@@ -57,11 +57,25 @@ public class CreateNewItemPage extends BasePage {
         getItemNameField().sendKeys(folderName);
     }
 
+    public CreateNewItemPage inputItemNameChain(String folderName) {
+        getItemNameField().sendKeys(folderName);
+        return this;
+    }
+
     public void ckickFolderButton() {
         getFolderButton().click();
     }
 
+    public CreateNewItemPage ckickFolderButtonChain() {
+        getFolderButton().click();
+        return this;
+    }
+
     public void clickOkButton() {
+        getOkButton().click();
+    }
+
+    public void clickOkButtonChain() {
         getOkButton().click();
     }
 }
