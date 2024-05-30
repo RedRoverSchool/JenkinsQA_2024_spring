@@ -222,10 +222,6 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return getDriver().getTitle();
     }
 
-    public Boolean isErrorItemNameInvalidDisplayed() {
-        return errorItemNameInvalid.isDisplayed();
-    }
-
     public Boolean isDisplayedNameField() {
         return nameText.isDisplayed();
     }

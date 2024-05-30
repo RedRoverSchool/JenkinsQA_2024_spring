@@ -150,7 +150,7 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
         };
     }
 
-    public BasePage openTutorial() {
+    public BasePage<?> openTutorial() {
         getWait5().until(ExpectedConditions.visibilityOf(tutorialIcon)).click();
 
         return this;
