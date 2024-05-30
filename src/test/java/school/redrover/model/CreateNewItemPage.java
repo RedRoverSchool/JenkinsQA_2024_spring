@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CreateNewItemPage extends BasePage {
+public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
 
     @FindBy(id = "name")
     WebElement newItemName;

@@ -10,7 +10,7 @@ import school.redrover.model.base.BaseFrame;
 import school.redrover.model.base.BasePage;
 import school.redrover.model.base.BaseProjectPage;
 
-public class HeaderFrame extends BaseFrame {
+public class HeaderFrame<T extends BasePage<T>> extends BaseFrame<T> {
 
     @FindBy(css = "a.model-link > span")
     private WebElement userNameOnHeader;
@@ -49,8 +49,8 @@ public class HeaderFrame extends BaseFrame {
     private WebElement adminDropdownConfigureLink;
 
 
-    public HeaderFrame(WebDriver driver) {
-        super(driver);
+    public HeaderFrame(WebDriver driver, T returnPage) {
+        super(driver, returnPage);
     }
 
     public UserPage clickUserNameOnHeader() {
@@ -86,7 +86,7 @@ public class HeaderFrame extends BaseFrame {
         return getWait2().until(ExpectedConditions.visibilityOf(searchFieldText)).getText();
     }
 
-    public <T extends BaseProjectPage<?>> T searchProjectByName(String projectName, T projectType) {
+    public <ProjectPage extends BaseProjectPage<?>> ProjectPage searchProjectByName(String projectName, ProjectPage projectType) {
         searchBox.sendKeys(projectName + Keys.ENTER);
 
         return projectType;
@@ -107,7 +107,7 @@ public class HeaderFrame extends BaseFrame {
         return new ViewAllPage(getDriver());
     }
 
-    public <T extends BasePage> T clickWarningIcon(T page) {
+    public <Page extends BasePage<?>> Page clickWarningIcon(Page page) {
         warningIcon.click();
 
         return page;

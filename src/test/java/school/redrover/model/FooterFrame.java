@@ -10,10 +10,16 @@ import school.redrover.model.base.BasePage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FooterFrame extends BaseFrame {
+public class FooterFrame<T extends BasePage<T>> extends BaseFrame<T> {
 
-    public FooterFrame(WebDriver driver) {
-        super(driver);
+    public FooterFrame(WebDriver driver, T returnPage ) {
+        super(driver, returnPage);
+    }
+
+    public T clickVersion() {
+        getWait2().until(ExpectedConditions.visibilityOf(version)).click();
+
+        return getReturnPage();
     }
 
     @FindBy(css = "[class$=jenkins_ver]")
@@ -38,12 +44,6 @@ public class FooterFrame extends BaseFrame {
     public String getVersionOnFooter() {
 
         return version.getText().split(" ")[1];
-    }
-
-    public <T extends BasePage> T clickVersion(T page) {
-        getWait2().until(ExpectedConditions.visibilityOf(version)).click();
-
-        return page;
     }
 
     public ApiPage clickApiLink() {

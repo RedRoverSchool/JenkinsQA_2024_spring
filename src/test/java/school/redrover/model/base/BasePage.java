@@ -10,7 +10,7 @@ import school.redrover.model.*;
 import java.util.List;
 import java.util.ArrayList;
 
-public abstract class BasePage extends BaseModel {
+public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
 
     @FindBy(css = "[class$=jenkins_ver]")
     private WebElement version;
@@ -31,12 +31,12 @@ public abstract class BasePage extends BaseModel {
         return new HomePage(getDriver());
     }
 
-    public HeaderFrame getHeader() {
-        return new HeaderFrame(getDriver());
+    public HeaderFrame<T> getHeader() {
+        return new HeaderFrame<>(getDriver(), (T) this);
     }
 
-    public FooterFrame getFooter() {
-        return new FooterFrame(getDriver());
+    public FooterFrame<T> getFooter() {
+        return new FooterFrame<>(getDriver(), (T) this);
     }
 
     public void openElementDropdown(WebElement element) {

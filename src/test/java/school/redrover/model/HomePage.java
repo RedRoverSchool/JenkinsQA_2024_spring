@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class HomePage extends BasePage {
+public class HomePage extends BasePage<HomePage> {
 
     @FindBy(linkText = "Create a job")
     private WebElement createAJobLink;
