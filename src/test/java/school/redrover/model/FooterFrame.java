@@ -16,12 +16,6 @@ public class FooterFrame<T extends BasePage<T>> extends BaseFrame<T> {
         super(driver, returnPage);
     }
 
-    public T clickVersion() {
-        getWait2().until(ExpectedConditions.visibilityOf(version)).click();
-
-        return getReturnPage();
-    }
-
     @FindBy(css = "[class$=jenkins_ver]")
     private WebElement version;
 
@@ -44,6 +38,12 @@ public class FooterFrame<T extends BasePage<T>> extends BaseFrame<T> {
     public String getVersionOnFooter() {
 
         return version.getText().split(" ")[1];
+    }
+
+    public T clickVersion() {
+        getWait2().until(ExpectedConditions.visibilityOf(version)).click();
+
+        return getReturnPage();
     }
 
     public ApiPage clickApiLink() {
