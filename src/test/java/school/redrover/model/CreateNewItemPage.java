@@ -135,7 +135,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return page;
     }
 
-    public <T extends BaseConfigPage<?>> T selectProjectTypeAndClickOk(TestUtils.ProjectType projectType, T projectConfigPage) {
+    public <T extends BaseConfigPage> T selectProjectTypeAndClickOk(TestUtils.ProjectType projectType, T projectConfigPage) {
         getDriver().findElement(By.xpath("//span[text()='" + projectType.getProjectTypeName() + "']")).click();
         okButton.click();
 

@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends BasePage {
+public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends BasePage<T> {
 
     @FindBy(tagName = "h1")
     private WebElement projectName;
