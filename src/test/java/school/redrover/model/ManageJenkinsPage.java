@@ -8,10 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ManageJenkinsPage extends BasePage {
 
@@ -65,6 +62,15 @@ public class ManageJenkinsPage extends BasePage {
 
     @FindBy(xpath = "(//div[@class='jenkins-section__items'])[5]//dd [position() mod 2 = 1]")
     private List<WebElement> toolsAndActionsBlockDescriptions;
+
+    @FindBy(xpath = "//section[contains(@class, 'jenkins-section')][2]//div//dt")
+    private List<WebElement> securitySectionNameList;
+
+    @FindBy(xpath = "//section[contains(@class, 'jenkins-section')][2]//div//dd[. !='']")
+    private List<WebElement> securitySectionDescriptionList;
+
+    @FindBy(xpath = "//div[@class='jenkins-section__item']//dt")
+    private List<WebElement> manageJenkinsLinkList;
 
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
@@ -160,12 +166,12 @@ public class ManageJenkinsPage extends BasePage {
 
     public boolean areSectionsLinksClickable() {
         for (WebElement element : sectionsLinksList) {
-                try {
-                    getWait2().until(ExpectedConditions.elementToBeClickable(element));
-                } catch (Exception e) {
-                    System.out.println("Element is NOT clickable: " + element.getText());
-                    return false;
-                }
+            try {
+                getWait2().until(ExpectedConditions.elementToBeClickable(element));
+            } catch (Exception e) {
+                System.out.println("Element is NOT clickable: " + element.getText());
+                return false;
+            }
         }
         return true;
     }
@@ -217,5 +223,38 @@ public class ManageJenkinsPage extends BasePage {
         getDriver().findElement(By.xpath("//dt[text()='" + link + "']")).click();
 
         return getDriver().getCurrentUrl();
+    }
+
+    public List<String> getSecurityBlockElementList() {
+        List<String> textList = new ArrayList<>();
+        List<WebElement> securityBlockElementList = securitySectionNameList;
+
+        for (WebElement element : securityBlockElementList) {
+            textList.add(element.getText());
+        }
+
+        return textList;
+    }
+
+    public List<String> getSecurityBlockDescriptionList() {
+        List<String> textList = new ArrayList<>();
+        List<WebElement> securityDescriptionList = securitySectionDescriptionList;
+
+        for (WebElement element : securityDescriptionList) {
+            textList.add(element.getText());
+        }
+
+        return textList;
+    }
+
+    public List<String> getListOfManageJenkinsLinks() {
+        List<String> linkTextList = new ArrayList<>();
+        List<WebElement> linkList = manageJenkinsLinkList;
+
+        for (WebElement link : linkList) {
+            linkTextList.add(link.getText());
+        }
+
+        return linkTextList;
     }
 }
