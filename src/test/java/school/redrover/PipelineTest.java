@@ -593,9 +593,8 @@ public class PipelineTest extends BaseTest {
             getDriver().findElement(By.id("jenkins-name-icon")).click();
         }
 
-
         TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
-//        TestUtils.createPipelineProject(this, PIPELINE_NAME);
+
         getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
                 By.xpath("//a[contains(@href, 'configure')]")))).click();
 
