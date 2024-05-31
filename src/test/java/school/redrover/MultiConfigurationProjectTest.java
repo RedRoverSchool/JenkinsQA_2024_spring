@@ -302,7 +302,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(PROJECT_NAME)
                 .selectMultiConfigurationAndClickOk()
-                .clickBreadcrumbsProjectName(PROJECT_NAME)
+                .clickBreadcrumbsProjectName()
                 .clickDisableProject()
                 .clickLogo()
                 .getDisabledProjectListText();

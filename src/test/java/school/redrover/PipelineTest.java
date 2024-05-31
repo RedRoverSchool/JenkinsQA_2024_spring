@@ -594,7 +594,7 @@ public class PipelineTest extends BaseTest {
         }
 
 
-        TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
+        TestUtils.createPipelineProject(this, PIPELINE_NAME);
         getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
                 By.xpath("//a[contains(@href, 'configure')]")))).click();
 
@@ -697,7 +697,7 @@ public class PipelineTest extends BaseTest {
     @Test
     public void testFullStageViewPopUpWindowIsDisplayed() {
         int number_of_stages = 2;
-        TestUtils.createJob(this, TestUtils.Job.PIPELINE, PIPELINE_NAME);
+        TestUtils.createNewItem(this, PIPELINE_NAME, TestUtils.Item.PIPELINE);
 
         String pipelineScript = """
                 pipeline {

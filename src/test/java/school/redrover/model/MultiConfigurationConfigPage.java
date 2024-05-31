@@ -116,7 +116,7 @@ public class MultiConfigurationConfigPage extends BaseConfigPage<MultiConfigurat
                 .toList();
     }
 
-    public MultiConfigurationProjectPage clickBreadcrumbsProjectName(String projectName) {
+    public MultiConfigurationProjectPage clickBreadcrumbsProjectName() {
         breadcrumbsProjectName.click();
 
         return new MultiConfigurationProjectPage(getDriver());
