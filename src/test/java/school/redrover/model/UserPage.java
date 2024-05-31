@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
-public class UserPage extends BasePage {
+public class UserPage extends BasePage<UserPage> {
 
     @FindBy(css = "#description + div")
     private WebElement jenkinsUserID;

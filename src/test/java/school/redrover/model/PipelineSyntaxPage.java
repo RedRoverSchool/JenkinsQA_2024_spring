@@ -9,7 +9,7 @@ import school.redrover.model.base.BasePage;
 
 import java.util.List;
 
-public class PipelineSyntaxPage extends BasePage {
+public class PipelineSyntaxPage extends BasePage<PipelineSyntaxPage> {
 
     public PipelineSyntaxPage(WebDriver driver) {
         super(driver);

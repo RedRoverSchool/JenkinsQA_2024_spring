@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
-public class JobBuildConsolePage extends BasePage {
+public class JobBuildConsolePage extends BasePage<JobBuildConsolePage> {
 
     @FindBy(className = "console-output")
     private WebElement consoleLogsTextBox;

@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ManageJenkinsPage extends BasePage {
+public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
 
     @FindBy(css = "[href='configureSecurity']")
     private WebElement securityLink;

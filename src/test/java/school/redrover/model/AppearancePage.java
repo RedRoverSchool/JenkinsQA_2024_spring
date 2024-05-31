@@ -9,7 +9,7 @@ import school.redrover.model.base.BasePage;
 
 import java.util.List;
 
-public class AppearancePage extends BasePage {
+public class AppearancePage extends BasePage<AppearancePage> {
 
     @FindBy(className = "app-theme-picker__item")
     private List<WebElement> themesList;

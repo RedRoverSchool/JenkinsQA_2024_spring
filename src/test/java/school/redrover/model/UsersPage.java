@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class UsersPage extends BasePage {
+public class UsersPage extends BasePage<UsersPage> {
 
     @FindBy(css = "[href='addUser']")
     private WebElement createUserLink;

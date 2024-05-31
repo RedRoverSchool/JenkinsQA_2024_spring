@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class CreateItemPage extends BasePage {
+public class CreateItemPage extends BasePage<CreateItemPage> {
 
     @FindBy(css = "#main-panel h1")
     private WebElement pageHeader;

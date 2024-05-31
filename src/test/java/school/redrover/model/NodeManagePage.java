@@ -8,7 +8,7 @@ import school.redrover.model.base.BasePage;
 
 import java.util.List;
 
-public class NodeManagePage extends BasePage {
+public class NodeManagePage extends BasePage<NodeManagePage> {
     public NodeManagePage(WebDriver driver) {
         super(driver);
     }
@@ -45,7 +45,6 @@ public class NodeManagePage extends BasePage {
     }
 
     public List<WebElement> nodeOnlineStatusText() {
-        List<WebElement> nodeStatusTextMessage = getDriver().findElements(By.xpath("//div[@class='message']"));
-        return nodeStatusTextMessage;
+        return getDriver().findElements(By.xpath("//div[@class='message']"));
     }
 }

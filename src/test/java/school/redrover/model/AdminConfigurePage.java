@@ -7,7 +7,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class AdminConfigurePage extends BasePage {
+public class AdminConfigurePage extends BasePage<AdminConfigurePage> {
 
     @FindBy(css = "[class*='-main'] [class*='box']")
     private WebElement searchSettingsBlock;
