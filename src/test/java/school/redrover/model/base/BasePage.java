@@ -12,9 +12,6 @@ import java.util.ArrayList;
 
 public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
 
-    @FindBy(css = "[class$=jenkins_ver]")
-    private WebElement version;
-
     @FindBy(tagName = "h1")
     private WebElement heading;
 
@@ -92,12 +89,6 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
 
     public String getCurrentUrl() {
         return getDriver().getCurrentUrl();
-    }
-
-    public HomePage clickVersion() {
-        version.click();
-
-        return new HomePage(getDriver());
     }
 
     protected void scrollToElement(WebElement element) {

@@ -36,7 +36,7 @@ public class FooterTest extends BaseTest {
     @Test
     public void testJenkinsVersion() {
         AboutJenkinsPage page = new HomePage(getDriver())
-                .clickVersion()
+                .getFooter().clickVersion()
                 .getFooter().selectAboutJenkinsAndClick();
 
         Assert.assertTrue(page.isDisplayedVersionJenkins());
@@ -45,7 +45,7 @@ public class FooterTest extends BaseTest {
     @Test
     public void testDropDownLink() {
         HomePage page = new HomePage(getDriver())
-                .clickVersion();
+                .getFooter().clickVersion();
 
         Assert.assertTrue(page.getFooter().isDisplayedAboutJenkinsDropdownItem());
         Assert.assertTrue(page.getFooter().isDisplayedInvolvedDropdownItem());
@@ -55,7 +55,7 @@ public class FooterTest extends BaseTest {
     @Test
     public void testJenkinsInformationFooter() {
         boolean isExistJenkinsInformationFooter = new HomePage(getDriver())
-                .clickVersion()
+                .getFooter().clickVersion()
                 .getFooter().selectAboutJenkinsAndClick()
                 .isExistJenkinsInformationFooter();
 
@@ -65,7 +65,7 @@ public class FooterTest extends BaseTest {
     @Test
     public void testVersionOnAboutJenkinsPage() {
         String versionOnPage = new HomePage(getDriver())
-                .clickVersion()
+                .getFooter().clickVersion()
                 .getFooter().selectAboutJenkinsAndClick()
                 .getJenkinsVersion();
 

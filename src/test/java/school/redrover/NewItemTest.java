@@ -287,7 +287,8 @@ public class NewItemTest extends BaseTest {
                 .getCurrentUrl();
 
         String pageHeading = new FreestyleConfigPage(getDriver())
-                .clickSaveButton().getPageHeadingText();
+                .clickSaveButton()
+                .getPageHeadingText();
 
         Assert.assertTrue(isTypeChecked);
         Assert.assertEquals(currentUrl, String.format("http://localhost:8080/job/%s/configure", PROJECT_NAME));
