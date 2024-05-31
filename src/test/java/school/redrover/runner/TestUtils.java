@@ -43,6 +43,15 @@ public final class TestUtils {
         public static final String ORGANIZATION_FOLDER = "jenkins_branch_OrganizationFolder";
     }
 
+    public static final String PIPELINE = "Pipeline";
+
+    public static void createItem(String type, String name, BaseTest baseTest) {
+        baseTest.getDriver().findElement(By.linkText("New Item")).click();
+        baseTest.getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(name);
+        baseTest.getDriver().findElement(By.xpath("//span[text()='" + type + "']")).click();
+        baseTest.getDriver().findElement(By.id("ok-button")).click();
+        baseTest.getDriver().findElement(By.xpath("//button[contains(text(), 'Save')]")).click();
+    }
     public static void goToMainPage(WebDriver driver) {
         driver.findElement(By.id("jenkins-name-icon")).click();
     }

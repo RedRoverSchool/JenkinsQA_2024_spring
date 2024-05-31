@@ -594,7 +594,8 @@ public class PipelineTest extends BaseTest {
         }
 
 
-        TestUtils.createPipelineProject(this, PIPELINE_NAME);
+        TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
+//        TestUtils.createPipelineProject(this, PIPELINE_NAME);
         getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
                 By.xpath("//a[contains(@href, 'configure')]")))).click();
 
@@ -925,7 +926,8 @@ public class PipelineTest extends BaseTest {
         PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
-                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
+                .clickProjectType(TestUtils.ProjectType.PIPELINE)
+                .clickOkAnyway(new PipelineConfigPage(getDriver()))
                 .clickDiscardOldBuilds()
                 .setNumberBuildsToKeep(1)
                 .scrollToPipelineScript()
