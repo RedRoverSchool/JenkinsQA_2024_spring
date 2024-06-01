@@ -85,7 +85,7 @@ public final class ProjectUtils {
         return Boolean.parseBoolean(properties.getProperty(CLOSE_BROWSER_IF_ERROR, "true"));
     }
 
-    static String getUrl() {
+    public static String getUrl() {
         return String.format("http://%s:%s/",
                 properties.getProperty(PROP_HOST),
                 properties.getProperty(PROP_PORT));

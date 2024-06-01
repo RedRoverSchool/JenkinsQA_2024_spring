@@ -10,11 +10,12 @@ public class SlimHudson {
     private String clazz;
     private List<SlimJob> jobs;
 
-    public String getClazz() {
-        return clazz;
-    }
-
     public List<SlimJob> getJob() {
         return jobs;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("SlimHudson{%s}", jobs);
     }
 }

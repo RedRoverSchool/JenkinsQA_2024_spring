@@ -8,15 +8,16 @@ public class SlimJob {
     private String name;
     private String color;
 
-    public String getClazz() {
-        return clazz;
-    }
-
     public String getName() {
         return name;
     }
 
     public String getColor() {
         return color;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%n  Job{name:'%s', color:'%s'}", name, color);
     }
 }
