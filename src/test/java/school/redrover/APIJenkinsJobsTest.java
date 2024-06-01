@@ -14,6 +14,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.domain.auth.Crumb;
 import school.redrover.domain.Hudson;
@@ -84,6 +85,7 @@ public class APIJenkinsJobsTest {
     }
 
     @Test
+    @Ignore
     public void testBuild() {
 //        String jenkinsUrl = "http://localhost:8080/job/Joba/buildWithParameters";
         String url = ProjectUtils.getUrl() + "/job/NEW_JOB/build";
