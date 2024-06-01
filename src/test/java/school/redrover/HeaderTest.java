@@ -40,10 +40,10 @@ public class HeaderTest extends BaseTest {
 
     @Test
     public void testLogout() {
-        getDriver().findElement(By.xpath("//*[@href='/logout']")).click();
-        String actual = getDriver().findElement(
-                By.xpath("//*[text()='Sign in to Jenkins']")).getText();
+        String actualPageTitle = new HomePage(getDriver())
+                .getHeader().clickLogOut()
+                .getSignInToJenkinsTitle();
 
-        Assert.assertEquals(actual, "Sign in to Jenkins");
+        Assert.assertEquals(actualPageTitle, "Sign in to Jenkins");
     }
 }

@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -47,6 +48,9 @@ public class HeaderFrame<T extends BasePage<T>> extends BaseFrame<T> {
 
     @FindBy(css = "[href*='configure']")
     private WebElement adminDropdownConfigureLink;
+
+    @FindBy(xpath = "//a[@href='/logout']")
+    private WebElement logOutIcon;
 
 
     public HeaderFrame(WebDriver driver, T returnPage) {
@@ -137,5 +141,11 @@ public class HeaderFrame<T extends BasePage<T>> extends BaseFrame<T> {
                 .perform();
         adminDropdownConfigureLink.click();
         return new AdminConfigurePage(getDriver());
+    }
+
+    public SignInToJenkinsPage clickLogOut() {
+        logOutIcon.click();
+
+        return new SignInToJenkinsPage(getDriver());
     }
 }
