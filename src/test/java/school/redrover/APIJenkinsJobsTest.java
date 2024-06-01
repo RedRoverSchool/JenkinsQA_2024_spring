@@ -86,7 +86,7 @@ public class APIJenkinsJobsTest {
     @Test
     public void testBuild() {
 //        String jenkinsUrl = "http://localhost:8080/job/Joba/buildWithParameters";
-        String url = ProjectUtils.getUrl() + "/job/Freestyle%20Project%20Name/build";
+        String url = ProjectUtils.getUrl() + "/job/NEW_JOB/build";
 
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             String auth = username + ":" + password;
@@ -119,7 +119,7 @@ public class APIJenkinsJobsTest {
 
     @Test
     public void testCreateNewJob() {
-        String url = "http://localhost:8080/createItem?name=JOBS";
+        String url = "http://localhost:8080/createItem?name=NEW_JOB";
         String jobXml = "<project>\n" +
                 "  <actions/>\n" +
                 "  <description>My new job description</description>\n" +
