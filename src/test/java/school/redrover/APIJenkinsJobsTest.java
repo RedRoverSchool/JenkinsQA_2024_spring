@@ -28,8 +28,8 @@ import java.util.Base64;
 
 public class APIJenkinsJobsTest {
 
-    private static final String username = "admin";
-    private static final String password = "admin";
+    private static final String username = ProjectUtils.getUserName();
+    private static final String password = ProjectUtils.getPassword();
 
     @Test
     public void testCrumbAndToken() {
