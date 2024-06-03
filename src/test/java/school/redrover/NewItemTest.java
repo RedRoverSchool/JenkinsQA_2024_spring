@@ -173,7 +173,6 @@ public class NewItemTest extends BaseTest {
        };
     }
 
-
     @Test(dependsOnMethods = "testDropdownNamesMenuContentWhenCopyProject" ,dataProvider = "existingJobsNames")
     public void testCopyFromExistingJob(String type, String jobName) {
 
