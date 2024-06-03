@@ -2,10 +2,6 @@ package school.redrover;
 
 import java.util.List;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -17,7 +13,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
     private static final String MULTI_PIPELINE_NAME = "MultibranchPipeline";
     private static final String RENAMED_MULTI_PIPELINE = "NewMultibranchPipelineName";
-    private static final String FOLDER_NAME = "Folder";
+    private static final String FOLDER_NAME = "NewFolder";
 
     @Test
     public void testCreateProjectViaSidebarMenu() {
@@ -188,38 +184,26 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testMoveInFolderViaSidebarMenu() {
-        TestUtils.createNewItem(this, FOLDER_NAME, TestUtils.Item.FOLDER);
-        TestUtils.createNewItem(this, MULTI_PIPELINE_NAME, TestUtils.Item.MULTI_BRANCH_PIPELINE);
+    public void testMoveProjectToFolderViaSidebarMenu() {
+        TestUtils.createFolderProject(this, FOLDER_NAME);
+        TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
 
-        getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']")).click();
-        getDriver().findElement(By.cssSelector("[href $='move']")).click();
-        new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" + FOLDER_NAME);
-        getDriver().findElement(By.name("Submit")).click();
+        String nestedMultibranchPipeline = new HomePage(getDriver())
+                .clickJobByName(MULTI_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
+                .clickMoveOnSidebar(MULTI_PIPELINE_NAME)
+                .chooseDestinationFromListAndMove(FOLDER_NAME)
+                .clickLogo()
+                .clickJobByName(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .getNestedProjectName();
 
-        WebElement searchInput = getDriver().findElement(By.cssSelector("input[role='searchbox']"));
-        searchInput.sendKeys(MULTI_PIPELINE_NAME);
-
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("yui-ac-bd")));
-        String actualFolderNameInSearch = getDriver().findElements(By.className("yui-ac-bd"))
-                .stream()
-                .map(WebElement::getText)
-                .toList().toString()
-                .replace("[", "")
-                .replace("]", "")
-                .replace(MULTI_PIPELINE_NAME, "")
-                .trim();
-
-        Assert.assertEquals(actualFolderNameInSearch, FOLDER_NAME, MULTI_PIPELINE_NAME + "находится в другой папке");
+        Assert.assertEquals(nestedMultibranchPipeline, MULTI_PIPELINE_NAME, MULTI_PIPELINE_NAME + "is not moved successfully");
     }
 
     @Test
     public void testDeleteViaDashboardDropdown() {
+        TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
+
         String actualPageHeading = new HomePage(getDriver())
-                .clickCreateAJob()
-                .setItemName(MULTI_PIPELINE_NAME)
-                .selectMultibranchPipelineAndClickOk()
-                .clickLogo()
                 .openItemDropdown(MULTI_PIPELINE_NAME)
                 .clickDeleteInDropdown(new DeleteDialog(getDriver()))
                 .clickYes(new HomePage(getDriver()))

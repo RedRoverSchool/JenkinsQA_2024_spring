@@ -1,13 +1,12 @@
 package school.redrover.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
 import school.redrover.model.base.BaseProjectPage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MultibranchPipelineProjectPage extends BaseProjectPage<MultibranchPipelineProjectPage> {
 
@@ -35,6 +34,9 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage<MultibranchP
     @FindBy(css = "a[href$='rename']")
     private WebElement sidebarRenameButton;
 
+    @FindBy(css = "[href $='move']")
+    private WebElement moveOnSidebar;
+
     @FindBy(css = "[class^='task-link-wrapper']")
     private List<WebElement> sidebarTasksList;
 
@@ -43,9 +45,6 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage<MultibranchP
 
     @FindBy(css = "[class*='dropdown'] [href$='doDelete']")
     private WebElement deleteMultibranchPipelineInBreadcrumbsLink;
-
-    @FindBy(css = "[class*='breadcrumbs'] [href^='/job']")
-    private WebElement breadcrumbsProjectName;
 
     public MultibranchPipelineProjectPage(WebDriver driver) {
         super(driver);
@@ -134,5 +133,11 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage<MultibranchP
         }
 
         return sideBarItemList;
+    }
+
+    public MovePage clickMoveOnSidebar(String name) {
+        moveOnSidebar.click();
+
+        return new MovePage(getDriver());
     }
 }
