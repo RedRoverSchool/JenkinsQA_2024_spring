@@ -1,19 +1,24 @@
 package school.redrover;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.model.AboutJenkinsPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Epic("Footer")
 public class FooterTest extends BaseTest {
 
     private final String jenkinsVersion = "2.440.2";
 
     @Test
+    @Story("'Jenkins 2.440.2' button > Visibility, clickability and functionality")
+    @Description("Check a drop-down list upon clicking on the 'Jenkins 2.440.2' button")
     public void testLinkButtonsListInVersionDropDown() {
         final List<String> expectedDropDownElementsValues = List.of("About Jenkins", "Get involved", "Website");
 
@@ -25,6 +30,8 @@ public class FooterTest extends BaseTest {
     }
 
     @Test
+    @Story("REST API link > Redirection")
+    @Description("Verify if the title name is correct")
     public void testRestAPIButtonTitle() {
         String titleText = new HomePage(getDriver())
                 .getFooter().clickApiLink()
@@ -34,25 +41,8 @@ public class FooterTest extends BaseTest {
     }
 
     @Test
-    public void testJenkinsVersion() {
-        AboutJenkinsPage page = new HomePage(getDriver())
-                .getFooter().clickVersion()
-                .getFooter().selectAboutJenkinsAndClick();
-
-        Assert.assertTrue(page.isDisplayedVersionJenkins());
-    }
-
-    @Test
-    public void testDropDownLink() {
-        HomePage page = new HomePage(getDriver())
-                .getFooter().clickVersion();
-
-        Assert.assertTrue(page.getFooter().isDisplayedAboutJenkinsDropdownItem());
-        Assert.assertTrue(page.getFooter().isDisplayedInvolvedDropdownItem());
-        Assert.assertTrue(page.getFooter().isDisplayedWebsiteDropdownItem());
-    }
-
-    @Test
+    @Story("'Jenkins 2.440.2' button > Visibility, clickability and functionality")
+    @Description("Check tab bar menu items on the 'About Jenkins' page")
     public void testJenkinsInformationFooter() {
         boolean isExistJenkinsInformationFooter = new HomePage(getDriver())
                 .getFooter().clickVersion()
@@ -63,6 +53,8 @@ public class FooterTest extends BaseTest {
     }
 
     @Test
+    @Story("'Jenkins 2.440.2' button > Visibility, clickability and functionality")
+    @Description("Check Jenkins version in the footer on the 'About Jenkins' page")
     public void testVersionOnAboutJenkinsPage() {
         String versionOnPage = new HomePage(getDriver())
                 .getFooter().clickVersion()
@@ -73,12 +65,8 @@ public class FooterTest extends BaseTest {
     }
 
     @Test
-    public void testVersionOnFooter() {
-        Assert.assertEquals(new HomePage(getDriver()).getFooter().getVersionOnFooter(),
-                jenkinsVersion);
-    }
-
-    @Test
+    @Story("'Jenkins 2.440.2' button > Visibility, clickability and functionality")
+    @Description("Check Jenkins version in the footer on the Home, New Item, People, Build History, Manage Jenkins, My Views pages")
     public void testVersionFooterOnEachPage() {
         List<String> versionList = new ArrayList<>();
 
