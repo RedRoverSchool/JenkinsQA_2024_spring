@@ -31,7 +31,7 @@ public class FooterTest extends BaseTest {
 
     @Test
     @Story("REST API link > Redirection")
-    @Description("Verify if the title name is correct")
+    @Description("Verify if the title name is correct on the Api Link page")
     public void testRestAPIButtonTitle() {
         String titleText = new HomePage(getDriver())
                 .getFooter().clickApiLink()
