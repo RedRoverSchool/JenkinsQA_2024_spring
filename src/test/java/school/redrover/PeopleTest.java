@@ -3,9 +3,7 @@ package school.redrover;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
@@ -13,7 +11,8 @@ import school.redrover.model.PeoplePage;
 import school.redrover.model.UsersPage;
 import school.redrover.runner.BaseTest;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 @Epic("People")
 public class PeopleTest extends BaseTest {
