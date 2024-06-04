@@ -1,11 +1,10 @@
 package school.redrover;
 
 import io.qameta.allure.Description;
-import io.qameta.allure.Link;
+import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
@@ -13,6 +12,7 @@ import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
+@Epic("FreestyleProject")
 public class FreestyleProjectTest extends BaseTest {
 
     private static final String FREESTYLE_PROJECT_NAME = "Freestyle_Project_Name";
@@ -21,11 +21,10 @@ public class FreestyleProjectTest extends BaseTest {
     private static final String EDITED_PROJECT_DESCRIPTION = "Project new description";
     private static final String FOLDER_NAME = "Folder_Project_Name";
 
-    @Story("New Item(Goes to FEATURES BY STORIES)")
-    @Description("Verify Create Freestyle Project(Description inside Overview))")
-    @Link(url="https://trello.com/c/7ifuPCsT")
-    @Test(description = "description inside @Test(replaces test name)")
-    public void testCreateProject() {
+    @Test
+    @Story("New Item > Create Freestyle Project")
+    @Description("Verify that a new project can be created via Sidebar menu")
+    public void testCreateProjectViaSidebarMenu() {
         List<String> itemList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FREESTYLE_PROJECT_NAME)
@@ -37,6 +36,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Story(" New item > Create a new item from other existing")
+    @Description("Verify that a new project can be created from an existing project.")
     public void testCreateProjectFromOtherExisting() {
         final String projectName1 = "Race Cars";
         final String projectName2 = "Vintage Cars";
@@ -65,6 +66,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dataProvider = "provideUnsafeCharacters")
+    @Story("New Item > Create Freestyle Project")
+    @Description("Verify error message for project creation with invalid characters.")
     public void testCreateProjectInvalidCharsGetMassage(String unsafeChar) {
         String errorMassage = new HomePage(getDriver())
                 .clickNewItem()
@@ -77,6 +80,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dataProvider = "provideUnsafeCharacters")
+    @Story("New Item > Create Freestyle Project")
+    @Description("Check OK button disabled for invalid project names.")
     public void testCreateProjectInvalidCharsDisabledOkButton(String unsafeChar) {
         boolean enabledOkButton = new HomePage(getDriver())
                 .clickNewItem()
@@ -88,6 +93,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Story("New Item > Create Freestyle Project")
+    @Description("Check error when create the project with an empty name.")
     public void testCreateProjectEmptyName() {
         String errorText = new HomePage(getDriver())
                 .clickNewItem()
@@ -100,6 +107,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Story("New Item > Create Freestyle Project")
+    @Description("Check error for project creation with a name exceeding character limit.")
     public void testCreateProjectWithLongestName() {
         String projectName2 = "a".repeat(260);
 
@@ -113,21 +122,9 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(errorText.contains("Logging ID="));
     }
 
-    @Test
-    public void testCreateProjectWithSpecialSymbol() {
-        String projectName2 = TestUtils.getUniqueName("testproject/");
-
-        String errorText = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(projectName2)
-                .selectFreeStyleProject()
-                .clickOkAnyway(new CreateItemPage(getDriver()))
-                .getErrorMessageText();
-
-        Assert.assertTrue(errorText.contains("is an unsafe character"));
-    }
-
-    @Test(dependsOnMethods = "testCreateProject")
+    @Test(dependsOnMethods = "testCreateProjectViaSidebarMenu")
+    @Story("New Item > Create Freestyle Project")
+    @Description("Check error when create the project with the same name.")
     public void testCreateProjectWithDuplicateName() {
         String errorMessage = new HomePage(getDriver())
                 .clickNewItem()
@@ -140,6 +137,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Story("New item > Create a new item from other existing")
+    @Description("Verify project can be copied from a container.")
     public void testCopyFromContainer() {
         String oldProjectName1 = "Race Cars";
         String newProjectName = "Vintage Cars";
@@ -149,13 +148,19 @@ public class FreestyleProjectTest extends BaseTest {
         List<String> elementsList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(newProjectName)
-                .setItemNameInCopyForm(oldProjectName1.substring(0, 1))
-                .getCopyFormElementsList();
+                .setItemNameInCopyForm(oldProjectName1)
+                .clickOkAnyway(new FreestyleConfigPage(getDriver()))
+                .clickSaveButton()
+                .clickLogo()
+                .getItemList();
 
-        Assert.assertTrue(elementsList.contains(oldProjectName1));
+        Assert.assertListContainsObject(elementsList, newProjectName, "Item is not found");
     }
 
+
     @Test
+    @Story("New item > Create a new item from other existing")
+    @Description("Verify configuration page open when the project is created.")
     public void testOpenConfigurePageOfProject() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
@@ -171,6 +176,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Story("Freestyle project > Move to Folder")
+    @Description("Verify moving the project to a folder via the sidebar.")
     public void testMoveFreestyleProjectToFolderViaSideBar() {
         String expectedText = String.format("Full project name: %s/%s", FOLDER_NAME, FREESTYLE_PROJECT_NAME);
 
@@ -188,6 +195,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Story("Freestyle project > Move to Folder")
+    @Description("Verify moving the project to a folder via the dropdown menu.")
     public void testProjectMovedToFolderViaDropdown() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
         TestUtils.createFolderProject(this, FOLDER_NAME);
@@ -204,6 +213,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testProjectMovedToFolderViaDropdown")
+    @Story("Freestyle project > Move to Folder")
+    @Description("Verify via breadcrumbs moving the project to a folder.")
     public void testCheckFreestyleProjectViaBreadcrumb() {
         List<String> itemListInsideFolder = new HomePage(getDriver())
                 .openDashboardBreadcrumbsDropdown()
@@ -216,6 +227,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Story("Freestyle project > Add description")
+    @Description("Verify adding a description to project by 'Add Description' button.")
     public void testAddDescriptionUsingAddDescriptionButton() {
         String projectDescription = new HomePage(getDriver())
                 .clickNewItem().setItemName(FREESTYLE_PROJECT_NAME)
@@ -230,6 +243,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testAddDescriptionUsingAddDescriptionButton")
+    @Story("Freestyle Project > Edit description")
+    @Description("Verify editing the description of the project.")
     public void testEditProjectDescription() {
         String projectDescriptionText = new HomePage(getDriver())
                 .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -243,6 +258,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testEditProjectDescription")
+    @Story("Freestyle Project > Edit description")
+    @Description("Verify deleting the description of the project.")
     public void testDeleteProjectDescription() {
         boolean addDescriptionButtonEnable = new HomePage(getDriver())
                 .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -255,6 +272,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Story("Freestyle Project > Disable/Enable Project")
+    @Description("Verify disabling the project.")
     public void testDisableProject() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
@@ -267,6 +286,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testDisableProject")
+    @Story("Freestyle Project > Disable/Enable Project")
+    @Description("Verify enabling the project.")
     public void testEnableProject() {
         String disableButtonText = new HomePage(getDriver())
                 .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -277,6 +298,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testEnableProject")
+    @Story("Build history>Start to build a project")
+    @Description("Verify that the project can be successfully built")
     public void testBuildNowProject() {
         String actualResult = new HomePage(getDriver())
                 .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -289,7 +312,9 @@ public class FreestyleProjectTest extends BaseTest {
 
 
     @Test
-    public void testRenameProjectViaSideBarMenu() {
+    @Story("Freestyle project > Rename project")
+    @Description("Verify that the project can be successfully renamed via Sidebar Menu")
+    public void testRenameProjectViaSidebarMenu() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
         List<String> itemList = new HomePage(getDriver())
@@ -304,6 +329,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Story("Freestyle project > Rename project")
+    @Description("Verify that the project can be successfully renamed via Dropdown Menu")
     public void testRenameProjectViaDropdown() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
@@ -318,6 +345,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Story("Freestyle project > Rename project")
+    @Description("Verify that the project can be successfully renamed via  Breadcrumbs Dropdown Menu")
     public void testRenameProjectViaBreadcrumbsDropdown() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
@@ -334,6 +363,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Story("Freestyle project > Rename project")
+    @Description("Check error when rename the project with empty name")
     public void testDropdownRenameWithEmptyName() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
@@ -347,6 +378,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Story("Freestyle project > Delete project")
+    @Description("Verify that the project can be successfully deleted via Sidebar Menu")
     public void testDeleteProjectViaSidebar() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
@@ -360,6 +393,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Story("Freestyle project > Delete project")
+    @Description("Verify that 'Welcome to Jenkins!' header is displayed when the project deleted")
     public void testGetWelcomePageWhenDeleteProjectViaSideBar() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
@@ -373,21 +408,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testDeleteUsingDropdown() {
-        TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
-
-        int beforeSize = new HomePage(getDriver()).getItemList().size();
-
-        List<String> itemList = new HomePage(getDriver())
-                .openItemDropdown(FREESTYLE_PROJECT_NAME)
-                .clickDeleteInDropdown(new DeleteDialog(getDriver()))
-                .clickYes(new HomePage(getDriver()))
-                .getItemList();
-
-        Assert.assertEquals(beforeSize - 1, itemList.size());
-    }
-
-    @Test
+    @Story("Freestyle project > Delete project")
+    @Description("Verify that the project can be successfully deleted via Dropdown Menu")
     public void testDeleteProjectDropdownMenu() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
@@ -398,31 +420,4 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertTrue(isItemDeleted);
     }
-
-    @Ignore
-    @Test
-    public void testCheckQuestion() {
-
-        List<String> expectedList = List.of("Help for feature: Discard old builds",
-                "Help for feature: This project is parameterized",
-                "Help for feature: Throttle builds",
-                "Help for feature: Execute concurrent builds if necessary",
-                "Help for feature: Git",
-                "Help for feature: Trigger builds remotely (e.g., from scripts)",
-                "Help for feature: Build after other projects are built",
-                "Help for feature: Build periodically",
-                "Help for feature: GitHub hook trigger for GITScm polling",
-                "Help for feature: Poll SCM",
-                "Help for feature: Use secret text(s) or file(s)",
-                "Help for feature: With Ant");
-
-        List<String> actualList = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(FREESTYLE_PROJECT_NAME)
-                .selectFreestyleAndClickOk()
-                .getTooltipList();
-
-        Assert.assertEquals(actualList,expectedList);
-
-    }
-}
+   }

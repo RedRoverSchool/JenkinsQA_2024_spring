@@ -154,13 +154,6 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return this;
     }
 
-    public List<String> getCopyFormElementsList() {
-        return copyFormElements
-                .stream()
-                .map(WebElement::getText)
-                .collect(Collectors.toList());
-    }
-
     public CreateItemPage clickOkButton() {
         okButton.click();
         return new CreateItemPage(getDriver());
@@ -184,12 +177,6 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         }
         return allJobFromThisLetterName;
     }
-
-    public CreateNewItemPage sendItemName(String name) {
-        newItemName.sendKeys(name);
-        return this;
-    }
-
 
     public CreateNewItemPage selectFreeStyleProject() {
         freestyleItem.click();

@@ -16,7 +16,7 @@ public class FreestyleConfigPage extends BaseConfigPage<FreestyleProjectPage, Fr
     @FindBy(css = "#side-panel h1")
     private WebElement headerSidePanel;
 
-    @FindBy (xpath = "//*[@name='description']")
+    @FindBy(xpath = "//*[@name='description']")
     private WebElement descriptionField;
 
     @FindBy(id = "build-triggers")
@@ -36,9 +36,6 @@ public class FreestyleConfigPage extends BaseConfigPage<FreestyleProjectPage, Fr
 
     @FindBy(name = "Submit")
     private WebElement saveButton;
-
-    @FindBy(xpath = "//a[contains(@tooltip,'Help for feature:')]")
-    private List<WebElement> tooltipList;
 
     public FreestyleConfigPage(WebDriver driver) {
         super(driver, new FreestyleProjectPage(driver));
@@ -83,18 +80,5 @@ public class FreestyleConfigPage extends BaseConfigPage<FreestyleProjectPage, Fr
         addTimestampsCheckbox.click();
 
         return this;
-    }
-
-    public List<String> getTooltipList() {
-        List<String> result = new ArrayList<>();
-        for (WebElement w : tooltipList) {
-
-            if (w.isDisplayed()) {
-                ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView({block:'center'});", w);
-                new Actions(getDriver()).pause(1100).moveToElement(w).pause(600).perform();
-                result.add(getDriver().findElement(By.xpath("//div[@class='tippy-box']")).getText());
-            }
-        }
-        return result;
     }
 }
