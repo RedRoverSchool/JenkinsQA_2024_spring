@@ -1,11 +1,10 @@
 package school.redrover;
 
 import io.qameta.allure.Description;
-import io.qameta.allure.Link;
+import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
@@ -21,10 +20,9 @@ public class FreestyleProjectTest extends BaseTest {
     private static final String EDITED_PROJECT_DESCRIPTION = "Project new description";
     private static final String FOLDER_NAME = "Folder_Project_Name";
 
-    @Story("New Item(Goes to FEATURES BY STORIES)")
-    @Description("Verify Create Freestyle Project(Description inside Overview))")
-    @Link(url="https://trello.com/c/7ifuPCsT")
-    @Test(description = "description inside @Test(replaces test name)")
+    @Test
+    @Epic("00 New item")
+    @Story("US_00.001 Create Freestyle Project")
     public void testCreateProject() {
         List<String> itemList = new HomePage(getDriver())
                 .clickNewItem()
@@ -37,6 +35,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Epic("00 New item")
+    @Story("US_00.007 Create a new item from other existing")
     public void testCreateProjectFromOtherExisting() {
         final String projectName1 = "Race Cars";
         final String projectName2 = "Vintage Cars";
@@ -65,6 +65,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dataProvider = "provideUnsafeCharacters")
+    @Epic("00 New item")
+    @Story("US_00.001 Create Freestyle Project")
     public void testCreateProjectInvalidCharsGetMassage(String unsafeChar) {
         String errorMassage = new HomePage(getDriver())
                 .clickNewItem()
@@ -77,6 +79,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dataProvider = "provideUnsafeCharacters")
+    @Epic("00 New item")
+    @Story("US_00.001 Create Freestyle Project")
     public void testCreateProjectInvalidCharsDisabledOkButton(String unsafeChar) {
         boolean enabledOkButton = new HomePage(getDriver())
                 .clickNewItem()
@@ -88,6 +92,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Epic("00 New item")
+    @Story("US_00.001 Create Freestyle Project")
     public void testCreateProjectEmptyName() {
         String errorText = new HomePage(getDriver())
                 .clickNewItem()
@@ -100,6 +106,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Epic("00 New item")
+    @Story("US_00.001 Create Freestyle Project")
     public void testCreateProjectWithLongestName() {
         String projectName2 = "a".repeat(260);
 
@@ -114,6 +122,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Epic("00 New item")
+    @Story("US_00.001 Create Freestyle Project")
     public void testCreateProjectWithSpecialSymbol() {
         String projectName2 = TestUtils.getUniqueName("testproject/");
 
@@ -128,6 +138,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateProject")
+    @Epic("00 New item")
+    @Story("US_00.001 Create Freestyle Project")
     public void testCreateProjectWithDuplicateName() {
         String errorMessage = new HomePage(getDriver())
                 .clickNewItem()
@@ -140,6 +152,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Epic("00 New item")
+    @Story("US_00.007 Create a new item from other existing")
     public void testCopyFromContainer() {
         String oldProjectName1 = "Race Cars";
         String newProjectName = "Vintage Cars";
@@ -156,6 +170,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Epic("00 New item")
+    @Story("US_00.001 Create Freestyle Project")
     public void testOpenConfigurePageOfProject() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
@@ -171,6 +187,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Epic("01_FreestyleProject")
+    @Story("US_01.006 Move Project to Folder")
     public void testMoveFreestyleProjectToFolderViaSideBar() {
         String expectedText = String.format("Full project name: %s/%s", FOLDER_NAME, FREESTYLE_PROJECT_NAME);
 
@@ -188,6 +206,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Epic("01_FreestyleProject")
+    @Story("US_01.006 Move Project to Folder")
     public void testProjectMovedToFolderViaDropdown() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
         TestUtils.createFolderProject(this, FOLDER_NAME);
@@ -204,6 +224,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testProjectMovedToFolderViaDropdown")
+    @Epic("01_FreestyleProject")
+    @Story("US_01.006 Move Project to Folder")
     public void testCheckFreestyleProjectViaBreadcrumb() {
         List<String> itemListInsideFolder = new HomePage(getDriver())
                 .openDashboardBreadcrumbsDropdown()
@@ -216,6 +238,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Epic("01_FreestyleProject")
+    @Story("US_01.001 Add description")
     public void testAddDescriptionUsingAddDescriptionButton() {
         String projectDescription = new HomePage(getDriver())
                 .clickNewItem().setItemName(FREESTYLE_PROJECT_NAME)
@@ -230,6 +254,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testAddDescriptionUsingAddDescriptionButton")
+    @Epic("01_FreestyleProject")
+    @Story("US_01.001 Add description")
     public void testEditProjectDescription() {
         String projectDescriptionText = new HomePage(getDriver())
                 .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -243,6 +269,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testEditProjectDescription")
+    @Epic("01_FreestyleProject")
+    @Story("US_01.001 Add description")
     public void testDeleteProjectDescription() {
         boolean addDescriptionButtonEnable = new HomePage(getDriver())
                 .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -255,6 +283,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Epic("01_FreestyleProject")
+    @Story("US_01.003 Disable/Enable Project")
     public void testDisableProject() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
@@ -267,6 +297,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testDisableProject")
+    @Epic("01_FreestyleProject")
+    @Story("US_01.003 Disable/Enable Project")
     public void testEnableProject() {
         String disableButtonText = new HomePage(getDriver())
                 .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -277,6 +309,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testEnableProject")
+    @Epic("01_FreestyleProject")
+    @Story("US_01.007 Build now")
     public void testBuildNowProject() {
         String actualResult = new HomePage(getDriver())
                 .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -289,6 +323,8 @@ public class FreestyleProjectTest extends BaseTest {
 
 
     @Test
+    @Epic("01_FreestyleProject")
+    @Story("US_01.002 Rename Project")
     public void testRenameProjectViaSideBarMenu() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
@@ -304,6 +340,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Epic("01_FreestyleProject")
+    @Story("US_01.002 Rename Project")
     public void testRenameProjectViaDropdown() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
@@ -318,6 +356,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Epic("01_FreestyleProject")
+    @Story("US_01.002 Rename Project")
     public void testRenameProjectViaBreadcrumbsDropdown() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
@@ -334,6 +374,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Epic("01_FreestyleProject")
+    @Story("US_01.002 Rename Project")
     public void testDropdownRenameWithEmptyName() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
@@ -347,6 +389,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Epic("01_FreestyleProject")
+    @Story("US_01.004 Delete Project")
     public void testDeleteProjectViaSidebar() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
@@ -360,6 +404,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Epic("01_FreestyleProject")
+    @Story("US_01.004 Delete Project")
     public void testGetWelcomePageWhenDeleteProjectViaSideBar() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
@@ -373,6 +419,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Epic("01_FreestyleProject")
+    @Story("US_01.004 Delete Project")
     public void testDeleteUsingDropdown() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
@@ -388,6 +436,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    @Epic("01_FreestyleProject")
+    @Story("US_01.004 Delete Project")
     public void testDeleteProjectDropdownMenu() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
@@ -399,8 +449,10 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(isItemDeleted);
     }
 
-    @Ignore
     @Test
+    @Epic("00 New item")
+    @Story("US_00.001 Create Freestyle Project")
+    @Description("Verify freestyle project config page question marks tooltips")
     public void testCheckQuestion() {
 
         List<String> expectedList = List.of("Help for feature: Discard old builds",
