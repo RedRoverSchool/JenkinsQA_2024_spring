@@ -653,9 +653,6 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Epic("")
-    @Story("US_02.00 ")
-    @Description("")
     public void testConsoleOutputValue() {
         int number_of_stages = 8;
         List<String> expectedConsoleOuputForAllStages = List.of("test 1", "test 2", "test 3", "test 4", "test 5", "test 6", "test 7", "test 8");
