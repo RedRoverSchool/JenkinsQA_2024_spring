@@ -308,14 +308,14 @@ public class MultibranchPipelineTest extends BaseTest {
     @Story("US_05.005 Delete Multibranch pipeline")
     @Description("Verify the deletion of a project via Breadcrumbs.")
     public void testDeleteProjectViaBreadcrumbs() {
-        boolean projectDeleted = new HomePage(getDriver())
+        boolean isProjectDeleted = new HomePage(getDriver())
                 .clickSpecificMultibranchPipelineName(RENAMED_MULTI_PIPELINE)
                 .clickMPDropdownArrow()
                 .clickDeleteMultibranchPipelineInBreadcrumbs(new DeleteDialog(getDriver()))
                 .clickYes(new HomePage(getDriver()))
                 .isItemDeleted(RENAMED_MULTI_PIPELINE);
 
-        Assert.assertTrue(projectDeleted, RENAMED_MULTI_PIPELINE + " was not deleted");
+        Assert.assertTrue(isProjectDeleted, RENAMED_MULTI_PIPELINE + " was not deleted");
     }
 
     @Test
@@ -325,13 +325,13 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testDeleteProjectViaSidebarMenu() {
         TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
 
-        boolean itemIsDeleted = new HomePage(getDriver())
+        boolean itemDeleted = new HomePage(getDriver())
                 .clickJobByName(MULTI_PIPELINE_NAME,
                         new MultibranchPipelineProjectPage(getDriver()))
                 .clickDeleteButton()
                 .confirmDeleteButton()
                 .isItemDeleted(MULTI_PIPELINE_NAME);
 
-        Assert.assertTrue(itemIsDeleted);
+        Assert.assertTrue(itemDeleted);
     }
 }
