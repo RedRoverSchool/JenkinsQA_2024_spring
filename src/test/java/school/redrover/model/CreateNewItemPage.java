@@ -1,9 +1,6 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseConfigPage;
@@ -157,6 +154,7 @@ public class CreateNewItemPage extends BasePage {
 //        return this;
 //    }
     public CreateNewItemPage setItemNameInCopyFrom(String name) {
+        ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView(true);", getDriver().findElement(By.cssSelector("#from")));
         getWait60().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#from"))).sendKeys(name);
         return this;
     }
