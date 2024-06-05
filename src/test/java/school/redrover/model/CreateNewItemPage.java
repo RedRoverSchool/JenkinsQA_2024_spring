@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.lang.Thread.sleep;
+
 public class CreateNewItemPage extends BasePage {
 
     @FindBy(id = "name")
@@ -154,6 +156,11 @@ public class CreateNewItemPage extends BasePage {
 //        return this;
 //    }
     public CreateNewItemPage setItemNameInCopyFrom(String name) {
+        try {
+            sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView(true);", getDriver().findElement(By.cssSelector("#from")));
         getWait60().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#from"))).sendKeys(name);
         return this;
