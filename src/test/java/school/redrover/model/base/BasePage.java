@@ -18,6 +18,9 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
     @FindBy(xpath = "//a[@class='main-search__icon-trailing']")
     private WebElement tutorialIcon;
 
+    @FindBy(tagName = "body")
+    private WebElement htmlBody;
+
     public BasePage(WebDriver driver) {
         super(driver);
     }
@@ -146,4 +149,10 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
 
         return this;
     }
+
+    public String getBackgroundColor() {
+
+        return htmlBody.getCssValue("background-color");
+    }
+
 }

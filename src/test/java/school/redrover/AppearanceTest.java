@@ -1,5 +1,8 @@
 package school.redrover;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
@@ -7,9 +10,12 @@ import school.redrover.model.AppearancePage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
+@Epic("Manage Jenkins")
 public class AppearanceTest extends BaseTest {
 
     @Test
+    @Story("Appearance")
+    @Description("Check number of color themes that are available")
     public void testAppearanceQuantityOfThemesViaDashboardDropDown() {
 
         int quantityOfThemes = new HomePage(getDriver())
@@ -19,10 +25,14 @@ public class AppearanceTest extends BaseTest {
                 .getThemesList()
                 .size();
 
+//        returnDefaultTheme();
+
         Assert.assertEquals(quantityOfThemes, 3);
     }
 
     @Test
+    @Story("Appearance")
+    @Description("Change color theme to Dark and check that this saved")
     public void testDarkThemeSwitchNotification() {
         String notificationText = new HomePage(getDriver())
                 .clickManageJenkins()
@@ -31,10 +41,14 @@ public class AppearanceTest extends BaseTest {
                 .clickApply()
                 .getNotificationText();
 
+//        returnDefaultTheme();
+
         Assert.assertEquals(notificationText, "Saved");
     }
 
     @Test
+    @Story("Appearance")
+    @Description("Change color theme to Dark and check that this saved")
     public void testDarkThemeSwitchColor() {
         String backgroundColor = new HomePage(getDriver())
                 .clickManageJenkins()
@@ -42,6 +56,8 @@ public class AppearanceTest extends BaseTest {
                 .clickDarkThemeButton()
                 .clickApply()
                 .getBackgroundColor();
+
+//        returnDefaultTheme();
 
         Assert.assertEquals(
                 backgroundColor,
@@ -58,6 +74,8 @@ public class AppearanceTest extends BaseTest {
                 .clickApplyButton()
                 .getCurrentThemeAttribute();
 
+//        returnDefaultTheme();
+
         Assert.assertEquals(actualThemeApplied, "dark");
     }
 
@@ -69,6 +87,8 @@ public class AppearanceTest extends BaseTest {
                 .clickDefaultThemeButton()
                 .clickApplyButton()
                 .getCurrentThemeAttribute();
+
+//        returnDefaultTheme();
 
         Assert.assertEquals(actualThemeApplied, "none");
     }
@@ -82,21 +102,17 @@ public class AppearanceTest extends BaseTest {
                 .clickApplyButton()
                 .getCurrentThemeAttribute();
 
+//        returnDefaultTheme();
+
         Assert.assertTrue(actualThemeApplied.contains("system"));
     }
 
     @AfterMethod
-    public void returnToNoneTheme() {
+    public void returnDefaultTheme() {
         AppearancePage appearancePage = new AppearancePage(getDriver());
 
-        if (!appearancePage
-                .getCurrentThemeAttribute()
-                .equals("none")) {
-            new HomePage(getDriver())
-                    .clickLogo()
-                    .clickManageJenkins()
-                    .clickAppearanceButton()
-                    .clickDefaultThemeButton()
+        if (!appearancePage.getCurrentThemeAttribute().equals("none")) {
+            appearancePage.clickDefaultThemeButton()
                     .clickApplyButton();
         }
     }

@@ -29,9 +29,6 @@ public class AppearancePage extends BasePage<AppearancePage> {
     @FindBy(id = "notification-bar")
     private WebElement notification;
 
-    @FindBy(tagName = "body")
-    private WebElement htmlBody;
-
     public AppearancePage(WebDriver driver) {
         super(driver);
     }
@@ -89,8 +86,4 @@ public class AppearancePage extends BasePage<AppearancePage> {
         return getWait2().until(ExpectedConditions.visibilityOf(notification)).getText();
     }
 
-    public String getBackgroundColor() {
-
-        return htmlBody.getCssValue("background-color");
-    }
 }
