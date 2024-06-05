@@ -1,22 +1,23 @@
 package school.redrover.model;
 
-import java.util.List;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
 import school.redrover.model.base.BaseProjectPage;
 
-public class MultibranchPipelineProjectPage extends BaseProjectPage<MultibranchPipelineProjectPage> {
+import java.util.ArrayList;
+import java.util.List;
 
+public class MultibranchPipelineProjectPage extends BaseProjectPage<MultibranchPipelineProjectPage> {
 
     @FindBy(xpath = "//span[.='Configure the project']")
     private WebElement configureButton;
 
     @FindBy(name = "Submit")
-    private WebElement disableEnableMPButton;
+    private WebElement enableMPButton;
 
+    @FindBy(xpath = "//form[@id='disable-project']/button")
+    private WebElement disableProjectButton;
 
     @FindBy(id = "enable-project")
     private WebElement disableMPMessage;
@@ -25,13 +26,16 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage<MultibranchP
     private List<WebElement> disabledMultiPipelineMessage;
 
     @FindBy(xpath = "//*[contains(@data-title,'Delete')]")
-
     private WebElement sidebarDeleteButton;
+
     @FindBy(xpath = "//*[contains(@data-id,'ok')]")
     private WebElement confirmDeleteButton;
 
     @FindBy(css = "a[href$='rename']")
     private WebElement sidebarRenameButton;
+
+    @FindBy(css = "[href $='move']")
+    private WebElement moveOnSidebar;
 
     @FindBy(css = "[class^='task-link-wrapper']")
     private List<WebElement> sidebarTasksList;
@@ -41,9 +45,6 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage<MultibranchP
 
     @FindBy(css = "[class*='dropdown'] [href$='doDelete']")
     private WebElement deleteMultibranchPipelineInBreadcrumbsLink;
-
-    @FindBy(css = "[class*='breadcrumbs'] [href^='/job']")
-    private WebElement breadcrumbsProjectName;
 
     public MultibranchPipelineProjectPage(WebDriver driver) {
         super(driver);
@@ -55,14 +56,20 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage<MultibranchP
         return new MultibranchPipelineConfigPage(getDriver());
     }
 
-    public MultibranchPipelineProjectPage clickDisableEnableMultibranchPipeline() {
-        disableEnableMPButton.click();
+    public MultibranchPipelineProjectPage clickEnableButton() {
+        enableMPButton.click();
+
+        return this;
+    }
+
+    public MultibranchPipelineProjectPage clickDisableProjectButton() {
+        disableProjectButton.click();
 
         return this;
     }
 
     public String getDisableMultibranchPipelineButtonText() {
-        return disableEnableMPButton.getText().trim();
+        return enableMPButton.getText().trim();
     }
 
 
@@ -95,11 +102,12 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage<MultibranchP
         return sidebarTasksList.size();
     }
 
-    public MultibranchPipelineProjectPage clickDeleteButton(){
+    public MultibranchPipelineProjectPage clickDeleteButton() {
         sidebarDeleteButton.click();
         return this;
     }
-    public HomePage confirmDeleteButton(){
+
+    public HomePage confirmDeleteButton() {
         confirmDeleteButton.click();
         return clickLogo();
     }
@@ -116,7 +124,20 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage<MultibranchP
         return dialog;
     }
 
-    public String getBreadcrumbsProjectName() {
-        return breadcrumbsProjectName.getText();
+    public List<String> getProjectSidebarList() {
+        List<String> sideBarItemList = new ArrayList<>();
+        List<WebElement> taskElements = sidebarTasksList;
+
+        for (WebElement task : taskElements) {
+            sideBarItemList.add(task.getText());
+        }
+
+        return sideBarItemList;
+    }
+
+    public MovePage clickMoveOnSidebar(String name) {
+        moveOnSidebar.click();
+
+        return new MovePage(getDriver());
     }
 }

@@ -49,7 +49,7 @@ public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
     private WebElement dropdownMoveButton;
 
     @FindBy(css = "td [href*='job']:first-child")
-    private WebElement nestedFolderName;
+    private WebElement nestedProjectName;
 
     @FindBy(css = "[class*='dropdown'] [href$='rename']")
     private WebElement dropdownRenameButton;
@@ -152,8 +152,8 @@ public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
         return new FolderProjectPage(getDriver());
     }
 
-    public String getNestedFolderName() {
-        return nestedFolderName.getText();
+    public String getNestedProjectName() {
+        return nestedProjectName.getText();
     }
 
     public FolderRenamePage clickDropdownRenameButton() {

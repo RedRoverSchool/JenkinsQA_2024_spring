@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
-public class ReloadConfigurationDialog extends BasePage {
+public class ReloadConfigurationDialog extends BasePage<ReloadConfigurationDialog> {
 
     @FindBy(className = "jenkins-dialog__title")
     private WebElement reloadConfigurationFromDiskDialogTitle;

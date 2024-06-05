@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 
-public class ItemErrorPage extends BasePage {
+public class ItemErrorPage extends BasePage<ItemErrorPage> {
 
     @FindBy(css = "#main-panel p")
     private WebElement messageText;

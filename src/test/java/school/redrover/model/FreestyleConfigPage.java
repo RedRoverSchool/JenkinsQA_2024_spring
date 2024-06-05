@@ -11,7 +11,7 @@ import school.redrover.model.base.BaseConfigPage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FreestyleConfigPage extends BaseConfigPage<FreestyleProjectPage> {
+public class FreestyleConfigPage extends BaseConfigPage<FreestyleProjectPage, FreestyleConfigPage> {
 
     @FindBy(css = "#side-panel h1")
     private WebElement headerSidePanel;

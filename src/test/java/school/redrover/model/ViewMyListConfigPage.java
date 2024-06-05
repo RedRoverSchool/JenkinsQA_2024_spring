@@ -9,7 +9,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
-public class ViewMyListConfigPage extends BasePage {
+public class ViewMyListConfigPage extends BasePage<ViewMyListConfigPage> {
 
     @FindBy(name = "Submit")
     private WebElement okButton;

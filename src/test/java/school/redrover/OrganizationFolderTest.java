@@ -1,8 +1,5 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
@@ -10,7 +7,6 @@ import school.redrover.model.OrganizationFolderConfigPage;
 import school.redrover.model.OrganizationFolderProjectPage;
 import school.redrover.runner.BaseTest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class OrganizationFolderTest extends BaseTest {
@@ -20,15 +16,6 @@ public class OrganizationFolderTest extends BaseTest {
     private static final String SCAN_ORGANIZATION_TEXT = "Scan Organization Folder Log";
 
     private static final String ORGANIZATION_FOLDER_DESCRIPTION = "Some description of the organization folder.";
-
-    private List<String> getActualList() {
-        List<String> actualList = new ArrayList<>();
-        for (int i = 1; i <= 9; i++) {
-            String xPath = "//*[@id=\"tasks\"]/div[" + i + "]/span/a/span[2]";
-            actualList.add(getDriver().findElement(By.xpath(xPath)).getText());
-        }
-        return actualList;
-    }
 
     @Test
     public void testCreateViaNewItem() {
@@ -170,37 +157,18 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateViaNewItem")
-    public void testPipelineSyntaxMenuList() {
-        final List<String> getExpectedList = List.of("Back", "Snippet Generator", "Declarative Directive Generator",
+    public void testPipelineSyntaxSidebarList() {
+        final List<String> expectedPipelineSyntaxSidebarList = List.of("Back", "Snippet Generator", "Declarative Directive Generator",
                 "Declarative Online Documentation", "Steps Reference",
                 "Global Variables Reference", "Online Documentation", "Examples Reference",
                 "IntelliJ IDEA GDSL");
 
-        WebElement currentOrganizationFolder = getDriver().
-                findElement(By.xpath("//span[text()='" + ORGANIZATION_FOLDER_NAME + "']/.."));
-        new Actions(getDriver()).moveToElement(currentOrganizationFolder).perform();
+        List<String> actualPipelineSyntaxSidebarList = new HomePage(getDriver())
+                .clickJobByName(ORGANIZATION_FOLDER_NAME, new OrganizationFolderProjectPage(getDriver()))
+                .clickPipelineSyntax()
+                .getPipelineSyntaxSidebarList();
 
-        WebElement menuForCurrentOrganizationFolder = getDriver().
-                findElement(By.xpath("//*[@id='job_" + ORGANIZATION_FOLDER_NAME + "']/td[3]/a"));
-        menuForCurrentOrganizationFolder.click();
-
-        WebElement pipelineSyntaxMenu = getDriver().
-                findElement(By.xpath("//*[@href='/job/" + ORGANIZATION_FOLDER_NAME + "/pipeline-syntax']"));
-        pipelineSyntaxMenu.click();
-
-        for (int i = 0; i < getActualList().size(); i++) {
-            Assert.assertEquals(getActualList().get(i), getExpectedList.get(i));
-        }
-    }
-
-    @Test(dependsOnMethods = "testCreateViaNewItem")
-    public void testViewEmptyOrganizationFolderEvents() {
-
-        getDriver().findElement(By.linkText(ORGANIZATION_FOLDER_NAME)).click();
-        getDriver().findElement(By.linkText("Organization Folder Events")).click();
-
-        Assert.assertTrue(getDriver().findElement(By.xpath("//*[@id='out']/div")).getText()
-                .matches("No events as of.+waiting for events\\.{3}"), "Messages not equals!");
+        Assert.assertEquals(actualPipelineSyntaxSidebarList, expectedPipelineSyntaxSidebarList);
     }
 
     @Test

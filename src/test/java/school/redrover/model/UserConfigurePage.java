@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
-public class UserConfigurePage extends BasePage {
+public class UserConfigurePage extends BasePage<UserConfigurePage> {
     @FindBy(xpath = "//button[text()='Add new Token']")
     private WebElement addNewTokenButton;
 

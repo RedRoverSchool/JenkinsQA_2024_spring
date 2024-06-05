@@ -10,7 +10,7 @@ import school.redrover.model.base.BasePage;
 import java.util.Collections;
 import java.util.List;
 
-public class NodeBuiltInStatusPage extends BasePage {
+public class NodeBuiltInStatusPage extends BasePage<NodeBuiltInStatusPage> {
 
     @FindBy(className = "advancedButton")
     private WebElement monitoringDataButton;

@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
-public class MultibranchPipelineRenamePage extends BasePage {
+public class MultibranchPipelineRenamePage extends BasePage<MultibranchPipelineRenamePage> {
 
     @FindBy(name = "newName")
     private WebElement newNameInput;

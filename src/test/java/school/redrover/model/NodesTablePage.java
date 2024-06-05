@@ -10,7 +10,7 @@ import school.redrover.model.base.BasePage;
 
 import java.util.List;
 
-public class NodesTablePage extends BasePage {
+public class NodesTablePage extends BasePage<NodesTablePage> {
 
     @FindBy(css = "[href='new']")
     private WebElement newNodeButton;

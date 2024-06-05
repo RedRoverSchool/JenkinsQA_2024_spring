@@ -5,11 +5,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
-import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
-public class BuildHistoryPage extends BasePage {
+public class BuildHistoryPage extends BasePage<BuildHistoryPage> {
 
     @FindBy(css = "td [class$='link'] [class$='dropdown-chevron']")
     private WebElement buildHistoryItemDropdownArrow;
@@ -70,9 +69,5 @@ public class BuildHistoryPage extends BasePage {
 
     public boolean isDisplayedBuildOnTimeline() {
         return buildNameOnTimeline.isDisplayed();
-    }
-
-    public String getTextConsoleOutput() {
-        return TextConsoleOutput.getText();
     }
 }

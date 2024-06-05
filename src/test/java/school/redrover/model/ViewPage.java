@@ -9,7 +9,7 @@ import school.redrover.model.base.BasePage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewPage extends BasePage {
+public class ViewPage extends BasePage<ViewPage> {
 
     @FindBy(linkText = "Edit View")
     private WebElement editViewButton;

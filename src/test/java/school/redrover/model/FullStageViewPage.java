@@ -8,7 +8,7 @@ import school.redrover.model.base.BasePage;
 
 import java.util.List;
 
-public class FullStageViewPage extends BasePage {
+public class FullStageViewPage extends BasePage<FullStageViewPage> {
 
     @FindBy(xpath = "//h2")
     private WebElement H2HeadingText;
