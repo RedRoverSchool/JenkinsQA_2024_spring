@@ -59,18 +59,6 @@ public class NodesTest extends BaseTest {
     }
 
     @Test
-    public void testAddNode() {
-        String text;
-
-        getDriver().findElement(By.xpath("//*[@href='/manage']")).click();
-        getDriver().findElement(By.xpath("//*[@href='computer']")).click();
-        getDriver().findElement(By.xpath("//*[@href='new']")).click();
-        text = getDriver().findElement(By.xpath("//h1")).getText();
-
-        Assert.assertEquals(text, "New node");
-    }
-
-    @Test
     public void testTooltipConfigureNodePage() {
         List<String> expectedList = List.of(
                 "Help for feature: Architecture",
@@ -87,6 +75,7 @@ public class NodesTest extends BaseTest {
                 "Help for feature: Response Time",
                 "Help for feature: Don&#039;t mark agents temporarily offline"
         );
+
         List<String> actualList = new HomePage(getDriver())
                 .clickNodesLink()
                 .clickConfigureMonitorButton()
@@ -184,26 +173,6 @@ public class NodesTest extends BaseTest {
     }
 
     @Test
-    public void testNumberOfItems() {
-
-        HomePage homePage = new HomePage(getDriver());
-        String text = homePage.getBuildExecutorStatusText();
-        List<WebElement> buildExecutors = homePage.getBuildExecutorStatusList();
-        int number = homePage.getBuildExecutorListSize();
-
-        if(text.contains("( offline)")) {
-            int number1 = buildExecutors.size();
-
-            Assert.assertEquals(number, number1);
-
-        } else if(number >= 1){
-            int number2 = buildExecutors.size();
-
-            Assert.assertEquals(number, number2);
-        }
-    }
-
-    @Test
     public void testSwitchNodeToOfflineStatus() {
         final String nodeStatusMessage = "Disconnected by admin";
 
@@ -220,7 +189,7 @@ public class NodesTest extends BaseTest {
     @Test(dependsOnMethods = "testSwitchNodeToOfflineStatus")
     public void testSwitchNodeToOnlineStatus() {
 
-         NodeManagePage nodeStatus = new HomePage(getDriver())
+        NodeManagePage nodeStatus = new HomePage(getDriver())
                 .clickNodesLink()
                 .clickOnBuiltInNode()
                 .clickBringThisNodeBackOnlineBtn();
@@ -257,49 +226,6 @@ public class NodesTest extends BaseTest {
                 .getNodesinTableList();
 
         Assert.assertTrue(nodesList.contains(NODE_NAME));
-    }
-
-    @Test
-    public void testCreateNewNodeWithName() {
-
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        getDriver().findElement(By.xpath("//dt[text()='Nodes']")).click();
-        getDriver().findElement(By.xpath("//a[@href='new']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(NODE_NAME);
-        getDriver().findElement(By.xpath("//label[text()='Permanent Agent']")).click();
-        getDriver().findElement(By.id("ok")).click();
-        getDriver().findElement(By.name("Submit")).click();
-
-        String actualResult = getDriver().findElement(By.xpath("//a[@href='../computer/" + NODE_NAME.replaceAll(" ", "%20") + "/']")).getText();
-
-        Assert.assertTrue(actualResult.contains(NODE_NAME));
-    }
-
-    @Test
-    public void testDeleteNode() {
-        final String nodeName = "NewNode";
-        createNewNode(nodeName);
-
-        WebElement createdNode = getDriver().findElement(
-                By.cssSelector("a[href*='../computer/" + nodeName + "/']"));
-
-        TestUtils.openElementDropdown(this, createdNode);
-        WebElement deleteButton = getDriver().findElement(By.xpath("//button[@href='/manage/computer/" + nodeName + "/doDelete']"));
-        deleteButton.click();
-
-        WebElement confirmButton = getDriver().findElement(By.cssSelector("[data-id='ok']"));
-        confirmButton.click();
-
-        boolean result;
-
-        try {
-            getDriver().findElement(By.xpath("//a[contains(@href,'../computer/" + nodeName + "/')]")).isDisplayed();
-            result = false;
-        } catch (Exception e) {
-            result = true;
-        }
-
-        Assert.assertTrue(result);
     }
 
     @Test

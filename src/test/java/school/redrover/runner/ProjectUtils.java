@@ -8,7 +8,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.io.FileHandler;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.ITestResult;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Properties;
-
 
 public final class ProjectUtils {
 
@@ -85,17 +83,17 @@ public final class ProjectUtils {
         return Boolean.parseBoolean(properties.getProperty(CLOSE_BROWSER_IF_ERROR, "true"));
     }
 
-    static String getUrl() {
+    public static String getUrl() {
         return String.format("http://%s:%s/",
                 properties.getProperty(PROP_HOST),
                 properties.getProperty(PROP_PORT));
     }
 
-    static String getUserName() {
+    public static String getUserName() {
         return properties.getProperty(PROP_ADMIN_USERNAME);
     }
 
-    static String getPassword() {
+    public static String getPassword() {
         return properties.getProperty(PROP_ADMIN_PAS);
     }
 

@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.model.base.BasePage;
 
-public class FreestyleMovePage extends BasePage {
+public class FreestyleMovePage extends BasePage<FreestyleMovePage> {
 
     @FindBy(xpath = "//select[@name='destination']")
     private WebElement dropDownDestinationPath;

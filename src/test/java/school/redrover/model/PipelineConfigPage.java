@@ -10,7 +10,7 @@ import school.redrover.model.base.BaseConfigPage;
 
 import java.time.Duration;
 
-public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
+public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, PipelineConfigPage> {
 
     @FindBy(xpath = "//textarea[@name='description']")
     private WebElement descriptionTextArea;

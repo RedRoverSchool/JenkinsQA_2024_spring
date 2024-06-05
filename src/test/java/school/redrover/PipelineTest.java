@@ -593,8 +593,8 @@ public class PipelineTest extends BaseTest {
             getDriver().findElement(By.id("jenkins-name-icon")).click();
         }
 
-
         TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
+
         getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
                 By.xpath("//a[contains(@href, 'configure')]")))).click();
 
@@ -697,7 +697,7 @@ public class PipelineTest extends BaseTest {
     @Test
     public void testFullStageViewPopUpWindowIsDisplayed() {
         int number_of_stages = 2;
-        TestUtils.createJob(this, TestUtils.Job.PIPELINE, PIPELINE_NAME);
+        TestUtils.createNewItem(this, PIPELINE_NAME, TestUtils.Item.PIPELINE);
 
         String pipelineScript = """
                 pipeline {
@@ -925,7 +925,8 @@ public class PipelineTest extends BaseTest {
         PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
-                .selectProjectTypeAndClickOk(TestUtils.ProjectType.PIPELINE, new PipelineConfigPage(getDriver()))
+                .clickProjectType(TestUtils.ProjectType.PIPELINE)
+                .clickOkAnyway(new PipelineConfigPage(getDriver()))
                 .clickDiscardOldBuilds()
                 .setNumberBuildsToKeep(1)
                 .scrollToPipelineScript()

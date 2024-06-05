@@ -207,7 +207,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testCheckFreestyleProjectViaBreadcrumb() {
         List<String> itemListInsideFolder = new HomePage(getDriver())
                 .openDashboardBreadcrumbsDropdown()
-                .getHeader().clickMyViewsFromDropdown()
+                .getHeader().clickMyViewsOnHeaderDropdown()
                 .clickBreadcrumbAll()
                 .clickJobNameBreadcrumb(FOLDER_NAME)
                 .getItemListInsideFolder();

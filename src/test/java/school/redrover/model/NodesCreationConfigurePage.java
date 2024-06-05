@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class NodesCreationConfigurePage extends BasePage {
+public class NodesCreationConfigurePage extends BasePage<NodesCreationConfigurePage> {
 
     @FindBy(name = "Submit")
     private WebElement saveButton;

@@ -11,7 +11,7 @@ public class HeaderTest extends BaseTest {
     @Test
     public void testTooltipAccessible() {
         String warningTooltipText = new HomePage(getDriver())
-                .getHeader().clickWarningIcon(new HomePage(getDriver()))
+                .getHeader().clickWarningIcon()
                 .getHeader().getWarningTooltipText();
 
         Assert.assertTrue(warningTooltipText.contains("Warnings"));
@@ -20,7 +20,7 @@ public class HeaderTest extends BaseTest {
     @Test
     public void testWarningsSettingPage() {
         String pageTitle = new HomePage(getDriver())
-                .getHeader().clickWarningIcon(new HomePage(getDriver()))
+                .getHeader().clickWarningIcon()
                 .getHeader().clickConfigureTooltipButton()
                 .getTitleText();
 
@@ -30,7 +30,7 @@ public class HeaderTest extends BaseTest {
     @Test
     public void testAccessToManageJenkinsPage() {
         String pageTitle = new HomePage(getDriver())
-                .getHeader().clickWarningIcon(new HomePage(getDriver()))
+                .getHeader().clickWarningIcon()
                 .getHeader().clickManageJenkinsTooltipLink()
                 .getPageHeadingText();
 
@@ -40,10 +40,10 @@ public class HeaderTest extends BaseTest {
 
     @Test
     public void testLogout() {
-        getDriver().findElement(By.xpath("//*[@href='/logout']")).click();
-        String actual = getDriver().findElement(
-                By.xpath("//*[text()='Sign in to Jenkins']")).getText();
+        String actualPageTitle = new HomePage(getDriver())
+                .getHeader().clickLogOut()
+                .getSignInToJenkinsTitle();
 
-        Assert.assertEquals(actual, "Sign in to Jenkins");
+        Assert.assertEquals(actualPageTitle, "Sign in to Jenkins");
     }
 }

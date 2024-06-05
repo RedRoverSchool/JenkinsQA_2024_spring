@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class CredentialProvidersPage extends BasePage {
+public class CredentialProvidersPage extends BasePage<CredentialProvidersPage> {
 
     @FindBy(tagName = "h1")
     private WebElement pageHeading;

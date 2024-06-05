@@ -4,7 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import school.redrover.model.base.BasePage;
 
-public class ViewAllPage extends BasePage {
+public class ViewAllPage extends BasePage<ViewAllPage> {
     public ViewAllPage(WebDriver driver) { super(driver); }
 
     public FolderProjectPage clickBreadcrumbAll() {

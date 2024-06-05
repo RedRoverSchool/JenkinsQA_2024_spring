@@ -149,7 +149,9 @@ public class UserTest extends BaseTest {
 
         //Precondition
         final String[] tokenUuidUser = new HomePage(getDriver())
-                .openUserConfigurations()
+                .clickPeopleOnSidebar()
+                .clickUserIdLink()
+                .clickConfigureOnSidebar()
                 .getTokenUuidUser(projectName);
 
         final String token = tokenUuidUser[0];
@@ -188,7 +190,9 @@ public class UserTest extends BaseTest {
 
         final String emptyTokenMessage = new JobBuildConsolePage(getDriver())
                 .clickLogo()
-                .openUserConfigurations()
+                .clickPeopleOnSidebar()
+                .clickUserIdLink()
+                .clickConfigureOnSidebar()
                 .getTokenMessage();
 
         Assert.assertEquals(emptyTokenMessage, "There are no registered tokens for this user.");

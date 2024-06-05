@@ -45,8 +45,6 @@ public final class TestUtils {
 
     public static final String PIPELINE = "Pipeline";
 
-    public static final String JOB_XPATH = "//*[text()='%s']";
-
     public static void createItem(String type, String name, BaseTest baseTest) {
         baseTest.getDriver().findElement(By.linkText("New Item")).click();
         baseTest.getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(name);
@@ -54,7 +52,6 @@ public final class TestUtils {
         baseTest.getDriver().findElement(By.id("ok-button")).click();
         baseTest.getDriver().findElement(By.xpath("//button[contains(text(), 'Save')]")).click();
     }
-
     public static void goToMainPage(WebDriver driver) {
         driver.findElement(By.id("jenkins-name-icon")).click();
     }
@@ -158,37 +155,6 @@ public final class TestUtils {
 
     public static List<String> getTexts(List<WebElement> elementList) {
         return elementList.stream().map(WebElement::getText).toList();
-    }
-
-    public static void goToJobPageAndEnterJobName(BaseTest baseTest, String jobName) {
-        baseTest.getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        baseTest.getDriver().findElement(By.id("name")).sendKeys(jobName);
-    }
-
-    public static void createJob(BaseTest baseTest, Job job, String jobName) {
-        goToJobPageAndEnterJobName(baseTest, jobName);
-        baseTest.getDriver().findElement(By.xpath(JOB_XPATH.formatted(job))).click();
-        baseTest.getDriver().findElement(By.id("ok-button")).click();
-    }
-
-    public enum Job {
-        FREESTYLE("Freestyle project"),
-        PIPELINE("Pipeline"),
-        MULTI_CONFIGURATION("Multi-configuration project"),
-        FOLDER("Folder"),
-        MULTI_BRUNCH_PIPELINE("Multibranch Pipeline"),
-        ORGANIZATION_FOLDER("Organization Folder");
-
-        private final String jobName;
-
-        Job(String jobName) {
-            this.jobName = jobName;
-        }
-
-        @Override
-        public String toString() {
-            return jobName;
-        }
     }
 
     public static void resetJenkinsTheme(BaseTest baseTest) {

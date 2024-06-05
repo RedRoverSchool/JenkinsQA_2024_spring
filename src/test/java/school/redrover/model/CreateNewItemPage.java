@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 import static java.lang.Thread.sleep;
 
-public class CreateNewItemPage extends BasePage {
+public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
 
     @FindBy(id = "name")
     WebElement newItemName;
@@ -136,11 +136,10 @@ public class CreateNewItemPage extends BasePage {
         return page;
     }
 
-    public <T extends BaseConfigPage<?>> T selectProjectTypeAndClickOk(TestUtils.ProjectType projectType, T projectConfigPage) {
+    public CreateNewItemPage clickProjectType(TestUtils.ProjectType projectType) {
         getDriver().findElement(By.xpath("//span[text()='" + projectType.getProjectTypeName() + "']")).click();
-        okButton.click();
 
-        return projectConfigPage;
+        return this;
     }
 
     public String getErrorMessageInvalidCharacterOrDuplicateName() {
@@ -231,10 +230,6 @@ public class CreateNewItemPage extends BasePage {
 
     public String getPageTitle() {
         return getDriver().getTitle();
-    }
-
-    public Boolean isErrorItemNameInvalidDisplayed() {
-        return errorItemNameInvalid.isDisplayed();
     }
 
     public Boolean isDisplayedNameField() {

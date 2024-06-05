@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class CreateNodePage extends BasePage {
+public class CreateNodePage extends BasePage<CreateNodePage> {
 
     @FindBy(id = "name")
     private WebElement nameInput;
