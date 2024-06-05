@@ -14,7 +14,7 @@ import school.redrover.runner.BaseTest;
 public class AppearanceTest extends BaseTest {
 
     @Test
-    @Story("Appearance")
+    @Story("US_09.005 Appearance")
     @Description("Check number of color themes that are available")
     public void testAppearanceQuantityOfThemesViaDashboardDropDown() {
 
@@ -25,14 +25,12 @@ public class AppearanceTest extends BaseTest {
                 .getThemesList()
                 .size();
 
-//        returnDefaultTheme();
-
         Assert.assertEquals(quantityOfThemes, 3);
     }
 
     @Test
-    @Story("Appearance")
-    @Description("Change color theme to Dark and check that this saved")
+    @Story("US_09.005 Appearance")
+    @Description("Change color theme to Dark and wait notification 'Saved'")
     public void testDarkThemeSwitchNotification() {
         String notificationText = new HomePage(getDriver())
                 .clickManageJenkins()
@@ -41,23 +39,19 @@ public class AppearanceTest extends BaseTest {
                 .clickApply()
                 .getNotificationText();
 
-//        returnDefaultTheme();
-
         Assert.assertEquals(notificationText, "Saved");
     }
 
     @Test
-    @Story("Appearance")
-    @Description("Change color theme to Dark and check that this saved")
-    public void testDarkThemeSwitchColor() {
+    @Story("US_09.005 Appearance")
+    @Description("Check background color after switch to Dark theme")
+    public void testDarkThemeColor() {
         String backgroundColor = new HomePage(getDriver())
                 .clickManageJenkins()
                 .clickAppearanceButton()
                 .clickDarkThemeButton()
                 .clickApply()
                 .getBackgroundColor();
-
-//        returnDefaultTheme();
 
         Assert.assertEquals(
                 backgroundColor,
@@ -66,6 +60,8 @@ public class AppearanceTest extends BaseTest {
     }
 
     @Test
+    @Story("US_09.005 Appearance")
+    @Description("Change color theme to Dark and check It")
     public void testDarkThemeApply() {
         final String actualThemeApplied = new HomePage(getDriver())
                 .clickManageJenkins()
@@ -74,11 +70,11 @@ public class AppearanceTest extends BaseTest {
                 .clickApplyButton()
                 .getCurrentThemeAttribute();
 
-//        returnDefaultTheme();
-
         Assert.assertEquals(actualThemeApplied, "dark");
     }
 
+    @Story("US_09.005 Appearance")
+    @Description("Change color theme to Default and check It")
     @Test
     public void testDefaultThemeApply() {
         final String actualThemeApplied = new HomePage(getDriver())
@@ -88,11 +84,11 @@ public class AppearanceTest extends BaseTest {
                 .clickApplyButton()
                 .getCurrentThemeAttribute();
 
-//        returnDefaultTheme();
-
         Assert.assertEquals(actualThemeApplied, "none");
     }
 
+    @Story("US_09.005 Appearance")
+    @Description("Change color theme to System and check It")
     @Test
     public void testSystemThemeApply() {
         final String actualThemeApplied = new HomePage(getDriver())
@@ -102,8 +98,6 @@ public class AppearanceTest extends BaseTest {
                 .clickApplyButton()
                 .getCurrentThemeAttribute();
 
-//        returnDefaultTheme();
-
         Assert.assertTrue(actualThemeApplied.contains("system"));
     }
 
@@ -112,7 +106,8 @@ public class AppearanceTest extends BaseTest {
         AppearancePage appearancePage = new AppearancePage(getDriver());
 
         if (!appearancePage.getCurrentThemeAttribute().equals("none")) {
-            appearancePage.clickDefaultThemeButton()
+            appearancePage
+                    .clickDefaultThemeButton()
                     .clickApplyButton();
         }
     }
