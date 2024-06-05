@@ -151,7 +151,7 @@ public class NewItemTest extends BaseTest {
         CreateItemPage errorPage = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName("someName")
-                .setItemNameInCopyForm(notExistingName)
+                .setItemNameInCopyFrom(notExistingName)
                 .clickOkButton();
 
         Assert.assertTrue(errorPage.getCurrentUrl().endsWith("/createItem"));
@@ -179,7 +179,7 @@ public class NewItemTest extends BaseTest {
         HomePage homePage = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(jobName + "Copy")
-                .setItemNameInCopyForm(jobName)
+                .setItemNameInCopyFrom(jobName)
                 .clickOkButton()
                 .clickLogo();
         Assert.assertTrue(homePage.isItemExists(jobName + "Copy"));
@@ -213,7 +213,7 @@ public class NewItemTest extends BaseTest {
         List<String> jobsFromDropdownMenu = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(newItemName)
-                .setItemNameInCopyForm(firstLetters)
+                .setItemNameInCopyFrom(firstLetters)
                 .getDropdownMenuContent();
 
         Assert.assertEquals(jobsFromDropdownMenu, firstLettersJobs);

@@ -25,11 +25,13 @@ public class CreateNewItemPage extends BasePage {
     @FindBy(css = "[class$='FreeStyleProject']")
     private WebElement freestyleItem;
 
-    @FindBy(id = "from")
+    @FindBy(css = "#from")
     private WebElement nameTextInCopyForm;
 
-    @FindBy(css = "[class$='WorkflowJob']")
+    @FindBy (css = "[class$='WorkflowJob']")
     private WebElement pipelineItem;
+
+    
 
     @FindBy(css = "[class$='MatrixProject']")
     private WebElement multiConfigurationItem;
@@ -150,11 +152,15 @@ public class CreateNewItemPage extends BasePage {
         return errorMessageEmptyName.getText();
     }
 
-    public CreateNewItemPage setItemNameInCopyForm(String name) {
-        nameTextInCopyForm.sendKeys(name);
+//    public CreateNewItemPage setItemNameInCopyForm(String name) {
+//        nameTextInCopyForm.sendKeys(name);
+//        return this;
+//    }
+    public CreateNewItemPage setItemNameInCopyFrom(String name) {
+        getWait60().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#from"))).sendKeys(name);
         return this;
     }
-
+//    allJobFromThisLetter = getWait60().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("li[style='']")))
     public List<String> getCopyFormElementsList() {
         return copyFormElements
                 .stream()

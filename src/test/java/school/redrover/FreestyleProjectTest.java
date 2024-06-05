@@ -46,7 +46,7 @@ public class FreestyleProjectTest extends BaseTest {
         List<String> projectList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(projectName2)
-                .setItemNameInCopyForm(projectName1)
+                .setItemNameInCopyFrom(projectName1)
                 .selectFreestyleAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
@@ -149,7 +149,7 @@ public class FreestyleProjectTest extends BaseTest {
         List<String> elementsList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(newProjectName)
-                .setItemNameInCopyForm(oldProjectName1.substring(0, 1))
+                .setItemNameInCopyFrom(oldProjectName1.substring(0, 1))
                 .getCopyFormElementsList();
 
         Assert.assertTrue(elementsList.contains(oldProjectName1));

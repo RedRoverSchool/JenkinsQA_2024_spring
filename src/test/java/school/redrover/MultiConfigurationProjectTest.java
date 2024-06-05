@@ -96,7 +96,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         List<String> projectList = TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
                 .clickNewItem()
                 .setItemName(newProjectName)
-                .setItemNameInCopyForm(PROJECT_NAME)
+                .setItemNameInCopyFrom(PROJECT_NAME)
                 .clickOkAnyway(new MultibranchPipelineConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
