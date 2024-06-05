@@ -325,13 +325,13 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testDeleteProjectViaSidebarMenu() {
         TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
 
-        boolean itemDeleted = new HomePage(getDriver())
+        boolean isItemDeleted = new HomePage(getDriver())
                 .clickJobByName(MULTI_PIPELINE_NAME,
                         new MultibranchPipelineProjectPage(getDriver()))
                 .clickDeleteButton()
                 .confirmDeleteButton()
                 .isItemDeleted(MULTI_PIPELINE_NAME);
 
-        Assert.assertTrue(itemDeleted);
+        Assert.assertTrue(isItemDeleted);
     }
 }
