@@ -156,10 +156,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return errorMessageEmptyName.getText();
     }
 
-//    public CreateNewItemPage setItemNameInCopyForm(String name) {
-//        nameTextInCopyForm.sendKeys(name);
-//        return this;
-//    }
+
     public CreateNewItemPage setItemNameInCopyFrom(String name) {
         try {
             sleep(1000);
@@ -170,7 +167,6 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         getWait60().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#from"))).sendKeys(name);
         return this;
     }
-//    allJobFromThisLetter = getWait60().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("li[style='']")))
     public List<String> getCopyFormElementsList() {
         return copyFormElements
                 .stream()
