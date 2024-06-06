@@ -141,6 +141,14 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return this;
     }
 
+
+    public CreateNewItemPage clickProjectType(String type) {
+        getDriver().findElement(By.xpath("//span[text()='" + type + "']")).click();
+
+        return this;
+    }
+
+
     public String getErrorMessageInvalidCharacterOrDuplicateName() {
         return errorItemNameInvalid.getText();
     }
