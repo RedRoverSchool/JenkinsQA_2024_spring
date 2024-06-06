@@ -159,8 +159,6 @@ public class NewItemTest extends BaseTest {
         Assert.assertEquals(errorPage.getErrorMessageText(), "No such job: " + notExistingName);
     }
 
-
-
     @DataProvider(name="existingJobsNames")
     public Object[][] existingJobsNames(){
         return new Object[][]{
