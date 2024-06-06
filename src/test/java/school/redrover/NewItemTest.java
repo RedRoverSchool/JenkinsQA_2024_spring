@@ -175,6 +175,7 @@ public class NewItemTest extends BaseTest {
                 {"Organization Folder","organizationFolder1"}
         };
     }
+
     @Test(dataProvider = "existingJobsNames")
     public void testCopyFromExistingJob(String type, String jobName) {
 
@@ -190,10 +191,11 @@ public class NewItemTest extends BaseTest {
                 .setItemNameInCopyFrom(jobName)
                 .clickOkButton()
                 .clickLogo();
-        Assert.assertTrue(homePage.isItemExists(jobName + "Copy"));
+
         Integer QuantityItemsWithCopies= new HomePage(getDriver())
                 .getItemList()
                 .size();
+
         Assert.assertEquals(QuantityItemsWithCopies,2);
         Assert.assertTrue(homePage.isItemExists(jobName + "Copy"));
         Assert.assertTrue(homePage.isItemExists(jobName));
