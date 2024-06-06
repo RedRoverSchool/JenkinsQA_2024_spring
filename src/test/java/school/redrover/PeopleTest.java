@@ -1,156 +1,124 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Story;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
+import school.redrover.model.PeoplePage;
+import school.redrover.model.UsersPage;
 import school.redrover.runner.BaseTest;
-import java.util.*;
-import static school.redrover.runner.TestUtils.goToMainPage;
 
+import java.util.Collections;
+import java.util.List;
+
+@Epic("People")
 public class PeopleTest extends BaseTest {
-    private void createPeople() {
-        final String[] usernames = {
+
+    @Test
+    @Story("View people")
+    @Description("Check name 'admin' on People page")
+    public void testDisplayedNameOnPeoplePage() {
+
+        List<String> namesList = new HomePage(getDriver())
+                .clickPeopleOnSidebar()
+                .getNamesList();
+
+        Assert.assertListContainsObject(namesList, "admin", "People page is not correct!");
+    }
+
+    @Test
+    @Story("Sort people")
+    @Description("Sort people by UserID, Name, Last Commit Activity, On/Off Value")
+    public void testSortPeople() {
+
+        final List<String> userNamesList = List.of(
                 "johndoe21",
                 "janesmith1985",
                 "david_lee92",
-                "emily.williams",
+                "emily_williams",
                 "alex_johnson",
                 "chris_evans",
                 "mary_jones",
-                "michael.brown",
+                "michael_brown",
                 "steve_rogers",
-                "lisa_taylor"
+                "lisa_taylor");
 
-        };
+        new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickUsers();
 
-        for (String username : usernames) {
-            getDriver().findElement(By.linkText("Manage Jenkins")).click();
-            getDriver().findElement(By.xpath("//dt[text()='Users']")).click();
-            getDriver().findElement(By.xpath("//a[@href='addUser']")).click();
-            getDriver().findElement(By.id("username")).clear();
-            getDriver().findElement(By.id("username")).sendKeys(username);
-            getDriver().findElement(By.name("password1")).sendKeys(username);
-            getDriver().findElement(By.name("password2")).sendKeys(username);
-            getDriver().findElement(By.name("fullname")).sendKeys(username.replaceAll("\\d", ""));
-            getDriver().findElement(By.name("email")).sendKeys(username + "@example.com");
-            getDriver().findElement(By.name("Submit")).click();
-            goToMainPage(getDriver());
+        for (String userName : userNamesList) {
+
+            new UsersPage(getDriver())
+                    .clickCreateUser()
+                    .clearUserNameField()
+                    .typeUserName(userName)
+                    .setPassword(userName)
+                    .setConfirmPassword(userName)
+                    .setFullName(userName.replaceAll("\\d", ""))
+                    .setEmailAddress(userName + "@example.com")
+                    .clickCreateUser();
         }
+
+        List<String> expectedUserIDList = new UsersPage(getDriver())
+                .clickLogo()
+                .clickPeopleOnSidebar()
+                .getUserIDList()
+                .stream()
+                .sorted(Collections.reverseOrder())
+                .toList();
+
+        List<String> actualUserIDList = new PeoplePage(getDriver())
+                .clickTitleUserID()
+                .getUserIDList();
+
+
+        List<String> expectedNamesList = new PeoplePage(getDriver())
+                .getNamesList()
+                .stream()
+                .sorted(Collections.reverseOrder())
+                .toList();
+
+        List<String> actualNamesList = new PeoplePage(getDriver())
+                .clickTitleName()
+                .getNamesList();
+
+
+        List<String> expectedLastCommitActivityList = new PeoplePage(getDriver())
+                .getLastCommitActivityList()
+                .stream()
+                .sorted(Collections.reverseOrder())
+                .toList();
+
+        List<String> actualLastCommitActivityList = new PeoplePage(getDriver())
+                .clickTitleLastCommitActivity()
+                .getLastCommitActivityList();
+
+
+        List<String> expectedOnOffList = new PeoplePage(getDriver())
+                .getOnOffList()
+                .stream()
+                .sorted(Collections.reverseOrder())
+                .toList();
+
+        List<String> actualOnOffList = new PeoplePage(getDriver())
+                .clickTitleOn()
+                .getOnOffList();
+
+        Assert.assertEquals(actualUserIDList, expectedUserIDList);
+        Assert.assertEquals(actualNamesList, expectedNamesList);
+        Assert.assertEquals(actualLastCommitActivityList, expectedLastCommitActivityList);
+        Assert.assertEquals(actualOnOffList, expectedOnOffList);
+
     }
 
     @Test
-    public void testSortPeople() {
-        createPeople();
-
-        getDriver().findElement(By.linkText("People")).click();
-
-        //Sort by UserID
-        List<WebElement> expectedPeopleLists = getDriver().findElements(By.className("jenkins-table__link"));
-        String[] myArray = expectedPeopleLists.stream().map(WebElement::getText).toArray(String[]::new);
-
-        Arrays.sort(myArray, Comparator.reverseOrder());
-
-        getDriver().findElement(By.xpath("//a[normalize-space()=\"User ID\"]")).click();
-
-        List<WebElement> ProvidedPeopleLists = getDriver().findElements(By.className("jenkins-table__link"));
-        String[] mySecArray = ProvidedPeopleLists.stream().map(WebElement::getText).toArray(String[]::new);
-
-        for (int i = 0; i < myArray.length && i < mySecArray.length; i++) {
-            Assert.assertEquals(mySecArray[i], myArray[i]);
-        }
-
-        //Sort by UserName
-        WebElement table = getDriver().findElement(By.id("people"));
-        List<WebElement> rows = table.findElements(By.tagName("tr"));
-
-        List<String> expectedSecColumnData = new ArrayList<>();
-        for (WebElement row : rows) {
-            List<WebElement> cells = row.findElements(By.tagName("td"));
-            if (!cells.isEmpty()) {
-                String cellText = cells.get(2).getText();
-                expectedSecColumnData.add(cellText);
-            }
-        }
-
-        String[] nameArray = expectedSecColumnData.toArray(String[]::new);
-
-        Arrays.sort(nameArray, Comparator.reverseOrder());
-
-        getDriver().findElement(By.xpath("//a[normalize-space()=\"Name\"]")).click();
-
-        List<String> secColumnData = new ArrayList<>();
-        for (WebElement row : rows) {
-            List<WebElement> cells = row.findElements(By.tagName("td"));
-            if (!cells.isEmpty()) {
-                String cellText = cells.get(2).getText();
-                secColumnData.add(cellText);
-            }
-        }
-
-        String[] nNameArray = secColumnData.toArray(String[]::new);
-
-        for (int i = 0; i < nNameArray.length && i < nameArray.length; i++) {
-            Assert.assertEquals(nNameArray[i], nameArray[i]);
-        }
-        //Sort by Last Commit Activity
-        List<String> expectedThirdColumnData = new ArrayList<>();
-        for (WebElement row : rows) {
-            List<WebElement> cells = row.findElements(By.tagName("td"));
-            if (!cells.isEmpty()) {
-                String cellText = cells.get(3).getText();
-                expectedThirdColumnData.add(cellText);
-            }
-        }
-
-        expectedThirdColumnData.sort(Collections.reverseOrder());
-
-        getDriver().findElement(By.xpath("//th[@initialsortdir=\"up\"]//a[@class=\"sortheader\"]")).click();
-
-        List<String> thirdColumnData = new ArrayList<>();
-        for (WebElement row : rows) {
-            List<WebElement> cells = row.findElements(By.tagName("td"));
-            if (!cells.isEmpty()) {
-                String cellText = cells.get(3).getText();
-                thirdColumnData.add(cellText);
-            }
-        }
-
-        for (int i = 0; i < thirdColumnData.size() && i < expectedThirdColumnData.size(); i++) {
-            Assert.assertEquals(thirdColumnData.get(i), expectedThirdColumnData.get(i));
-        }
-        //Sort by ON/OFF
-        List<String> expectedFourthColumnData = new ArrayList<>();
-        for (WebElement row : rows) {
-            List<WebElement> cells = row.findElements(By.tagName("td"));
-            if (!cells.isEmpty()) {
-                String cellText = cells.get(4).getText();
-                expectedFourthColumnData.add(cellText);
-            }
-        }
-
-        expectedFourthColumnData.sort(Comparator.reverseOrder());
-
-        getDriver().findElement(By.xpath("//a[normalize-space()=\"On\"]")).click();
-
-        List<String> fourthColumnData = new ArrayList<>();
-        for (WebElement row : rows) {
-            List<WebElement> cells = row.findElements(By.tagName("td"));
-            if (!cells.isEmpty()) {
-                String cellText = cells.get(4).getText();
-                fourthColumnData.add(cellText);
-            }
-        }
-
-        for (int i = 0; i < fourthColumnData.size() && i < expectedFourthColumnData.size(); i++) {
-            Assert.assertEquals(fourthColumnData.get(i), expectedFourthColumnData.get(i));
-        }
-    }
-
-    @Test
-    public void testIconSizeChangeToSmall() {
+    @Story("Icon size")
+    @Description("Check icon size after change to Small")
+    public void testChangeIconSizeToSmall() {
         final Dimension actualIconSize = new HomePage(getDriver())
                 .clickPeopleOnSidebar()
                 .clickSmallIconButton()
@@ -160,7 +128,9 @@ public class PeopleTest extends BaseTest {
     }
 
     @Test
-    public void testIconSizeChangeToMedium() {
+    @Story("Icon size")
+    @Description("Check icon size after change to Medium")
+    public void testChangeIconSizeToMedium() {
         final Dimension actualIconSize = new HomePage(getDriver())
                 .clickPeopleOnSidebar()
                 .clickMediumIconButton()
@@ -170,7 +140,9 @@ public class PeopleTest extends BaseTest {
     }
 
     @Test
-    public void testIconSizeChangeToLarge() {
+    @Story("Icon size")
+    @Description("Check icon size after change to Large")
+    public void testChangeIconSizeToLarge() {
         final Dimension actualIconSize = new HomePage(getDriver())
                 .clickPeopleOnSidebar()
                 .clickLargeIconButton()

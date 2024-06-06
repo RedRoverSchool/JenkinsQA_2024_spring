@@ -8,7 +8,7 @@ import school.redrover.model.base.BasePage;
 public class CreateUserPage extends BasePage<CreateUserPage> {
 
     @FindBy(id = "username")
-    private WebElement userNameInput;
+    private WebElement userNameField;
 
     @FindBy(name = "password1")
     private WebElement password1Input;
@@ -41,8 +41,14 @@ public class CreateUserPage extends BasePage<CreateUserPage> {
         super(driver);
     }
 
-    public CreateUserPage setUserName(String userName) {
-        userNameInput.sendKeys(userName);
+    public CreateUserPage typeUserName(String userName) {
+        userNameField.sendKeys(userName);
+
+        return new CreateUserPage(getDriver());
+    }
+
+    public CreateUserPage clearUserNameField() {
+        userNameField.clear();
 
         return new CreateUserPage(getDriver());
     }

@@ -37,7 +37,7 @@ public class UserTest extends BaseTest {
                 .clickManageJenkins()
                 .clickUsers()
                 .clickCreateUser()
-                .setUserName(USER_NAME)
+                .typeUserName(USER_NAME)
                 .setPassword(PASSWORD)
                 .setConfirmPassword(PASSWORD)
                 .setFullName(FULL_NAME)

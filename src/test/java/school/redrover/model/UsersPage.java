@@ -48,7 +48,7 @@ public class UsersPage extends BasePage<UsersPage> {
     public UsersPage createUserWithRandomData() {
         String password = randomString();
         clickCreateUser()
-                .setUserName(randomString())
+                .typeUserName(randomString())
                 .setPassword(password)
                 .setConfirmPassword(password)
                 .setFullName(randomString())
@@ -100,7 +100,7 @@ public class UsersPage extends BasePage<UsersPage> {
     public UsersPage createUser(String username, String password, String fullName, String email) {
 
         clickCreateUser()
-                .setUserName(username)
+                .typeUserName(username)
                 .setPassword(password)
                 .setConfirmPassword(password)
                 .setFullName(fullName)
