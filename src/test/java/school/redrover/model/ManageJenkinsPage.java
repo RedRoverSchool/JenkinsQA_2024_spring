@@ -173,7 +173,6 @@ public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
             try {
                 getWait2().until(ExpectedConditions.elementToBeClickable(element));
             } catch (Exception e) {
-                System.out.println("Element is NOT clickable: " + element.getText());
                 return false;
             }
         }
