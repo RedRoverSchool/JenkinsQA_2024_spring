@@ -1,5 +1,8 @@
 package school.redrover.runner;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -19,6 +22,7 @@ import java.util.Properties;
 
 public final class ProjectUtils {
 
+    private static final Logger LOGGER = LogManager.getLogger();
     private static final String PREFIX_PROP = "local.";
     private static final String PROP_HOST = PREFIX_PROP + "host";
     private static final String PROP_PORT = PREFIX_PROP + "port";
@@ -50,8 +54,8 @@ public final class ProjectUtils {
                 try {
                     InputStream inputStream = ProjectUtils.class.getClassLoader().getResourceAsStream("local.properties");
                     if (inputStream == null) {
-                        System.out.println("ERROR: The \u001B[31mlocal.properties\u001B[0m file not found in src/test/resources/ directory.");
-                        System.out.println("You need to create it from local.properties.TEMPLATE file.");
+                        log(Level.ERROR, "The \u001B[31mlocal.properties\u001B[0m file not found in src/test/resources/ directory.");
+                        log(Level.ERROR, "You need to create it from local.properties.TEMPLATE file.");
                         System.exit(1);
                     }
                     properties.load(inputStream);
@@ -116,12 +120,19 @@ public final class ProjectUtils {
     }
 
     public static void log(String str) {
-        System.out.println(str);
+        LOGGER.info(str);
+    }
+
+    public static void log(Level level, String str) {
+        LOGGER.log(level, str);
     }
 
     public static void logf(String str, Object... arr) {
-        System.out.printf(str, arr);
-        System.out.println();
+        log(String.format(str, arr));
+    }
+
+    public static void logf(Level level, String str, Object... arr) {
+        log(level, String.format(str, arr));
     }
 
     static void takeScreenshot(WebDriver driver, String instanceName, String methodName) {
