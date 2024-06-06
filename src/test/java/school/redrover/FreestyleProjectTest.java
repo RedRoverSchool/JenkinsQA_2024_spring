@@ -156,9 +156,9 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(newProjectName)
 
-                .setItemNameInCopyFrom(oldProjectName1.substring(0, 1))
-                .getCopyFormElementsList();
-                .setItemNameInCopyForm(oldProjectName1)
+//                .setItemNameInCopyFrom(oldProjectName1.substring(0, 1))
+//                .getCopyFormElementsList()
+                .setItemNameInCopyFrom(oldProjectName1)
                 .clickOkAnyway(new FreestyleConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
