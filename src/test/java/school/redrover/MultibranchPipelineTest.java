@@ -12,6 +12,7 @@ import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
+@Epic("Multibranch pipeline")
 public class MultibranchPipelineTest extends BaseTest {
 
     private static final String MULTI_PIPELINE_NAME = "MultibranchPipeline";
@@ -19,8 +20,7 @@ public class MultibranchPipelineTest extends BaseTest {
     private static final String FOLDER_NAME = "NewFolder";
 
     @Test
-    @Epic("New item")
-    @Story("US_00.005 Create Multibranch Pipeline")
+    @Story("US_05.000 Create Multibranch Pipeline")
     @Description("Verify that a project can be created via the sidebar menu.")
     public void testCreateProjectViaSidebarMenu() {
         List<String> itemList = new HomePage(getDriver())
@@ -35,8 +35,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Epic("New item")
-    @Story("US_00.005 Create Multibranch Pipeline")
+    @Story("US_05.000 Create Multibranch Pipeline")
     @Description("Verify error message is displayed when creating a project without a name.")
     public void testCreateProjectWithEmptyName() {
         String errorName = new HomePage(getDriver())
@@ -48,10 +47,9 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Epic("New item")
-    @Story("US_00.007 Create a new item from other existing")
+    @Story("US_05.007 Create a project from other existing")
     @Description("Verify creation project by copying from other multibranch pipeline project.")
-    public void testCreateMultibranchPipelineFromExistingMultibranchPipeline() {
+    public void testCreateProjectFromExistingMultibranchPipeline() {
         final String firstProjectName = "My first Multibranch Pipeline";
         final String secondItemName = "My second Multibranch Pipeline";
 
@@ -70,7 +68,6 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Epic("Multibranch pipeline")
     @Story("US_05.004 Disable Multibranch pipeline")
     @Description("Verify a project can be disabled via toggle.")
     public void testDisableProjectViaToggle() {
@@ -86,7 +83,6 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateProjectViaSidebarMenu")
-    @Epic("Multibranch pipeline")
     @Story("US_05.004 Disable Multibranch pipeline")
     @Description("Verify a project can be disabled via Disable Project Button.")
     public void testDisabledProjectViaDisableProjectButton() {
@@ -99,7 +95,6 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testDisabledProjectViaDisableProjectButton")
-    @Epic("Multibranch pipeline")
     @Story("US_05.004 Disable Multibranch pipeline")
     @Description("Verify that the color of the disabled project message")
     public void testVerifyProjectDisabledMessageColorOnStatusPage() {
@@ -111,7 +106,6 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testVerifyProjectDisabledMessageColorOnStatusPage")
-    @Epic("Multibranch pipeline")
     @Story("US_05.003 Enable Multibranch pipeline")
     @Description("Verify that a previously disabled project can be enabled back by checking that disable button is displayed")
     public void testEnableProject() {
@@ -124,7 +118,6 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testEnableProject")
-    @Epic("Multibranch pipeline")
     @Story("US_05.004 Disable Multibranch pipeline")
     @Description("Verify the correct tooltip text is displayed when hovering over the toggle button")
     public void testDisabledTooltip() {
@@ -140,7 +133,6 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Epic("Multibranch pipeline")
     @Story("US_05.004 Disable Multibranch pipeline")
     @Description("Verify that the status toggle of a project reflects that the project is disabled.")
     public void testDisabledProjectToggleStatus() {
@@ -156,7 +148,6 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testDisabledProjectToggleStatus")
-    @Epic("Multibranch pipeline")
     @Story("US_05.003 Enable Multibranch pipeline")
     @Description("Verify the status toggle of a project reflects that the project is enable.")
     public void testEnableProjectToggleStatus() {
@@ -172,7 +163,6 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Epic("Multibranch pipeline")
     @Story("US_05.001 Rename Multibranch pipeline")
     @Description("Verify a project can be successfully renamed via the sidebar")
     public void testRenameMultibranchPipelineViaSideBar() {
@@ -191,7 +181,6 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Epic("Multibranch pipeline")
     @Story("US_05.001 Rename Multibranch pipeline")
     @Description("Verify error message is displayed when attempting to rename project to the same name")
     public void testRenameProjectWithNameSameAsCurrent() {
@@ -210,7 +199,6 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Epic("Multibranch pipeline")
     @Story("US_05.001 Rename Multibranch pipeline")
     @Description("Verifies a project can be successfully renamed via dropdown menu")
     public void testRenameProjectViaMainPageDropdownMenu() {
@@ -229,7 +217,6 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Epic("Multibranch pipeline")
     @Story("US_05.002 View Multibranch pipeline page > Sidebar > Visibility, clickability, redirection")
     @Description("Verify list of sidebar tasks for a project created within a folder.")
     public void testProjectSidebarTasksUponCreatingViaFolder() {
@@ -250,7 +237,6 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Epic("Multibranch pipeline")
     @Story("US_05.002 View Multibranch pipeline page > Sidebar > Visibility, clickability, redirection")
     @Description("Verify list of sidebar tasks for a project.")
     public void testVerifyProjectSidebarMenuList() {
@@ -269,7 +255,6 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Epic("Multibranch pipeline")
     @Story("US_05.006 Move Multibranch pipeline")
     @Description("Verify that a project can be successfully moved to a folder via sidebar menu.")
     public void testMoveProjectToFolderViaSidebarMenu() {
@@ -288,7 +273,6 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Epic("Multibranch pipeline")
     @Story("US_05.005 Delete Multibranch pipeline")
     @Description("Verify the deletion of a project via dropdown menu.")
     public void testDeleteViaDashboardDropdown() {
@@ -304,7 +288,6 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testRenameMultibranchPipelineViaSideBar")
-    @Epic("Multibranch pipeline")
     @Story("US_05.005 Delete Multibranch pipeline")
     @Description("Verify the deletion of a project via Breadcrumbs.")
     public void testDeleteProjectViaBreadcrumbs() {
@@ -319,7 +302,6 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Epic("Multibranch pipeline")
     @Story("US_05.005 Delete Multibranch pipeline")
     @Description("Verify the deletion of a project via Sidebar menu.")
     public void testDeleteProjectViaSidebarMenu() {
