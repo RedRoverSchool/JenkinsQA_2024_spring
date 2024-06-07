@@ -127,7 +127,7 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
         return breadcrumbs.getAttribute("data-href").contains(folderName + "/job/" + projectName);
     }
 
-    public DeleteDialog clickDeleteInMenu(DeleteDialog dialog) {
+    public DeleteDialog clickDeleteInMenu() {
         menuDelete.click();
         return new DeleteDialog(getDriver());
     }

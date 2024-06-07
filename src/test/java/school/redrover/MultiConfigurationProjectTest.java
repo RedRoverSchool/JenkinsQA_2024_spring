@@ -157,7 +157,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         String actualColor = TestUtils
                 .createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
                 .clickSpecificMultiConfigurationProjectName(PROJECT_NAME)
-                .clickDeleteInMenu(new DeleteDialog(getDriver()))
+                .clickDeleteInMenu()
                 .getYesButtonColorDeletingViaSidebar();
 
         if (getDriver().findElement(By.tagName("html")).getAttribute("data-theme").equals("none")) {
@@ -249,7 +249,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         boolean isProjectDeleted = homePage
                 .clickJobByName(RANDOM_PROJECT_NAME, new MultiConfigurationProjectPage(getDriver()))
-                .clickDeleteInMenu(new DeleteDialog(getDriver()))
+                .clickDeleteInMenu()
                 .clickYes(homePage).isItemDeleted(RANDOM_PROJECT_NAME);
 
         Assert.assertTrue(isProjectDeleted);
