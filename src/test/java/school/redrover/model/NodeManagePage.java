@@ -1,6 +1,5 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -22,29 +21,29 @@ public class NodeManagePage extends BasePage<NodeManagePage> {
     @FindBy(css = ".jenkins-button.jenkins-button--primary")
     private WebElement bringThisNodeBackOnlineBtn;
 
-    @FindBy(xpath = "//div[@class='message']")
-    private WebElement nodeOnlineStatusMessage;
+    @FindBy(css = ".message")
+    private List<WebElement> nodeOfflineStatusMessageList;
 
     public NodeManagePage clickMarkThisNodeTemporaryOfflineButton() {
         markThisNodeTemporaryOfflineButton.click();
         return new NodeManagePage(getDriver());
     }
 
-    public NodeManagePage clickMarkThisNodeTemporaryOfflineConfirmationBtn() {
+    public NodeManagePage clickMarkThisNodeTemporaryOfflineConfirmationButton() {
         markThisNodeTemporaryOfflineConfirmationBtn.click();
         return new NodeManagePage(getDriver());
     }
 
-    public NodeManagePage clickBringThisNodeBackOnlineBtn() {
+    public NodeManagePage clickBringThisNodeBackOnlineButton() {
         bringThisNodeBackOnlineBtn.click();
         return new NodeManagePage(getDriver());
     }
 
-    public String getNodeOnlineStatusText() {
-        return nodeOnlineStatusMessage.getText();
+    public String getNodeOfflineStatusText() {
+        return nodeOfflineStatusMessageList.get(0).getText();
     }
 
-    public List<WebElement> nodeOnlineStatusText() {
-        return getDriver().findElements(By.xpath("//div[@class='message']"));
+    public Boolean isNodeOfflineStatusMessageDisplayed() {
+        return !nodeOfflineStatusMessageList.isEmpty();
     }
 }

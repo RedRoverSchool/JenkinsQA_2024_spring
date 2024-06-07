@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -37,6 +38,9 @@ public class NodesTablePage extends BasePage<NodesTablePage> {
         super(driver);
     }
 
+
+
+    @Step("Click button 'New Node'")
     public CreateNodePage clickNewNodeButton() {
         newNodeButton.click();
 
@@ -58,7 +62,7 @@ public class NodesTablePage extends BasePage<NodesTablePage> {
         return this;
     }
 
-    public boolean isConteinNode(String name) {
+    public boolean isContainNode(String name) {
         return table.getText().contains(name);
     }
 

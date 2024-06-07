@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -20,18 +21,21 @@ public class CreateNodePage extends BasePage<CreateNodePage> {
         super(driver);
     }
 
-    public CreateNodePage setNodeName(String name) {
+    @Step("Type text to name input field")
+    public CreateNodePage typeNodeName(String name) {
         nameInput.sendKeys(name);
 
         return this;
     }
 
+    @Step("Select radio button 'Permanent Agent'")
     public CreateNodePage selectPermanentAgentRadioButton() {
         permanentAgentRadioButton.click();
 
         return this;
     }
 
+    @Step("Click button 'Create'")
     public NodesCreationConfigurePage clickCreateButton() {
         createButton.click();
 

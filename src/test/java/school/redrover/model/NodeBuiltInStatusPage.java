@@ -38,17 +38,6 @@ public class NodeBuiltInStatusPage extends BasePage<NodeBuiltInStatusPage> {
                 .toList();
     }
 
-    public void assertMonitoringDataValues(List<String> actualMonitoringDataValues,
-                                           List<String> expectedMonitoringDataValues) {
-        try {
-            Assert.assertEquals(actualMonitoringDataValues, expectedMonitoringDataValues);
-        } catch (AssertionError e) {
-            Collections.sort(expectedMonitoringDataValues);
-            Assert.assertEquals(actualMonitoringDataValues, expectedMonitoringDataValues,
-                    "Actual Monitoring Data list is different after sorting expected values alphabetically");
-        }
-    }
-
     public HomePage turnNodeOnIfOffline() {
         try {
             nodeOnlineButton.click();

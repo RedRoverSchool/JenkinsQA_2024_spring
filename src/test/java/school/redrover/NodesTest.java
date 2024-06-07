@@ -3,36 +3,41 @@ package school.redrover;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
+import io.qameta.allure.Step;
+import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 @Epic("Nodes")
 public class NodesTest extends BaseTest {
 
     private static final String NODE_NAME = "FirstNode";
 
-    public NodesTablePage createNewNode(String nodeName) {
+    @Step("Create Node")
+    public void createNode(String nodeName) {
 
         new HomePage(getDriver())
-                .clickManageJenkins()
-                .clickNodes()
+                .clickBuildExecutorStatusLink()
                 .clickNewNodeButton()
-                .setNodeName(nodeName)
+                .typeNodeName(nodeName)
                 .selectPermanentAgentRadioButton()
                 .clickCreateButton()
                 .clickSaveButton();
-        return new NodesTablePage(getDriver());
     }
 
     @Test
-    public void testCreatedNodeIsOnMainPage() {
+    @Story("US_15.001 Create new node")
+    @Description("Check number of color themes that are available")
+    public void testCreatedNodeIsOnHomePage() {
         HomePage homePage = new HomePage(getDriver())
                 .clickBuildExecutorStatusLink()
                 .clickNewNodeButton()
-                .setNodeName(NODE_NAME)
+                .typeNodeName(NODE_NAME)
                 .selectPermanentAgentRadioButton()
                 .clickCreateButton()
                 .clickSaveButton()
@@ -47,7 +52,7 @@ public class NodesTest extends BaseTest {
         NodesTablePage nodesTablePage = new HomePage(getDriver())
                 .clickBuildExecutorStatusLink()
                 .clickNewNodeButton()
-                .setNodeName(NODE_NAME)
+                .typeNodeName(NODE_NAME)
                 .selectPermanentAgentRadioButton()
                 .clickCreateButton()
                 .clickSaveButton();
@@ -85,8 +90,13 @@ public class NodesTest extends BaseTest {
 
     @Test
     public void testBuiltInNodeMonitoringDataList() {
-        final List<String> expectedMonitoringDataValues = new ArrayList<>(List.of("Architecture", "Response Time",
-                "Clock Difference", "Free Temp Space", "Free Disk Space", "Free Swap Space"));
+        final List<String> expectedMonitoringDataValues = new ArrayList<>(List.of(
+                "Architecture",
+                "Response Time",
+                "Clock Difference",
+                "Free Temp Space",
+                "Free Disk Space",
+                "Free Swap Space"));
 
         List<String> actualMonitoringDataValues = new HomePage(getDriver())
                 .clickBuildExecutorStatusLink()
@@ -94,23 +104,20 @@ public class NodesTest extends BaseTest {
                 .clickMonitoringDataButton()
                 .getMonitoringDataElementsList();
 
-        new NodeBuiltInStatusPage(getDriver()).
-                assertMonitoringDataValues(actualMonitoringDataValues, expectedMonitoringDataValues);
+        TestUtils.assertEqualsLists(actualMonitoringDataValues, expectedMonitoringDataValues);
     }
 
     @Test
     public void testDeletedNodeNotDisplayedInNodesTable() {
-        NodesTablePage nodesTablePage = new HomePage(getDriver())
-                .clickBuildExecutorStatusLink()
-                .clickNewNodeButton()
-                .setNodeName(NODE_NAME)
-                .selectPermanentAgentRadioButton()
-                .clickCreateButton()
-                .clickSaveButton()
-                .openDropDownChevron(NODE_NAME)
-                .deleteNodeViaOpenedDropDownChevron();
 
-        Assert.assertFalse(nodesTablePage.isConteinNode(NODE_NAME));
+        createNode(NODE_NAME);
+
+        boolean isNodeExist = new NodesTablePage(getDriver())
+                .openDropDownChevron(NODE_NAME)
+                .deleteNodeViaOpenedDropDownChevron()
+                .isContainNode(NODE_NAME);
+
+        Assert.assertFalse(isNodeExist);
     }
 
     @Test
@@ -122,12 +129,12 @@ public class NodesTest extends BaseTest {
         String actualResult = new HomePage(getDriver())
                 .clickBuildExecutorStatusLink()
                 .clickNewNodeButton()
-                .setNodeName(nodeName)
+                .typeNodeName(nodeName)
                 .selectPermanentAgentRadioButton()
                 .clickCreateButton()
                 .clickSaveButton()
                 .clickNewNodeButton()
-                .setNodeName(nodeName)
+                .typeNodeName(nodeName)
                 .selectPermanentAgentRadioButton()
                 .clickCreateButtonOnError()
                 .getErrorMessageText();
@@ -136,16 +143,16 @@ public class NodesTest extends BaseTest {
     }
 
     @Test
-    public void testCreateNewNodeWithOneLabel() {
+    public void testCreateNodeWithOneLabel() {
         String labelName = "NewLabelName";
 
         String actualResult = new HomePage(getDriver())
                 .clickBuildExecutorStatusLink()
                 .clickNewNodeButton()
-                .setNodeName(NODE_NAME)
+                .typeNodeName(NODE_NAME)
                 .selectPermanentAgentRadioButton()
                 .clickCreateButton()
-                .createLabel(labelName)
+                .typeToLabelsField(labelName)
                 .clickSaveButton()
                 .clickNode(NODE_NAME)
                 .getLabels();
@@ -160,10 +167,10 @@ public class NodesTest extends BaseTest {
         String actualResult = new HomePage(getDriver())
                 .clickBuildExecutorStatusLink()
                 .clickNewNodeButton()
-                .setNodeName(NODE_NAME)
+                .typeNodeName(NODE_NAME)
                 .selectPermanentAgentRadioButton()
                 .clickCreateButton()
-                .addDescription(description)
+                .typeDescriptionText(description)
                 .clickSaveButton()
                 .clickNode(NODE_NAME)
                 .getDescription();
@@ -173,27 +180,28 @@ public class NodesTest extends BaseTest {
 
     @Test
     public void testSwitchNodeToOfflineStatus() {
-        final String nodeStatusMessage = "Disconnected by admin";
+        final String expectedNodeStatusMessage = "Disconnected by admin";
 
-        String nodeStatus = new HomePage(getDriver())
+        String actualNodeStatusMessage = new HomePage(getDriver())
                 .clickBuildExecutorStatusLink()
                 .clickOnBuiltInNode()
                 .clickMarkThisNodeTemporaryOfflineButton()
-                .clickMarkThisNodeTemporaryOfflineConfirmationBtn()
-                .getNodeOnlineStatusText();
+                .clickMarkThisNodeTemporaryOfflineConfirmationButton()
+                .getNodeOfflineStatusText();
 
-        Assert.assertTrue(nodeStatus.contains(nodeStatusMessage));
+        Assert.assertEquals(actualNodeStatusMessage, expectedNodeStatusMessage);
     }
 
     @Test(dependsOnMethods = "testSwitchNodeToOfflineStatus")
     public void testSwitchNodeToOnlineStatus() {
 
-        NodeManagePage nodeStatus = new HomePage(getDriver())
+        Boolean isNodeOffline = new HomePage(getDriver())
                 .clickBuildExecutorStatusLink()
                 .clickOnBuiltInNode()
-                .clickBringThisNodeBackOnlineBtn();
+                .clickBringThisNodeBackOnlineButton()
+                .isNodeOfflineStatusMessageDisplayed();
 
-        Assert.assertTrue(nodeStatus.nodeOnlineStatusText().isEmpty());
+        Assert.assertFalse(isNodeOffline);
     }
 
     @Test
@@ -203,7 +211,7 @@ public class NodesTest extends BaseTest {
                 .clickManageJenkins()
                 .clickNodes()
                 .clickNewNodeButton()
-                .setNodeName("!")
+                .typeNodeName("!")
                 .selectPermanentAgentRadioButton()
                 .clickCreateButtonOnError()
                 .getErrorMessageText();
@@ -218,7 +226,7 @@ public class NodesTest extends BaseTest {
                 .clickManageJenkins()
                 .clickNodes()
                 .clickNewNodeButton()
-                .setNodeName(NODE_NAME)
+                .typeNodeName(NODE_NAME)
                 .selectPermanentAgentRadioButton()
                 .clickCreateButton()
                 .clickSaveButton()
@@ -230,12 +238,12 @@ public class NodesTest extends BaseTest {
     @Test
     public void testDeleteExistingNode() {
 
-        createNewNode(NODE_NAME)
+        createNode(NODE_NAME);
+
+        String searchResult = new NodesTablePage(getDriver())
                 .clickNode(NODE_NAME)
                 .clickDeleteAgent()
-                .clickYesButton();
-
-        String searchResult = new HomePage(getDriver())
+                .clickYesButton()
                 .getHeader().typeSearchQueryPressEnter(NODE_NAME)
                 .getNoMatchText();
 

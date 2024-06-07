@@ -129,7 +129,7 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
 
     public DeleteDialog clickDeleteInMenu(DeleteDialog dialog) {
         menuDelete.click();
-        return dialog;
+        return new DeleteDialog(getDriver());
     }
 
     public MultiConfigurationRenamePage clickRenameInMenu() {
