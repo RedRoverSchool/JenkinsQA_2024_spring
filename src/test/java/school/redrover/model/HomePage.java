@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -283,6 +284,7 @@ public class HomePage extends BasePage<HomePage> {
         return new OrganizationFolderProjectPage(getDriver());
     }
 
+    @Step("Click on Chevron of the Dashboard")
     public HomePage openDashboardBreadcrumbsDropdown() {
         WebElement chevron = dashboardBreadcrumbs.findElement(By.cssSelector("[class$='chevron']"));
         ((JavascriptExecutor) getDriver()).executeScript(
@@ -293,6 +295,7 @@ public class HomePage extends BasePage<HomePage> {
         return this;
     }
 
+    @Step("Click on Manage Jenkins in the Dashboard dropdown menu")
     public ManageJenkinsPage clickManageFromDashboardBreadcrumbsMenu() {
         manageFromDashboardBreadcrumbsMenu.click();
 

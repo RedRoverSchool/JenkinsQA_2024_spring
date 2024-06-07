@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
@@ -90,6 +91,7 @@ public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
         return searchInput.isDisplayed();
     }
 
+    @Step("Click on Appearance button in System Configuration")
     public AppearancePage clickAppearanceButton() {
         appearanceButton.click();
 
