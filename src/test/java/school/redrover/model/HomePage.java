@@ -20,7 +20,7 @@ public class HomePage extends BasePage<HomePage> {
     private WebElement createAJobLink;
 
     @FindBy(css = "[href='/computer/']")
-    private WebElement nodesLink;
+    private WebElement buildExecutorStatusLink;
 
     @FindBy(css = "#executors tr [href]")
     private List<WebElement> nodesList;
@@ -163,8 +163,8 @@ public class HomePage extends BasePage<HomePage> {
         return new MovePage(getDriver());
     }
 
-    public NodesTablePage clickNodesLink() {
-        nodesLink.click();
+    public NodesTablePage clickBuildExecutorStatusLink() {
+        buildExecutorStatusLink.click();
 
         return new NodesTablePage(getDriver());
     }

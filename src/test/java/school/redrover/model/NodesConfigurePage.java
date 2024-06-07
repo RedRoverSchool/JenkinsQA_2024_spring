@@ -18,7 +18,7 @@ public class NodesConfigurePage extends BasePage<NodesConfigurePage> {
 
     public NodesConfigurePage(WebDriver driver) { super(driver); }
 
-    public List<String> getTooltipsConfigureNodePage() {
+    public List<String> getTooltipsOnConfigureNodePage() {
         List<String> actualList = new ArrayList<>();
         for (WebElement e : tooltipsConfigureNodePage) {
             ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView({block:'center'});", e);

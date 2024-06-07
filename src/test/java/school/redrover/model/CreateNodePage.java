@@ -14,7 +14,7 @@ public class CreateNodePage extends BasePage<CreateNodePage> {
     private WebElement permanentAgentRadioButton;
 
     @FindBy(id = "ok")
-    private WebElement okButton;
+    private WebElement createButton;
 
     public CreateNodePage(WebDriver driver) {
         super(driver);
@@ -32,14 +32,14 @@ public class CreateNodePage extends BasePage<CreateNodePage> {
         return this;
     }
 
-    public NodesCreationConfigurePage clickOkButton() {
-        okButton.click();
+    public NodesCreationConfigurePage clickCreateButton() {
+        createButton.click();
 
         return new NodesCreationConfigurePage(getDriver());
     }
 
-    public NodesErrorPage clickOkButtonOnError() {
-        okButton.click();
+    public NodesErrorPage clickCreateButtonOnError() {
+        createButton.click();
 
         return new NodesErrorPage(getDriver());
     }
