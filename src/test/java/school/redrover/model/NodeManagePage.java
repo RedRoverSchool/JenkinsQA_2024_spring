@@ -4,6 +4,7 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 import java.util.List;
@@ -39,7 +40,11 @@ public class NodeManagePage extends BasePage<NodeManagePage> {
 
     @Step("Click on the button 'Bring This Node Back Online'")
     public NodeManagePage clickBringThisNodeBackOnlineButton() {
-        bringThisNodeBackOnlineBtn.click();
+        try {
+            getWait5().until(ExpectedConditions.elementToBeClickable(bringThisNodeBackOnlineBtn)).click();
+        } catch (Exception e) {
+
+        }
         return new NodeManagePage(getDriver());
     }
 

@@ -304,18 +304,6 @@ public class HomePage extends BasePage<HomePage> {
         return new ManageJenkinsPage(getDriver());
     }
 
-    public String getBuildExecutorStatusText() {
-        return buildExecutorStatus.getText();
-    }
-
-    public List<WebElement> getBuildExecutorStatusList() {
-        return buildExecutorStatusList.stream().toList();
-    }
-
-    public int getBuildExecutorListSize() {
-        return buildExecutorStatusList.size();
-    }
-
     public FullStageViewPage clickFullStageViewButton() {
         getWait5().until(ExpectedConditions.elementToBeClickable(fullStageViewButton)).click();
 

@@ -677,65 +677,32 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
+    @Epic("Build history")
+    @Story("US_08.002 Take information about a project built")
+    @Description("Check List of builds is displayed in descending'")
     public void testBuildAttributesDescending() {
-
-        int number_of_stages = 1;
-        int buildsQtt = 5;
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/manage']"))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='computer']"))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//td/a[contains(@href, 'built-in')]"))).click();
-
-        try {
-            getWait2().until(ExpectedConditions.elementToBeClickable(
-                    By.xpath("//button[@class='jenkins-button jenkins-button--primary ']"))).click();
-            getDriver().findElement(By.id("jenkins-name-icon")).click();
-
-        } catch (Exception e) {
-
-            getDriver().findElement(By.id("jenkins-name-icon")).click();
-        }
-
-        TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
-                By.xpath("//a[contains(@href, 'configure')]")))).click();
-
-        String pipelineScript = """
+        final String PIPELINE_SCRIPT = """
                 pipeline {
                 agent any
 
                 stages {
                 """;
 
-        getDriver().findElement(By.className("ace_text-input")).sendKeys(pipelineScript);
+        List<String> actualOrder = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickNodes()
+                .clickOnBuiltInNode()
+                .clickBringThisNodeBackOnlineButton()
+                .clickLogo()
 
-        for (int i = 1; i <= number_of_stages; i++) {
-
-            String stage = "\nstage('stage " + i + "') {\n" +
-                    "steps {\n" +
-                    "echo 'test " + i + "'\n";
-            getDriver().findElement(By.className("ace_text-input")).sendKeys(stage);
-            getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
-            getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
-        }
-
-        getDriver().findElement(By.name("Submit")).click();
-
-        WebElement buildButton = getDriver().findElement(
-                By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/build?delay=0sec']"));
-
-        for (int i = 1; i <= buildsQtt; i++) {
-            buildButton.click();
-            getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
-                    By.xpath("//span[@class='badge']/a[@href='" + i + "']")));
-        }
-
-        List<WebElement> buildTable = getWait2().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
-                By.className("badge")));
-
-        List<String> actualOrder = TestUtils.getTexts(buildTable);
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .sendScript(1,PIPELINE_SCRIPT)
+                .clickSaveButton()
+                .makeBuilds(5)
+                .waitBuildToFinish()
+                .getBuildHistoryList();
 
         List<String> expectedOrder = new ArrayList<>(actualOrder);
         expectedOrder.sort(Collections.reverseOrder());

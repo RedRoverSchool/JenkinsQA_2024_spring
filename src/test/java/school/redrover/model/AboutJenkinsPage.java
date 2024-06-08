@@ -19,10 +19,6 @@ public class AboutJenkinsPage extends BasePage<AboutJenkinsPage> {
         super(driver);
     }
 
-    public boolean isDisplayedVersionJenkins() {
-        return versionJenkins.isDisplayed();
-    }
-
     public String getJenkinsVersion() {
         return versionJenkins.getText().split(" ")[1];
     }
