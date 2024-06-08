@@ -29,7 +29,7 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
         super(driver);
     }
 
-    @Step("Click Jenkins logo on header")
+    @Step("Click on the Jenkins logo on the header")
     public HomePage clickLogo() {
         logo.click();
 

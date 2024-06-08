@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -24,16 +25,19 @@ public class NodeManagePage extends BasePage<NodeManagePage> {
     @FindBy(css = ".message")
     private List<WebElement> nodeOfflineStatusMessageList;
 
+    @Step("Click on the button 'Mark this node temporarily offline'")
     public NodeManagePage clickMarkThisNodeTemporaryOfflineButton() {
         markThisNodeTemporaryOfflineButton.click();
         return new NodeManagePage(getDriver());
     }
 
+    @Step("Confirm switch by click on the button 'Mark this node temporarily offline'")
     public NodeManagePage clickMarkThisNodeTemporaryOfflineConfirmationButton() {
         markThisNodeTemporaryOfflineConfirmationBtn.click();
         return new NodeManagePage(getDriver());
     }
 
+    @Step("Click on the button 'Bring This Node Back Online'")
     public NodeManagePage clickBringThisNodeBackOnlineButton() {
         bringThisNodeBackOnlineBtn.click();
         return new NodeManagePage(getDriver());

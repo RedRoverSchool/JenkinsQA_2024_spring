@@ -20,19 +20,21 @@ public class NodesCreationConfigurePage extends BasePage<NodesCreationConfigureP
         super(driver);
     }
 
-    @Step("Click button 'Save'")
+    @Step("Click on the button 'Save'")
     public NodesTablePage clickSaveButton() {
         saveButton.click();
 
         return new NodesTablePage(getDriver());
     }
 
-    public NodesCreationConfigurePage typeToLabelsField(String labelName) {
+    @Step("Type text to the Labels input field")
+    public NodesCreationConfigurePage typeToLabelsInputField(String labelName) {
         labelsField.sendKeys(labelName);
 
         return new NodesCreationConfigurePage(getDriver());
     }
 
+    @Step("Type text to the Description input area")
     public NodesCreationConfigurePage typeDescriptionText(String description) {
         descriptionField.sendKeys(description);
 

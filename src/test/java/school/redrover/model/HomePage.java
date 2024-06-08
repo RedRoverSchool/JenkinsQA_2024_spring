@@ -164,7 +164,7 @@ public class HomePage extends BasePage<HomePage> {
         return new MovePage(getDriver());
     }
 
-    @Step("Click link 'Build Executor Status'")
+    @Step("Click on the link 'Build Executor Status'")
     public NodesTablePage clickBuildExecutorStatusLink() {
         buildExecutorStatusLink.click();
 
@@ -189,6 +189,7 @@ public class HomePage extends BasePage<HomePage> {
         return new MultiConfigurationProjectPage(getDriver());
     }
 
+    @Step("Click on the 'Manage Jenkins' in the sidebar menu")
     public ManageJenkinsPage clickManageJenkins() {
         manageJenkinsLink.click();
 

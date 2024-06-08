@@ -21,7 +21,7 @@ public class CreateNodePage extends BasePage<CreateNodePage> {
         super(driver);
     }
 
-    @Step("Type text to name input field")
+    @Step("Type the text to name input field")
     public CreateNodePage typeNodeName(String name) {
         nameInput.sendKeys(name);
 
@@ -35,13 +35,14 @@ public class CreateNodePage extends BasePage<CreateNodePage> {
         return this;
     }
 
-    @Step("Click button 'Create'")
+    @Step("Click on the button 'Create'")
     public NodesCreationConfigurePage clickCreateButton() {
         createButton.click();
 
         return new NodesCreationConfigurePage(getDriver());
     }
 
+    @Step("Click on the button 'Create'")
     public NodesErrorPage clickCreateButtonOnError() {
         createButton.click();
 
