@@ -12,7 +12,10 @@ import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -585,7 +588,7 @@ public class PipelineTest extends BaseTest {
 
         List<String> buildList = new HomePage(getDriver())
                 .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
-                .clickSidebarConfigureButton(PIPELINE_NAME)
+                .clickSidebarConfigureButton()
                 .clickDiscardOldBuilds()
                 .setNumberBuildsToKeep(maxNumberBuildsToKeep)
                 .clickSaveButton()
@@ -605,11 +608,11 @@ public class PipelineTest extends BaseTest {
     public void testSetPipelineScript() {
         String echoScriptName = new HomePage(getDriver())
                 .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
-                .clickSidebarConfigureButton(PIPELINE_NAME)
+                .clickSidebarConfigureButton()
                 .scrollToPipelineScript()
                 .selectSamplePipelineScript("hello")
                 .clickSaveButton()
-                .clickSidebarConfigureButton(PIPELINE_NAME)
+                .clickSidebarConfigureButton()
                 .scrollToPipelineScript()
                 .getScriptText();
 
@@ -1046,26 +1049,23 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
+    @Epic("Pipeline")
+    @Story("US_02.004.03 Pipeline Configuration")
+    @Description("Verify the pipeline configuration has interactive sections: General, Advanced Project Options, Pipeline")
     public void testSectionsOfSidePanelAreVisible() {
-        TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
-        getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
+        List<String> expectedSectionsNameList = new ArrayList<>(Arrays.asList("General","Advanced Project Options","Pipeline"));
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[contains(text(), 'Configure')]")));
+        List<String> sectionsNameList = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickLogo()
+                .clickSpecificPipelineName(PIPELINE_NAME)
+                .clickSidebarConfigureButton()
+                .getSectionsNameList();
 
-        List<WebElement> sections = List.of(
-                getDriver().findElement(
-                        By.xpath("//div[@id='side-panel']//descendant::button[contains(@data-section-id, 'general')]")),
-                getDriver().findElement(
-                        By.xpath("//div[@id='side-panel']//descendant::button[contains(@data-section-id, 'advanced-project-options')]")),
-                getDriver().findElement(
-                        By.xpath("//div[@id='side-panel']//descendant::button[contains(@data-section-id, 'pipeline')]")));
-
-        for (WebElement section : sections) {
-            Assert.assertTrue(section.isDisplayed(),
-                    "The requested section is not found in Configure side-panel");
-        }
+        Assert.assertEquals(sectionsNameList,expectedSectionsNameList);
     }
 
     @Test
@@ -1089,7 +1089,7 @@ public class PipelineTest extends BaseTest {
 
         String projectsDisplayNameInHeader = new HomePage(getDriver())
                 .clickSpecificPipelineName(PIPELINE_NAME)
-                .clickSidebarConfigureButton(PIPELINE_NAME)
+                .clickSidebarConfigureButton()
                 .clickAdvancedProjectOptionsMenu()
                 .clickAdvancedButton()
                 .setDisplayNameDescription(editedDisplayNameText)
@@ -1103,7 +1103,7 @@ public class PipelineTest extends BaseTest {
     public void testDeleteDisplayNameInAdvancedSection() {
         String projectsDisplayNameInHeader = new HomePage(getDriver())
                 .clickSpecificPipelineName(PIPELINE_NAME)
-                .clickSidebarConfigureButton(PIPELINE_NAME)
+                .clickSidebarConfigureButton()
                 .clickAdvancedProjectOptionsMenu()
                 .clickAdvancedButton()
                 .clearDisplayNameDescription()
@@ -1167,7 +1167,7 @@ public class PipelineTest extends BaseTest {
                 .selectCustomPipelineSpeedDurabilityLevel(index)
                 .scrollToPipelineScript()
                 .clickSaveButton()
-                .clickSidebarConfigureButton(PIPELINE_NAME)
+                .clickSidebarConfigureButton()
                 .getCustomPipelineSpeedDurabilityLevelText();
 
         Assert.assertTrue(selectedOption.contains(selectedOptionForCheck));
@@ -1185,7 +1185,7 @@ public class PipelineTest extends BaseTest {
                 .clickQuietPeriodCheckbox()
                 .setNumberOfSecondsInQuietPeriodInputField(numberOfSeconds)
                 .clickSaveButton()
-                .clickSidebarConfigureButton(PIPELINE_NAME)
+                .clickSidebarConfigureButton()
                 .scrollToQuietPeriodCheckbox()
                 .getQuietPeriodInputFieldValue();
 
