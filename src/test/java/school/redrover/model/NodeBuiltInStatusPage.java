@@ -1,13 +1,12 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.testng.Assert;
 import school.redrover.model.base.BasePage;
 
-import java.util.Collections;
 import java.util.List;
 
 public class NodeBuiltInStatusPage extends BasePage<NodeBuiltInStatusPage> {
@@ -25,6 +24,7 @@ public class NodeBuiltInStatusPage extends BasePage<NodeBuiltInStatusPage> {
         super(driver);
     }
 
+    @Step("Click on the button 'Monitoring Data'")
     public NodeBuiltInStatusPage clickMonitoringDataButton() {
         monitoringDataButton.click();
 
@@ -36,17 +36,6 @@ public class NodeBuiltInStatusPage extends BasePage<NodeBuiltInStatusPage> {
                 .stream()
                 .map(WebElement::getText)
                 .toList();
-    }
-
-    public void assertMonitoringDataValues(List<String> actualMonitoringDataValues,
-                                           List<String> expectedMonitoringDataValues) {
-        try {
-            Assert.assertEquals(actualMonitoringDataValues, expectedMonitoringDataValues);
-        } catch (AssertionError e) {
-            Collections.sort(expectedMonitoringDataValues);
-            Assert.assertEquals(actualMonitoringDataValues, expectedMonitoringDataValues,
-                    "Actual Monitoring Data list is different after sorting expected values alphabetically");
-        }
     }
 
     public HomePage turnNodeOnIfOffline() {

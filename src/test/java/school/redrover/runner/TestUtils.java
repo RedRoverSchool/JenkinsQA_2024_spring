@@ -5,11 +5,13 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
 import school.redrover.model.HomePage;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -172,4 +174,15 @@ public final class TestUtils {
                 .filter(el -> el.substring(0, firstLetters.length()).equalsIgnoreCase(firstLetters))
                 .toList();
     }
+
+    public static void assertEqualsLists(List<String> actualList, List<String> expectedList) {
+        try {
+            Assert.assertEquals(actualList, expectedList);
+        } catch (AssertionError e) {
+            Collections.sort(expectedList);
+            Assert.assertEquals(actualList, expectedList,
+                    "Actual list is different after sorting expected values alphabetically");
+        }
+    }
+
 }

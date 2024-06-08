@@ -1,6 +1,6 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
+import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -75,6 +75,7 @@ public class HeaderFrame<T extends BasePage<T>> extends BaseFrame<T> {
         return new SearchResultPage(getDriver());
     }
 
+    @Step("Type text for search to input field and press 'Enter'")
     public SearchResultPage typeSearchQueryPressEnter(String searchQuery) {
         searchBox.sendKeys(searchQuery, Keys.ENTER);
         return new SearchResultPage(getDriver());

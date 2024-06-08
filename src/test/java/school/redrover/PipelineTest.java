@@ -844,7 +844,7 @@ public class PipelineTest extends BaseTest {
         }
 
         List<String> actualStageHeaderNameList = new HomePage(getDriver())
-                .clickNodesLink()
+                .clickBuildExecutorStatusLink()
                 .clickBuiltInNodeName()
                 .turnNodeOnIfOffline()
                 .clickNewItem()

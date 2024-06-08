@@ -1,5 +1,6 @@
 package school.redrover;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
@@ -25,6 +26,7 @@ public class AppearanceTest extends BaseTest {
                 .getThemesList()
                 .size();
 
+        Allure.step("Expected results: 3 color themes available for selection");
         Assert.assertEquals(quantityOfThemes, 3);
     }
 

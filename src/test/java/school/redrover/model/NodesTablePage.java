@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -25,7 +26,7 @@ public class NodesTablePage extends BasePage<NodesTablePage> {
     private WebElement table;
 
     @FindBy(css = "[href='configure']")
-    private WebElement configureMonitorButton;
+    private WebElement configureMonitorsButton;
 
     @FindBy(css = "[href^='../computer/']:not([href$='configure'])")
     private List<WebElement> nodesInTableList;
@@ -37,12 +38,16 @@ public class NodesTablePage extends BasePage<NodesTablePage> {
         super(driver);
     }
 
+
+
+    @Step("Click on the button 'New Node'")
     public CreateNodePage clickNewNodeButton() {
         newNodeButton.click();
 
         return new CreateNodePage(getDriver());
     }
 
+    @Step("Move cursor to the Name and click on the dropdown chevron")
     public NodesTablePage openDropDownChevron(String name) {
         WebElement dropdownChevron = getDriver().findElement(By.cssSelector("#node_" + name + " > td:nth-child(2) > a > button"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
@@ -51,19 +56,27 @@ public class NodesTablePage extends BasePage<NodesTablePage> {
         return this;
     }
 
-    public NodesTablePage deleteNodeViaOpenedDropDownChevron() {
+    @Step("click on the 'Delete Agent' in the dropdown menu")
+    public NodesTablePage clickDeleteAgentOnDropdownMenu() {
         deleteButton.click();
+
+        return this;
+    }
+
+    @Step("Click 'Yes' in the Delete Agent window")
+    public NodesTablePage clickYesInDeleteAgentWindow() {
         okIntoDeleteDialog.click();
 
         return this;
     }
 
-    public boolean isConteinNode(String name) {
+    public boolean isContainNode(String name) {
         return table.getText().contains(name);
     }
 
-    public NodesConfigurePage clickConfigureMonitorButton() {
-        configureMonitorButton.click();
+    @Step("Click on the button 'Configure monitors'")
+    public NodesConfigurePage clickConfigureMonitorsButton() {
+        configureMonitorsButton.click();
 
         return new NodesConfigurePage(getDriver());
     }
@@ -72,19 +85,21 @@ public class NodesTablePage extends BasePage<NodesTablePage> {
         return getDriver().findElement(By.cssSelector("[href='../computer/" + name + "/']")).isDisplayed();
     }
 
-    public List<String> getNodesinTableList() {
+    public List<String> getNodesInTableList() {
         return nodesInTableList
                 .stream()
                 .map(WebElement::getText)
                 .toList();
     }
 
+    @Step("Click on the Node name 'Built-In Node'")
     public NodeBuiltInStatusPage clickBuiltInNodeName() {
         builtInNode.click();
 
         return new NodeBuiltInStatusPage(getDriver());
     }
 
+    @Step("Click on the Node with the specified name")
     public NodePage clickNode(String nodeName) {
         getDriver().findElement(By.xpath("//a[@href='../computer/" +
                 nodeName.replaceAll(" ", "%20") + "/']")).click();
