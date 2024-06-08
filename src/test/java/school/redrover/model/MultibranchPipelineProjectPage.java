@@ -22,9 +22,6 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage<MultibranchP
     @FindBy(id = "enable-project")
     private WebElement disableMPMessage;
 
-    @FindBy(xpath = "//form[contains(., 'This Multibranch Pipeline is currently disabled')]")
-    private List<WebElement> disabledMultiPipelineMessage;
-
     @FindBy(xpath = "//*[contains(@data-title,'Delete')]")
     private WebElement sidebarDeleteButton;
 
@@ -75,10 +72,6 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage<MultibranchP
 
     public String getDisableMultibranchPipelineText() {
         return disableMPMessage.getDomProperty("innerText").split(" Enable")[0];
-    }
-
-    public boolean isMultibranchPipelineDisabledTextNotDisplayed() {
-        return disabledMultiPipelineMessage.isEmpty();
     }
 
     public String getDisableMultibranchPipelineTextColor() {

@@ -1,38 +1,42 @@
 package school.redrover;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.OrganizationFolderConfigPage;
 import school.redrover.model.OrganizationFolderProjectPage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
+@Epic("Organization folder")
 public class OrganizationFolderTest extends BaseTest {
 
     private static final String ORGANIZATION_FOLDER_NAME = "OrganizationFolder";
-
-    private static final String SCAN_ORGANIZATION_TEXT = "Scan Organization Folder Log";
-
     private static final String ORGANIZATION_FOLDER_DESCRIPTION = "Some description of the organization folder.";
 
     @Test
-    public void testCreateViaNewItem() {
-
-        String getItemPageHeading = new HomePage(getDriver())
+    @Story("US_06.000 Create project")
+    @Description("Verify the creation of a project via Sidebar menu.")
+    public void testCreateViaSidebarMenu() {
+        String itemPageHeading = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(ORGANIZATION_FOLDER_NAME)
                 .selectOrganizationFolderAndClickOk()
                 .clickSaveButton()
                 .getProjectName();
 
-        Assert.assertEquals(getItemPageHeading, ORGANIZATION_FOLDER_NAME);
+        Assert.assertEquals(itemPageHeading, ORGANIZATION_FOLDER_NAME);
     }
 
     @Test
+    @Story("US_06.000 Create project")
+    @Description("Verify creation of the project with the default icon.")
     public void testCreateWithDefaultIcon() {
-
         String organizationFolderIcon = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(ORGANIZATION_FOLDER_NAME)
@@ -44,11 +48,12 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(organizationFolderIcon, "Folder");
     }
 
-    @Test(dependsOnMethods = "testCreateViaNewItem")
-    public void testAddDescription() {
-
+    @Test(dependsOnMethods = "testCreateViaSidebarMenu")
+    @Story("US_06.009 Add description to folder")
+    @Description("Verify description can be added to project by clicking Add description.")
+    public void testAddDescriptionViaAddDescriptionButton() {
         String textInDescription = new OrganizationFolderProjectPage(getDriver())
-                .clickAddOrEditDescription()
+                .clickAddDescription()
                 .setDescription(ORGANIZATION_FOLDER_DESCRIPTION)
                 .clickSaveButton()
                 .getDescriptionText();
@@ -57,42 +62,39 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
-    public void testPipelineSyntaxDocumentationAccess() {
+    @Story("US_06.007 Pipeline syntax")
+    @Description("Verify access to the declarative documentation for pipeline syntax.")
+    public void testPipelineSyntaxDeclarativeDocumentationAccess() {
+        TestUtils.createOrganizationFolderProject(this, ORGANIZATION_FOLDER_NAME);
+
         String pageTitle = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(ORGANIZATION_FOLDER_NAME)
-                .selectOrganizationFolderAndClickOk()
-                .clickSaveButton()
-                .clickLogo()
                 .clickSpecificOrganizationFolderName(ORGANIZATION_FOLDER_NAME)
-                .clickPipelineSyntax()
-                .clickOnlineDocumentation()
+                .clickSidebarPipelineSyntax()
+                .clickSidebarDeclarativeOnlineDocumentation()
                 .getPipelineSyntaxTitle();
 
-        Assert.assertTrue(getDriver().getCurrentUrl().contains("/pipeline/"));
         Assert.assertEquals(pageTitle, "Pipeline Syntax");
     }
 
     @Test
+    @Story("US_06.007 Pipeline syntax")
+    @Description("Verify access to examples Reference.")
     public void testPipelineSyntaxExamplesAccess() {
+        TestUtils.createOrganizationFolderProject(this, ORGANIZATION_FOLDER_NAME);
+
         String pageTitle = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(ORGANIZATION_FOLDER_NAME)
-                .selectOrganizationFolderAndClickOk()
-                .clickSaveButton()
-                .clickLogo()
                 .clickSpecificOrganizationFolderName(ORGANIZATION_FOLDER_NAME)
-                .clickPipelineSyntax()
-                .clickExamplesReference()
+                .clickSidebarPipelineSyntax()
+                .clickSidebarExamplesReference()
                 .getPipelineExamplesTitle();
 
-        Assert.assertTrue(getDriver().getCurrentUrl().contains("/examples/"));
         Assert.assertEquals(pageTitle, "Pipeline Examples");
     }
 
-    @Test(dependsOnMethods = "testCreateViaNewItem")
+    @Test(dependsOnMethods = "testCreateViaSidebarMenu")
+    @Story("US_06.007 Pipeline syntax")
+    @Description("Verify tooltips of the step Catch Error.")
     public void testCatchErrorStepTooltipsViaDashboardDropdown() {
-
         final List<String> expectedTooltipList = List.of(
                 "Help for feature: catchError",
                 "Help for feature: Message",
@@ -109,7 +111,9 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(actualTooltipList, expectedTooltipList);
     }
 
-    @Test(dependsOnMethods = "testCreateViaNewItem")
+    @Test(dependsOnMethods = "testCreateViaSidebarMenu")
+    @Story("US_06.001 Configuration")
+    @Description("Verify sidebar menu visibility when accessing the configuration page of an organization folder.")
     public void testSidebarMenuVisibility() {
         boolean isSidebarVisible = new HomePage(getDriver())
                 .clickSpecificOrganizationFolderName(ORGANIZATION_FOLDER_NAME)
@@ -120,43 +124,52 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
-    public void testRenameOrganizationFolder() {
+    @Story("US_06.006 Rename Organization Folder")
+    @Description("Verify that a project can be successfully renamed via the sidebar")
+    public void testRenameProjectViaSidebarMenu() {
         final String newOrganizationFolderName = "New Organization Folder";
 
+        TestUtils.createOrganizationFolderProject(this, ORGANIZATION_FOLDER_NAME);
+
         List<String> itemList = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(ORGANIZATION_FOLDER_NAME)
-                .selectOrganizationFolderAndClickOk()
-                .clickSaveButton()
-                .clickOnRenameButton()
+                .clickJobByName(ORGANIZATION_FOLDER_NAME, new OrganizationFolderProjectPage(getDriver()))
+                .clickSidebarRenameButton()
                 .setNewName(newOrganizationFolderName)
                 .clickRename()
                 .clickLogo()
                 .getItemList();
 
-        Assert.assertTrue(itemList.contains(newOrganizationFolderName));
+        Assert.assertListContainsObject(itemList, newOrganizationFolderName,
+                "The project is not renamed successfully");
     }
 
-    @Test(dependsOnMethods = "testCreateViaNewItem")
+    @Test(dependsOnMethods = "testCreateViaSidebarMenu")
+    @Story("US_06.003 Scan Organization Folder Log")
+    @Description("Verify that the 'Scan Organization Folder Log' page is accessible")
     public void testScanOrganizationFolder() {
-        String scan = new HomePage(getDriver())
-                .clickJobByName(ORGANIZATION_FOLDER_NAME,
-                        new OrganizationFolderProjectPage(getDriver()))
-                .clickScan()
+        String titleText = new HomePage(getDriver())
+                .clickJobByName(ORGANIZATION_FOLDER_NAME, new OrganizationFolderProjectPage(getDriver()))
+                .clickSidebarScanOrganizationFolderLog()
                 .getScanText();
 
-        Assert.assertEquals(scan, SCAN_ORGANIZATION_TEXT);
+        Assert.assertEquals(titleText, "Scan Organization Folder Log",
+                "The page title does not match 'Scan Organization Folder Log'");
     }
 
-    @Test(dependsOnMethods = "testCreateViaNewItem")
-    public void testFindOrganizationFolderOnDashboard() {
-        HomePage homePage = new HomePage(getDriver());
+    @Test(dependsOnMethods = "testCreateViaSidebarMenu")
+    @Story("US_06.000 Create project")
+    @Description("Verify the creation of a project on Dashboard")
+    public void testProjectPresenceOnDashboard() {
+        List<String> itemList = new HomePage(getDriver())
+                .getItemList();
 
-        Assert.assertListContainsObject(homePage.getItemList(), ORGANIZATION_FOLDER_NAME,
+        Assert.assertListContainsObject(itemList, ORGANIZATION_FOLDER_NAME,
                 ORGANIZATION_FOLDER_NAME + "is not on the dashboard");
     }
 
-    @Test(dependsOnMethods = "testCreateViaNewItem")
+    @Test(dependsOnMethods = "testCreateViaSidebarMenu")
+    @Story("US_06.007 Pipeline syntax")
+    @Description("Verify that the pipeline syntax sidebar contains the expected list of items.")
     public void testPipelineSyntaxSidebarList() {
         final List<String> expectedPipelineSyntaxSidebarList = List.of("Back", "Snippet Generator", "Declarative Directive Generator",
                 "Declarative Online Documentation", "Steps Reference",
@@ -165,20 +178,20 @@ public class OrganizationFolderTest extends BaseTest {
 
         List<String> actualPipelineSyntaxSidebarList = new HomePage(getDriver())
                 .clickJobByName(ORGANIZATION_FOLDER_NAME, new OrganizationFolderProjectPage(getDriver()))
-                .clickPipelineSyntax()
+                .clickSidebarPipelineSyntax()
                 .getPipelineSyntaxSidebarList();
 
         Assert.assertEquals(actualPipelineSyntaxSidebarList, expectedPipelineSyntaxSidebarList);
     }
 
     @Test
-    public void testDeleteOrganizationFolder() {
+    @Story("US_06.005 Delete Organization Folder")
+    @Description("Verify the deletion of a project via Sidebar menu.")
+    public void testDeleteOrganizationFolderViaSidebar() {
+        TestUtils.createOrganizationFolderProject(this, ORGANIZATION_FOLDER_NAME);
 
         List<String> itemList = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(ORGANIZATION_FOLDER_NAME)
-                .selectOrganizationFolderAndClickOk()
-                .clickSaveButton()
+                .clickJobByName(ORGANIZATION_FOLDER_NAME, new OrganizationFolderProjectPage(getDriver()))
                 .clickDeleteOnSidebar()
                 .clickYesForDeleteOrganizationFolder()
                 .getItemList();
@@ -187,31 +200,31 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
+    @Story("US_06.001 Configuration")
+    @Description("Verify that the borders of the project recognizers filters are dashed in the configuration page.")
     public void testProjectRecognizersFiltersBordersAreDashed() {
+        TestUtils.createOrganizationFolderProject(this, ORGANIZATION_FOLDER_NAME);
 
-        boolean projectRecognizersBordersFiltersDashed = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(ORGANIZATION_FOLDER_NAME)
-                .selectOrganizationFolderAndClickOk()
-                .clickSaveButton()
+        boolean isProjectRecognizersBordersFiltersDashed = new HomePage(getDriver())
+                .clickJobByName(ORGANIZATION_FOLDER_NAME, new OrganizationFolderProjectPage(getDriver()))
                 .clickConfigure()
                 .scrollToProjectRecognizersBlock()
                 .clickProjectRecognizersAddButton()
                 .addPipelineJenkinsFileFilter()
                 .areProjectRecognizersFiltersBordersDashed();
 
-        Assert.assertTrue(projectRecognizersBordersFiltersDashed,
+        Assert.assertTrue(isProjectRecognizersBordersFiltersDashed,
                 "Filters boarders of Project Recognizers block  are not dashed");
     }
 
     @Test
+    @Story("US_06.001 Configuration")
+    @Description("Verify that clicking anchor links in the configuration page navigates to the corresponding blocks.")
     public void testAnchorLinksLeadToCorrespondingBlocks() {
+        TestUtils.createOrganizationFolderProject(this, ORGANIZATION_FOLDER_NAME);
 
         boolean isNavigatedToCorrespondingBlock = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(ORGANIZATION_FOLDER_NAME)
-                .selectOrganizationFolderAndClickOk()
-                .clickSaveButton()
+                .clickJobByName(ORGANIZATION_FOLDER_NAME, new OrganizationFolderProjectPage(getDriver()))
                 .clickConfigure()
                 .isNavigatedToCorrespondingBlockClickingAnchorLink();
 
@@ -219,14 +232,15 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
+    @Story("US_06.001 Configuration")
+    @Description("Verify that the 'Throttle Builds' dropdown contains the correct time period options.")
     public void testThrottleBuildsTimePeriodOptions() {
         final List<String> expectedTimePeriodOptions = List.of("Second", "Minute", "Hour", "Day", "Week", "Month", "Year");
 
+        TestUtils.createOrganizationFolderProject(this, ORGANIZATION_FOLDER_NAME);
+
         List<String> actualTimePeriodOptions = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(ORGANIZATION_FOLDER_NAME)
-                .selectOrganizationFolderAndClickOk()
-                .clickSaveButton()
+                .clickJobByName(ORGANIZATION_FOLDER_NAME, new OrganizationFolderProjectPage(getDriver()))
                 .clickConfigure()
                 .scrollToPropertyStrategyBlock()
                 .clickAddPropertyButton()
@@ -237,13 +251,13 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
+    @Story("US_06.001 Configuration")
+    @Description("Verify that the untrusted property checkboxes remain selected after saving the configuration.")
     public void testUntrustedPropertyCheckboxesSelectedUponSaving() {
+        TestUtils.createOrganizationFolderProject(this, ORGANIZATION_FOLDER_NAME);
 
         OrganizationFolderConfigPage organizationFolderConfigPage = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(ORGANIZATION_FOLDER_NAME)
-                .selectOrganizationFolderAndClickOk()
-                .clickSaveButton()
+                .clickJobByName(ORGANIZATION_FOLDER_NAME, new OrganizationFolderProjectPage(getDriver()))
                 .clickConfigure()
                 .scrollToPropertyStrategyBlock()
                 .clickAddPropertyButton()
@@ -259,14 +273,15 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
+    @Story("US_06.001 Configuration")
+    @Description("Verify that the order of strategy properties can be changed in the configuration.")
     public void testStrategyPropertiesOrderCanBeChanged() {
         final List<String> expectedStrategyPropertiesList = List.of("Untrusted", "Throttle builds");
 
+        TestUtils.createOrganizationFolderProject(this, ORGANIZATION_FOLDER_NAME);
+
         List<String> actualStrategyPropertiesList = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(ORGANIZATION_FOLDER_NAME)
-                .selectOrganizationFolderAndClickOk()
-                .clickSaveButton()
+                .clickJobByName(ORGANIZATION_FOLDER_NAME, new OrganizationFolderProjectPage(getDriver()))
                 .clickConfigure()
                 .scrollToPropertyStrategyBlock()
                 .clickAddPropertyButton()

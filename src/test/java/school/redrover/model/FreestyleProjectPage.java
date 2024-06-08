@@ -205,7 +205,7 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
         return new JobBuildConsolePage(getDriver());
     }
 
-    public String getDesabledMassageText() {
+    public String getDisabledMassageText() {
 
         return getWait5().until(ExpectedConditions.visibilityOf(disabledStatusMassage)).getText();
     }

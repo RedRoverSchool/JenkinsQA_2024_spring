@@ -217,7 +217,6 @@ public class FreestyleProjectTest extends BaseTest {
     @Description("Verify via breadcrumbs moving the project to a folder.")
     public void testCheckFreestyleProjectViaBreadcrumb() {
         List<String> itemListInsideFolder = new HomePage(getDriver())
-                .openDashboardBreadcrumbsDropdown()
                 .getHeader().clickMyViewsOnHeaderDropdown()
                 .clickBreadcrumbAll()
                 .clickJobNameBreadcrumb(FOLDER_NAME)
@@ -280,7 +279,7 @@ public class FreestyleProjectTest extends BaseTest {
         String disabledStatus = new HomePage(getDriver())
                 .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickDisableProjectButton()
-                .getDesabledMassageText();
+                .getDisabledMassageText();
 
         Assert.assertTrue(disabledStatus.contains("This project is currently disabled"));
     }

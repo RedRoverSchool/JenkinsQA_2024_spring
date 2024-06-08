@@ -26,7 +26,7 @@ public class PipelineSyntaxPage extends BasePage<PipelineSyntaxPage> {
     @FindBy(className = "tippy-content")
     private WebElement tooltip;
 
-    @FindBy(xpath = "//span[contains(text(), 'Online Documentation')]/..")
+    @FindBy(xpath = "//span[contains(text(), 'Declarative Online')]/..")
     private WebElement onlineDocumentationSidebarItem;
 
     @FindBy(xpath = "//a[contains(@href,'examples')]")
@@ -51,13 +51,13 @@ public class PipelineSyntaxPage extends BasePage<PipelineSyntaxPage> {
                 .toList();
     }
 
-    public PipelineDocumentationPage clickOnlineDocumentation() {
+    public PipelineDocumentationPage clickSidebarDeclarativeOnlineDocumentation() {
         onlineDocumentationSidebarItem.click();
 
         return new PipelineDocumentationPage(getDriver());
     }
 
-    public PipelineExamplesPage clickExamplesReference() {
+    public PipelineExamplesPage clickSidebarExamplesReference() {
         examplesReferenceSidebarItem.click();
 
         return new PipelineExamplesPage(getDriver());
