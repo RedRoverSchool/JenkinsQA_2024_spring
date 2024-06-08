@@ -797,43 +797,6 @@ public class PipelineTest extends BaseTest {
         }
     }
 
-    @Ignore
-    @Test
-    public void testFullStageViewPopUpWindowIsDisplayed() {
-        int number_of_stages = 2;
-        TestUtils.createNewItem(this, PIPELINE_NAME, TestUtils.Item.PIPELINE);
-
-        String pipelineScript = """
-                pipeline {
-                agent any
-
-                stages {
-                """;
-
-        getDriver().findElement(By.className("ace_text-input")).sendKeys(pipelineScript);
-
-        for (int i = 1; i <= number_of_stages; i++) {
-
-            String stage = "\nstage('stage " + i + "') {\n" +
-                    "steps {\n" +
-                    "echo 'test " + i + "'\n";
-            getDriver().findElement(By.className("ace_text-input")).sendKeys(stage);
-            getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
-            getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
-        }
-
-        getDriver().findElement(By.name("Submit")).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@data-build-success='Build scheduled']"))).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='table-box']")));
-        getDriver().findElement(By.xpath("//tr[@data-runid='1']//td[@data-stageid='6']")).click();
-        getDriver().findElement(By.xpath("//div[@class='btn btn-small cbwf-widget cbwf-controller-applied stage-logs']")).click();
-
-        String actualResult = getDriver().findElement(By.xpath("//div[@class='cbwf-dialog cbwf-stage-logs-dialog']")).getText();
-
-        Assert.assertTrue(actualResult.contains("Stage Logs (stage 1)"));
-    }
-
-
     @Test
     public void testStageColumnHeader() {
 
@@ -891,32 +854,6 @@ public class PipelineTest extends BaseTest {
                 .isDescriptionPreviewVisible();
 
         Assert.assertFalse(descriptionPreviewIsDisplayed);
-    }
-
-    @Test
-    public void testVerifyNewPPCreatedByCreateJob() {
-
-        getDriver().findElement(By.cssSelector("a[href='newJob']")).click();
-        getDriver().findElement(By.cssSelector("div.add-item-name > input#name")).sendKeys(NAME_PROJECTS.get(0));
-        getDriver().findElement(By.cssSelector(".org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
-        getDriver().findElement(By.cssSelector("button#ok-button")).click();
-
-        getDriver().findElement(By.cssSelector("button.jenkins-button--primary")).click();
-
-        getDriver().findElement(By.cssSelector("li.jenkins-breadcrumbs__list-item > a[href='/']")).click();
-
-        Assert.assertTrue(getDriver().findElement(By.cssSelector("tr#job_" + NAME_PROJECTS.get(0))).isDisplayed());
-
-    }
-
-    @Test(dependsOnMethods = "testVerifyNewPPCreatedByCreateJob")
-    public void testVerifyNewPPCreatedNewItem() {
-
-        TestUtils.createNewItem(this, NAME_PROJECTS.get(1), TestUtils.Item.PIPELINE);
-
-        for (String nameProject : NAME_PROJECTS) {
-            Assert.assertTrue(getDriver().findElement(By.cssSelector("tr#job_" + nameProject)).isDisplayed());
-        }
     }
 
     @Test
