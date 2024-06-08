@@ -206,7 +206,6 @@ public class MultiConfigurationProjectTest extends BaseTest {
 //        }
 //    }
 
-
     @Test
     @Epic("New item ")
     @Story("US_00.003  Create Multiconfiguration project")
@@ -317,8 +316,6 @@ public class MultiConfigurationProjectTest extends BaseTest {
         Assert.assertTrue(isProjectDeleted);
     }
 
-
-
     @Test
     @Epic("New item")
     @Story("US_00.003.01  Create Multiconfiguration project ")
@@ -337,7 +334,6 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         Assert.assertTrue(currentUrl.contains(PROJECT_NAME) && searchResult.contains(PROJECT_NAME));
     }
-
 
     @Test
     @Epic("Multi-configuration project")
