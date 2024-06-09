@@ -47,7 +47,7 @@ public class FreestyleProjectTest extends BaseTest {
         List<String> projectList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(projectName2)
-                .setItemNameInCopyFrom(projectName1)
+                .typeItemNameInCopyFrom(projectName1)
                 .selectFreestyleAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
@@ -151,7 +151,7 @@ public class FreestyleProjectTest extends BaseTest {
 
 //                .setItemNameInCopyFrom(oldProjectName1.substring(0, 1))
 //                .getCopyFormElementsList()
-                .setItemNameInCopyFrom(oldProjectName1)
+                .typeItemNameInCopyFrom(oldProjectName1)
                 .clickOkAnyway(new FreestyleConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()

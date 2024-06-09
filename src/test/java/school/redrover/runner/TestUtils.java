@@ -178,7 +178,7 @@ public final class TestUtils {
 
         return new HomePage(baseTest.getDriver()).getItemList()
                 .stream()
-                .filter(el -> el.substring(0, firstLetters.length()).equalsIgnoreCase(firstLetters))
+                .filter(el -> el.substring(0, firstLetters.length()).equals(firstLetters))
                 .toList();
     }
 

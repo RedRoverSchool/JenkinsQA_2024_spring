@@ -51,7 +51,7 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
     private WebElement breadcrumbsDropdownDelete;
 
     @FindBy(xpath = "//*[span = 'Delete Multi-configuration project']")
-    private WebElement menuDelete;
+    private WebElement sidebarDelete;
 
     @FindBy(xpath = "//*[contains(@href, 'rename')]")
     private WebElement menuRename;
@@ -130,13 +130,15 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
         return breadcrumbs.getAttribute("data-href").contains(folderName + "/job/" + projectName);
     }
 
-    public DeleteDialog clickDeleteInMenu(DeleteDialog deleteDialog) {
-        menuDelete.click();
+    public DeleteDialog clickSidebarDelete() {
+        sidebarDelete.click();
+
         return new DeleteDialog(getDriver());
     }
 
     public MultiConfigurationRenamePage clickRenameInMenu() {
         menuRename.click();
+
         return new MultiConfigurationRenamePage(getDriver());
     }
 
