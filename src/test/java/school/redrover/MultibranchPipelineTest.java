@@ -58,7 +58,7 @@ public class MultibranchPipelineTest extends BaseTest {
         List<String> itemList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(secondItemName)
-                .setItemNameInCopyForm(firstProjectName)
+                .setItemNameInCopyFrom(firstProjectName)
                 .clickOkAnyway(new MultibranchPipelineConfigPage(getDriver()))
                 .clickLogo()
                 .getItemList();

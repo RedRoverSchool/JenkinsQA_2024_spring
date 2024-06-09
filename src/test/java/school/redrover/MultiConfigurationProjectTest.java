@@ -313,7 +313,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("")
+    @Story("Edit configuration")
     @Description("Add discard old builds configurations to project")
     public void testAddDiscardOldBuildsConfigurationsToProject(){
         final String daysToKeep = generateRandomNumber();

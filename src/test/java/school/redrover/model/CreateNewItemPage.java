@@ -3,7 +3,6 @@ package school.redrover.model;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.base.BaseConfigPage;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
 
@@ -145,14 +144,6 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
 
         return this;
     }
-
-
-    public CreateNewItemPage clickProjectType(String type) {
-        getDriver().findElement(By.xpath("//span[text()='" + type + "']")).click();
-
-        return this;
-    }
-
 
     public String getErrorMessageInvalidCharacterOrDuplicateName() {
         return errorItemNameInvalid.getText();

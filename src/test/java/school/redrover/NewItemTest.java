@@ -173,7 +173,6 @@ public class NewItemTest extends BaseTest {
     }
 
     @Test(dataProvider = "existingJobsNames")
-    @Test(dataProvider = "existingJobsNames")
     public void testCopyFromExistingJob(String type, String jobName) {
 
         HomePage homePage;
@@ -196,19 +195,8 @@ public class NewItemTest extends BaseTest {
 
         Assert.assertEquals(QuantityItemsWithCopies,2);
         Assert.assertTrue(homePage.isItemExists(jobName + "Copy"));
-
-        Integer QuantityItemsWithCopies= new HomePage(getDriver())
-                .getItemList()
-                .size();
-
-        Assert.assertEquals(QuantityItemsWithCopies,2);
-        Assert.assertTrue(homePage.isItemExists(jobName + "Copy"));
         Assert.assertTrue(homePage.isItemExists(jobName));
     }
-
-        Assert.assertTrue(homePage.isItemExists(jobName));
-          }
-
 
     @Test
     public void testDropdownNamesMenuContentWhenCopyProject() {
