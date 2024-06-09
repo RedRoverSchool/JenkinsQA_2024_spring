@@ -1,6 +1,7 @@
 package school.redrover.model;
 
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -90,6 +91,8 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
         return getWait2().until(ExpectedConditions.visibilityOf(description)).getText();
     }
 
+
+    @Step("Click on the button 'Configure' on sidebar")
     public MultiConfigurationConfigPage clickConfigureButton() {
         configureButton.click();
 

@@ -1,8 +1,11 @@
 package school.redrover;
 
+import io.qameta.allure.Allure;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Story;
 import org.openqa.selenium.By;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
@@ -10,6 +13,7 @@ import school.redrover.runner.TestUtils;
 import java.util.List;
 import java.util.Random;
 
+@Epic("Multi-configuration project")
 public class MultiConfigurationProjectTest extends BaseTest {
 
     private static final String PROJECT_NAME = "MCProject";
@@ -255,29 +259,32 @@ public class MultiConfigurationProjectTest extends BaseTest {
         Assert.assertTrue(isProjectDeleted);
     }
 
-    @Ignore
     @Test
+    @Story("")
+    @Description("Add discard old builds configurations to project")
     public void testAddDiscardOldBuildsConfigurationsToProject(){
         final String daysToKeep = generateRandomNumber();
         final String numToKeep = generateRandomNumber();
         final String artifactDaysToKeep = generateRandomNumber();
         final String artifactNumToKeep = generateRandomNumber();
 
-        List<String> discardOldBuildsList = TestUtils
-                .createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
+        TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
+
+        List<String> discardOldBuildsList = new HomePage(getDriver())
                 .clickSpecificMultiConfigurationProjectName(PROJECT_NAME)
                 .clickConfigureButton()
                 .clickDiscardOldBuilds()
-                .setDaysToKeep(daysToKeep)
-                .setMaxNumberOfBuildsToKeep(numToKeep)
+                .enterNumberOfDaysToKeepBuilds(daysToKeep)
+                .enterMaxNumberOfBuildsToKeep(numToKeep)
                 .clickAdvancedButton()
-                .setArtifactDaysToKeepStr(artifactDaysToKeep)
-                .setArtifactNumToKeepStr(artifactNumToKeep)
+                .enterNumberOfDaysToKeepArtifacts(artifactDaysToKeep)
+                .enterMaxNumberOfBuildsToKeepWithArtifacts(artifactNumToKeep)
                 .clickSaveButton()
                 .clickConfigureButton()
                 .clickAdvancedButton()
                 .getDiscardOldBuildsListText();
 
+        Allure.step("Expected result : Values of discard old builds parameters are the same as entered");
         Assert.assertEquals(
                 discardOldBuildsList,
                 List.of(daysToKeep, numToKeep, artifactDaysToKeep, artifactNumToKeep));
