@@ -3,24 +3,27 @@ package school.redrover;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
+
 import static school.redrover.runner.TestUtils.goToMainPage;
-import org.testng.annotations.DataProvider;
 
 public class PipelineTest extends BaseTest {
 
@@ -31,8 +34,6 @@ public class PipelineTest extends BaseTest {
     private static final String DESCRIPTION = "Lorem ipsum dolor sit amet";
 
     private static final String SUCCEED_BUILD_EXPECTED = "Finished: SUCCESS";
-
-    private static final List<String> NAME_PROJECTS = List.of("PPProject", "PPProject2");
 
     private static final String pipelineScript = "pipeline {\nagent any\n\nstages {\n";
 
@@ -701,7 +702,7 @@ public class PipelineTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
-                .sendScript(1,PIPELINE_SCRIPT)
+                .sendScript(1, PIPELINE_SCRIPT)
                 .clickSaveButton()
                 .makeBuilds(5)
                 .waitBuildToFinish()
@@ -958,7 +959,7 @@ public class PipelineTest extends BaseTest {
     @Description("Verify the pipeline configuration has interactive sections: General, Advanced Project Options, Pipeline")
     public void testSectionsOfSidePanelAreVisible() {
 
-        List<String> expectedSectionsNameList = new ArrayList<>(Arrays.asList("General","Advanced Project Options","Pipeline"));
+        List<String> expectedSectionsNameList = new ArrayList<>(Arrays.asList("General", "Advanced Project Options", "Pipeline"));
 
         List<String> sectionsNameList = new HomePage(getDriver())
                 .clickCreateAJob()
@@ -969,12 +970,12 @@ public class PipelineTest extends BaseTest {
                 .clickSidebarConfigureButton()
                 .getSectionsNameList();
 
-        Assert.assertEquals(sectionsNameList,expectedSectionsNameList);
+        Assert.assertEquals(sectionsNameList, expectedSectionsNameList);
     }
 
     @Test
     public void testAddDisplayNameInAdvancedSection() {
-         String projectsDisplayNameInHeader = new HomePage(getDriver())
+        String projectsDisplayNameInHeader = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
@@ -1157,12 +1158,12 @@ public class PipelineTest extends BaseTest {
 
     @DataProvider(name = "tooltipTextProvider")
     public Object[][] tooltipTextProvider() {
-        return new Object[][] {
-                { "Discard old builds" },
-                { "Pipeline speed/durability override" },
-                { "Preserve stashes from completed builds" },
-                { "This project is parameterized" },
-                { "Throttle builds" },
+        return new Object[][]{
+                {"Discard old builds"},
+                {"Pipeline speed/durability override"},
+                {"Preserve stashes from completed builds"},
+                {"This project is parameterized"},
+                {"Throttle builds"},
                 {"Build after other projects are built"},
                 {"Build periodically"},
                 {"GitHub hook trigger for GITScm polling"},
@@ -1173,6 +1174,7 @@ public class PipelineTest extends BaseTest {
                 {"Script"}
         };
     }
+
     @Test(dataProvider = "tooltipTextProvider")
     void testVerifyConfigurationPageHaveTooltips(String tooltipText) {
         new HomePage(getDriver())
