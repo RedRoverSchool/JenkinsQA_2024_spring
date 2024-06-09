@@ -936,7 +936,7 @@ public class PipelineTest extends BaseTest {
         PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
-                .clickProjectType(TestUtils.ProjectType.PIPELINE)
+                .clickProjectType("Pipeline")
                 .clickOkAnyway(new PipelineConfigPage(getDriver()))
                 .clickDiscardOldBuilds()
                 .setNumberBuildsToKeep(1)
