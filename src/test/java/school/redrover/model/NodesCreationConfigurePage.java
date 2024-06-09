@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -19,19 +20,22 @@ public class NodesCreationConfigurePage extends BasePage<NodesCreationConfigureP
         super(driver);
     }
 
+    @Step("Click on the button 'Save'")
     public NodesTablePage clickSaveButton() {
         saveButton.click();
 
         return new NodesTablePage(getDriver());
     }
 
-    public NodesCreationConfigurePage createLabel(String labelName) {
+    @Step("Type text to the Labels input field")
+    public NodesCreationConfigurePage typeToLabelsInputField(String labelName) {
         labelsField.sendKeys(labelName);
 
         return new NodesCreationConfigurePage(getDriver());
     }
 
-    public NodesCreationConfigurePage addDescription(String description) {
+    @Step("Type text to the Description input area")
+    public NodesCreationConfigurePage typeDescriptionText(String description) {
         descriptionField.sendKeys(description);
 
         return new NodesCreationConfigurePage(getDriver());

@@ -1,5 +1,6 @@
 package school.redrover.model.base;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -18,12 +19,19 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
     @FindBy(xpath = "//a[@class='main-search__icon-trailing']")
     private WebElement tutorialIcon;
 
+    @FindBy(tagName = "body")
+    private WebElement htmlBody;
+
+    @FindBy(id = "jenkins-name-icon")
+    private WebElement logo;
+
     public BasePage(WebDriver driver) {
         super(driver);
     }
 
+    @Step("Click on the Jenkins logo on the header")
     public HomePage clickLogo() {
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        logo.click();
 
         return new HomePage(getDriver());
     }
@@ -146,4 +154,10 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
 
         return this;
     }
+
+    public String getBackgroundColor() {
+
+        return htmlBody.getCssValue("background-color");
+    }
+
 }

@@ -1,5 +1,8 @@
 package school.redrover;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Story;
 import org.openqa.selenium.Keys;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -12,29 +15,23 @@ import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
-
+@Epic("Folder")
 public class FolderTest extends BaseTest {
 
     private static final String FOLDER_NAME = "First_Folder";
-
     private static final String NEW_FOLDER_NAME = "Renamed_First_Folder";
-
     private static final String THIRD_FOLDER_NAME = "Dependant_Test_Folder";
-
     private static final String FOLDER_TO_MOVE = "Folder_to_move_into_the_first";
-
     private static final String FOLDER_TO_MOVE_2 = "Folder_to_move_into_the_first_2";
-
     private static final String PIPELINE_NAME = "Pipeline Sv";
-
     private static final String IVAN_S_FREE_STYLE_PROJECT = "Ivan's Freestyle";
-
     private static final String FOLDER_DESCRIPTION_FIRST = "Some description of the folder.";
-
     private static final String FOLDER_DESCRIPTION_SECOND = "NEW description of the folder.";
 
 
     @Test
+    @Story("US_04.000 Create Folder")
+    @Description("Verify the creation of a folder via Create a job")
     public void testCreateViaCreateAJob() {
         String folderBreadcrumbName = new HomePage(getDriver())
                 .clickCreateAJob()
@@ -47,6 +44,8 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateViaCreateAJob")
+    @Story("US_04.004 Add and edit description of the folder ")
+    @Description("Add description of the folder and save it")
     public void testAddDescription() {
         String textInDescription = new FolderProjectPage(getDriver())
                 .clickAddOrEditDescription()
@@ -58,6 +57,8 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testAddDescription")
+    @Story("US_04.004 Add and edit description of the folder ")
+    @Description("Edit description of the folder and save it")
     public void testChangeDescription() {
         String textInDescription = new FolderProjectPage(getDriver())
                 .clickAddOrEditDescription()
@@ -70,7 +71,9 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
-    public void testDotAsFirstFolderNameCharErrorMessage() {
+    @Story("US_04.000 Create Folder")
+    @Description("Verify error message when create a folder with a dot as the first character")
+    public void testErrorWhenCreatingFolderWithDotAsFirstCharacter() {
         String errorMessageText = new HomePage(getDriver())
                 .clickNewItem()
                 .selectFolder()
@@ -82,7 +85,9 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
-    public void testDotAsLastFolderNameCharErrorMessage() {
+    @Story("US_04.000 Create Folder")
+    @Description("Verify error message when create a folder with a dot as the last character")
+    public void testErrorWhenCreatingFolderWithDotAsLastCharacter() {
         String errorMessageText = new HomePage(getDriver())
                 .clickNewItem()
                 .selectFolder()
@@ -94,6 +99,8 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateViaCreateAJob")
+    @Story("US_04.001 Rename Folder")
+    @Description("Rename Folder via Breadcrumbs dropdown menu")
     public void testRenameFolderViaFolderBreadcrumbsDropdownMenu() {
         String folderStatusPageHeading = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
@@ -109,6 +116,8 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = {"testCreateViaCreateAJob", "testRenameFolderViaFolderBreadcrumbsDropdownMenu"})
+    @Story("US_04.001 Rename Folder")
+    @Description("Rename Folder via main page dropdown")
     public void testRenameFolderViaMainPageDropdownMenu() {
         String folderStatusPageHeading = new HomePage(getDriver())
                 .openItemDropdownWithSelenium(NEW_FOLDER_NAME)
@@ -122,12 +131,13 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
+    @Story("US_04.001 Rename Folder")
+    @Description("Rename Folder via sidebar")
     public void testRenameFolderViaSidebarMenu() {
+        TestUtils.createFolderProject(this, FOLDER_NAME);
+
         String folderRenamedName = new HomePage(getDriver())
-                .clickCreateAJob()
-                .setItemName(FOLDER_NAME)
-                .selectFolderAndClickOk()
-                .clickSaveButton()
+                .clickJobByName(FOLDER_NAME, new FolderProjectPage(getDriver()))
                 .clickOnRenameButton()
                 .setNewName(NEW_FOLDER_NAME)
                 .clickRename()
@@ -137,6 +147,8 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
+    @Story("US_04.002 Move Folder to Folder")
+    @Description("Verify a Folder can be moved into another Folder via breadcrumbs")
     public void testFolderMovedIntoAnotherFolderViaBreadcrumbs() {
         TestUtils.createFolderProject(this, FOLDER_NAME);
         TestUtils.createFolderProject(this, FOLDER_TO_MOVE);
@@ -154,23 +166,27 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testFolderMovedIntoAnotherFolderViaBreadcrumbs")
+    @Story("US_04.005 Create a job inside folder")
+    @Description("Add Multi Configuration Project inside folder")
     public void testCreateMultiConfigurationProjectInFolder() {
-        final String MULTI_CONFIGURATION_NAME = "MultiConfigurationProject_1";
+        final String multiConfigurationProject = "MultiConfigurationProject_1";
 
-        FolderProjectPage folderProjectPage = new HomePage(getDriver())
+        boolean isItemCreated = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
                 .clickNewItemInsideFolder()
-                .setItemName(MULTI_CONFIGURATION_NAME)
+                .setItemName(multiConfigurationProject)
                 .selectFreestyleAndClickOk()
                 .clickLogo()
-                .clickSpecificFolderName(FOLDER_NAME);
+                .clickSpecificFolderName(FOLDER_NAME)
+                .isItemExistsInsideFolder(multiConfigurationProject);
 
-        Assert.assertTrue(folderProjectPage.isItemExistsInsideFolder(MULTI_CONFIGURATION_NAME));
+        Assert.assertTrue(isItemCreated);
     }
 
     @Test(dependsOnMethods = "testCreateMultiConfigurationProjectInFolder")
+    @Story("US_04.003 Delete Folder")
+    @Description("Delete folder from dropdown menu")
     public void testDeleteFolderViaDropdown() {
-
         boolean isFolderDeleted = new HomePage(getDriver())
                 .openItemDropdown(FOLDER_NAME)
                 .clickDeleteInDropdown(new DeleteDialog(getDriver()))
@@ -181,7 +197,9 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
-    public void testMoveFolderToFolderViaChevron() {
+    @Story("US_04.002 Move Folder to Folder")
+    @Description("Verify a Folder can be moved into another Folder via dropdown menu")
+    public void testMoveFolderToFolderViaDropDownMenu() {
         TestUtils.createFolderProject(this, FOLDER_TO_MOVE);
         TestUtils.createFolderProject(this, FOLDER_NAME);
 
@@ -197,7 +215,9 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
-    public void testCreateViaNewItem() {
+    @Story("US_04.000 Create Folder")
+    @Description("Verify the creation of a folder via Sidebar Menu")
+    public void testCreateViaSidebarMenu() {
         String folderName = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FOLDER_NAME)
@@ -213,7 +233,9 @@ public class FolderTest extends BaseTest {
         Assert.assertListContainsObject(itemList, FOLDER_NAME, "Folder is not created");
     }
 
-    @Test(dependsOnMethods = "testCreateViaNewItem")
+    @Test(dependsOnMethods = "testCreateViaSidebarMenu")
+    @Story("US_04.000 Create Folder")
+    @Description("Verify that created Folder is empty")
     public void testCheckNewFolderIsEmpty() {
         Boolean isFolderEmpty = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
@@ -223,6 +245,8 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCheckNewFolderIsEmpty")
+    @Story("US_04.000 Create Folder")
+    @Description("Validate that a newly created folder is empty")
     public void testNewlyCreatedFolderIsEmptyAJ() {
         final String folderName = "NewProjectFolder";
         final String thisFolderIsEmptyMessage = "This folder is empty";
@@ -250,6 +274,8 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testNewlyCreatedFolderIsEmptyAJ")
+    @Story("US_04.005 Create a job inside folder")
+    @Description("Add Pipeline Project inside folder")
     public void testCreateJobPipelineInFolder() {
         String expectedFullProjectName = String.format("Full project name: %s/%s", FOLDER_NAME, PIPELINE_NAME);
 
@@ -271,6 +297,8 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateJobPipelineInFolder")
+    @Story("US_04.005 Create a job inside folder")
+    @Description("Verify the creation of two inner folder in existed Folder")
     public void testCreateTwoInnerFolder() {
         List<String> itemNames = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
@@ -292,8 +320,10 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateTwoInnerFolder")
+    @Story("US_04.005 Create a job inside folder")
+    @Description("Verify the creation of Freestyle project in existed Folder")
     public void testCreateFreeStyleProjectInsideRootFolder() {
-        List<String> insideFilderItemList = new HomePage(getDriver())
+        List<String> insideFolderItemList = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
                 .clickNewItemInsideFolder()
                 .setItemName(IVAN_S_FREE_STYLE_PROJECT)
@@ -303,10 +333,12 @@ public class FolderTest extends BaseTest {
                 .clickSpecificFolderName(FOLDER_NAME)
                 .getItemListInsideFolder();
 
-        Assert.assertListContainsObject(insideFilderItemList, IVAN_S_FREE_STYLE_PROJECT, "FreeStyle Project was not created");
+        Assert.assertListContainsObject(insideFolderItemList, IVAN_S_FREE_STYLE_PROJECT, "FreeStyle Project was not created");
     }
 
     @Test(dependsOnMethods = "testCreateFreeStyleProjectInsideRootFolder")
+    @Story("04.003 Delete Folder")
+    @Description("Delete folder from folder's page using left menu panel")
     public void testDeleteFolder() {
         List<String> jobList = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
@@ -318,7 +350,9 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
-    public void testSpecialCharactersNameFolder() {
+    @Story("US_04.000 Create Folder")
+    @Description("Verify error message when create a folder with invalid character")
+    public void testCreateProjectInvalidChar() {
         String header1Text = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName("Fold%erdate")

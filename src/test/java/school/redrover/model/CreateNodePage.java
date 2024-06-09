@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -14,32 +15,36 @@ public class CreateNodePage extends BasePage<CreateNodePage> {
     private WebElement permanentAgentRadioButton;
 
     @FindBy(id = "ok")
-    private WebElement okButton;
+    private WebElement createButton;
 
     public CreateNodePage(WebDriver driver) {
         super(driver);
     }
 
-    public CreateNodePage setNodeName(String name) {
+    @Step("Type the text to name input field")
+    public CreateNodePage typeNodeName(String name) {
         nameInput.sendKeys(name);
 
         return this;
     }
 
+    @Step("Select radio button 'Permanent Agent'")
     public CreateNodePage selectPermanentAgentRadioButton() {
         permanentAgentRadioButton.click();
 
         return this;
     }
 
-    public NodesCreationConfigurePage clickOkButton() {
-        okButton.click();
+    @Step("Click on the button 'Create'")
+    public NodesCreationConfigurePage clickCreateButton() {
+        createButton.click();
 
         return new NodesCreationConfigurePage(getDriver());
     }
 
-    public NodesErrorPage clickOkButtonOnError() {
-        okButton.click();
+    @Step("Click on the button 'Create'")
+    public NodesErrorPage clickCreateButtonOnError() {
+        createButton.click();
 
         return new NodesErrorPage(getDriver());
     }

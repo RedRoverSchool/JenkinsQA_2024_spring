@@ -12,7 +12,10 @@ import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -585,7 +588,7 @@ public class PipelineTest extends BaseTest {
 
         List<String> buildList = new HomePage(getDriver())
                 .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
-                .clickSidebarConfigureButton(PIPELINE_NAME)
+                .clickSidebarConfigureButton()
                 .clickDiscardOldBuilds()
                 .setNumberBuildsToKeep(maxNumberBuildsToKeep)
                 .clickSaveButton()
@@ -605,11 +608,11 @@ public class PipelineTest extends BaseTest {
     public void testSetPipelineScript() {
         String echoScriptName = new HomePage(getDriver())
                 .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
-                .clickSidebarConfigureButton(PIPELINE_NAME)
+                .clickSidebarConfigureButton()
                 .scrollToPipelineScript()
                 .selectSamplePipelineScript("hello")
                 .clickSaveButton()
-                .clickSidebarConfigureButton(PIPELINE_NAME)
+                .clickSidebarConfigureButton()
                 .scrollToPipelineScript()
                 .getScriptText();
 
@@ -677,65 +680,32 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
+    @Epic("Build history")
+    @Story("US_08.002 Take information about a project built")
+    @Description("Check List of builds is displayed in descending'")
     public void testBuildAttributesDescending() {
-
-        int number_of_stages = 1;
-        int buildsQtt = 5;
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/manage']"))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='computer']"))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//td/a[contains(@href, 'built-in')]"))).click();
-
-        try {
-            getWait2().until(ExpectedConditions.elementToBeClickable(
-                    By.xpath("//button[@class='jenkins-button jenkins-button--primary ']"))).click();
-            getDriver().findElement(By.id("jenkins-name-icon")).click();
-
-        } catch (Exception e) {
-
-            getDriver().findElement(By.id("jenkins-name-icon")).click();
-        }
-
-        TestUtils.createItem(TestUtils.PIPELINE, PIPELINE_NAME, this);
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
-                By.xpath("//a[contains(@href, 'configure')]")))).click();
-
-        String pipelineScript = """
+        final String PIPELINE_SCRIPT = """
                 pipeline {
                 agent any
 
                 stages {
                 """;
 
-        getDriver().findElement(By.className("ace_text-input")).sendKeys(pipelineScript);
+        List<String> actualOrder = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickNodes()
+                .clickOnBuiltInNode()
+                .clickBringThisNodeBackOnlineButton()
+                .clickLogo()
 
-        for (int i = 1; i <= number_of_stages; i++) {
-
-            String stage = "\nstage('stage " + i + "') {\n" +
-                    "steps {\n" +
-                    "echo 'test " + i + "'\n";
-            getDriver().findElement(By.className("ace_text-input")).sendKeys(stage);
-            getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
-            getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
-        }
-
-        getDriver().findElement(By.name("Submit")).click();
-
-        WebElement buildButton = getDriver().findElement(
-                By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/build?delay=0sec']"));
-
-        for (int i = 1; i <= buildsQtt; i++) {
-            buildButton.click();
-            getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
-                    By.xpath("//span[@class='badge']/a[@href='" + i + "']")));
-        }
-
-        List<WebElement> buildTable = getWait2().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
-                By.className("badge")));
-
-        List<String> actualOrder = TestUtils.getTexts(buildTable);
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .sendScript(1,PIPELINE_SCRIPT)
+                .clickSaveButton()
+                .makeBuilds(5)
+                .waitBuildToFinish()
+                .getBuildHistoryList();
 
         List<String> expectedOrder = new ArrayList<>(actualOrder);
         expectedOrder.sort(Collections.reverseOrder());
@@ -797,43 +767,6 @@ public class PipelineTest extends BaseTest {
         }
     }
 
-    @Ignore
-    @Test
-    public void testFullStageViewPopUpWindowIsDisplayed() {
-        int number_of_stages = 2;
-        TestUtils.createNewItem(this, PIPELINE_NAME, TestUtils.Item.PIPELINE);
-
-        String pipelineScript = """
-                pipeline {
-                agent any
-
-                stages {
-                """;
-
-        getDriver().findElement(By.className("ace_text-input")).sendKeys(pipelineScript);
-
-        for (int i = 1; i <= number_of_stages; i++) {
-
-            String stage = "\nstage('stage " + i + "') {\n" +
-                    "steps {\n" +
-                    "echo 'test " + i + "'\n";
-            getDriver().findElement(By.className("ace_text-input")).sendKeys(stage);
-            getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
-            getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
-        }
-
-        getDriver().findElement(By.name("Submit")).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@data-build-success='Build scheduled']"))).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='table-box']")));
-        getDriver().findElement(By.xpath("//tr[@data-runid='1']//td[@data-stageid='6']")).click();
-        getDriver().findElement(By.xpath("//div[@class='btn btn-small cbwf-widget cbwf-controller-applied stage-logs']")).click();
-
-        String actualResult = getDriver().findElement(By.xpath("//div[@class='cbwf-dialog cbwf-stage-logs-dialog']")).getText();
-
-        Assert.assertTrue(actualResult.contains("Stage Logs (stage 1)"));
-    }
-
-
     @Test
     public void testStageColumnHeader() {
 
@@ -844,7 +777,7 @@ public class PipelineTest extends BaseTest {
         }
 
         List<String> actualStageHeaderNameList = new HomePage(getDriver())
-                .clickNodesLink()
+                .clickBuildExecutorStatusLink()
                 .clickBuiltInNodeName()
                 .turnNodeOnIfOffline()
                 .clickNewItem()
@@ -891,32 +824,6 @@ public class PipelineTest extends BaseTest {
                 .isDescriptionPreviewVisible();
 
         Assert.assertFalse(descriptionPreviewIsDisplayed);
-    }
-
-    @Test
-    public void testVerifyNewPPCreatedByCreateJob() {
-
-        getDriver().findElement(By.cssSelector("a[href='newJob']")).click();
-        getDriver().findElement(By.cssSelector("div.add-item-name > input#name")).sendKeys(NAME_PROJECTS.get(0));
-        getDriver().findElement(By.cssSelector(".org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
-        getDriver().findElement(By.cssSelector("button#ok-button")).click();
-
-        getDriver().findElement(By.cssSelector("button.jenkins-button--primary")).click();
-
-        getDriver().findElement(By.cssSelector("li.jenkins-breadcrumbs__list-item > a[href='/']")).click();
-
-        Assert.assertTrue(getDriver().findElement(By.cssSelector("tr#job_" + NAME_PROJECTS.get(0))).isDisplayed());
-
-    }
-
-    @Test(dependsOnMethods = "testVerifyNewPPCreatedByCreateJob")
-    public void testVerifyNewPPCreatedNewItem() {
-
-        TestUtils.createNewItem(this, NAME_PROJECTS.get(1), TestUtils.Item.PIPELINE);
-
-        for (String nameProject : NAME_PROJECTS) {
-            Assert.assertTrue(getDriver().findElement(By.cssSelector("tr#job_" + nameProject)).isDisplayed());
-        }
     }
 
     @Test
@@ -1046,26 +953,23 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
+    @Epic("Pipeline")
+    @Story("US_02.004.03 Pipeline Configuration")
+    @Description("Verify the pipeline configuration has interactive sections: General, Advanced Project Options, Pipeline")
     public void testSectionsOfSidePanelAreVisible() {
-        TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
-        getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
+        List<String> expectedSectionsNameList = new ArrayList<>(Arrays.asList("General","Advanced Project Options","Pipeline"));
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[contains(text(), 'Configure')]")));
+        List<String> sectionsNameList = new HomePage(getDriver())
+                .clickCreateAJob()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickLogo()
+                .clickSpecificPipelineName(PIPELINE_NAME)
+                .clickSidebarConfigureButton()
+                .getSectionsNameList();
 
-        List<WebElement> sections = List.of(
-                getDriver().findElement(
-                        By.xpath("//div[@id='side-panel']//descendant::button[contains(@data-section-id, 'general')]")),
-                getDriver().findElement(
-                        By.xpath("//div[@id='side-panel']//descendant::button[contains(@data-section-id, 'advanced-project-options')]")),
-                getDriver().findElement(
-                        By.xpath("//div[@id='side-panel']//descendant::button[contains(@data-section-id, 'pipeline')]")));
-
-        for (WebElement section : sections) {
-            Assert.assertTrue(section.isDisplayed(),
-                    "The requested section is not found in Configure side-panel");
-        }
+        Assert.assertEquals(sectionsNameList,expectedSectionsNameList);
     }
 
     @Test
@@ -1089,7 +993,7 @@ public class PipelineTest extends BaseTest {
 
         String projectsDisplayNameInHeader = new HomePage(getDriver())
                 .clickSpecificPipelineName(PIPELINE_NAME)
-                .clickSidebarConfigureButton(PIPELINE_NAME)
+                .clickSidebarConfigureButton()
                 .clickAdvancedProjectOptionsMenu()
                 .clickAdvancedButton()
                 .setDisplayNameDescription(editedDisplayNameText)
@@ -1103,7 +1007,7 @@ public class PipelineTest extends BaseTest {
     public void testDeleteDisplayNameInAdvancedSection() {
         String projectsDisplayNameInHeader = new HomePage(getDriver())
                 .clickSpecificPipelineName(PIPELINE_NAME)
-                .clickSidebarConfigureButton(PIPELINE_NAME)
+                .clickSidebarConfigureButton()
                 .clickAdvancedProjectOptionsMenu()
                 .clickAdvancedButton()
                 .clearDisplayNameDescription()
@@ -1167,7 +1071,7 @@ public class PipelineTest extends BaseTest {
                 .selectCustomPipelineSpeedDurabilityLevel(index)
                 .scrollToPipelineScript()
                 .clickSaveButton()
-                .clickSidebarConfigureButton(PIPELINE_NAME)
+                .clickSidebarConfigureButton()
                 .getCustomPipelineSpeedDurabilityLevelText();
 
         Assert.assertTrue(selectedOption.contains(selectedOptionForCheck));
@@ -1185,7 +1089,7 @@ public class PipelineTest extends BaseTest {
                 .clickQuietPeriodCheckbox()
                 .setNumberOfSecondsInQuietPeriodInputField(numberOfSeconds)
                 .clickSaveButton()
-                .clickSidebarConfigureButton(PIPELINE_NAME)
+                .clickSidebarConfigureButton()
                 .scrollToQuietPeriodCheckbox()
                 .getQuietPeriodInputFieldValue();
 

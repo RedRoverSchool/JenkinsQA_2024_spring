@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -31,12 +32,14 @@ public class NodePage extends BasePage<NodePage> {
         return descriptionArea.getText();
     }
 
+    @Step("Click on the 'Delete Agent' on sidebar")
     public NodePage clickDeleteAgent() {
         deleteAgent.click();
 
         return this;
     }
 
+    @Step("Confirm delete by click on the 'Yes' in popup-window")
     public NodesTablePage clickYesButton() {
         yesButton.click();
 

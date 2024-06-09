@@ -158,8 +158,7 @@ public class NewItemTest extends BaseTest {
         Assert.assertEquals(errorPage.getErrorMessageText(), "No such job: " + notExistingName);
     }
 
-
-      @DataProvider(name="existingJobsNames")
+    @DataProvider(name="existingJobsNames")
     public Object[][] existingJobsNames(){
         return new Object[][]{
                 {"Freestyle project","folff"},
@@ -173,6 +172,7 @@ public class NewItemTest extends BaseTest {
         };
     }
 
+    @Test(dataProvider = "existingJobsNames")
     @Test(dataProvider = "existingJobsNames")
     public void testCopyFromExistingJob(String type, String jobName) {
 
@@ -189,12 +189,23 @@ public class NewItemTest extends BaseTest {
                 .clickOkButton()
                 .clickLogo();
 
+
         Integer QuantityItemsWithCopies= new HomePage(getDriver())
                 .getItemList()
                 .size();
 
         Assert.assertEquals(QuantityItemsWithCopies,2);
         Assert.assertTrue(homePage.isItemExists(jobName + "Copy"));
+
+        Integer QuantityItemsWithCopies= new HomePage(getDriver())
+                .getItemList()
+                .size();
+
+        Assert.assertEquals(QuantityItemsWithCopies,2);
+        Assert.assertTrue(homePage.isItemExists(jobName + "Copy"));
+        Assert.assertTrue(homePage.isItemExists(jobName));
+    }
+
         Assert.assertTrue(homePage.isItemExists(jobName));
           }
 
@@ -221,7 +232,6 @@ public class NewItemTest extends BaseTest {
         TestUtils.createMultiConfigurationProject(this, multiConfigurationProject1);
         TestUtils.createMultibranchProject(this,multiBranchPipe1);
         TestUtils.createOrganizationFolderProject(this,organizationFolder1);
-
 
         List<String> firstLettersJobs = TestUtils.getJobsBeginningFromThisFirstLetters(this, firstLetters);
 

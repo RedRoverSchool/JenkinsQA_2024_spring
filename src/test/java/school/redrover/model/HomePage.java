@@ -21,7 +21,7 @@ public class HomePage extends BasePage<HomePage> {
     private WebElement createAJobLink;
 
     @FindBy(css = "[href='/computer/']")
-    private WebElement nodesLink;
+    private WebElement buildExecutorStatusLink;
 
     @FindBy(css = "#executors tr [href]")
     private List<WebElement> nodesList;
@@ -164,8 +164,9 @@ public class HomePage extends BasePage<HomePage> {
         return new MovePage(getDriver());
     }
 
-    public NodesTablePage clickNodesLink() {
-        nodesLink.click();
+    @Step("Click on the link 'Build Executor Status'")
+    public NodesTablePage clickBuildExecutorStatusLink() {
+        buildExecutorStatusLink.click();
 
         return new NodesTablePage(getDriver());
     }
@@ -189,6 +190,7 @@ public class HomePage extends BasePage<HomePage> {
         return new MultiConfigurationProjectPage(getDriver());
     }
 
+    @Step("Click on the 'Manage Jenkins' in the sidebar menu")
     public ManageJenkinsPage clickManageJenkins() {
         manageJenkinsLink.click();
 
@@ -288,6 +290,7 @@ public class HomePage extends BasePage<HomePage> {
         return new OrganizationFolderProjectPage(getDriver());
     }
 
+    @Step("Click on Chevron of the Dashboard")
     public HomePage openDashboardBreadcrumbsDropdown() {
         WebElement chevron = dashboardBreadcrumbs.findElement(By.cssSelector("[class$='chevron']"));
         ((JavascriptExecutor) getDriver()).executeScript(
@@ -298,22 +301,11 @@ public class HomePage extends BasePage<HomePage> {
         return this;
     }
 
+    @Step("Click on Manage Jenkins in the Dashboard dropdown menu")
     public ManageJenkinsPage clickManageFromDashboardBreadcrumbsMenu() {
         manageFromDashboardBreadcrumbsMenu.click();
 
         return new ManageJenkinsPage(getDriver());
-    }
-
-    public String getBuildExecutorStatusText() {
-        return buildExecutorStatus.getText();
-    }
-
-    public List<WebElement> getBuildExecutorStatusList() {
-        return buildExecutorStatusList.stream().toList();
-    }
-
-    public int getBuildExecutorListSize() {
-        return buildExecutorStatusList.size();
     }
 
     public FullStageViewPage clickFullStageViewButton() {

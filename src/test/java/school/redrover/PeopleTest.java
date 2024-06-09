@@ -18,7 +18,7 @@ import java.util.List;
 public class PeopleTest extends BaseTest {
 
     @Test
-    @Story("View people")
+    @Story("US_07.001 View people")
     @Description("Check name 'admin' on People page")
     public void testDisplayedNameOnPeoplePage() {
 
@@ -30,7 +30,7 @@ public class PeopleTest extends BaseTest {
     }
 
     @Test
-    @Story("Sort people")
+    @Story("US_07.002 Sort people")
     @Description("Sort people by UserID, Name, Last Commit Activity, On/Off Value")
     public void testSortPeople() {
 
@@ -116,7 +116,7 @@ public class PeopleTest extends BaseTest {
     }
 
     @Test
-    @Story("Icon size")
+    @Story("US_07.003 Icon size")
     @Description("Check icon size after change to Small")
     public void testChangeIconSizeToSmall() {
         final Dimension actualIconSize = new HomePage(getDriver())
@@ -128,7 +128,7 @@ public class PeopleTest extends BaseTest {
     }
 
     @Test
-    @Story("Icon size")
+    @Story("US_07.003 Icon size")
     @Description("Check icon size after change to Medium")
     public void testChangeIconSizeToMedium() {
         final Dimension actualIconSize = new HomePage(getDriver())
@@ -140,7 +140,7 @@ public class PeopleTest extends BaseTest {
     }
 
     @Test
-    @Story("Icon size")
+    @Story("US_07.003 Icon size")
     @Description("Check icon size after change to Large")
     public void testChangeIconSizeToLarge() {
         final Dimension actualIconSize = new HomePage(getDriver())
