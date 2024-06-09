@@ -113,7 +113,6 @@ public final class TestUtils {
     }
 
     public static List<String> getJobsBeginningFromThisFirstLetters(BaseTest baseTest, String firstLetters) {
-
         return new HomePage(baseTest.getDriver())
                 .getItemList()
                 .stream()
