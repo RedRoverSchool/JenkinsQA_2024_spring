@@ -1,14 +1,14 @@
 package school.redrover;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.model.*;
+import school.redrover.model.HomePage;
+import school.redrover.model.NodesTablePage;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.TestUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Epic("Nodes")
 public class NodesTest extends BaseTest {
@@ -17,7 +17,6 @@ public class NodesTest extends BaseTest {
 
     @Step("Create Node")
     public void createNode(String nodeName) {
-
         new HomePage(getDriver())
                 .clickBuildExecutorStatusLink()
                 .clickNewNodeButton()
@@ -49,7 +48,6 @@ public class NodesTest extends BaseTest {
     @Story("US_15.001 Create Node")
     @Description("Verify a created via home page Node can be seen in Nodes table")
     public void testCreatedNodeIsInNodesTable() {
-
         createNode(NODE_NAME);
 
         NodesTablePage nodesTablePage = new NodesTablePage(getDriver());
@@ -95,11 +93,12 @@ public class NodesTest extends BaseTest {
     public void testBuiltInNodeMonitoringDataList() {
         final List<String> expectedMonitoringDataValues = new ArrayList<>(List.of(
                 "Architecture",
-                "Response Time",
                 "Clock Difference",
-                "Free Temp Space",
                 "Free Disk Space",
-                "Free Swap Space"));
+                "Free Swap Space",
+                "Free Temp Space",
+                "Response Time"
+        ));
 
         List<String> actualMonitoringDataValues = new HomePage(getDriver())
                 .clickBuildExecutorStatusLink()
@@ -107,15 +106,14 @@ public class NodesTest extends BaseTest {
                 .clickMonitoringDataButton()
                 .getMonitoringDataElementsList();
 
-        Allure.step("Expected result: The list of Monitoring Data matches the one specified");
-        TestUtils.assertEqualsLists(actualMonitoringDataValues, expectedMonitoringDataValues);
+        Allure.step("Expected result: The actual list of Monitoring Data matches the expected one");
+        Assert.assertEquals(actualMonitoringDataValues, expectedMonitoringDataValues);
     }
 
     @Test
     @Story("US_15.002 Delete Node")
     @Description("Delete Node using dropdown menu and check that this Node not displayed in Nodes table")
     public void testDeleteNodeViaDropdownMenu() {
-
         createNode(NODE_NAME);
 
         boolean isNodeExist = new NodesTablePage(getDriver())
@@ -132,7 +130,6 @@ public class NodesTest extends BaseTest {
     @Story("US_15.001 Create Node")
     @Description("Verify error message when create Node with existing name")
     public void testCreateNodeUsingExistingNameAndVerifyErrorMessage() {
-
         final String nodeName = "NewNode";
         final String expectedResult = "Agent called ‘" + nodeName + "’ already exists";
 
@@ -212,7 +209,6 @@ public class NodesTest extends BaseTest {
     @Story("US_15.003 Edit Node")
     @Description("Return online status to Node")
     public void testSwitchNodeToOnlineStatus() {
-
         Boolean isNodeOffline = new HomePage(getDriver())
                 .clickBuildExecutorStatusLink()
                 .clickOnBuiltInNode()
@@ -227,7 +223,6 @@ public class NodesTest extends BaseTest {
     @Story("US_15.001 Create Node")
     @Description("Create Node using invalid data: unsafe char in name")
     public void testCreateNodeWithInvalidData() {
-
         String actualResult = new HomePage(getDriver())
                 .clickManageJenkins()
                 .clickNodes()
@@ -245,7 +240,6 @@ public class NodesTest extends BaseTest {
     @Story("US_15.001 Create Node")
     @Description("Create Node from Manage Jenkins")
     public void testCreateNodeFromManageJenkins() {
-
         List<String> nodesList = new HomePage(getDriver())
                 .clickManageJenkins()
                 .clickNodes()
@@ -264,7 +258,6 @@ public class NodesTest extends BaseTest {
     @Story("US_15.002 Delete Node")
     @Description("Delete Node using sidebar menu and check that using searchbox in Header")
     public void testDeleteNodeViaSidebarMenu() {
-
         createNode(NODE_NAME);
 
         String searchResult = new NodesTablePage(getDriver())
