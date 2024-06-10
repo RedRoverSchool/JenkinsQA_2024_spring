@@ -3,24 +3,24 @@ package school.redrover;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
-
-import static school.redrover.runner.TestUtils.goToMainPage;
 
 @Epic("Pipeline")
 public class PipelineTest extends BaseTest {
@@ -370,7 +370,7 @@ public class PipelineTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
-                .sendScript(stagesQtt, PIPELINE_SCRIPT)
+                .sendScript(stagesQtt, pipelineScript)
                 .clickSaveButton()
                 .makeBuilds(buildsQtt)
                 .clickFullStageViewButton()
@@ -445,7 +445,7 @@ public class PipelineTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
-                .sendScript(stagesQtt, PIPELINE_SCRIPT)
+                .sendScript(stagesQtt, pipelineScript)
                 .clickSaveButton()
                 .makeBuilds(buildsQtt)
                 .getSagesQtt();
@@ -670,7 +670,6 @@ public class PipelineTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
-                .sendScript(1, PIPELINE_SCRIPT)
                 .sendScript(1, pipelineScript)
                 .clickSaveButton()
                 .makeBuilds(5)
@@ -754,7 +753,7 @@ public class PipelineTest extends BaseTest {
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .scrollToPipelineScript()
-                .sendScript(numberOfStages, PIPELINE_SCRIPT)
+                .sendScript(numberOfStages, pipelineScript)
                 .clickSaveButton().clickBuild()
                 .waitBuildToFinish()
                 .getStageHeaderNameList();
