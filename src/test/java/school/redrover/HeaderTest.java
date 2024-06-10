@@ -10,7 +10,7 @@ import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 public class HeaderTest extends BaseTest {
-    @Epic("14_Header")
+    @Epic("Header")
 
     @Test
     @Story("US_14.004 Warning item")

@@ -22,7 +22,7 @@ public class FreestyleProjectTest extends BaseTest {
     private static final String FOLDER_NAME = "Folder_Project_Name";
 
     @Test
-    @Story("US_01.000 Create Project")
+    @Story("US_01.000  Create Project")
     @Description("Verify that a new project can be created via Sidebar menu.")
     public void testCreateProjectViaSidebarMenu() {
         List<String> itemList = new HomePage(getDriver())
@@ -36,7 +36,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_01.000 Create Project")
+    @Story("US_01.000  Create Project")
     @Description("Verify that a new project can be created from an existing project.")
     public void testCreateProjectFromOtherExisting() {
         final String projectName1 = "Race Cars";
@@ -66,7 +66,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dataProvider = "provideUnsafeCharacters")
-    @Story("US_01.000 Create Project")
+    @Story("US_01.000  Create Project")
     @Description("Verify error message for project creation with invalid characters.")
     public void testCreateProjectInvalidCharsGetMassage(String unsafeChar) {
         String errorMassage = new HomePage(getDriver())
@@ -80,7 +80,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dataProvider = "provideUnsafeCharacters")
-    @Story("US_01.000 Create Project")
+    @Story("US_01.000  Create Project")
     @Description("Check OK button disabled for invalid project names.")
     public void testCreateProjectInvalidCharsDisabledOkButton(String unsafeChar) {
         boolean enabledOkButton = new HomePage(getDriver())
@@ -93,7 +93,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_01.000 Create Project")
+    @Story("US_01.000  Create Project")
     @Description("Check error when create the project with an empty name.")
     public void testCreateProjectEmptyName() {
         String errorText = new HomePage(getDriver())
@@ -107,7 +107,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_01.000 Create Project")
+    @Story("US_01.000  Create Project")
     @Description("Check error for project creation with a name exceeding character limit.")
     public void testCreateProjectWithLongestName() {
         String projectName2 = "a".repeat(260);
@@ -123,7 +123,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateProjectViaSidebarMenu")
-    @Story("US_01.000 Create Project")
+    @Story("US_01.000  Create Project")
     @Description("Check error when create the project with the same name.")
     public void testCreateProjectWithDuplicateName() {
         String errorMessage = new HomePage(getDriver())
@@ -137,7 +137,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_00.009 Create Project")
+    @Story("US_01.000  Create Project")
     @Description("Verify project can be copied from a container.")
     public void testCopyFromContainer() {
         String oldProjectName1 = "Race Cars";
@@ -162,7 +162,7 @@ public class FreestyleProjectTest extends BaseTest {
 
 
     @Test
-    @Story("US_01.000 Create Project")
+    @Story("US_01.000  Create Project")
     @Description("Verify configuration page open when the project is created.")
     public void testOpenConfigurePageOfProject() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
@@ -179,8 +179,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_01.005 Move Project")
-    @Description("Verify moving the project to a folder via the sidebar.")
+    @Story("US_01.005  Move Project")
+    @Description("Move the project to a Folder via the sidebar")
     public void testMoveProjectToFolderViaSideBar() {
         String expectedText = String.format("Full project name: %s/%s", FOLDER_NAME, FREESTYLE_PROJECT_NAME);
 
@@ -198,8 +198,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_01.005 Move Project")
-    @Description("Verify moving the project to a folder via the dropdown menu.")
+    @Story("US_01.005  Move Project")
+    @Description("Move the project to a Folder via Dropdown")
     public void testMoveProjectToFolderViaDropdown() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
         TestUtils.createFolderProject(this, FOLDER_NAME);
@@ -216,9 +216,9 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testMoveProjectToFolderViaDropdown")
-    @Story("US_01.005 Move Project")
-    @Description("Verify via breadcrumbs moving the project to a folder.")
-    public void testCheckMovedFreestyleProjectViaBreadcrumb() {
+    @Story("US_01.005  Move Project")
+    @Description("Move the project to a Folder via breadcrumbs")
+    public void testMoveProjectToFolderViaBreadcrumb() {
         List<String> itemListInsideFolder = new HomePage(getDriver())
                 .getHeader().clickMyViewsOnHeaderDropdown()
                 .clickBreadcrumbAll()
@@ -229,8 +229,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_01.001 Add description")
-    @Description("Verify adding a description to project by 'Add Description' button.")
+    @Story("US_01.006  Change project description")
+    @Description("Add project description by 'Add Description' button")
     public void testAddDescriptionUsingAddDescriptionButton() {
         String projectDescription = new HomePage(getDriver())
                 .clickNewItem().setItemName(FREESTYLE_PROJECT_NAME)
@@ -245,8 +245,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testAddDescriptionUsingAddDescriptionButton")
-    @Story("US_01.005 Edit description Project")
-    @Description("Verify the edited description is visible.")
+    @Story("US_01.006  Change project description")
+    @Description("Add project description")
     public void testEditProjectDescription() {
         String projectDescriptionText = new HomePage(getDriver())
                 .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -260,8 +260,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testEditProjectDescription")
-    @Story("US_01.007 Delete description Project")
-    @Description("Verify deleting the description of the project.")
+    @Story("US_01.006  Change project description")
+    @Description("Delete project description")
     public void testDeleteProjectDescription() {
         boolean addDescriptionButtonEnable = new HomePage(getDriver())
                 .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -274,8 +274,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_01.003 Disable/Enable Project")
-    @Description("Disable project.")
+    @Story("US_01.003  Disable/Enable Project")
+    @Description("Disable project")
     public void testDisableProject() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
@@ -288,8 +288,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testDisableProject")
-    @Story("US_01.003 Disable/Enable Project")
-    @Description("Enable disabled project.")
+    @Story("US_01.003  Disable/Enable Project")
+    @Description("Enable disabled project")
     public void testEnableProject() {
         String disableButtonText = new HomePage(getDriver())
                 .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
@@ -300,7 +300,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testEnableProject")
-    @Story("US_01.008 Build now Project.")
+    @Story("US_01.007  Build now Project")
     @Description("Verify that the project can be successfully built")
     public void testBuildNowProject() {
         String actualResult = new HomePage(getDriver())
@@ -313,8 +313,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_01.002 Rename project")
-    @Description("Verify that the project can be successfully renamed via Sidebar Menu")
+    @Story("US_01.002  Rename project")
+    @Description("Rename project from project's page via left sidebar panel")
     public void testRenameProjectViaSidebarMenu() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
@@ -330,8 +330,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_01.002 Rename project")
-    @Description("Verify that the project can be successfully renamed via Dropdown Menu")
+    @Story("US_01.002  Rename project")
+    @Description("Rename project via dropdown menu")
     public void testRenameProjectViaDropdown() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
@@ -346,8 +346,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_01.002 Rename project")
-    @Description("Verify that the project can be successfully renamed via Breadcrumbs Dropdown Menu")
+    @Story("US_01.002  Rename project")
+    @Description("Rename project via breadcrumb navigation menu on project's page")
     public void testRenameProjectViaBreadcrumbsDropdown() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
@@ -364,7 +364,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_01.002 Rename project")
+    @Story("US_01.002  Rename project")
     @Description("Check error when rename the project with empty name")
     public void testDropdownRenameWithEmptyName() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
@@ -379,8 +379,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_01.004 Delete project")
-    @Description("Delete project from project's page left side panel")
+    @Story("US_01.004  Delete project")
+    @Description("Delete project from project's page left sidebar panel")
     public void testDeleteProjectViaSidebar() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
@@ -394,8 +394,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_01.004 Delete project")
-    @Description("Delete project from breadcrumb navigation menu on project's page")
+    @Story("US_01.004  Delete project")
+    @Description("Delete project via breadcrumb navigation menu on project's page")
     public void testGetWelcomePageWhenDeleteProjectViaBreadCrumbMenu() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
@@ -410,9 +410,9 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_01.004 Delete project")
-    @Description("Delete project from drop-down menu")
-    public void testDeleteProjectDropdownMenu() {
+    @Story("US_01.004  Delete project")
+    @Description("Delete project via dropdown menu")
+    public void testDeleteProjectViaDropdownMenu() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
         boolean isItemDeleted = new HomePage(getDriver())
