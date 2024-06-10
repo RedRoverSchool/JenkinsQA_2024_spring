@@ -433,7 +433,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.004 Pipeline Configuration")
+    @Story("US_02.004 Verify the Pipeline configuration")
     @Description("Verify that a pipeline with a specified number of stages can be created via pipeline script")
     public void testStagesQtt() {
         final int stagesQtt = 5;
@@ -575,7 +575,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testSetNumberBuildsToKeep")
-    @Story("US_02.004 Pipeline Configuration")
+    @Story("US_02.004 Verify the Pipeline configuration")
     @Description("Set 'Hello world' pipeline script")
     public void testSetPipelineScript() {
         String echoScriptName = new HomePage(getDriver())
@@ -926,7 +926,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.004 Pipeline Configuration")
+    @Story("US_02.004 Verify the Pipeline configuration")
     @Description("Verify the pipeline configuration has interactive sections: General, Advanced Project Options, Pipeline")
     public void testSectionsOfSidePanelAreVisible() {
 

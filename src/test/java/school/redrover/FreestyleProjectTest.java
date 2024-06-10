@@ -12,7 +12,7 @@ import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
-@Epic("FreestyleProject")
+@Epic("Freestyle project")
 public class FreestyleProjectTest extends BaseTest {
 
     private static final String FREESTYLE_PROJECT_NAME = "Freestyle_Project_Name";
@@ -137,7 +137,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_01.009 Create a new item from other existing")
+    @Story("US_01.009 Create the Project from other existing")
     @Description("Verify project can be copied from a container.")
     public void testCopyFromContainer() {
         String oldProjectName1 = "Race Cars";

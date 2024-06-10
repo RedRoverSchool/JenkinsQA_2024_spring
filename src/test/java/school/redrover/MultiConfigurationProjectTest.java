@@ -3,18 +3,16 @@ package school.redrover;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.Sleeper;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
+
 import java.util.List;
 import java.util.Random;
 
-
+@Epic("Multi-configuration project")
 public class MultiConfigurationProjectTest extends BaseTest {
 
     private static final String PROJECT_NAME = "MCProject";
@@ -30,7 +28,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
 
     @Test
-    @Epic("Multiconfiguration project")
+    @Epic("Multi-configuration project")
     @Story("US_03.004  Rename project")
     @Description("Check, an existing MultiConfiguration Project can be renamed")
     public void testRenameProjectViaMainPageDropdown() {
@@ -50,7 +48,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    @Epic("Multiconfiguration project")
+    @Epic("Multi-configuration project")
     @Story("US_03.001 Add/edit description")
     @Description("Adding the MultiConfiguration project description")
     public void testAddDescription() {
@@ -67,7 +65,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    @Epic("Multiconfiguration project")
+    @Epic("Multi-configuration project")
     @Story("US_03.001 Add/edit description")
     @Description("Add some text above to existing description of the MultiConfiguration Project")
     public void testEditDescriptionWithoutDelete() {
@@ -92,7 +90,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    @Epic("Multiconfiguration project")
+    @Epic("Multi-configuration project")
     @Story("US_03.001 Add/edit description")
     @Description("Check, the text in a preview field  equals to the text in the description field ")
     public void testDescriptionPreview() {
@@ -207,8 +205,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 //    }
 
     @Test
-    @Epic("New item ")
-    @Story("US_00.003  Create Multiconfiguration project")
+    @Story("US_03.000 Create Project")
     @Description("It is not possible to create project without an item name")
     public void testCreateProjectWithoutName() {
         final String EMPTY_NAME = "";

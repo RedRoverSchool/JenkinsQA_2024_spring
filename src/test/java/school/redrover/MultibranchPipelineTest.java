@@ -12,7 +12,7 @@ import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
-@Epic("Multibranch pipeline")
+@Epic("Multibranch Pipeline")
 public class MultibranchPipelineTest extends BaseTest {
 
     private static final String MULTI_PIPELINE_NAME = "MultibranchPipeline";
@@ -47,8 +47,8 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_05.007 Create a project from other existing")
-    @Description("Verify creation project by copying from other multibranch pipeline project.")
+    @Story("US_05.007 Create Multibranch Pipeline from other existing")
+    @Description("Verify creation by copying from other Multibranch Pipeline")
     public void testCreateProjectFromExistingMultibranchPipeline() {
         final String firstProjectName = "My first Multibranch Pipeline";
         final String secondItemName = "My second Multibranch Pipeline";
@@ -68,7 +68,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_05.004 Disable Multibranch pipeline")
+    @Story("US_05.004 Disable Multibranch Pipeline")
     @Description("Verify a project can be disabled via toggle.")
     public void testDisableProjectViaToggle() {
         String disableWarningText = new HomePage(getDriver())
@@ -273,8 +273,8 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_05.005 Delete Multibranch pipeline")
-    @Description("Verify the deletion of a project via dropdown menu.")
+    @Story("US_05.005 Delete Multibranch Pipeline")
+    @Description("Verify the deletion of Multibranch Pipeline via dropdown menu.")
     public void testDeleteViaDashboardDropdown() {
         TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
 
@@ -288,9 +288,9 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testRenameMultibranchPipelineViaSideBar")
-    @Story("US_05.005 Delete Multibranch pipeline")
-    @Description("Verify the deletion of a project via Breadcrumbs.")
-    public void testDeleteProjectViaBreadcrumbs() {
+    @Story("US_05.005 Delete Multibranch Pipeline")
+    @Description("Verify the deletion of Multibranch Pipeline via Breadcrumbs.")
+    public void testDeleteViaBreadcrumbs() {
         boolean isProjectDeleted = new HomePage(getDriver())
                 .clickSpecificMultibranchPipelineName(RENAMED_MULTI_PIPELINE)
                 .clickMPDropdownArrow()
@@ -303,8 +303,8 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     @Story("US_05.005 Delete Multibranch pipeline")
-    @Description("Verify the deletion of a project via Sidebar menu.")
-    public void testDeleteProjectViaSidebarMenu() {
+    @Description("Verify the deletion of a Multibranch pipeline via Sidebar menu.")
+    public void testDeleteViaSidebarMenu() {
         TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
 
         boolean isItemDeleted = new HomePage(getDriver())
