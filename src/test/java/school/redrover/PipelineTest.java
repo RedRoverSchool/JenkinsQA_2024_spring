@@ -3,20 +3,17 @@ package school.redrover;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -184,7 +181,8 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.007  Delete Pipeline")
+    @Epic("Pipeline")
+    @Story("US_02.007 Delete pipeline")
     @Description("Verify Pipeline builds disappeared from Build History page upon its removal")
     public void testBuildHistoryEmptyUponPipelineRemoval() {
         boolean isBuildDeleted = new HomePage(getDriver())
@@ -372,7 +370,7 @@ public class PipelineTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
-                .sendScript(stagesQtt, pipelineScript)
+                .sendScript(stagesQtt, PIPELINE_SCRIPT)
                 .clickSaveButton()
                 .makeBuilds(buildsQtt)
                 .clickFullStageViewButton()
@@ -447,7 +445,7 @@ public class PipelineTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
-                .sendScript(stagesQtt, pipelineScript)
+                .sendScript(stagesQtt, PIPELINE_SCRIPT)
                 .clickSaveButton()
                 .makeBuilds(buildsQtt)
                 .getSagesQtt();
@@ -627,8 +625,11 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testConsoleOutputValue() {
-        int number_of_stages = 8;
-        List<String> expectedConsoleOuputForAllStages = List.of("test 1", "test 2", "test 3", "test 4", "test 5", "test 6", "test 7", "test 8");
+        int numberOfStages = 8;
+        List<String> expectedConsoleOuputForAllStages = List.of(
+                "test 1", "test 2", "test 3",
+                "test 4", "test 5", "test 6",
+                "test 7", "test 8");
         String pipelineScript = """
                 pipeline {
                 agent any
@@ -641,10 +642,10 @@ public class PipelineTest extends BaseTest {
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .scrollToPipelineScript()
-                .sendScript(number_of_stages, pipelineScript)
+                .sendScript(numberOfStages, pipelineScript)
                 .clickSaveButton()
                 .clickBuild()
-                .getConsoleOuputForAllStages(number_of_stages);
+                .getConsoleOuputForAllStages(numberOfStages);
 
         Assert.assertEquals(actualConsoleOuputForAllStages, expectedConsoleOuputForAllStages);
     }
@@ -653,7 +654,7 @@ public class PipelineTest extends BaseTest {
     @Story("US_02.011  Take information about a project built")
     @Description("Check List of builds is displayed in descending'")
     public void testBuildAttributesDescending() {
-        final String PIPELINE_SCRIPT = """
+        final String pipelineScript = """
                 pipeline {
                 agent any
 
@@ -670,6 +671,7 @@ public class PipelineTest extends BaseTest {
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .sendScript(1, PIPELINE_SCRIPT)
+                .sendScript(1, pipelineScript)
                 .clickSaveButton()
                 .makeBuilds(5)
                 .waitBuildToFinish()
@@ -685,7 +687,7 @@ public class PipelineTest extends BaseTest {
     @Test
     public void testBuildColorGreen() {
 
-        int number_of_stages = 1;
+        int numberOfStages = 1;
 
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/manage']"))).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='computer']"))).click();
@@ -712,11 +714,11 @@ public class PipelineTest extends BaseTest {
 
         getDriver().findElement(By.className("ace_text-input")).sendKeys(pipelineScript);
 
-        for (int i = 1; i <= number_of_stages; i++) {
+        for (int i = 1; i <= numberOfStages; i++) {
 
-            String stage = "\nstage('stage " + i + "') {\n" +
-                    "steps {\n" +
-                    "echo 'test " + i + "'\n";
+            String stage = "\nstage('stage " + i + "') {\n"
+                    + "steps {\n"
+                    + "echo 'test " + i + "'\n";
             getDriver().findElement(By.className("ace_text-input")).sendKeys(stage);
             getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
             getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
@@ -738,9 +740,9 @@ public class PipelineTest extends BaseTest {
     @Test
     public void testStageColumnHeader() {
 
-        int number_of_stages = 2;
+        int numberOfStages = 2;
         List<String> expectedHeaderNameList = new ArrayList<>();
-        for (int i = 0; i < number_of_stages; i++) {
+        for (int i = 0; i < numberOfStages; i++) {
             expectedHeaderNameList.add("stage " + (i + 1));
         }
 
@@ -752,7 +754,7 @@ public class PipelineTest extends BaseTest {
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .scrollToPipelineScript()
-                .sendScript(number_of_stages, pipelineScript)
+                .sendScript(numberOfStages, PIPELINE_SCRIPT)
                 .clickSaveButton().clickBuild()
                 .waitBuildToFinish()
                 .getStageHeaderNameList();
@@ -873,7 +875,8 @@ public class PipelineTest extends BaseTest {
             }
         }
 
-        goToMainPage(getDriver());
+        new HomePage(getDriver())
+                .clickLogo();
 
         Assert.assertTrue(getDriver().findElement(
                 By.xpath("(//*[name()='svg'][@tooltip='Disabled'])[1]")).isDisplayed());
@@ -909,7 +912,7 @@ public class PipelineTest extends BaseTest {
         PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(PIPELINE_NAME)
-                .clickProjectType(TestUtils.ProjectType.PIPELINE)
+                .clickProjectType("Pipeline")
                 .clickOkAnyway(new PipelineConfigPage(getDriver()))
                 .clickDiscardOldBuilds()
                 .setNumberBuildsToKeep(1)
@@ -930,7 +933,7 @@ public class PipelineTest extends BaseTest {
     @Description("Verify that Pipeline configuration has interactive sections: General, Advanced Project Options, Pipeline")
     public void testSectionsOfSidePanelAreVisible() {
 
-        List<String> expectedSectionsNameList = new ArrayList<>(Arrays.asList("General", "Advanced Project Options", "Pipeline"));
+        List<String> expectedSectionsNameList = List.of("General", "Advanced Project Options", "Pipeline");
 
         List<String> sectionsNameList = new HomePage(getDriver())
                 .clickCreateAJob()

@@ -7,10 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
-import school.redrover.runner.TestUtils;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
 
@@ -46,9 +44,6 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
 
     @FindBy(id = "itemname-required")
     private WebElement errorMessageEmptyName;
-
-    @FindBy(xpath = "//div[@class='item-copy']//li[not(@style='display: none;')]")
-    private List<WebElement> copyFormElements;
 
     @FindBy(id = "itemname-required")
     private WebElement itemNameHint;
@@ -130,12 +125,6 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return page;
     }
 
-    public CreateNewItemPage clickProjectType(TestUtils.ProjectType projectType) {
-        getDriver().findElement(By.xpath("//span[text()='" + projectType.getProjectTypeName() + "']")).click();
-
-        return this;
-    }
-
     public CreateNewItemPage clickProjectType(String type) {
         getDriver().findElement(By.xpath("//span[text()='" + type + "']")).click();
 
@@ -150,18 +139,11 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return errorMessageEmptyName.getText();
     }
 
-
     public CreateNewItemPage typeItemNameInCopyFrom(String name) {
         clickElementFromTheBottomOfThePage(copyFromInputField);
         copyFromInputField.sendKeys(name);
 
         return this;
-    }
-    public List<String> getCopyFormElementsList() {
-        return copyFormElements
-                .stream()
-                .map(WebElement::getText)
-                .collect(Collectors.toList());
     }
 
     public CreateItemPage clickOkButton() {
