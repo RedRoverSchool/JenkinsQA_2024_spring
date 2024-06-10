@@ -17,7 +17,6 @@ import java.util.List;
     @Epic("Build History")
     public class BuildHistoryTest extends BaseTest {
     private final String PROJECT_NAME = "My freestyle project";
-    private final String BUILD_SCHEDULED_MASSAGE_ACTUAL = "Build scheduled";
 
 
     @Test
@@ -63,6 +62,7 @@ import java.util.List;
                 .clickGreenBuildArrowButton()
                 .getBuildScheduledMessage();
 
-        Assert.assertEquals(buildScheduledMessageReceived,BUILD_SCHEDULED_MASSAGE_ACTUAL);
+        String BUILD_SCHEDULED_MASSAGE_ACTUAL = "Build scheduled";
+        Assert.assertEquals(buildScheduledMessageReceived, BUILD_SCHEDULED_MASSAGE_ACTUAL);
     }
 }
