@@ -116,6 +116,9 @@ public class HomePage extends BasePage<HomePage> {
     @FindBy(css = "#tasks > div")
     private List<WebElement> sidebarMenuList;
 
+    @FindBy(xpath = "//td[@class='jenkins-table__cell--tight']//span[@data-notification='Build scheduled']")
+    private WebElement buildScheduledMessagePopUp;
+
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -484,6 +487,17 @@ public class HomePage extends BasePage<HomePage> {
 
     public int getBuildButtonCountForProject(String projetcName) {
         return getDriver().findElements(By.xpath("//table//a[@title= 'Schedule a Build for " + projetcName + "']")).size();
+    }
+
+    public HomePage clickGreenBuildArrowButton() {
+        greenBuildArrow.click();
+
+        return this;
+    }
+
+    public String getBuildScheduledMessage() {
+
+        return buildScheduledMessagePopUp.getAttribute("data-notification");
     }
 
 }

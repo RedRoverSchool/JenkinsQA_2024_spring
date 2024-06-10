@@ -1,5 +1,9 @@
 package school.redrover;
 
+
+import io.qameta.allure.Description;
+import io.qameta.allure.Story;
+import io.qameta.allure.Epic;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.FreestyleProjectPage;
@@ -9,10 +13,16 @@ import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
-public class BuildHistoryTest extends BaseTest {
+
+    @Epic("Build History")
+    public class BuildHistoryTest extends BaseTest {
     private final String PROJECT_NAME = "My freestyle project";
+    private final String BUILD_SCHEDULED_MASSAGE_ACTUAL = "Build scheduled";
+
 
     @Test
+    @Story("Start to build a project")
+    @Description("Check the project is displayed in the table on the Homepage")
     public void testGetTableBuildHistory() {
         TestUtils.createFreestyleProject(this, PROJECT_NAME);
 
@@ -25,6 +35,8 @@ public class BuildHistoryTest extends BaseTest {
     }
 
     @Test
+    @Story("Start to build a project")
+    @Description("Check the project is displayed in the table on the Homepage")
     public void testCheckBuildOnBoard() {
         String FREESTYLE_PROJECT_NAME = "FREESTYLE";
 
@@ -38,6 +50,19 @@ public class BuildHistoryTest extends BaseTest {
                 .clickBuildHistory()
                 .isDisplayedBuildOnTimeline();
 
-        Assert.assertTrue(projectNameOnTimeline, "FREESTYLE is display");
+        Assert.assertTrue(projectNameOnTimeline);
+    }
+
+    @Test
+    @Story("Start to build a project")
+    @Description("Check 'Build Scheduled' notification is displayed")
+    public void testBuildScheduledMessage() {
+        TestUtils.createFreestyleProject(this, PROJECT_NAME);
+
+        String buildScheduledMessageReceived = new HomePage(getDriver())
+                .clickGreenBuildArrowButton()
+                .getBuildScheduledMessage();
+
+        Assert.assertEquals(buildScheduledMessageReceived,BUILD_SCHEDULED_MASSAGE_ACTUAL);
     }
 }
