@@ -30,7 +30,7 @@ public class FolderTest extends BaseTest {
 
 
     @Test
-    @Story("US_04.000 Create Folder")
+    @Story("US_04.000  Create Folder")
     @Description("Verify the creation of a folder via Create a job")
     public void testCreateViaCreateAJob() {
         String folderBreadcrumbName = new HomePage(getDriver())
@@ -44,7 +44,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateViaCreateAJob")
-    @Story("US_04.004 Add and edit description of the folder ")
+    @Story("US_04.004  Add and edit description of the folder ")
     @Description("Add description of the folder and save it")
     public void testAddDescription() {
         String textInDescription = new FolderProjectPage(getDriver())
@@ -57,7 +57,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testAddDescription")
-    @Story("US_04.004 Add and edit description of the folder ")
+    @Story("US_04.004  Add and edit description of the folder ")
     @Description("Edit description of the folder and save it")
     public void testChangeDescription() {
         String textInDescription = new FolderProjectPage(getDriver())
@@ -71,7 +71,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
-    @Story("US_04.000 Create Folder")
+    @Story("US_04.000  Create Folder")
     @Description("Verify error message when create a folder with a dot as the first character")
     public void testErrorWhenCreatingFolderWithDotAsFirstCharacter() {
         String errorMessageText = new HomePage(getDriver())
@@ -85,7 +85,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
-    @Story("US_04.000 Create Folder")
+    @Story("US_04.000  Create Folder")
     @Description("Verify error message when create a folder with a dot as the last character")
     public void testErrorWhenCreatingFolderWithDotAsLastCharacter() {
         String errorMessageText = new HomePage(getDriver())
@@ -147,7 +147,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
-    @Story("US_04.002 Move Folder to Folder")
+    @Story("US_04.002  Move Folder to Folder")
     @Description("Verify a Folder can be moved into another Folder via breadcrumbs")
     public void testFolderMovedIntoAnotherFolderViaBreadcrumbs() {
         TestUtils.createFolderProject(this, FOLDER_NAME);
@@ -166,7 +166,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testFolderMovedIntoAnotherFolderViaBreadcrumbs")
-    @Story("US_04.005 Create a job inside folder")
+    @Story("US_04.005  Create a job inside folder")
     @Description("Add Multi Configuration Project inside folder")
     public void testCreateMultiConfigurationProjectInFolder() {
         final String multiConfigurationProject = "MultiConfigurationProject_1";
@@ -184,7 +184,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateMultiConfigurationProjectInFolder")
-    @Story("US_04.003 Delete Folder")
+    @Story("US_04.003  Delete Folder")
     @Description("Delete folder from dropdown menu")
     public void testDeleteFolderViaDropdown() {
         boolean isFolderDeleted = new HomePage(getDriver())
@@ -197,7 +197,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
-    @Story("US_04.002 Move Folder to Folder")
+    @Story("US_04.002  Move Folder to Folder")
     @Description("Verify a Folder can be moved into another Folder via dropdown menu")
     public void testMoveFolderToFolderViaDropDownMenu() {
         TestUtils.createFolderProject(this, FOLDER_TO_MOVE);
@@ -215,7 +215,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
-    @Story("US_04.000 Create Folder")
+    @Story("US_04.000  Create Folder")
     @Description("Verify the creation of a folder via Sidebar Menu")
     public void testCreateViaSidebarMenu() {
         String folderName = new HomePage(getDriver())
@@ -234,7 +234,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateViaSidebarMenu")
-    @Story("US_04.000 Create Folder")
+    @Story("US_04.000  Create Folder")
     @Description("Verify that created Folder is empty")
     public void testCheckNewFolderIsEmpty() {
         Boolean isFolderEmpty = new HomePage(getDriver())
@@ -245,7 +245,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCheckNewFolderIsEmpty")
-    @Story("US_04.000 Create Folder")
+    @Story("US_04.000  Create Folder")
     @Description("Validate that a newly created folder is empty")
     public void testNewlyCreatedFolderIsEmptyAJ() {
         final String folderName = "NewProjectFolder";
@@ -274,7 +274,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testNewlyCreatedFolderIsEmptyAJ")
-    @Story("US_04.005 Create a job inside folder")
+    @Story("US_04.005  Create a job inside folder")
     @Description("Add Pipeline Project inside folder")
     public void testCreateJobPipelineInFolder() {
         String expectedFullProjectName = String.format("Full project name: %s/%s", FOLDER_NAME, PIPELINE_NAME);
@@ -297,7 +297,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateJobPipelineInFolder")
-    @Story("US_04.005 Create a job inside folder")
+    @Story("US_04.005  Create a job inside folder")
     @Description("Verify the creation of two inner folder in existed Folder")
     public void testCreateTwoInnerFolder() {
         List<String> itemNames = new HomePage(getDriver())
@@ -320,7 +320,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateTwoInnerFolder")
-    @Story("US_04.005 Create a job inside folder")
+    @Story("US_04.005  Create a job inside folder")
     @Description("Verify the creation of Freestyle project in existed Folder")
     public void testCreateFreeStyleProjectInsideRootFolder() {
         List<String> insideFolderItemList = new HomePage(getDriver())
@@ -337,7 +337,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateFreeStyleProjectInsideRootFolder")
-    @Story("04.003 Delete Folder")
+    @Story("04.003  Delete Folder")
     @Description("Delete folder from folder's page using left menu panel")
     public void testDeleteFolder() {
         List<String> jobList = new HomePage(getDriver())
@@ -350,7 +350,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
-    @Story("US_04.000 Create Folder")
+    @Story("US_04.000  Create Folder")
     @Description("Verify error message when create a folder with invalid character")
     public void testCreateProjectInvalidChar() {
         String header1Text = new HomePage(getDriver())
