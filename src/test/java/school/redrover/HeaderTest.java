@@ -8,11 +8,11 @@ import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
+@Epic("Header")
 public class HeaderTest extends BaseTest {
-    @Epic("Header")
 
     @Test
-    @Story("US_14.004 Warning item")
+    @Story("US_14.004  Warning item")
     @Description("Check tooltip with the list of problems")
     public void testTooltipAccessible() {
         String warningTooltipText = new HomePage(getDriver())
@@ -25,7 +25,7 @@ public class HeaderTest extends BaseTest {
     }
 
     @Test
-    @Story("US_14.004 Warning item")
+    @Story("US_14.004  Warning item")
     @Description("Check getting the settings page with warnings")
     public void testWarningsSettingPage() {
         String pageTitle = new HomePage(getDriver())
@@ -39,7 +39,7 @@ public class HeaderTest extends BaseTest {
     }
 
     @Test
-    @Story("US_14.004 Warning item")
+    @Story("US_14.004  Warning item")
     @Description("Check opening a settings page by clicking on link “Manage Jenkins")
     public void testAccessToManageJenkinsPage() {
         String pageTitle = new HomePage(getDriver())
@@ -54,7 +54,7 @@ public class HeaderTest extends BaseTest {
     }
 
     @Test
-    @Story("US_14.005 Entrance to the user's account")
+    @Story("US_14.005  Entrance to the user's account")
     @Description("Check user logout")
     public void testLogout() {
         String actualPageTitle = new HomePage(getDriver())
