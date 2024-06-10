@@ -137,7 +137,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_01.009 Create the Project from other existing")
+    @Story("US_00.009 Create Project")
     @Description("Verify project can be copied from a container.")
     public void testCopyFromContainer() {
         String oldProjectName1 = "Race Cars";
@@ -176,9 +176,9 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_01.006 Move to Folder")
+    @Story("US_01.005 Move Project")
     @Description("Verify moving the project to a folder via the sidebar.")
-    public void testMoveFreestyleProjectToFolderViaSideBar() {
+    public void testMoveProjectToFolderViaSideBar() {
         String expectedText = String.format("Full project name: %s/%s", FOLDER_NAME, FREESTYLE_PROJECT_NAME);
 
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
@@ -195,9 +195,9 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_01.006 Move to Folder")
+    @Story("US_01.005 Move Project")
     @Description("Verify moving the project to a folder via the dropdown menu.")
-    public void testProjectMovedToFolderViaDropdown() {
+    public void testMoveProjectToFolderViaDropdown() {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
         TestUtils.createFolderProject(this, FOLDER_NAME);
 
@@ -212,10 +212,10 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertListContainsObject(projectList, FREESTYLE_PROJECT_NAME, "Item is not moved successfully");
     }
 
-    @Test(dependsOnMethods = "testProjectMovedToFolderViaDropdown")
-    @Story("US_01.006 Move to Folder")
+    @Test(dependsOnMethods = "testMoveProjectToFolderViaDropdown")
+    @Story("US_01.005 Move Project")
     @Description("Verify via breadcrumbs moving the project to a folder.")
-    public void testCheckFreestyleProjectViaBreadcrumb() {
+    public void testCheckMovedFreestyleProjectViaBreadcrumb() {
         List<String> itemListInsideFolder = new HomePage(getDriver())
                 .getHeader().clickMyViewsOnHeaderDropdown()
                 .clickBreadcrumbAll()
