@@ -889,8 +889,9 @@ public class PipelineTest extends BaseTest {
         TestUtils.createPipelineProject(this, PIPELINE_NAME);
         getDriver().findElement(By.cssSelector("#tasks > div:nth-child(4) > span > a")).click();
 
-        getWait60().until(ExpectedConditions.textToBePresentInElementLocated(By.id("pipeline-box"), "Stage View\n" +
-                "This Pipeline has run successfully, but does not define any stages. Please use the stage step to define some stages in this Pipeline."));
+        getWait60().until(ExpectedConditions.textToBePresentInElementLocated(By.id("pipeline-box"), "Stage View\n"
+                + "This Pipeline has run successfully, but does not define any stages. "
+                + "Please use the stage step to define some stages in this Pipeline."));
 
         getDriver().findElement(By.cssSelector("#disable-project > button")).click();
 
