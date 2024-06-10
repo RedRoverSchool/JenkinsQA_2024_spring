@@ -1,16 +1,15 @@
 package school.redrover;
 
-import java.util.List;
-
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
+
+import java.util.List;
 
 @Epic("Multibranch Pipeline")
 public class MultibranchPipelineTest extends BaseTest {
