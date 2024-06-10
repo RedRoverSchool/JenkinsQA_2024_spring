@@ -150,7 +150,7 @@ public class NewItemTest extends BaseTest {
         CreateItemPage errorPage = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName("someName")
-                .setItemNameInCopyForm(notExistingName)
+                .typeItemNameInCopyFrom(notExistingName)
                 .clickOkButton();
 
         Assert.assertTrue(errorPage.getCurrentUrl().endsWith("/createItem"));
@@ -184,11 +184,10 @@ public class NewItemTest extends BaseTest {
                 .clickLogo()
                 .clickNewItem()
                 .setItemName(jobName + "Copy")
-                .setItemNameInCopyForm(jobName)
+                .typeItemNameInCopyFrom(jobName)
                 .clickOkButton()
                 .clickLogo();
 
-        Assert.assertTrue(homePage.isItemExists(jobName + "Copy"));
 
         Integer QuantityItemsWithCopies = new HomePage(getDriver())
                 .getItemList()
@@ -198,7 +197,6 @@ public class NewItemTest extends BaseTest {
         Assert.assertTrue(homePage.isItemExists(jobName + "Copy"));
         Assert.assertTrue(homePage.isItemExists(jobName));
     }
-
 
     @Test
     public void testDropdownNamesMenuContentWhenCopyProject() {
@@ -211,7 +209,7 @@ public class NewItemTest extends BaseTest {
         final String multiBranchPipe1 = "multiBranch1";
         final String organizationFolder1 = "organizationFolder1";
 
-        final String firstLetters = "foL";
+        final String firstLetters = "fol";
         final String newItemName = "someName";
 
         TestUtils.createFreestyleProject(this, freestyle1);
@@ -228,7 +226,7 @@ public class NewItemTest extends BaseTest {
         List<String> jobsFromDropdownMenu = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(newItemName)
-                .setItemNameInCopyForm(firstLetters)
+                .typeItemNameInCopyFrom(firstLetters)
                 .getDropdownMenuContent();
 
         Assert.assertEquals(jobsFromDropdownMenu, firstLettersJobs);

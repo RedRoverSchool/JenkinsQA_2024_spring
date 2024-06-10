@@ -1,6 +1,7 @@
 package school.redrover.model;
 
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -50,7 +51,7 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
     private WebElement breadcrumbsDropdownDelete;
 
     @FindBy(xpath = "//*[span = 'Delete Multi-configuration project']")
-    private WebElement menuDelete;
+    private WebElement sidebarDelete;
 
     @FindBy(xpath = "//*[contains(@href, 'rename')]")
     private WebElement menuRename;
@@ -90,6 +91,8 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
         return getWait2().until(ExpectedConditions.visibilityOf(description)).getText();
     }
 
+
+    @Step("Click on the button 'Configure' on sidebar")
     public MultiConfigurationConfigPage clickConfigureButton() {
         configureButton.click();
 
@@ -127,13 +130,15 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
         return breadcrumbs.getAttribute("data-href").contains(folderName + "/job/" + projectName);
     }
 
-    public DeleteDialog clickDeleteInMenu(DeleteDialog deleteDialog) {
-        menuDelete.click();
+    public DeleteDialog clickSidebarDelete() {
+        sidebarDelete.click();
+
         return new DeleteDialog(getDriver());
     }
 
     public MultiConfigurationRenamePage clickRenameInMenu() {
         menuRename.click();
+
         return new MultiConfigurationRenamePage(getDriver());
     }
 

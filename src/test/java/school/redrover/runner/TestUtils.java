@@ -1,5 +1,6 @@
 package school.redrover.runner;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -96,6 +97,7 @@ public final class TestUtils {
         }
     }
 
+    @Step("Create the Freestyle project")
     public static HomePage createFreestyleProject(BaseTest baseTest, String name) {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
@@ -104,6 +106,7 @@ public final class TestUtils {
                 .clickLogo();
     }
 
+    @Step("Create the Pipeline")
     public static HomePage createPipelineProject(BaseTest baseTest, String name) {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
@@ -112,6 +115,7 @@ public final class TestUtils {
                 .clickLogo();
     }
 
+    @Step("Create the Multi-configuration project")
     public static HomePage createMultiConfigurationProject(BaseTest baseTest, String name) {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
@@ -120,6 +124,7 @@ public final class TestUtils {
                 .clickLogo();
     }
 
+    @Step("Create the Folder")
     public static HomePage createFolderProject(BaseTest baseTest, String name) {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
@@ -128,6 +133,7 @@ public final class TestUtils {
                 .clickLogo();
     }
 
+    @Step("Create the Multibranch Pipeline")
     public static HomePage createMultibranchProject(BaseTest baseTest, String name) {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
@@ -136,6 +142,7 @@ public final class TestUtils {
                 .clickLogo();
     }
 
+    @Step("Create the Organization Folder")
     public static HomePage createOrganizationFolderProject(BaseTest baseTest, String name) {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
