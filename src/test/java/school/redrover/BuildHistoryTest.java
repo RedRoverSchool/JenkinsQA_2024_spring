@@ -14,10 +14,9 @@ import school.redrover.runner.TestUtils;
 import java.util.List;
 
 
-    @Epic("Build History")
-    public class BuildHistoryTest extends BaseTest {
-    private final String PROJECT_NAME = "My freestyle project";
-
+@Epic("Build History")
+public class BuildHistoryTest extends BaseTest {
+    private static final String PROJECT_NAME = "My freestyle project";
 
     @Test
     @Story("Start to build a project")
@@ -37,12 +36,12 @@ import java.util.List;
     @Story("Start to build a project")
     @Description("Check the project is displayed in the table on the Homepage")
     public void testCheckBuildOnBoard() {
-        String FREESTYLE_PROJECT_NAME = "FREESTYLE";
+        final String freestyleProjectName = "FREESTYLE";
 
-        TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
+        TestUtils.createFreestyleProject(this, freestyleProjectName);
 
         boolean projectNameOnTimeline = new HomePage(getDriver())
-                .clickJobByName("FREESTYLE", new FreestyleProjectPage(getDriver()))
+                .clickJobByName(freestyleProjectName, new FreestyleProjectPage(getDriver()))
                 .clickBuildNowOnSideBar()
                 .waitForGreenMarkBuildSuccessAppearience()
                 .clickLogo()
@@ -62,7 +61,6 @@ import java.util.List;
                 .clickGreenBuildArrowButton()
                 .getBuildScheduledMessage();
 
-        String BUILD_SCHEDULED_MASSAGE_ACTUAL = "Build scheduled";
-        Assert.assertEquals(buildScheduledMessageReceived, BUILD_SCHEDULED_MASSAGE_ACTUAL);
+        Assert.assertEquals(buildScheduledMessageReceived, "Build scheduled");
     }
 }
