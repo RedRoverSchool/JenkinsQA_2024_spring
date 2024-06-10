@@ -18,7 +18,6 @@ import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -963,7 +962,7 @@ public class PipelineTest extends BaseTest {
     @Description("Verify the pipeline configuration has interactive sections: General, Advanced Project Options, Pipeline")
     public void testSectionsOfSidePanelAreVisible() {
 
-        List<String> expectedSectionsNameList = new ArrayList<>(Arrays.asList("General", "Advanced Project Options", "Pipeline"));
+        List<String> expectedSectionsNameList = List.of("General", "Advanced Project Options", "Pipeline");
 
         List<String> sectionsNameList = new HomePage(getDriver())
                 .clickCreateAJob()
