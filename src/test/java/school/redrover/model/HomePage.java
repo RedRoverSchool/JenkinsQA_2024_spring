@@ -56,12 +56,6 @@ public class HomePage extends BasePage<HomePage> {
     @FindBy(css = "[class='tippy-box'] [href='/manage']")
     private WebElement manageFromDashboardBreadcrumbsMenu;
 
-    @FindBy(id = "executors")
-    private WebElement buildExecutorStatus;
-
-    @FindBy(xpath = "//td[text()='Idle']")
-    private List<WebElement> buildExecutorStatusList;
-
     @FindBy(css = "[aria-describedby*='tippy']")
     private WebElement builSchedulePopUp;
 
@@ -411,7 +405,6 @@ public class HomePage extends BasePage<HomePage> {
     }
 
     public int getSizeViewNameList() {
-
         return viewNameList.size();
     }
 
@@ -423,12 +416,10 @@ public class HomePage extends BasePage<HomePage> {
     }
 
     public String getBuildStatus() {
-
         return greenBuildArrow.getAttribute("tooltip");
     }
 
     public List<String> getDisabledProjectListText() {
-
         return disabledProjectList.stream().map(WebElement::getText).toList();
     }
 
@@ -496,8 +487,6 @@ public class HomePage extends BasePage<HomePage> {
     }
 
     public String getBuildScheduledMessage() {
-
         return buildScheduledMessagePopUp.getAttribute("data-notification");
     }
-
 }
