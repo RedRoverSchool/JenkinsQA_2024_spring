@@ -1,5 +1,8 @@
 package school.redrover;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
@@ -8,7 +11,7 @@ import school.redrover.runner.TestUtils;
 
 import java.util.Collections;
 import java.util.List;
-
+@Epic("Dashboard")
 public class DashboardTest extends BaseTest {
 
     private static final String PIPELINE_NAME = "The Pipeline";
@@ -17,7 +20,8 @@ public class DashboardTest extends BaseTest {
 
     private static final String VIEW_NAME = "RedRover";
 
-
+    @Story("US_16.005 Side Menu Items")
+    @Description("Check all Side Menu Items exist")
     @Test
     public void testDashboardMenu() {
         final List<String> expectedSidebarMenu = List.of(
@@ -33,28 +37,11 @@ public class DashboardTest extends BaseTest {
         Assert.assertEquals(actualSidebarMenu, expectedSidebarMenu);
     }
 
-    @Test(dependsOnMethods = "testDashboardMenu")
-    public void testEditDescriptionOnDashboard() {
-        final String expectedDescription = "RedRover Projects";
-
-        final String expectedLinkText = "Edit description";
-
-        String actualDescription = new HomePage(getDriver())
-                .clickEditDescription()
-                .typeDescription(expectedDescription)
-                .clickSaveButton()
-                .getDescription();
-
-        final String actualLinkText = new HomePage(getDriver())
-                .getEditDescriptionLinkText();
-
-        Assert.assertEquals(actualDescription, expectedDescription);
-        Assert.assertEquals(actualLinkText, expectedLinkText);
-    }
-
+    @Story("US_16.003 Item Chevron Menu > List of Menu Items")
+    @Description("Check all Folder Chevron Menu Items exist")
     @Test(dependsOnMethods = "testDashboardMenu")
     public void testFolderChevronMenu() {
-        String folderName = "A Folder";
+        final String folderName = "A Folder";
 
         final List<String> folderMenu = List.of(
                 "Configure",
@@ -74,12 +61,14 @@ public class DashboardTest extends BaseTest {
         Assert.assertEquals(chevronMenu, folderMenu);
     }
 
-
-    @Test(dependsOnMethods = "testFolderChevronMenu")
+    @Story("US_16.003 Item Chevron Menu > List of Menu Items")
+    @Description("Check all Freestyle Project Menu Items exist")
+    @Test(dependsOnMethods = "testDashboardMenu")
     public void testFreestyleProjectChevronMenu() {
-        String freestyleProjectName = "FREESTYLE";
 
-        final List<String> freestyleProjectMenu = List.of(
+        String freestyleName = "Freestyle";
+
+        final List<String> freestyleMenu = List.of(
                 "Changes",
                 "Workspace",
                 "Build Now",
@@ -88,17 +77,18 @@ public class DashboardTest extends BaseTest {
                 "Move",
                 "Rename");
 
-        TestUtils.createFreestyleProject(this, freestyleProjectName);
+        TestUtils.createFreestyleProject(this, freestyleName);
 
         List<String> chevronMenu = new HomePage(getDriver())
-                .openItemDropdown(freestyleProjectName)
+                .openItemDropdown(freestyleName)
                 .getDropdownMenu();
 
-        Assert.assertEquals(chevronMenu, freestyleProjectMenu);
+        Assert.assertEquals(chevronMenu, freestyleMenu);
     }
 
-
-    @Test(dependsOnMethods = "testFreestyleProjectChevronMenu")
+    @Story("US_16.003 Item Chevron Menu > List of Menu Items")
+    @Description("Check all Pipeline Project Menu Items exist")
+    @Test(dependsOnMethods = "testDashboardMenu")
     public void testPipelineChevronMenu() {
         final List<String> pipelineMenu = List.of(
                 "Changes",
@@ -119,10 +109,12 @@ public class DashboardTest extends BaseTest {
         Assert.assertEquals(chevronMenu, pipelineMenu);
     }
 
-
-    @Test(dependsOnMethods = "testPipelineChevronMenu")
+    @Story("US_16.003 Item Chevron Menu > List of Menu Items")
+    @Description("Check all Multi-configuration Project Menu Items exist")
+    @Test(dependsOnMethods = "testDashboardMenu")
     public void testMultiConfigurationProjectChevronMenu() {
-        final List<String> multiConfigurationProjectMenu = List.of(
+
+        final List<String> multiConfigurationMenu = List.of(
                 "Changes",
                 "Workspace",
                 "Build Now",
@@ -137,13 +129,15 @@ public class DashboardTest extends BaseTest {
                 .openItemDropdown(MULTI_CONFIGURATION_PROJECT_NAME)
                 .getDropdownMenu();
 
-        Assert.assertEquals(chevronMenu, multiConfigurationProjectMenu);
+        Assert.assertEquals(chevronMenu, multiConfigurationMenu);
     }
 
-
-    @Test(dependsOnMethods = "testMultiConfigurationProjectChevronMenu")
+    @Story("US_16.003 Item Chevron Menu > List of Menu Items")
+    @Description("Check all Multibranch Pipeline Menu Items exist")
+    @Test(dependsOnMethods = "testDashboardMenu")
     public void testMultibranchPipelineChevronMenu() {
-        String multibranchPipelineName = "MULTIBRANCH_PIPELINE";
+
+        String multibranchPipeline = "Multibranch Pipeline";
 
         final List<String> multibranchPipelineMenu = List.of(
                 "Configure",
@@ -157,17 +151,19 @@ public class DashboardTest extends BaseTest {
                 "Pipeline Syntax",
                 "Credentials");
 
-        TestUtils.createMultibranchProject(this, multibranchPipelineName);
+        TestUtils.createMultibranchProject(this, multibranchPipeline);
 
         List<String> chevronMenu = new HomePage(getDriver())
-                .openItemDropdown(multibranchPipelineName)
+                .openItemDropdown(multibranchPipeline)
                 .getDropdownMenu();
 
         Assert.assertEquals(chevronMenu, multibranchPipelineMenu);
     }
 
 
-    @Test(dependsOnMethods = "testMultibranchPipelineChevronMenu")
+    @Story("US_16.003 Item Chevron Menu > List of Menu Items")
+    @Description("Check all Organization Folder Menu Items exist")
+    @Test(dependsOnMethods = "testDashboardMenu")
     public void testOrganizationFolderChevronMenu() {
         String organizationFolderName = "RedRover Organization";
 
@@ -316,5 +312,26 @@ public class DashboardTest extends BaseTest {
                 .getHeadingText();
 
         Assert.assertEquals(actualHeading, "Welcome to Jenkins!");
+    }
+
+    @Story("US_16.006 Edit Dashboard Description")
+    @Description("Test existence and ability to change Dashboard Description")
+    @Test
+    public void testEditDescriptionOnDashboard() {
+        final String expectedDescription = "RedRover Projects";
+
+        final String expectedLinkText = "Edit description";
+
+        String actualDescription = new HomePage(getDriver())
+                .clickEditDescription()
+                .typeDescription(expectedDescription)
+                .clickSaveButton()
+                .getDescription();
+
+        final String actualLinkText = new HomePage(getDriver())
+                .getEditDescriptionLinkText();
+
+        Assert.assertEquals(actualDescription, expectedDescription);
+        Assert.assertEquals(actualLinkText, expectedLinkText);
     }
 }
