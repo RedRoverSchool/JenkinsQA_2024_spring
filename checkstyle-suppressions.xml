@@ -5,9 +5,10 @@
         "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 
 <suppressions>
-<!--    <suppress checks="JavadocStyleCheck"/>-->
     <suppress checks="MagicNumberCheck"/>
-    <suppress message="Missing a Javadoc comment"/>
     <suppress checks="DesignForExtension"/>
     <suppress checks="FinalParameters"/>
+    <suppress checks="MissingJavadocMethod"/>
+    <suppress checks="JavadocVariable"/>
+    <suppress checks="JavadocPackage"/>
 </suppressions>
