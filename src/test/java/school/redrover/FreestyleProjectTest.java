@@ -235,7 +235,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickJobNameBreadcrumb(FOLDER_NAME)
                 .getItemListInsideFolder();
 
-        Allure.step("Expected result: The project list inside the folder contain moved project" + FREESTYLE_PROJECT_NAME);
+        Allure.step("Expected result: The project list inside the folder contain moved project");
         Assert.assertTrue(itemListInsideFolder.contains(FREESTYLE_PROJECT_NAME));
     }
 

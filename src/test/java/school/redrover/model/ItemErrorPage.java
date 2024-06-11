@@ -26,6 +26,6 @@ public class ItemErrorPage extends BasePage<ItemErrorPage> {
 
     public String getErrorText() {
 
-         return getWait5().until(ExpectedConditions.visibilityOf(errorText)).getText();
+        return getWait5().until(ExpectedConditions.visibilityOf(errorText)).getText();
     }
 }
