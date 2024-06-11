@@ -8,9 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import school.redrover.model.base.BaseProjectPage;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
@@ -178,6 +176,17 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
 
     public String getTextAreaBorderBacklightColor() {
         return getDriver().switchTo().activeElement().getCssValue("box-shadow").split(" 0px")[0];
+    }
+
+    public String getCellColor() {
+        Set<String> backgroundColor = new HashSet<>();
+        for (int i = 1; i <= 2; i++) {
+            WebElement element = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//tr[@data-runid='" + i + "']/td[@class='stage-cell stage-cell-0 SUCCESS']/div[@class='cell-color']")));
+
+            backgroundColor.add(element.getCssValue("background-color"));
+        }
+        return backgroundColor.iterator().next();
     }
 
     public PipelineProjectPage clickOnDescriptionInput() {

@@ -667,6 +667,7 @@ public class PipelineTest extends BaseTest {
                 .clickOnBuiltInNode()
                 .clickBringThisNodeBackOnlineButton()
                 .clickLogo()
+
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
@@ -682,58 +683,35 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(actualOrder, expectedOrder);
     }
 
-    @Ignore
     @Test
+    @Epic("Pipeline")
+    @Story("02.011 Take information about a project built")
+    @Description("Successful builds are marked with a green indicator when creating the list of builds.")
     public void testBuildColorGreen() {
-
-        int numberOfStages = 1;
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/manage']"))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='computer']"))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//td/a[contains(@href, 'built-in')]"))).click();
-
-        try {
-            getWait2().until(ExpectedConditions.elementToBeClickable(
-                    By.xpath("//button[@class='jenkins-button jenkins-button--primary ']"))).click();
-            getDriver().findElement(By.id("jenkins-name-icon")).click();
-
-        } catch (Exception e) {
-            getDriver().findElement(By.id("jenkins-name-icon")).click();
-        }
-
-        TestUtils.createPipelineProject(this, PIPELINE_NAME);
-
-        String pipelineScript = """
+    final String PIPELINE_SCRIPT = """
                 pipeline {
                 agent any
-
+ 
                 stages {
                 """;
 
-        getDriver().findElement(By.className("ace_text-input")).sendKeys(pipelineScript);
+        String backgroundColor = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickNodes()
+                .clickOnBuiltInNode()
+                .clickBringThisNodeBackOnlineButton()
+                .clickLogo()
 
-        for (int i = 1; i <= numberOfStages; i++) {
-
-            String stage = "\nstage('stage " + i + "') {\n"
-                    + "steps {\n"
-                    + "echo 'test " + i + "'\n";
-            getDriver().findElement(By.className("ace_text-input")).sendKeys(stage);
-            getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
-            getDriver().findElement(By.className("ace_text-input")).sendKeys(Keys.ARROW_DOWN);
-        }
-
-        getDriver().findElement(By.name("Submit")).click();
-
-        WebElement button = getDriver().findElement(By.xpath("//a[@href='/job/" + PIPELINE_NAME + "/build?delay=0sec']"));
-        for (int i = 1; i <= 2; i++) {
-            button.click();
-            WebElement element = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                    By.xpath("//tr[@data-runid='" + i + "']/td[@class='stage-cell stage-cell-0 SUCCESS']/div[@class='cell-color']")));
-            String backgroundColor = element.getCssValue("background-color");
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .sendScript(1,PIPELINE_SCRIPT)
+                .clickSaveButton()
+                .makeBuilds(2)
+                .waitBuildToFinish()
+                .getCellColor();
 
             Assert.assertEquals(backgroundColor, "rgba(0, 255, 0, 0.1)");
-        }
     }
 
     @Test

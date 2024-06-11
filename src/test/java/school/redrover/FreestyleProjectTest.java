@@ -1,5 +1,6 @@
 package school.redrover;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
@@ -32,6 +33,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickLogo()
                 .getItemList();
 
+        Allure.step("Expected result: Created Freestyle Project is displayed on Home page");
         Assert.assertListContainsObject(itemList, FREESTYLE_PROJECT_NAME, "Item is not found");
     }
 
@@ -53,6 +55,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickLogo()
                 .getItemList();
 
+        Allure.step("Expected result: Created Freestyle Project from an existed project is displayed on Home page");
         Assert.assertListContainsObject(projectList, projectName2, "Project is not created from other existing");
     }
 
@@ -75,6 +78,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .selectFreeStyleProject()
                 .getErrorMessageInvalidCharacterOrDuplicateName();
 
+        Allure.step("Expected result: Error message '» " + unsafeChar + "’ is an unsafe character' is displayed");
         Assert.assertEquals(errorMassage, "» ‘" + unsafeChar + "’ is an unsafe character");
 
     }
@@ -89,6 +93,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .selectFreeStyleProject()
                 .isOkButtonEnabled();
 
+        Allure.step("Expected result: OK button is disabled for the invalid project name: " + unsafeChar);
         Assert.assertFalse(enabledOkButton);
     }
 
@@ -96,44 +101,51 @@ public class FreestyleProjectTest extends BaseTest {
     @Story("US_01.000  Create Project")
     @Description("Check error when create the project with an empty name.")
     public void testCreateProjectEmptyName() {
+        String expectedErrorMessage = "No name is specified";
         String errorText = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName("   ")
                 .selectFreeStyleProject()
-                .clickOkAnyway(new CreateItemPage(getDriver()))
-                .getErrorMessageText();
+                .clickOkAnyway(new ItemErrorPage(getDriver()))
+                .getMessageText();
 
-        Assert.assertTrue(errorText.contains("No name is specified"));
+        Allure.step("Expected result: Error message " + expectedErrorMessage + "is displayed");
+        Assert.assertEquals(errorText, expectedErrorMessage);
     }
 
     @Test
     @Story("US_01.000  Create Project")
     @Description("Check error for project creation with a name exceeding character limit.")
     public void testCreateProjectWithLongestName() {
-        String projectName2 = "a".repeat(260);
+        final String expectedErrorMessage = "A problem occurred while processing the request";
+        final String projectName = "a".repeat(260);
 
         String errorText = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(projectName2)
+                .setItemName(projectName)
                 .selectFreeStyleProject()
-                .clickOkAnyway(new CreateItemPage(getDriver()))
-                .getErrorMessageText();
+                .clickOkAnyway(new ItemErrorPage(getDriver()))
+                .getErrorText();
 
-        Assert.assertTrue(errorText.contains("Logging ID="));
+        Allure.step("Expected result: Error message " + expectedErrorMessage + "is displayed");
+        Assert.assertEquals(errorText, expectedErrorMessage);
     }
 
     @Test(dependsOnMethods = "testCreateProjectViaSidebarMenu")
     @Story("US_01.000  Create Project")
     @Description("Check error when create the project with the same name.")
     public void testCreateProjectWithDuplicateName() {
+        final String expectedErrorMessage = "A job already exists with the name ";
+
         String errorMessage = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(FREESTYLE_PROJECT_NAME)
                 .selectFreeStyleProject()
-                .clickOkAnyway(new CreateItemPage(getDriver()))
-                .getErrorMessageText();
+                .clickOkAnyway(new ItemErrorPage(getDriver()))
+                .getMessageText();
 
-        Assert.assertTrue(errorMessage.contains("A job already exists with the name"));
+        Allure.step("Expected result: Error Message " + expectedErrorMessage + "is displayed");
+        Assert.assertEquals(errorMessage, expectedErrorMessage + "‘" + FREESTYLE_PROJECT_NAME + "’");
     }
 
     @Test
@@ -148,15 +160,13 @@ public class FreestyleProjectTest extends BaseTest {
         List<String> elementsList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(newProjectName)
-
-//                .setItemNameInCopyFrom(oldProjectName1.substring(0, 1))
-//                .getCopyFormElementsList()
                 .typeItemNameInCopyFrom(oldProjectName1)
                 .clickOkAnyway(new FreestyleConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
                 .getItemList();
 
+        Allure.step("Expected result: Freestyle Project created by copy from a container is displayed on Home page");
         Assert.assertListContainsObject(elementsList, newProjectName, "Item is not found");
     }
 
@@ -172,10 +182,8 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickConfigure()
                 .getHeaderSidePanelText();
 
-        Assert.assertEquals(
-                headerText,
-                "Configure",
-                "Configure page of the project is not opened");
+        Allure.step("Expected results: The header text should be 'Configure'");
+        Assert.assertEquals(headerText, "Configure", "Configure page of the project is not opened");
     }
 
     @Test
@@ -194,6 +202,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickMoveButton()
                 .getFullProjectPath();
 
+        Allure.step("Expected result: The full project path should contain: " + expectedText);
         Assert.assertTrue(actualText.contains(expectedText), "The text does not contain the expected project name.");
     }
 
@@ -212,6 +221,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickJobByName(FOLDER_NAME, new FolderProjectPage(getDriver()))
                 .getItemListInsideFolder();
 
+        Allure.step("Expected result: The project list inside the folder contain moved project");
         Assert.assertListContainsObject(projectList, FREESTYLE_PROJECT_NAME, "Item is not moved successfully");
     }
 
@@ -225,6 +235,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickJobNameBreadcrumb(FOLDER_NAME)
                 .getItemListInsideFolder();
 
+        Allure.step("Expected result: The project list inside the folder contain moved project");
         Assert.assertTrue(itemListInsideFolder.contains(FREESTYLE_PROJECT_NAME));
     }
 
@@ -241,6 +252,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickSaveButton()
                 .getProjectDescriptionText();
 
+        Allure.step("The project description matches: " + FREESTYLE_PROJECT_DESCRIPTION);
         Assert.assertTrue(projectDescription.matches(FREESTYLE_PROJECT_DESCRIPTION));
     }
 
@@ -256,6 +268,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickSaveButton()
                 .getProjectDescriptionText();
 
+        Allure.step("Expected result: The project description should be updated to: " + EDITED_PROJECT_DESCRIPTION);
         Assert.assertEquals(projectDescriptionText, EDITED_PROJECT_DESCRIPTION);
     }
 
@@ -263,20 +276,22 @@ public class FreestyleProjectTest extends BaseTest {
     @Story("US_01.006  Change project description")
     @Description("Delete project description")
     public void testDeleteProjectDescription() {
-        boolean addDescriptionButtonEnable = new HomePage(getDriver())
+        boolean isAddDescriptionButtonEnable = new HomePage(getDriver())
                 .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickEditDescription()
                 .clearDescription()
                 .clickSaveButton()
                 .isAddDescriptionButtonEnable();
 
-        Assert.assertTrue(addDescriptionButtonEnable);
+        Allure.step("Expected result: The 'Add Description' button is enabled.");
+        Assert.assertTrue(isAddDescriptionButtonEnable);
     }
 
     @Test
     @Story("US_01.003  Disable/Enable Project")
     @Description("Disable project")
     public void testDisableProject() {
+        final String expectedWarningMessage = "This project is currently disabled";
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
         String disabledStatus = new HomePage(getDriver())
@@ -284,19 +299,23 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickDisableProjectButton()
                 .getDisabledMassageText();
 
-        Assert.assertTrue(disabledStatus.contains("This project is currently disabled"));
+        Allure.step("Expected result: The warning message '" + expectedWarningMessage + "' is displayed.");
+        Assert.assertTrue(disabledStatus.contains(expectedWarningMessage));
     }
 
     @Test(dependsOnMethods = "testDisableProject")
     @Story("US_01.003  Disable/Enable Project")
     @Description("Enable disabled project")
     public void testEnableProject() {
+        String expectedButtonText = "Disable Project";
+
         String disableButtonText = new HomePage(getDriver())
                 .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickEnableButton()
                 .getDisableProjectButtonText();
 
-        Assert.assertEquals(disableButtonText, "Disable Project");
+        Allure.step("Expected result: The button text is '" + expectedButtonText);
+        Assert.assertEquals(disableButtonText, expectedButtonText);
     }
 
     @Test(dependsOnMethods = "testEnableProject")
@@ -309,6 +328,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .waitForGreenMarkBuildSuccessAppearience()
                 .getBuildInfo();
 
+        Allure.step("Expected result: The build is successful and the build number shown");
         Assert.assertEquals(actualResult, "#1");
     }
 
@@ -326,6 +346,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickLogo()
                 .getItemList();
 
+        Allure.step("Expected result: Renamed Freestyle Project is displayed on Home page");
         Assert.assertListContainsObject(itemList, RENAMED_FREESTYLE_PROJECT_NAME, "Item is not found");
     }
 
@@ -342,6 +363,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickRename()
                 .getProjectName();
 
+        Allure.step("Expected result: Renamed Freestyle Project is displayed");
         Assert.assertEquals(projectName, RENAMED_FREESTYLE_PROJECT_NAME);
     }
 
@@ -360,6 +382,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickLogo()
                 .getItemList();
 
+        Allure.step("Expected result: Renamed Freestyle Project is displayed on Home page");
         Assert.assertListContainsObject(itemList, RENAMED_FREESTYLE_PROJECT_NAME, "Item is not found");
     }
 
@@ -367,6 +390,7 @@ public class FreestyleProjectTest extends BaseTest {
     @Story("US_01.002  Rename project")
     @Description("Check error when rename the project with empty name")
     public void testDropdownRenameWithEmptyName() {
+        final String expectedErrorMessage = "No name is specified";
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
         String errorMassage = new HomePage(getDriver())
@@ -375,7 +399,8 @@ public class FreestyleProjectTest extends BaseTest {
                 .clearNameAndClickRenameButton()
                 .getMessageText();
 
-        Assert.assertEquals(errorMassage, "No name is specified");
+        Allure.step("Expected result: error message" + expectedErrorMessage + "is displayed");
+        Assert.assertEquals(errorMassage, expectedErrorMessage);
     }
 
     @Test
@@ -390,6 +415,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickYesInConfirmDeleteDialog()
                 .getItemList();
 
+        Allure.step("Expected result: project list on Home Page is empty");
         Assert.assertTrue(projectList.isEmpty());
     }
 
@@ -397,6 +423,8 @@ public class FreestyleProjectTest extends BaseTest {
     @Story("US_01.004  Delete project")
     @Description("Delete project via breadcrumb navigation menu on project's page")
     public void testGetWelcomePageWhenDeleteProjectViaBreadCrumbMenu() {
+        final String expectedHeader = "Welcome to Jenkins!";
+
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
         String welcomeJenkinsHeader = new HomePage(getDriver())
@@ -406,7 +434,8 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickYesInConfirmDeleteDialog()
                 .getHeadingText();
 
-        Assert.assertEquals(welcomeJenkinsHeader, "Welcome to Jenkins!");
+        Allure.step("Expected result: " + expectedHeader + "is displayed indicating there are no projects exists");
+        Assert.assertEquals(welcomeJenkinsHeader, expectedHeader);
     }
 
     @Test
@@ -420,6 +449,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickDeleteOnDropdownAndConfirm()
                 .isItemDeleted(FREESTYLE_PROJECT_NAME);
 
+        Allure.step("Expected result: the project is not displayed on Home Page");
         Assert.assertTrue(isItemDeleted);
     }
 }
