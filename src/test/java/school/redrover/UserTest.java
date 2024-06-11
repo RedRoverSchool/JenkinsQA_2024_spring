@@ -100,18 +100,18 @@ public class UserTest extends BaseTest {
         return randomString() + "@" + randomString() + ".com";
     }
 
-   @DataProvider(name = "usersCreateDataProvider")
-   public Object[][] usersCreateDataProvider() {
-        return new Object[][] {
-//                {"Username", "Password", "Full name", "E-mail address"},
+    @DataProvider(name = "usersCreateDataProvider")
+    public Object[][] usersCreateDataProvider() {
+        return new Object[][]{
+//              "Username", "Password",   "Full name",   "E-mail address"
                 {"Ivan", randomString(), randomString(), randomEmail()},
                 {"Maria", randomString(), randomString(), randomEmail()},
                 {"Sofia", randomString(), randomString(), randomEmail()},
                 {"Irina", randomString(), randomString(), randomEmail()}
         };
-   }
+    }
 
-   @Test(dataProvider = "usersCreateDataProvider")
+    @Test(dataProvider = "usersCreateDataProvider")
     public void testRedirectToUserPage(String username, String password, String fullName, String email) {
 
         String currentUrl = new HomePage(getDriver())
@@ -127,7 +127,7 @@ public class UserTest extends BaseTest {
     }
 
     @Test
-    public void testErrorMessageForEmptyField(){
+    public void testErrorMessageForEmptyField() {
 
         new HomePage(getDriver())
                 .clickManageJenkins()

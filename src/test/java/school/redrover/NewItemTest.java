@@ -158,17 +158,17 @@ public class NewItemTest extends BaseTest {
         Assert.assertEquals(errorPage.getErrorMessageText(), "No such job: " + notExistingName);
     }
 
-    @DataProvider(name="existingJobsNames")
-    public Object[][] existingJobsNames(){
+    @DataProvider(name = "existingJobsNames")
+    public Object[][] existingJobsNames() {
         return new Object[][]{
-                {"Freestyle project","folff"},
-                {"Freestyle project","folff00"},
-                {"Folder","Folder1"},
-                {"Folder","bFolder2"},
-                {"Pipeline","pipe1"},
+                {"Freestyle project", "folff"},
+                {"Freestyle project", "folff00"},
+                {"Folder", "Folder1"},
+                {"Folder", "bFolder2"},
+                {"Pipeline", "pipe1"},
                 {"Multi-configuration project", "multi1"},
                 {"Multibranch Pipeline", "multiBranch1"},
-                {"Organization Folder","organizationFolder1"}
+                {"Organization Folder", "organizationFolder1"}
         };
     }
 
@@ -189,11 +189,11 @@ public class NewItemTest extends BaseTest {
                 .clickLogo();
 
 
-        Integer QuantityItemsWithCopies= new HomePage(getDriver())
+        Integer quantityItemsWithCopies = new HomePage(getDriver())
                 .getItemList()
                 .size();
 
-        Assert.assertEquals(QuantityItemsWithCopies,2);
+        Assert.assertEquals(quantityItemsWithCopies, 2);
         Assert.assertTrue(homePage.isItemExists(jobName + "Copy"));
         Assert.assertTrue(homePage.isItemExists(jobName));
     }
@@ -218,8 +218,8 @@ public class NewItemTest extends BaseTest {
         TestUtils.createFreestyleProject(this, freestyle2);
         TestUtils.createPipelineProject(this, pipeline1);
         TestUtils.createMultiConfigurationProject(this, multiConfigurationProject1);
-        TestUtils.createMultibranchProject(this,multiBranchPipe1);
-        TestUtils.createOrganizationFolderProject(this,organizationFolder1);
+        TestUtils.createMultibranchProject(this, multiBranchPipe1);
+        TestUtils.createOrganizationFolderProject(this, organizationFolder1);
 
         List<String> firstLettersJobs = TestUtils.getJobsBeginningFromThisFirstLetters(this, firstLetters);
 
