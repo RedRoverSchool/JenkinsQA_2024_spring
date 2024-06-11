@@ -224,6 +224,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         Assert.assertTrue(projectNameList.contains(PROJECT_NAME));
     }
 
+
     @Test(dependsOnMethods = "testCreateMultiConfigurationProject")
     @Story("US_03.004  Rename project")
     @Description("Check,an existing project can be renamed")

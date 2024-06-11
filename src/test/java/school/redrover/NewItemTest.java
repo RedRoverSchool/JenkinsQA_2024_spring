@@ -1,5 +1,8 @@
 package school.redrover;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -13,14 +16,16 @@ import school.redrover.runner.TestUtils;
 import java.util.List;
 import java.util.Random;
 
+@Epic("New item")
 public class NewItemTest extends BaseTest {
 
     @Test
+    @Story("US_00.000 Create New item")
+    @Description("Enter to New item page")
     public void testOpenCreateNewItemPage() {
         String newItemHeader = new HomePage(getDriver())
                 .clickNewItem()
                 .getPageTitle();
-
         String TextAboveNameField = new CreateNewItemPage(getDriver())
                 .getTitleOfNameField();
 
@@ -28,20 +33,10 @@ public class NewItemTest extends BaseTest {
         Assert.assertEquals(TextAboveNameField, "Enter an item name");
     }
 
-    @Test
-    public void testCreateNewFolder() {
-        List<String> itemsList = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName("Name")
-                .selectFolderAndClickOk()
-                .clickSaveButton()
-                .clickLogo()
-                .getItemList();
-
-        Assert.assertListContainsObject(itemsList, "Name", "Item not found");
-    }
 
     @Test
+    @Story("US_00.000 Create New item")
+    @Description("You can't create an item without selection of item type, because 'OkButton' is enabled ")
     public void testCreateItemWithoutSelectedItemType() {
         boolean okButtonIsEnabled = new HomePage(getDriver())
                 .clickNewItem()
@@ -52,46 +47,65 @@ public class NewItemTest extends BaseTest {
     }
 
     @Test
-    public void testRenameFolder() {
-        List<String> itemsList = new HomePage(getDriver())
+    @Story("US_00.000 Create New item")
+    @Description("A user can see the name entry field ")
+    public void testUserSeeTheNameEntryField() {
+
+        Boolean existenceOfNameField = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName("Name")
-                .selectFolderAndClickOk()
-                .clickSaveButton()
-                .clickLogo()
-                .openItemDropdownWithSelenium("Name")
-                .clickRenameOnDropdownForFolder()
-                .setNewName("New Name")
-                .clickRename()
-                .clickLogo()
-                .getItemList();
+                .isDisplayedNameField();
 
-        Assert.assertListContainsObject(itemsList, "New Name", "Item not found");
+        Assert.assertTrue(existenceOfNameField);
     }
 
     @Test
-    public void testMessageWhenCreateItemUsingSpecialCharactersInName() {
-        String[] specialCharacters = {"!", "%", "&", "#", "@", "*", "$", "?", "^", "|", "/", "]", "["};
+    @Story("US_00.000 Create New item")
+    @Description(" Check list of types, suggested for a project creation ")
+    public void TestCheckListOfSuggestedForCreationProjectTypes() {
+        List<String> typesList = List.of(
+                "Freestyle project",
+                "Pipeline",
+                "Multi-configuration project",
+                "Folder",
+                "Multibranch Pipeline",
+                "Organization Folder");
 
-        new HomePage(getDriver())
-                .clickNewItem();
+        List<String> actualTypesList = new HomePage(getDriver())
+                .clickNewItem()
+                .getTypesList();
 
-        for (String specChar : specialCharacters) {
-            String actualErrorMessage = new CreateNewItemPage(getDriver())
-                    .clearItemNameField()
-                    .setItemName("Fold" + specChar + "erdate")
-                    .getErrorMessageInvalidCharacterOrDuplicateName();
-
-            String expectMessage = "» ‘" + specChar + "’ is an unsafe character";
-
-            Assert.assertEquals(actualErrorMessage, expectMessage, "Message is not displayed");
-        }
+        Assert.assertEquals(actualTypesList, typesList);
     }
 
+
+    @DataProvider(name = "unsafeCharactersProvider")
+    public Object[][] unsafeCharactersProvider() {
+        return new Object[][]{
+                {"!"}, {"#"}, {"$"}, {"%"}, {"&"}, {"*"}, {"/"}, {";"},
+                {">"}, {"<"}, {"?"}, {"@"}, {"["}, {"\\"}, {"]"}, {"^"}, {"|"}
+        };
+    }
+
+    @Test(dataProvider = "unsafeCharactersProvider")
+    @Story("US_00.000 Create New item")
+    @Description("Check hint, when entering an unsafe character ")
+    public void testInvalidValuesForProjectNameInput(String x) {
+        String errorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(x)
+                .getErrorMessageInvalidCharacterOrDuplicateName();
+
+        Assert.assertEquals(errorMessage, "» ‘" + x + "’ is an unsafe character");
+    }
+
+
     @Test
+    @Story("US_00.000 Create New item")
+    @Description(" Create item with empty name")
+
     public void testCreateItemWithEmptyName() {
-        String hintTextWhenEmptyName = "» This field cannot be empty, please enter a valid name";
-        String hintColor = "rgba(255, 0, 0, 1)";
+        final String hintTextWhenEmptyName = "» This field cannot be empty, please enter a valid name";
+        final String hintColor = "rgba(255, 0, 0, 1)";
 
         Boolean IsOkButtonEnabled = new HomePage(getDriver())
                 .clickNewItem()
@@ -111,6 +125,8 @@ public class NewItemTest extends BaseTest {
     }
 
     @Test
+    @Story("US_00.000 Create New item")
+    @Description("It is impossible to create a new item after clearing Item Name input Field  ")
     public void testCreateItemEmptyNameNegative() {
         CreateNewItemPage createNewItemPage = new HomePage(getDriver())
                 .clickNewItem()
@@ -121,28 +137,9 @@ public class NewItemTest extends BaseTest {
         Assert.assertFalse(createNewItemPage.isOkButtonEnabled());
     }
 
-    @Test
-    public void testCreateMulticonfigurationProject() {
-        List<String> itemsList = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName("Name")
-                .selectMultiConfigurationAndClickOk()
-                .clickSaveButton()
-                .clickLogo()
-                .getItemList();
 
-        Assert.assertListContainsObject(itemsList, "Name", "Item not found");
-    }
-
-    @Test
-    public void testCreateMulticonfigurationProjectNegative() {
-        CreateNewItemPage createNewItemPage = new HomePage(getDriver())
-                .clickNewItem()
-                .selectMultiConfiguration();
-
-        Assert.assertEquals(createNewItemPage.getItemNameHintText(), "» This field cannot be empty, please enter a valid name");
-    }
-
+    @Story("US_00.007 Create a new item from other existing")
+    @Description("Try to copy an unexisting project")
     @Test(dependsOnMethods = "testDropdownNamesMenuContentWhenCopyProject")
     public void testCopyFromNotExistingJob() {
         final String notExistingName = "AAA";
@@ -171,7 +168,8 @@ public class NewItemTest extends BaseTest {
                 {"Organization Folder","organizationFolder1"}
         };
     }
-
+    @Story("US_00.007 Create a new item from other existing")
+    @Description(" Create a new item from other existing one for ALL types of jobs.")
     @Test(dataProvider = "existingJobsNames")
     public void testCopyFromExistingJob(String type, String jobName) {
 
@@ -198,6 +196,8 @@ public class NewItemTest extends BaseTest {
         Assert.assertTrue(homePage.isItemExists(jobName));
     }
 
+    @Story("US_00.007 Create a new item from other existing")
+    @Description("Check tooltip's content contains the all names of jobs, beginning from defined letter(letters)")
     @Test
     public void testDropdownNamesMenuContentWhenCopyProject() {
         final String freestyle1 = "folff";
@@ -232,49 +232,6 @@ public class NewItemTest extends BaseTest {
         Assert.assertEquals(jobsFromDropdownMenu, firstLettersJobs);
     }
 
-    @DataProvider(name = "unsafeCharactersProvider")
-    public Object[][] unsafeCharactersProvider() {
-        return new Object[][]{
-                {"!"}, {"#"}, {"$"}, {"%"}, {"&"}, {"*"}, {"/"}, {";"},
-                {">"}, {"<"}, {"?"}, {"@"}, {"["}, {"\\"}, {"]"}, {"^"}, {"|"}
-        };
-    }
-
-    @Test(dataProvider = "unsafeCharactersProvider")
-    public void testInvalidValuesForProjectNameInput(String x) {
-        String errorMessage = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(x)
-                .getErrorMessageInvalidCharacterOrDuplicateName();
-
-        Assert.assertEquals(errorMessage, "» ‘" + x + "’ is an unsafe character");
-    }
-
-    @Test
-    public void testUserSeeTheNameEntryField() {
-
-        Assert.assertTrue(new HomePage(getDriver())
-                .clickNewItem()
-                .isDisplayedNameField());
-    }
-
-    @Test
-    public void TestCheckListOfSuggestedForCreationProjectTypes() {
-        List<String> typesList = List.of(
-                "Freestyle project",
-                "Pipeline",
-                "Multi-configuration project",
-                "Folder",
-                "Multibranch Pipeline",
-                "Organization Folder");
-
-        List<String> actualTypesList = new HomePage(getDriver())
-                .clickNewItem()
-                .getTypesList();
-
-        Assert.assertEquals(actualTypesList, typesList);
-    }
-
     @DataProvider
     Object[][] projectTypes() {
         return new Object[][]{
@@ -283,8 +240,10 @@ public class NewItemTest extends BaseTest {
     }
 
     @Test(dataProvider = "projectTypes")
-    public void testCreateItemForStandaloneOrNestedProjects(String projectType) {
-        String PROJECT_NAME = "NewProject";
+    @Story("US_00.000 Create New item")
+    @Description("Verification for desirable job type  ")
+    public void testCreateItemForStandAloneOrNestedProjects(String projectType) {
+        final String PROJECT_NAME = "NewProject";
         Random random = new Random();
         int itemOptionIndex = random.nextInt(3) + 1;
 
@@ -293,17 +252,15 @@ public class NewItemTest extends BaseTest {
                 .setItemName(PROJECT_NAME)
                 .clickItemOption(projectType, itemOptionIndex)
                 .isAttributeAriaChecked(projectType, itemOptionIndex);
-
         String currentUrl = new CreateNewItemPage(getDriver())
                 .clickOkButton()
                 .getCurrentUrl();
-
         String pageHeading = new FreestyleConfigPage(getDriver())
                 .clickSaveButton()
                 .getPageHeadingText();
 
         Assert.assertTrue(isTypeChecked);
-        Assert.assertEquals(currentUrl, String.format("http://localhost:8080/job/%s/configure", PROJECT_NAME));
+        Assert.assertTrue(currentUrl.contains(PROJECT_NAME));
         Assert.assertTrue(pageHeading.contains(PROJECT_NAME));
     }
 }

@@ -102,33 +102,44 @@ public class FolderTest extends BaseTest {
     @Story("US_04.001 Rename Folder")
     @Description("Rename Folder via Breadcrumbs dropdown menu")
     public void testRenameFolderViaFolderBreadcrumbsDropdownMenu() {
-        String folderStatusPageHeading = new HomePage(getDriver())
+        FolderProjectPage folderProjectPage  = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
                 .hoverOverBreadcrumbsName()
                 .clickBreadcrumbsDropdownArrow()
                 .clickDropdownRenameButton()
                 .setNewName(NEW_FOLDER_NAME)
-                .clickRename()
+                .clickRename();
+        String folderStatusPageHeading = folderProjectPage
                 .getProjectName();
+        HomePage renewHomePage = folderProjectPage
+                .clickLogo();
 
         Assert.assertEquals(folderStatusPageHeading, NEW_FOLDER_NAME,
                 "The Folder name is not equal to " + NEW_FOLDER_NAME);
+        Assert.assertTrue(renewHomePage.isItemExists(NEW_FOLDER_NAME));
+        Assert.assertTrue(renewHomePage.isItemDeleted(FOLDER_NAME));
     }
 
     @Test(dependsOnMethods = {"testCreateViaCreateAJob", "testRenameFolderViaFolderBreadcrumbsDropdownMenu"})
     @Story("US_04.001 Rename Folder")
     @Description("Rename Folder via main page dropdown")
     public void testRenameFolderViaMainPageDropdownMenu() {
-        String folderStatusPageHeading = new HomePage(getDriver())
+        FolderProjectPage folderProjectPage = new HomePage(getDriver())
                 .openItemDropdownWithSelenium(NEW_FOLDER_NAME)
                 .clickRenameOnDropdownForFolder()
                 .setNewName(THIRD_FOLDER_NAME)
-                .clickRename()
+                .clickRename();
+        String folderStatusPageHeading = folderProjectPage
                 .getProjectName();
+        HomePage renewHomePage = folderProjectPage
+                .clickLogo();
 
         Assert.assertEquals(folderStatusPageHeading, THIRD_FOLDER_NAME,
                 "The Folder name is not equal to " + THIRD_FOLDER_NAME);
+        Assert.assertTrue(renewHomePage.isItemExists(THIRD_FOLDER_NAME));
+        Assert.assertTrue(renewHomePage.isItemDeleted(NEW_FOLDER_NAME));
     }
+
 
     @Test
     @Story("US_04.001 Rename Folder")
@@ -136,16 +147,37 @@ public class FolderTest extends BaseTest {
     public void testRenameFolderViaSidebarMenu() {
         TestUtils.createFolderProject(this, FOLDER_NAME);
 
-        String folderRenamedName = new HomePage(getDriver())
+        FolderProjectPage folderProjectPage = new HomePage(getDriver())
                 .clickJobByName(FOLDER_NAME, new FolderProjectPage(getDriver()))
                 .clickOnRenameButton()
                 .setNewName(NEW_FOLDER_NAME)
-                .clickRename()
+                .clickRename();
+        String folderRenamedName = folderProjectPage
                 .getProjectName();
+        HomePage renewHomePage = folderProjectPage
+                .clickLogo();
 
         Assert.assertEquals(folderRenamedName, NEW_FOLDER_NAME);
+        Assert.assertTrue(renewHomePage.isItemExists(NEW_FOLDER_NAME));
+        Assert.assertTrue(renewHomePage.isItemDeleted(FOLDER_NAME));
     }
+    @Test
+    public void testRenameFolder() {
+        List<String> itemsList = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName("Name")
+                .selectFolderAndClickOk()
+                .clickSaveButton()
+                .clickLogo()
+                .openItemDropdownWithSelenium("Name")
+                .clickRenameOnDropdownForFolder()
+                .setNewName("New Name")
+                .clickRename()
+                .clickLogo()
+                .getItemList();
 
+        Assert.assertListContainsObject(itemsList, "New Name", "Item not found");
+    }
     @Test
     @Story("US_04.002 Move Folder to Folder")
     @Description("Verify a Folder can be moved into another Folder via breadcrumbs")
