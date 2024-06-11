@@ -6,7 +6,6 @@ import org.openqa.selenium.interactions.WheelInput;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.testng.Assert;
 import school.redrover.model.base.BaseConfigPage;
 
 import java.time.Duration;
@@ -69,10 +68,10 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
     private List<WebElement> sectionsNameList;
 
     @FindBy(xpath = "//label[text()='Use Groovy Sandbox']")
-    WebElement useGroovySandboxCheckbox;
+    private WebElement useGroovySandboxCheckbox;
 
     @FindBy(linkText = "Script Approval Configuration")
-    WebElement scriptApprovalLink;
+    private WebElement scriptApprovalLink;
 
     public PipelineConfigPage(WebDriver driver) {
         super(driver, new PipelineProjectPage(driver));
