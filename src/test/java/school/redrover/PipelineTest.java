@@ -181,8 +181,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Epic("Pipeline")
-    @Story("US_02.007 Delete pipeline")
+    @Story("US_02.007  Delete Pipeline")
     @Description("Verify Pipeline builds disappeared from Build History page upon its removal")
     public void testBuildHistoryEmptyUponPipelineRemoval() {
         boolean isBuildDeleted = new HomePage(getDriver())
