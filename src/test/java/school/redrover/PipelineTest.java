@@ -35,7 +35,7 @@ public class PipelineTest extends BaseTest {
 
     private static final List<String> NAME_PROJECTS = List.of("PPProject", "PPProject2");
 
-    private static final String pipelineScript = "pipeline {\nagent any\n\nstages {\n";
+    private static final String PIPELINE_SCRIPT = "pipeline {\nagent any\n\nstages {\n";
 
     private static final By ADVANCED_PROJECT_OPTIONS_MENU = By.xpath("//button[@data-section-id='advanced-project-options']");
 
@@ -370,7 +370,7 @@ public class PipelineTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
-                .sendScript(stagesQtt, pipelineScript)
+                .sendScript(stagesQtt, PIPELINE_SCRIPT)
                 .clickSaveButton()
                 .makeBuilds(buildsQtt)
                 .clickFullStageViewButton()
@@ -445,7 +445,7 @@ public class PipelineTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
-                .sendScript(stagesQtt, pipelineScript)
+                .sendScript(stagesQtt, PIPELINE_SCRIPT)
                 .clickSaveButton()
                 .makeBuilds(buildsQtt)
                 .getSagesQtt();
@@ -753,7 +753,7 @@ public class PipelineTest extends BaseTest {
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .scrollToPipelineScript()
-                .sendScript(numberOfStages, pipelineScript)
+                .sendScript(numberOfStages, PIPELINE_SCRIPT)
                 .clickSaveButton().clickBuild()
                 .waitBuildToFinish()
                 .getStageHeaderNameList();
@@ -857,9 +857,9 @@ public class PipelineTest extends BaseTest {
         TestUtils.createPipelineProject(this, PIPELINE_NAME);
         getDriver().findElement(By.cssSelector("#tasks > div:nth-child(4) > span > a")).click();
 
-        getWait60().until(ExpectedConditions.textToBePresentInElementLocated(By.id("pipeline-box"), "Stage View\n" +
-                "This Pipeline has run successfully, but does not define any stages. " +
-                "Please use the stage step to define some stages in this Pipeline."));
+        getWait60().until(ExpectedConditions.textToBePresentInElementLocated(By.id("pipeline-box"), "Stage View\n"
+                + "This Pipeline has run successfully, but does not define any stages. "
+                + "Please use the stage step to define some stages in this Pipeline."));
 
         getDriver().findElement(By.cssSelector("#disable-project > button")).click();
 
@@ -929,7 +929,8 @@ public class PipelineTest extends BaseTest {
 
     @Test
     @Story("US_02.004  Verify the Pipeline configuration")
-    @Description("Verify that Pipeline configuration has interactive sections: General, Advanced Project Options, Pipeline")
+    @Description("Verify that Pipeline configuration has interactive sections: "
+            + "General, Advanced Project Options, Pipeline")
     public void testSectionsOfSidePanelAreVisible() {
 
         List<String> expectedSectionsNameList = List.of("General", "Advanced Project Options", "Pipeline");

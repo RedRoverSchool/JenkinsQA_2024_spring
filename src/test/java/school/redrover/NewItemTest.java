@@ -189,11 +189,11 @@ public class NewItemTest extends BaseTest {
                 .clickLogo();
 
 
-        Integer QuantityItemsWithCopies = new HomePage(getDriver())
+        Integer quantityItemsWithCopies = new HomePage(getDriver())
                 .getItemList()
                 .size();
 
-        Assert.assertEquals(QuantityItemsWithCopies, 2);
+        Assert.assertEquals(quantityItemsWithCopies, 2);
         Assert.assertTrue(homePage.isItemExists(jobName + "Copy"));
         Assert.assertTrue(homePage.isItemExists(jobName));
     }
