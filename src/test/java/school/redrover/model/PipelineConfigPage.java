@@ -6,6 +6,7 @@ import org.openqa.selenium.interactions.WheelInput;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 import school.redrover.model.base.BaseConfigPage;
 
 import java.time.Duration;
@@ -66,6 +67,12 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
 
     @FindBy(css = "#tasks > div")
     private List<WebElement> sectionsNameList;
+
+    @FindBy(xpath = "//label[text()='Use Groovy Sandbox']")
+    WebElement useGroovySandboxCheckbox;
+
+    @FindBy(linkText = "Script Approval Configuration")
+    WebElement scriptApprovalLink;
 
     public PipelineConfigPage(WebDriver driver) {
         super(driver, new PipelineProjectPage(driver));
@@ -242,5 +249,15 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
     public String getScriptText() {
 
         return echoScript.getText();
+    }
+
+    public PipelineConfigPage clickOnUseGroovySandboxCheckbox() {
+        getWait5().until(ExpectedConditions.visibilityOf(useGroovySandboxCheckbox)).click();
+
+        return new PipelineConfigPage(getDriver());
+    }
+
+    public boolean isScriptApprovalLinkShown() {
+        return getWait5().until(ExpectedConditions.elementToBeClickable(scriptApprovalLink)).isDisplayed();
     }
 }
