@@ -81,7 +81,7 @@ public class HeaderFrame<T extends BasePage<T>> extends BaseFrame<T> {
         return new SearchResultPage(getDriver());
     }
 
-    public T chooseAndClickFirstSuggestListVariant(){
+    public T chooseAndClickFirstSuggestListVariant() {
         getWait5().until(ExpectedConditions.visibilityOf(firstSuggestListVariant)).click();
 
         return getReturnPage();
@@ -105,6 +105,7 @@ public class HeaderFrame<T extends BasePage<T>> extends BaseFrame<T> {
                 .perform();
     }
 
+    @Step("Click 'MyViews' on the header dropdown menu")
     public ViewAllPage clickMyViewsOnHeaderDropdown() {
         clickChevronForOpenHeaderUsernameDropdown();
         myViewsOnDropDown.click();

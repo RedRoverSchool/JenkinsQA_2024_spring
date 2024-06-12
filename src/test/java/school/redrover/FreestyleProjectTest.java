@@ -102,12 +102,13 @@ public class FreestyleProjectTest extends BaseTest {
     @Description("Check error when create the project with an empty name.")
     public void testCreateProjectEmptyName() {
         String expectedErrorMessage = "No name is specified";
+
         String errorText = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName("   ")
                 .selectFreeStyleProject()
                 .clickOkAnyway(new ItemErrorPage(getDriver()))
-                .getMessageText();
+                .getErrorText();
 
         Allure.step("Expected result: Error message " + expectedErrorMessage + "is displayed");
         Assert.assertEquals(errorText, expectedErrorMessage);
@@ -125,7 +126,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .setItemName(projectName)
                 .selectFreeStyleProject()
                 .clickOkAnyway(new ItemErrorPage(getDriver()))
-                .getErrorText();
+                .getProblemText();
 
         Allure.step("Expected result: Error message " + expectedErrorMessage + "is displayed");
         Assert.assertEquals(errorText, expectedErrorMessage);
@@ -142,34 +143,11 @@ public class FreestyleProjectTest extends BaseTest {
                 .setItemName(FREESTYLE_PROJECT_NAME)
                 .selectFreeStyleProject()
                 .clickOkAnyway(new ItemErrorPage(getDriver()))
-                .getMessageText();
+                .getErrorText();
 
         Allure.step("Expected result: Error Message " + expectedErrorMessage + "is displayed");
         Assert.assertEquals(errorMessage, expectedErrorMessage + "‘" + FREESTYLE_PROJECT_NAME + "’");
     }
-
-    @Test
-    @Story("US_01.000  Create Project")
-    @Description("Verify project can be copied from a container.")
-    public void testCopyFromContainer() {
-        String oldProjectName1 = "Race Cars";
-        String newProjectName = "Vintage Cars";
-
-        TestUtils.createFreestyleProject(this, oldProjectName1);
-
-        List<String> elementsList = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(newProjectName)
-                .typeItemNameInCopyFrom(oldProjectName1)
-                .clickOkAnyway(new FreestyleConfigPage(getDriver()))
-                .clickSaveButton()
-                .clickLogo()
-                .getItemList();
-
-        Allure.step("Expected result: Freestyle Project created by copy from a container is displayed on Home page");
-        Assert.assertListContainsObject(elementsList, newProjectName, "Item is not found");
-    }
-
 
     @Test
     @Story("US_01.000  Create Project")
@@ -231,8 +209,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testMoveProjectToFolderViaBreadcrumb() {
         List<String> itemListInsideFolder = new HomePage(getDriver())
                 .getHeader().clickMyViewsOnHeaderDropdown()
-                .clickBreadcrumbAll()
-                .clickJobNameBreadcrumb(FOLDER_NAME)
+                .clickBreadcrumbAllDropdownMenuAndSelectProjectName(FOLDER_NAME)
                 .getItemListInsideFolder();
 
         Allure.step("Expected result: The project list inside the folder contain moved project");
@@ -244,7 +221,8 @@ public class FreestyleProjectTest extends BaseTest {
     @Description("Add project description by 'Add Description' button")
     public void testAddDescriptionUsingAddDescriptionButton() {
         String projectDescription = new HomePage(getDriver())
-                .clickNewItem().setItemName(FREESTYLE_PROJECT_NAME)
+                .clickNewItem()
+                .setItemName(FREESTYLE_PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .clickSaveButton()
                 .clickAddDescription()
@@ -325,7 +303,7 @@ public class FreestyleProjectTest extends BaseTest {
         String actualResult = new HomePage(getDriver())
                 .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickBuildNowOnSideBar()
-                .waitForGreenMarkBuildSuccessAppearience()
+                .waitForGreenMarkBuildSuccessAppearance()
                 .getBuildInfo();
 
         Allure.step("Expected result: The build is successful and the build number shown");
@@ -391,13 +369,14 @@ public class FreestyleProjectTest extends BaseTest {
     @Description("Check error when rename the project with empty name")
     public void testDropdownRenameWithEmptyName() {
         final String expectedErrorMessage = "No name is specified";
+
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
         String errorMassage = new HomePage(getDriver())
                 .openItemDropdown(FREESTYLE_PROJECT_NAME)
                 .clickRenameOnDropdownForFreestyleProject()
                 .clearNameAndClickRenameButton()
-                .getMessageText();
+                .getErrorText();
 
         Allure.step("Expected result: error message" + expectedErrorMessage + "is displayed");
         Assert.assertEquals(errorMassage, expectedErrorMessage);

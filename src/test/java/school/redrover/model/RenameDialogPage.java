@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -18,6 +19,7 @@ public class RenameDialogPage extends BasePage<RenameDialogPage> {
         super(driver);
     }
 
+    @Step("Clear 'New Name' input field and type new name for the Project")
     public RenameDialogPage setNewItemName(String newItemName) {
         inputNewNameField.clear();
         inputNewNameField.sendKeys(newItemName);
@@ -25,6 +27,7 @@ public class RenameDialogPage extends BasePage<RenameDialogPage> {
         return new RenameDialogPage(getDriver());
     }
 
+    @Step("Click 'Rename' button")
     public <T> T clickRename(T page) {
         getWait10().until(ExpectedConditions.elementToBeClickable(renameButton)).click();
 

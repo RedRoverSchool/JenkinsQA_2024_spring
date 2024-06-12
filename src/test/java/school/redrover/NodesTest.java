@@ -2,6 +2,7 @@ package school.redrover;
 
 import io.qameta.allure.*;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.NodesTablePage;
@@ -14,6 +15,14 @@ import java.util.List;
 public class NodesTest extends BaseTest {
 
     private static final String NODE_NAME = "FirstNode";
+
+    @BeforeMethod
+    private void beforeMethod() {
+        HomePage homePage = new HomePage(getDriver());
+        if (homePage.isNodesDisplayedOnExecutorsPanel()) {
+            homePage.clickOnExecutorPanelToggle();
+        }
+    }
 
     @Step("Create Node")
     public void createNode(String nodeName) {
