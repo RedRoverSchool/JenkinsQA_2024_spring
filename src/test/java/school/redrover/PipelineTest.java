@@ -32,8 +32,6 @@ public class PipelineTest extends BaseTest {
 
     private static final String SUCCEED_BUILD_EXPECTED = "Finished: SUCCESS";
 
-    private static final List<String> NAME_PROJECTS = List.of("PPProject", "PPProject2");
-
     private static final String PIPELINE_SCRIPT = "pipeline {\nagent any\n\nstages {\n";
 
     private static final By ADVANCED_PROJECT_OPTIONS_MENU = By.xpath("//button[@data-section-id='advanced-project-options']");
