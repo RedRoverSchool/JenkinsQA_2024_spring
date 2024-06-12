@@ -575,7 +575,7 @@ public class PipelineTest extends BaseTest {
     public void testSetPipelineScript() {
         String echoScriptName = new HomePage(getDriver())
                 .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
-                .clickSidebarConfigureButton()
+                .clickConfigureOnSidebar()
                 .scrollToPipelineScript()
                 .selectSamplePipelineScript("hello")
                 .clickSaveButton()
@@ -1014,7 +1014,7 @@ public class PipelineTest extends BaseTest {
 
         boolean isScriptApprovalLinkShown = new HomePage(getDriver())
                 .clickSpecificPipelineName(PIPELINE_NAME)
-                .clickSidebarConfigureButton()
+                .clickConfigureOnSidebar()
                 .scrollToPipelineScript()
                 .selectSamplePipelineScript("github-maven")
                 .clickOnUseGroovySandboxCheckbox()
@@ -1038,7 +1038,7 @@ public class PipelineTest extends BaseTest {
                 .selectCustomPipelineSpeedDurabilityLevel(index)
                 .scrollToPipelineScript()
                 .clickSaveButton()
-                .clickSidebarConfigureButton()
+                .clickConfigureOnSidebar()
                 .getCustomPipelineSpeedDurabilityLevelText();
 
         Assert.assertTrue(selectedOption.contains(selectedOptionForCheck));
