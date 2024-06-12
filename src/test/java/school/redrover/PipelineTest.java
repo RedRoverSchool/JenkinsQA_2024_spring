@@ -5,7 +5,6 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -32,8 +31,6 @@ public class PipelineTest extends BaseTest {
     private static final String DESCRIPTION = "Lorem ipsum dolor sit amet";
 
     private static final String SUCCEED_BUILD_EXPECTED = "Finished: SUCCESS";
-
-    private static final List<String> NAME_PROJECTS = List.of("PPProject", "PPProject2");
 
     private static final String PIPELINE_SCRIPT = "pipeline {\nagent any\n\nstages {\n";
 
@@ -558,7 +555,7 @@ public class PipelineTest extends BaseTest {
 
         List<String> buildList = new HomePage(getDriver())
                 .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
-                .clickSidebarConfigureButton()
+                .clickConfigureOnSidebar()
                 .clickDiscardOldBuilds()
                 .setNumberBuildsToKeep(maxNumberBuildsToKeep)
                 .clickSaveButton()
@@ -577,11 +574,11 @@ public class PipelineTest extends BaseTest {
     public void testSetPipelineScript() {
         String echoScriptName = new HomePage(getDriver())
                 .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
-                .clickSidebarConfigureButton()
+                .clickConfigureOnSidebar()
                 .scrollToPipelineScript()
                 .selectSamplePipelineScript("hello")
                 .clickSaveButton()
-                .clickSidebarConfigureButton()
+                .clickConfigureOnSidebar()
                 .scrollToPipelineScript()
                 .getScriptText();
 
@@ -683,7 +680,6 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Epic("Pipeline")
     @Story("02.011 Take information about a project built")
     @Description("Successful builds are marked with a green indicator when creating the list of builds.")
     public void testBuildColorGreen() {
@@ -918,7 +914,7 @@ public class PipelineTest extends BaseTest {
                 .selectPipelineAndClickOk()
                 .clickLogo()
                 .clickSpecificPipelineName(PIPELINE_NAME)
-                .clickSidebarConfigureButton()
+                .clickConfigureOnSidebar()
                 .getSectionsNameList();
 
         Assert.assertEquals(sectionsNameList, expectedSectionsNameList);
@@ -945,7 +941,7 @@ public class PipelineTest extends BaseTest {
 
         String projectsDisplayNameInHeader = new HomePage(getDriver())
                 .clickSpecificPipelineName(PIPELINE_NAME)
-                .clickSidebarConfigureButton()
+                .clickConfigureOnSidebar()
                 .clickAdvancedProjectOptionsMenu()
                 .clickAdvancedButton()
                 .setDisplayNameDescription(editedDisplayNameText)
@@ -960,7 +956,7 @@ public class PipelineTest extends BaseTest {
     public void testDeleteDisplayNameInAdvancedSection() {
         String projectsDisplayNameInHeader = new HomePage(getDriver())
                 .clickSpecificPipelineName(PIPELINE_NAME)
-                .clickSidebarConfigureButton()
+                .clickConfigureOnSidebar()
                 .clickAdvancedProjectOptionsMenu()
                 .clickAdvancedButton()
                 .clearDisplayNameDescription()
@@ -1030,7 +1026,7 @@ public class PipelineTest extends BaseTest {
                 .selectCustomPipelineSpeedDurabilityLevel(index)
                 .scrollToPipelineScript()
                 .clickSaveButton()
-                .clickSidebarConfigureButton()
+                .clickConfigureOnSidebar()
                 .getCustomPipelineSpeedDurabilityLevelText();
 
         Assert.assertTrue(selectedOption.contains(selectedOptionForCheck));
@@ -1048,7 +1044,7 @@ public class PipelineTest extends BaseTest {
                 .clickQuietPeriodCheckbox()
                 .setNumberOfSecondsInQuietPeriodInputField(numberOfSeconds)
                 .clickSaveButton()
-                .clickSidebarConfigureButton()
+                .clickConfigureOnSidebar()
                 .scrollToQuietPeriodCheckbox()
                 .getQuietPeriodInputFieldValue();
 
@@ -1147,29 +1143,36 @@ public class PipelineTest extends BaseTest {
                 "Tooltip '" + tooltipText + "' is not displayed.");
     }
 
-    @Test
-    public void testSetNumberOfBuildsThrottleBuilds() {
-        final String messageDay = "Approximately 24 hours between builds";
 
+    @DataProvider
+    private Object[][] dataForThrottleBuilds() {
+
+        return new Object[][]{
+                {"1", "second", "Approximately a second between builds"},
+                {"2", "minute", "Approximately 30 seconds between builds"},
+                {"3", "hour", "Approximately 20 minutes between builds"},
+                {"4", "day", "Approximately 6 hours between builds"},
+                {"6", "week", "Approximately 28 hours between builds"},
+                {"20", "month", "Approximately 37 hours between builds"},
+                {"50", "year", "Approximately 7 days between builds"}
+        };
+    }
+    @Test(dataProvider = "dataForThrottleBuilds")
+    @Story("US_02.004  Verify the Pipeline configuration")
+    @Description("Set number of builds, time period in Throttle builds and verify message about time between builds after")
+    public void testSetParametersToThrottleBuilds(String numberOfBuilds, String timePeriod, String expectedMessage) {
         TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
-        getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
+        String messageAboutTimePeriod = new HomePage(getDriver())
+                .clickSpecificPipelineName(PIPELINE_NAME)
+                .clickConfigureOnSidebar()
+                .clickOnThrottleBuilds()
+                .clearNumberOfBuilds()
+                .typeNumberOfBuilds(numberOfBuilds)
+                .selectTimePeriod(timePeriod)
+                .getMessageAboutTimeBetweenBuilds();
 
-        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
-        executor.executeScript("arguments[0].scrollIntoView({block: 'center'});",
-                getDriver().findElement(By.xpath("//label[text()='Throttle builds']")));
-
-        getDriver().findElement(By.xpath("//label[text()='Throttle builds']")).click();
-        WebElement selectThrottleBuilds = getDriver().findElement(
-                By.xpath("//select[@class='jenkins-select__input select']"));
-        Select simpleDropDown = new Select(selectThrottleBuilds);
-        simpleDropDown.selectByValue("day");
-
-        WebElement dayElement = getDriver().findElement(By.xpath("//div[@class='ok']"));
-        getWait5().until(ExpectedConditions.visibilityOf(dayElement));
-
-        Assert.assertEquals(dayElement.getText(), messageDay);
+        Assert.assertEquals(messageAboutTimePeriod, expectedMessage);
     }
 
     @Test

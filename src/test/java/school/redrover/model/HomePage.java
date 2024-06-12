@@ -119,6 +119,12 @@ public class HomePage extends BasePage<HomePage> {
     @FindBy(xpath = "//button[@data-id='ok']")
     private WebElement yesButton;
 
+    @FindBy(css = "#executors")
+    private WebElement executors;
+
+    @FindBy(css = "[href='/toggleCollapse?paneId=executors']")
+    private WebElement toggleCollapse;
+
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -501,5 +507,14 @@ public class HomePage extends BasePage<HomePage> {
 
     public String getBuildScheduledMessage() {
         return buildScheduledMessagePopUp.getAttribute("data-notification");
+    }
+
+    public boolean isNodesDisplayedOnExecutorsPanel() {
+
+        return executors.getText().contains("built-in node");
+    }
+
+    public void clickOnExecutorPanelToggle() {
+        toggleCollapse.click();
     }
 }

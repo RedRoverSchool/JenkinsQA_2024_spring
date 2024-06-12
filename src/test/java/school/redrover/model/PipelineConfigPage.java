@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.WheelInput;
@@ -66,6 +67,19 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
 
     @FindBy(css = "#tasks > div")
     private List<WebElement> sectionsNameList;
+
+    @FindBy(xpath = "//label[text()='Throttle builds']")
+    private WebElement throttleBuilds;
+
+    @FindBy(css = ".jenkins-select__input.select")
+    private WebElement timePeriodSelect;
+
+    @FindBy(css = ".ok")
+    private WebElement messageAboutTimeBetweenBuilds;
+
+    @FindBy(css = "[checkdependson='durationName']")
+    private WebElement numberOfBuildsInThrottleBuilds;
+
 
     public PipelineConfigPage(WebDriver driver) {
         super(driver, new PipelineProjectPage(driver));
@@ -243,4 +257,40 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
 
         return echoScript.getText();
     }
+
+    @Step("Click on 'Throttle builds'")
+    public PipelineConfigPage clickOnThrottleBuilds() {
+        clickElementFromTheBottomOfThePage(throttleBuilds);
+
+        return this;
+    }
+
+    @Step("Select Time period")
+    public PipelineConfigPage selectTimePeriod(String timePeriod) {
+        clickElementFromTheBottomOfThePage(timePeriodSelect);
+        new Select(timePeriodSelect).selectByValue(timePeriod);
+
+        return this;
+    }
+
+    @Step("Get message about time between builds")
+    public String getMessageAboutTimeBetweenBuilds() {
+
+        return getWait2().until(ExpectedConditions.visibilityOf(messageAboutTimeBetweenBuilds)).getText();
+    }
+
+    @Step("Clear input field 'Number of builds' in Throttle builds")
+    public PipelineConfigPage clearNumberOfBuilds() {
+        numberOfBuildsInThrottleBuilds.clear();
+
+        return this;
+    }
+
+    @Step("Type text to input field 'Number of builds'")
+    public PipelineConfigPage typeNumberOfBuilds(String numberOfBuilds) {
+        numberOfBuildsInThrottleBuilds.sendKeys(numberOfBuilds);
+
+        return this;
+    }
+
 }
