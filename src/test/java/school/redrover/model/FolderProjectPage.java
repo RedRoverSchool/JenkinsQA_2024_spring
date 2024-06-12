@@ -189,10 +189,4 @@ public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
     public Boolean isLinkForCreateJobDisplayed() {
         return createJobLink.isDisplayed();
     }
-
-    public FolderProjectPage clickJobNameBreadcrumb(String name) {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@class = 'jenkins-dropdown__item'][contains(@href," + name + ")]"))).click();
-
-        return this;
-    }
-   }
+}

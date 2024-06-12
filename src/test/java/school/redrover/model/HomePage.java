@@ -17,6 +17,9 @@ import java.util.List;
 
 public class HomePage extends BasePage<HomePage> {
 
+    @FindBy(xpath = "//a[.='New Item']")
+    private WebElement newItem;
+
     @FindBy(linkText = "Create a job")
     private WebElement createAJobLink;
 
@@ -113,13 +116,17 @@ public class HomePage extends BasePage<HomePage> {
     @FindBy(xpath = "//td[@class='jenkins-table__cell--tight']//span[@data-notification='Build scheduled']")
     private WebElement buildScheduledMessagePopUp;
 
+    @FindBy(xpath = "//button[@data-id='ok']")
+    private WebElement yesButton;
+
 
     public HomePage(WebDriver driver) {
         super(driver);
     }
 
+    @Step("Click 'New Item' on sidebar menu")
     public CreateNewItemPage clickNewItem() {
-        getDriver().findElement(By.xpath("//a[.='New Item']")).click();
+        newItem.click();
 
         return new CreateNewItemPage(getDriver());
     }
@@ -137,6 +144,7 @@ public class HomePage extends BasePage<HomePage> {
                 .toList();
     }
 
+    @Step("Click project dropdown menu")
     public HomePage openItemDropdown(String projectName) {
         WebElement element = getDriver().findElement(By.cssSelector(String.format(
                 "td>a[href = 'job/%s/']",
@@ -150,12 +158,14 @@ public class HomePage extends BasePage<HomePage> {
         return dialog;
     }
 
+    @Step("Click 'Rename' on dropdown menu")
     public FreestyleRenamePage clickRenameOnDropdownForFreestyleProject() {
         renameFromDropdown.click();
 
         return new FreestyleRenamePage(getDriver());
     }
 
+    @Step("Click 'Move' in project dropdown menu")
     public MovePage clickMoveInDropdown() {
         dropdownMove.click();
         return new MovePage(getDriver());
@@ -317,6 +327,7 @@ public class HomePage extends BasePage<HomePage> {
         return new MultibranchPipelineRenamePage(getDriver());
     }
 
+    @Step("Click the project by name")
     public <T> T clickJobByName(String name, T page) {
         getDriver().findElement(By.xpath(
                 "//td/a[@href='job/" + name.replace(" ", "%20") + "/']")).click();
@@ -408,9 +419,11 @@ public class HomePage extends BasePage<HomePage> {
         return viewNameList.size();
     }
 
+    @Step("Click 'Delete' in dropdown menu and confirm it by click 'Yes' in confirming dialog ")
     public HomePage clickDeleteOnDropdownAndConfirm() {
         dropdownDelete.click();
-        getDriver().findElement(By.cssSelector("button[data-id='ok']")).click();
+
+        getWait5().until(ExpectedConditions.visibilityOf(yesButton)).click();
 
         return this;
     }
