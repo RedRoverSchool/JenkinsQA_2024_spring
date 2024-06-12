@@ -1,25 +1,26 @@
 package school.redrover;
 
-import java.util.List;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
+import java.util.List;
+
+@Epic("Multibranch Pipeline")
 public class MultibranchPipelineTest extends BaseTest {
 
     private static final String MULTI_PIPELINE_NAME = "MultibranchPipeline";
     private static final String RENAMED_MULTI_PIPELINE = "NewMultibranchPipelineName";
-    private static final String FOLDER_NAME = "Folder";
+    private static final String FOLDER_NAME = "NewFolder";
 
     @Test
+    @Story("US_05.000  Create Multibranch Pipeline")
+    @Description("Verify that a project can be created via the sidebar menu.")
     public void testCreateProjectViaSidebarMenu() {
         List<String> itemList = new HomePage(getDriver())
                 .clickNewItem()
@@ -33,6 +34,8 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
+    @Story("US_05.000  Create Multibranch Pipeline")
+    @Description("Verify error message is displayed when creating a project without a name")
     public void testCreateProjectWithEmptyName() {
         String errorName = new HomePage(getDriver())
                 .clickNewItem()
@@ -43,47 +46,129 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testCreateMultibranchPipelineFromExistingMultibranchPipeline() {
-        final String FIRST_ITEM_NAME = "My first Multibranch Pipeline";
-        final String SECOND_ITEM_NAME = "My second Multibranch Pipeline";
+    @Story("US_05.007  Create Multibranch Pipeline from other existing")
+    @Description("Verify creation by copying from other Multibranch Pipeline")
+    public void testCreateProjectFromExistingMultibranchPipeline() {
+        final String firstProjectName = "My first Multibranch Pipeline";
+        final String secondItemName = "My second Multibranch Pipeline";
 
-        TestUtils.createMultibranchProject(this, FIRST_ITEM_NAME);
+        TestUtils.createMultibranchProject(this, firstProjectName);
 
         List<String> itemList = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(SECOND_ITEM_NAME)
-                .setItemNameInCopyForm(FIRST_ITEM_NAME)
+                .setItemName(secondItemName)
+                .typeItemNameInCopyFrom(firstProjectName)
                 .clickOkAnyway(new MultibranchPipelineConfigPage(getDriver()))
                 .clickLogo()
                 .getItemList();
 
-        Assert.assertListContainsObject(itemList, SECOND_ITEM_NAME,
-                "Copy of " + FIRST_ITEM_NAME + "not created!");
+        Assert.assertListContainsObject(itemList, secondItemName,
+                "Copy of " + firstProjectName + "not created!");
     }
 
     @Test
-    public void testCreateMultibranchPipelineWithEmptyName() {
-        final String expectedErrorMessage = "» This field cannot be empty, please enter a valid name";
-
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.xpath("//div[@id='j-add-item-type-standalone-projects']/ul/li[3]"))
-                .click();
-        WebElement okButton = getDriver().findElement(By.xpath("//button[@id='ok-button']"));
-        WebElement actualErrorMessage = getDriver().findElement(By.xpath("//div[@id='itemname-required']"));
-
-        Assert.assertFalse(okButton.isEnabled());
-        Assert.assertTrue(actualErrorMessage.isDisplayed());
-        Assert.assertEquals(actualErrorMessage.getText(), expectedErrorMessage);
-    }
-
-    @Test
-    public void testRenameMultibranchPipelineViaSideBar() {
-        List<String> itemList = new HomePage(getDriver())
+    @Story("US_05.004  Disable Multibranch Pipeline")
+    @Description("Verify a project can be disabled via toggle.")
+    public void testDisableProjectViaToggle() {
+        String disableWarningText = new HomePage(getDriver())
                 .clickCreateAJob()
                 .setItemName(MULTI_PIPELINE_NAME)
                 .selectMultibranchPipelineAndClickOk()
                 .clickToggle()
                 .clickSaveButton()
+                .getDisableMultibranchPipelineText();
+
+        Assert.assertEquals(disableWarningText, "This Multibranch Pipeline is currently disabled");
+    }
+
+    @Test(dependsOnMethods = "testCreateProjectViaSidebarMenu")
+    @Story("US_05.004  Disable Multibranch pipeline")
+    @Description("Verify a project can be disabled via Disable Project Button.")
+    public void testDisabledProjectViaDisableProjectButton() {
+        String disabledMessage = new HomePage(getDriver())
+                .clickSpecificMultibranchPipelineName(MULTI_PIPELINE_NAME)
+                .clickDisableProjectButton()
+                .getDisableMultibranchPipelineText();
+
+        Assert.assertEquals(disabledMessage, "This Multibranch Pipeline is currently disabled");
+    }
+
+    @Test(dependsOnMethods = "testDisabledProjectViaDisableProjectButton")
+    @Story("US_05.004  Disable Multibranch pipeline")
+    @Description("Verify that the color of the disabled project message")
+    public void testVerifyProjectDisabledMessageColorOnStatusPage() {
+        String disabledMessageColor = new HomePage(getDriver())
+                .clickSpecificMultibranchPipelineName(MULTI_PIPELINE_NAME)
+                .getDisableMultibranchPipelineTextColor();
+
+        Assert.assertEquals(disabledMessageColor, "rgba(254, 130, 10, 1)");
+    }
+
+    @Test(dependsOnMethods = "testVerifyProjectDisabledMessageColorOnStatusPage")
+    @Story("US_05.003  Enable Multibranch pipeline")
+    @Description("Verify that a previously disabled project can be enabled back by checking that disable button is displayed")
+    public void testEnableProject() {
+        String disableMultibranchPipelineButtonText = new HomePage(getDriver())
+                .clickJobByName(MULTI_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
+                .clickEnableButton()
+                .getDisableMultibranchPipelineButtonText();
+
+        Assert.assertEquals(disableMultibranchPipelineButtonText, "Disable Multibranch Pipeline");
+    }
+
+    @Test(dependsOnMethods = "testEnableProject")
+    @Story("US_05.004  Disable Multibranch pipeline")
+    @Description("Verify the correct tooltip text is displayed when hovering over the toggle button")
+    public void testDisabledTooltip() {
+        final String tooltipText = "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
+
+        MultibranchPipelineConfigPage multibranchPipelineConfigPage = new HomePage(getDriver())
+                .clickJobByName(MULTI_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
+                .selectConfigure()
+                .hoverOverToggle();
+
+        Assert.assertTrue(multibranchPipelineConfigPage.isTooltipDisplayed());
+        Assert.assertEquals(multibranchPipelineConfigPage.getTooltipText(), tooltipText);
+    }
+
+    @Test
+    @Story("US_05.004  Disable Multibranch pipeline")
+    @Description("Verify that the status toggle of a project reflects that the project is disabled.")
+    public void testDisabledProjectToggleStatus() {
+        String statusToggle = new HomePage(getDriver()).clickCreateAJob()
+                .setItemName(MULTI_PIPELINE_NAME)
+                .selectMultibranchPipelineAndClickOk()
+                .clickOnToggle()
+                .clickSaveButton()
+                .selectConfigure()
+                .getStatusToggle();
+
+        Assert.assertEquals(statusToggle, "false");
+    }
+
+    @Test(dependsOnMethods = "testDisabledProjectToggleStatus")
+    @Story("US_05.003  Enable Multibranch pipeline")
+    @Description("Verify the status toggle of a project reflects that the project is enable.")
+    public void testEnableProjectToggleStatus() {
+        TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
+
+        String statusToggle = new HomePage(getDriver())
+                .clickJobByName(MULTI_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
+                .clickEnableButton()
+                .selectConfigure()
+                .getStatusToggle();
+
+        Assert.assertEquals(statusToggle, "true");
+    }
+
+    @Test
+    @Story("US_05.001  Rename Multibranch pipeline")
+    @Description("Verify a project can be successfully renamed via the sidebar")
+    public void testRenameMultibranchPipelineViaSideBar() {
+        TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
+
+        List<String> itemList = new HomePage(getDriver())
+                .clickJobByName(MULTI_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
                 .clickSidebarRenameButton()
                 .clearNewNameInput()
                 .setItemName(RENAMED_MULTI_PIPELINE)
@@ -95,6 +180,8 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
+    @Story("US_05.001  Rename Multibranch pipeline")
+    @Description("Verify error message is displayed when attempting to rename project to the same name")
     public void testRenameProjectWithNameSameAsCurrent() {
         TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
 
@@ -111,55 +198,12 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testChangeFromDisabledToEnabledOnStatusPage() {
-        MultibranchPipelineProjectPage multibranchPipelineProjectPage = new HomePage(getDriver())
-                .clickCreateAJob()
-                .setItemName(MULTI_PIPELINE_NAME)
-                .selectMultibranchPipelineAndClickOk()
-                .clickToggle()
-                .clickSaveButton()
-                .clickDisableEnableMultibranchPipeline();
-
-        Assert.assertTrue(multibranchPipelineProjectPage.isMultibranchPipelineDisabledTextNotDisplayed(), "Disabled message is displayed!!!");
-    }
-
-    @Test
-    public void testVerifyStatusToSwitchingEnableMultibranchPipeline() {
-        String enableStatus = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(MULTI_PIPELINE_NAME)
-                .selectMultibranchPipelineAndClickOk()
-                .clickToggle()
-                .clickSaveButton()
-                .clickDisableEnableMultibranchPipeline()
-                .getDisableMultibranchPipelineButtonText();
-
-        Assert.assertEquals(enableStatus, "Disable Multibranch Pipeline");
-    }
-
-    @Test
-    public void testDisabledTooltip() {
-        final String tooltipText = "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
-
-        MultibranchPipelineConfigPage multibranchPipelineConfigPage = new HomePage(getDriver())
-                .clickCreateAJob()
-                .setItemName(MULTI_PIPELINE_NAME)
-                .selectMultibranchPipelineAndClickOk()
-                .clickToggle()
-                .hoverOverToggle();
-
-        Assert.assertTrue(multibranchPipelineConfigPage.isTooltipDisplayed());
-        Assert.assertEquals(multibranchPipelineConfigPage.getTooltipText(), tooltipText);
-    }
-
-    @Test
-    public void testRenameMultibranchPipelineViaMainPageDropdownMenu() {
+    @Story("US_05.001  Rename Multibranch pipeline")
+    @Description("Verifies a project can be successfully renamed via dropdown menu")
+    public void testRenameProjectViaMainPageDropdownMenu() {
+        TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
 
         List<String> itemList = new HomePage(getDriver())
-                .clickCreateAJob()
-                .setItemName(MULTI_PIPELINE_NAME)
-                .selectMultibranchPipelineAndClickOk()
-                .clickLogo()
                 .openItemDropdown(MULTI_PIPELINE_NAME)
                 .clickRenameOnDropdownForMultibranchPipeline()
                 .clearNewNameInput()
@@ -172,33 +216,16 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testRenamedMultibranchPipelineSeenInBreadcrumbs() {
-        String multiPipelineBreadcrumbName = new HomePage(getDriver())
-                .clickCreateAJob()
-                .sendItemName(MULTI_PIPELINE_NAME)
-                .selectMultibranchPipelineAndClickOk()
-                .clickSaveButton()
-                .clickSidebarRenameButton()
-                .clearNewNameInput()
-                .setItemName(RENAMED_MULTI_PIPELINE)
-                .clickRename(new MultibranchPipelineProjectPage(getDriver()))
-                .getBreadcrumbsProjectName();
-
-        Assert.assertEquals(multiPipelineBreadcrumbName, RENAMED_MULTI_PIPELINE,
-                "Actual multibranch breadcrumb name is not " + RENAMED_MULTI_PIPELINE);
-    }
-
-    @Test
-    public void testMultibranchSidebarTasksUponCreatingViaFolder() {
+    @Story("US_05.002  View Multibranch pipeline page > Sidebar > Visibility, clickability, redirection")
+    @Description("Verify list of sidebar tasks for a project created within a folder.")
+    public void testProjectSidebarTasksUponCreatingViaFolder() {
         final List<String> sidebarTasks = List.of("Status", "Configure", "Scan Multibranch Pipeline Log",
                 "Multibranch Pipeline Events", "Delete Multibranch Pipeline", "People", "Build History", "Move",
                 "Rename", "Pipeline Syntax", "Credentials");
+        TestUtils.createFolderProject(this, FOLDER_NAME);
 
         MultibranchPipelineProjectPage multibranchPipelineProjectPage = new HomePage(getDriver())
-                .clickCreateAJob()
-                .setItemName("NestedTestsFolder")
-                .selectFolderAndClickOk()
-                .clickSaveButton()
+                .clickJobByName(FOLDER_NAME, new FolderProjectPage(getDriver()))
                 .clickNewItemInsideFolder()
                 .setItemName(MULTI_PIPELINE_NAME)
                 .selectMultibranchPipelineAndClickOk()
@@ -209,54 +236,48 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testVerifyProjectSidebarMenu() {
-        final List<String> pipelineSidebarList =
+    @Story("US_05.002  View Multibranch pipeline page > Sidebar > Visibility, clickability, redirection")
+    @Description("Verify list of sidebar tasks for a project.")
+    public void testVerifyProjectSidebarMenuList() {
+        final List<String> expectedSidebarList =
                 List.of("Status", "Configure", "Scan Multibranch Pipeline Log", "Multibranch Pipeline Events",
                         "Delete Multibranch Pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
 
         TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
 
-        getDriver().findElement(By.xpath("//span[text() = '" + MULTI_PIPELINE_NAME + "']")).click();
-        List<String> pipelineSideMenu = TestUtils.getTexts(getDriver()
-                .findElements(By.xpath("//div[@class = 'task ']")));
+        List<String> multibranchPipelineSidebarList = new HomePage(getDriver())
+                .clickJobByName(MULTI_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
+                .getProjectSidebarList();
 
-        Assert.assertEquals(pipelineSideMenu.size(), 10);
-        Assert.assertEquals(pipelineSideMenu, pipelineSidebarList);
+        Assert.assertEquals(multibranchPipelineSidebarList.size(), 10);
+        Assert.assertEquals(multibranchPipelineSidebarList, expectedSidebarList);
     }
 
     @Test
-    public void testMoveInFolderViaSidebarMenu() {
-        TestUtils.createNewItem(this, FOLDER_NAME, TestUtils.Item.FOLDER);
-        TestUtils.createNewItem(this, MULTI_PIPELINE_NAME, TestUtils.Item.MULTI_BRANCH_PIPELINE);
+    @Story("US_05.006  Move Multibranch Pipeline")
+    @Description("Verify that a project can be successfully moved to a folder via sidebar menu.")
+    public void testMoveProjectToFolderViaSidebarMenu() {
+        TestUtils.createFolderProject(this, FOLDER_NAME);
+        TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
 
-        getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']")).click();
-        getDriver().findElement(By.cssSelector("[href $='move']")).click();
-        new Select(getDriver().findElement(By.name("destination"))).selectByValue("/" + FOLDER_NAME);
-        getDriver().findElement(By.name("Submit")).click();
-
-        WebElement searchInput = getDriver().findElement(By.cssSelector("input[role='searchbox']"));
-        searchInput.sendKeys(MULTI_PIPELINE_NAME);
-
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("yui-ac-bd")));
-        String actualFolderNameInSearch = getDriver().findElements(By.className("yui-ac-bd"))
-                .stream()
-                .map(WebElement::getText)
-                .toList().toString()
-                .replace("[", "")
-                .replace("]", "")
-                .replace(MULTI_PIPELINE_NAME, "")
-                .trim();
-
-        Assert.assertEquals(actualFolderNameInSearch, FOLDER_NAME, MULTI_PIPELINE_NAME + "находится в другой папке");
-    }
-
-    @Test
-    public void testDeleteViaDashboardDropdown() {
-        String actualPageHeading = new HomePage(getDriver())
-                .clickCreateAJob()
-                .setItemName(MULTI_PIPELINE_NAME)
-                .selectMultibranchPipelineAndClickOk()
+        String nestedMultibranchPipeline = new HomePage(getDriver())
+                .clickJobByName(MULTI_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
+                .clickMoveOnSidebar(MULTI_PIPELINE_NAME)
+                .chooseDestinationFromListAndMove(FOLDER_NAME)
                 .clickLogo()
+                .clickJobByName(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .getNestedProjectName();
+
+        Assert.assertEquals(nestedMultibranchPipeline, MULTI_PIPELINE_NAME, MULTI_PIPELINE_NAME + "is not moved successfully");
+    }
+
+    @Test
+    @Story("US_05.005  Delete Multibranch Pipeline")
+    @Description("Verify the deletion of Multibranch Pipeline via dropdown menu.")
+    public void testDeleteViaDashboardDropdown() {
+        TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
+
+        String actualPageHeading = new HomePage(getDriver())
                 .openItemDropdown(MULTI_PIPELINE_NAME)
                 .clickDeleteInDropdown(new DeleteDialog(getDriver()))
                 .clickYes(new HomePage(getDriver()))
@@ -265,152 +286,33 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(actualPageHeading, "Welcome to Jenkins!");
     }
 
-    @Test
-    public void testEnableMultibranchPipeline() {
-        MultibranchPipelineConfigPage page = new HomePage(getDriver())
-                .clickCreateAJob()
-                .setItemName(MULTI_PIPELINE_NAME)
-                .selectMultibranchPipelineAndClickOk()
-                .clickOnToggle()
-                .clickSaveButton()
-                .selectConfigure()
-                .clickOnToggle()
-                .clickSaveButton()
-                .selectConfigure();
-
-        Assert.assertEquals(page.getStatusToggle(), "true");
-    }
-
-    @Test
-    public void testDisabledMultibranchPipeline() {
-        MultibranchPipelineConfigPage page = new HomePage(getDriver()).clickCreateAJob()
-                .setItemName(MULTI_PIPELINE_NAME)
-                .selectMultibranchPipelineAndClickOk()
-                .clickOnToggle()
-                .clickSaveButton()
-                .selectConfigure();
-
-        Assert.assertEquals(page.getStatusToggle(), "false");
-    }
-
-    @Test
-    public void testRenamingMultibranchPipeline() {
-        TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
-
-        getDriver().findElement(By.xpath
-                ("//*[@href='job/" + MULTI_PIPELINE_NAME + "/']/span")).click();
-        getDriver().findElement(By.xpath
-                ("//*[contains(@href,'confirm-rename')]")).click();
-        getDriver().findElement(By.xpath("//*[@name='newName']")).clear();
-        getDriver().findElement(By.xpath("//*[@name='newName']"))
-                .sendKeys("New project");
-        getDriver().findElement(By.xpath("//*[@name='Submit']")).click();
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "New project");
-    }
-
-    @Test
-    public void testEnableMultibranchPipeline2() {
-        TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
-
-        getDriver().findElement(By.xpath
-                ("//*[@href='job/" + MULTI_PIPELINE_NAME + "/']/span")).click();
-        getDriver().findElement(By.xpath("//*[@name='Submit']")).click();
-        Assert.assertNotNull(getDriver().findElements(By.xpath(
-                "//*[contains(@src, 'pipelinemultibranchproject.svg')]")));
-    }
-
-    @Test
-    public void testNewMultibranchPipelineIsEmpty() {
-        final String multibranchPipelineName = "FidelityNewPipeline";
-        final String thisFolderIsEmptyMessage = "This folder is empty";
-
-        getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.name("name")).sendKeys(multibranchPipelineName);
-        getDriver().findElement(By.xpath("//label/span[text() ='Multibranch Pipeline']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        TestUtils.goToMainPage(getDriver());
-
-        getDriver().findElement(By.linkText(multibranchPipelineName)).click();
-
-        final String actualMultibranchPipelineName = getDriver().findElement(By.xpath("//h1")).getText();
-        final String actualEmptyStateMessage = getDriver().findElement(By.xpath("//section[@class='empty-state-section']/h2")).getText();
-
-        Assert.assertEquals(actualMultibranchPipelineName, multibranchPipelineName);
-        Assert.assertEquals(actualEmptyStateMessage, thisFolderIsEmptyMessage);
-    }
-
-    @Test(dependsOnMethods = "testVerifyMpDisabledMessageColorOnStatusPage")
-    public void testChangeFromDisableOnStatusPage() {
-        getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']")).click();
-        WebElement configureLink = getDriver().findElement(By.cssSelector(".task-link-wrapper [href$='configure']"));
-        configureLink.click();
-        if (getDriver().findElement(By.className("jenkins-toggle-switch__label__checked-title"))
-                .isDisplayed()) {
-            getDriver().findElement(By.cssSelector("[data-title*='Disabled']")).click();
-        }
-        getDriver().findElement(By.cssSelector("[name*='Submit']")).click();
-        getDriver().findElement(By.id("jenkins-home-link")).click();
-
-        getDriver().findElement(By.xpath("//span[text()='" + MULTI_PIPELINE_NAME + "']")).click();
-        getDriver().findElement(By.xpath("//button[contains(., 'Enable')]")).click();
-        List<WebElement> disabledMultiPipelineMessage = getDriver().findElements(
-                By.xpath("//form[contains(., 'This Multibranch Pipeline is currently disabled')]"));
-
-        Assert.assertEquals(disabledMultiPipelineMessage.size(), 0, "Disabled message is displayed!!!");
-    }
-
-    @Test(dependsOnMethods = "testCreateProjectViaSidebarMenu")
-    public void testVerifyMpDisabledOnStatusPage() {
-        String disabledMessage = new HomePage(getDriver())
-                .clickSpecificMultibranchPipelineName(MULTI_PIPELINE_NAME)
-                .clickDisableEnableMultibranchPipeline()
-                .getDisableMultibranchPipelineText();
-
-        Assert.assertEquals(disabledMessage, "This Multibranch Pipeline is currently disabled");
-    }
-
-    @Test(dependsOnMethods = "testVerifyMpDisabledOnStatusPage")
-    public void testVerifyMpDisabledMessageColorOnStatusPage() {
-        String disabledMessageColor = new HomePage(getDriver())
-                .clickSpecificMultibranchPipelineName(MULTI_PIPELINE_NAME)
-                .getDisableMultibranchPipelineTextColor();
-
-        Assert.assertEquals(disabledMessageColor, "rgba(254, 130, 10, 1)");
-    }
-
     @Test(dependsOnMethods = "testRenameMultibranchPipelineViaSideBar")
-    public void testDeleteMpViaBreadcrumbs() {
-        boolean isMpDeleted = new HomePage(getDriver())
+    @Story("US_05.005  Delete Multibranch Pipeline")
+    @Description("Verify the deletion of Multibranch Pipeline via Breadcrumbs.")
+    public void testDeleteViaBreadcrumbs() {
+        boolean isProjectDeleted = new HomePage(getDriver())
                 .clickSpecificMultibranchPipelineName(RENAMED_MULTI_PIPELINE)
                 .clickMPDropdownArrow()
                 .clickDeleteMultibranchPipelineInBreadcrumbs(new DeleteDialog(getDriver()))
                 .clickYes(new HomePage(getDriver()))
                 .isItemDeleted(RENAMED_MULTI_PIPELINE);
 
-        Assert.assertTrue(isMpDeleted, RENAMED_MULTI_PIPELINE + " was not deleted");
+        Assert.assertTrue(isProjectDeleted, RENAMED_MULTI_PIPELINE + " was not deleted");
     }
 
-    @Test(dependsOnMethods = "testDisabledMultibranchPipeline")
-    public void testMultibranchPipelineEnable() {
-        String buttonName = new HomePage(getDriver())
-                .clickJobByName(MULTI_PIPELINE_NAME,
-                        new MultibranchPipelineProjectPage(getDriver()))
-                .clickDisableEnableMultibranchPipeline()
-                .getDisableMultibranchPipelineButtonText();
+    @Test
+    @Story("US_05.005  Delete Multibranch Pipeline")
+    @Description("Verify the deletion of a Multibranch pipeline via Sidebar menu.")
+    public void testDeleteViaSidebarMenu() {
+        TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
 
-        Assert.assertEquals(buttonName, "Disable Multibranch Pipeline");
-    }
-
-    @Test(dependsOnMethods = "testMultibranchPipelineEnable")
-    public void testDeleteProject() {
-        boolean itemIsDeleted = new HomePage(getDriver())
+        boolean isItemDeleted = new HomePage(getDriver())
                 .clickJobByName(MULTI_PIPELINE_NAME,
                         new MultibranchPipelineProjectPage(getDriver()))
                 .clickDeleteButton()
                 .confirmDeleteButton()
                 .isItemDeleted(MULTI_PIPELINE_NAME);
 
-        Assert.assertTrue(itemIsDeleted);
+        Assert.assertTrue(isItemDeleted);
     }
 }

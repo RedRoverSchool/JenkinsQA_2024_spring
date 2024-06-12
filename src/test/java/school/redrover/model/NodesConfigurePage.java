@@ -11,14 +11,14 @@ import school.redrover.model.base.BasePage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NodesConfigurePage extends BasePage {
+public class NodesConfigurePage extends BasePage<NodesConfigurePage> {
 
     @FindBy(css = "[tooltip^='Help for feature']")
     private List<WebElement> tooltipsConfigureNodePage;
 
     public NodesConfigurePage(WebDriver driver) { super(driver); }
 
-    public List<String> getTooltipsConfigureNodePage() {
+    public List<String> getTooltipsOnConfigureNodePage() {
         List<String> actualList = new ArrayList<>();
         for (WebElement e : tooltipsConfigureNodePage) {
             ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView({block:'center'});", e);

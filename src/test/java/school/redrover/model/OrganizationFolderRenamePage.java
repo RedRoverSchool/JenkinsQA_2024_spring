@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class OrganizationFolderRenamePage extends BasePage {
+public class OrganizationFolderRenamePage extends BasePage<OrganizationFolderRenamePage> {
 
     @FindBy(xpath = "//input[@name='newName']")
     private WebElement textBox;

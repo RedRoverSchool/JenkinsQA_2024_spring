@@ -44,6 +44,15 @@ jobs:
       - name: Wait for the Jenkins
         run: ./.github/wait-for-jenkins.sh
 
+      - name: Run checkstyle
+        uses: nikitasavinov/checkstyle-action@master
+        with:
+          checkstyle_config: 'my_checks.xml'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: 'github-pr-check'
+          tool_name: 'Checkstyle'
+          workdir: 'src/test/java/school/redrover'
+
       - name: Maven test
         run: mvn test
         env:

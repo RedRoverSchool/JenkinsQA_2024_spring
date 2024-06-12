@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
@@ -8,12 +9,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ManageJenkinsPage extends BasePage {
+public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
 
     @FindBy(css = "[href='configureSecurity']")
     private WebElement securityLink;
@@ -66,6 +68,15 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(xpath = "(//div[@class='jenkins-section__items'])[5]//dd [position() mod 2 = 1]")
     private List<WebElement> toolsAndActionsBlockDescriptions;
 
+    @FindBy(xpath = "//section[contains(@class, 'jenkins-section')][2]//div//dt")
+    private List<WebElement> securitySectionNameList;
+
+    @FindBy(xpath = "//section[contains(@class, 'jenkins-section')][2]//div//dd[. !='']")
+    private List<WebElement> securitySectionDescriptionList;
+
+    @FindBy(xpath = "//div[@class='jenkins-section__item']//dt")
+    private List<WebElement> manageJenkinsLinkList;
+
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
@@ -80,6 +91,7 @@ public class ManageJenkinsPage extends BasePage {
         return searchInput.isDisplayed();
     }
 
+    @Step("Click on Appearance button in System Configuration")
     public AppearancePage clickAppearanceButton() {
         appearanceButton.click();
 
@@ -160,12 +172,11 @@ public class ManageJenkinsPage extends BasePage {
 
     public boolean areSectionsLinksClickable() {
         for (WebElement element : sectionsLinksList) {
-                try {
-                    getWait2().until(ExpectedConditions.elementToBeClickable(element));
-                } catch (Exception e) {
-                    System.out.println("Element is NOT clickable: " + element.getText());
-                    return false;
-                }
+            try {
+                getWait2().until(ExpectedConditions.elementToBeClickable(element));
+            } catch (Exception e) {
+                return false;
+            }
         }
         return true;
     }
@@ -217,5 +228,38 @@ public class ManageJenkinsPage extends BasePage {
         getDriver().findElement(By.xpath("//dt[text()='" + link + "']")).click();
 
         return getDriver().getCurrentUrl();
+    }
+
+    public List<String> getSecurityBlockElementList() {
+        List<String> textList = new ArrayList<>();
+        List<WebElement> securityBlockElementList = securitySectionNameList;
+
+        for (WebElement element : securityBlockElementList) {
+            textList.add(element.getText());
+        }
+
+        return textList;
+    }
+
+    public List<String> getSecurityBlockDescriptionList() {
+        List<String> textList = new ArrayList<>();
+        List<WebElement> securityDescriptionList = securitySectionDescriptionList;
+
+        for (WebElement element : securityDescriptionList) {
+            textList.add(element.getText());
+        }
+
+        return textList;
+    }
+
+    public List<String> getListOfManageJenkinsLinks() {
+        List<String> linkTextList = new ArrayList<>();
+        List<WebElement> linkList = manageJenkinsLinkList;
+
+        for (WebElement link : linkList) {
+            linkTextList.add(link.getText());
+        }
+
+        return linkTextList;
     }
 }

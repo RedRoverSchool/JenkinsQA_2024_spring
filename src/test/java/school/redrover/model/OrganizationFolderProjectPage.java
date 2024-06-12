@@ -37,7 +37,7 @@ public class OrganizationFolderProjectPage extends BaseProjectPage<OrganizationF
     @FindBy(xpath = "//button[@data-id='ok']")
     private WebElement yesButtonOnDeleteOrganizationFolderAlert;
 
-    @FindBy(xpath = "//*[contains(@href,'console')]")
+    @FindBy(xpath = "//a[contains(@href,'console')]")
     private WebElement scanButton;
 
     @FindBy(xpath = "//h1")
@@ -57,20 +57,20 @@ public class OrganizationFolderProjectPage extends BaseProjectPage<OrganizationF
         return itemIcon.getAttribute("title");
     }
 
-    public PipelineSyntaxPage clickPipelineSyntax() {
+    public PipelineSyntaxPage clickSidebarPipelineSyntax() {
         pipelineSyntaxButton.click();
 
         return new PipelineSyntaxPage(getDriver());
     }
 
 
-    public OrganizationFolderRenamePage clickOnRenameButton() {
+    public OrganizationFolderRenamePage clickSidebarRenameButton() {
         renameButton.click();
 
         return new OrganizationFolderRenamePage(getDriver());
     }
 
-    public OrganizationFolderProjectPage clickAddOrEditDescription() {
+    public OrganizationFolderProjectPage clickAddDescription() {
         descriptionLink.click();
         return this;
     }
@@ -94,7 +94,7 @@ public class OrganizationFolderProjectPage extends BaseProjectPage<OrganizationF
         return this;
     }
 
-    public OrganizationFolderProjectPage clickScan(){
+    public OrganizationFolderProjectPage clickSidebarScanOrganizationFolderLog(){
         scanButton.click();
         return this;
     }

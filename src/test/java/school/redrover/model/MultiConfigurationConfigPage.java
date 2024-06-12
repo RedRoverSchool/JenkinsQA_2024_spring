@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,7 +11,7 @@ import school.redrover.model.base.BaseConfigPage;
 
 import java.util.List;
 
-public class MultiConfigurationConfigPage extends BaseConfigPage<MultiConfigurationProjectPage> {
+public class MultiConfigurationConfigPage extends BaseConfigPage<MultiConfigurationProjectPage,MultiConfigurationConfigPage> {
 
     @FindBy(className = "jenkins-toggle-switch__label")
     private WebElement toggleSwitch;
@@ -34,7 +35,7 @@ public class MultiConfigurationConfigPage extends BaseConfigPage<MultiConfigurat
     private WebElement advancedButton;
 
     @FindBy(css = "[name*='artifactDaysToKeepStr']")
-    private WebElement artifactDaysToKeepStr;
+    private WebElement DaysToKeepArtifacts;
 
     @FindBy(css = "[name*='artifactNumToKeepStr']")
     private WebElement artifactNumToKeepStr;
@@ -73,37 +74,43 @@ public class MultiConfigurationConfigPage extends BaseConfigPage<MultiConfigurat
         return errorRequiresName.getText();
     }
 
+    @Step("Click on the checkbox 'Discard old builds'")
     public MultiConfigurationConfigPage clickDiscardOldBuilds() {
         discardOldBuildsCheckbox.click();
 
         return this;
     }
 
-    public MultiConfigurationConfigPage setDaysToKeep(String days) {
+    @Step("Enter number of days to keep builds in the input field")
+    public MultiConfigurationConfigPage enterNumberOfDaysToKeepBuilds(String days) {
         daysToKeep.sendKeys(days);
 
         return this;
     }
 
-    public MultiConfigurationConfigPage setMaxNumberOfBuildsToKeep(String number) {
+    @Step("Enter Max number of builds to keep in the input field")
+    public MultiConfigurationConfigPage enterMaxNumberOfBuildsToKeep(String number) {
         maxNumberOfBuildsToKeep.sendKeys(number);
 
         return this;
     }
 
+    @Step("Click on the button 'Advanced'")
     public MultiConfigurationConfigPage clickAdvancedButton() {
-        advancedButton.click();
+        clickElementFromTheBottomOfThePage(advancedButton);
 
         return this;
     }
 
-    public MultiConfigurationConfigPage setArtifactDaysToKeepStr(String days) {
-        artifactDaysToKeepStr.sendKeys(days);
+    @Step("Enter number of days to keep artifacts in the input field")
+    public MultiConfigurationConfigPage enterNumberOfDaysToKeepArtifacts(String days) {
+        DaysToKeepArtifacts.sendKeys(days);
 
         return this;
     }
 
-    public MultiConfigurationConfigPage setArtifactNumToKeepStr(String number) {
+    @Step("Enter Max number of builds to keep with artifacts in the input field")
+    public MultiConfigurationConfigPage enterMaxNumberOfBuildsToKeepWithArtifacts(String number) {
         artifactNumToKeepStr.sendKeys(number);
 
         return this;
@@ -116,7 +123,7 @@ public class MultiConfigurationConfigPage extends BaseConfigPage<MultiConfigurat
                 .toList();
     }
 
-    public MultiConfigurationProjectPage clickBreadcrumbsProjectName(String projectName) {
+    public MultiConfigurationProjectPage clickBreadcrumbsProjectName() {
         breadcrumbsProjectName.click();
 
         return new MultiConfigurationProjectPage(getDriver());

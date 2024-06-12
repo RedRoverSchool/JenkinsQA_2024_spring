@@ -7,7 +7,7 @@ import school.redrover.model.base.BasePage;
 
 import java.util.List;
 
-public class AboutJenkinsPage extends BasePage {
+public class AboutJenkinsPage extends BasePage<AboutJenkinsPage> {
 
     @FindBy(xpath = "//p[@class='app-about-version']")
     public WebElement versionJenkins;
@@ -17,10 +17,6 @@ public class AboutJenkinsPage extends BasePage {
 
     public AboutJenkinsPage(WebDriver driver) {
         super(driver);
-    }
-
-    public boolean isDisplayedVersionJenkins() {
-        return versionJenkins.isDisplayed();
     }
 
     public String getJenkinsVersion() {

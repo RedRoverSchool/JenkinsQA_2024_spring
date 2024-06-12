@@ -1,5 +1,6 @@
 package school.redrover.model.base;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -10,10 +11,7 @@ import school.redrover.model.*;
 import java.util.List;
 import java.util.ArrayList;
 
-public abstract class BasePage extends BaseModel {
-
-    @FindBy(css = "[class$=jenkins_ver]")
-    private WebElement version;
+public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
 
     @FindBy(tagName = "h1")
     private WebElement heading;
@@ -21,22 +19,29 @@ public abstract class BasePage extends BaseModel {
     @FindBy(xpath = "//a[@class='main-search__icon-trailing']")
     private WebElement tutorialIcon;
 
+    @FindBy(tagName = "body")
+    private WebElement htmlBody;
+
+    @FindBy(id = "jenkins-name-icon")
+    private WebElement logo;
+
     public BasePage(WebDriver driver) {
         super(driver);
     }
 
+    @Step("Click on the Jenkins logo on the header")
     public HomePage clickLogo() {
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        logo.click();
 
         return new HomePage(getDriver());
     }
 
-    public HeaderFrame getHeader() {
-        return new HeaderFrame(getDriver());
+    public HeaderFrame<T> getHeader() {
+        return new HeaderFrame<>(getDriver(), (T) this);
     }
 
-    public FooterFrame getFooter() {
-        return new FooterFrame(getDriver());
+    public FooterFrame<T> getFooter() {
+        return new FooterFrame<>(getDriver(), (T) this);
     }
 
     public void openElementDropdown(WebElement element) {
@@ -64,7 +69,7 @@ public abstract class BasePage extends BaseModel {
                 "arguments[0].dispatchEvent(new Event('click'));", element);
     }
 
-    protected void clickElement(WebElement webElement) {
+    protected void clickElementFromTheBottomOfThePage(WebElement webElement) {
         new Actions(getDriver())
                 .scrollToElement(webElement)
                 .scrollByAmount(0, 100)
@@ -92,12 +97,6 @@ public abstract class BasePage extends BaseModel {
 
     public String getCurrentUrl() {
         return getDriver().getCurrentUrl();
-    }
-
-    public HomePage clickVersion() {
-        version.click();
-
-        return new HomePage(getDriver());
     }
 
     protected void scrollToElement(WebElement element) {
@@ -150,9 +149,15 @@ public abstract class BasePage extends BaseModel {
         };
     }
 
-    public BasePage openTutorial() {
+    public BasePage<T> openTutorial() {
         getWait5().until(ExpectedConditions.visibilityOf(tutorialIcon)).click();
 
         return this;
     }
+
+    public String getBackgroundColor() {
+
+        return htmlBody.getCssValue("background-color");
+    }
+
 }

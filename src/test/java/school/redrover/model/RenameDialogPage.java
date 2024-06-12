@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
-public class RenameDialogPage extends BasePage {
+public class RenameDialogPage extends BasePage<RenameDialogPage> {
 
     @FindBy(xpath = "//input[@checkdependson='newName']")
     private WebElement inputNewNameField;

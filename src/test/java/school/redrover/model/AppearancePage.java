@@ -9,7 +9,7 @@ import school.redrover.model.base.BasePage;
 
 import java.util.List;
 
-public class AppearancePage extends BasePage {
+public class AppearancePage extends BasePage<AppearancePage> {
 
     @FindBy(className = "app-theme-picker__item")
     private List<WebElement> themesList;
@@ -28,9 +28,6 @@ public class AppearancePage extends BasePage {
 
     @FindBy(id = "notification-bar")
     private WebElement notification;
-
-    @FindBy(tagName = "body")
-    private WebElement htmlBody;
 
     public AppearancePage(WebDriver driver) {
         super(driver);
@@ -89,8 +86,4 @@ public class AppearancePage extends BasePage {
         return getWait2().until(ExpectedConditions.visibilityOf(notification)).getText();
     }
 
-    public String getBackgroundColor() {
-
-        return htmlBody.getCssValue("background-color");
-    }
 }

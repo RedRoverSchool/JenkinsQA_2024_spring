@@ -6,9 +6,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.base.BaseSideMenuPage;
+import school.redrover.model.base.BasePage;
 
-public class PeoplePage extends BaseSideMenuPage<PeoplePage> {
+import java.util.List;
+
+public class PeoplePage extends BasePage<PeoplePage> {
 
     @FindBy(css = "[title='Small']")
     private WebElement smallIconButton;
@@ -22,14 +24,35 @@ public class PeoplePage extends BaseSideMenuPage<PeoplePage> {
     @FindBy(css = "[id*='person-admin'] svg")
     private WebElement userTableIcon;
 
-    @FindBy(css = "h1")
-    private WebElement pageHeading;
-
     @FindBy(id = "people")
     private WebElement peopleTable;
 
     @FindBy(xpath = "//a[contains(@href, '/user/')]")
     private WebElement userIdLink;
+
+    @FindBy(css = ".jenkins-table__link")
+    private List<WebElement> userIDList;
+
+    @FindBy(linkText= "User ID")
+    WebElement titleUserID;
+
+    @FindBy(css = "tr[id^='person-'] > td:nth-child(3)")
+    private List<WebElement> nameList;
+
+    @FindBy(linkText= "Name")
+    WebElement titleName;
+
+    @FindBy(css = "tr[id^='person-'] > td:nth-child(4)")
+    private List<WebElement> lastCommitActivityList;
+
+    @FindBy(linkText= "Last Commit Activity")
+    WebElement titleLastCommitActivity;
+
+    @FindBy(css = "tr[id^='person-'] > td:nth-child(5)")
+    private List<WebElement> OnOffList;
+
+    @FindBy(linkText= "On")
+    WebElement titleOn;
 
     public PeoplePage(WebDriver driver) {
         super(driver);
@@ -59,14 +82,51 @@ public class PeoplePage extends BaseSideMenuPage<PeoplePage> {
         return userTableIcon.getSize();
     }
 
-    public String getPageHeading() {
-        return pageHeading.getText();
-    }
-
-    protected UserPage clickUserIdLink() {
+    public UserPage clickUserIdLink() {
         getWait5().until(ExpectedConditions.visibilityOf(peopleTable));
         userIdLink.click();
 
         return new UserPage(getDriver());
     }
+
+    public List<String> getUserIDList() {
+        return userIDList.stream().map(WebElement::getText).toList();
+    }
+
+    public PeoplePage clickTitleUserID() {
+        titleUserID.click();
+
+        return this;
+    }
+
+    public List<String> getNamesList() {
+        return nameList.stream().map(WebElement::getText).toList();
+    }
+
+    public PeoplePage clickTitleName() {
+        titleName.click();
+
+        return this;
+    }
+
+    public List<String> getLastCommitActivityList() {
+        return lastCommitActivityList.stream().map(WebElement::getText).toList();
+    }
+
+    public PeoplePage clickTitleLastCommitActivity() {
+        titleLastCommitActivity.click();
+
+        return this;
+    }
+
+    public List<String> getOnOffList() {
+        return OnOffList.stream().map(WebElement::getText).toList();
+    }
+
+    public PeoplePage clickTitleOn() {
+        titleOn.click();
+
+        return this;
+    }
+
 }

@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class PipelineDocumentationPage extends BasePage {
+public class PipelineDocumentationPage extends BasePage<PipelineDocumentationPage> {
 
     public PipelineDocumentationPage(WebDriver driver) {
         super(driver);

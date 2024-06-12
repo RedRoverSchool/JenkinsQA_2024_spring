@@ -8,7 +8,7 @@ import school.redrover.model.base.BasePage;
 
 import java.util.List;
 
-public class SearchResultPage extends BasePage {
+public class SearchResultPage extends BasePage<SearchResultPage> {
 
     @FindBy(css = "[class='error']")
     private WebElement noMatchResult;

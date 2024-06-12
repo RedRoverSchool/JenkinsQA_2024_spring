@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -7,13 +8,15 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.model.base.BasePage;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class PipelineSyntaxPage extends BasePage {
+public class PipelineSyntaxPage extends BasePage<PipelineSyntaxPage> {
 
     public PipelineSyntaxPage(WebDriver driver) {
         super(driver);
     }
+
     @FindBy(css = "[class$='dropdownList']")
     private WebElement sampleStepDropdownList;
 
@@ -23,7 +26,7 @@ public class PipelineSyntaxPage extends BasePage {
     @FindBy(className = "tippy-content")
     private WebElement tooltip;
 
-    @FindBy(xpath = "//span[contains(text(), 'Online Documentation')]/..")
+    @FindBy(xpath = "//span[contains(text(), 'Declarative Online')]/..")
     private WebElement onlineDocumentationSidebarItem;
 
     @FindBy(xpath = "//a[contains(@href,'examples')]")
@@ -48,15 +51,25 @@ public class PipelineSyntaxPage extends BasePage {
                 .toList();
     }
 
-    public PipelineDocumentationPage clickOnlineDocumentation() {
+    public PipelineDocumentationPage clickSidebarDeclarativeOnlineDocumentation() {
         onlineDocumentationSidebarItem.click();
 
         return new PipelineDocumentationPage(getDriver());
     }
 
-    public PipelineExamplesPage clickExamplesReference() {
+    public PipelineExamplesPage clickSidebarExamplesReference() {
         examplesReferenceSidebarItem.click();
 
         return new PipelineExamplesPage(getDriver());
+    }
+
+    public List<String> getPipelineSyntaxSidebarList() {
+        List<String> sidebarItemList = new ArrayList<>();
+        List<WebElement> elementList = getDriver().findElements(By.xpath("//div[@id='tasks']/div"));
+        for (WebElement element : elementList) {
+            sidebarItemList.add(element.getText());
+        }
+
+        return sidebarItemList;
     }
 }

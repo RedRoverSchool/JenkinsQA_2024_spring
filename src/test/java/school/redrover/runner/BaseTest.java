@@ -1,5 +1,9 @@
 package school.redrover.runner;
 
+import io.qameta.allure.Allure;
+import org.apache.logging.log4j.Level;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
@@ -7,6 +11,7 @@ import org.testng.annotations.*;
 import school.redrover.runner.order.OrderForTests;
 import school.redrover.runner.order.OrderUtils;
 
+import java.io.ByteArrayInputStream;
 import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.Arrays;
@@ -28,23 +33,23 @@ public abstract class BaseTest {
     private OrderUtils.MethodsOrder<Method> methodsOrder;
 
     private void startDriver() {
-        ProjectUtils.log("Browser open");
+        ProjectUtils.log(Level.DEBUG, "Browser open");
 
         driver = ProjectUtils.createDriver();
     }
 
     private void clearData() {
-        ProjectUtils.log("Clear data");
+        ProjectUtils.log(Level.DEBUG, "Clear data");
         JenkinsUtils.clearData();
     }
 
     private void loginWeb() {
-        ProjectUtils.log("Login");
+        ProjectUtils.log(Level.DEBUG, "Login");
         JenkinsUtils.login(driver);
     }
 
     private void getWeb() {
-        ProjectUtils.log("Get web page");
+        ProjectUtils.log(Level.DEBUG, "Get web page");
         ProjectUtils.get(driver);
     }
 
@@ -67,7 +72,7 @@ public abstract class BaseTest {
             wait10 = null;
             wait60 = null;
 
-            ProjectUtils.log("Browser closed");
+            ProjectUtils.log(Level.DEBUG, "Browser closed");
         }
     }
 
@@ -112,11 +117,19 @@ public abstract class BaseTest {
             ProjectUtils.takeScreenshot(getDriver(), testResult.getInstanceName(), testResult.getName());
         }
 
+        if (!testResult.isSuccess()) {
+            Allure.addAttachment(
+                    "screenshot.png",
+                    "image/png",
+                    new ByteArrayInputStream(((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES)),
+                    "png");
+        }
+
         if (methodsOrder.isGroupFinished(method) && !(!ProjectUtils.isServerRun() && !testResult.isSuccess() && !ProjectUtils.closeBrowserIfError())) {
             stopDriver();
         }
 
-        ProjectUtils.logf("Execution time is %o sec\n\n", (testResult.getEndMillis() - testResult.getStartMillis()) / 1000);
+        ProjectUtils.logf("Execution time is %.3f sec", (testResult.getEndMillis() - testResult.getStartMillis()) / 1000.0);
     }
 
     protected WebDriver getDriver() {

@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.model.base.BasePage;
 
-public class MultiConfigurationMovePage extends BasePage {
+public class MultiConfigurationMovePage extends BasePage<MultiConfigurationMovePage> {
 
     @FindBy(name = "destination")
     private WebElement selectDestination;

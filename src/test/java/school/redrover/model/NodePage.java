@@ -1,14 +1,12 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class NodePage extends BasePage {
-
-    @FindBy(xpath = "//a[@href='editDescription']")
-    private WebElement addDescription;
+public class NodePage extends BasePage<NodePage> {
 
     @FindBy(xpath = "//div[@class='jenkins-!-margin-bottom-3']")
     private WebElement labels;
@@ -34,12 +32,14 @@ public class NodePage extends BasePage {
         return descriptionArea.getText();
     }
 
+    @Step("Click on the 'Delete Agent' on sidebar")
     public NodePage clickDeleteAgent() {
         deleteAgent.click();
 
         return this;
     }
 
+    @Step("Confirm delete by click on the 'Yes' in popup-window")
     public NodesTablePage clickYesButton() {
         yesButton.click();
 

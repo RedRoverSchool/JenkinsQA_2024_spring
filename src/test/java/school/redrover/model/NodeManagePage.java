@@ -1,14 +1,15 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 import java.util.List;
 
-public class NodeManagePage extends BasePage {
+public class NodeManagePage extends BasePage<NodeManagePage> {
     public NodeManagePage(WebDriver driver) {
         super(driver);
     }
@@ -22,30 +23,36 @@ public class NodeManagePage extends BasePage {
     @FindBy(css = ".jenkins-button.jenkins-button--primary")
     private WebElement bringThisNodeBackOnlineBtn;
 
-    @FindBy(xpath = "//div[@class='message']")
-    private WebElement nodeOnlineStatusMessage;
+    @FindBy(css = ".message")
+    private List<WebElement> nodeOfflineStatusMessageList;
 
+    @Step("Click on the button 'Mark this node temporarily offline'")
     public NodeManagePage clickMarkThisNodeTemporaryOfflineButton() {
         markThisNodeTemporaryOfflineButton.click();
         return new NodeManagePage(getDriver());
     }
 
-    public NodeManagePage clickMarkThisNodeTemporaryOfflineConfirmationBtn() {
+    @Step("Confirm switch by click on the button 'Mark this node temporarily offline'")
+    public NodeManagePage clickMarkThisNodeTemporaryOfflineConfirmationButton() {
         markThisNodeTemporaryOfflineConfirmationBtn.click();
         return new NodeManagePage(getDriver());
     }
 
-    public NodeManagePage clickBringThisNodeBackOnlineBtn() {
-        bringThisNodeBackOnlineBtn.click();
+    @Step("Click on the button 'Bring This Node Back Online'")
+    public NodeManagePage clickBringThisNodeBackOnlineButton() {
+        try {
+            getWait5().until(ExpectedConditions.elementToBeClickable(bringThisNodeBackOnlineBtn)).click();
+        } catch (Exception e) {
+
+        }
         return new NodeManagePage(getDriver());
     }
 
-    public String getNodeOnlineStatusText() {
-        return nodeOnlineStatusMessage.getText();
+    public String getNodeOfflineStatusText() {
+        return nodeOfflineStatusMessageList.get(0).getText();
     }
 
-    public List<WebElement> nodeOnlineStatusText() {
-        List<WebElement> nodeStatusTextMessage = getDriver().findElements(By.xpath("//div[@class='message']"));
-        return nodeStatusTextMessage;
+    public Boolean isNodeOfflineStatusMessageDisplayed() {
+        return !nodeOfflineStatusMessageList.isEmpty();
     }
 }

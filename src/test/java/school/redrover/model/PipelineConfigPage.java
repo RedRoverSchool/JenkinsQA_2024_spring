@@ -9,8 +9,9 @@ import org.openqa.selenium.support.ui.Select;
 import school.redrover.model.base.BaseConfigPage;
 
 import java.time.Duration;
+import java.util.List;
 
-public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
+public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, PipelineConfigPage> {
 
     @FindBy(xpath = "//textarea[@name='description']")
     private WebElement descriptionTextArea;
@@ -63,6 +64,9 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
     @FindBy(xpath = "//select[@class='setting-input']")
     private WebElement customPipelineSpeedDurabilityLevelInput;
 
+    @FindBy(css = "#tasks > div")
+    private List<WebElement> sectionsNameList;
+
     public PipelineConfigPage(WebDriver driver) {
         super(driver, new PipelineProjectPage(driver));
     }
@@ -85,6 +89,13 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage> {
                 advancedButton);
 
         return this;
+    }
+
+    public List<String> getSectionsNameList() {
+
+        return sectionsNameList.stream()
+                .map(WebElement::getText)
+                .toList();
     }
 
     public PipelineConfigPage scrollToQuietPeriodCheckbox() {

@@ -2,8 +2,6 @@ package school.redrover.runner;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URI;
 import java.net.URLEncoder;
@@ -11,7 +9,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -157,9 +154,11 @@ public class JenkinsUtils {
     }
 
     private static void deleteNodes() {
-        String mainPage = getPage("");
+        String mainPage = getPage("computer/");
+        Set<String> nodes = getSubstringsFromPage(mainPage, "href=\"../computer/", "/\" ");
+        nodes.remove("(built-in)");
         deleteByLink("manage/computer/%s/doDelete",
-                getSubstringsFromPage(mainPage, "href=\"/computer/", "/\""),
+                nodes,
                 getCrumbFromPage(mainPage));
     }
 

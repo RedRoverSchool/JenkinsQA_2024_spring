@@ -1,30 +1,37 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
+import io.qameta.allure.Allure;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Story;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
+
 import java.util.List;
 import java.util.Random;
 
+@Epic("Multi-configuration project")
 public class MultiConfigurationProjectTest extends BaseTest {
 
     private static final String PROJECT_NAME = "MCProject";
     private static final String RANDOM_PROJECT_NAME = TestUtils.randomString();
     private static final String FOLDER_NAME = "Folder_name";
 
-    private String generateRandomNumber(){
+    private String generateRandomNumber() {
         Random r = new Random();
         int randomNumber = r.nextInt(100) + 1;
         return String.valueOf(randomNumber);
     }
 
+
     @Test
-    public void testRenameProjectViaMainPageDropdown() {
-        String addToProjectName = "New";
+    @Story("US_03.004  Rename project")
+    @Description("Check, an existing project can be renamed via dropdown")
+    public void testRenameProjectViaDashboardDropdown() {
+        final String addToProjectName = "New";
         TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
 
         String newProjectName = new HomePage(getDriver())
@@ -40,6 +47,8 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
+    @Story("US_03.001  Add/edit description")
+    @Description("Adding the project description")
     public void testAddDescription() {
         final String TEXT = "❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
 
@@ -54,6 +63,8 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
+    @Story("US_03.001  Add/edit description")
+    @Description("Add some text above to existing description of the project")
     public void testEditDescriptionWithoutDelete() {
         final String text = "qwerty123";
         final String additionalText = "AAA";
@@ -76,27 +87,31 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
+    @Story("US_03.001  Add/edit description")
+    @Description("Check, the text in a preview field equals to the text in the description field")
     public void testDescriptionPreview() {
         final String text = "I want to see preview";
 
         String previewText =
                 TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
-                .clickSpecificMultiConfigurationProjectName(PROJECT_NAME)
-                .clickAddDescriptionButton()
-                .addOrEditDescription(text)
-                .clickPreview()
-                .getPreviewText();
+                        .clickSpecificMultiConfigurationProjectName(PROJECT_NAME)
+                        .clickAddDescriptionButton()
+                        .addOrEditDescription(text)
+                        .clickPreview()
+                        .getPreviewText();
 
         Assert.assertEquals(previewText, text);
     }
 
     @Test
+    @Story("US_03.000  Create project")
+    @Description("Check creating project by copying the exist one")
     public void testMakeCopyMultiConfigurationProject() {
         final String newProjectName = "MCProject copy";
         List<String> projectList = TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
                 .clickNewItem()
                 .setItemName(newProjectName)
-                .setItemNameInCopyForm(PROJECT_NAME)
+                .typeItemNameInCopyFrom(PROJECT_NAME)
                 .clickOkAnyway(new MultibranchPipelineConfigPage(getDriver()))
                 .clickSaveButton()
                 .clickLogo()
@@ -106,6 +121,8 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
+    @Story("US_03.001  Add/edit description")
+    @Description("Delete project description")
     public void testDeleteProjectDescription() {
         final String DESCRIPTION_TEXT = "This is project description";
         TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
@@ -128,17 +145,26 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    public void testMCPDisableByToggle() {
-        Assert.assertFalse(TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
+    @Story("US_03.002  Enable/Disable project")
+    @Description("Disable project by toggle")
+    public void testProjectDisableByToggle() {
+
+        TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
+
+        boolean statusToggle = new HomePage(getDriver())
                 .clickSpecificMultiConfigurationProjectName(PROJECT_NAME)
                 .clickConfigureButton()
                 .clickToggleSwitch()
                 .clickApply()
-                .getStatusToggle());
+                .getStatusToggle();
+
+        Assert.assertFalse(statusToggle);
     }
 
-    @Test(dependsOnMethods = "testMCPDisableByToggle")
-    public void testCheckTooltipEnablingMCP() {
+    @Test(dependsOnMethods = "testProjectDisableByToggle")
+    @Story("US_03.002  Enable/Disable project")
+    @Description("Get tooltip information 'Enable or disable the current project' by hovering on a Toggle Switch")
+    public void testCheckTooltipEnablingMultiConfigurationProject() {
 
         String toggleTooltipText = new HomePage(getDriver())
                 .clickSpecificMultiConfigurationProjectName(PROJECT_NAME)
@@ -150,24 +176,24 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    public void testYesButtonColorDeletingMCPInSidebar() {
-        String expectedColorNone = "#e6001f";
-        String expectedColorDark = "hsl(5, 100%, 60%)";
+    @Story("US_03.003  Delete project")
+    @Description("Checking 'Yes' button color when delete project")
+    public void testYesButtonColorDeletingMultiConfigurationProjectInSidebar() {
+        final String expectedColorNone = "#e6001f";
 
-        String actualColor = TestUtils
-                .createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
+        TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
+
+        String actualYesButtonColor = new HomePage(getDriver())
                 .clickSpecificMultiConfigurationProjectName(PROJECT_NAME)
-                .clickDeleteInMenu(new DeleteDialog(getDriver()))
+                .clickSidebarDelete()
                 .getYesButtonColorDeletingViaSidebar();
 
-        if (getDriver().findElement(By.tagName("html")).getAttribute("data-theme").equals("none")) {
-            Assert.assertEquals(expectedColorNone, actualColor);
-        } else if (getDriver().findElement(By.tagName("html")).getAttribute("data-theme").equals("dark")) {
-            Assert.assertEquals(expectedColorDark, actualColor);
-        }
+        Assert.assertEquals(actualYesButtonColor, expectedColorNone);
     }
 
     @Test
+    @Story("US_03.000  Create project")
+    @Description("Create project with empty name")
     public void testCreateProjectWithoutName() {
         final String EMPTY_NAME = "";
         final String ERROR_MESSAGE = "This field cannot be empty";
@@ -185,7 +211,9 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    public void testCreateMCProject() {
+    @Story("US_03.000  Create project")
+    @Description("Create project with valid name")
+    public void testCreateMultiConfigurationProject() {
         List<String> projectNameList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(PROJECT_NAME)
@@ -197,7 +225,9 @@ public class MultiConfigurationProjectTest extends BaseTest {
         Assert.assertTrue(projectNameList.contains(PROJECT_NAME));
     }
 
-    @Test(dependsOnMethods = "testCreateMCProject")
+    @Test(dependsOnMethods = "testCreateMultiConfigurationProject")
+    @Story("US_03.004  Rename project")
+    @Description("Check,an existing project can be renamed")
     public void testRenameMCProject() {
 
         HomePage homePage = new HomePage(getDriver());
@@ -206,12 +236,15 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickJobByName(PROJECT_NAME, new MultiConfigurationProjectPage(getDriver()))
                 .clickRenameInMenu()
                 .changeProjectNameWithClear(RANDOM_PROJECT_NAME)
-                .clickRenameButton().clickLogo();
+                .clickRenameButton()
+                .clickLogo();
 
         Assert.assertTrue(homePage.isItemExists(RANDOM_PROJECT_NAME) && !homePage.isItemExists(PROJECT_NAME));
     }
 
     @Test
+    @Story("US_03.003  Delete project ")
+    @Description("Delete an existing project via Dropdown menu")
     public void testDeleteProjectViaDropdown() {
 
         TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
@@ -228,14 +261,16 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
+    @Story("US_03.005  Move project to Folder")
+    @Description("Move the project to the Folder via Dropdown menu")
     public void testMoveProjectToFolderViaDropdown() {
-
         final String folderName = "Folder";
 
         TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
         TestUtils.createNewItem(this, folderName, TestUtils.Item.FOLDER);
 
-        Assert.assertTrue(new HomePage(getDriver()).openItemDropdownWithSelenium(PROJECT_NAME)
+        Assert.assertTrue(new HomePage(getDriver())
+                .openItemDropdownWithSelenium(PROJECT_NAME)
                 .selectMoveFromDropdown()
                 .selectFolder(folderName)
                 .clickMove()
@@ -243,65 +278,80 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
+    @Story("US_03.003  Delete project ")
+    @Description("Delete an existing project via left-sidebar menu")
     public void testDeleteMultiConfigurationProjectFromMenu() {
 
         HomePage homePage = TestUtils.createMultiConfigurationProject(this, RANDOM_PROJECT_NAME);
 
         boolean isProjectDeleted = homePage
                 .clickJobByName(RANDOM_PROJECT_NAME, new MultiConfigurationProjectPage(getDriver()))
-                .clickDeleteInMenu(new DeleteDialog(getDriver()))
-                .clickYes(homePage).isItemDeleted(RANDOM_PROJECT_NAME);
+                .clickSidebarDelete()
+                .clickYes(homePage)
+                .isItemDeleted(RANDOM_PROJECT_NAME);
 
         Assert.assertTrue(isProjectDeleted);
     }
 
-    @Ignore
     @Test
-    public void testAddDiscardOldBuildsConfigurationsToProject(){
+    @Story("US_03.006  Edit configuration")
+    @Description("Add discard old builds configurations to project")
+    public void testAddDiscardOldBuildsConfigurationsToProject() {
         final String daysToKeep = generateRandomNumber();
         final String numToKeep = generateRandomNumber();
         final String artifactDaysToKeep = generateRandomNumber();
         final String artifactNumToKeep = generateRandomNumber();
 
-        List<String> discardOldBuildsList = TestUtils
-                .createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
+        TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
+
+        List<String> discardOldBuildsList = new HomePage(getDriver())
                 .clickSpecificMultiConfigurationProjectName(PROJECT_NAME)
                 .clickConfigureButton()
                 .clickDiscardOldBuilds()
-                .setDaysToKeep(daysToKeep)
-                .setMaxNumberOfBuildsToKeep(numToKeep)
+                .enterNumberOfDaysToKeepBuilds(daysToKeep)
+                .enterMaxNumberOfBuildsToKeep(numToKeep)
                 .clickAdvancedButton()
-                .setArtifactDaysToKeepStr(artifactDaysToKeep)
-                .setArtifactNumToKeepStr(artifactNumToKeep)
+                .enterNumberOfDaysToKeepArtifacts(artifactDaysToKeep)
+                .enterMaxNumberOfBuildsToKeepWithArtifacts(artifactNumToKeep)
                 .clickSaveButton()
                 .clickConfigureButton()
                 .clickAdvancedButton()
                 .getDiscardOldBuildsListText();
 
+        Allure.step("Expected result : Values of discard old builds parameters are the same as entered");
         Assert.assertEquals(
                 discardOldBuildsList,
                 List.of(daysToKeep, numToKeep, artifactDaysToKeep, artifactNumToKeep));
     }
 
     @Test
-    public void testSearchForCreatedProject(){
+    @Story("US_03.000  Create project ")
+    @Description("Verify existing project can be found using Search")
+    public void testSearchForCreatedProject() {
 
-        String currentUrl = TestUtils
+        SearchResultPage searchResultPage = TestUtils
                 .createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
-                .getHeader().searchProjectByName(PROJECT_NAME, new MultiConfigurationProjectPage(getDriver()))
-                .getCurrentUrl();
+                .getHeader()
+                .typeTextToSearchField(PROJECT_NAME)
+                .getHeader()
+                .pressEnterOnSearchField();
 
-        Assert.assertTrue(currentUrl.contains(PROJECT_NAME));
+        String currentUrl = searchResultPage.getCurrentUrl();
+        String searchResult = searchResultPage.getTextFromMainPanel();
+
+        Assert.assertTrue(currentUrl.contains(PROJECT_NAME) && searchResult.contains(PROJECT_NAME));
     }
 
     @Test
-    public void testVerifyThatDisabledIconIsDisplayedOnDashboard(){
+    @Story("US_03.002  Enable/Disable project")
+    @Description("Check, that there is a special icon near displayed project on Dashboard")
+    public void testVerifyThatDisabledIconIsDisplayedOnDashboard() {
 
         List<String> disabledProjectList = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(PROJECT_NAME)
                 .selectMultiConfigurationAndClickOk()
-                .clickBreadcrumbsProjectName(PROJECT_NAME)
+                .clickBreadcrumbsProjectName()
                 .clickDisableProject()
                 .clickLogo()
                 .getDisabledProjectListText();
@@ -310,7 +360,9 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    public void testMoveProjectToFolderFromDashboardPage(){
+    @Story("US_03.005  Move project to Folder")
+    @Description("Move project to Folder using left-sidebar  menu on Dashboard")
+    public void testMoveProjectToFolderFromDashboardPage() {
 
         TestUtils.createFolderProject(this, FOLDER_NAME);
         TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
@@ -324,11 +376,14 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickSpecificFolderName(FOLDER_NAME);
 
         boolean isProjectMoved = new FolderProjectPage(getDriver()).getItemListInsideFolder().contains(PROJECT_NAME);
+        boolean isProjectDeleted = new HomePage(getDriver()).isItemDeleted(FOLDER_NAME);
 
-        Assert.assertTrue(isProjectMoved);
+        Assert.assertTrue(isProjectMoved && isProjectDeleted);
     }
 
     @Test
+    @Story("US_03.002  Enable/Disable project")
+    @Description("Check, that disable Message appears, when a project is disabled")
     public void testDisableProjectOnProjectPage() {
 
         TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
@@ -338,11 +393,12 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickDisableProject()
                 .getDisableMessage();
 
-        Assert.assertTrue(disableMessage.contains("This project is currently disabled"),
-                "Substring not found");
+        Assert.assertTrue(disableMessage.contains("This project is currently disabled"), "Substring not found");
     }
 
     @Test(dependsOnMethods = "testDisableProjectOnProjectPage")
+    @Story("US_03.002  Enable/Disable project")
+    @Description("Check,that 'Enable' status is indicated on Project Configure Page, when a project is enable")
     public void testEnableProjectOnProjectPage() {
 
         String enableMessage = new HomePage(getDriver())
@@ -355,15 +411,4 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 "Substring not found");
     }
 
-    @Test
-    public void testSearchMCPByName() {
-
-        TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
-
-        String searchResult = new HomePage(getDriver())
-                .getHeader().typeSearchQueryPressEnter(PROJECT_NAME)
-                .getTextFromMainPanel();
-
-        Assert.assertTrue(searchResult.contains(PROJECT_NAME));
-    }
 }

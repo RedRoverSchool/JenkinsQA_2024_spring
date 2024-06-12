@@ -8,9 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import school.redrover.model.base.BaseProjectPage;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
@@ -50,6 +48,9 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
 
     @FindBy(css = "a[href$='rename']")
     private WebElement sidebarRenameButton;
+
+    @FindBy(css = "a[href$='configure']")
+    private WebElement sidebarConfigureButton;
 
     @FindBy(xpath = "//a[@data-build-success = 'Build scheduled']")
     private WebElement buildButton;
@@ -177,6 +178,17 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         return getDriver().switchTo().activeElement().getCssValue("box-shadow").split(" 0px")[0];
     }
 
+    public String getCellColor() {
+        Set<String> backgroundColor = new HashSet<>();
+        for (int i = 1; i <= 2; i++) {
+            WebElement element = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//tr[@data-runid='" + i + "']/td[@class='stage-cell stage-cell-0 SUCCESS']/div[@class='cell-color']")));
+
+            backgroundColor.add(element.getCssValue("background-color"));
+        }
+        return backgroundColor.iterator().next();
+    }
+
     public PipelineProjectPage clickOnDescriptionInput() {
         descriptionInput.click();
 
@@ -203,8 +215,8 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         return new DeleteDialog(getDriver());
     }
 
-    public PipelineConfigPage clickSidebarConfigureButton(String jobName) {
-        getDriver().findElement(By.xpath("//a[@href='/job/" + jobName + "/configure']")).click();
+    public PipelineConfigPage clickSidebarConfigureButton() {
+        sidebarConfigureButton.click();
 
         return new PipelineConfigPage(getDriver());
     }

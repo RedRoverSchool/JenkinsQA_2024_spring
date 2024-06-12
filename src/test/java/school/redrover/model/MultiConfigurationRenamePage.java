@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class MultiConfigurationRenamePage extends BasePage {
+public class MultiConfigurationRenamePage extends BasePage<MultiConfigurationRenamePage> {
 
     @FindBy(name = "newName")
     private WebElement renameText;

@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.CreateItemPage;
 import school.redrover.model.CreateNewItemPage;
@@ -151,7 +150,7 @@ public class NewItemTest extends BaseTest {
         CreateItemPage errorPage = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName("someName")
-                .setItemNameInCopyForm(notExistingName)
+                .typeItemNameInCopyFrom(notExistingName)
                 .clickOkButton();
 
         Assert.assertTrue(errorPage.getCurrentUrl().endsWith("/createItem"));
@@ -159,32 +158,45 @@ public class NewItemTest extends BaseTest {
         Assert.assertEquals(errorPage.getErrorMessageText(), "No such job: " + notExistingName);
     }
 
-    @DataProvider(name="existingJobsNames")
-    public Object[][] existingJobsNames(){
+    @DataProvider(name = "existingJobsNames")
+    public Object[][] existingJobsNames() {
         return new Object[][]{
-                {"Freestyle","folff"},
-                {"Freestyle","folff00"},
-                {"Folder","Folder1"},
-                {"Folder","bFolder2"},
-                {"Pipeline","pipe1"},
-                {"MultiConfigurationProject", "multi1"},
-                {"MultiBranchPipe", "multiBranch1"},
-                {"organizationFolder","organizationFolder1"}
-       };
+                {"Freestyle project", "folff"},
+                {"Freestyle project", "folff00"},
+                {"Folder", "Folder1"},
+                {"Folder", "bFolder2"},
+                {"Pipeline", "pipe1"},
+                {"Multi-configuration project", "multi1"},
+                {"Multibranch Pipeline", "multiBranch1"},
+                {"Organization Folder", "organizationFolder1"}
+        };
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testDropdownNamesMenuContentWhenCopyProject" ,dataProvider = "existingJobsNames")
+    @Test(dataProvider = "existingJobsNames")
     public void testCopyFromExistingJob(String type, String jobName) {
 
-        HomePage homePage = new HomePage(getDriver())
+        HomePage homePage;
+        homePage = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(jobName)
+                .clickProjectType(type)
+                .clickOkButton()
+                .clickLogo()
                 .clickNewItem()
                 .setItemName(jobName + "Copy")
-                .setItemNameInCopyForm(jobName)
+                .typeItemNameInCopyFrom(jobName)
                 .clickOkButton()
                 .clickLogo();
+
+
+        Integer quantityItemsWithCopies = new HomePage(getDriver())
+                .getItemList()
+                .size();
+
+        Assert.assertEquals(quantityItemsWithCopies, 2);
         Assert.assertTrue(homePage.isItemExists(jobName + "Copy"));
-        }
+        Assert.assertTrue(homePage.isItemExists(jobName));
+    }
 
     @Test
     public void testDropdownNamesMenuContentWhenCopyProject() {
@@ -197,7 +209,7 @@ public class NewItemTest extends BaseTest {
         final String multiBranchPipe1 = "multiBranch1";
         final String organizationFolder1 = "organizationFolder1";
 
-        final String firstLetters = "foL";
+        final String firstLetters = "fol";
         final String newItemName = "someName";
 
         TestUtils.createFreestyleProject(this, freestyle1);
@@ -206,15 +218,15 @@ public class NewItemTest extends BaseTest {
         TestUtils.createFreestyleProject(this, freestyle2);
         TestUtils.createPipelineProject(this, pipeline1);
         TestUtils.createMultiConfigurationProject(this, multiConfigurationProject1);
-        TestUtils.createMultibranchProject(this,multiBranchPipe1);
-        TestUtils.createOrganizationFolderProject(this,organizationFolder1);
+        TestUtils.createMultibranchProject(this, multiBranchPipe1);
+        TestUtils.createOrganizationFolderProject(this, organizationFolder1);
 
         List<String> firstLettersJobs = TestUtils.getJobsBeginningFromThisFirstLetters(this, firstLetters);
 
         List<String> jobsFromDropdownMenu = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(newItemName)
-                .setItemNameInCopyForm(firstLetters)
+                .typeItemNameInCopyFrom(firstLetters)
                 .getDropdownMenuContent();
 
         Assert.assertEquals(jobsFromDropdownMenu, firstLettersJobs);
@@ -287,7 +299,8 @@ public class NewItemTest extends BaseTest {
                 .getCurrentUrl();
 
         String pageHeading = new FreestyleConfigPage(getDriver())
-                .clickSaveButton().getPageHeadingText();
+                .clickSaveButton()
+                .getPageHeadingText();
 
         Assert.assertTrue(isTypeChecked);
         Assert.assertEquals(currentUrl, String.format("http://localhost:8080/job/%s/configure", PROJECT_NAME));
