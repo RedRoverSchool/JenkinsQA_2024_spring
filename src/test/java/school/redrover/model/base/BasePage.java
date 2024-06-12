@@ -69,7 +69,7 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
                 "arguments[0].dispatchEvent(new Event('click'));", element);
     }
 
-    protected void clickElement(WebElement webElement) {
+    protected void clickElementFromTheBottomOfThePage(WebElement webElement) {
         new Actions(getDriver())
                 .scrollToElement(webElement)
                 .scrollByAmount(0, 100)

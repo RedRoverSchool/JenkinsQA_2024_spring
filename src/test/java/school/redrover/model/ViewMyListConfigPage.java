@@ -61,7 +61,7 @@ public class ViewMyListConfigPage extends BasePage<ViewMyListConfigPage> {
     }
 
     public ViewMyListConfigPage checkProjectForAddingToView(String name) {
-        clickElement(getDriver().findElement(
+        clickElementFromTheBottomOfThePage(getDriver().findElement(
                 By.xpath("//label[contains(@title, '" + name + "')]")));
         return this;
     }

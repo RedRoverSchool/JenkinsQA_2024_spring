@@ -20,7 +20,7 @@ public class OrganizationFolderTest extends BaseTest {
     private static final String ORGANIZATION_FOLDER_DESCRIPTION = "Some description of the organization folder.";
 
     @Test
-    @Story("US_06.000 Create project")
+    @Story("US_06.000  Create project")
     @Description("Verify the creation of a project via Sidebar menu.")
     public void testCreateViaSidebarMenu() {
         String itemPageHeading = new HomePage(getDriver())
@@ -34,7 +34,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
-    @Story("US_06.000 Create project")
+    @Story("US_06.000  Create project")
     @Description("Verify creation of the project with the default icon.")
     public void testCreateWithDefaultIcon() {
         String organizationFolderIcon = new HomePage(getDriver())
@@ -49,7 +49,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateViaSidebarMenu")
-    @Story("US_06.009 Add description to folder")
+    @Story("US_06.009  Add description to Organization Folder")
     @Description("Verify description can be added to project by clicking Add description.")
     public void testAddDescriptionViaAddDescriptionButton() {
         String textInDescription = new OrganizationFolderProjectPage(getDriver())
@@ -62,7 +62,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
-    @Story("US_06.007 Pipeline syntax")
+    @Story("US_06.007  Pipeline syntax")
     @Description("Verify access to the declarative documentation for pipeline syntax.")
     public void testPipelineSyntaxDeclarativeDocumentationAccess() {
         TestUtils.createOrganizationFolderProject(this, ORGANIZATION_FOLDER_NAME);
@@ -77,7 +77,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
-    @Story("US_06.007 Pipeline syntax")
+    @Story("US_06.007  Pipeline syntax")
     @Description("Verify access to examples Reference.")
     public void testPipelineSyntaxExamplesAccess() {
         TestUtils.createOrganizationFolderProject(this, ORGANIZATION_FOLDER_NAME);
@@ -92,7 +92,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateViaSidebarMenu")
-    @Story("US_06.007 Pipeline syntax")
+    @Story("US_06.007  Pipeline syntax")
     @Description("Verify tooltips of the step Catch Error.")
     public void testCatchErrorStepTooltipsViaDashboardDropdown() {
         final List<String> expectedTooltipList = List.of(
@@ -112,7 +112,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateViaSidebarMenu")
-    @Story("US_06.001 Configuration")
+    @Story("US_06.001  Use Configuration page")
     @Description("Verify sidebar menu visibility when accessing the configuration page of an organization folder.")
     public void testSidebarMenuVisibility() {
         boolean isSidebarVisible = new HomePage(getDriver())
@@ -124,7 +124,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
-    @Story("US_06.006 Rename Organization Folder")
+    @Story("US_06.006  Rename Organization Folder")
     @Description("Verify that a project can be successfully renamed via the sidebar")
     public void testRenameProjectViaSidebarMenu() {
         final String newOrganizationFolderName = "New Organization Folder";
@@ -144,7 +144,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateViaSidebarMenu")
-    @Story("US_06.003 Scan Organization Folder Log")
+    @Story("US_06.003  Scan Organization Folder Log")
     @Description("Verify that the 'Scan Organization Folder Log' page is accessible")
     public void testScanOrganizationFolder() {
         String titleText = new HomePage(getDriver())
@@ -157,7 +157,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateViaSidebarMenu")
-    @Story("US_06.000 Create project")
+    @Story("US_06.000  Create project")
     @Description("Verify the creation of a project on Dashboard")
     public void testProjectPresenceOnDashboard() {
         List<String> itemList = new HomePage(getDriver())
@@ -168,7 +168,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateViaSidebarMenu")
-    @Story("US_06.007 Pipeline syntax")
+    @Story("US_06.007  Pipeline syntax")
     @Description("Verify that the pipeline syntax sidebar contains the expected list of items.")
     public void testPipelineSyntaxSidebarList() {
         final List<String> expectedPipelineSyntaxSidebarList = List.of("Back", "Snippet Generator", "Declarative Directive Generator",
@@ -185,7 +185,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
-    @Story("US_06.005 Delete Organization Folder")
+    @Story("US_06.005  Delete Organization Folder")
     @Description("Verify the deletion of a project via Sidebar menu.")
     public void testDeleteOrganizationFolderViaSidebar() {
         TestUtils.createOrganizationFolderProject(this, ORGANIZATION_FOLDER_NAME);
@@ -200,7 +200,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
-    @Story("US_06.001 Configuration")
+    @Story("US_06.001  Use Configuration page")
     @Description("Verify that the borders of the project recognizers filters are dashed in the configuration page.")
     public void testProjectRecognizersFiltersBordersAreDashed() {
         TestUtils.createOrganizationFolderProject(this, ORGANIZATION_FOLDER_NAME);
@@ -218,7 +218,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
-    @Story("US_06.001 Configuration")
+    @Story("US_06.001  Use Configuration page")
     @Description("Verify that clicking anchor links in the configuration page navigates to the corresponding blocks.")
     public void testAnchorLinksLeadToCorrespondingBlocks() {
         TestUtils.createOrganizationFolderProject(this, ORGANIZATION_FOLDER_NAME);
@@ -232,7 +232,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
-    @Story("US_06.001 Configuration")
+    @Story("US_06.001  Use Configuration page")
     @Description("Verify that the 'Throttle Builds' dropdown contains the correct time period options.")
     public void testThrottleBuildsTimePeriodOptions() {
         final List<String> expectedTimePeriodOptions = List.of("Second", "Minute", "Hour", "Day", "Week", "Month", "Year");
@@ -251,7 +251,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
-    @Story("US_06.001 Configuration")
+    @Story("US_06.001  Use Configuration page")
     @Description("Verify that the untrusted property checkboxes remain selected after saving the configuration.")
     public void testUntrustedPropertyCheckboxesSelectedUponSaving() {
         TestUtils.createOrganizationFolderProject(this, ORGANIZATION_FOLDER_NAME);
@@ -273,7 +273,7 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
-    @Story("US_06.001 Configuration")
+    @Story("US_06.001  Use Configuration page")
     @Description("Verify that the order of strategy properties can be changed in the configuration.")
     public void testStrategyPropertiesOrderCanBeChanged() {
         final List<String> expectedStrategyPropertiesList = List.of("Untrusted", "Throttle builds");

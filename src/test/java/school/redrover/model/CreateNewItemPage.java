@@ -6,18 +6,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.base.BaseConfigPage;
 import school.redrover.model.base.BasePage;
-import school.redrover.runner.TestUtils;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
-
-    @FindBy(id = "name")
-    WebElement newItemName;
 
     @FindBy(id = "name")
     private WebElement nameText;
@@ -25,8 +18,8 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
     @FindBy(css = "[class$='FreeStyleProject']")
     private WebElement freestyleItem;
 
-    @FindBy(id = "from")
-    private WebElement nameTextInCopyForm;
+    @FindBy(css = "#from")
+    private WebElement copyFromInputField;
 
     @FindBy(css = "[class$='WorkflowJob']")
     private WebElement pipelineItem;
@@ -51,9 +44,6 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
 
     @FindBy(id = "itemname-required")
     private WebElement errorMessageEmptyName;
-
-    @FindBy(xpath = "//div[@class='item-copy']//li[not(@style='display: none;')]")
-    private List<WebElement> copyFormElements;
 
     @FindBy(id = "itemname-required")
     private WebElement itemNameHint;
@@ -135,19 +125,11 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return page;
     }
 
-    public CreateNewItemPage clickProjectType(TestUtils.ProjectType projectType) {
-        getDriver().findElement(By.xpath("//span[text()='" + projectType.getProjectTypeName() + "']")).click();
-
-        return this;
-    }
-
-
     public CreateNewItemPage clickProjectType(String type) {
         getDriver().findElement(By.xpath("//span[text()='" + type + "']")).click();
 
         return this;
     }
-
 
     public String getErrorMessageInvalidCharacterOrDuplicateName() {
         return errorItemNameInvalid.getText();
@@ -157,8 +139,10 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return errorMessageEmptyName.getText();
     }
 
-    public CreateNewItemPage setItemNameInCopyForm(String name) {
-        nameTextInCopyForm.sendKeys(name);
+    public CreateNewItemPage typeItemNameInCopyFrom(String name) {
+        clickElementFromTheBottomOfThePage(copyFromInputField);
+        copyFromInputField.sendKeys(name);
+
         return this;
     }
 
@@ -177,13 +161,10 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
     }
 
     public List<String> getDropdownMenuContent() {
-        List<WebElement> allJobFromThisLetter = getWait60().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("li[style='']")));
-        List<String> allJobFromThisLetterName = new ArrayList<>();
+        List<WebElement> allJobFromThisLetter = getWait10().until(
+                ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("li[style='']")));
 
-        for (WebElement el : allJobFromThisLetter) {
-            allJobFromThisLetterName.add(el.getText());
-        }
-        return allJobFromThisLetterName;
+        return allJobFromThisLetter.stream().map(WebElement::getText).toList();
     }
 
     public CreateNewItemPage selectFreeStyleProject() {
