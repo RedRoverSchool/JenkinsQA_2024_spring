@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -18,6 +19,7 @@ public class MovePage extends BasePage<MovePage> {
         super(driver);
     }
 
+    @Step("Select existed folder, in which you want to move the project and click 'Move' button")
     public FreestyleProjectPage chooseFolderAndConfirmMove(String folderName) {
 
         Select selectDefinition = new Select(selectDestination);

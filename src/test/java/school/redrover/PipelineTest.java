@@ -5,10 +5,8 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
@@ -32,8 +30,6 @@ public class PipelineTest extends BaseTest {
     private static final String DESCRIPTION = "Lorem ipsum dolor sit amet";
 
     private static final String SUCCEED_BUILD_EXPECTED = "Finished: SUCCESS";
-
-    private static final List<String> NAME_PROJECTS = List.of("PPProject", "PPProject2");
 
     private static final String PIPELINE_SCRIPT = "pipeline {\nagent any\n\nstages {\n";
 
@@ -107,7 +103,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.005  Edit description")
+    @Story("US_02.005 Edit description")
     @Description("Verify text area border backlight color being active")
     public void testPipelineDescriptionTextAreaBacklightColor() {
         TestUtils.resetJenkinsTheme(this);
@@ -126,7 +122,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.005  Edit description")
+    @Story("US_02.005 Edit description")
     @Description("Verify text area border backlight color by default")
     public void testPipelineDescriptionTextAreaBacklightDefaultColor() {
         TestUtils.resetJenkinsTheme(this);
@@ -144,7 +140,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.007  Delete Pipeline")
+    @Story("US_02.007 Delete Pipeline")
     @Description("Verify the pop-up 'Yes' button color is red if user deletes Pipeline using sidebar")
     public void testYesButtonColorDeletingPipelineInSidebar() {
         TestUtils.resetJenkinsTheme(this);
@@ -161,7 +157,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.007  Delete Pipeline")
+    @Story("US_02.007 Delete Pipeline")
     @Description("Verify Pipeline can be deleted via breadcrumbs")
     public void testDeleteViaBreadcrumbs() {
         boolean isPipelineDeleted = new HomePage(getDriver())
@@ -181,7 +177,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.007  Delete Pipeline")
+    @Story("US_02.007 Delete Pipeline")
     @Description("Verify Pipeline builds disappeared from Build History page upon its removal")
     public void testBuildHistoryEmptyUponPipelineRemoval() {
         boolean isBuildDeleted = new HomePage(getDriver())
@@ -203,7 +199,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.005  Edit description")
+    @Story("US_02.005 Edit description")
     @Description("Add a description to the Pipeline")
     public void testAddDescription() {
         String descriptionText = new HomePage(getDriver())
@@ -220,7 +216,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testAddDescription")
-    @Story("US_02.005  Edit description")
+    @Story("US_02.005 Edit description")
     @Description("Edit current description")
     public void testEditDescription() {
         final String addedToDescription = ", consectetur adipiscing elit.";
@@ -238,7 +234,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.008  Rename Pipeline")
+    @Story("US_02.008 Rename Pipeline")
     @Description("Rename project via sidebar")
     public void testRenamePipelineViaSidebar() {
         String displayedName = new HomePage(getDriver())
@@ -256,7 +252,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.009  Full stage view")
+    @Story("US_02.009 Full stage view")
     @Description("Project's name and 'Stage View' are displayed after clicking 'Full Stage View' button in the sidebar")
     public void testFullStageViewButton() {
 
@@ -277,7 +273,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.009  Full stage view")
+    @Story("US_02.009 Full stage view")
     @Description("Verify the presence of the full stage view button in the sidebar")
     void testVerifyThePresenceOfTheFullStageViewButtonInTheSidebar() {
         String pipelineName = "New Pipeline group_java_autoqa_rrschool";
@@ -294,7 +290,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.009  Full stage view")
+    @Story("US_02.009 Full stage view")
     @Description("Verify that the breadcrumb navigation displays the correct hierarchy")
     public void testBreadcrumbsOnFullStageViewPage() {
         final String expectedResult = "Dashboard > " + PIPELINE_NAME + " > Full Stage View";
@@ -313,7 +309,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testBreadcrumbsOnFullStageViewPage")
-    @Story("US_02.009  Full stage view")
+    @Story("US_02.009 Full stage view")
     @Description("Button Color Changes on Hover")
     public void testColorWhenHoveringMouseOnFullStageViewButton() {
 
@@ -332,7 +328,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.009  Full stage view")
+    @Story("US_02.009 Full stage view")
     @Description("Verify the heading after clicking the ‘Full Stage View’ button in the dropdown menu displays")
     public void testFullStageViewButtonInDropDown() {
 
@@ -353,7 +349,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.009  Full stage view")
+    @Story("US_02.009 Full stage view")
     @Description("Verify the list of the last 10 builds for the pipeline is displayed")
     public void testTableWithLast10Builds() {
 
@@ -379,7 +375,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.002  View changes")
+    @Story("US_02.002 View changes")
     @Description("Verify Changes page opens by clicking 'Changes' in drop-down menu at Pipeline name on Pipeline page")
     public void testChangesPageHeading() {
         String actualPageHeading = new HomePage(getDriver())
@@ -396,7 +392,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.008  Rename Pipeline")
+    @Story("US_02.008 Rename Pipeline")
     @Description("Rename project via breadcrumbs")
     public void testRenameJobViaBreadcrumbs() {
         String displayedNewName = new HomePage(getDriver())
@@ -415,7 +411,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.005  Edit description")
+    @Story("US_02.005 Edit description")
     @Description("Use preview option to view description")
     public void testAddDescriptionPreview() {
         String previewDescription = new HomePage(getDriver())
@@ -430,7 +426,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.004  Verify the Pipeline configuration")
+    @Story("US_02.004 Verify the Pipeline configuration")
     @Description("Verify that a pipeline with a specified number of stages can be created via pipeline script")
     public void testStagesQtt() {
         final int stagesQtt = 5;
@@ -453,7 +449,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.006  Disable project")
+    @Story("US_02.006 Disable project")
     @Description("Verify 'Disable Project' button is visible")
     public void testVisibilityOfDisableButton() {
         boolean isDisableButtonDisplayed = new HomePage(getDriver())
@@ -467,7 +463,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.006  Disable project")
+    @Story("US_02.006 Disable project")
     @Description("Disable project")
     public void testDisableItem() {
         final String expectedWarning = "This project is currently disabled";
@@ -484,7 +480,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testDisableItem")
-    @Story("US_02.006  Disable project")
+    @Story("US_02.006 Disable project")
     @Description("Verify project is disabled")
     public void testPipelineNotActive() {
 
@@ -493,7 +489,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = {"testPipelineNotActive", "testDisableItem"})
-    @Story("US_02.006  Disable project")
+    @Story("US_02.006 Disable project")
     @Description("Verify disabled project can be enabled")
     public void testEnableBack() {
         String pipelineStatus = new HomePage(getDriver())
@@ -506,7 +502,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testEnableBack")
-    @Story("US_02.011  Take information about a project built")
+    @Story("US_02.011 Take information about a project built")
     @Description("Check permalinks after build is scheduled")
     public void testPermalinksBuildDetails() {
         final List<String> expectedPermalinkList =
@@ -522,7 +518,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testPermalinksBuildDetails")
-    @Story("US_02.011  Take information about a project built")
+    @Story("US_02.011 Take information about a project built")
     @Description("Successful build is marked green")
     public void testGreenBuildSuccessColor() {
         final String greenHexColor = "#1ea64b";
@@ -535,7 +531,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testGreenBuildSuccessColor")
-    @Story("US_02.011  Take information about a project built")
+    @Story("US_02.011 Take information about a project built")
     @Description("Сheck builds history descending order")
     public void testCheckBuildsHistoryDescendingOrder() {
         List<String> actualBuildsOrderList = new HomePage(getDriver())
@@ -551,14 +547,14 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCheckBuildsHistoryDescendingOrder")
-    @Story("US_02.011  Take information about a project built")
+    @Story("US_02.011 Take information about a project built")
     @Description("Check numbers of builds in the Build History in descending order")
     public void testSetNumberBuildsToKeep() {
         final int maxNumberBuildsToKeep = 1;
 
         List<String> buildList = new HomePage(getDriver())
                 .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
-                .clickSidebarConfigureButton()
+                .clickConfigureOnSidebar()
                 .clickDiscardOldBuilds()
                 .setNumberBuildsToKeep(maxNumberBuildsToKeep)
                 .clickSaveButton()
@@ -572,16 +568,16 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testSetNumberBuildsToKeep")
-    @Story("US_02.004  Verify the Pipeline configuration")
+    @Story("US_02.004 Verify the Pipeline configuration")
     @Description("Set 'Hello world' pipeline script")
     public void testSetPipelineScript() {
         String echoScriptName = new HomePage(getDriver())
                 .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
-                .clickSidebarConfigureButton()
+                .clickConfigureOnSidebar()
                 .scrollToPipelineScript()
                 .selectSamplePipelineScript("hello")
                 .clickSaveButton()
-                .clickSidebarConfigureButton()
+                .clickConfigureOnSidebar()
                 .scrollToPipelineScript()
                 .getScriptText();
 
@@ -589,7 +585,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.007  Delete Pipeline")
+    @Story("US_02.007 Delete Pipeline")
     @Description("Delete project via sidebar menu 'Delete Pipeline'")
     public void testDeleteSidebarMenu() {
         List<String> jobList = new HomePage(getDriver())
@@ -606,7 +602,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.007  Delete Pipeline")
+    @Story("US_02.007 Delete Pipeline")
     @Description("Delete project via dropdown menu")
     public void testDeleteDropdownMenu() {
         boolean isPipelineDeleted = new HomePage(getDriver())
@@ -623,6 +619,8 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
+    @Story("02.003 Build now")
+    @Description("02.003.01 Verify Console Ouput For All Stages")
     public void testConsoleOutputValue() {
         int numberOfStages = 8;
         List<String> expectedConsoleOuputForAllStages = List.of(
@@ -650,7 +648,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.011  Take information about a project built")
+    @Story("US_02.011 Take information about a project built")
     @Description("Check List of builds is displayed in descending'")
     public void testBuildAttributesDescending() {
         final String pipelineScript = """
@@ -683,8 +681,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Epic("Pipeline")
-    @Story("02.011 Take information about a project built")
+    @Story("US_02.011 Take information about a project built")
     @Description("Successful builds are marked with a green indicator when creating the list of builds.")
     public void testBuildColorGreen() {
     final String PIPELINE_SCRIPT = """
@@ -714,6 +711,8 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
+    @Story("02.003 Build now")
+    @Description("02.003.02 Verify column header for each stage of the build")
     public void testStageColumnHeader() {
 
         int numberOfStages = 2;
@@ -757,6 +756,8 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
+    @Story("US_02.004 Verify the Pipeline configuration")
+    @Description("02.004.12 Verify that description preview can be hidden")
     public void testHideDescriptionPreview() {
 
         TestUtils.createPipelineProject(this, PIPELINE_NAME);
@@ -795,6 +796,8 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
+    @Story("02.003 Build now")
+    @Description("02.003.03 Verify that build is finished successfully")
     public void testRunByBuildNowButton() {
 
         String consoleOutput = new HomePage(getDriver())
@@ -816,6 +819,8 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testRunByBuildNowButton")
+    @Story("US_02.004 Verify the Pipeline configuration")
+    @Description("02.004.11 Verify that build run by schedule is finished successfully")
     public void testRunBuildByTriangleButton() {
 
         String consoleOutput = new HomePage(getDriver())
@@ -870,6 +875,8 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
+    @Story("US_02.004 Verify the Pipeline configuration")
+    @Description("02.004.13 Verify that Pipeline side bar menu item scrolls to Pipeline section")
     public void testScroll() {
 
         boolean isPipelineScroll = new HomePage(getDriver())
@@ -883,6 +890,8 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
+    @Story("US_02.004 Verify the Pipeline configuration")
+    @Description("02.004.14 Verify that Discard OldB uilds By Count option is saved")
     public void testDiscardOldBuildsByCount() {
 
         PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
@@ -905,7 +914,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.004  Verify the Pipeline configuration")
+    @Story("US_02.004 Verify the Pipeline configuration")
     @Description("Verify that Pipeline configuration has interactive sections: "
             + "General, Advanced Project Options, Pipeline")
     public void testSectionsOfSidePanelAreVisible() {
@@ -918,7 +927,7 @@ public class PipelineTest extends BaseTest {
                 .selectPipelineAndClickOk()
                 .clickLogo()
                 .clickSpecificPipelineName(PIPELINE_NAME)
-                .clickSidebarConfigureButton()
+                .clickConfigureOnSidebar()
                 .getSectionsNameList();
 
         Assert.assertEquals(sectionsNameList, expectedSectionsNameList);
@@ -945,7 +954,7 @@ public class PipelineTest extends BaseTest {
 
         String projectsDisplayNameInHeader = new HomePage(getDriver())
                 .clickSpecificPipelineName(PIPELINE_NAME)
-                .clickSidebarConfigureButton()
+                .clickConfigureOnSidebar()
                 .clickAdvancedProjectOptionsMenu()
                 .clickAdvancedButton()
                 .setDisplayNameDescription(editedDisplayNameText)
@@ -960,7 +969,7 @@ public class PipelineTest extends BaseTest {
     public void testDeleteDisplayNameInAdvancedSection() {
         String projectsDisplayNameInHeader = new HomePage(getDriver())
                 .clickSpecificPipelineName(PIPELINE_NAME)
-                .clickSidebarConfigureButton()
+                .clickConfigureOnSidebar()
                 .clickAdvancedProjectOptionsMenu()
                 .clickAdvancedButton()
                 .clearDisplayNameDescription()
@@ -970,29 +979,26 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(projectsDisplayNameInHeader, PIPELINE_NAME);
     }
 
-    @Ignore
     @Test
-    public void testChoosePipelineScript() {
+    @Story("US_02.004 Verify the Pipeline configuration")
+    @Description("02.004.06 Verify that Script Approval Link is Shown when Use Groovy Sandbox Checkbox is unchecked")
+    public void testUncheckUseGroovySandboxCheckbox() {
         TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//button[@data-section-id='pipeline']"))).click();
+        boolean isScriptApprovalLinkShown = new HomePage(getDriver())
+                .clickSpecificPipelineName(PIPELINE_NAME)
+                .clickConfigureOnSidebar()
+                .scrollToPipelineScript()
+                .selectSamplePipelineScript("github-maven")
+                .clickOnUseGroovySandboxCheckbox()
+                .isScriptApprovalLinkShown();
 
-        WebElement selectScript = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[@class = 'samples']//select")));
-        Select simpleDropDown = new Select(selectScript);
-        simpleDropDown.selectByValue("github-maven");
-
-        WebElement uncheckCheckBox = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//label[text()='Use Groovy Sandbox']")));
-        uncheckCheckBox.click();
-
-        WebElement link = getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//a[@target='blank']")));
-        Assert.assertTrue(link.isDisplayed(), "Uncheck doesn't work");
+        Assert.assertTrue(isScriptApprovalLinkShown, "Uncheck of 'Use Groovy Sandbox' checkbox doesn't work");
     }
 
     @Test
+    @Story("US_02.004 Verify the Pipeline configuration")
+    @Description("02.004.07 Verify that Custom Pipeline Speed Durability Level is saved")
     public void testSetPipelineSpeedDurabilityOverride() {
         final String selectedOptionForCheck = "Less durability, a bit faster (specialty use only)";
         final int index = 1;
@@ -1005,13 +1011,15 @@ public class PipelineTest extends BaseTest {
                 .selectCustomPipelineSpeedDurabilityLevel(index)
                 .scrollToPipelineScript()
                 .clickSaveButton()
-                .clickSidebarConfigureButton()
+                .clickConfigureOnSidebar()
                 .getCustomPipelineSpeedDurabilityLevelText();
 
         Assert.assertTrue(selectedOption.contains(selectedOptionForCheck));
     }
 
     @Test
+    @Story("US_02.004 Verify the Pipeline configuration")
+    @Description("02.004.08 Verify that user is able to set Quiet Period Build Triggers more than zero")
     public void testSetQuietPeriodBuildTriggersMoreThanZero() {
         final int numberOfSeconds = 3;
 
@@ -1023,7 +1031,7 @@ public class PipelineTest extends BaseTest {
                 .clickQuietPeriodCheckbox()
                 .setNumberOfSecondsInQuietPeriodInputField(numberOfSeconds)
                 .clickSaveButton()
-                .clickSidebarConfigureButton()
+                .clickConfigureOnSidebar()
                 .scrollToQuietPeriodCheckbox()
                 .getQuietPeriodInputFieldValue();
 
@@ -1032,6 +1040,8 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
+    @Story("US_02.004 Verify the Pipeline configuration")
+    @Description("02.004.09 Verify that user is not able to set Quiet Period Build Triggers than than zero")
     public void testSetQuietPeriodBuildTriggersLessThanZero() {
         final int numberOfSeconds = -5;
         final String errorMessage = "This value should be larger than 0";
@@ -1050,6 +1060,8 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
+    @Story("US_02.004 Verify the Pipeline configuration")
+    @Description("02.004.10 Verify that user is not able to set double value to Quiet Period Build Triggers")
     public void testSetDoubleQuietPeriodBuildTriggers() {
         final double numberOfSeconds = 0.3;
         final String errorMessage = "Not an integer";
@@ -1100,33 +1112,42 @@ public class PipelineTest extends BaseTest {
                 "Tooltip '" + tooltipText + "' is not displayed.");
     }
 
-    @Test
-    public void testSetNumberOfBuildsThrottleBuilds() {
-        final String messageDay = "Approximately 24 hours between builds";
 
+    @DataProvider
+    private Object[][] dataForThrottleBuilds() {
+
+        return new Object[][]{
+                {"1", "second", "Approximately a second between builds"},
+                {"2", "minute", "Approximately 30 seconds between builds"},
+                {"3", "hour", "Approximately 20 minutes between builds"},
+                {"4", "day", "Approximately 6 hours between builds"},
+                {"6", "week", "Approximately 28 hours between builds"},
+                {"20", "month", "Approximately 37 hours between builds"},
+                {"50", "year", "Approximately 7 days between builds"}
+        };
+    }
+    @Test(dataProvider = "dataForThrottleBuilds")
+    @Story("US_02.004 Verify the Pipeline configuration")
+    @Description("Set number of builds, time period in Throttle builds and verify message about time between builds after")
+    public void testSetParametersToThrottleBuilds(String numberOfBuilds, String timePeriod, String expectedMessage) {
         TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
-        getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
+        String messageAboutTimePeriod = new HomePage(getDriver())
+                .clickSpecificPipelineName(PIPELINE_NAME)
+                .clickConfigureOnSidebar()
+                .clickOnThrottleBuilds()
+                .clearNumberOfBuilds()
+                .typeNumberOfBuilds(numberOfBuilds)
+                .selectTimePeriod(timePeriod)
+                .getMessageAboutTimeBetweenBuilds();
 
-        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
-        executor.executeScript("arguments[0].scrollIntoView({block: 'center'});",
-                getDriver().findElement(By.xpath("//label[text()='Throttle builds']")));
-
-        getDriver().findElement(By.xpath("//label[text()='Throttle builds']")).click();
-        WebElement selectThrottleBuilds = getDriver().findElement(
-                By.xpath("//select[@class='jenkins-select__input select']"));
-        Select simpleDropDown = new Select(selectThrottleBuilds);
-        simpleDropDown.selectByValue("day");
-
-        WebElement dayElement = getDriver().findElement(By.xpath("//div[@class='ok']"));
-        getWait5().until(ExpectedConditions.visibilityOf(dayElement));
-
-        Assert.assertEquals(dayElement.getText(), messageDay);
+        Assert.assertEquals(messageAboutTimePeriod, expectedMessage);
     }
 
     @Test
-    public void testBuildNowWithAnError() {
+    @Story("US_02.004 Verify the Pipeline configuration")
+    @Description("02.004.11 Verify that build is failed when user set to use Pipeline script from repository and don't set the repository")
+    public void testBuildWithoutScriptRepository() {
         String errorMassageConsole = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)

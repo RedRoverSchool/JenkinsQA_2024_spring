@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -73,18 +74,21 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
         super(driver);
     }
 
+    @Step("Click 'Add description' button")
     public FreestyleProjectPage clickAddDescription() {
         addOrEditDescriptionButton.click();
 
         return this;
     }
 
+    @Step("Click 'Edit description'")
     public FreestyleProjectPage clickEditDescription() {
         addOrEditDescriptionButton.click();
 
         return this;
     }
 
+    @Step("Click 'Disable Project' button")
     public FreestyleProjectPage clickDisableProjectButton() {
         disableProjectButton.click();
 
@@ -96,36 +100,42 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
         return disableProjectButton.getText();
     }
 
+    @Step("Click 'Enable Project'")
     public FreestyleProjectPage clickEnableButton() {
         enableButton.click();
 
         return this;
     }
 
+    @Step("Clear previous description")
     public FreestyleProjectPage clearDescription() {
         descriptionInput.clear();
 
         return this;
     }
 
+    @Step("Type description text in the input description field")
     public FreestyleProjectPage setDescription(String name) {
         descriptionInput.sendKeys(name);
 
         return this;
     }
 
+    @Step("Click 'Save' button")
     public FreestyleProjectPage clickSaveButton() {
         saveButton.click();
 
         return this;
     }
 
+    @Step("Click breadcrumbs dropdown menu for the project")
     public FreestyleProjectPage clickBreadcrumbsDropdownArrow() {
         clickSpecificDropdownArrow(breadcrumbsDropdownArrow);
 
         return this;
     }
 
+    @Step("Click 'Rename' from breadcrumbs dropdown menu")
     public RenameDialogPage clickBreadcrumbsDropdownRenameProject(String oldItemName) {
         getDriver().findElement(By.xpath("//div[@class='jenkins-dropdown']//a[@href='/job/" + oldItemName + "/confirm-rename']")).click();
 
@@ -136,11 +146,13 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
         return projectDescription.getText();
     }
 
+    @Step("Click 'Move' on sidebar Menu")
     public FreestyleMovePage clickMove() {
         moveButton.click();
         return new FreestyleMovePage(getDriver());
     }
 
+    @Step("Click 'Configure' on sidebar menu")
     public FreestyleConfigPage clickConfigure() {
 
         configureButton.click();
@@ -148,6 +160,7 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
         return new FreestyleConfigPage(getDriver());
     }
 
+    @Step("Click 'Rename' on sidebar menu")
     public FreestyleRenamePage clickRename() {
 
         renameButton.click();
@@ -155,11 +168,13 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
         return new FreestyleRenamePage(getDriver());
     }
 
+    @Step("Click 'Delete Project' on sidebar menu")
     public FreestyleProjectPage clickDelete() {
         getWait10().until(ExpectedConditions.elementToBeClickable(deleteButton)).click();
         return this;
     }
 
+    @Step("Click 'Yes' button in confirming deletion dialog")
     public HomePage clickYesInConfirmDeleteDialog() {
         yesButton.click();
         return new HomePage(getDriver());
@@ -170,6 +185,7 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
         return addDescriptionButton.isEnabled();
     }
 
+    @Step("Click 'Build Now' on sidebar menu")
     public FreestyleProjectPage clickBuildNowOnSideBar() {
         buildNowSideBar.click();
         return this;
@@ -185,7 +201,8 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
         return buildInfo.getText();
     }
 
-    public FreestyleProjectPage waitForGreenMarkBuildSuccessAppearience() {
+    @Step("Wait for green mark appearance, indicating that project is successfully build")
+    public FreestyleProjectPage waitForGreenMarkBuildSuccessAppearance() {
         getWait10().until(ExpectedConditions.visibilityOf(greenMarkBuildSuccess));
 
         return this;

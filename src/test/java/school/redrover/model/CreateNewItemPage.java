@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -58,6 +59,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         super(driver);
     }
 
+    @Step("Type the name of the project to name input field")
     public CreateNewItemPage setItemName(String name) {
         getWait5().until(ExpectedConditions.visibilityOf(nameText));
         nameText.sendKeys(name);
@@ -65,6 +67,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return this;
     }
 
+    @Step("Select 'Freestyle project' and click 'Ok' button")
     public FreestyleConfigPage selectFreestyleAndClickOk() {
         freestyleItem.click();
         okButton.click();
@@ -119,6 +122,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return new OrganizationFolderConfigPage(getDriver());
     }
 
+    @Step("Click 'Ok' button")
     public <T> T clickOkAnyway(T page) {
         okButton.click();
 
@@ -139,6 +143,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return errorMessageEmptyName.getText();
     }
 
+    @Step("Type existing project name in the input field 'Copy from'")
     public CreateNewItemPage typeItemNameInCopyFrom(String name) {
         clickElementFromTheBottomOfThePage(copyFromInputField);
         copyFromInputField.sendKeys(name);
@@ -167,6 +172,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return allJobFromThisLetter.stream().map(WebElement::getText).toList();
     }
 
+    @Step("Select 'Freestyle Project'")
     public CreateNewItemPage selectFreeStyleProject() {
         freestyleItem.click();
         return this;

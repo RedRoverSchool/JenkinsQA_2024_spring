@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -51,6 +52,7 @@ public class FreestyleConfigPage extends BaseConfigPage<FreestyleProjectPage, Fr
         return new FreestyleConfigPage(getDriver());
     }
 
+    @Step("Click 'Save' button")
     public FreestyleProjectPage clickSaveButton() {
         saveButton.click();
 

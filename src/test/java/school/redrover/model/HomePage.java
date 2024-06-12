@@ -17,6 +17,9 @@ import java.util.List;
 
 public class HomePage extends BasePage<HomePage> {
 
+    @FindBy(xpath = "//a[.='New Item']")
+    private WebElement newItem;
+
     @FindBy(linkText = "Create a job")
     private WebElement createAJobLink;
 
@@ -113,13 +116,32 @@ public class HomePage extends BasePage<HomePage> {
     @FindBy(xpath = "//td[@class='jenkins-table__cell--tight']//span[@data-notification='Build scheduled']")
     private WebElement buildScheduledMessagePopUp;
 
+    @FindBy(css= "#notification-bar > span")
+    private WebElement buildDoneGreenMessage;
+
+    @FindBy(css = "button[href $= '/build?delay=0sec']")
+    private WebElement dropdownBuild;
+
+    @FindBy(xpath = "//button[@data-id='ok']")
+    private WebElement yesButton;
+
+    @FindBy(css = "#executors")
+    private WebElement executors;
+
+    @FindBy(css = "[href='/toggleCollapse?paneId=executors']")
+    private WebElement toggleCollapse;
+
+    @FindBy(css = "tr > td > .jenkins-table__link > span:first-child")
+    private List<WebElement> itemList;
+
 
     public HomePage(WebDriver driver) {
         super(driver);
     }
 
+    @Step("Click 'New Item' on sidebar menu")
     public CreateNewItemPage clickNewItem() {
-        getDriver().findElement(By.xpath("//a[.='New Item']")).click();
+        newItem.click();
 
         return new CreateNewItemPage(getDriver());
     }
@@ -131,12 +153,12 @@ public class HomePage extends BasePage<HomePage> {
     }
 
     public List<String> getItemList() {
-        return getDriver().findElements(By.cssSelector("tr > td > .jenkins-table__link > span:first-child"))
-                .stream()
+        return itemList.stream()
                 .map(WebElement::getText)
                 .toList();
     }
 
+    @Step("Click project dropdown menu")
     public HomePage openItemDropdown(String projectName) {
         WebElement element = getDriver().findElement(By.cssSelector(String.format(
                 "td>a[href = 'job/%s/']",
@@ -150,12 +172,14 @@ public class HomePage extends BasePage<HomePage> {
         return dialog;
     }
 
+    @Step("Click 'Rename' on dropdown menu")
     public FreestyleRenamePage clickRenameOnDropdownForFreestyleProject() {
         renameFromDropdown.click();
 
         return new FreestyleRenamePage(getDriver());
     }
 
+    @Step("Click 'Move' in project dropdown menu")
     public MovePage clickMoveInDropdown() {
         dropdownMove.click();
         return new MovePage(getDriver());
@@ -317,6 +341,7 @@ public class HomePage extends BasePage<HomePage> {
         return new MultibranchPipelineRenamePage(getDriver());
     }
 
+    @Step("Click the project by name")
     public <T> T clickJobByName(String name, T page) {
         getDriver().findElement(By.xpath(
                 "//td/a[@href='job/" + name.replace(" ", "%20") + "/']")).click();
@@ -408,9 +433,11 @@ public class HomePage extends BasePage<HomePage> {
         return viewNameList.size();
     }
 
+    @Step("Click 'Delete' in dropdown menu and confirm it by click 'Yes' in confirming dialog ")
     public HomePage clickDeleteOnDropdownAndConfirm() {
         dropdownDelete.click();
-        getDriver().findElement(By.cssSelector("button[data-id='ok']")).click();
+
+        getWait5().until(ExpectedConditions.visibilityOf(yesButton)).click();
 
         return this;
     }
@@ -488,5 +515,24 @@ public class HomePage extends BasePage<HomePage> {
 
     public String getBuildScheduledMessage() {
         return buildScheduledMessagePopUp.getAttribute("data-notification");
+    }
+
+    public HomePage clickBuildNowFromDropdown() {
+        dropdownBuild.click();
+
+        return this;
+    }
+
+    public String catchBuildNowDoneMessage() {
+        return getWait2().until(ExpectedConditions.visibilityOf(buildDoneGreenMessage)).getText();
+
+    }
+
+    public boolean isNodesDisplayedOnExecutorsPanel() {
+        return executors.getText().contains("built-in node");
+    }
+
+    public void clickOnExecutorPanelToggle() {
+        toggleCollapse.click();
     }
 }

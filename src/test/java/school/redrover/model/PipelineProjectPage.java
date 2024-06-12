@@ -1,11 +1,11 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.Assert;
 import school.redrover.model.base.BaseProjectPage;
 
 import java.util.*;
@@ -215,7 +215,8 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         return new DeleteDialog(getDriver());
     }
 
-    public PipelineConfigPage clickSidebarConfigureButton() {
+    @Step("Click on the 'Configure' on sidebar")
+    public PipelineConfigPage clickConfigureOnSidebar() {
         sidebarConfigureButton.click();
 
         return new PipelineConfigPage(getDriver());
