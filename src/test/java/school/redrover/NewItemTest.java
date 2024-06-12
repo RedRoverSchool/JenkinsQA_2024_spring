@@ -38,12 +38,12 @@ public class NewItemTest extends BaseTest {
     @Story("US_00.000 Create New item")
     @Description("You can't create an item without selection of item type, because 'OkButton' is enabled ")
     public void testCreateItemWithoutSelectedItemType() {
-        boolean okButtonIsEnabled = new HomePage(getDriver())
+        boolean isOkButtonEnabled = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName("Test Project")
                 .isOkButtonEnabled();
 
-        Assert.assertFalse(okButtonIsEnabled);
+        Assert.assertFalse(isOkButtonEnabled);
     }
 
     @Test
@@ -51,11 +51,11 @@ public class NewItemTest extends BaseTest {
     @Description("A user can see the name entry field ")
     public void testUserSeeTheNameEntryField() {
 
-        Boolean existenceOfNameField = new HomePage(getDriver())
+        Boolean isNameEntryFieldDisplayed = new HomePage(getDriver())
                 .clickNewItem()
                 .isDisplayedNameField();
 
-        Assert.assertTrue(existenceOfNameField);
+        Assert.assertTrue(isNameEntryFieldDisplayed);
     }
 
     @Test
@@ -104,10 +104,10 @@ public class NewItemTest extends BaseTest {
     @Description(" Create item with empty name")
 
     public void testCreateItemWithEmptyName() {
-        final String hintTextWhenEmptyName = "» This field cannot be empty, please enter a valid name";
-        final String hintColor = "rgba(255, 0, 0, 1)";
+        final String HINT_TEXT_WHEN_EMPTY_NAME = "» This field cannot be empty, please enter a valid name";
+        final String HINT_COLOR = "rgba(255, 0, 0, 1)";
 
-        Boolean IsOkButtonEnabled = new HomePage(getDriver())
+        Boolean isOkButtonEnabled = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName("q")
                 .clearItemNameField()
@@ -119,9 +119,9 @@ public class NewItemTest extends BaseTest {
         String validationMessageColor = new CreateNewItemPage(getDriver())
                 .getItemNameHintColor();
 
-        Assert.assertFalse(IsOkButtonEnabled);
-        Assert.assertEquals(validationMessage, hintTextWhenEmptyName);
-        Assert.assertEquals(validationMessageColor, hintColor);
+        Assert.assertFalse(isOkButtonEnabled);
+        Assert.assertEquals(validationMessage, HINT_TEXT_WHEN_EMPTY_NAME);
+        Assert.assertEquals(validationMessageColor, HINT_COLOR);
     }
 
     @Test
@@ -142,17 +142,17 @@ public class NewItemTest extends BaseTest {
     @Description("Try to copy an unexisting project")
     @Test(dependsOnMethods = "testDropdownNamesMenuContentWhenCopyProject")
     public void testCopyFromNotExistingJob() {
-        final String notExistingName = "AAA";
+        final String NOT_EXISTING_NAME = "AAA";
 
         CreateItemPage errorPage = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName("someName")
-                .typeItemNameInCopyFrom(notExistingName)
+                .typeItemNameInCopyFrom(NOT_EXISTING_NAME)
                 .clickOkButton();
 
         Assert.assertTrue(errorPage.getCurrentUrl().endsWith("/createItem"));
         Assert.assertEquals(errorPage.getPageHeaderText(), "Error");
-        Assert.assertEquals(errorPage.getErrorMessageText(), "No such job: " + notExistingName);
+        Assert.assertEquals(errorPage.getErrorMessageText(), "No such job: " +NOT_EXISTING_NAME);
     }
 
     @DataProvider(name="existingJobsNames")
@@ -200,33 +200,33 @@ public class NewItemTest extends BaseTest {
     @Description("Check tooltip's content contains the all names of jobs, beginning from defined letter(letters)")
     @Test
     public void testDropdownNamesMenuContentWhenCopyProject() {
-        final String freestyle1 = "folff";
-        final String freestyle2 = "folff00";
-        final String folder1 = "Folder1";
-        final String folder2 = "bFolder2";
-        final String pipeline1 = "pipe1";
-        final String multiConfigurationProject1 = "multi1";
-        final String multiBranchPipe1 = "multiBranch1";
-        final String organizationFolder1 = "organizationFolder1";
+        final String FREESTYLE1 = "folff";
+        final String FREESTYLE2 = "folff00";
+        final String FOLDER1 = "Folder1";
+        final String FOLDER2 = "bFolder2";
+        final String PIPELINE1 = "pipe1";
+        final String MULTI_CONFIGURATION_PROJECT1 = "multi1";
+        final String MULTI_BRANCH_PIPE1 = "multiBranch1";
+        final String ORGANIZATION_FOLDER1 = "organizationFolder1";
 
-        final String firstLetters = "fol";
-        final String newItemName = "someName";
+        final String FIRST_LETTERS = "fol";
+        final String NEW_ITEM_NAME = "someName";
 
-        TestUtils.createFreestyleProject(this, freestyle1);
-        TestUtils.createFolderProject(this, folder1);
-        TestUtils.createFolderProject(this, folder2);
-        TestUtils.createFreestyleProject(this, freestyle2);
-        TestUtils.createPipelineProject(this, pipeline1);
-        TestUtils.createMultiConfigurationProject(this, multiConfigurationProject1);
-        TestUtils.createMultibranchProject(this,multiBranchPipe1);
-        TestUtils.createOrganizationFolderProject(this,organizationFolder1);
+        TestUtils.createFreestyleProject(this, FREESTYLE1);
+        TestUtils.createFolderProject(this,FOLDER1);
+        TestUtils.createFolderProject(this, FOLDER2);
+        TestUtils.createFreestyleProject(this, FREESTYLE2);
+        TestUtils.createPipelineProject(this, PIPELINE1);
+        TestUtils.createMultiConfigurationProject(this, MULTI_CONFIGURATION_PROJECT1);
+        TestUtils.createMultibranchProject(this,MULTI_BRANCH_PIPE1);
+        TestUtils.createOrganizationFolderProject(this,ORGANIZATION_FOLDER1);
 
-        List<String> firstLettersJobs = TestUtils.getJobsBeginningFromThisFirstLetters(this, firstLetters);
+        List<String> firstLettersJobs = TestUtils.getJobsBeginningFromThisFirstLetters(this, FIRST_LETTERS );
 
         List<String> jobsFromDropdownMenu = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(newItemName)
-                .typeItemNameInCopyFrom(firstLetters)
+                .setItemName(NEW_ITEM_NAME)
+                .typeItemNameInCopyFrom(FIRST_LETTERS)
                 .getDropdownMenuContent();
 
         Assert.assertEquals(jobsFromDropdownMenu, firstLettersJobs);
