@@ -496,7 +496,7 @@ public class HomePage extends BasePage<HomePage> {
         return buildScheduledMessagePopUp.getAttribute("data-notification");
     }
 
-    public boolean isNodesDisplayedOnExecutorsPanel(){
+    public boolean isNodesDisplayedOnExecutorsPanel() {
 
         return executors.getText().contains("built-in node");
     }
