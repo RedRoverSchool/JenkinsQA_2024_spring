@@ -5,10 +5,8 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
@@ -1176,7 +1174,7 @@ public class PipelineTest extends BaseTest {
         };
     }
     @Test(dataProvider = "dataForThrottleBuilds")
-    @Story("US_02.004  Verify the Pipeline configuration")
+    @Story("US_02.004 Verify the Pipeline configuration")
     @Description("Set number of builds, time period in Throttle builds and verify message about time between builds after")
     public void testSetParametersToThrottleBuilds(String numberOfBuilds, String timePeriod, String expectedMessage) {
         TestUtils.createPipelineProject(this, PIPELINE_NAME);
