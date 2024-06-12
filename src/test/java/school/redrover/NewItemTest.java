@@ -155,17 +155,17 @@ public class NewItemTest extends BaseTest {
         Assert.assertEquals(errorPage.getErrorMessageText(), "No such job: " +NOT_EXISTING_NAME);
     }
 
-    @DataProvider(name="existingJobsNames")
-    public Object[][] existingJobsNames(){
+    @DataProvider(name = "existingJobsNames")
+    public Object[][] existingJobsNames() {
         return new Object[][]{
-                {"Freestyle project","folff"},
-                {"Freestyle project","folff00"},
-                {"Folder","Folder1"},
-                {"Folder","bFolder2"},
-                {"Pipeline","pipe1"},
+                {"Freestyle project", "folff"},
+                {"Freestyle project", "folff00"},
+                {"Folder", "Folder1"},
+                {"Folder", "bFolder2"},
+                {"Pipeline", "pipe1"},
                 {"Multi-configuration project", "multi1"},
                 {"Multibranch Pipeline", "multiBranch1"},
-                {"Organization Folder","organizationFolder1"}
+                {"Organization Folder", "organizationFolder1"}
         };
     }
     @Story("US_00.007 Create a new item from other existing")
@@ -185,13 +185,11 @@ public class NewItemTest extends BaseTest {
                 .typeItemNameInCopyFrom(jobName)
                 .clickOkButton()
                 .clickLogo();
-
-
-        Integer QuantityItemsWithCopies= new HomePage(getDriver())
+        Integer quantityItemsWithCopies = new HomePage(getDriver())
                 .getItemList()
                 .size();
 
-        Assert.assertEquals(QuantityItemsWithCopies,2);
+        Assert.assertEquals(quantityItemsWithCopies, 2);
         Assert.assertTrue(homePage.isItemExists(jobName + "Copy"));
         Assert.assertTrue(homePage.isItemExists(jobName));
     }
@@ -200,6 +198,7 @@ public class NewItemTest extends BaseTest {
     @Description("Check tooltip's content contains the all names of jobs, beginning from defined letter(letters)")
     @Test
     public void testDropdownNamesMenuContentWhenCopyProject() {
+
         final String FREESTYLE1 = "folff";
         final String FREESTYLE2 = "folff00";
         final String FOLDER1 = "Folder1";

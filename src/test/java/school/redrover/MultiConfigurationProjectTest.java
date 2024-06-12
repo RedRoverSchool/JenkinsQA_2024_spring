@@ -26,10 +26,11 @@ public class MultiConfigurationProjectTest extends BaseTest {
         return String.valueOf(randomNumber);
     }
 
+
     @Test
     @Story("US_03.004  Rename project")
     @Description("Check, an existing project can be renamed via dropdown")
-        public void testRenameProjectViaDashboardDropdown() {
+    public void testRenameProjectViaDashboardDropdown() {
         final String addToProjectName = "New";
         TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
 

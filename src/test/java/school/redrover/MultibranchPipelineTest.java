@@ -1,18 +1,17 @@
 package school.redrover;
 
-import java.util.List;
-
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
-@Epic("Multibranch pipeline")
+import java.util.List;
+
+@Epic("Multibranch Pipeline")
 public class MultibranchPipelineTest extends BaseTest {
 
     private static final String MULTI_PIPELINE_NAME = "MultibranchPipeline";
@@ -20,7 +19,7 @@ public class MultibranchPipelineTest extends BaseTest {
     private static final String FOLDER_NAME = "NewFolder";
 
     @Test
-    @Story("US_05.000 Create Multibranch Pipeline")
+    @Story("US_05.000  Create Multibranch Pipeline")
     @Description("Verify that a project can be created via the sidebar menu.")
     public void testCreateProjectViaSidebarMenu() {
         List<String> itemList = new HomePage(getDriver())
@@ -35,8 +34,8 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_05.000 Create Multibranch Pipeline")
-    @Description("Verify error message is displayed when creating a project without a name.")
+    @Story("US_05.000  Create Multibranch Pipeline")
+    @Description("Verify error message is displayed when creating a project without a name")
     public void testCreateProjectWithEmptyName() {
         String errorName = new HomePage(getDriver())
                 .clickNewItem()
@@ -47,8 +46,8 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_05.007 Create a project from other existing")
-    @Description("Verify creation project by copying from other multibranch pipeline project.")
+    @Story("US_05.007  Create Multibranch Pipeline from other existing")
+    @Description("Verify creation by copying from other Multibranch Pipeline")
     public void testCreateProjectFromExistingMultibranchPipeline() {
         final String firstProjectName = "My first Multibranch Pipeline";
         final String secondItemName = "My second Multibranch Pipeline";
@@ -68,7 +67,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_05.004 Disable Multibranch pipeline")
+    @Story("US_05.004  Disable Multibranch Pipeline")
     @Description("Verify a project can be disabled via toggle.")
     public void testDisableProjectViaToggle() {
         String disableWarningText = new HomePage(getDriver())
@@ -83,7 +82,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateProjectViaSidebarMenu")
-    @Story("US_05.004 Disable Multibranch pipeline")
+    @Story("US_05.004  Disable Multibranch pipeline")
     @Description("Verify a project can be disabled via Disable Project Button.")
     public void testDisabledProjectViaDisableProjectButton() {
         String disabledMessage = new HomePage(getDriver())
@@ -95,7 +94,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testDisabledProjectViaDisableProjectButton")
-    @Story("US_05.004 Disable Multibranch pipeline")
+    @Story("US_05.004  Disable Multibranch pipeline")
     @Description("Verify that the color of the disabled project message")
     public void testVerifyProjectDisabledMessageColorOnStatusPage() {
         String disabledMessageColor = new HomePage(getDriver())
@@ -106,7 +105,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testVerifyProjectDisabledMessageColorOnStatusPage")
-    @Story("US_05.003 Enable Multibranch pipeline")
+    @Story("US_05.003  Enable Multibranch pipeline")
     @Description("Verify that a previously disabled project can be enabled back by checking that disable button is displayed")
     public void testEnableProject() {
         String disableMultibranchPipelineButtonText = new HomePage(getDriver())
@@ -118,7 +117,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testEnableProject")
-    @Story("US_05.004 Disable Multibranch pipeline")
+    @Story("US_05.004  Disable Multibranch pipeline")
     @Description("Verify the correct tooltip text is displayed when hovering over the toggle button")
     public void testDisabledTooltip() {
         final String tooltipText = "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
@@ -133,7 +132,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_05.004 Disable Multibranch pipeline")
+    @Story("US_05.004  Disable Multibranch pipeline")
     @Description("Verify that the status toggle of a project reflects that the project is disabled.")
     public void testDisabledProjectToggleStatus() {
         String statusToggle = new HomePage(getDriver()).clickCreateAJob()
@@ -148,7 +147,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testDisabledProjectToggleStatus")
-    @Story("US_05.003 Enable Multibranch pipeline")
+    @Story("US_05.003  Enable Multibranch pipeline")
     @Description("Verify the status toggle of a project reflects that the project is enable.")
     public void testEnableProjectToggleStatus() {
         TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
@@ -163,7 +162,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_05.001 Rename Multibranch pipeline")
+    @Story("US_05.001  Rename Multibranch pipeline")
     @Description("Verify a project can be successfully renamed via the sidebar")
     public void testRenameMultibranchPipelineViaSideBar() {
         TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
@@ -181,7 +180,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_05.001 Rename Multibranch pipeline")
+    @Story("US_05.001  Rename Multibranch pipeline")
     @Description("Verify error message is displayed when attempting to rename project to the same name")
     public void testRenameProjectWithNameSameAsCurrent() {
         TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
@@ -199,7 +198,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_05.001 Rename Multibranch pipeline")
+    @Story("US_05.001  Rename Multibranch pipeline")
     @Description("Verifies a project can be successfully renamed via dropdown menu")
     public void testRenameProjectViaMainPageDropdownMenu() {
         TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
@@ -217,7 +216,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_05.002 View Multibranch pipeline page > Sidebar > Visibility, clickability, redirection")
+    @Story("US_05.002  View Multibranch pipeline page > Sidebar > Visibility, clickability, redirection")
     @Description("Verify list of sidebar tasks for a project created within a folder.")
     public void testProjectSidebarTasksUponCreatingViaFolder() {
         final List<String> sidebarTasks = List.of("Status", "Configure", "Scan Multibranch Pipeline Log",
@@ -237,7 +236,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_05.002 View Multibranch pipeline page > Sidebar > Visibility, clickability, redirection")
+    @Story("US_05.002  View Multibranch pipeline page > Sidebar > Visibility, clickability, redirection")
     @Description("Verify list of sidebar tasks for a project.")
     public void testVerifyProjectSidebarMenuList() {
         final List<String> expectedSidebarList =
@@ -255,7 +254,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_05.006 Move Multibranch pipeline")
+    @Story("US_05.006  Move Multibranch Pipeline")
     @Description("Verify that a project can be successfully moved to a folder via sidebar menu.")
     public void testMoveProjectToFolderViaSidebarMenu() {
         TestUtils.createFolderProject(this, FOLDER_NAME);
@@ -273,8 +272,8 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_05.005 Delete Multibranch pipeline")
-    @Description("Verify the deletion of a project via dropdown menu.")
+    @Story("US_05.005  Delete Multibranch Pipeline")
+    @Description("Verify the deletion of Multibranch Pipeline via dropdown menu.")
     public void testDeleteViaDashboardDropdown() {
         TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
 
@@ -288,9 +287,9 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testRenameMultibranchPipelineViaSideBar")
-    @Story("US_05.005 Delete Multibranch pipeline")
-    @Description("Verify the deletion of a project via Breadcrumbs.")
-    public void testDeleteProjectViaBreadcrumbs() {
+    @Story("US_05.005  Delete Multibranch Pipeline")
+    @Description("Verify the deletion of Multibranch Pipeline via Breadcrumbs.")
+    public void testDeleteViaBreadcrumbs() {
         boolean isProjectDeleted = new HomePage(getDriver())
                 .clickSpecificMultibranchPipelineName(RENAMED_MULTI_PIPELINE)
                 .clickMPDropdownArrow()
@@ -302,9 +301,9 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_05.005 Delete Multibranch pipeline")
-    @Description("Verify the deletion of a project via Sidebar menu.")
-    public void testDeleteProjectViaSidebarMenu() {
+    @Story("US_05.005  Delete Multibranch Pipeline")
+    @Description("Verify the deletion of a Multibranch pipeline via Sidebar menu.")
+    public void testDeleteViaSidebarMenu() {
         TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
 
         boolean isItemDeleted = new HomePage(getDriver())

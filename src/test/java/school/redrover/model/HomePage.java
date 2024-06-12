@@ -113,6 +113,12 @@ public class HomePage extends BasePage<HomePage> {
     @FindBy(xpath = "//td[@class='jenkins-table__cell--tight']//span[@data-notification='Build scheduled']")
     private WebElement buildScheduledMessagePopUp;
 
+    @FindBy(css = "#executors")
+    private WebElement executors;
+
+    @FindBy(css = "[href='/toggleCollapse?paneId=executors']")
+    private WebElement toggleCollapse;
+
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -488,5 +494,14 @@ public class HomePage extends BasePage<HomePage> {
 
     public String getBuildScheduledMessage() {
         return buildScheduledMessagePopUp.getAttribute("data-notification");
+    }
+
+    public boolean isNodesDisplayedOnExecutorsPanel() {
+
+        return executors.getText().contains("built-in node");
+    }
+
+    public void clickOnExecutorPanelToggle() {
+        toggleCollapse.click();
     }
 }
