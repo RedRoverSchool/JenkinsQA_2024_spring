@@ -107,7 +107,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.005  Edit description")
+    @Story("US_02.005 Edit description")
     @Description("Verify text area border backlight color being active")
     public void testPipelineDescriptionTextAreaBacklightColor() {
         TestUtils.resetJenkinsTheme(this);
@@ -126,7 +126,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.005  Edit description")
+    @Story("US_02.005 Edit description")
     @Description("Verify text area border backlight color by default")
     public void testPipelineDescriptionTextAreaBacklightDefaultColor() {
         TestUtils.resetJenkinsTheme(this);
@@ -506,7 +506,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testEnableBack")
-    @Story("US_02.011  Take information about a project built")
+    @Story("US_02.011 Take information about a project built")
     @Description("Check permalinks after build is scheduled")
     public void testPermalinksBuildDetails() {
         final List<String> expectedPermalinkList =
@@ -522,7 +522,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testPermalinksBuildDetails")
-    @Story("US_02.011  Take information about a project built")
+    @Story("US_02.011 Take information about a project built")
     @Description("Successful build is marked green")
     public void testGreenBuildSuccessColor() {
         final String greenHexColor = "#1ea64b";
@@ -535,7 +535,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testGreenBuildSuccessColor")
-    @Story("US_02.011  Take information about a project built")
+    @Story("US_02.011 Take information about a project built")
     @Description("Сheck builds history descending order")
     public void testCheckBuildsHistoryDescendingOrder() {
         List<String> actualBuildsOrderList = new HomePage(getDriver())
@@ -652,7 +652,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.011  Take information about a project built")
+    @Story("US_02.011 Take information about a project built")
     @Description("Check List of builds is displayed in descending'")
     public void testBuildAttributesDescending() {
         final String pipelineScript = """
@@ -685,7 +685,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("02.011 Take information about a project built")
+    @Story("US_02.011 Take information about a project built")
     @Description("Successful builds are marked with a green indicator when creating the list of builds.")
     public void testBuildColorGreen() {
     final String PIPELINE_SCRIPT = """
@@ -760,7 +760,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("02.004 Verify the Pipeline configuration")
+    @Story("US_02.004 Verify the Pipeline configuration")
     @Description("02.004.12 Verify that description preview can be hidden")
     public void testHideDescriptionPreview() {
 
@@ -823,7 +823,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testRunByBuildNowButton")
-    @Story("02.004 Verify the Pipeline configuration")
+    @Story("US_02.004 Verify the Pipeline configuration")
     @Description("02.004.11 Verify that build run by schedule is finished successfully")
     public void testRunBuildByTriangleButton() {
 
@@ -879,7 +879,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("02.004 Verify the Pipeline configuration")
+    @Story("US_02.004 Verify the Pipeline configuration")
     @Description("02.004.13 Verify that Pipeline side bar menu item scrolls to Pipeline section")
     public void testScroll() {
 
@@ -894,7 +894,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("02.004 Verify the Pipeline configuration")
+    @Story("US_02.004 Verify the Pipeline configuration")
     @Description("02.004.14 Verify that Discard OldB uilds By Count option is saved")
     public void testDiscardOldBuildsByCount() {
 
@@ -918,7 +918,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.004  Verify the Pipeline configuration")
+    @Story("US_02.004 Verify the Pipeline configuration")
     @Description("Verify that Pipeline configuration has interactive sections: "
             + "General, Advanced Project Options, Pipeline")
     public void testSectionsOfSidePanelAreVisible() {
@@ -1009,7 +1009,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("02.004 Verify the Pipeline configuration")
+    @Story("US_02.004 Verify the Pipeline configuration")
     @Description("02.004.06 Verify that Script Approval Link is Shown when Use Groovy Sandbox Checkbox is unchecked")
     public void testUncheckUseGroovySandboxCheckbox() {
         TestUtils.createPipelineProject(this, PIPELINE_NAME);
@@ -1026,7 +1026,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("02.004 Verify the Pipeline configuration")
+    @Story("US_02.004 Verify the Pipeline configuration")
     @Description("02.004.07 Verify that Custom Pipeline Speed Durability Level is saved")
     public void testSetPipelineSpeedDurabilityOverride() {
         final String selectedOptionForCheck = "Less durability, a bit faster (specialty use only)";
@@ -1047,7 +1047,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("02.004 Verify the Pipeline configuration")
+    @Story("US_02.004 Verify the Pipeline configuration")
     @Description("02.004.08 Verify that user is able to set Quiet Period Build Triggers more than zero")
     public void testSetQuietPeriodBuildTriggersMoreThanZero() {
         final int numberOfSeconds = 3;
@@ -1069,7 +1069,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("02.004 Verify the Pipeline configuration")
+    @Story("US_02.004 Verify the Pipeline configuration")
     @Description("02.004.09 Verify that user is not able to set Quiet Period Build Triggers than than zero")
     public void testSetQuietPeriodBuildTriggersLessThanZero() {
         final int numberOfSeconds = -5;
@@ -1089,7 +1089,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("02.004 Verify the Pipeline configuration")
+    @Story("US_02.004 Verify the Pipeline configuration")
     @Description("02.004.10 Verify that user is not able to set double value to Quiet Period Build Triggers")
     public void testSetDoubleQuietPeriodBuildTriggers() {
         final double numberOfSeconds = 0.3;
@@ -1189,7 +1189,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("02.004 Verify the Pipeline configuration")
+    @Story("US_02.004 Verify the Pipeline configuration")
     @Description("02.004.11 Verify that build is failed when user set to use Pipeline script from repository and don't set the repository")
     public void testBuildWithoutScriptRepository() {
         String errorMassageConsole = new HomePage(getDriver())
