@@ -1017,29 +1017,6 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(projectsDisplayNameInHeader, PIPELINE_NAME);
     }
 
-    @Test
-    public void testVerifySectionHasTooltip() {
-        String labelText = "Display Name";
-        String tooltipText = "Help for feature: Display Name";
-
-        TestUtils.createPipelineProject(this, PIPELINE_NAME);
-
-        getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(ADVANCED_PROJECT_OPTIONS_MENU)).click();
-
-        WebElement advancedButton = getDriver().findElement(By.xpath("//section[@class='jenkins-section']//button[@type='button']"));
-
-        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
-        executor.executeScript("arguments[0].dispatchEvent(new Event('click'));",
-                advancedButton);
-
-        String actualTooltip = getDriver().findElement(By.xpath("//*[contains(text(), '" + labelText + "')]//a")).getAttribute("tooltip");
-
-        Assert.assertEquals(actualTooltip, tooltipText);
-    }
-
     @Ignore
     @Test
     public void testChoosePipelineScript() {
@@ -1133,28 +1110,6 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(validationErrorMessage, errorMessage);
     }
 
-    @Test
-    public void testVerifySectionsHaveTooltips() {
-        String[] labelsText = {"Display Name", "Script"};
-
-        TestUtils.createPipelineProject(this, PIPELINE_NAME);
-        getDriver().findElement(By.xpath("//a[contains(@href, '" + PIPELINE_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(ADVANCED_PROJECT_OPTIONS_MENU)).click();
-        WebElement advancedButton = getDriver().findElement(By.xpath("//section[@class='jenkins-section']//button[@type='button']"));
-
-        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
-        executor.executeScript("arguments[0].dispatchEvent(new Event('click'));",
-                advancedButton);
-
-        for (String label : labelsText) {
-            String actualTooltip = getDriver().findElement(By.xpath("//*[contains(text(), '" + label + "')]//a")).getAttribute("tooltip");
-
-            Assert.assertEquals(actualTooltip, "Help for feature: " + label);
-        }
-    }
-
     @DataProvider(name = "tooltipTextProvider")
     public Object[][] tooltipTextProvider() {
         return new Object[][] {
@@ -1173,8 +1128,13 @@ public class PipelineTest extends BaseTest {
                 {"Script"}
         };
     }
+
+
     @Test(dataProvider = "tooltipTextProvider")
-    void testVerifyConfigurationPageHaveTooltips(String tooltipText) {
+    @Epic("Pipeline")
+    @Story("US_02.004 Pipeline Configuration")
+    @Description("Verify that three pipeline configure sections (General, Advanced Project Options, Pipeline) have toolTips")
+    void testVerifyConfigureSectionsHaveTooltips(String tooltipText) {
         new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
