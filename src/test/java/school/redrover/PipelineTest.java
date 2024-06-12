@@ -1087,7 +1087,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dataProvider = "tooltipTextProvider")
-    @Story("US_02.004 Pipeline Configuration")
+    @Story("US_02.004 Verify the Pipeline configuration")
     @Description("Verify that three pipeline configure sections have toolTips")
     void testVerifyConfigureSectionsHaveTooltips(String tooltipText) {
         new HomePage(getDriver())
