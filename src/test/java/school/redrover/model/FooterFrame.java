@@ -32,7 +32,7 @@ public class FooterFrame<T extends BasePage<T>> extends BaseFrame<T> {
     private WebElement websiteDropdownItem;
 
     @FindBy(className = "jenkins-dropdown__item")
-    private List<WebElement> dropDownElements;
+    private List<WebElement> dropdownElements;
 
 
     public String getVersionOnFooter() {
@@ -73,9 +73,9 @@ public class FooterFrame<T extends BasePage<T>> extends BaseFrame<T> {
         return new AboutJenkinsPage(getDriver());
     }
 
-    public List<String> getVersionDropDownElementsValues() {
+    public List<String> getVersionDropdownElementsValues() {
         List<String> actualDropDownElementsValues = new ArrayList<>();
-        for (WebElement element : dropDownElements) {
+        for (WebElement element : dropdownElements) {
             actualDropDownElementsValues.add(element.getDomProperty("innerText"));
         }
 
