@@ -82,7 +82,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateProjectViaSidebarMenu")
-    @Story("US_05.004 Disable Multibranch pipeline")
+    @Story("US_05.004 Disable Multibranch Pipeline")
     @Description("Verify a project can be disabled via Disable Project Button.")
     public void testDisabledProjectViaDisableProjectButton() {
         String disabledMessage = new HomePage(getDriver())
@@ -94,7 +94,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testDisabledProjectViaDisableProjectButton")
-    @Story("US_05.004 Disable Multibranch pipeline")
+    @Story("US_05.004 Disable Multibranch Pipeline")
     @Description("Verify that the color of the disabled project message")
     public void testVerifyProjectDisabledMessageColorOnStatusPage() {
         String disabledMessageColor = new HomePage(getDriver())
@@ -117,7 +117,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testEnableProject")
-    @Story("US_05.004 Disable Multibranch pipeline")
+    @Story("US_05.004 Disable Multibranch Pipeline")
     @Description("Verify the correct tooltip text is displayed when hovering over the toggle button")
     public void testDisabledTooltip() {
         final String tooltipText = "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
@@ -132,7 +132,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_05.004 Disable Multibranch pipeline")
+    @Story("US_05.004 Disable Multibranch Pipeline")
     @Description("Verify that the status toggle of a project reflects that the project is disabled.")
     public void testDisabledProjectToggleStatus() {
         String statusToggle = new HomePage(getDriver()).clickCreateAJob()
