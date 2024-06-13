@@ -99,7 +99,7 @@ public final class TestUtils {
                 .clickNewItem()
                 .setItemName(name.trim())
                 .selectMultibranchPipelineAndClickOk()
-                .clickSaveButton()
+//                .clickSaveButton()
                 .clickLogo();
     }
 

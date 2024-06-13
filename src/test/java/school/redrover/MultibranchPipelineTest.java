@@ -153,7 +153,7 @@ public class MultibranchPipelineTest extends BaseTest {
         TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
 
         String statusToggle = new HomePage(getDriver())
-                .clickJobByName(MULTI_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
+                .clickSpecificMultibranchPipelineName(MULTI_PIPELINE_NAME)
                 .clickEnableButton()
                 .selectConfigure()
                 .getStatusToggle();
