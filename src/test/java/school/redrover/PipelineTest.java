@@ -10,7 +10,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
@@ -488,7 +487,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertFalse(new HomePage(getDriver()).isButtonOfScheduleABuildExist(PIPELINE_NAME));
     }
 
-    @Test(dependsOnMethods = {"testCheckForButtonOfScheduleABuild"})
+    @Test(dependsOnMethods = {"testCheckForButtonOfScheduleABuild", "testDisablePipeline"})
     @Story("US_02.006  Disable project")
     @Description("Verify disabled project can be enabled")
     public void testEnableBack() {

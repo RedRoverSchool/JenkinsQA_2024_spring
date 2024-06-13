@@ -133,6 +133,7 @@ public class HomePage extends BasePage<HomePage> {
 
     @FindBy(css = "tbody [tooltip]")
     private WebElement statusIcon;
+
     @FindBy(css = "tr > td > .jenkins-table__link > span:first-child")
     private List<WebElement> itemList;
 
