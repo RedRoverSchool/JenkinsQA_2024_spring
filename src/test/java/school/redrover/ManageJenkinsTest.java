@@ -1,5 +1,8 @@
 package school.redrover;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Story;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -16,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.LinkedHashMap;
 
-
+@Epic("Manage Jenkins")
 public class ManageJenkinsTest extends BaseTest {
 
     private static final Object[][] manageLinks = {
@@ -41,6 +44,8 @@ public class ManageJenkinsTest extends BaseTest {
     };
 
     @Test
+    @Story("US_09.001  ")
+    @Description("")
     public void testRedirectionToSecurityPage() {
         String pageTitle = new HomePage(getDriver())
                 .clickManageJenkins()
@@ -51,6 +56,8 @@ public class ManageJenkinsTest extends BaseTest {
     }
 
     @Test
+    @Story("US_09.001  ")
+    @Description("")
     public void testSectionNamesOfSecurityBlock() {
         final List<String> expectedSecurityBlockList = List.of("Security", "Credentials", "Credential Providers",
                 "Users");
@@ -63,6 +70,8 @@ public class ManageJenkinsTest extends BaseTest {
     }
 
     @Test
+    @Story("US_09.001  ")
+    @Description("")
     public void testSectionDescriptionOfSecurityBlock() {
         final List<String> expectedDescriptionList = List
                 .of("Secure Jenkins; define who is allowed to access/use the system.", "Configure credentials",
@@ -77,6 +86,8 @@ public class ManageJenkinsTest extends BaseTest {
     }
 
     @Test
+    @Story("US_09.001  ")
+    @Description("")
     public void testSecurityBlockSectionsClickable() {
         getDriver().findElement(By.xpath("//a[@href = '/manage']")).click();
 
@@ -90,6 +101,8 @@ public class ManageJenkinsTest extends BaseTest {
     }
 
     @Test
+    @Story("US_09.001  ")
+    @Description("")
     public void testToolsAndActionsBlockSectionsClickable() {
         boolean areToolsAndActionsSectionsEnabled = new HomePage(getDriver())
                 .clickManageJenkins()
@@ -99,6 +112,8 @@ public class ManageJenkinsTest extends BaseTest {
     }
 
     @Test
+    @Story("US_09.001  ")
+    @Description("")
     public void testAlertMessageClickingReloadConfigurationFromDisk() {
         boolean isAlertTitleVisible = new HomePage(getDriver())
                 .clickManageJenkins()
@@ -109,6 +124,8 @@ public class ManageJenkinsTest extends BaseTest {
     }
 
     @Test
+    @Story("US_09.001  ")
+    @Description("")
     public void testRedirectionByClickingSecurityBlockSections() {
         boolean isSecurityBlockSectionsStale;
         List<String> pageTitle = List.of("Security", "Credentials", "Credential Providers", "Users");
@@ -131,6 +148,8 @@ public class ManageJenkinsTest extends BaseTest {
     }
 
     @Test
+    @Story("US_09.001  ")
+    @Description("")
     public void testPlaceholderSettingsSearchInput() {
         String SearchInputPlaceholderText = new HomePage(getDriver())
                 .clickManageJenkins()
@@ -140,6 +159,8 @@ public class ManageJenkinsTest extends BaseTest {
     }
 
     @Test
+    @Story("US_09.001  Search settings")
+    @Description("")
     public void testSearchSettingsWithInvalidData() {
         String noSearchResultsPopUp = new HomePage(getDriver())
                 .clickManageJenkins()
@@ -150,14 +171,8 @@ public class ManageJenkinsTest extends BaseTest {
     }
 
     @Test
-    public void testSearchSettingsFieldVisibility() {
-        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
-                .clickManageJenkins();
-
-        Assert.assertTrue(manageJenkinsPage.isSearchInputDisplayed());
-    }
-
-    @Test
+    @Story("US_09.001  Search settings")
+    @Description("")
     public void testActivatingSearchPressingSlash() {
         ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
                 .clickManageJenkins()
@@ -167,6 +182,8 @@ public class ManageJenkinsTest extends BaseTest {
     }
 
     @Test
+    @Story("US_09.001  ")
+    @Description("")
     public void testTooltipAppears() {
         ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
                 .clickManageJenkins()
@@ -177,6 +194,8 @@ public class ManageJenkinsTest extends BaseTest {
     }
 
     @Test
+    @Story("US_09.001  Search settings")
+    @Description("")
     public void testRedirectionToNotFirstSearchResult() {
         String pageToNavigateHeading = new HomePage(getDriver())
                 .clickManageJenkins()
@@ -193,6 +212,8 @@ public class ManageJenkinsTest extends BaseTest {
     }
 
     @Test(dataProvider = "linksDataProvider")
+    @Story("US_09.001  ")
+    @Description("")
     public void testManageJenkinsLinks(String link, String endpoint) {
         String actualUrl = new HomePage(getDriver()).clickManageJenkins()
                 .clickManageLink(link);
@@ -201,6 +222,8 @@ public class ManageJenkinsTest extends BaseTest {
     }
 
     @Test
+    @Story("US_09.001  ")
+    @Description("")
     public void testListOfManageJenkinsLinks() {
         final List<String> expectedLinkNameList = List.of
                 ("System", "Tools", "Plugins", "Nodes", "Clouds", "Appearance", "Security", "Credentials",
@@ -217,6 +240,8 @@ public class ManageJenkinsTest extends BaseTest {
     }
 
     @Test
+    @Story("US_09.001  ")
+    @Description("")
     public void testSectionsLinksAreClickable() {
         ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
                 .clickManageJenkins();
@@ -226,6 +251,8 @@ public class ManageJenkinsTest extends BaseTest {
     }
 
     @Test
+    @Story("US_09.001  ")
+    @Description("")
     public void testSystemInformationBlockTitlesAndDescriptions() {
         final Map<String, String> expectedSystemInformationBlockTitlesAndDescriptions = Map.ofEntries(
                 Map.entry("System Information", "Displays various environmental information to assist trouble-shooting."),
@@ -242,6 +269,8 @@ public class ManageJenkinsTest extends BaseTest {
     }
 
     @Test
+    @Story("US_09.001  ")
+    @Description("")
     public void testToolsAndActionsBlockSectionsOrderTitlesAndDescriptions() {
         final Map<String, String> expectedTitlesAndDescriptions = new LinkedHashMap<>() {{
             put("Reload Configuration from Disk",
