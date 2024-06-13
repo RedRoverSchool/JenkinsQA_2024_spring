@@ -119,6 +119,8 @@ public class HomePage extends BasePage<HomePage> {
     @FindBy(css = "[href='/toggleCollapse?paneId=executors']")
     private WebElement toggleCollapse;
 
+    @FindBy(css = "tbody [tooltip]")
+    private WebElement statusIcon;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -421,6 +423,7 @@ public class HomePage extends BasePage<HomePage> {
         return this;
     }
 
+    @Step("Get Tooltip of green Build arrow")
     public String getBuildStatus() {
         return greenBuildArrow.getAttribute("tooltip");
     }
@@ -482,8 +485,12 @@ public class HomePage extends BasePage<HomePage> {
         return menuList;
     }
 
-    public int getBuildButtonCountForProject(String projetcName) {
-        return getDriver().findElements(By.xpath("//table//a[@title= 'Schedule a Build for " + projetcName + "']")).size();
+    @Step("Checking for a button of Schedule a Build for the Pipeline")
+    public boolean isButtonOfScheduleABuildExist(String projectName) {
+        int num = getDriver().findElements(By.xpath(
+                "//table//a[@title= 'Schedule a Build for " + projectName + "']")).size();
+
+        return num != 0;
     }
 
     public HomePage clickGreenBuildArrowButton() {
@@ -504,4 +511,10 @@ public class HomePage extends BasePage<HomePage> {
     public void clickOnExecutorPanelToggle() {
         toggleCollapse.click();
     }
+
+    @Step("Get status icon tooltip")
+    public String getStatusIconTooltip() {
+        return statusIcon.getAttribute("tooltip");
+    }
+
 }
