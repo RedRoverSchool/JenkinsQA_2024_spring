@@ -765,6 +765,8 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
+    @Story("US_02.009 Full Stage View")
+    @Description("Verify the heading after clicking the ‘Full Stage View’ on the dropdown menu")
     public void testFullStageViewOnDropdownMenu() {
         final String expectedText = PIPELINE_NAME + " - Stage View";
 
