@@ -10,22 +10,22 @@ import school.redrover.model.base.BasePage;
 public class ItemErrorPage extends BasePage<ItemErrorPage> {
 
     @FindBy(css = "#main-panel p")
-    private WebElement messageText;
+    private WebElement underErrorText;
 
     @FindBy(xpath = "//h2")
-    private WebElement errorText;
+    private WebElement underOopsProblemText;
 
     public ItemErrorPage(WebDriver driver) {
         super(driver);
     }
 
-    public String getMessageText() {
-
-        return getWait2().until(ExpectedConditions.visibilityOf(messageText)).getText();
-    }
-
     public String getErrorText() {
 
-        return getWait5().until(ExpectedConditions.visibilityOf(errorText)).getText();
+        return getWait2().until(ExpectedConditions.visibilityOf(underErrorText)).getText();
+    }
+
+    public String getProblemText() {
+
+        return getWait5().until(ExpectedConditions.visibilityOf(underOopsProblemText)).getText();
     }
 }

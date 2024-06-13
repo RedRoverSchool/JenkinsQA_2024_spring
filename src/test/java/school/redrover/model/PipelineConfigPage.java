@@ -81,6 +81,12 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
     private WebElement numberOfBuildsInThrottleBuilds;
 
 
+    @FindBy(xpath = "//label[text()='Use Groovy Sandbox']")
+    private WebElement useGroovySandboxCheckbox;
+
+    @FindBy(linkText = "Script Approval Configuration")
+    private WebElement scriptApprovalLink;
+
     public PipelineConfigPage(WebDriver driver) {
         super(driver, new PipelineProjectPage(driver));
     }
@@ -293,4 +299,14 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
         return this;
     }
 
+
+    public PipelineConfigPage clickOnUseGroovySandboxCheckbox() {
+        getWait5().until(ExpectedConditions.visibilityOf(useGroovySandboxCheckbox)).click();
+
+        return new PipelineConfigPage(getDriver());
+    }
+
+    public boolean isScriptApprovalLinkShown() {
+        return getWait5().until(ExpectedConditions.elementToBeClickable(scriptApprovalLink)).isDisplayed();
+    }
 }

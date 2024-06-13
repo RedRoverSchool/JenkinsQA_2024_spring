@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -17,6 +18,7 @@ public class FreestyleMovePage extends BasePage<FreestyleMovePage> {
         super(driver);
     }
 
+    @Step("Select the project to move to from dropdown menu")
     public FreestyleMovePage choosePath(String folderName) {
 
         Select simpleDropDown = new Select(dropDownDestinationPath);
@@ -25,6 +27,7 @@ public class FreestyleMovePage extends BasePage<FreestyleMovePage> {
         return this;
     }
 
+    @Step("Click 'Move' button")
     public FreestyleProjectPage clickMoveButton() {
         moveButton.click();
 
