@@ -775,7 +775,7 @@ public class PipelineTest extends BaseTest {
                 .clickFullStageViewOnDropdown()
                 .getH2HeadingText();
 
-        Allure.step("Expected result: Page heading - '" + expectedText +"'");
+        Allure.step("Expected result: Page heading - '" + expectedText + "'");
         Assert.assertEquals(pageHeading, expectedText);
     }
 
