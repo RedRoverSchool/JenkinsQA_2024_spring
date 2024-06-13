@@ -199,7 +199,7 @@ public class FolderTest extends BaseTest {
     @Test
     @Story("US_04.002  Move Folder to Folder")
     @Description("Verify a Folder can be moved into another Folder via dropdown menu")
-    public void testMoveFolderToFolderViaDropDownMenu() {
+    public void testMoveFolderToFolderViaDropdownMenu() {
         TestUtils.createFolderProject(this, FOLDER_TO_MOVE);
         TestUtils.createFolderProject(this, FOLDER_NAME);
 

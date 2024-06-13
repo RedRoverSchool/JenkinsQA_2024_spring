@@ -19,14 +19,14 @@ public class FooterTest extends BaseTest {
     @Test
     @Story("'Jenkins 2.440.2' button > Visibility, clickability and functionality")
     @Description("Check a drop-down list upon clicking on the 'Jenkins 2.440.2' button")
-    public void testLinkButtonsListInVersionDropDown() {
-        final List<String> expectedDropDownElementsValues = List.of("About Jenkins", "Get involved", "Website");
+    public void testLinkButtonsListInVersionDropdown() {
+        final List<String> expectedDropdownElementsValues = List.of("About Jenkins", "Get involved", "Website");
 
-        List<String> actualDropDownElementsValues = new HomePage(getDriver())
+        List<String> actualDropdownElementsValues = new HomePage(getDriver())
                 .getFooter().clickVersion()
-                .getFooter().getVersionDropDownElementsValues();
+                .getFooter().getVersionDropdownElementsValues();
 
-        Assert.assertEquals(actualDropDownElementsValues, expectedDropDownElementsValues, "Allarm!");
+        Assert.assertEquals(actualDropdownElementsValues, expectedDropdownElementsValues, "Allarm!");
     }
 
     @Test

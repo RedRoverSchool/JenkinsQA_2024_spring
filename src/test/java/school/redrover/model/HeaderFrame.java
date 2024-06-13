@@ -23,7 +23,7 @@ public class HeaderFrame<T extends BasePage<T>> extends BaseFrame<T> {
     private WebElement admin;
 
     @FindBy(css = "[href$='admin/my-views']")
-    private WebElement myViewsOnDropDown;
+    private WebElement myViewsOnDropdown;
 
     @FindBy(css = "[class$='am-button security-am']")
     private WebElement warningIcon;
@@ -108,7 +108,7 @@ public class HeaderFrame<T extends BasePage<T>> extends BaseFrame<T> {
     @Step("Click 'MyViews' on the header dropdown menu")
     public ViewAllPage clickMyViewsOnHeaderDropdown() {
         clickChevronForOpenHeaderUsernameDropdown();
-        myViewsOnDropDown.click();
+        myViewsOnDropdown.click();
 
         return new ViewAllPage(getDriver());
     }

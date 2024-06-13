@@ -126,7 +126,7 @@ public class NodesTest extends BaseTest {
         createNode(NODE_NAME);
 
         boolean isNodeExist = new NodesTablePage(getDriver())
-                .openDropDownChevron(NODE_NAME)
+                .openDropdownChevron(NODE_NAME)
                 .clickDeleteAgentOnDropdownMenu()
                 .clickYesInDeleteAgentWindow()
                 .isContainNode(NODE_NAME);

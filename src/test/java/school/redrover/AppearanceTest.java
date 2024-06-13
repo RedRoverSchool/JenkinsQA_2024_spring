@@ -17,7 +17,7 @@ public class AppearanceTest extends BaseTest {
     @Test
     @Story("US_09.005 Appearance")
     @Description("Check number of color themes that are available")
-    public void testAppearanceQuantityOfThemesViaDashboardDropDown() {
+    public void testAppearanceQuantityOfThemesViaDashboardDropdown() {
 
         int quantityOfThemes = new HomePage(getDriver())
                 .openDashboardBreadcrumbsDropdown()

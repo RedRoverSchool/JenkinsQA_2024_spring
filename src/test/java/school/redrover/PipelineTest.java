@@ -330,7 +330,7 @@ public class PipelineTest extends BaseTest {
     @Test
     @Story("US_02.009 Full stage view")
     @Description("Verify the heading after clicking the ‘Full Stage View’ button in the dropdown menu displays")
-    public void testFullStageViewButtonInDropDown() {
+    public void testFullStageViewButtonInDropdown() {
 
         final String pipelineName = PIPELINE_NAME;
         final String expectedResult = PIPELINE_NAME + " - Stage View";
@@ -767,7 +767,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testFullStageViewDropDownMenu() {
+    public void testFullStageViewDropdownMenu() {
         TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
         getWait5().until(ExpectedConditions.presenceOfElementLocated(
@@ -1138,7 +1138,7 @@ public class PipelineTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
-                .selectDropDownDefinition(2)
+                .selectDropdownDefinition(2)
                 .clickSaveButton()
                 .clickOnBuildNowOnSidebar()
                 .clickLogo()

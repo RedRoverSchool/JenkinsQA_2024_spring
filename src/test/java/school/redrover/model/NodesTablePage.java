@@ -48,7 +48,7 @@ public class NodesTablePage extends BasePage<NodesTablePage> {
     }
 
     @Step("Move cursor to the Name and click on the dropdown chevron")
-    public NodesTablePage openDropDownChevron(String name) {
+    public NodesTablePage openDropdownChevron(String name) {
         WebElement dropdownChevron = getDriver().findElement(By.cssSelector("#node_" + name + " > td:nth-child(2) > a > button"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
             "arguments[0].dispatchEvent(new Event('click'));", dropdownChevron);
