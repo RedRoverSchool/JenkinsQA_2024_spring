@@ -1134,7 +1134,7 @@ public class PipelineTest extends BaseTest {
     @Story("US_02.004 Verify the Pipeline configuration")
     @Description("02.004.11 Verify that build is failed when user set to use Pipeline script from repository and don't set the repository")
     public void testBuildWithoutScriptRepository() {
-        String errorMassageConsole = new HomePage(getDriver())
+        String errorMessageConsole = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
@@ -1146,6 +1146,6 @@ public class PipelineTest extends BaseTest {
                 .clickBuild1Console()
                 .getConsoleOutputMessage();
 
-        Assert.assertTrue(errorMassageConsole.contains("Finished: FAILURE"));
+        Assert.assertTrue(errorMessageConsole.contains("Finished: FAILURE"));
     }
 }

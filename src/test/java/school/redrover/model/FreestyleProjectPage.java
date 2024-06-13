@@ -59,7 +59,7 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
     private WebElement successConsoleOutputButton;
 
     @FindBy(xpath = "//form[@id='enable-project']")
-    private WebElement disabledStatusMassage;
+    private WebElement disabledStatusMessage;
 
     @FindBy(css = "[href^='/job'] [class$='dropdown-chevron']")
     private WebElement breadcrumbsDropdownArrow;
@@ -222,8 +222,8 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
         return new JobBuildConsolePage(getDriver());
     }
 
-    public String getDisabledMassageText() {
+    public String getDisabledMessageText() {
 
-        return getWait5().until(ExpectedConditions.visibilityOf(disabledStatusMassage)).getText();
+        return getWait5().until(ExpectedConditions.visibilityOf(disabledStatusMessage)).getText();
     }
 }

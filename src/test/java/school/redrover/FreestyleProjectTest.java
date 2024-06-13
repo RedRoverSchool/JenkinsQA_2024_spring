@@ -71,15 +71,15 @@ public class FreestyleProjectTest extends BaseTest {
     @Test(dataProvider = "provideUnsafeCharacters")
     @Story("US_01.000  Create Project")
     @Description("Verify error message for project creation with invalid characters.")
-    public void testCreateProjectInvalidCharsGetMassage(String unsafeChar) {
-        String errorMassage = new HomePage(getDriver())
+    public void testCreateProjectInvalidCharsGetMessage(String unsafeChar) {
+        String errorMessage = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(unsafeChar)
                 .selectFreeStyleProject()
                 .getErrorMessageInvalidCharacterOrDuplicateName();
 
         Allure.step("Expected result: Error message '» " + unsafeChar + "’ is an unsafe character' is displayed");
-        Assert.assertEquals(errorMassage, "» ‘" + unsafeChar + "’ is an unsafe character");
+        Assert.assertEquals(errorMessage, "» ‘" + unsafeChar + "’ is an unsafe character");
 
     }
 
@@ -275,7 +275,7 @@ public class FreestyleProjectTest extends BaseTest {
         String disabledStatus = new HomePage(getDriver())
                 .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickDisableProjectButton()
-                .getDisabledMassageText();
+                .getDisabledMessageText();
 
         Allure.step("Expected result: The warning message '" + expectedWarningMessage + "' is displayed.");
         Assert.assertTrue(disabledStatus.contains(expectedWarningMessage));
@@ -372,14 +372,14 @@ public class FreestyleProjectTest extends BaseTest {
 
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
-        String errorMassage = new HomePage(getDriver())
+        String errorMessage = new HomePage(getDriver())
                 .openItemDropdown(FREESTYLE_PROJECT_NAME)
                 .clickRenameOnDropdownForFreestyleProject()
                 .clearNameAndClickRenameButton()
                 .getErrorText();
 
         Allure.step("Expected result: error message" + expectedErrorMessage + "is displayed");
-        Assert.assertEquals(errorMassage, expectedErrorMessage);
+        Assert.assertEquals(errorMessage, expectedErrorMessage);
     }
 
     @Test
