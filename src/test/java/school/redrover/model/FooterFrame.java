@@ -74,11 +74,11 @@ public class FooterFrame<T extends BasePage<T>> extends BaseFrame<T> {
     }
 
     public List<String> getVersionDropdownElementsValues() {
-        List<String> actualDropDownElementsValues = new ArrayList<>();
+        List<String> actualDropdownElementsValues = new ArrayList<>();
         for (WebElement element : dropdownElements) {
-            actualDropDownElementsValues.add(element.getDomProperty("innerText"));
+            actualDropdownElementsValues.add(element.getDomProperty("innerText"));
         }
 
-        return actualDropDownElementsValues;
+        return actualDropdownElementsValues;
     }
 }

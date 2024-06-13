@@ -21,8 +21,8 @@ public class FreestyleMovePage extends BasePage<FreestyleMovePage> {
     @Step("Select the project to move to from dropdown menu")
     public FreestyleMovePage choosePath(String folderName) {
 
-        Select simpleDropDown = new Select(dropdownDestinationPath);
-        simpleDropDown.selectByValue("/" + folderName);
+        Select simpleDropdown = new Select(dropdownDestinationPath);
+        simpleDropdown.selectByValue("/" + folderName);
 
         return this;
     }
