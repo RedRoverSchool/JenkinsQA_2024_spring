@@ -36,7 +36,7 @@ public class PipelineTest extends BaseTest {
     private static final By ADVANCED_PROJECT_OPTIONS_MENU = By.xpath("//button[@data-section-id='advanced-project-options']");
 
     @Test
-    @Story("US_02.000  Create Pipeline")
+    @Story("US_02.000 Create Pipeline")
     @Description("Create Pipeline with valid name and verify if created project is shown on the HomePage")
     public void testCreatePipeline() {
         List<String> itemPipeline = new HomePage(getDriver())
@@ -51,7 +51,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreatePipeline")
-    @Story("US_02.000  Create Pipeline")
+    @Story("US_02.000 Create Pipeline")
     @Description("Verify that the pipeline project with the same name can`t be created")
     public void testCreatePipelineSameName() {
         String itemPipeline = new HomePage(getDriver())
@@ -64,7 +64,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.000  Create Pipeline")
+    @Story("US_02.000 Create Pipeline")
     @Description("Create Pipeline Project with empty name")
     public void testCreatePipelineWithEmptyName() {
         String itemPipeline = new HomePage(getDriver())
@@ -77,7 +77,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreatePiplineAndUseSearchToFindProject")
-    @Story("US_02.000  Create Pipeline")
+    @Story("US_02.000 Create Pipeline")
     @Description("Find created project by its name, using 'Search' input field")
     public void testFindPipelineProject() {
         String searchResult = new HomePage(getDriver())
@@ -88,7 +88,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.000  Create Pipeline")
+    @Story("US_02.000 Create Pipeline")
     @Description("Create Pipeline and find created project by its name, using 'Search' input field on Home Page")
     public void testCreatePiplineAndUseSearchToFindProject() {
         String actualPipelineName = new HomePage(getDriver())
@@ -464,7 +464,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.006  Disable project")
+    @Story("US_02.006 Disable project")
     @Description("Disable Pipeline and check message about it")
     public void testDisablePipeline() {
         TestUtils.createPipelineProject(this, PIPELINE_NAME);
@@ -479,7 +479,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testDisablePipeline")
-    @Story("US_02.006  Disable project")
+    @Story("US_02.006 Disable project")
     @Description("Checking for a button of Schedule a Build for the Pipeline")
     public void testCheckForButtonOfScheduleABuild() {
 
@@ -488,7 +488,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = {"testCheckForButtonOfScheduleABuild", "testDisablePipeline"})
-    @Story("US_02.006  Disable project")
+    @Story("US_02.006 Disable project")
     @Description("Verify disabled project can be enabled")
     public void testEnableBack() {
         String pipelineStatus = new HomePage(getDriver())
@@ -502,7 +502,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testEnableBack")
-    @Story("US_02.011 Take information about a project built")
+    @Story("US_02.011 Take the information about a project built")
     @Description("Check permalinks after build is scheduled")
     public void testPermalinksBuildDetails() {
         final List<String> expectedPermalinkList =
@@ -518,7 +518,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testPermalinksBuildDetails")
-    @Story("US_02.011 Take information about a project built")
+    @Story("US_02.011 Take the information about a project built")
     @Description("Successful build is marked green")
     public void testGreenBuildSuccessColor() {
         final String greenHexColor = "#1ea64b";
@@ -531,7 +531,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testGreenBuildSuccessColor")
-    @Story("US_02.011 Take information about a project built")
+    @Story("US_02.011 Take the information about a project built")
     @Description("Сheck builds history descending order")
     public void testCheckBuildsHistoryDescendingOrder() {
         List<String> actualBuildsOrderList = new HomePage(getDriver())
@@ -547,7 +547,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCheckBuildsHistoryDescendingOrder")
-    @Story("US_02.011 Take information about a project built")
+    @Story("US_02.011 Take the information about a project built")
     @Description("Check numbers of builds in the Build History in descending order")
     public void testSetNumberBuildsToKeep() {
         final int maxNumberBuildsToKeep = 1;
@@ -648,7 +648,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.011 Take information about a project built")
+    @Story("US_02.011 Take the information about a project built")
     @Description("Check List of builds is displayed in descending'")
     public void testBuildAttributesDescending() {
         final String pipelineScript = """
@@ -681,16 +681,9 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.011 Take information about a project built")
+    @Story("US_02.011 Take the information about a project built")
     @Description("Successful builds are marked with a green indicator when creating the list of builds.")
     public void testBuildColorGreen() {
-        final String PIPELINE_SCRIPT = """
-                pipeline {
-                agent any
-                 
-                stages {
-                """;
-
         String backgroundColor = new HomePage(getDriver())
                 .clickManageJenkins()
                 .clickNodes()
@@ -834,7 +827,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.006  Disable project")
+    @Story("US_02.006 Disable project")
     @Description("Checking for a missing 'Build Now' on sidebar for disabled Pipeline")
     public void testCheckForMissingBuildNowOnSidebar() {
         TestUtils.createPipelineProject(this, PIPELINE_NAME);
@@ -849,7 +842,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.006  Disable project")
+    @Story("US_02.006 Disable project")
     @Description("Checking tooltip of status icon on Dashboard")
     public void testCheckTooltipOfStatusIcon() {
         TestUtils.createPipelineProject(this, PIPELINE_NAME);
@@ -1118,7 +1111,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dataProvider = "dataForThrottleBuilds")
-    @Story("US_02.004  Verify the Pipeline configuration")
+    @Story("US_02.004 Verify the Pipeline configuration")
     @Description("Set number of builds, time period in Throttle builds "
             + "and verify message about time between builds after")
     public void testSetParametersToThrottleBuilds(String numberOfBuilds, String timePeriod, String expectedMessage) {
