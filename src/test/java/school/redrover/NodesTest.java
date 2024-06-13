@@ -97,7 +97,7 @@ public class NodesTest extends BaseTest {
     }
 
     @Test
-    @Story("US_15.003 Check list of Monitoring Data")
+    @Story("US_15.005 Check list of Monitoring Data")
     @Description("Verify Monitoring Data list of the Built-In Node")
     public void testBuiltInNodeMonitoringDataList() {
         final List<String> expectedMonitoringDataValues = new ArrayList<>(List.of(

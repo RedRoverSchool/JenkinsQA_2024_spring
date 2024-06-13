@@ -184,7 +184,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateMultiConfigurationProjectInFolder")
-    @Story("US_04.003  Delete Folder")
+    @Story("US_04.003 Delete Folder")
     @Description("Delete folder from dropdown menu")
     public void testDeleteFolderViaDropdown() {
         boolean isFolderDeleted = new HomePage(getDriver())
@@ -337,7 +337,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateFreeStyleProjectInsideRootFolder")
-    @Story("04.003  Delete Folder")
+    @Story("US_04.003 Delete Folder")
     @Description("Delete folder from folder's page using left menu panel")
     public void testDeleteFolder() {
         List<String> jobList = new HomePage(getDriver())

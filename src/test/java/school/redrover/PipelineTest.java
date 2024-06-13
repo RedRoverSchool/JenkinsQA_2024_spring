@@ -619,7 +619,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("02.003 Build now")
+    @Story("US_02.003 Build now")
     @Description("02.003.01 Verify Console Ouput For All Stages")
     public void testConsoleOutputValue() {
         int numberOfStages = 8;
@@ -704,7 +704,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("02.003 Build now")
+    @Story("US_02.003 Build now")
     @Description("02.003.02 Verify column header for each stage of the build")
     public void testStageColumnHeader() {
 
@@ -789,7 +789,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("02.003 Build now")
+    @Story("US_02.003 Build now")
     @Description("02.003.03 Verify that build is finished successfully")
     public void testRunByBuildNowButton() {
 

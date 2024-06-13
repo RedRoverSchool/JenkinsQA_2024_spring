@@ -104,7 +104,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_03.000  Create project")
+    @Story("US_03.000 Create project")
     @Description("Check creating project by copying the exist one")
     public void testMakeCopyMultiConfigurationProject() {
         final String newProjectName = "MCProject copy";
@@ -176,7 +176,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_03.003  Delete project")
+    @Story("US_03.003 Delete project")
     @Description("Checking 'Yes' button color when delete project")
     public void testYesButtonColorDeletingMultiConfigurationProjectInSidebar() {
         final String expectedColorNone = "#e6001f";
@@ -192,7 +192,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_03.000  Create project")
+    @Story("US_03.000 Create project")
     @Description("Create project with empty name")
     public void testCreateProjectWithoutName() {
         final String EMPTY_NAME = "";
@@ -211,7 +211,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_03.000  Create project")
+    @Story("US_03.000 Create project")
     @Description("Create project with valid name")
     public void testCreateMultiConfigurationProject() {
         List<String> projectNameList = new HomePage(getDriver())
@@ -243,7 +243,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_03.003  Delete project ")
+    @Story("US_03.003 Delete project")
     @Description("Delete an existing project via Dropdown menu")
     public void testDeleteProjectViaDropdown() {
 
@@ -278,7 +278,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_03.003  Delete project ")
+    @Story("US_03.003 Delete project")
     @Description("Delete an existing project via left-sidebar menu")
     public void testDeleteMultiConfigurationProjectFromMenu() {
 
@@ -325,7 +325,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_03.000  Create project ")
+    @Story("US_03.000 Create project")
     @Description("Verify existing project can be found using Search")
     public void testSearchForCreatedProject() {
 
