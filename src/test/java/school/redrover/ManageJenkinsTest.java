@@ -285,8 +285,8 @@ public class ManageJenkinsTest extends BaseTest {
                 .clickSystemLogLink()
                 .getHeadingText();
 
-        Allure.step("Expected result: Page heading is 'System Log'");
-        Assert.assertEquals(pageTitle, "System Log");
+        Allure.step("Expected result: Page heading is 'Log Recorders'");
+        Assert.assertEquals(pageTitle, "Log Recorders");
     }
 
     @Test
@@ -298,8 +298,8 @@ public class ManageJenkinsTest extends BaseTest {
                 .clickLoadStatisticsLink()
                 .getHeadingText();
 
-        Allure.step("Expected result: Page heading is 'Load Statistics'");
-        Assert.assertEquals(pageTitle, "Load Statistics");
+        Allure.step("Expected result: Page heading is 'Load statistics: Jenkins'");
+        Assert.assertEquals(pageTitle, "Load statistics: Jenkins");
     }
 
     @Test
@@ -311,8 +311,8 @@ public class ManageJenkinsTest extends BaseTest {
                 .clickAboutJenkinsLink()
                 .getHeadingText();
 
-        Allure.step("Expected result: Page heading is 'About Jenkins'");
-        Assert.assertEquals(pageTitle, "About Jenkins");
+        Allure.step("Expected result: Page heading is 'Jenkins'");
+        Assert.assertEquals(pageTitle, "Jenkins");
     }
 
     @Test
