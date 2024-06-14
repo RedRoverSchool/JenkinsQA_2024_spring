@@ -15,7 +15,7 @@ public class ReloadConfigurationDialog extends BasePage<ReloadConfigurationDialo
         super(driver);
     }
 
-    public boolean dialogTitleVisibility() {
-        return getWait2().until(ExpectedConditions.visibilityOf(reloadConfigurationFromDiskDialogTitle)).isDisplayed();
+    public String getDialogTitleText() {
+        return getWait2().until(ExpectedConditions.visibilityOf(reloadConfigurationFromDiskDialogTitle)).getText();
     }
 }
