@@ -78,9 +78,7 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
     }
 
     public boolean areElementsEnabled(List<WebElement> elements) {
-        return elements
-                .stream()
-                .allMatch(WebElement::isEnabled);
+        return elements.stream().allMatch(WebElement::isEnabled);
     }
 
     public String getText(WebElement webElement) {
