@@ -75,6 +75,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return new FreestyleConfigPage(getDriver());
     }
 
+    @Step("Select 'Pipeline' and click 'Ok' button")
     public PipelineConfigPage selectPipelineAndClickOk() {
         pipelineItem.click();
         okButton.click();
@@ -95,6 +96,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return this;
     }
 
+    @Step("Select 'Folder' and click 'Ok' button")
     public FolderConfigPage selectFolderAndClickOk() {
         folderItem.click();
         okButton.click();
@@ -102,6 +104,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return new FolderConfigPage(getDriver());
     }
 
+    @Step("Select 'Folder'")
     public CreateNewItemPage selectFolder() {
         folderItem.click();
 
@@ -115,6 +118,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return new MultibranchPipelineConfigPage(getDriver());
     }
 
+    @Step("Select 'Organization Folder' and click 'Ok' button")
     public OrganizationFolderConfigPage selectOrganizationFolderAndClickOk() {
         organizationFolderItem.click();
         okButton.click();

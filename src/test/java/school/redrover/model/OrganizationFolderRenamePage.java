@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -17,6 +18,7 @@ public class OrganizationFolderRenamePage extends BasePage<OrganizationFolderRen
         super(driver);
     }
 
+    @Step("Clear 'New Name' input field and type new name")
     public OrganizationFolderRenamePage setNewName(String name) {
         textBox.clear();
         textBox.sendKeys(name);
@@ -24,6 +26,7 @@ public class OrganizationFolderRenamePage extends BasePage<OrganizationFolderRen
         return this;
     }
 
+    @Step("Click 'Rename' button")
     public OrganizationFolderProjectPage clickRename() {
         submitButton.click();
 

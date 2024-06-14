@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
 
     @FindBy(id = "description-link")
-    private WebElement changeDescriptionButton;
+    private WebElement addOrEditDescriptionButton;
 
     @FindBy(name = "description")
     private WebElement descriptionInput;
@@ -52,8 +52,8 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
     @FindBy(css = "a[href$='configure']")
     private WebElement sidebarConfigureButton;
 
-    @FindBy(xpath = "//a[@data-build-success = 'Build scheduled']")
-    private WebElement buildButton;
+    @FindBy(css = "[data-build-success]")
+    private WebElement buildNowOnSidebar;
 
     @FindBy(xpath = "//td[contains(@class, 'progress-bar')]")
     private WebElement buildProgressBar;
@@ -89,7 +89,7 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
     private WebElement stageStatus;
 
     @FindBy(css = "form > button")
-    private WebElement disablebutton;
+    private WebElement disableProjectButton;
 
     @FindBy(xpath = "//button[@name='Submit']")
     private WebElement enableButton;
@@ -116,9 +116,7 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
             @FindBy(id = "tasks"),
             @FindBy(className = "task-link-text")
     })
-
-    private List<WebElement> taskLinkTextElements;
-
+    private List<WebElement> taskList;
 
     @FindBy(xpath = "//h1[@class='job-index-headline page-headline']")
     private WebElement projectsDisplayNameInHeader;
@@ -128,6 +126,11 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
 
     @FindBy(css = "span[class='glyphicon glyphicon-remove']")
     private WebElement closeStageLogsButton;
+
+    @FindBy(css = ".build-row-cell")
+    private List<WebElement> buildRow;
+
+
     public PipelineProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -139,7 +142,7 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
     }
 
     public PipelineProjectPage clickChangeDescription() {
-        changeDescriptionButton.click();
+        addOrEditDescriptionButton.click();
 
         return this;
     }
@@ -155,7 +158,7 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
     }
 
     public PipelineProjectPage waitAddDescriptionButtonDisappears() {
-        getWait2().until(ExpectedConditions.invisibilityOf(changeDescriptionButton));
+        getWait2().until(ExpectedConditions.invisibilityOf(addOrEditDescriptionButton));
 
         return this;
     }
@@ -174,11 +177,11 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         return descriptionPreview.isDisplayed();
     }
 
-    public String getTextAreaBorderBacklightColor() {
+    public String getColorOfTextAreaBorderBacklight() {
         return getDriver().switchTo().activeElement().getCssValue("box-shadow").split(" 0px")[0];
     }
 
-    public String getCellColor() {
+    public String getColorOfCell() {
         Set<String> backgroundColor = new HashSet<>();
         for (int i = 1; i <= 2; i++) {
             WebElement element = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
@@ -201,7 +204,7 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         return this;
     }
 
-    public String getDefaultTextAreaBorderBacklightColor() {
+    public String getColorOfDefaultTextAreaBorderBacklight() {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
 
         return (String) js.executeScript(
@@ -246,8 +249,9 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         return new PipelineRenamePage(getDriver());
     }
 
-    public PipelineProjectPage clickBuild() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(buildButton)).click();
+    @Step("Click on 'Build Now' on sidebar")
+    public PipelineProjectPage clickOnBuildNowOnSidebar() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(buildNowOnSidebar)).click();
 
         return this;
     }
@@ -281,18 +285,20 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         return new FullStageViewPage(getDriver());
     }
 
-    public boolean isBtnPresentInSidebar(String btnText) {
-        getWait2().until(ExpectedConditions.visibilityOfAllElements(taskLinkTextElements));
+    @Step("Check task presenсe on sidebar")
+    public boolean isTaskPresentOnSidebar(String task) {
+        getWait2().until(ExpectedConditions.visibilityOfAllElements(taskList));
 
-        return taskLinkTextElements.stream()
-                .anyMatch(element -> btnText.equals(element.getText()));
+        return taskList.stream()
+                .anyMatch(element -> task.equals(element.getText()));
     }
 
+    @Step("Get message about Pipeline status")
     public String getWarningMessageText() {
         return getWait2().until(ExpectedConditions.visibilityOf(warningMessage)).getText();
     }
 
-    public String getFullStageViewButtonBackgroundColor() {
+    public String getColorOfFullStageViewButtonBackground() {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         return (String) js.executeScript("return window.getComputedStyle(arguments[0], '::before').getPropertyValue('background-color');", fullStageViewButton);
     }
@@ -355,13 +361,15 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         return result;
     }
 
+    @Step("Check visibility of button 'Disable Project'")
     public boolean isDisableButtonVisible() {
         return getWait2().until(ExpectedConditions
-                .visibilityOfElementLocated(By.name("Submit"))).isDisplayed();
+                .visibilityOf(disableProjectButton)).isDisplayed();
     }
 
+    @Step("Click on button 'Disable' on Pipeline project page")
     public PipelineProjectPage clickDisableButton() {
-        disablebutton.click();
+        disableProjectButton.click();
 
         return this;
     }
@@ -416,7 +424,6 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
     }
 
     public String getProjectsDisplayNameInHeader() {
-
         return projectsDisplayNameInHeader.getText();
     }
 
@@ -433,5 +440,11 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         }
 
         return consoleOuputForAllStages;
+    }
+
+    public List<String> getBuilderRowList() {
+
+        return getWait5().until(ExpectedConditions.visibilityOfAllElements(buildRow)).stream()
+                .map(WebElement::getText).toList();
     }
 }

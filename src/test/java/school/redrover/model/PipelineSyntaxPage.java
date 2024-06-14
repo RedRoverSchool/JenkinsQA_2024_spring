@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -32,6 +33,7 @@ public class PipelineSyntaxPage extends BasePage<PipelineSyntaxPage> {
     @FindBy(xpath = "//a[contains(@href,'examples')]")
     private WebElement examplesReferenceSidebarItem;
 
+    @Step("Select 'catchError' from 'Sample Step' option list")
     public PipelineSyntaxPage selectCatchError() {
         new Select(sampleStepDropdownList)
                 .selectByValue("catchError: Catch error and set build result to failure");
@@ -51,12 +53,14 @@ public class PipelineSyntaxPage extends BasePage<PipelineSyntaxPage> {
                 .toList();
     }
 
+    @Step("Click on 'Declarative Online Documentation' in the sidebar menu")
     public PipelineDocumentationPage clickSidebarDeclarativeOnlineDocumentation() {
         onlineDocumentationSidebarItem.click();
 
         return new PipelineDocumentationPage(getDriver());
     }
 
+    @Step("Click on 'Examples Reference' in the sidebar menu")
     public PipelineExamplesPage clickSidebarExamplesReference() {
         examplesReferenceSidebarItem.click();
 

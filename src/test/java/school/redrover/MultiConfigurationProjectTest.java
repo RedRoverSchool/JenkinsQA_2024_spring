@@ -35,7 +35,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
 
         String newProjectName = new HomePage(getDriver())
-                .openItemDropdownWithSelenium(PROJECT_NAME)
+                .openItemDropdown(PROJECT_NAME)
                 .clickRenameOnDropdownForMultiConfigurationProject()
                 .changeProjectNameWithoutClear(addToProjectName)
                 .clickRenameButton()
@@ -104,7 +104,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_03.000  Create project")
+    @Story("US_03.000 Create project")
     @Description("Check creating project by copying the exist one")
     public void testMakeCopyMultiConfigurationProject() {
         final String newProjectName = "MCProject copy";
@@ -179,7 +179,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_03.003  Delete project")
+    @Story("US_03.003 Delete project")
     @Description("Checking 'Yes' button color when delete project")
     public void testYesButtonColorDeletingMultiConfigurationProjectInSidebar() {
         final String expectedColorNone = "#e6001f";
@@ -195,7 +195,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_03.000  Create project")
+    @Story("US_03.000 Create project")
     @Description("Create project with empty name")
     public void testCreateProjectWithoutName() {
         final String emptyName = "";
@@ -214,7 +214,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_03.000  Create project")
+    @Story("US_03.000 Create project")
     @Description("Create project with valid name")
     public void testCreateMultiConfigurationProject() {
         List<String> projectNameList = new HomePage(getDriver())
@@ -227,6 +227,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         Assert.assertTrue(projectNameList.contains(PROJECT_NAME));
     }
+
 
     @Test(dependsOnMethods = "testCreateMultiConfigurationProject")
     @Story("US_03.004  Rename project")
@@ -246,7 +247,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_03.003  Delete project ")
+    @Story("US_03.003 Delete project")
     @Description("Delete an existing project via Dropdown menu")
     public void testDeleteProjectViaDropdown() {
 
@@ -281,7 +282,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_03.003  Delete project ")
+    @Story("US_03.003 Delete project")
     @Description("Delete an existing project via left-sidebar menu")
     public void testDeleteMultiConfigurationProjectFromMenu() {
 
@@ -328,7 +329,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_03.000  Create project ")
+    @Story("US_03.000 Create project")
     @Description("Verify existing project can be found using Search")
     public void testSearchForCreatedProject() {
 

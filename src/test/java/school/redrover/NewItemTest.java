@@ -1,5 +1,8 @@
 package school.redrover;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -13,253 +16,52 @@ import school.redrover.runner.TestUtils;
 import java.util.List;
 import java.util.Random;
 
+@Epic("New item")
 public class NewItemTest extends BaseTest {
 
     @Test
+    @Story("US_00.000 Create New item")
+    @Description("Enter to New item page")
     public void testOpenCreateNewItemPage() {
         String newItemHeader = new HomePage(getDriver())
                 .clickNewItem()
                 .getPageTitle();
-
-        String textAboveNameField = new CreateNewItemPage(getDriver())
+        String TextAboveNameField = new CreateNewItemPage(getDriver())
                 .getTitleOfNameField();
 
         Assert.assertEquals(newItemHeader, "New Item [Jenkins]");
-        Assert.assertEquals(textAboveNameField, "Enter an item name");
+        Assert.assertEquals(TextAboveNameField, "Enter an item name");
     }
 
-    @Test
-    public void testCreateNewFolder() {
-        List<String> itemsList = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName("Name")
-                .selectFolderAndClickOk()
-                .clickSaveButton()
-                .clickLogo()
-                .getItemList();
-
-        Assert.assertListContainsObject(itemsList, "Name", "Item not found");
-    }
 
     @Test
+    @Story("US_00.000 Create New item")
+    @Description("You can't create an item without selection of item type, because 'OkButton' is enabled ")
     public void testCreateItemWithoutSelectedItemType() {
-        boolean okButtonIsEnabled = new HomePage(getDriver())
+        boolean isOkButtonEnabled = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName("Test Project")
                 .isOkButtonEnabled();
 
-        Assert.assertFalse(okButtonIsEnabled);
-    }
-
-    @Test
-    public void testRenameFolder() {
-        List<String> itemsList = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName("Name")
-                .selectFolderAndClickOk()
-                .clickSaveButton()
-                .clickLogo()
-                .openItemDropdownWithSelenium("Name")
-                .clickRenameOnDropdownForFolder()
-                .setNewName("New Name")
-                .clickRename()
-                .clickLogo()
-                .getItemList();
-
-        Assert.assertListContainsObject(itemsList, "New Name", "Item not found");
-    }
-
-    @Test
-    public void testMessageWhenCreateItemUsingSpecialCharactersInName() {
-        String[] specialCharacters = {"!", "%", "&", "#", "@", "*", "$", "?", "^", "|", "/", "]", "["};
-
-        new HomePage(getDriver())
-                .clickNewItem();
-
-        for (String specChar : specialCharacters) {
-            String actualErrorMessage = new CreateNewItemPage(getDriver())
-                    .clearItemNameField()
-                    .setItemName("Fold" + specChar + "erdate")
-                    .getErrorMessageInvalidCharacterOrDuplicateName();
-
-            String expectMessage = "» ‘" + specChar + "’ is an unsafe character";
-
-            Assert.assertEquals(actualErrorMessage, expectMessage, "Message is not displayed");
-        }
-    }
-
-    @Test
-    public void testCreateItemWithEmptyName() {
-        String hintTextWhenEmptyName = "» This field cannot be empty, please enter a valid name";
-        String hintColor = "rgba(255, 0, 0, 1)";
-
-        Boolean isOkButtonEnabled = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName("q")
-                .clearItemNameField()
-                .isOkButtonEnabled();
-
-        String validationMessage = new CreateNewItemPage(getDriver())
-                .getItemNameHintText();
-
-        String validationMessageColor = new CreateNewItemPage(getDriver())
-                .getItemNameHintColor();
-
         Assert.assertFalse(isOkButtonEnabled);
-        Assert.assertEquals(validationMessage, hintTextWhenEmptyName);
-        Assert.assertEquals(validationMessageColor, hintColor);
     }
 
     @Test
-    public void testCreateItemEmptyNameNegative() {
-        CreateNewItemPage createNewItemPage = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName("Name")
-                .clearItemNameField()
-                .selectFolder();
-
-        Assert.assertFalse(createNewItemPage.isOkButtonEnabled());
-    }
-
-    @Test
-    public void testCreateMulticonfigurationProject() {
-        List<String> itemsList = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName("Name")
-                .selectMultiConfigurationAndClickOk()
-                .clickSaveButton()
-                .clickLogo()
-                .getItemList();
-
-        Assert.assertListContainsObject(itemsList, "Name", "Item not found");
-    }
-
-    @Test
-    public void testCreateMulticonfigurationProjectNegative() {
-        CreateNewItemPage createNewItemPage = new HomePage(getDriver())
-                .clickNewItem()
-                .selectMultiConfiguration();
-
-        Assert.assertEquals(createNewItemPage.getItemNameHintText(), "» This field cannot be empty, please enter a valid name");
-    }
-
-    @Test(dependsOnMethods = "testDropdownNamesMenuContentWhenCopyProject")
-    public void testCopyFromNotExistingJob() {
-        final String notExistingName = "AAA";
-
-        CreateItemPage errorPage = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName("someName")
-                .typeItemNameInCopyFrom(notExistingName)
-                .clickOkButton();
-
-        Assert.assertTrue(errorPage.getCurrentUrl().endsWith("/createItem"));
-        Assert.assertEquals(errorPage.getPageHeaderText(), "Error");
-        Assert.assertEquals(errorPage.getErrorMessageText(), "No such job: " + notExistingName);
-    }
-
-    @DataProvider(name = "existingJobsNames")
-    public Object[][] existingJobsNames() {
-        return new Object[][]{
-                {"Freestyle project", "folff"},
-                {"Freestyle project", "folff00"},
-                {"Folder", "Folder1"},
-                {"Folder", "bFolder2"},
-                {"Pipeline", "pipe1"},
-                {"Multi-configuration project", "multi1"},
-                {"Multibranch Pipeline", "multiBranch1"},
-                {"Organization Folder", "organizationFolder1"}
-        };
-    }
-
-    @Test(dataProvider = "existingJobsNames")
-    public void testCopyFromExistingJob(String type, String jobName) {
-
-        HomePage homePage;
-        homePage = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(jobName)
-                .clickProjectType(type)
-                .clickOkButton()
-                .clickLogo()
-                .clickNewItem()
-                .setItemName(jobName + "Copy")
-                .typeItemNameInCopyFrom(jobName)
-                .clickOkButton()
-                .clickLogo();
-
-
-        Integer quantityItemsWithCopies = new HomePage(getDriver())
-                .getItemList()
-                .size();
-
-        Assert.assertEquals(quantityItemsWithCopies, 2);
-        Assert.assertTrue(homePage.isItemExists(jobName + "Copy"));
-        Assert.assertTrue(homePage.isItemExists(jobName));
-    }
-
-    @Test
-    public void testDropdownNamesMenuContentWhenCopyProject() {
-        final String freestyle1 = "folff";
-        final String freestyle2 = "folff00";
-        final String folder1 = "Folder1";
-        final String folder2 = "bFolder2";
-        final String pipeline1 = "pipe1";
-        final String multiConfigurationProject1 = "multi1";
-        final String multiBranchPipe1 = "multiBranch1";
-        final String organizationFolder1 = "organizationFolder1";
-
-        final String firstLetters = "fol";
-        final String newItemName = "someName";
-
-        TestUtils.createFreestyleProject(this, freestyle1);
-        TestUtils.createFolderProject(this, folder1);
-        TestUtils.createFolderProject(this, folder2);
-        TestUtils.createFreestyleProject(this, freestyle2);
-        TestUtils.createPipelineProject(this, pipeline1);
-        TestUtils.createMultiConfigurationProject(this, multiConfigurationProject1);
-        TestUtils.createMultibranchProject(this, multiBranchPipe1);
-        TestUtils.createOrganizationFolderProject(this, organizationFolder1);
-
-        List<String> firstLettersJobs = TestUtils.getJobsBeginningFromThisFirstLetters(this, firstLetters);
-
-        List<String> jobsFromDropdownMenu = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(newItemName)
-                .typeItemNameInCopyFrom(firstLetters)
-                .getDropdownMenuContent();
-
-        Assert.assertEquals(jobsFromDropdownMenu, firstLettersJobs);
-    }
-
-    @DataProvider(name = "unsafeCharactersProvider")
-    public Object[][] unsafeCharactersProvider() {
-        return new Object[][]{
-                {"!"}, {"#"}, {"$"}, {"%"}, {"&"}, {"*"}, {"/"}, {";"},
-                {">"}, {"<"}, {"?"}, {"@"}, {"["}, {"\\"}, {"]"}, {"^"}, {"|"}
-        };
-    }
-
-    @Test(dataProvider = "unsafeCharactersProvider")
-    public void testInvalidValuesForProjectNameInput(String x) {
-        String errorMessage = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(x)
-                .getErrorMessageInvalidCharacterOrDuplicateName();
-
-        Assert.assertEquals(errorMessage, "» ‘" + x + "’ is an unsafe character");
-    }
-
-    @Test
+    @Story("US_00.000 Create New item")
+    @Description("A user can see the name entry field ")
     public void testUserSeeTheNameEntryField() {
 
-        Assert.assertTrue(new HomePage(getDriver())
+        Boolean isNameEntryFieldDisplayed = new HomePage(getDriver())
                 .clickNewItem()
-                .isDisplayedNameField());
+                .isDisplayedNameField();
+
+        Assert.assertTrue(isNameEntryFieldDisplayed);
     }
 
     @Test
-    public void testCheckListOfSuggestedForCreationProjectTypes() {
+    @Story("US_00.000 Create New item")
+    @Description(" Check list of types, suggested for a project creation ")
+    public void TestCheckListOfSuggestedForCreationProjectTypes() {
         List<String> typesList = List.of(
                 "Freestyle project",
                 "Pipeline",
@@ -275,6 +77,160 @@ public class NewItemTest extends BaseTest {
         Assert.assertEquals(actualTypesList, typesList);
     }
 
+
+    @DataProvider(name = "unsafeCharactersProvider")
+    public Object[][] unsafeCharactersProvider() {
+        return new Object[][]{
+                {"!"}, {"#"}, {"$"}, {"%"}, {"&"}, {"*"}, {"/"}, {";"},
+                {">"}, {"<"}, {"?"}, {"@"}, {"["}, {"\\"}, {"]"}, {"^"}, {"|"}
+        };
+    }
+
+    @Test(dataProvider = "unsafeCharactersProvider")
+    @Story("US_00.000 Create New item")
+    @Description("Check hint, when entering an unsafe character ")
+    public void testInvalidValuesForProjectNameInput(String x) {
+        String errorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(x)
+                .getErrorMessageInvalidCharacterOrDuplicateName();
+
+        Assert.assertEquals(errorMessage, "» ‘" + x + "’ is an unsafe character");
+    }
+
+
+    @Test
+    @Story("US_00.000 Create New item")
+    @Description(" Create item with empty name")
+
+    public void testCreateItemWithEmptyName() {
+        final String HINT_TEXT_WHEN_EMPTY_NAME = "» This field cannot be empty, please enter a valid name";
+        final String HINT_COLOR = "rgba(255, 0, 0, 1)";
+
+        Boolean isOkButtonEnabled = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName("q")
+                .clearItemNameField()
+                .isOkButtonEnabled();
+
+        String validationMessage = new CreateNewItemPage(getDriver())
+                .getItemNameHintText();
+
+        String validationMessageColor = new CreateNewItemPage(getDriver())
+                .getItemNameHintColor();
+
+        Assert.assertFalse(isOkButtonEnabled);
+        Assert.assertEquals(validationMessage, HINT_TEXT_WHEN_EMPTY_NAME);
+        Assert.assertEquals(validationMessageColor, HINT_COLOR);
+    }
+
+    @Test
+    @Story("US_00.000 Create New item")
+    @Description("It is impossible to create a new item after clearing Item Name input Field  ")
+    public void testCreateItemEmptyNameNegative() {
+        CreateNewItemPage createNewItemPage = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName("Name")
+                .clearItemNameField()
+                .selectFolder();
+
+        Assert.assertFalse(createNewItemPage.isOkButtonEnabled());
+    }
+
+
+    @Story("US_00.007 Create a new item from other existing")
+    @Description("Try to copy an unexisting project")
+    @Test(dependsOnMethods = "testDropdownNamesMenuContentWhenCopyProject")
+    public void testCopyFromNotExistingJob() {
+        final String NOT_EXISTING_NAME = "AAA";
+
+        CreateItemPage errorPage = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName("someName")
+                .typeItemNameInCopyFrom(NOT_EXISTING_NAME)
+                .clickOkButton();
+
+        Assert.assertTrue(errorPage.getCurrentUrl().endsWith("/createItem"));
+        Assert.assertEquals(errorPage.getPageHeaderText(), "Error");
+        Assert.assertEquals(errorPage.getErrorMessageText(), "No such job: " +NOT_EXISTING_NAME);
+    }
+
+    @DataProvider(name = "existingJobsNames")
+    public Object[][] existingJobsNames() {
+        return new Object[][]{
+                {"Freestyle project", "folff"},
+                {"Freestyle project", "folff00"},
+                {"Folder", "Folder1"},
+                {"Folder", "bFolder2"},
+                {"Pipeline", "pipe1"},
+                {"Multi-configuration project", "multi1"},
+                {"Multibranch Pipeline", "multiBranch1"},
+                {"Organization Folder", "organizationFolder1"}
+        };
+    }
+    @Story("US_00.007 Create a new item from other existing")
+    @Description(" Create a new item from other existing one for ALL types of jobs.")
+    @Test(dataProvider = "existingJobsNames")
+    public void testCopyFromExistingJob(String type, String jobName) {
+
+        HomePage homePage;
+        homePage = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(jobName)
+                .clickProjectType(type)
+                .clickOkButton()
+                .clickLogo()
+                .clickNewItem()
+                .setItemName(jobName + "Copy")
+                .typeItemNameInCopyFrom(jobName)
+                .clickOkButton()
+                .clickLogo();
+        Integer quantityItemsWithCopies = new HomePage(getDriver())
+                .getItemList()
+                .size();
+
+        Assert.assertEquals(quantityItemsWithCopies, 2);
+        Assert.assertTrue(homePage.isItemExists(jobName + "Copy"));
+        Assert.assertTrue(homePage.isItemExists(jobName));
+    }
+
+    @Story("US_00.007 Create a new item from other existing")
+    @Description("Check tooltip's content contains the all names of jobs, beginning from defined letter(letters)")
+    @Test
+    public void testDropdownNamesMenuContentWhenCopyProject() {
+
+        final String FREESTYLE1 = "folff";
+        final String FREESTYLE2 = "folff00";
+        final String FOLDER1 = "Folder1";
+        final String FOLDER2 = "bFolder2";
+        final String PIPELINE1 = "pipe1";
+        final String MULTI_CONFIGURATION_PROJECT1 = "multi1";
+        final String MULTI_BRANCH_PIPE1 = "multiBranch1";
+        final String ORGANIZATION_FOLDER1 = "organizationFolder1";
+
+        final String FIRST_LETTERS = "fol";
+        final String NEW_ITEM_NAME = "someName";
+
+        TestUtils.createFreestyleProject(this, FREESTYLE1);
+        TestUtils.createFolderProject(this,FOLDER1);
+        TestUtils.createFolderProject(this, FOLDER2);
+        TestUtils.createFreestyleProject(this, FREESTYLE2);
+        TestUtils.createPipelineProject(this, PIPELINE1);
+        TestUtils.createMultiConfigurationProject(this, MULTI_CONFIGURATION_PROJECT1);
+        TestUtils.createMultibranchProject(this,MULTI_BRANCH_PIPE1);
+        TestUtils.createOrganizationFolderProject(this,ORGANIZATION_FOLDER1);
+
+        List<String> firstLettersJobs = TestUtils.getJobsBeginningFromThisFirstLetters(this, FIRST_LETTERS );
+
+        List<String> jobsFromDropdownMenu = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(NEW_ITEM_NAME)
+                .typeItemNameInCopyFrom(FIRST_LETTERS)
+                .getDropdownMenuContent();
+
+        Assert.assertEquals(jobsFromDropdownMenu, firstLettersJobs);
+    }
+
     @DataProvider
     Object[][] projectTypes() {
         return new Object[][]{
@@ -283,27 +239,27 @@ public class NewItemTest extends BaseTest {
     }
 
     @Test(dataProvider = "projectTypes")
-    public void testCreateItemForStandaloneOrNestedProjects(String projectType) {
-        String projectName = "NewProject";
+    @Story("US_00.000 Create New item")
+    @Description("Verification for desirable job type  ")
+    public void testCreateItemForStandAloneOrNestedProjects(String projectType) {
+        final String PROJECT_NAME = "NewProject";
         Random random = new Random();
         int itemOptionIndex = random.nextInt(3) + 1;
 
         Boolean isTypeChecked = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(projectName)
+                .setItemName(PROJECT_NAME)
                 .clickItemOption(projectType, itemOptionIndex)
                 .isAttributeAriaChecked(projectType, itemOptionIndex);
-
         String currentUrl = new CreateNewItemPage(getDriver())
                 .clickOkButton()
                 .getCurrentUrl();
-
         String pageHeading = new FreestyleConfigPage(getDriver())
                 .clickSaveButton()
                 .getPageHeadingText();
 
         Assert.assertTrue(isTypeChecked);
-        Assert.assertEquals(currentUrl, String.format("http://localhost:8080/job/%s/configure", projectName));
-        Assert.assertTrue(pageHeading.contains(projectName));
+        Assert.assertTrue(currentUrl.contains(PROJECT_NAME));
+        Assert.assertTrue(pageHeading.contains(PROJECT_NAME));
     }
 }

@@ -60,6 +60,7 @@ public final class TestUtils {
                 .clickNewItem()
                 .setItemName(name.trim())
                 .selectFreestyleAndClickOk()
+                .clickSaveButton()
                 .clickLogo();
     }
 
@@ -69,6 +70,7 @@ public final class TestUtils {
                 .clickNewItem()
                 .setItemName(name.trim())
                 .selectPipelineAndClickOk()
+                .clickSaveButton()
                 .clickLogo();
     }
 
@@ -78,6 +80,7 @@ public final class TestUtils {
                 .clickNewItem()
                 .setItemName(name.trim())
                 .selectMultiConfigurationAndClickOk()
+                .clickSaveButton()
                 .clickLogo();
     }
 
@@ -87,6 +90,7 @@ public final class TestUtils {
                 .clickNewItem()
                 .setItemName(name.trim())
                 .selectFolderAndClickOk()
+                .clickSaveButton()
                 .clickLogo();
     }
 
@@ -96,6 +100,7 @@ public final class TestUtils {
                 .clickNewItem()
                 .setItemName(name.trim())
                 .selectMultibranchPipelineAndClickOk()
+//                .clickSaveButton()
                 .clickLogo();
     }
 
@@ -105,6 +110,7 @@ public final class TestUtils {
                 .clickNewItem()
                 .setItemName(name.trim())
                 .selectOrganizationFolderAndClickOk()
+                .clickSaveButton()
                 .clickLogo();
     }
 
