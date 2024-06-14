@@ -359,7 +359,7 @@ public class PipelineTest extends BaseTest {
 
         List<String> actualBuildsList = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickNodes()
+                .clickNodesLink()
                 .clickBuiltInNodeName()
                 .turnNodeOnIfOffline()
                 .clickNewItem()
@@ -434,7 +434,7 @@ public class PipelineTest extends BaseTest {
 
         int actualSagesQtt = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickNodes()
+                .clickNodesLink()
                 .clickBuiltInNodeName()
                 .turnNodeOnIfOffline()
                 .clickNewItem()
@@ -660,7 +660,7 @@ public class PipelineTest extends BaseTest {
 
         List<String> actualOrder = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickNodes()
+                .clickNodesLink()
                 .clickOnBuiltInNode()
                 .clickBringThisNodeBackOnlineButton()
                 .clickLogo()
@@ -693,7 +693,7 @@ public class PipelineTest extends BaseTest {
 
         String backgroundColor = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickNodes()
+                .clickNodesLink()
                 .clickOnBuiltInNode()
                 .clickBringThisNodeBackOnlineButton()
                 .clickLogo()
