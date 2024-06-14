@@ -35,7 +35,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
 
         String newProjectName = new HomePage(getDriver())
-                .openItemDropdownWithSelenium(PROJECT_NAME)
+                .openItemDropdown(PROJECT_NAME)
                 .clickRenameOnDropdownForMultiConfigurationProject()
                 .changeProjectNameWithoutClear(addToProjectName)
                 .clickRenameButton()
