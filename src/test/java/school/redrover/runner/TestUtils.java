@@ -114,7 +114,7 @@ public final class TestUtils {
     public static void resetJenkinsTheme(BaseTest baseTest) {
         new HomePage(baseTest.getDriver())
                 .clickManageJenkins()
-                .clickAppearanceButton()
+                .clickAppearanceLink()
                 .switchToDefaultTheme()
                 .clickLogo();
     }
