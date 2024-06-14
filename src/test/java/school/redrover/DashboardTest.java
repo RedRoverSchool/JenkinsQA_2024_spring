@@ -242,16 +242,16 @@ public class DashboardTest extends BaseTest {
     public void testBackgroundColorOfViewName() {
 
         String passiveColor = new HomePage(getDriver())
-                .getPassiveViewNameBackgroundColor();
+                .getColorOfPassiveViewNameBackground();
 
         String hoverColor = new HomePage(getDriver())
                 .moveMouseToPassiveViewName()
-                .getPassiveViewNameBackgroundColor();
+                .getColorOfPassiveViewNameBackground();
 
         String activeColor = new HomePage(getDriver())
                 .moveMouseToPassiveViewName()
                 .mouseClick()
-                .getActiveViewNameBackgroundColor();
+                .getColorOfActiveViewNameBackground();
 
         Assert.assertNotEquals(passiveColor, hoverColor);
         Assert.assertNotEquals(hoverColor, activeColor);

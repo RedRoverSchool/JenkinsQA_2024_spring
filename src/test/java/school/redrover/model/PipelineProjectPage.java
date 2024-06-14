@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
 
     @FindBy(id = "description-link")
-    private WebElement changeDescriptionButton;
+    private WebElement addOrEditDescriptionButton;
 
     @FindBy(name = "description")
     private WebElement descriptionInput;
@@ -142,7 +142,7 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
     }
 
     public PipelineProjectPage clickChangeDescription() {
-        changeDescriptionButton.click();
+        addOrEditDescriptionButton.click();
 
         return this;
     }
@@ -158,7 +158,7 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
     }
 
     public PipelineProjectPage waitAddDescriptionButtonDisappears() {
-        getWait2().until(ExpectedConditions.invisibilityOf(changeDescriptionButton));
+        getWait2().until(ExpectedConditions.invisibilityOf(addOrEditDescriptionButton));
 
         return this;
     }
@@ -177,11 +177,11 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         return descriptionPreview.isDisplayed();
     }
 
-    public String getTextAreaBorderBacklightColor() {
+    public String getColorOfTextAreaBorderBacklight() {
         return getDriver().switchTo().activeElement().getCssValue("box-shadow").split(" 0px")[0];
     }
 
-    public String getCellColor() {
+    public String getColorOfCell() {
         Set<String> backgroundColor = new HashSet<>();
         for (int i = 1; i <= 2; i++) {
             WebElement element = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
@@ -204,7 +204,7 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         return this;
     }
 
-    public String getDefaultTextAreaBorderBacklightColor() {
+    public String getColorOfDefaultTextAreaBorderBacklight() {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
 
         return (String) js.executeScript(
@@ -298,7 +298,7 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         return getWait2().until(ExpectedConditions.visibilityOf(warningMessage)).getText();
     }
 
-    public String getFullStageViewButtonBackgroundColor() {
+    public String getColorOfFullStageViewButtonBackground() {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         return (String) js.executeScript("return window.getComputedStyle(arguments[0], '::before').getPropertyValue('background-color');", fullStageViewButton);
     }
@@ -447,5 +447,4 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         return getWait5().until(ExpectedConditions.visibilityOfAllElements(buildRow)).stream()
                 .map(WebElement::getText).toList();
     }
-
 }

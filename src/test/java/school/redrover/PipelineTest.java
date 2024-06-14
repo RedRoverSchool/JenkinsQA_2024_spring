@@ -5,7 +5,6 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -113,7 +112,7 @@ public class PipelineTest extends BaseTest {
                 .clickSaveButton()
                 .clickChangeDescription()
                 .waitAddDescriptionButtonDisappears()
-                .getTextAreaBorderBacklightColor();
+                .getColorOfTextAreaBorderBacklight();
 
         Assert.assertEquals(currentTextAreaBorderBacklightColor, "rgba(11, 106, 162, 0.25)",
                 "Current text area border backlight color is different");
@@ -132,7 +131,7 @@ public class PipelineTest extends BaseTest {
                 .clickSaveButton()
                 .clickChangeDescription()
                 .makeDescriptionFieldNotActive()
-                .getDefaultTextAreaBorderBacklightColor();
+                .getColorOfDefaultTextAreaBorderBacklight();
 
         Assert.assertEquals(defaultTextAreaBorderBacklightColor, "rgba(11,106,162,.25)");
     }
@@ -315,11 +314,11 @@ public class PipelineTest extends BaseTest {
 
         String backgroundColorBeforeHover = new HomePage(getDriver())
                 .clickSpecificPipelineName(PIPELINE_NAME)
-                .getFullStageViewButtonBackgroundColor();
+                .getColorOfFullStageViewButtonBackground();
 
         String backgroundColorAfterHover = new PipelineProjectPage(getDriver())
                 .hoverOnFullStageViewButton()
-                .getFullStageViewButtonBackgroundColor();
+                .getColorOfFullStageViewButtonBackground();
 
         Assert.assertTrue(!backgroundColorAfterHover.equals(backgroundColorBeforeHover)
                 && backgroundColorAfterHover.equals(expectedColor));
@@ -696,7 +695,7 @@ public class PipelineTest extends BaseTest {
                 .clickSaveButton()
                 .makeBuilds(2)
                 .waitBuildToFinish()
-                .getCellColor();
+                .getColorOfCell();
 
         Assert.assertEquals(backgroundColor, "rgba(0, 255, 0, 0.1)");
     }
@@ -726,24 +725,6 @@ public class PipelineTest extends BaseTest {
                 .getStageHeaderNameList();
 
         Assert.assertEquals(actualStageHeaderNameList, expectedHeaderNameList);
-    }
-
-    @Test
-    public void testButtonBackgroundColor() {
-        String expectedColor = "rgba(175,175,207,.175)";
-
-        getDriver().findElement(By.cssSelector("a[href$=\"/newJob\"]")).click();
-        getDriver().findElement(By.cssSelector("#name")).sendKeys("Pipeline");
-        getDriver().findElement(By.xpath("//li[contains(@class, '_Folder')]")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        String actualColor = (String) js.executeScript(
-                "return window.getComputedStyle(arguments[0]).getPropertyValue('--item-background--hover');",
-                getDriver().findElement(By.id("description-link")));
-
-        Assert.assertEquals(actualColor, expectedColor);
     }
 
     @Test

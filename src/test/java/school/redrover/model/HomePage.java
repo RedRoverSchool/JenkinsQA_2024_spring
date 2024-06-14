@@ -367,11 +367,11 @@ public class HomePage extends BasePage<HomePage> {
         return this;
     }
 
-    public String getPassiveViewNameBackgroundColor() {
+    public String getColorOfPassiveViewNameBackground() {
         return passiveViewName.getCssValue("background-color");
     }
 
-    public String getActiveViewNameBackgroundColor() {
+    public String getColorOfActiveViewNameBackground() {
         return activeViewName.getCssValue("background-color");
     }
 
