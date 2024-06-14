@@ -108,7 +108,7 @@ public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
         return new UsersPage(getDriver());
     }
 
-    public boolean isSearchFieldActivateElement() {
+    public boolean isSearchFieldActive() {
         return searchInput.equals(getDriver().switchTo().activeElement());
     }
 
@@ -130,7 +130,7 @@ public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
         return new ManageJenkinsPage(getDriver());
     }
 
-    public String getSearchHintText() {
+    public String getSearchTooltipText() {
         return searchHint.getAttribute("tooltip");
     }
 
@@ -160,7 +160,7 @@ public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
         return this;
     }
 
-    public String getNoSearchResultsPopUpText() {
+    public String getNoSearchResultsPopupText() {
         return getWait2().until(ExpectedConditions.visibilityOf(noSearchResultsPopUp)).getText();
     }
 
@@ -231,35 +231,14 @@ public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
     }
 
     public List<String> getSecurityBlockElementList() {
-        List<String> textList = new ArrayList<>();
-        List<WebElement> securityBlockElementList = securitySectionNameList;
-
-        for (WebElement element : securityBlockElementList) {
-            textList.add(element.getText());
-        }
-
-        return textList;
+        return securitySectionNameList.stream().map(WebElement::getText).toList();
     }
 
     public List<String> getSecurityBlockDescriptionList() {
-        List<String> textList = new ArrayList<>();
-        List<WebElement> securityDescriptionList = securitySectionDescriptionList;
-
-        for (WebElement element : securityDescriptionList) {
-            textList.add(element.getText());
-        }
-
-        return textList;
+        return securitySectionDescriptionList.stream().map(WebElement::getText).toList();
     }
 
     public List<String> getListOfManageJenkinsLinks() {
-        List<String> linkTextList = new ArrayList<>();
-        List<WebElement> linkList = manageJenkinsLinkList;
-
-        for (WebElement link : linkList) {
-            linkTextList.add(link.getText());
-        }
-
-        return linkTextList;
+        return manageJenkinsLinkList.stream().map(WebElement::getText).toList();
     }
 }
