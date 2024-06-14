@@ -63,7 +63,7 @@ public class HomePage extends BasePage<HomePage> {
     private WebElement builSchedulePopUp;
 
     @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
-    private WebElement fullStageViewButton;
+    private WebElement fullStageViewOnDropdown;
 
     @FindBy(css = ".tab.active a")
     private WebElement activeViewName;
@@ -332,8 +332,9 @@ public class HomePage extends BasePage<HomePage> {
         return new ManageJenkinsPage(getDriver());
     }
 
-    public FullStageViewPage clickFullStageViewButton() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(fullStageViewButton)).click();
+    @Step("Click on 'Full Stage View' on Item dropdown menu")
+    public FullStageViewPage clickFullStageViewOnDropdown() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(fullStageViewOnDropdown)).click();
 
         return new FullStageViewPage(getDriver());
     }

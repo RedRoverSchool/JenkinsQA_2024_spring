@@ -17,7 +17,7 @@ public class FooterTest extends BaseTest {
     private final String jenkinsVersion = "2.440.2";
 
     @Test
-    @Story("'Jenkins 2.440.2' button > Visibility, clickability and functionality")
+    @Story("US_12.002 'Jenkins 2.440.2' button > Visibility, clickability and functionality")
     @Description("Check a drop-down list upon clicking on the 'Jenkins 2.440.2' button")
     public void testLinkButtonsListInVersionDropdown() {
         final List<String> expectedDropdownElementsValues = List.of("About Jenkins", "Get involved", "Website");
@@ -30,7 +30,7 @@ public class FooterTest extends BaseTest {
     }
 
     @Test
-    @Story("REST API link > Redirection")
+    @Story("US_12.003 REST API link > Redirection")
     @Description("Verify if the title name is correct on the Api Link page")
     public void testRestAPIButtonTitle() {
         String titleText = new HomePage(getDriver())
@@ -41,7 +41,7 @@ public class FooterTest extends BaseTest {
     }
 
     @Test
-    @Story("'Jenkins 2.440.2' button > Visibility, clickability and functionality")
+    @Story("US_12.002 'Jenkins 2.440.2' button > Visibility, clickability and functionality")
     @Description("Check tab bar menu items on the 'About Jenkins' page")
     public void testJenkinsInformationFooter() {
         boolean isExistJenkinsInformationFooter = new HomePage(getDriver())
@@ -53,7 +53,7 @@ public class FooterTest extends BaseTest {
     }
 
     @Test
-    @Story("'Jenkins 2.440.2' button > Visibility, clickability and functionality")
+    @Story("US_12.002 'Jenkins 2.440.2' button > Visibility, clickability and functionality")
     @Description("Check Jenkins version in the footer on the 'About Jenkins' page")
     public void testVersionOnAboutJenkinsPage() {
         String versionOnPage = new HomePage(getDriver())
@@ -65,7 +65,7 @@ public class FooterTest extends BaseTest {
     }
 
     @Test
-    @Story("'Jenkins 2.440.2' button > Visibility, clickability and functionality")
+    @Story("US_12.002 'Jenkins 2.440.2' button > Visibility, clickability and functionality")
     @Description("Check Jenkins version in the footer on the Home, New Item, People, Build History, Manage Jenkins, My Views pages")
     public void testVersionFooterOnEachPage() {
         List<String> versionList = new ArrayList<>();

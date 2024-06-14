@@ -6,8 +6,6 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -342,7 +340,7 @@ public class PipelineTest extends BaseTest {
                 .clickSaveButton()
                 .clickLogo()
                 .openItemDropdown(pipelineName)
-                .clickFullStageViewButton()
+                .clickFullStageViewOnDropdown()
                 .getH2HeadingText();
 
         Assert.assertEquals(h2HeadingText, expectedResult);
@@ -767,25 +765,20 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testFullStageViewDropdownMenu() {
+    @Story("US_02.009 Full Stage View")
+    @Description("Verify the heading after clicking on the ‘Full Stage View’ on the dropdown menu")
+    public void testFullStageViewOnDropdownMenu() {
+        final String expectedText = PIPELINE_NAME + " - Stage View";
+
         TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//li[@class='jenkins-breadcrumbs__list-item']"))).click();
+        String pageHeading = new HomePage(getDriver())
+                .openItemDropdown(PIPELINE_NAME)
+                .clickFullStageViewOnDropdown()
+                .getH2HeadingText();
 
-        WebElement chevron = getDriver().findElement(
-                By.xpath("//a[@href='job/" + PIPELINE_NAME + "/']//button[@class='jenkins-menu-dropdown-chevron']"));
-        JavascriptExecutor jsExecutor = (JavascriptExecutor) getDriver();
-
-        jsExecutor.executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", chevron);
-        jsExecutor.executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
-                By.xpath("//a[contains(@href, 'workflow-stage')]")))).click();
-
-        String expectedText = PIPELINE_NAME + " - Stage View";
-        Assert.assertEquals(getWait5().until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//div[@id='pipeline-box']/h2"))).getText(), expectedText);
+        Allure.step("Expected result: Page heading - '" + expectedText + "'");
+        Assert.assertEquals(pageHeading, expectedText);
     }
 
     @Test
