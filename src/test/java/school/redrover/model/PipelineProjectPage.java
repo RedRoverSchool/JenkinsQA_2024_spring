@@ -58,7 +58,7 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
     @FindBy(xpath = "//td[contains(@class, 'progress-bar')]")
     private WebElement buildProgressBar;
 
-    @FindBy(css = "[aria-describedby^='tippy'")
+    @FindBy(css = "[aria-describedby^='tippy']")
     private WebElement buildScheduledPopUp;
 
     @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
