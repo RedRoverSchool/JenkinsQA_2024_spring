@@ -33,7 +33,7 @@ public class HeaderTest extends BaseTest {
                 .clickWarningIcon()
                 .getHeader()
                 .clickConfigureTooltipButton()
-                .getTitleText();
+                .getTitle();
 
         Assert.assertTrue(pageTitle.contains("Security"));
     }
