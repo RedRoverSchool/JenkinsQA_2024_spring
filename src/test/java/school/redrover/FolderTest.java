@@ -333,7 +333,10 @@ public class FolderTest extends BaseTest {
                 .clickSpecificFolderName(FOLDER_NAME)
                 .getItemListInsideFolder();
 
-        Assert.assertListContainsObject(insideFolderItemList, IVAN_S_FREE_STYLE_PROJECT, "FreeStyle Project was not created");
+        Assert.assertListContainsObject(
+                insideFolderItemList,
+                IVAN_S_FREE_STYLE_PROJECT,
+                "FreeStyle Project was not created");
     }
 
     @Test(dependsOnMethods = "testCreateFreeStyleProjectInsideRootFolder")

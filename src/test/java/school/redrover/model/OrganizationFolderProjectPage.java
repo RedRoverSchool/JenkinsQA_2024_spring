@@ -94,12 +94,12 @@ public class OrganizationFolderProjectPage extends BaseProjectPage<OrganizationF
         return this;
     }
 
-    public OrganizationFolderProjectPage clickSidebarScanOrganizationFolderLog(){
+    public OrganizationFolderProjectPage clickSidebarScanOrganizationFolderLog() {
         scanButton.click();
         return this;
     }
 
-    public String getScanText(){
+    public String getScanText() {
         return scanText.getText();
     }
 

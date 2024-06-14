@@ -684,10 +684,10 @@ public class PipelineTest extends BaseTest {
     @Story("US_02.011 Take information about a project built")
     @Description("Successful builds are marked with a green indicator when creating the list of builds.")
     public void testBuildColorGreen() {
-    final String PIPELINE_SCRIPT = """
+        final String pipelineScript = """
                 pipeline {
                 agent any
- 
+                 
                 stages {
                 """;
 
@@ -701,13 +701,13 @@ public class PipelineTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
-                .sendScript(1,PIPELINE_SCRIPT)
+                .sendScript(1, pipelineScript)
                 .clickSaveButton()
                 .makeBuilds(2)
                 .waitBuildToFinish()
                 .getCellColor();
 
-            Assert.assertEquals(backgroundColor, "rgba(0, 255, 0, 0.1)");
+        Assert.assertEquals(backgroundColor, "rgba(0, 255, 0, 0.1)");
     }
 
     @Test
@@ -1126,6 +1126,7 @@ public class PipelineTest extends BaseTest {
                 {"50", "year", "Approximately 7 days between builds"}
         };
     }
+
     @Test(dataProvider = "dataForThrottleBuilds")
     @Story("US_02.004 Verify the Pipeline configuration")
     @Description("Set number of builds, time period in Throttle builds and verify message about time between builds after")

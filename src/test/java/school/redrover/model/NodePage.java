@@ -28,7 +28,7 @@ public class NodePage extends BasePage<NodePage> {
         return labels.getText();
     }
 
-    public String getDescription(){
+    public String getDescription() {
         return descriptionArea.getText();
     }
 

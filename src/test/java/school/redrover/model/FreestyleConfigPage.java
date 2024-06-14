@@ -1,16 +1,10 @@
 package school.redrover.model;
 
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BaseConfigPage;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FreestyleConfigPage extends BaseConfigPage<FreestyleProjectPage, FreestyleConfigPage> {
 

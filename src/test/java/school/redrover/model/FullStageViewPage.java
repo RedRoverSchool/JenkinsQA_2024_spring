@@ -11,7 +11,7 @@ import java.util.List;
 public class FullStageViewPage extends BasePage<FullStageViewPage> {
 
     @FindBy(xpath = "//h2")
-    private WebElement H2HeadingText;
+    private WebElement h2HeadingText;
 
     @FindBy(id = "breadcrumbBar")
     private WebElement breadcrumbBarText;
@@ -24,7 +24,7 @@ public class FullStageViewPage extends BasePage<FullStageViewPage> {
     }
 
     public String getH2HeadingText() {
-        return getWait5().until(ExpectedConditions.visibilityOf(H2HeadingText)).getText();
+        return getWait5().until(ExpectedConditions.visibilityOf(h2HeadingText)).getText();
     }
 
     public String getBreadcrumbsText() {

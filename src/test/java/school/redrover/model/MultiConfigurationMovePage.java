@@ -14,7 +14,9 @@ public class MultiConfigurationMovePage extends BasePage<MultiConfigurationMoveP
     @FindBy(name = "Submit")
     private WebElement moveButton;
 
-    public MultiConfigurationMovePage(WebDriver driver) { super(driver); }
+    public MultiConfigurationMovePage(WebDriver driver) {
+        super(driver);
+    }
 
     public MultiConfigurationMovePage selectFolder(String folderName) {
         new Select(selectDestination).selectByValue("/" + folderName);

@@ -63,7 +63,7 @@ public class AppearancePage extends BasePage<AppearancePage> {
         return this;
     }
 
-    public AppearancePage clickApply(){
+    public AppearancePage clickApply() {
         applyButton.click();
         return new AppearancePage(getDriver());
     }
@@ -73,7 +73,7 @@ public class AppearancePage extends BasePage<AppearancePage> {
             clickDefaultThemeButton();
             clickApplyButton();
         }
-            return this;
+        return this;
     }
 
     public String getCurrentThemeAttribute() {

@@ -13,7 +13,7 @@ public class DeleteDialog extends BasePage {
     }
 
     @FindBy(css = "dialog .jenkins-button--primary")
-    WebElement yesButton;
+    private WebElement yesButton;
 
 
     public <T> T clickYes(T page) {

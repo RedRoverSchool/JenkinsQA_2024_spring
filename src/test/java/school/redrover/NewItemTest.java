@@ -21,11 +21,11 @@ public class NewItemTest extends BaseTest {
                 .clickNewItem()
                 .getPageTitle();
 
-        String TextAboveNameField = new CreateNewItemPage(getDriver())
+        String textAboveNameField = new CreateNewItemPage(getDriver())
                 .getTitleOfNameField();
 
         Assert.assertEquals(newItemHeader, "New Item [Jenkins]");
-        Assert.assertEquals(TextAboveNameField, "Enter an item name");
+        Assert.assertEquals(textAboveNameField, "Enter an item name");
     }
 
     @Test
@@ -93,7 +93,7 @@ public class NewItemTest extends BaseTest {
         String hintTextWhenEmptyName = "» This field cannot be empty, please enter a valid name";
         String hintColor = "rgba(255, 0, 0, 1)";
 
-        Boolean IsOkButtonEnabled = new HomePage(getDriver())
+        Boolean isOkButtonEnabled = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName("q")
                 .clearItemNameField()
@@ -105,7 +105,7 @@ public class NewItemTest extends BaseTest {
         String validationMessageColor = new CreateNewItemPage(getDriver())
                 .getItemNameHintColor();
 
-        Assert.assertFalse(IsOkButtonEnabled);
+        Assert.assertFalse(isOkButtonEnabled);
         Assert.assertEquals(validationMessage, hintTextWhenEmptyName);
         Assert.assertEquals(validationMessageColor, hintColor);
     }
@@ -259,7 +259,7 @@ public class NewItemTest extends BaseTest {
     }
 
     @Test
-    public void TestCheckListOfSuggestedForCreationProjectTypes() {
+    public void testCheckListOfSuggestedForCreationProjectTypes() {
         List<String> typesList = List.of(
                 "Freestyle project",
                 "Pipeline",
@@ -284,13 +284,13 @@ public class NewItemTest extends BaseTest {
 
     @Test(dataProvider = "projectTypes")
     public void testCreateItemForStandaloneOrNestedProjects(String projectType) {
-        String PROJECT_NAME = "NewProject";
+        String projectName = "NewProject";
         Random random = new Random();
         int itemOptionIndex = random.nextInt(3) + 1;
 
         Boolean isTypeChecked = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(PROJECT_NAME)
+                .setItemName(projectName)
                 .clickItemOption(projectType, itemOptionIndex)
                 .isAttributeAriaChecked(projectType, itemOptionIndex);
 
@@ -303,7 +303,7 @@ public class NewItemTest extends BaseTest {
                 .getPageHeadingText();
 
         Assert.assertTrue(isTypeChecked);
-        Assert.assertEquals(currentUrl, String.format("http://localhost:8080/job/%s/configure", PROJECT_NAME));
-        Assert.assertTrue(pageHeading.contains(PROJECT_NAME));
+        Assert.assertEquals(currentUrl, String.format("http://localhost:8080/job/%s/configure", projectName));
+        Assert.assertTrue(pageHeading.contains(projectName));
     }
 }

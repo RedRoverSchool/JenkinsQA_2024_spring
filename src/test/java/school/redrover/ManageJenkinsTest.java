@@ -305,7 +305,7 @@ public class ManageJenkinsTest extends BaseTest {
     @Test
     @Story("US_09.004 View 'Manage Jenkins' page > Redirection")
     @Description("Check redirection to 'About Jenkins' page")
-    public void testRedirectionToCAboutJenkinsPage() {
+    public void testRedirectionToAboutJenkinsPage() {
         String pageTitle = new HomePage(getDriver())
                 .clickManageJenkins()
                 .clickAboutJenkinsLink()
