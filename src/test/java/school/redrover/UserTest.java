@@ -25,7 +25,8 @@ public class UserTest extends BaseTest {
     public void testCheckUserID() {
 
         String userID = new HomePage(getDriver())
-                .getHeader().clickUserNameOnHeader()
+                .getHeader()
+                .clickUserNameOnHeader()
                 .getUserID();
 
         Assert.assertEquals(userID, "admin");
@@ -35,7 +36,7 @@ public class UserTest extends BaseTest {
     public void testCreateUserViaManageJenkins() {
         List<String> userName = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickUsers()
+                .clickUsersLink()
                 .clickCreateUser()
                 .typeUserName(USER_NAME)
                 .setPassword(PASSWORD)
@@ -63,7 +64,8 @@ public class UserTest extends BaseTest {
     public void testUsersSortingByName() {
 
         List<String> names = new HomePage(getDriver())
-                .clickManageJenkins().clickUsers()
+                .clickManageJenkins()
+                .clickUsersLink()
                 .createUserWithRandomData()
                 .createUserWithRandomData()
                 .createUserWithRandomData()
@@ -79,7 +81,8 @@ public class UserTest extends BaseTest {
     public void testUsersSortingByUserID() {
 
         List<String> userIDList = new HomePage(getDriver())
-                .clickManageJenkins().clickUsers()
+                .clickManageJenkins()
+                .clickUsersLink()
                 .createUserWithRandomData()
                 .createUserWithRandomData()
                 .createUserWithRandomData()
@@ -103,7 +106,6 @@ public class UserTest extends BaseTest {
     @DataProvider(name = "usersCreateDataProvider")
     public Object[][] usersCreateDataProvider() {
         return new Object[][]{
-//              "Username", "Password",   "Full name",   "E-mail address"
                 {"Ivan", randomString(), randomString(), randomEmail()},
                 {"Maria", randomString(), randomString(), randomEmail()},
                 {"Sofia", randomString(), randomString(), randomEmail()},
@@ -116,7 +118,7 @@ public class UserTest extends BaseTest {
 
         String currentUrl = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickUsers()
+                .clickUsersLink()
                 .createUser(username, password, fullName, email)
                 .clickLogo()
                 .clickPeopleOnSidebar()
@@ -131,7 +133,7 @@ public class UserTest extends BaseTest {
 
         new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickUsers()
+                .clickUsersLink()
                 .createUser("", "", "", "");
 
         CreateUserPage createUserPage = new CreateUserPage(getDriver());
