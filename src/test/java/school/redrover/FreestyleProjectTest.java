@@ -28,7 +28,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testCreateProjectViaSidebarMenu() {
         List<String> itemList = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(FREESTYLE_PROJECT_NAME)
+                .typeItemName(FREESTYLE_PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .clickLogo()
                 .getItemList();
@@ -48,7 +48,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         List<String> projectList = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(projectName2)
+                .typeItemName(projectName2)
                 .typeItemNameInCopyFrom(projectName1)
                 .selectFreestyleAndClickOk()
                 .clickSaveButton()
@@ -74,7 +74,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testCreateProjectInvalidCharsGetMassage(String unsafeChar) {
         String errorMassage = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(unsafeChar)
+                .typeItemName(unsafeChar)
                 .selectFreeStyleProject()
                 .getErrorMessageInvalidCharacterOrDuplicateName();
 
@@ -89,7 +89,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testCreateProjectInvalidCharsDisabledOkButton(String unsafeChar) {
         boolean enabledOkButton = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(unsafeChar)
+                .typeItemName(unsafeChar)
                 .selectFreeStyleProject()
                 .isOkButtonEnabled();
 
@@ -105,7 +105,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         String errorText = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName("   ")
+                .typeItemName("   ")
                 .selectFreeStyleProject()
                 .clickOkAnyway(new ItemErrorPage(getDriver()))
                 .getErrorText();
@@ -123,7 +123,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         String errorText = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(projectName)
+                .typeItemName(projectName)
                 .selectFreeStyleProject()
                 .clickOkAnyway(new ItemErrorPage(getDriver()))
                 .getProblemText();
@@ -140,7 +140,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         String errorMessage = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(FREESTYLE_PROJECT_NAME)
+                .typeItemName(FREESTYLE_PROJECT_NAME)
                 .selectFreeStyleProject()
                 .clickOkAnyway(new ItemErrorPage(getDriver()))
                 .getErrorText();
@@ -222,7 +222,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testAddDescriptionUsingAddDescriptionButton() {
         String projectDescription = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(FREESTYLE_PROJECT_NAME)
+                .typeItemName(FREESTYLE_PROJECT_NAME)
                 .selectFreestyleAndClickOk()
                 .clickSaveButton()
                 .clickAddDescription()

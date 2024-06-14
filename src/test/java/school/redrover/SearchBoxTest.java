@@ -52,7 +52,7 @@ public class SearchBoxTest extends BaseTest {
     public void createFolder(String folderName) {
         new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(folderName)
+                .typeItemName(folderName)
                 .selectFolderAndClickOk()
                 .clickSaveButton()
                 .clickLogo();
@@ -96,10 +96,10 @@ public class SearchBoxTest extends BaseTest {
     public void testSearchPipeline(){
         String searchResult = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(PIPELINE_NAME)
+                .typeItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .clickLogo()
-                .getHeader().searchProjectByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
+                .getHeader().typeProjectNameToSearchInputFieldAndPressEnter(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
                 .getHeadingText();
 
         Assert.assertEquals(searchResult, PIPELINE_NAME,  "Pipeline is not found");

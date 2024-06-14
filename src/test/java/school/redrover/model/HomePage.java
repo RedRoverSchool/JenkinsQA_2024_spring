@@ -149,12 +149,14 @@ public class HomePage extends BasePage<HomePage> {
         return new CreateNewItemPage(getDriver());
     }
 
+    @Step("Click on the 'Create a job' at start page")
     public CreateNewItemPage clickCreateAJob() {
         createAJobLink.click();
 
         return new CreateNewItemPage(getDriver());
     }
 
+    @Step("Get Item list from Dashboard")
     public List<String> getItemList() {
         return itemList.stream()
                 .map(WebElement::getText)

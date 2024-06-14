@@ -110,7 +110,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         final String newProjectName = "MCProject copy";
         List<String> projectList = TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
                 .clickNewItem()
-                .setItemName(newProjectName)
+                .typeItemName(newProjectName)
                 .typeItemNameInCopyFrom(PROJECT_NAME)
                 .clickOkAnyway(new MultibranchPipelineConfigPage(getDriver()))
                 .clickSaveButton()
@@ -201,7 +201,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         CreateNewItemPage createNewItemPage =
                 new HomePage(getDriver())
                         .clickNewItem()
-                        .setItemName(EMPTY_NAME)
+                        .typeItemName(EMPTY_NAME)
                         .selectMultiConfiguration();
 
         boolean isErrorMessageCorrect = createNewItemPage.getErrorMessageEmptyName().contains(ERROR_MESSAGE);
@@ -216,7 +216,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     public void testCreateMultiConfigurationProject() {
         List<String> projectNameList = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(PROJECT_NAME)
+                .typeItemName(PROJECT_NAME)
                 .selectMultiConfigurationAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
@@ -350,7 +350,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         List<String> disabledProjectList = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(PROJECT_NAME)
+                .typeItemName(PROJECT_NAME)
                 .selectMultiConfigurationAndClickOk()
                 .clickBreadcrumbsProjectName()
                 .clickDisableProject()

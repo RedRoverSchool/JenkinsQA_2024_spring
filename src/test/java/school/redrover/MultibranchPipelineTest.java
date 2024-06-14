@@ -24,7 +24,7 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testCreateProjectViaSidebarMenu() {
         List<String> itemList = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(MULTI_PIPELINE_NAME)
+                .typeItemName(MULTI_PIPELINE_NAME)
                 .selectMultibranchPipelineAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
@@ -56,7 +56,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         List<String> itemList = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(secondItemName)
+                .typeItemName(secondItemName)
                 .typeItemNameInCopyFrom(firstProjectName)
                 .clickOkAnyway(new MultibranchPipelineConfigPage(getDriver()))
                 .clickLogo()
@@ -72,7 +72,7 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testDisableProjectViaToggle() {
         String disableWarningText = new HomePage(getDriver())
                 .clickCreateAJob()
-                .setItemName(MULTI_PIPELINE_NAME)
+                .typeItemName(MULTI_PIPELINE_NAME)
                 .selectMultibranchPipelineAndClickOk()
                 .clickToggle()
                 .clickSaveButton()
@@ -136,7 +136,7 @@ public class MultibranchPipelineTest extends BaseTest {
     @Description("Verify that the status toggle of a project reflects that the project is disabled.")
     public void testDisabledProjectToggleStatus() {
         String statusToggle = new HomePage(getDriver()).clickCreateAJob()
-                .setItemName(MULTI_PIPELINE_NAME)
+                .typeItemName(MULTI_PIPELINE_NAME)
                 .selectMultibranchPipelineAndClickOk()
                 .clickOnToggle()
                 .clickSaveButton()
@@ -227,7 +227,7 @@ public class MultibranchPipelineTest extends BaseTest {
         MultibranchPipelineProjectPage multibranchPipelineProjectPage = new HomePage(getDriver())
                 .clickJobByName(FOLDER_NAME, new FolderProjectPage(getDriver()))
                 .clickNewItemInsideFolder()
-                .setItemName(MULTI_PIPELINE_NAME)
+                .typeItemName(MULTI_PIPELINE_NAME)
                 .selectMultibranchPipelineAndClickOk()
                 .clickSaveButton();
 

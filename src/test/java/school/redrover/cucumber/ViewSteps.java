@@ -49,7 +49,7 @@ public class ViewSteps {
 
     @And("Enter Item name {string}")
     public void enterItemName(String name) {
-        createNewItemPage = createNewItemPage.setItemName(name);
+        createNewItemPage = createNewItemPage.typeItemName(name);
     }
 
     @And("Set Item type as Freestyle project, click Ok and go to Configure page")

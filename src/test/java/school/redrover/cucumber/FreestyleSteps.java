@@ -44,7 +44,7 @@ public class FreestyleSteps {
 
     @And("Type job name {string}")
     public void enterItemName(String name) {
-        createNewItemPage.setItemName(name);
+        createNewItemPage.typeItemName(name);
     }
 
     @And("Click Ok and go to config")

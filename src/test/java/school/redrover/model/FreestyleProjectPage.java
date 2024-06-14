@@ -74,19 +74,6 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
         super(driver);
     }
 
-    @Step("Click 'Add description' button")
-    public FreestyleProjectPage clickAddDescription() {
-        addOrEditDescriptionButton.click();
-
-        return this;
-    }
-
-    @Step("Click 'Edit description'")
-    public FreestyleProjectPage clickEditDescription() {
-        addOrEditDescriptionButton.click();
-
-        return this;
-    }
 
     @Step("Click 'Disable Project' button")
     public FreestyleProjectPage clickDisableProjectButton() {
@@ -178,11 +165,6 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
     public HomePage clickYesInConfirmDeleteDialog() {
         yesButton.click();
         return new HomePage(getDriver());
-    }
-
-    public boolean isAddDescriptionButtonEnable() {
-
-        return addDescriptionButton.isEnabled();
     }
 
     @Step("Click 'Build Now' on sidebar menu")

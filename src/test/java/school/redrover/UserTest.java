@@ -165,7 +165,7 @@ public class UserTest extends BaseTest {
         //Test steps
         final String actualConsoleLogs = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(projectName)
+                .typeItemName(projectName)
                 .selectFreestyleAndClickOk()
                 .scrollToBuildTriggersHeading()
                 .clickTriggerBuildsRemotelyCheckbox()

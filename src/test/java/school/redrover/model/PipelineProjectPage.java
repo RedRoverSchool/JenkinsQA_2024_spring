@@ -13,15 +13,6 @@ import java.util.stream.Collectors;
 
 public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
 
-    @FindBy(id = "description-link")
-    private WebElement changeDescriptionButton;
-
-    @FindBy(name = "description")
-    private WebElement descriptionInput;
-
-    @FindBy(name = "Submit")
-    private WebElement saveButton;
-
     @FindBy(css = "#description>:first-child")
     private WebElement displayedDescription;
 
@@ -135,33 +126,10 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         super(driver);
     }
 
-    public PipelineProjectPage clickSaveButton() {
-        saveButton.click();
-
-        return this;
-    }
-
-    public PipelineProjectPage clickChangeDescription() {
-        changeDescriptionButton.click();
-
-        return this;
-    }
-
-    public PipelineProjectPage setDescription(String name) {
-        descriptionInput.sendKeys(name);
-
-        return this;
-    }
-
     public String getDescriptionText() {
         return displayedDescription.getText();
     }
 
-    public PipelineProjectPage waitAddDescriptionButtonDisappears() {
-        getWait2().until(ExpectedConditions.invisibilityOf(changeDescriptionButton));
-
-        return this;
-    }
 
     public PipelineProjectPage clickShowDescriptionPreview() {
         showDescriptionPreview.click();
@@ -192,24 +160,10 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         return backgroundColor.iterator().next();
     }
 
-    public PipelineProjectPage clickOnDescriptionInput() {
-        descriptionInput.click();
-
-        return this;
-    }
-
     public PipelineProjectPage makeDescriptionFieldNotActive() {
         new Actions(getDriver()).sendKeys(Keys.TAB).perform();
 
         return this;
-    }
-
-    public String getDefaultTextAreaBorderBacklightColor() {
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-
-        return (String) js.executeScript(
-                "return window.getComputedStyle(arguments[0]).getPropertyValue('--focus-input-glow');",
-                descriptionInput);
     }
 
     public DeleteDialog clickSidebarDeleteButton() {

@@ -57,7 +57,7 @@ public final class TestUtils {
     public static HomePage createFreestyleProject(BaseTest baseTest, String name) {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
-                .setItemName(name.trim())
+                .typeItemName(name.trim())
                 .selectFreestyleAndClickOk()
                 .clickSaveButton()
                 .clickLogo();
@@ -67,7 +67,7 @@ public final class TestUtils {
     public static HomePage createPipelineProject(BaseTest baseTest, String name) {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
-                .setItemName(name.trim())
+                .typeItemName(name.trim())
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
                 .clickLogo();
@@ -77,7 +77,7 @@ public final class TestUtils {
     public static HomePage createMultiConfigurationProject(BaseTest baseTest, String name) {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
-                .setItemName(name.trim())
+                .typeItemName(name.trim())
                 .selectMultiConfigurationAndClickOk()
                 .clickSaveButton()
                 .clickLogo();
@@ -87,7 +87,7 @@ public final class TestUtils {
     public static HomePage createFolderProject(BaseTest baseTest, String name) {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
-                .setItemName(name.trim())
+                .typeItemName(name.trim())
                 .selectFolderAndClickOk()
                 .clickSaveButton()
                 .clickLogo();
@@ -97,7 +97,7 @@ public final class TestUtils {
     public static HomePage createMultibranchProject(BaseTest baseTest, String name) {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
-                .setItemName(name.trim())
+                .typeItemName(name.trim())
                 .selectMultibranchPipelineAndClickOk()
 //                .clickSaveButton()
                 .clickLogo();
@@ -107,7 +107,7 @@ public final class TestUtils {
     public static HomePage createOrganizationFolderProject(BaseTest baseTest, String name) {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
-                .setItemName(name.trim())
+                .typeItemName(name.trim())
                 .selectOrganizationFolderAndClickOk()
                 .clickSaveButton()
                 .clickLogo();

@@ -35,7 +35,7 @@ public class FolderTest extends BaseTest {
     public void testCreateViaCreateAJob() {
         String folderBreadcrumbName = new HomePage(getDriver())
                 .clickCreateAJob()
-                .setItemName(FOLDER_NAME)
+                .typeItemName(FOLDER_NAME)
                 .selectFolderAndClickOk()
                 .clickSaveButton()
                 .getBreadcrumbName();
@@ -77,7 +77,7 @@ public class FolderTest extends BaseTest {
         String errorMessageText = new HomePage(getDriver())
                 .clickNewItem()
                 .selectFolder()
-                .setItemName(".")
+                .typeItemName(".")
                 .getErrorMessageInvalidCharacterOrDuplicateName();
 
         Assert.assertEquals(errorMessageText, "» “.” is not an allowed name",
@@ -91,7 +91,7 @@ public class FolderTest extends BaseTest {
         String errorMessageText = new HomePage(getDriver())
                 .clickNewItem()
                 .selectFolder()
-                .setItemName("Folder." + Keys.TAB)
+                .typeItemName("Folder." + Keys.TAB)
                 .getErrorMessageInvalidCharacterOrDuplicateName();
 
         Assert.assertEquals(errorMessageText, "» A name cannot end with ‘.’",
@@ -165,7 +165,7 @@ public class FolderTest extends BaseTest {
     public void testRenameFolder() {
         List<String> itemsList = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName("Name")
+                .typeItemName("Name")
                 .selectFolderAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
@@ -206,7 +206,7 @@ public class FolderTest extends BaseTest {
         boolean isItemCreated = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
                 .clickNewItemInsideFolder()
-                .setItemName(multiConfigurationProject)
+                .typeItemName(multiConfigurationProject)
                 .selectFreestyleAndClickOk()
                 .clickLogo()
                 .clickSpecificFolderName(FOLDER_NAME)
@@ -252,7 +252,7 @@ public class FolderTest extends BaseTest {
     public void testCreateViaSidebarMenu() {
         String folderName = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(FOLDER_NAME)
+                .typeItemName(FOLDER_NAME)
                 .selectFolderAndClickOk()
                 .clickSaveButton()
                 .getBreadcrumbName();
@@ -314,7 +314,7 @@ public class FolderTest extends BaseTest {
         String fullProjectName = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
                 .clickNewItemInsideFolder()
-                .setItemName(PIPELINE_NAME)
+                .typeItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
                 .getFullProjectNameLocationText();
@@ -335,13 +335,13 @@ public class FolderTest extends BaseTest {
         List<String> itemNames = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
                 .clickNewItemInsideFolder()
-                .setItemName(FOLDER_TO_MOVE)
+                .typeItemName(FOLDER_TO_MOVE)
                 .selectFolderAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
                 .clickSpecificFolderName(FOLDER_NAME)
                 .clickNewItemInsideFolder()
-                .setItemName(FOLDER_TO_MOVE_2)
+                .typeItemName(FOLDER_TO_MOVE_2)
                 .selectFolderAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
@@ -358,7 +358,7 @@ public class FolderTest extends BaseTest {
         List<String> insideFolderItemList = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
                 .clickNewItemInsideFolder()
-                .setItemName(IVAN_S_FREE_STYLE_PROJECT)
+                .typeItemName(IVAN_S_FREE_STYLE_PROJECT)
                 .selectFreestyleAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
@@ -387,7 +387,7 @@ public class FolderTest extends BaseTest {
     public void testCreateProjectInvalidChar() {
         String header1Text = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName("Fold%erdate")
+                .typeItemName("Fold%erdate")
                 .selectFolderAndClickOk()
                 .getHeadingText();
 

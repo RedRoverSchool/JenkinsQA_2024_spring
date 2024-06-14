@@ -40,7 +40,7 @@ public class NewItemTest extends BaseTest {
     public void testCreateItemWithoutSelectedItemType() {
         boolean isOkButtonEnabled = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName("Test Project")
+                .typeItemName("Test Project")
                 .isOkButtonEnabled();
 
         Assert.assertFalse(isOkButtonEnabled);
@@ -92,7 +92,7 @@ public class NewItemTest extends BaseTest {
     public void testInvalidValuesForProjectNameInput(String x) {
         String errorMessage = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(x)
+                .typeItemName(x)
                 .getErrorMessageInvalidCharacterOrDuplicateName();
 
         Assert.assertEquals(errorMessage, "» ‘" + x + "’ is an unsafe character");
@@ -109,7 +109,7 @@ public class NewItemTest extends BaseTest {
 
         Boolean isOkButtonEnabled = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName("q")
+                .typeItemName("q")
                 .clearItemNameField()
                 .isOkButtonEnabled();
 
@@ -130,7 +130,7 @@ public class NewItemTest extends BaseTest {
     public void testCreateItemEmptyNameNegative() {
         CreateNewItemPage createNewItemPage = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName("Name")
+                .typeItemName("Name")
                 .clearItemNameField()
                 .selectFolder();
 
@@ -146,7 +146,7 @@ public class NewItemTest extends BaseTest {
 
         CreateItemPage errorPage = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName("someName")
+                .typeItemName("someName")
                 .typeItemNameInCopyFrom(NOT_EXISTING_NAME)
                 .clickOkButton();
 
@@ -176,12 +176,12 @@ public class NewItemTest extends BaseTest {
         HomePage homePage;
         homePage = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(jobName)
+                .typeItemName(jobName)
                 .clickProjectType(type)
                 .clickOkButton()
                 .clickLogo()
                 .clickNewItem()
-                .setItemName(jobName + "Copy")
+                .typeItemName(jobName + "Copy")
                 .typeItemNameInCopyFrom(jobName)
                 .clickOkButton()
                 .clickLogo();
@@ -224,7 +224,7 @@ public class NewItemTest extends BaseTest {
 
         List<String> jobsFromDropdownMenu = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(NEW_ITEM_NAME)
+                .typeItemName(NEW_ITEM_NAME)
                 .typeItemNameInCopyFrom(FIRST_LETTERS)
                 .getDropdownMenuContent();
 
@@ -248,7 +248,7 @@ public class NewItemTest extends BaseTest {
 
         Boolean isTypeChecked = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(PROJECT_NAME)
+                .typeItemName(PROJECT_NAME)
                 .clickItemOption(projectType, itemOptionIndex)
                 .isAttributeAriaChecked(projectType, itemOptionIndex);
         String currentUrl = new CreateNewItemPage(getDriver())

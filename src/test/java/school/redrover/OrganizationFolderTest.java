@@ -25,7 +25,7 @@ public class OrganizationFolderTest extends BaseTest {
     public void testCreateViaSidebarMenu() {
         String itemPageHeading = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .typeItemName(ORGANIZATION_FOLDER_NAME)
                 .selectOrganizationFolderAndClickOk()
                 .clickSaveButton()
                 .getProjectName();
@@ -39,7 +39,7 @@ public class OrganizationFolderTest extends BaseTest {
     public void testCreateWithDefaultIcon() {
         String organizationFolderIcon = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .typeItemName(ORGANIZATION_FOLDER_NAME)
                 .selectOrganizationFolderAndClickOk()
                 .selectDefaultIcon()
                 .clickSaveButton()
