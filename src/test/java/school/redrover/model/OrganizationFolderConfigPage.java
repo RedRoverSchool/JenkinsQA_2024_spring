@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -71,6 +72,7 @@ public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFol
         return sidebarMenu.isDisplayed();
     }
 
+    @Step("Select 'Default Icon' from 'Icon' dropdown list")
     public OrganizationFolderConfigPage selectDefaultIcon() {
         new Select(iconDropdownList)
                 .selectByVisibleText("Default Icon");
@@ -78,18 +80,21 @@ public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFol
         return new OrganizationFolderConfigPage(getDriver());
     }
 
+    @Step("Scroll to 'Project Recognizers' block")
     public OrganizationFolderConfigPage scrollToProjectRecognizersBlock() {
         scrollToElement(projectRecognizersBlock);
 
         return this;
     }
 
+    @Step("Click 'Add' button under 'Project Recognizers' block")
     public OrganizationFolderConfigPage clickProjectRecognizersAddButton() {
         projectRecognizersAddButton.click();
 
         return this;
     }
 
+    @Step("Click 'Pipeline Jenkinsfile' from Filter list")
     public OrganizationFolderConfigPage addPipelineJenkinsFileFilter() {
         pipelineJenkinsFileFilter.click();
 
@@ -117,18 +122,21 @@ public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFol
         return true;
     }
 
+    @Step("Scroll to 'Property strategy' block")
     public OrganizationFolderConfigPage scrollToPropertyStrategyBlock() {
         scrollToElement(propertyStrategyBlock);
 
         return this;
     }
 
+    @Step("Click 'Add property' button")
     public OrganizationFolderConfigPage clickAddPropertyButton() {
         addPropertyButton.click();
 
         return this;
     }
 
+    @Step("Click 'Throttle builds' from dropdown menu")
     public OrganizationFolderConfigPage clickThrottleBuildsDropdownOption() {
         throttleBuildsDropdownOption.click();
 
@@ -142,12 +150,14 @@ public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFol
                 .toList();
     }
 
+    @Step("Click 'Untrusted' on dropdown menu")
     public OrganizationFolderConfigPage clickUntrustedDropdownOption() {
         untrustedDropdownOption.click();
 
         return this;
     }
 
+    @Step("Select all 'Untrusted' check boxes")
     public OrganizationFolderConfigPage selectUntrustedCheckboxes() {
         for (WebElement element : untrustedCheckboxesList) {
             element.click();
@@ -172,6 +182,7 @@ public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFol
                 .count();
     }
 
+    @Step("Change blocks order by drugging 'ThrottleBuilds' to 'Untrusted'")
     public OrganizationFolderConfigPage changeUntrustedAndThrottleBuildsOrder() {
         new Actions(getDriver())
                 .clickAndHold(untrustedPropertyDragAndDropIcon)

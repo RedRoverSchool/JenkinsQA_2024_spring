@@ -149,6 +149,7 @@ public class HomePage extends BasePage<HomePage> {
         return new CreateNewItemPage(getDriver());
     }
 
+    @Step("Click 'Create a Job'")
     public CreateNewItemPage clickCreateAJob() {
         createAJobLink.click();
 
@@ -167,9 +168,11 @@ public class HomePage extends BasePage<HomePage> {
                 "td>a[href = 'job/%s/']",
                 TestUtils.asURL(projectName))));
         openElementDropdown(element);
+
         return this;
     }
 
+    @Step("Click 'Delete' in dropdown menu")
     public DeleteDialog clickDeleteInDropdown(DeleteDialog dialog) {
         dropdownDelete.click();
         return dialog;
@@ -233,6 +236,7 @@ public class HomePage extends BasePage<HomePage> {
         return new ViewPage(getDriver());
     }
 
+    @Step("Open dropdown menu of the Project")
     public HomePage openItemDropdownWithSelenium(String projectName) {
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(
@@ -392,6 +396,7 @@ public class HomePage extends BasePage<HomePage> {
         return this;
     }
 
+    @Step("Select folder to move")
     public MovePage chooseFolderToMove() {
         getWait5().until(ExpectedConditions.visibilityOf(moveOption)).click();
 
@@ -420,12 +425,14 @@ public class HomePage extends BasePage<HomePage> {
         return new FreestyleProjectPage(getDriver());
     }
 
+    @Step("Click 'Rename' on dropdown menu for the folder")
     public FolderRenamePage clickRenameOnDropdownForFolder() {
         renameFromDropdown.click();
 
         return new FolderRenamePage(getDriver());
     }
 
+    @Step("Click 'Pipeline Syntax' from dropdown menu")
     public PipelineSyntaxPage openItemPipelineSyntaxFromDropdown() {
         dropdownPipelineSyntax.click();
 

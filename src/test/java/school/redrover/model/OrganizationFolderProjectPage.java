@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -47,6 +48,7 @@ public class OrganizationFolderProjectPage extends BaseProjectPage<OrganizationF
         super(driver);
     }
 
+    @Step("Click 'Configure' on sidebar menu")
     public OrganizationFolderConfigPage clickConfigure() {
         configureButton.click();
 
@@ -57,29 +59,33 @@ public class OrganizationFolderProjectPage extends BaseProjectPage<OrganizationF
         return itemIcon.getAttribute("title");
     }
 
+    @Step("Click on 'Pipeline Syntax' in the sidebar menu")
     public PipelineSyntaxPage clickSidebarPipelineSyntax() {
         pipelineSyntaxButton.click();
 
         return new PipelineSyntaxPage(getDriver());
     }
 
-
-    public OrganizationFolderRenamePage clickSidebarRenameButton() {
+    @Step("Click 'Rename' on sidebar menu")
+    public OrganizationFolderRenamePage clickSidebarRename() {
         renameButton.click();
 
         return new OrganizationFolderRenamePage(getDriver());
     }
 
+    @Step("Click 'Add description'")
     public OrganizationFolderProjectPage clickAddDescription() {
         descriptionLink.click();
         return this;
     }
 
+    @Step("Type description text into description input field")
     public OrganizationFolderProjectPage setDescription(String text) {
         textareaDescription.sendKeys(text);
         return this;
     }
 
+    @Step("Click 'Save' button")
     public OrganizationFolderProjectPage clickSaveButton() {
         saveButton.click();
         return this;
@@ -89,20 +95,23 @@ public class OrganizationFolderProjectPage extends BaseProjectPage<OrganizationF
         return description.getText();
     }
 
-    public OrganizationFolderProjectPage clickDeleteOnSidebar() {
+    @Step("Click 'Delete Organization Folder' on sidebar menu")
+    public OrganizationFolderProjectPage clickSidebarDelete() {
         deleteOnSidebar.click();
         return this;
     }
 
-    public OrganizationFolderProjectPage clickSidebarScanOrganizationFolderLog(){
+    @Step("Click 'Scan Organization Folder Log' on the sidebar menu")
+    public OrganizationFolderProjectPage clickSidebarScanOrganizationFolderLog() {
         scanButton.click();
         return this;
     }
 
-    public String getScanText(){
+    public String getScanText() {
         return scanText.getText();
     }
 
+    @Step("Click 'Yes' button in the confirming deletion dialog")
     public HomePage clickYesForDeleteOrganizationFolder() {
         yesButtonOnDeleteOrganizationFolderAlert.click();
         return new HomePage(getDriver());

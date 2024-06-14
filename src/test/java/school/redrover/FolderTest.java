@@ -1,5 +1,6 @@
 package school.redrover;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
@@ -40,6 +41,7 @@ public class FolderTest extends BaseTest {
                 .clickSaveButton()
                 .getBreadcrumbName();
 
+        Allure.step("Expected result: Created project name matches breadcrumb name");
         Assert.assertEquals(folderBreadcrumbName, FOLDER_NAME, "Breadcrumb name doesn't match " + FOLDER_NAME);
     }
 
@@ -48,11 +50,12 @@ public class FolderTest extends BaseTest {
     @Description("Add description of the folder and save it")
     public void testAddDescription() {
         String textInDescription = new FolderProjectPage(getDriver())
-                .clickAddOrEditDescription()
+                .clickAddDescription()
                 .setDescription(FOLDER_DESCRIPTION_FIRST)
                 .clickSaveButton()
                 .getDescriptionText();
 
+        Allure.step("Expected result: Description text is displayed");
         Assert.assertEquals(textInDescription, FOLDER_DESCRIPTION_FIRST);
     }
 
@@ -61,12 +64,13 @@ public class FolderTest extends BaseTest {
     @Description("Edit description of the folder and save it")
     public void testChangeDescription() {
         String textInDescription = new FolderProjectPage(getDriver())
-                .clickAddOrEditDescription()
+                .clickEditDescription()
                 .clearDescription()
                 .setDescription(FOLDER_DESCRIPTION_SECOND)
                 .clickSaveButton()
                 .getDescriptionText();
 
+        Allure.step("Expected result: New description text is displayed");
         Assert.assertEquals(textInDescription, FOLDER_DESCRIPTION_SECOND);
     }
 
@@ -80,6 +84,7 @@ public class FolderTest extends BaseTest {
                 .setItemName(".")
                 .getErrorMessageInvalidCharacterOrDuplicateName();
 
+        Allure.step("Expected result: The error message is displayed");
         Assert.assertEquals(errorMessageText, "» “.” is not an allowed name",
                 "The error message is different");
     }
@@ -94,6 +99,7 @@ public class FolderTest extends BaseTest {
                 .setItemName("Folder." + Keys.TAB)
                 .getErrorMessageInvalidCharacterOrDuplicateName();
 
+        Allure.step("Expected result: The error message is displayed");
         Assert.assertEquals(errorMessageText, "» A name cannot end with ‘.’",
                 "The error message is different");
     }
@@ -102,7 +108,7 @@ public class FolderTest extends BaseTest {
     @Story("US_04.001 Rename Folder")
     @Description("Rename Folder via Breadcrumbs dropdown menu")
     public void testRenameFolderViaFolderBreadcrumbsDropdownMenu() {
-        FolderProjectPage folderProjectPage  = new HomePage(getDriver())
+        FolderProjectPage folderProjectPage = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
                 .hoverOverBreadcrumbsName()
                 .clickBreadcrumbsDropdownArrow()
@@ -114,6 +120,7 @@ public class FolderTest extends BaseTest {
         HomePage renewHomePage = folderProjectPage
                 .clickLogo();
 
+        Allure.step("Expected result: the renamed Project is displayed");
         Assert.assertEquals(folderStatusPageHeading, NEW_FOLDER_NAME,
                 "The Folder name is not equal to " + NEW_FOLDER_NAME);
         Assert.assertTrue(renewHomePage.isItemExists(NEW_FOLDER_NAME));
@@ -134,6 +141,7 @@ public class FolderTest extends BaseTest {
         HomePage renewHomePage = folderProjectPage
                 .clickLogo();
 
+        Allure.step("Expected result: the renamed Project is displayed");
         Assert.assertEquals(folderStatusPageHeading, THIRD_FOLDER_NAME,
                 "The Folder name is not equal to " + THIRD_FOLDER_NAME);
         Assert.assertTrue(renewHomePage.isItemExists(THIRD_FOLDER_NAME));
@@ -149,7 +157,7 @@ public class FolderTest extends BaseTest {
 
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
                 .clickJobByName(FOLDER_NAME, new FolderProjectPage(getDriver()))
-                .clickOnRenameButton()
+                .clickSidebarRename()
                 .setNewName(NEW_FOLDER_NAME)
                 .clickRename();
         String folderRenamedName = folderProjectPage
@@ -157,27 +165,12 @@ public class FolderTest extends BaseTest {
         HomePage renewHomePage = folderProjectPage
                 .clickLogo();
 
+        Allure.step("Expected result: the renamed Project is displayed");
         Assert.assertEquals(folderRenamedName, NEW_FOLDER_NAME);
         Assert.assertTrue(renewHomePage.isItemExists(NEW_FOLDER_NAME));
         Assert.assertTrue(renewHomePage.isItemDeleted(FOLDER_NAME));
     }
-    @Test
-    public void testRenameFolder() {
-        List<String> itemsList = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName("Name")
-                .selectFolderAndClickOk()
-                .clickSaveButton()
-                .clickLogo()
-                .openItemDropdownWithSelenium("Name")
-                .clickRenameOnDropdownForFolder()
-                .setNewName("New Name")
-                .clickRename()
-                .clickLogo()
-                .getItemList();
 
-        Assert.assertListContainsObject(itemsList, "New Name", "Item not found");
-    }
     @Test
     @Story("US_04.002  Move Folder to Folder")
     @Description("Verify a Folder can be moved into another Folder via breadcrumbs")
@@ -194,6 +187,7 @@ public class FolderTest extends BaseTest {
                 .clickMainFolderName(FOLDER_NAME)
                 .getNestedProjectName();
 
+        Allure.step("Expected result: Nested project is displayed");
         Assert.assertEquals(nestedFolder, FOLDER_TO_MOVE, FOLDER_TO_MOVE + " is not in " + FOLDER_NAME);
     }
 
@@ -212,6 +206,7 @@ public class FolderTest extends BaseTest {
                 .clickSpecificFolderName(FOLDER_NAME)
                 .isItemExistsInsideFolder(multiConfigurationProject);
 
+        Allure.step("Expected result: Nested project is displayed");
         Assert.assertTrue(isItemCreated);
     }
 
@@ -225,6 +220,7 @@ public class FolderTest extends BaseTest {
                 .clickYes(new HomePage(getDriver()))
                 .isItemDeleted(FOLDER_NAME);
 
+        Allure.step("Expected result: Project is not displayed on Home page anymore");
         Assert.assertTrue(isFolderDeleted);
     }
 
@@ -243,6 +239,7 @@ public class FolderTest extends BaseTest {
                 .clickSpecificFolderName(FOLDER_NAME)
                 .getItemListInsideFolder();
 
+        Allure.step("Expected result: Nested project is displayed");
         Assert.assertEquals(folderNameList.get(0), FOLDER_TO_MOVE);
     }
 
@@ -261,6 +258,7 @@ public class FolderTest extends BaseTest {
                 .clickLogo()
                 .getItemList();
 
+        Allure.step("Expected result: Created Project is displayed on Breadcrumbs");
         Assert.assertEquals(folderName, FOLDER_NAME);
         Assert.assertListContainsObject(itemList, FOLDER_NAME, "Folder is not created");
     }
@@ -273,6 +271,7 @@ public class FolderTest extends BaseTest {
                 .clickSpecificFolderName(FOLDER_NAME)
                 .isFolderEmpty();
 
+        Allure.step("Expected result: Section 'This folder is empty' is displayed");
         Assert.assertTrue(isFolderEmpty);
     }
 
@@ -299,6 +298,7 @@ public class FolderTest extends BaseTest {
         Boolean isLinkForCreateJobDisplayed = new FolderProjectPage(getDriver())
                 .isLinkForCreateJobDisplayed();
 
+        Allure.step("Expected result: Section 'This folder is empty' is displayed");
         Assert.assertEquals(actualFolderName, folderName);
         Assert.assertEquals(actualEmptyStateMessage, thisFolderIsEmptyMessage);
         Assert.assertEquals(actualCreateJobLinkText, createAJobLinkText);
@@ -324,6 +324,7 @@ public class FolderTest extends BaseTest {
                 .clickSpecificFolderName(FOLDER_NAME)
                 .getItemInTableName();
 
+        Allure.step("Expected result: Full Project name contains both Project names");
         Assert.assertTrue(fullProjectName.contains(expectedFullProjectName), "The text does not contain the expected project name.");
         Assert.assertEquals(itemName, PIPELINE_NAME);
     }
@@ -348,6 +349,7 @@ public class FolderTest extends BaseTest {
                 .clickSpecificFolderName(FOLDER_NAME)
                 .getItemListInsideFolder();
 
+        Allure.step("Expected result: Item list inside folder contains both created projects");
         Assert.assertTrue(itemNames.contains(FOLDER_TO_MOVE) && itemNames.contains(FOLDER_TO_MOVE_2));
     }
 
@@ -365,6 +367,7 @@ public class FolderTest extends BaseTest {
                 .clickSpecificFolderName(FOLDER_NAME)
                 .getItemListInsideFolder();
 
+        Allure.step("Expected result: Item list inside folder contains Freestyle project");
         Assert.assertListContainsObject(insideFolderItemList, IVAN_S_FREE_STYLE_PROJECT, "FreeStyle Project was not created");
     }
 
@@ -378,6 +381,7 @@ public class FolderTest extends BaseTest {
                 .clickYesForDeleteFolder()
                 .getItemList();
 
+        Allure.step("Expected result: the project is not displayed on Home Page");
         Assert.assertListNotContainsObject(jobList, FOLDER_NAME, FOLDER_NAME + " not removed!");
     }
 
@@ -391,6 +395,7 @@ public class FolderTest extends BaseTest {
                 .selectFolderAndClickOk()
                 .getHeadingText();
 
+        Allure.step("Expected result: The Error message is displayed");
         Assert.assertEquals(header1Text, "Error");
     }
 }

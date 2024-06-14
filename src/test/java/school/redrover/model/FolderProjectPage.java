@@ -1,10 +1,10 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseProjectPage;
 
 import java.util.List;
@@ -77,7 +77,8 @@ public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
         return breadcrumbsName.getText();
     }
 
-    public FolderRenamePage clickOnRenameButton() {
+    @Step("Click 'Rename' on sidebar menu")
+    public FolderRenamePage clickSidebarRename() {
         renameButton.click();
 
         return new FolderRenamePage(getDriver());
@@ -87,6 +88,7 @@ public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
         return emptyStateSection.isDisplayed();
     }
 
+    @Step("Click 'New Item' on sidebar menu")
     public CreateNewItemPage clickNewItemInsideFolder() {
         newItem.click();
 
@@ -100,21 +102,31 @@ public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
                 .collect(Collectors.toList());
     }
 
-    public FolderProjectPage clickAddOrEditDescription() {
+    @Step("Click 'Add description' button")
+    public FolderProjectPage clickAddDescription() {
         descriptionLink.click();
         return this;
     }
 
+    @Step("Click 'Edit description' button")
+    public FolderProjectPage clickEditDescription() {
+        descriptionLink.click();
+        return this;
+    }
+
+    @Step("Type description text in the input field")
     public FolderProjectPage setDescription(String text) {
         textareaDescription.sendKeys(text);
         return this;
     }
 
+    @Step("Clear description input field")
     public FolderProjectPage clearDescription() {
         textareaDescription.clear();
         return this;
     }
 
+    @Step("Click 'Save' button")
     public FolderProjectPage clickSaveButton() {
         saveButton.click();
         return this;
@@ -128,24 +140,28 @@ public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
         return itemInTable.getText();
     }
 
+    @Step("Hover over Breadcrumbs Specific Project name")
     public FolderProjectPage hoverOverBreadcrumbsName() {
         hoverOverElement(breadcrumbsName);
 
         return this;
     }
 
+    @Step("Click dropdown arrow for specific Project name")
     public FolderProjectPage clickBreadcrumbsDropdownArrow() {
         clickSpecificDropdownArrow(breadcrumbsDropdownArrow);
 
         return this;
     }
 
+    @Step("Click 'Move' on dropdown menu")
     public MovePage clickDropdownMoveButton() {
         dropdownMoveButton.click();
 
         return new MovePage(getDriver());
     }
 
+    @Step("Click 'Main' folder name")
     public FolderProjectPage clickMainFolderName(String mainFolder) {
         getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job/" + mainFolder + "']")).click();
 
@@ -156,18 +172,21 @@ public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
         return nestedProjectName.getText();
     }
 
+    @Step("Click 'Rename' from dropdown menu")
     public FolderRenamePage clickDropdownRenameButton() {
         dropdownRenameButton.click();
 
         return new FolderRenamePage(getDriver());
     }
 
+    @Step("Click 'Delete' on sidebar menu")
     public FolderProjectPage clickDeleteOnSidebar() {
         deleteOnSidebar.click();
 
         return this;
     }
 
+    @Step("Click 'Yes' button in confirming alert")
     public HomePage clickYesForDeleteFolder() {
         yesButtonOnDeleteFolderAlert.click();
 

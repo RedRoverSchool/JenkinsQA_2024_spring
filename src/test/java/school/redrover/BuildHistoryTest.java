@@ -1,4 +1,5 @@
 package school.redrover;
+
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -10,6 +11,7 @@ import school.redrover.model.FreestyleProjectPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
+
 import java.util.List;
 
 
@@ -43,7 +45,6 @@ public class BuildHistoryTest extends BaseTest {
         boolean isProjectNameOnTimeline = new HomePage(getDriver())
                 .clickJobByName("FREESTYLE", new FreestyleProjectPage(getDriver()))
                 .clickBuildNowOnSideBar()
-                .waitForGreenMarkBuildSuccessAppearance()
                 .clickLogo()
                 .clickBuildHistory()
                 .isDisplayedBuildOnTimeline();
@@ -85,7 +86,7 @@ public class BuildHistoryTest extends BaseTest {
         Assert.assertEquals(buildDoneGreenMessageActual, buildDoneGreenMessageExpected);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testGetTableBuildHistory")
     @Story("US_08.002 Get the information about a project build")
     @Description("Check 'Build now: Done.' notification is displayed")
     public void testPermalinksDisplayed() {
@@ -95,10 +96,7 @@ public class BuildHistoryTest extends BaseTest {
                         "Last successful build (#1)",
                         "Last completed build (#1)");
 
-        TestUtils.createFreestyleProject(this, PROJECT_NAME);
-
         List<String> permalinksActual = new HomePage(getDriver())
-                .scheduleBuildForItem(PROJECT_NAME)
                 .clickJobByName(PROJECT_NAME, new BuildHistoryPage(getDriver()))
                 .getPermalinkList();
 

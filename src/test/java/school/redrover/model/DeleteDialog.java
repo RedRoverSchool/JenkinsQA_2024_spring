@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -15,7 +16,7 @@ public class DeleteDialog extends BasePage {
     @FindBy(css = "dialog .jenkins-button--primary")
     WebElement yesButton;
 
-
+    @Step("Click 'Yes' button")
     public <T> T clickYes(T page) {
         getWait10().until(ExpectedConditions.elementToBeClickable(yesButton)).click();
         return page;
