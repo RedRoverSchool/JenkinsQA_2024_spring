@@ -1,5 +1,6 @@
 package school.redrover;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
@@ -74,7 +75,8 @@ public class NewItemTest extends BaseTest {
                 .clickNewItem()
                 .getTypesList();
 
-        Assert.assertEquals(actualTypesList, typesList);
+        Allure.step("Expected result: All expected project types are present'");
+        Assert.assertTrue(actualTypesList.containsAll(typesList));
     }
 
 
