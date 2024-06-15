@@ -1,15 +1,21 @@
 package school.redrover.model.base;
 
 import io.qameta.allure.Step;
-import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WindowType;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.model.*;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.model.FooterFrame;
+import school.redrover.model.FreestyleProjectPage;
+import school.redrover.model.HeaderFrame;
+import school.redrover.model.HomePage;
 import school.redrover.runner.ProjectUtils;
 
-import java.util.List;
 import java.util.ArrayList;
 
 public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
