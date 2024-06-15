@@ -211,6 +211,7 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
         return pageHeading.getText();
     }
 
+    @Step("Click 'Success Console Output' button")
     public JobBuildConsolePage clickSuccessConsoleOutputButton() {
         getWait60().until(ExpectedConditions.elementToBeClickable(successConsoleOutputButton)).click();
 

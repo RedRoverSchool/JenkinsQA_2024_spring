@@ -53,24 +53,28 @@ public class FreestyleConfigPage extends BaseConfigPage<FreestyleProjectPage, Fr
         return new FreestyleProjectPage(getDriver());
     }
 
+    @Step("Scroll page to 'Build Triggers Heading'")
     public FreestyleConfigPage scrollToBuildTriggersHeading() {
         scrollToElement(buildTriggersHeading);
 
         return this;
     }
 
+    @Step("Click 'TriggerBuildsRemotely' Checkbox")
     public FreestyleConfigPage clickTriggerBuildsRemotelyCheckbox() {
         triggerBuildsRemotelyCheckbox.click();
 
         return this;
     }
 
-    public FreestyleConfigPage inputAuthenticationToken(String projectName) {
-        authenticationTokenInput.sendKeys(projectName);
+    @Step("Type '{tokenName}' token name to 'Authentication token' input")
+    public FreestyleConfigPage inputAuthenticationToken(String tokenName) {
+        authenticationTokenInput.sendKeys(tokenName);
 
         return this;
     }
 
+    @Step("Click 'Add timestamps to the Console Output' Checkbox")
     public FreestyleConfigPage clickAddTimestampsCheckbox() {
         super.scrollToElement(buildEnvironmentHeading);
         addTimestampsCheckbox.click();

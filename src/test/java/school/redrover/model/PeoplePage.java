@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
@@ -82,6 +83,7 @@ public class PeoplePage extends BasePage<PeoplePage> {
         return userTableIcon.getSize();
     }
 
+    @Step("Click first 'User Id' Link")
     public UserPage clickUserIdLink() {
         getWait5().until(ExpectedConditions.visibilityOf(peopleTable));
         userIdLink.click();

@@ -1,5 +1,6 @@
 package school.redrover;
 
+import io.qameta.allure.Allure;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
@@ -148,13 +149,14 @@ public class UserTest extends BaseTest {
     @Test
     public void testFreestyleJobRemoteTriggering() {
         final String projectName = "Project1";
+        final String tokenName = "tokenForProject1";
 
         //Precondition
         final String[] tokenUuidUser = new HomePage(getDriver())
                 .clickPeopleOnSidebar()
                 .clickUserIdLink()
                 .clickConfigureOnSidebar()
-                .getTokenUuidUser(projectName);
+                .getTokenUuidUser(tokenName);
 
         final String token = tokenUuidUser[0];
         final String uuid = tokenUuidUser[1];
@@ -171,16 +173,17 @@ public class UserTest extends BaseTest {
                 .selectFreestyleAndClickOk()
                 .scrollToBuildTriggersHeading()
                 .clickTriggerBuildsRemotelyCheckbox()
-                .inputAuthenticationToken(projectName)
+                .inputAuthenticationToken(tokenName)
                 .clickAddTimestampsCheckbox()
                 .clickSaveButton()
-                .triggerJobViaHTTPRequest(token, user, projectName)
+                .triggerJobViaHTTPRequest(token, user, projectName, tokenName)
                 .clickSuccessConsoleOutputButton()
                 .getConsoleLogsText();
 
         new JobBuildConsolePage(getDriver())
                 .revokeTokenViaHTTPRequest(token, uuid, user);
 
+        Allure.step("Expected result: Build is triggered remotely");
         Assert.assertTrue(
                 actualConsoleLogs.contains("Started by remote host"),
                 "The build should be triggered remotely."
@@ -190,13 +193,14 @@ public class UserTest extends BaseTest {
                 "The build should NOT be triggered by user."
         );
 
-        final String emptyTokenMessage = new JobBuildConsolePage(getDriver())
+        final List<String> uuidList = new JobBuildConsolePage(getDriver())
                 .clickLogo()
                 .clickPeopleOnSidebar()
                 .clickUserIdLink()
                 .clickConfigureOnSidebar()
-                .getTokenMessage();
+                .getUuidlist();
 
-        Assert.assertEquals(emptyTokenMessage, "There are no registered tokens for this user.");
+        Allure.step("Expected result: Token is revoked");
+        Assert.assertListNotContainsObject(uuidList, uuid, "Token was not revoked for this user.");
     }
 }

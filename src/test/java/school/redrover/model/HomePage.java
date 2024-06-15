@@ -405,13 +405,14 @@ public class HomePage extends BasePage<HomePage> {
         return new MovePage(getDriver());
     }
 
+    @Step("Click 'People' on sidebar")
     public PeoplePage clickPeopleOnSidebar() {
         peopleButton.click();
 
         return new PeoplePage(getDriver());
     }
 
-    @Step("Click on the specific Folder name")
+    @Step("Click '{itemName}' Folder name")
     public FolderProjectPage clickSpecificFolderName(String itemName) {
         getDriver().findElement(
                 By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
@@ -419,7 +420,7 @@ public class HomePage extends BasePage<HomePage> {
         return new FolderProjectPage(getDriver());
     }
 
-    @Step("Click on the specific Freestyle project name")
+    @Step("Click '{itemName}' Freestyle project name")
     public FreestyleProjectPage clickSpecificFreestyleProjectName(String itemName) {
         getDriver().findElement(
                 By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();

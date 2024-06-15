@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -23,6 +24,7 @@ public class UserPage extends BasePage<UserPage> {
         return jenkinsUserID.getText().replace("Jenkins User ID:", "").trim();
     }
 
+    @Step("Click 'Configure' on sidebar")
     public UserConfigurePage clickConfigureOnSidebar() {
         getWait5().until(ExpectedConditions.visibilityOf(configureOnSidebar)).click();
 

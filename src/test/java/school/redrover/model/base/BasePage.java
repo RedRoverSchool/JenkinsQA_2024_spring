@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.*;
+import school.redrover.runner.ProjectUtils;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -85,6 +86,10 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
         return heading.getText();
     }
 
+    public void scrollIntoViewCenter(WebElement e) {
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block:'center'});", e);
+    }
+
     public void scrollIntoView(WebElement element) {
         ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView(true);", element);
     }
@@ -97,30 +102,29 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
     }
 
-    public FreestyleProjectPage triggerJobViaHTTPRequest(String token, String user, String projectName) {
-        final String postBuildJob = "http://" + user + ":" + token + "@localhost:8080/job/Project1/build?token=" + projectName;
+    @Step("Trigger remotely '{projectName}' job as user '{user}' with '{tName}' token via HTTPRequest")
+    public FreestyleProjectPage triggerJobViaHTTPRequest(String token, String user, String projectName, String tName) {
+        final String postBuildJob = "http://" + user + ":" + token + "@" + ProjectUtils.getUrl().substring(7)
+                + "job/" + projectName + "/build?token=" + tName;
 
         getDriver().switchTo().newWindow(WindowType.TAB);
         getDriver().navigate().to(postBuildJob);
-
-        List<String> tabs = new ArrayList<>(getDriver().getWindowHandles());
-
-        getDriver().switchTo().window(tabs.get(0));
+        getDriver().switchTo().window((new ArrayList<>(getDriver().getWindowHandles())).get(0));
 
         return new FreestyleProjectPage(getDriver());
     }
 
+    @Step("Revoke '{user}' token with uuid='{uuid}' via HTTPRequest")
     public void revokeTokenViaHTTPRequest(String token, String uuid, String user) {
-        final String postRevokeToken = "http://" + user + ":" + token + "@localhost:8080/user/" + user
-                + "/descriptorByName/jenkins.security.ApiTokenProperty/revoke?tokenUuid=" + uuid;
+        final String postRevokeToken = "http://" + user + ":" + token + "@" + ProjectUtils.getUrl().substring(7)
+                + "user/" + user + "/descriptorByName/jenkins.security.ApiTokenProperty/revoke?tokenUuid=" + uuid;
 
         getDriver().switchTo().newWindow(WindowType.TAB);
         getDriver().navigate().to(postRevokeToken);
+
         getWait5().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
 
-        List<String> tabs = new ArrayList<>(getDriver().getWindowHandles());
-
-        getDriver().switchTo().window(tabs.get(0));
+        getDriver().switchTo().window((new ArrayList<>(getDriver().getWindowHandles())).get(0));
     }
 
     public void scrollToTopOfPage() {
