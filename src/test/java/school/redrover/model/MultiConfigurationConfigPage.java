@@ -11,7 +11,8 @@ import school.redrover.model.base.BaseConfigPage;
 
 import java.util.List;
 
-public class MultiConfigurationConfigPage extends BaseConfigPage<MultiConfigurationProjectPage, MultiConfigurationConfigPage> {
+public class MultiConfigurationConfigPage extends
+        BaseConfigPage<MultiConfigurationProjectPage, MultiConfigurationConfigPage> {
 
     @FindBy(className = "jenkins-toggle-switch__label")
     private WebElement toggleSwitch;
