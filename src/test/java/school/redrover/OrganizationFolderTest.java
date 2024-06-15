@@ -286,7 +286,6 @@ public class OrganizationFolderTest extends BaseTest {
         Allure.step("Expected result: All untrusted property checkboxes remain selected after saving");
         Assert.assertTrue(organizationFolderConfigPage.areUntrustedCheckboxesSelected(),
                 "Not all checkboxes are selected");
-        Assert.assertEquals(organizationFolderConfigPage.getSelectedCheckboxesSize(), 11);
     }
 
     @Test

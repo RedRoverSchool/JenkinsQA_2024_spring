@@ -350,7 +350,7 @@ public class HomePage extends BasePage<HomePage> {
         return new MultibranchPipelineRenamePage(getDriver());
     }
 
-    @Step("Click the project by name")
+    @Step("Click the '{name}' project name")
     public <T> T clickJobByName(String name, T page) {
         getDriver().findElement(By.xpath(
                 "//td/a[@href='job/" + name.replace(" ", "%20") + "/']")).click();

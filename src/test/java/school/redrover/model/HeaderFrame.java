@@ -120,9 +120,7 @@ public class HeaderFrame<T extends BasePage<T>> extends BaseFrame<T> {
     }
 
     public String getWarningTooltipText() {
-        WebElement warningTooltipText = getWait5().until(ExpectedConditions.visibilityOf(warningTooltipLocator));
-
-        return warningTooltipText.getText();
+        return getWait5().until(ExpectedConditions.visibilityOf(warningTooltipLocator)).getText();
     }
 
     public ManageJenkinsPage clickManageJenkinsTooltipLink() {

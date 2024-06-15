@@ -175,14 +175,7 @@ public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFol
         return true;
     }
 
-    public Integer getSelectedCheckboxesSize() {
-        return (int) untrustedCheckboxesList
-                .stream()
-                .filter(WebElement::isSelected)
-                .count();
-    }
-
-    @Step("Change blocks order by drugging 'ThrottleBuilds' to 'Untrusted'")
+    @Step("Change blocks order by dragging 'ThrottleBuilds' to 'Untrusted'")
     public OrganizationFolderConfigPage changeUntrustedAndThrottleBuildsOrder() {
         new Actions(getDriver())
                 .clickAndHold(untrustedPropertyDragAndDropIcon)

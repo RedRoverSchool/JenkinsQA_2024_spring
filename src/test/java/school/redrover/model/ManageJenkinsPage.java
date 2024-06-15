@@ -289,6 +289,6 @@ public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
     }
 
     public String getSlashIconTooltipText() {
-        return searchHint.getAttribute("tooltip");
+        return getWait2().until(ExpectedConditions.visibilityOf(searchHint)).getAttribute("tooltip");
     }
 }
