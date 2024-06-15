@@ -738,19 +738,18 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testButtonBackgroundColor() {
+    @Story("02.005 Edit description")
+    @Description("Verify button Add Description background color on mouse hover")
+    public void testAddDescriptionButtonBackgroundColor() {
         String expectedColor = "rgba(175,175,207,.175)";
 
-        getDriver().findElement(By.cssSelector("a[href$=\"/newJob\"]")).click();
-        getDriver().findElement(By.cssSelector("#name")).sendKeys("Pipeline");
-        getDriver().findElement(By.xpath("//li[contains(@class, '_Folder')]")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        String actualColor = (String) js.executeScript(
-                "return window.getComputedStyle(arguments[0]).getPropertyValue('--item-background--hover');",
-                getDriver().findElement(By.id("description-link")));
+        String actualColor = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .hoverOnAddDescriptionButton()
+                .getAddDescriptionButtonBackgroundColor();
 
         Assert.assertEquals(actualColor, expectedColor);
     }

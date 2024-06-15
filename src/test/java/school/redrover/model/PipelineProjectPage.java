@@ -306,6 +306,18 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         return this;
     }
 
+    public String getAddDescriptionButtonBackgroundColor() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+
+        return (String) js.executeScript("return window.getComputedStyle(arguments[0], '::before').getPropertyValue('--item-background--hover');", changeDescriptionButton);
+    }
+
+    public PipelineProjectPage hoverOnAddDescriptionButton(){
+        hoverOverElement(changeDescriptionButton);
+
+        return this;
+    }
+
     public PipelineProjectPage makeBuilds(int buildsQtt) {
         for (int i = 1; i <= buildsQtt; i++) {
             getWait5().until(ExpectedConditions.elementToBeClickable(
