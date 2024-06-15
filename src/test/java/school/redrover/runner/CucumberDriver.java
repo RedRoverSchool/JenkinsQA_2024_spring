@@ -29,7 +29,7 @@ public class CucumberDriver {
 
     @After
     public static void after(Scenario scenario) {
-        if(scenario.isFailed() && ProjectUtils.isServerRun()) {
+        if (scenario.isFailed() && ProjectUtils.isServerRun()) {
             ProjectUtils.takeScreenshot(driver, scenario.getName(), "CucumberTest");
         }
 

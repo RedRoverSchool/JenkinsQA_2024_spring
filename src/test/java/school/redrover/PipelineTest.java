@@ -4,7 +4,6 @@ import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -29,8 +28,6 @@ public class PipelineTest extends BaseTest {
     private static final String SUCCEED_BUILD_EXPECTED = "Finished: SUCCESS";
 
     private static final String PIPELINE_SCRIPT = "pipeline {\nagent any\n\nstages {\n";
-
-    private static final By ADVANCED_PROJECT_OPTIONS_MENU = By.xpath("//button[@data-section-id='advanced-project-options']");
 
     @Test
     @Story("US_02.000 Create Pipeline")
@@ -356,7 +353,7 @@ public class PipelineTest extends BaseTest {
 
         List<String> actualBuildsList = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickNodes()
+                .clickNodesLink()
                 .clickBuiltInNodeName()
                 .turnNodeOnIfOffline()
                 .clickNewItem()
@@ -431,7 +428,7 @@ public class PipelineTest extends BaseTest {
 
         int actualSagesQtt = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickNodes()
+                .clickNodesLink()
                 .clickBuiltInNodeName()
                 .turnNodeOnIfOffline()
                 .clickNewItem()
@@ -657,7 +654,7 @@ public class PipelineTest extends BaseTest {
 
         List<String> actualOrder = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickNodes()
+                .clickNodesLink()
                 .clickOnBuiltInNode()
                 .clickBringThisNodeBackOnlineButton()
                 .clickLogo()
@@ -683,7 +680,7 @@ public class PipelineTest extends BaseTest {
     public void testBuildColorGreen() {
         String backgroundColor = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickNodes()
+                .clickNodesLink()
                 .clickOnBuiltInNode()
                 .clickBringThisNodeBackOnlineButton()
                 .clickLogo()

@@ -9,7 +9,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import school.redrover.model.base.BaseConfigPage;
 
-public class MultibranchPipelineConfigPage extends BaseConfigPage<MultibranchPipelineProjectPage,MultibranchPipelineConfigPage> {
+public class MultibranchPipelineConfigPage extends
+        BaseConfigPage<MultibranchPipelineProjectPage, MultibranchPipelineConfigPage> {
 
     @FindBy(css = "[data-title*='Disabled']")
     private WebElement statusToggle;

@@ -144,16 +144,16 @@ public class APIJenkinsJobsTest {
         List<SlimJob> jobs = slimHudson.getJobs();
 
         Allure.step("Checking if slimHudson is using crumbs");
-        Assert.assertTrue(slimHudson.isUseCrumbs(), "SlimHudson should be using crumbs");
-
+        Assert.assertTrue(slimHudson.isUseCrumbs());
         Allure.step("Checking if slimHudson is using security");
-        Assert.assertTrue(slimHudson.isUseSecurity(), "SlimHudson should be using security");
+        Assert.assertTrue(slimHudson.isUseSecurity());
 
         Allure.step("Expected results: job entity has been built with same name and verify status");
-        Assert.assertFalse(slimHudson.getJobs().isEmpty(), "SlimHudson jobs list should not be empty");
+        Assert.assertFalse(slimHudson.getJobs().isEmpty());
 
+        Allure.step("Expected results: Job name should match the provided job");
         jobs.stream().filter(slimJob -> slimJob.getName().equals(job)).forEach(slimJob ->
-                Assert.assertEquals(slimJob.getName(), job, "Job name should match the provided job"));
+                Assert.assertEquals(slimJob.getName(), job));
     }
 
     private String getJsonJobs() {

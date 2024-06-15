@@ -116,7 +116,7 @@ public class HomePage extends BasePage<HomePage> {
     @FindBy(xpath = "//td[@class='jenkins-table__cell--tight']//span[@data-notification='Build scheduled']")
     private WebElement buildScheduledMessagePopUp;
 
-    @FindBy(css= "#notification-bar > span")
+    @FindBy(css = "#notification-bar > span")
     private WebElement buildDoneGreenMessage;
 
     @FindBy(css = "button[href $= '/build?delay=0sec']")
@@ -322,8 +322,8 @@ public class HomePage extends BasePage<HomePage> {
     public HomePage openDashboardBreadcrumbsDropdown() {
         WebElement chevron = dashboardBreadcrumbs.findElement(By.cssSelector("[class$='chevron']"));
         ((JavascriptExecutor) getDriver()).executeScript(
-                "arguments[0].dispatchEvent(new Event('mouseenter'));" +
-                        "arguments[0].dispatchEvent(new Event('click'));",
+                "arguments[0].dispatchEvent(new Event('mouseenter'));"
+                        + "arguments[0].dispatchEvent(new Event('click'));",
                 chevron);
 
         return this;

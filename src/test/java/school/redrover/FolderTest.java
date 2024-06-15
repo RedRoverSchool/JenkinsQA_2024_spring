@@ -148,7 +148,6 @@ public class FolderTest extends BaseTest {
         Assert.assertTrue(renewHomePage.isItemDeleted(NEW_FOLDER_NAME));
     }
 
-
     @Test
     @Story("US_04.001 Rename Folder")
     @Description("Rename Folder via sidebar")

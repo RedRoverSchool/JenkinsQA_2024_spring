@@ -3,10 +3,9 @@ package school.redrover.model;
 import org.openqa.selenium.WebDriver;
 import school.redrover.model.base.BasePage;
 
-public class SecurityPage extends BasePage<SecurityPage> {
+public class SystemInformationPage extends BasePage<SystemInformationPage> {
 
-
-    public SecurityPage(WebDriver driver) {
+    public SystemInformationPage(WebDriver driver) {
         super(driver);
     }
 }

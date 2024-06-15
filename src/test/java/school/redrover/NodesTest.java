@@ -234,7 +234,7 @@ public class NodesTest extends BaseTest {
     public void testCreateNodeWithInvalidData() {
         String actualResult = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickNodes()
+                .clickNodesLink()
                 .clickNewNodeButton()
                 .typeNodeName("!")
                 .selectPermanentAgentRadioButton()
@@ -251,7 +251,7 @@ public class NodesTest extends BaseTest {
     public void testCreateNodeFromManageJenkins() {
         List<String> nodesList = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickNodes()
+                .clickNodesLink()
                 .clickNewNodeButton()
                 .typeNodeName(NODE_NAME)
                 .selectPermanentAgentRadioButton()

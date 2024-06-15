@@ -56,7 +56,9 @@ public abstract class BaseTest {
     private void stopDriver() {
         try {
             JenkinsUtils.logout(driver);
-        } catch (Exception ignore) {}
+        } catch (Exception ignore) {
+
+        }
 
         closeDriver();
     }
@@ -129,7 +131,9 @@ public abstract class BaseTest {
             stopDriver();
         }
 
-        ProjectUtils.logf("Execution time is %.3f sec", (testResult.getEndMillis() - testResult.getStartMillis()) / 1000.0);
+        ProjectUtils.logf(
+                "Execution time is %.3f sec",
+                (testResult.getEndMillis() - testResult.getStartMillis()) / 1000.0);
     }
 
     protected WebDriver getDriver() {

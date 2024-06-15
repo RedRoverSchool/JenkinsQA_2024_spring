@@ -42,7 +42,7 @@ public class UserConfigurePage extends BasePage<UserConfigurePage> {
     public String[] getTokenUuidUser(String projectName) {
         new Actions(getDriver())
                 .scrollToElement(addNewTokenButton)
-                .scrollByAmount(0,150)
+                .scrollByAmount(0, 150)
                 .perform();
 
         addNewTokenButton.click();

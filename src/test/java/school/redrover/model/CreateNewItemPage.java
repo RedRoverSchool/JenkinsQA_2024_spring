@@ -59,7 +59,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         super(driver);
     }
 
-    @Step("Type the name of the project to name input field")
+    @Step("Type {name} to name input field")
     public CreateNewItemPage setItemName(String name) {
         getWait5().until(ExpectedConditions.visibilityOf(nameText));
         nameText.sendKeys(name);
@@ -147,7 +147,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return errorMessageEmptyName.getText();
     }
 
-    @Step("Type existing project name in the input field 'Copy from'")
+    @Step("Type {name} in the input field 'Copy from'")
     public CreateNewItemPage typeItemNameInCopyFrom(String name) {
         clickElementFromTheBottomOfThePage(copyFromInputField);
         copyFromInputField.sendKeys(name);

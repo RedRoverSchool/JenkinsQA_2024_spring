@@ -14,7 +14,9 @@ public class UserPage extends BasePage<UserPage> {
     @FindBy(linkText = "Configure")
     private WebElement configureOnSidebar;
 
-    public UserPage(WebDriver driver) { super(driver); }
+    public UserPage(WebDriver driver) {
+        super(driver);
+    }
 
     public String getUserID() {
 

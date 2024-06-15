@@ -48,7 +48,7 @@ public class PeopleTest extends BaseTest {
 
         new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickUsers();
+                .clickUsersLink();
 
         for (String userName : userNamesList) {
 

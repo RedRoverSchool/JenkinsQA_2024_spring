@@ -15,7 +15,7 @@ public class UsersPage extends BasePage<UsersPage> {
     private WebElement createUserLink;
 
     @FindBy(css = "[class*='jenkins-table__link']")
-    List<WebElement> usersList;
+    private List<WebElement> usersList;
 
     @FindBy(css = "thead th:nth-child(3)>a")
     private WebElement columnNameHeader;
