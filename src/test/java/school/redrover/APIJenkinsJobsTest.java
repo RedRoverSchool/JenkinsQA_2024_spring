@@ -73,7 +73,7 @@ public class APIJenkinsJobsTest {
         Assert.assertNotNull(token);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateNewJob")
     @Story("Test get jobs with Json ContentType")
     @Description("Verify that a jobs returned correct json format")
     public void testGetJobs() {
@@ -81,8 +81,10 @@ public class APIJenkinsJobsTest {
         SlimHudson slimHudson = new Gson().fromJson(jsonResponse, SlimHudson.class);
         Hudson hudson = new Gson().fromJson(jsonResponse, Hudson.class);
 
-        Assert.assertNotNull(hudson);
-        Assert.assertNotNull(slimHudson);
+        Allure.step("Expected results: job entity should not be null");
+        Assert.assertNotNull(hudson, "Hudson should not be null");
+        Allure.step("Expected results: job entity should not be null");
+        Assert.assertNotNull(slimHudson, "SlimHudson should not be null");
         Allure.step("Expected results: job entity has name and status");
         slimHudson.getJobs().stream().map(SlimJob::getName).forEach(Assert::assertNotNull);
         slimHudson.getJobs().stream().map(SlimJob::getColor).forEach(Assert::assertNotNull);
@@ -109,7 +111,7 @@ public class APIJenkinsJobsTest {
 
     @Test(dataProvider = "jobDataProvider")
     @Story("Create new job with XML ContentType")
-    @Description("Check the status code is returned 200")
+    @Description("Check the status code is returned 200 after jobs is created")
     public void testCreateNewJob(String jobName, String jobDescription) {
         String url = ProjectUtils.getUrl() + "/createItem?name=" + jobName;
         String jobXml = "<project>\n" +
