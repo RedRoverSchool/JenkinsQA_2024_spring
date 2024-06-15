@@ -29,6 +29,7 @@ public class MovePage extends BasePage<MovePage> {
         return new FreestyleProjectPage(getDriver());
     }
 
+    @Step("Select destination from list and click 'Move' button")
     public FolderProjectPage chooseDestinationFromListAndMove(String destination) {
         new Select(selectDestination)
                 .selectByValue("/" + destination);

@@ -169,8 +169,8 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
     }
 
     public PipelineConfigPage selectCustomPipelineSpeedDurabilityLevel(int index) {
-        Select dropDown = new Select(customPipelineSpeedDurabilityLevelInput);
-        dropDown.selectByIndex(index);
+        Select dropdown = new Select(customPipelineSpeedDurabilityLevelInput);
+        dropdown.selectByIndex(index);
 
         return this;
     }
@@ -236,7 +236,7 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
         return this;
     }
 
-    public PipelineConfigPage selectDropDownDefinition(Integer index) {
+    public PipelineConfigPage selectDropdownDefinition(Integer index) {
         WebElement dropDownDefinition = getDriver().findElement(By.xpath(
                 "//section[@class = 'jenkins-section']//select[@class = 'jenkins-select__input dropdownList']/option[" + index + "]"));
 

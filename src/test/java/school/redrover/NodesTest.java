@@ -97,7 +97,7 @@ public class NodesTest extends BaseTest {
     }
 
     @Test
-    @Story("US_15.003 Check list of Monitoring Data")
+    @Story("US_15.005 Check list of Monitoring Data")
     @Description("Verify Monitoring Data list of the Built-In Node")
     public void testBuiltInNodeMonitoringDataList() {
         final List<String> expectedMonitoringDataValues = new ArrayList<>(List.of(
@@ -126,7 +126,7 @@ public class NodesTest extends BaseTest {
         createNode(NODE_NAME);
 
         boolean isNodeExist = new NodesTablePage(getDriver())
-                .openDropDownChevron(NODE_NAME)
+                .openDropdownChevron(NODE_NAME)
                 .clickDeleteAgentOnDropdownMenu()
                 .clickYesInDeleteAgentWindow()
                 .isContainNode(NODE_NAME);
@@ -234,7 +234,7 @@ public class NodesTest extends BaseTest {
     public void testCreateNodeWithInvalidData() {
         String actualResult = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickNodes()
+                .clickNodesLink()
                 .clickNewNodeButton()
                 .typeNodeName("!")
                 .selectPermanentAgentRadioButton()
@@ -251,7 +251,7 @@ public class NodesTest extends BaseTest {
     public void testCreateNodeFromManageJenkins() {
         List<String> nodesList = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickNodes()
+                .clickNodesLink()
                 .clickNewNodeButton()
                 .typeNodeName(NODE_NAME)
                 .selectPermanentAgentRadioButton()

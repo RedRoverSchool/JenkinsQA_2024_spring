@@ -1,15 +1,11 @@
 package school.redrover;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
@@ -33,10 +29,8 @@ public class PipelineTest extends BaseTest {
 
     private static final String PIPELINE_SCRIPT = "pipeline {\nagent any\n\nstages {\n";
 
-    private static final By ADVANCED_PROJECT_OPTIONS_MENU = By.xpath("//button[@data-section-id='advanced-project-options']");
-
     @Test
-    @Story("US_02.000  Create Pipeline")
+    @Story("US_02.000 Create Pipeline")
     @Description("Create Pipeline with valid name and verify if created project is shown on the HomePage")
     public void testCreatePipeline() {
         List<String> itemPipeline = new HomePage(getDriver())
@@ -51,7 +45,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreatePipeline")
-    @Story("US_02.000  Create Pipeline")
+    @Story("US_02.000 Create Pipeline")
     @Description("Verify that the pipeline project with the same name can`t be created")
     public void testCreatePipelineSameName() {
         String itemPipeline = new HomePage(getDriver())
@@ -64,7 +58,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.000  Create Pipeline")
+    @Story("US_02.000 Create Pipeline")
     @Description("Create Pipeline Project with empty name")
     public void testCreatePipelineWithEmptyName() {
         String itemPipeline = new HomePage(getDriver())
@@ -77,7 +71,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreatePiplineAndUseSearchToFindProject")
-    @Story("US_02.000  Create Pipeline")
+    @Story("US_02.000 Create Pipeline")
     @Description("Find created project by its name, using 'Search' input field")
     public void testFindPipelineProject() {
         String searchResult = new HomePage(getDriver())
@@ -88,7 +82,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.000  Create Pipeline")
+    @Story("US_02.000 Create Pipeline")
     @Description("Create Pipeline and find created project by its name, using 'Search' input field on Home Page")
     public void testCreatePiplineAndUseSearchToFindProject() {
         String actualPipelineName = new HomePage(getDriver())
@@ -115,7 +109,7 @@ public class PipelineTest extends BaseTest {
                 .clickSaveButton()
                 .clickChangeDescription()
                 .waitAddDescriptionButtonDisappears()
-                .getTextAreaBorderBacklightColor();
+                .getColorOfTextAreaBorderBacklight();
 
         Assert.assertEquals(currentTextAreaBorderBacklightColor, "rgba(11, 106, 162, 0.25)",
                 "Current text area border backlight color is different");
@@ -134,7 +128,7 @@ public class PipelineTest extends BaseTest {
                 .clickSaveButton()
                 .clickChangeDescription()
                 .makeDescriptionFieldNotActive()
-                .getDefaultTextAreaBorderBacklightColor();
+                .getColorOfDefaultTextAreaBorderBacklight();
 
         Assert.assertEquals(defaultTextAreaBorderBacklightColor, "rgba(11,106,162,.25)");
     }
@@ -286,7 +280,7 @@ public class PipelineTest extends BaseTest {
                 .clickLogo()
                 .clickSpecificPipelineName(pipelineName);
 
-        Assert.assertTrue(new PipelineProjectPage(getDriver()).isBtnPresentInSidebar("Full Stage View"));
+        Assert.assertTrue(new PipelineProjectPage(getDriver()).isTaskPresentOnSidebar("Full Stage View"));
     }
 
     @Test
@@ -317,11 +311,11 @@ public class PipelineTest extends BaseTest {
 
         String backgroundColorBeforeHover = new HomePage(getDriver())
                 .clickSpecificPipelineName(PIPELINE_NAME)
-                .getFullStageViewButtonBackgroundColor();
+                .getColorOfFullStageViewButtonBackground();
 
         String backgroundColorAfterHover = new PipelineProjectPage(getDriver())
                 .hoverOnFullStageViewButton()
-                .getFullStageViewButtonBackgroundColor();
+                .getColorOfFullStageViewButtonBackground();
 
         Assert.assertTrue(!backgroundColorAfterHover.equals(backgroundColorBeforeHover)
                 && backgroundColorAfterHover.equals(expectedColor));
@@ -330,7 +324,7 @@ public class PipelineTest extends BaseTest {
     @Test
     @Story("US_02.009 Full stage view")
     @Description("Verify the heading after clicking the ‘Full Stage View’ button in the dropdown menu displays")
-    public void testFullStageViewButtonInDropDown() {
+    public void testFullStageViewButtonInDropdown() {
 
         final String pipelineName = PIPELINE_NAME;
         final String expectedResult = PIPELINE_NAME + " - Stage View";
@@ -342,7 +336,7 @@ public class PipelineTest extends BaseTest {
                 .clickSaveButton()
                 .clickLogo()
                 .openItemDropdown(pipelineName)
-                .clickFullStageViewButton()
+                .clickFullStageViewOnDropdown()
                 .getH2HeadingText();
 
         Assert.assertEquals(h2HeadingText, expectedResult);
@@ -359,7 +353,7 @@ public class PipelineTest extends BaseTest {
 
         List<String> actualBuildsList = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickNodes()
+                .clickNodesLink()
                 .clickBuiltInNodeName()
                 .turnNodeOnIfOffline()
                 .clickNewItem()
@@ -434,7 +428,7 @@ public class PipelineTest extends BaseTest {
 
         int actualSagesQtt = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickNodes()
+                .clickNodesLink()
                 .clickBuiltInNodeName()
                 .turnNodeOnIfOffline()
                 .clickNewItem()
@@ -464,31 +458,29 @@ public class PipelineTest extends BaseTest {
 
     @Test
     @Story("US_02.006 Disable project")
-    @Description("Disable project")
-    public void testDisableItem() {
-        final String expectedWarning = "This project is currently disabled";
+    @Description("Disable Pipeline and check message about it")
+    public void testDisablePipeline() {
+        TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
         String warningMessage = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(PIPELINE_NAME)
-                .selectPipelineAndClickOk()
-                .clickSaveButton()
+                .clickSpecificPipelineName(PIPELINE_NAME)
                 .clickDisableButton()
                 .getWarningMessageText();
 
-        Assert.assertTrue(warningMessage.contains(expectedWarning));
+        Allure.step("Expected result: The right message about disabled project status is displayed");
+        Assert.assertTrue(warningMessage.contains("This project is currently disabled"));
     }
 
-    @Test(dependsOnMethods = "testDisableItem")
+    @Test(dependsOnMethods = "testDisablePipeline")
     @Story("US_02.006 Disable project")
-    @Description("Verify project is disabled")
-    public void testPipelineNotActive() {
+    @Description("Checking for a button of Schedule a Build for the Pipeline")
+    public void testCheckForButtonOfScheduleABuild() {
 
-        Assert.assertTrue(new HomePage(getDriver()).isItemExists(PIPELINE_NAME));
-        Assert.assertEquals(new HomePage(getDriver()).getBuildButtonCountForProject(PIPELINE_NAME), 0);
+        Allure.step("Expected result: Button of Schedule a Build for the Pipeline is displayed");
+        Assert.assertFalse(new HomePage(getDriver()).isButtonOfScheduleABuildExist(PIPELINE_NAME));
     }
 
-    @Test(dependsOnMethods = {"testPipelineNotActive", "testDisableItem"})
+    @Test(dependsOnMethods = {"testCheckForButtonOfScheduleABuild", "testDisablePipeline"})
     @Story("US_02.006 Disable project")
     @Description("Verify disabled project can be enabled")
     public void testEnableBack() {
@@ -498,11 +490,12 @@ public class PipelineTest extends BaseTest {
                 .clickLogo()
                 .getBuildStatus();
 
+        Allure.step("Expected result: Tooltip - Schedule a Build for " + PIPELINE_NAME);
         Assert.assertEquals(pipelineStatus, "Schedule a Build for " + PIPELINE_NAME);
     }
 
     @Test(dependsOnMethods = "testEnableBack")
-    @Story("US_02.011 Take information about a project built")
+    @Story("US_02.011 Take the information about a project built")
     @Description("Check permalinks after build is scheduled")
     public void testPermalinksBuildDetails() {
         final List<String> expectedPermalinkList =
@@ -518,7 +511,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testPermalinksBuildDetails")
-    @Story("US_02.011 Take information about a project built")
+    @Story("US_02.011 Take the information about a project built")
     @Description("Successful build is marked green")
     public void testGreenBuildSuccessColor() {
         final String greenHexColor = "#1ea64b";
@@ -531,7 +524,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testGreenBuildSuccessColor")
-    @Story("US_02.011 Take information about a project built")
+    @Story("US_02.011 Take the information about a project built")
     @Description("Сheck builds history descending order")
     public void testCheckBuildsHistoryDescendingOrder() {
         List<String> actualBuildsOrderList = new HomePage(getDriver())
@@ -547,7 +540,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCheckBuildsHistoryDescendingOrder")
-    @Story("US_02.011 Take information about a project built")
+    @Story("US_02.011 Take the information about a project built")
     @Description("Check numbers of builds in the Build History in descending order")
     public void testSetNumberBuildsToKeep() {
         final int maxNumberBuildsToKeep = 1;
@@ -619,7 +612,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("02.003 Build now")
+    @Story("US_02.003 Build now")
     @Description("02.003.01 Verify Console Ouput For All Stages")
     public void testConsoleOutputValue() {
         int numberOfStages = 8;
@@ -641,14 +634,14 @@ public class PipelineTest extends BaseTest {
                 .scrollToPipelineScript()
                 .sendScript(numberOfStages, pipelineScript)
                 .clickSaveButton()
-                .clickBuild()
+                .clickOnBuildNowOnSidebar()
                 .getConsoleOuputForAllStages(numberOfStages);
 
         Assert.assertEquals(actualConsoleOuputForAllStages, expectedConsoleOuputForAllStages);
     }
 
     @Test
-    @Story("US_02.011 Take information about a project built")
+    @Story("US_02.011 Take the information about a project built")
     @Description("Check List of builds is displayed in descending'")
     public void testBuildAttributesDescending() {
         final String pipelineScript = """
@@ -660,7 +653,7 @@ public class PipelineTest extends BaseTest {
 
         List<String> actualOrder = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickNodes()
+                .clickNodesLink()
                 .clickOnBuiltInNode()
                 .clickBringThisNodeBackOnlineButton()
                 .clickLogo()
@@ -681,19 +674,12 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.011 Take information about a project built")
+    @Story("US_02.011 Take the information about a project built")
     @Description("Successful builds are marked with a green indicator when creating the list of builds.")
     public void testBuildColorGreen() {
-    final String PIPELINE_SCRIPT = """
-                pipeline {
-                agent any
- 
-                stages {
-                """;
-
         String backgroundColor = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickNodes()
+                .clickNodesLink()
                 .clickOnBuiltInNode()
                 .clickBringThisNodeBackOnlineButton()
                 .clickLogo()
@@ -701,17 +687,17 @@ public class PipelineTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
-                .sendScript(1,PIPELINE_SCRIPT)
+                .sendScript(1, PIPELINE_SCRIPT)
                 .clickSaveButton()
                 .makeBuilds(2)
                 .waitBuildToFinish()
-                .getCellColor();
+                .getColorOfCell();
 
-            Assert.assertEquals(backgroundColor, "rgba(0, 255, 0, 0.1)");
+        Assert.assertEquals(backgroundColor, "rgba(0, 255, 0, 0.1)");
     }
 
     @Test
-    @Story("02.003 Build now")
+    @Story("US_02.003 Build now")
     @Description("02.003.02 Verify column header for each stage of the build")
     public void testStageColumnHeader() {
 
@@ -730,7 +716,7 @@ public class PipelineTest extends BaseTest {
                 .selectPipelineAndClickOk()
                 .scrollToPipelineScript()
                 .sendScript(numberOfStages, PIPELINE_SCRIPT)
-                .clickSaveButton().clickBuild()
+                .clickSaveButton().clickOnBuildNowOnSidebar()
                 .waitBuildToFinish()
                 .getStageHeaderNameList();
 
@@ -738,9 +724,9 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("02.005 Edit description")
+    @Story("US_02.005 Edit description")
     @Description("Verify button Add Description background color on mouse hover")
-    public void testAddDescriptionButtonBackgroundColor() {
+    public void testVerifyColorOfAddDescriptionButtonBackground() {
         String expectedColor = "rgba(175,175,207,.175)";
 
         String actualColor = new HomePage(getDriver())
@@ -773,29 +759,24 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testFullStageViewDropDownMenu() {
+    @Story("US_02.009 Full Stage View")
+    @Description("Verify the heading after clicking on the ‘Full Stage View’ on the dropdown menu")
+    public void testFullStageViewOnDropdownMenu() {
+        final String expectedText = PIPELINE_NAME + " - Stage View";
+
         TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//li[@class='jenkins-breadcrumbs__list-item']"))).click();
+        String pageHeading = new HomePage(getDriver())
+                .openItemDropdown(PIPELINE_NAME)
+                .clickFullStageViewOnDropdown()
+                .getH2HeadingText();
 
-        WebElement chevron = getDriver().findElement(
-                By.xpath("//a[@href='job/" + PIPELINE_NAME + "/']//button[@class='jenkins-menu-dropdown-chevron']"));
-        JavascriptExecutor jsExecutor = (JavascriptExecutor) getDriver();
-
-        jsExecutor.executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", chevron);
-        jsExecutor.executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
-                By.xpath("//a[contains(@href, 'workflow-stage')]")))).click();
-
-        String expectedText = PIPELINE_NAME + " - Stage View";
-        Assert.assertEquals(getWait5().until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//div[@id='pipeline-box']/h2"))).getText(), expectedText);
+        Allure.step("Expected result: Page heading - '" + expectedText + "'");
+        Assert.assertEquals(pageHeading, expectedText);
     }
 
     @Test
-    @Story("02.003 Build now")
+    @Story("US_02.003 Build now")
     @Description("02.003.03 Verify that build is finished successfully")
     public void testRunByBuildNowButton() {
 
@@ -807,7 +788,7 @@ public class PipelineTest extends BaseTest {
                 .clickLogo()
                 .clickJobByName(PIPELINE_NAME,
                         new PipelineProjectPage(getDriver()))
-                .clickBuild()
+                .clickOnBuildNowOnSidebar()
                 .waitForBuildScheduledPopUp()
                 .clickLogo()
                 .clickBuildHistory()
@@ -832,45 +813,35 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(consoleOutput.contains(SUCCEED_BUILD_EXPECTED));
     }
 
-    @Ignore
     @Test
-    public void testDisablePipelineProject() {
+    @Story("US_02.006 Disable project")
+    @Description("Checking for a missing 'Build Now' on sidebar for disabled Pipeline")
+    public void testCheckForMissingBuildNowOnSidebar() {
         TestUtils.createPipelineProject(this, PIPELINE_NAME);
-        getDriver().findElement(By.cssSelector("#tasks > div:nth-child(4) > span > a")).click();
 
-        getWait60().until(ExpectedConditions.textToBePresentInElementLocated(By.id("pipeline-box"), "Stage View\n"
-                + "This Pipeline has run successfully, but does not define any stages. "
-                + "Please use the stage step to define some stages in this Pipeline."));
+        boolean isTaskPresentOnSidebar = new HomePage(getDriver())
+                .clickSpecificPipelineName(PIPELINE_NAME)
+                .clickDisableButton()
+                .isTaskPresentOnSidebar("Build Now");
 
-        getDriver().findElement(By.cssSelector("#disable-project > button")).click();
+        Allure.step("Expected result: The task 'Build Now' is not present on sidebar");
+        Assert.assertFalse(isTaskPresentOnSidebar);
+    }
 
-        Assert.assertEquals("This project is currently disabled\n" + "Enable",
-                getDriver().findElement(By.id("enable-project")).getText());
+    @Test
+    @Story("US_02.006 Disable project")
+    @Description("Checking tooltip of status icon on Dashboard")
+    public void testCheckTooltipOfStatusIcon() {
+        TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
-        List<WebElement> listItems = getDriver().findElements(By.className("task"));
-        String[] myArray = listItems.stream().map(WebElement::getText).toArray(String[]::new);
-        for (String s : myArray) {
-            if (s.equals("Build Now")) {
-                throw new RuntimeException("It's possible to run this pipeline job");
-            }
-        }
+        String statusIconTooltip = new HomePage(getDriver())
+                .clickSpecificPipelineName(PIPELINE_NAME)
+                .clickDisableButton()
+                .clickLogo()
+                .getStatusIconTooltip();
 
-        new HomePage(getDriver())
-                .clickLogo();
-
-        Assert.assertTrue(getDriver().findElement(
-                By.xpath("(//*[name()='svg'][@tooltip='Disabled'])[1]")).isDisplayed());
-
-        getDriver().findElement(By.linkText("MyNewPipeline")).click();
-        getDriver().findElement(By.name("Submit")).click();
-        getDriver().findElement(By.cssSelector("#tasks > div:nth-child(4) > span > a")).click();
-
-        getWait60().until(ExpectedConditions.numberOfElementsToBe(By.className("build-row-cell"), 2));
-
-        List<WebElement> buildList = getDriver().findElements(By.className("build-row-cell"));
-        String[] bArray = buildList.stream().map(WebElement::getText).toArray(String[]::new);
-
-        Assert.assertTrue(bArray.length >= 2);
+        Allure.step("Expected result: Status of last build Icon have tooltip 'Disabled'");
+        Assert.assertEquals(statusIconTooltip, "Disabled");
     }
 
     @Test
@@ -903,9 +874,9 @@ public class PipelineTest extends BaseTest {
                 .scrollToPipelineScript()
                 .selectSamplePipelineScript("hello")
                 .clickSaveButton()
-                .clickBuild()
+                .clickOnBuildNowOnSidebar()
                 .waitBuildToFinish()
-                .clickBuild()
+                .clickOnBuildNowOnSidebar()
                 .waitBuildToFinish();
 
         Assert.assertTrue(pipelineProjectPage.isBuildAppear(2, PIPELINE_NAME), "there is no second build");
@@ -1125,9 +1096,11 @@ public class PipelineTest extends BaseTest {
                 {"50", "year", "Approximately 7 days between builds"}
         };
     }
+
     @Test(dataProvider = "dataForThrottleBuilds")
     @Story("US_02.004 Verify the Pipeline configuration")
-    @Description("Set number of builds, time period in Throttle builds and verify message about time between builds after")
+    @Description("Set number of builds, time period in Throttle builds "
+            + "and verify message about time between builds after")
     public void testSetParametersToThrottleBuilds(String numberOfBuilds, String timePeriod, String expectedMessage) {
         TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
@@ -1140,6 +1113,7 @@ public class PipelineTest extends BaseTest {
                 .selectTimePeriod(timePeriod)
                 .getMessageAboutTimeBetweenBuilds();
 
+        Allure.step("Expected result: Time between builds is calculated and displayed correctly");
         Assert.assertEquals(messageAboutTimePeriod, expectedMessage);
     }
 
@@ -1147,18 +1121,18 @@ public class PipelineTest extends BaseTest {
     @Story("US_02.004 Verify the Pipeline configuration")
     @Description("02.004.11 Verify that build is failed when user set to use Pipeline script from repository and don't set the repository")
     public void testBuildWithoutScriptRepository() {
-        String errorMassageConsole = new HomePage(getDriver())
+        String errorMessageConsole = new HomePage(getDriver())
                 .clickNewItem()
                 .setItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
-                .selectDropDownDefinition(2)
+                .selectDropdownDefinition(2)
                 .clickSaveButton()
-                .clickBuild()
+                .clickOnBuildNowOnSidebar()
                 .clickLogo()
                 .clickBuildHistory()
                 .clickBuild1Console()
                 .getConsoleOutputMessage();
 
-        Assert.assertTrue(errorMassageConsole.contains("Finished: FAILURE"));
+        Assert.assertTrue(errorMessageConsole.contains("Finished: FAILURE"));
     }
 }

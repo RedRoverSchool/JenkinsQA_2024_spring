@@ -10,10 +10,10 @@ import java.util.List;
 public class AboutJenkinsPage extends BasePage<AboutJenkinsPage> {
 
     @FindBy(xpath = "//p[@class='app-about-version']")
-    public WebElement versionJenkins;
+    private WebElement versionJenkins;
 
     @FindBy(xpath = "//div[@class='tabBar']")
-    public WebElement jenkinsTabPanel;
+    private WebElement jenkinsTabPanel;
 
     public AboutJenkinsPage(WebDriver driver) {
         super(driver);

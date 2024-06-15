@@ -10,7 +10,7 @@ import school.redrover.model.base.BasePage;
 public class FreestyleMovePage extends BasePage<FreestyleMovePage> {
 
     @FindBy(xpath = "//select[@name='destination']")
-    private WebElement dropDownDestinationPath;
+    private WebElement dropdownDestinationPath;
     @FindBy(xpath = "//button[@name='Submit']")
     private WebElement moveButton;
 
@@ -21,8 +21,8 @@ public class FreestyleMovePage extends BasePage<FreestyleMovePage> {
     @Step("Select the project to move to from dropdown menu")
     public FreestyleMovePage choosePath(String folderName) {
 
-        Select simpleDropDown = new Select(dropDownDestinationPath);
-        simpleDropDown.selectByValue("/" + folderName);
+        Select simpleDropdown = new Select(dropdownDestinationPath);
+        simpleDropdown.selectByValue("/" + folderName);
 
         return this;
     }

@@ -35,7 +35,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
 
         String newProjectName = new HomePage(getDriver())
-                .openItemDropdownWithSelenium(PROJECT_NAME)
+                .openItemDropdown(PROJECT_NAME)
                 .clickRenameOnDropdownForMultiConfigurationProject()
                 .changeProjectNameWithoutClear(addToProjectName)
                 .clickRenameButton()
@@ -50,16 +50,16 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Story("US_03.001  Add/edit description")
     @Description("Adding the project description")
     public void testAddDescription() {
-        final String TEXT = "❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
+        final String text = "❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
 
         String description = TestUtils.createMultiConfigurationProject(this, RANDOM_PROJECT_NAME)
                 .clickSpecificMultiConfigurationProjectName(RANDOM_PROJECT_NAME)
                 .clickAddDescriptionButton()
-                .addOrEditDescription(TEXT)
+                .addOrEditDescription(text)
                 .clickSaveDescription()
                 .getDescriptionText();
 
-        Assert.assertEquals(description, TEXT);
+        Assert.assertEquals(description, text);
     }
 
     @Test
@@ -71,7 +71,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
 
-        String DescriptionText = new HomePage(getDriver())
+        String descriptionText = new HomePage(getDriver())
                 .clickSpecificMultiConfigurationProjectName(PROJECT_NAME)
                 .clickAddDescriptionButton()
                 .addOrEditDescription(text)
@@ -83,7 +83,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickSaveDescription()
                 .getDescriptionText();
 
-        Assert.assertEquals(DescriptionText, additionalText + text);
+        Assert.assertEquals(descriptionText, additionalText + text);
     }
 
     @Test
@@ -104,11 +104,14 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_03.000  Create project")
+    @Story("US_03.000 Create project")
     @Description("Check creating project by copying the exist one")
     public void testMakeCopyMultiConfigurationProject() {
         final String newProjectName = "MCProject copy";
-        List<String> projectList = TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
+        List<String> projectList = TestUtils.createNewItem(
+                this,
+                        PROJECT_NAME,
+                        TestUtils.Item.MULTI_CONFIGURATION_PROJECT)
                 .clickNewItem()
                 .setItemName(newProjectName)
                 .typeItemNameInCopyFrom(PROJECT_NAME)
@@ -124,7 +127,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Story("US_03.001  Add/edit description")
     @Description("Delete project description")
     public void testDeleteProjectDescription() {
-        final String DESCRIPTION_TEXT = "This is project description";
+        final String descriptionText = "This is project description";
         TestUtils.createNewItem(this, PROJECT_NAME, TestUtils.Item.MULTI_CONFIGURATION_PROJECT);
 
         MultiConfigurationProjectPage multiConfigurationProjectPage = new MultiConfigurationProjectPage(getDriver());
@@ -132,7 +135,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         boolean isDescriptionDeleted = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, multiConfigurationProjectPage)
                 .clickAddDescriptionButton()
-                .addOrEditDescription(DESCRIPTION_TEXT)
+                .addOrEditDescription(descriptionText)
                 .clickSaveDescription()
                 .clickLogo()
                 .clickJobByName(PROJECT_NAME, multiConfigurationProjectPage)
@@ -176,7 +179,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_03.003  Delete project")
+    @Story("US_03.003 Delete project")
     @Description("Checking 'Yes' button color when delete project")
     public void testYesButtonColorDeletingMultiConfigurationProjectInSidebar() {
         final String expectedColorNone = "#e6001f";
@@ -192,26 +195,26 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_03.000  Create project")
+    @Story("US_03.000 Create project")
     @Description("Create project with empty name")
     public void testCreateProjectWithoutName() {
-        final String EMPTY_NAME = "";
-        final String ERROR_MESSAGE = "This field cannot be empty";
+        final String emptyName = "";
+        final String errorMessage = "This field cannot be empty";
 
         CreateNewItemPage createNewItemPage =
                 new HomePage(getDriver())
                         .clickNewItem()
-                        .setItemName(EMPTY_NAME)
+                        .setItemName(emptyName)
                         .selectMultiConfiguration();
 
-        boolean isErrorMessageCorrect = createNewItemPage.getErrorMessageEmptyName().contains(ERROR_MESSAGE);
+        boolean isErrorMessageCorrect = createNewItemPage.getErrorMessageEmptyName().contains(errorMessage);
         boolean isCanNotPressOkButton = createNewItemPage.isOkButtonNotActive();
 
         Assert.assertTrue(isErrorMessageCorrect && isCanNotPressOkButton);
     }
 
     @Test
-    @Story("US_03.000  Create project")
+    @Story("US_03.000 Create project")
     @Description("Create project with valid name")
     public void testCreateMultiConfigurationProject() {
         List<String> projectNameList = new HomePage(getDriver())
@@ -224,6 +227,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         Assert.assertTrue(projectNameList.contains(PROJECT_NAME));
     }
+
 
     @Test(dependsOnMethods = "testCreateMultiConfigurationProject")
     @Story("US_03.004  Rename project")
@@ -243,7 +247,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_03.003  Delete project ")
+    @Story("US_03.003 Delete project")
     @Description("Delete an existing project via Dropdown menu")
     public void testDeleteProjectViaDropdown() {
 
@@ -278,7 +282,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_03.003  Delete project ")
+    @Story("US_03.003 Delete project")
     @Description("Delete an existing project via left-sidebar menu")
     public void testDeleteMultiConfigurationProjectFromMenu() {
 
@@ -325,7 +329,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    @Story("US_03.000  Create project ")
+    @Story("US_03.000 Create project")
     @Description("Verify existing project can be found using Search")
     public void testSearchForCreatedProject() {
 
@@ -410,5 +414,4 @@ public class MultiConfigurationProjectTest extends BaseTest {
         Assert.assertTrue(enableMessage.matches("Enabled"),
                 "Substring not found");
     }
-
 }

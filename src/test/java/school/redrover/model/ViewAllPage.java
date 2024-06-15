@@ -11,7 +11,7 @@ import school.redrover.model.base.BasePage;
 public class ViewAllPage extends BasePage<ViewAllPage> {
 
     @FindBy(xpath = "(//li[@class='children'])[2]")
-    private WebElement allDropDownChevron;
+    private WebElement allDropdownChevron;
 
     public ViewAllPage(WebDriver driver) {
         super(driver);
@@ -19,7 +19,7 @@ public class ViewAllPage extends BasePage<ViewAllPage> {
 
     @Step("Click 'All' dropdown menu on Breadcrumbs and select Project name")
     public FolderProjectPage clickBreadcrumbAllDropdownMenuAndSelectProjectName(String name) {
-        allDropDownChevron.click();
+        allDropdownChevron.click();
 
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@class = 'jenkins-dropdown__item'][contains(@href," + name + ")]"))).click();
 

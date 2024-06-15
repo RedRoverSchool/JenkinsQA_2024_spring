@@ -59,7 +59,7 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
     private WebElement successConsoleOutputButton;
 
     @FindBy(xpath = "//form[@id='enable-project']")
-    private WebElement disabledStatusMassage;
+    private WebElement disabledStatusMessage;
 
     @FindBy(css = "[href^='/job'] [class$='dropdown-chevron']")
     private WebElement breadcrumbsDropdownArrow;
@@ -188,6 +188,8 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
     @Step("Click 'Build Now' on sidebar menu")
     public FreestyleProjectPage clickBuildNowOnSideBar() {
         buildNowSideBar.click();
+        getWait10().until(ExpectedConditions.visibilityOf(greenMarkBuildSuccess));
+
         return this;
     }
 
@@ -201,13 +203,6 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
         return buildInfo.getText();
     }
 
-    @Step("Wait for green mark appearance, indicating that project is successfully build")
-    public FreestyleProjectPage waitForGreenMarkBuildSuccessAppearance() {
-        getWait10().until(ExpectedConditions.visibilityOf(greenMarkBuildSuccess));
-
-        return this;
-    }
-
     public String getFullProjectPath() {
         return projectPath.getText();
     }
@@ -216,14 +211,15 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
         return pageHeading.getText();
     }
 
+    @Step("Click 'Success Console Output' button")
     public JobBuildConsolePage clickSuccessConsoleOutputButton() {
         getWait60().until(ExpectedConditions.elementToBeClickable(successConsoleOutputButton)).click();
 
         return new JobBuildConsolePage(getDriver());
     }
 
-    public String getDisabledMassageText() {
+    public String getDisabledMessageText() {
 
-        return getWait5().until(ExpectedConditions.visibilityOf(disabledStatusMassage)).getText();
+        return getWait5().until(ExpectedConditions.visibilityOf(disabledStatusMessage)).getText();
     }
 }
