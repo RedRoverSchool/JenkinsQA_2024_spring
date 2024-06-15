@@ -735,7 +735,7 @@ public class PipelineTest extends BaseTest {
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
                 .hoverOnAddDescriptionButton()
-                .getAddDescriptionButtonBackgroundColor();
+                .getColorOfAddDescriptionButtonBackground();
 
         Assert.assertEquals(actualColor, expectedColor);
     }
