@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,46 +10,51 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import school.redrover.model.base.BaseConfigPage;
 
-public class MultibranchPipelineConfigPage extends BaseConfigPage<MultibranchPipelineProjectPage,MultibranchPipelineConfigPage> {
+public class MultibranchPipelineConfigPage extends BaseConfigPage<MultibranchPipelineProjectPage, MultibranchPipelineConfigPage> {
 
     @FindBy(css = "[data-title*='Disabled']")
     private WebElement statusToggle;
 
-    @FindBy(className = "tippy-box")
-    private WebElement tooltip;
-
     @FindBy(id = "enable-disable-project")
     private WebElement toggleInput;
+
+    @FindBy(id = "itemname-required")
+    private WebElement errorRequiresName;
+
+    @FindBy(className = "tippy-box")
+    private WebElement toggleTooltip;
 
     public MultibranchPipelineConfigPage(WebDriver driver) {
         super(driver, new MultibranchPipelineProjectPage(driver));
     }
 
-    public MultibranchPipelineConfigPage clickToggle() {
+    @Step("Click the toggle to disable the project")
+    public MultibranchPipelineConfigPage clickToggleToDisable() {
         statusToggle.click();
+
         return this;
     }
 
-    public MultibranchPipelineConfigPage clickOnToggle() {
-        statusToggle.click();
-        return new MultibranchPipelineConfigPage(getDriver());
-    }
-
+    @Step("Hover over the Toggle")
     public MultibranchPipelineConfigPage hoverOverToggle() {
-        getDriver().findElement(By.tagName("h1")).click();
         new Actions(getDriver()).moveToElement(statusToggle).perform();
+
         return this;
     }
 
     public String getTooltipText() {
-        return tooltip.getText();
+        return toggleTooltip.getText();
     }
 
     public boolean isTooltipDisplayed() {
-        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-box"))).isDisplayed();
+        return getWait2().until(ExpectedConditions.visibilityOf(toggleTooltip)).isDisplayed();
     }
 
     public String getStatusToggle() {
         return toggleInput.getDomProperty("checked");
+    }
+
+    public String getErrorRequiresName() {
+        return errorRequiresName.getText();
     }
 }

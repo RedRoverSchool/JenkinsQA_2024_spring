@@ -46,14 +46,14 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
     @FindBy(id = "itemname-required")
     private WebElement errorMessageEmptyName;
 
-    @FindBy(id = "itemname-required")
-    private WebElement itemNameHint;
-
     @FindBy(css = "label.h3")
     private WebElement titleOfNameField;
 
     @FindBy(css = "#items span")
     private List<WebElement> typesList;
+
+    @FindBy(css = "li[style='']")
+    private List <WebElement> copyFromDropdownContent;
 
     public CreateNewItemPage(WebDriver driver) {
         super(driver);
@@ -111,6 +111,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return this;
     }
 
+    @Step("Select 'Multibranch Pipeline' and click 'OK' button")
     public MultibranchPipelineConfigPage selectMultibranchPipelineAndClickOk() {
         multibranchPipelineItem.click();
         okButton.click();
@@ -161,17 +162,12 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
     }
 
     public boolean isOkButtonNotActive() {
-        try {
-            getDriver().findElement(By.xpath("//button[contains(@class, 'disabled') and text()='OK']"));
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        return !okButton.isEnabled();
     }
 
     public List<String> getDropdownMenuContent() {
         List<WebElement> allJobFromThisLetter = getWait10().until(
-                ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("li[style='']")));
+                ExpectedConditions.visibilityOfAllElements(copyFromDropdownContent));
 
         return allJobFromThisLetter.stream().map(WebElement::getText).toList();
     }
@@ -188,11 +184,11 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
     }
 
     public String getItemNameHintText() {
-        return itemNameHint.getText();
+        return errorMessageEmptyName.getText();
     }
 
     public String getItemNameHintColor() {
-        return itemNameHint.getCssValue("color");
+        return errorMessageEmptyName.getCssValue("color");
     }
 
     public Boolean isOkButtonEnabled() {
