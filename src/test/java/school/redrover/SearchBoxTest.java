@@ -119,13 +119,13 @@ public class SearchBoxTest extends BaseTest {
 
     @Test
     public void testSearchResultHeading() {
-        final String SEARCHING_TEXT = "i";
+        final String searchingText = "i";
 
         String resultHeading = new HomePage(getDriver())
-                .getHeader().typeSearchQueryPressEnter(SEARCHING_TEXT)
+                .getHeader().typeSearchQueryPressEnter(searchingText)
                 .getMatchLogResult();
 
-        String expectedSearchResult = "Search for '%s'".formatted(SEARCHING_TEXT);
+        String expectedSearchResult = "Search for '%s'".formatted(searchingText);
 
         Assert.assertEquals(resultHeading, expectedSearchResult);
     }

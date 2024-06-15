@@ -33,7 +33,9 @@ public class AppearancePage extends BasePage<AppearancePage> {
         super(driver);
     }
 
-    public List<WebElement> getThemesList() { return themesList; }
+    public List<WebElement> getThemesList() {
+        return themesList;
+    }
 
     public boolean isDefaultThemeNotSelected() {
         return !defaultThemeButton.isSelected();

@@ -222,6 +222,8 @@ public class NewItemTest extends BaseTest {
         TestUtils.createMultibranchProject(this, multiBranchPipe1);
         TestUtils.createOrganizationFolderProject(this, organizationFolder1);
 
+        TestUtils.setInsensitiveSearchUserSetting(this, true);
+
         List<String> firstLettersJobs = TestUtils.getJobsBeginningFromThisFirstLetters(this, firstLetters);
 
         List<String> jobsFromDropdownMenu = new HomePage(getDriver())

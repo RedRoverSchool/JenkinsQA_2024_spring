@@ -126,6 +126,15 @@ public final class TestUtils {
                 .clickLogo();
     }
 
+    @Step("Set insensitiveSearch = {flag} user setting")
+    public static void setInsensitiveSearchUserSetting(BaseTest baseTest, boolean flag) {
+        new HomePage(baseTest.getDriver())
+                .getHeader().goToAdminConfigurePage()
+                .turnInsensitiveSearch(flag)
+                .clickApplyButton()
+                .clickLogo();
+    }
+
     public static List<String> getJobsBeginningFromThisFirstLetters(BaseTest baseTest, String firstLetters) {
         return new HomePage(baseTest.getDriver())
                 .getItemList()

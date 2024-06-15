@@ -1,9 +1,7 @@
 package school.redrover.model;
 
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
@@ -24,16 +22,17 @@ public class AdminConfigurePage extends BasePage<AdminConfigurePage> {
 
     public AdminConfigurePage clickApplyButton() {
         applyButton.click();
+
         return new AdminConfigurePage(getDriver());
     }
 
     public AdminConfigurePage turnInsensitiveSearch(boolean flag) {
-        boolean isCheckboxSelected = caseSensitivityCheckbox.isSelected();
-        if ((flag && !isCheckboxSelected) || (!flag && isCheckboxSelected)) {
-            new Actions(getDriver()).moveToElement(searchSettingsBlock)
-                    .sendKeys(Keys.TAB, Keys.SPACE)
-                    .perform();
+        scrollIntoViewCenter(caseSensitivityCheckbox);
+
+        if (flag != caseSensitivityCheckbox.isSelected()) {
+            searchSettingsBlock.click();
         }
+
         return new AdminConfigurePage(getDriver());
     }
 }

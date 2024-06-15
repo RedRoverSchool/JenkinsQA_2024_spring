@@ -54,15 +54,15 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
     public void openElementDropdown(WebElement element) {
         WebElement chevron = element.findElement(By.cssSelector("[class $= 'chevron']"));
 
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", chevron);
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", chevron);
+        js.executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
     }
 
     public boolean isThereTextInBreadcrumbs(String text) {
         return getDriver().findElements(By.className("jenkins-breadcrumbs__list-item"))
                 .stream()
-                .anyMatch(e -> e.getText()
-                        .contains(text));
+                .anyMatch(e -> e.getText().contains(text));
     }
 
     public void hoverOverElement(WebElement element) {
@@ -72,8 +72,11 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
     }
 
     public void clickSpecificDropdownArrow(WebElement element) {
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
-                "arguments[0].dispatchEvent(new Event('click'));", element);
+        ((JavascriptExecutor) getDriver()).executeScript(
+                """
+                        arguments[0].dispatchEvent(new Event('mouseenter'));
+                        arguments[0].dispatchEvent(new Event('click'));""",
+                element);
     }
 
     protected void clickElementFromTheBottomOfThePage(WebElement webElement) {
@@ -144,10 +147,10 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
             public Boolean apply(WebDriver driver) {
                 JavascriptExecutor js = (JavascriptExecutor) driver;
                 return (Boolean) js.executeScript(
-                        "let rect = arguments[0].getBoundingClientRect();" +
-                                "return (rect.top >= 0 && rect.left >= 0 && " +
-                                "rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && " +
-                                "rect.right <= (window.innerWidth || document.documentElement.clientWidth));",
+                        "let rect = arguments[0].getBoundingClientRect();"
+                                + "return (rect.top >= 0 && rect.left >= 0 && "
+                                + "rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && "
+                                + "rect.right <= (window.innerWidth || document.documentElement.clientWidth));",
                         element);
             }
         };

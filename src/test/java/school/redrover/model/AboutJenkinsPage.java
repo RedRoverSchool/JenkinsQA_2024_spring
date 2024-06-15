@@ -24,7 +24,10 @@ public class AboutJenkinsPage extends BasePage<AboutJenkinsPage> {
     }
 
     public boolean isExistJenkinsInformationFooter() {
-        List<String> tabBarMenu = List.of("Mavenized dependencies", "Static resources", "License and dependency information for plugins");
+        List<String> tabBarMenu = List.of(
+                "Mavenized dependencies",
+                "Static resources",
+                "License and dependency information for plugins");
         return tabBarMenu.stream().allMatch(x -> jenkinsTabPanel.getText().contains(x));
     }
 }

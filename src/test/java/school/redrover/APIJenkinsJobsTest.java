@@ -93,22 +93,24 @@ public class APIJenkinsJobsTest {
     @Description("Check the status code is returned 200 after jobs is created")
     public void testCreateNewJob(String jobName, String jobDescription) {
         String url = ProjectUtils.getUrl() + "/createItem?name=" + jobName;
-        String jobXml = "<project>\n" +
-                "  <actions/>\n" +
-                "  <description>" + jobDescription + "</description>\n" +
-                "  <keepDependencies>false</keepDependencies>\n" +
-                "  <properties/>\n" +
-                "  <scm class=\"hudson.scm.NullSCM\"/>\n" +
-                "  <canRoam>true</canRoam>\n" +
-                "  <disabled>false</disabled>\n" +
-                "  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>\n" +
-                "  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>\n" +
-                "  <triggers/>\n" +
-                "  <concurrentBuild>false</concurrentBuild>\n" +
-                "  <builders/>\n" +
-                "  <publishers/>\n" +
-                "  <buildWrappers/>\n" +
-                "</project>";
+        String jobXml = """
+                <project>
+                    <actions/>
+                    <description>""" + jobDescription + """
+                    </description>
+                    <keepDependencies>false</keepDependencies>
+                    <properties/>
+                    <scm class="hudson.scm.NullSCM"/>
+                    <canRoam>true</canRoam>
+                    <disabled>false</disabled>
+                    <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+                    <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+                    <triggers/>
+                    <concurrentBuild>false</concurrentBuild>
+                    <builders/>
+                    <publishers/>
+                    <buildWrappers/>
+                </project>""";
 
         Allure.step("Expected results: job entity has been created");
         Assert.assertNotNull(post(url, jobXml, ContentType.APPLICATION_XML, 200));
@@ -187,7 +189,9 @@ public class APIJenkinsJobsTest {
         return ProjectUtils.getUrl() + "/crumbIssuer/api/json?xpath=" + query;
     }
 
-    private static String getEntity(CloseableHttpClient httpClient, HttpRequestBase request, int status) throws IOException {
+    private static String getEntity(CloseableHttpClient httpClient,
+                                    HttpRequestBase request,
+                                    int status) throws IOException {
         try (CloseableHttpResponse response = httpClient.execute(request)) {
             Assert.assertEquals(response.getStatusLine().getStatusCode(), status);
             HttpEntity entity = response.getEntity();
