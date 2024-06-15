@@ -53,7 +53,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
     private List<WebElement> typesList;
 
     @FindBy(css = "li[style='']")
-    private List <WebElement> copyFromDropdownContent;
+    private List<WebElement> copyFromDropdownContent;
 
     public CreateNewItemPage(WebDriver driver) {
         super(driver);
