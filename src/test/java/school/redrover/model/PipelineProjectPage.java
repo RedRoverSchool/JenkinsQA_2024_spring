@@ -315,8 +315,8 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
     public String getColorOfAddDescriptionButtonBackground() {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
 
-        return (String) js.executeScript("return window.getComputedStyle(arguments[0], '::before')" +
-                ".getPropertyValue('--item-background--hover');", addOrEditDescriptionButton);
+        return (String) js.executeScript("return window.getComputedStyle(arguments[0], '::before')"
+                + ".getPropertyValue('--item-background--hover');", addOrEditDescriptionButton);
     }
 
     public PipelineProjectPage hoverOnAddDescriptionButton() {
