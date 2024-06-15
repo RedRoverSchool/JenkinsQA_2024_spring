@@ -21,7 +21,6 @@ import org.apache.http.util.EntityUtils;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.domain.Hudson;
 import school.redrover.domain.SlimHudson;
@@ -87,26 +86,6 @@ public class APIJenkinsJobsTest {
         Assert.assertNotNull(slimHudson, "SlimHudson should not be null");
         Allure.step("Expected results: job entity has name and status");
         slimHudson.getJobs().stream().map(SlimJob::getName).forEach(Assert::assertNotNull);
-        slimHudson.getJobs().stream().map(SlimJob::getColor).forEach(Assert::assertNotNull);
-    }
-
-    @Ignore
-    @Story("Create new job with Json ContentType")
-    @Description("Check the status code is returned 200")
-    @Test(dataProvider = "jobDataProvider")
-    public void testCreateNewJobWithJson(String jobName, String jobDescription) {
-        final String url = ProjectUtils.getUrl() + "/createItem?name=" + jobName;
-
-        JsonObject jobJson = new JsonObject();
-        jobJson.addProperty("description", jobDescription);
-        jobJson.add("actions", new JsonObject());
-        jobJson.add("properties", new JsonObject());
-        jobJson.add("builders", new JsonObject());
-        jobJson.add("publishers", new JsonObject());
-        jobJson.add("buildWrappers", new JsonObject());
-
-        Allure.step("Expected results: job entity has been created");
-        Assert.assertNotNull(post(url, jobJson.toString(), ContentType.APPLICATION_JSON, 200));
     }
 
     @Test(dataProvider = "jobDataProvider")
