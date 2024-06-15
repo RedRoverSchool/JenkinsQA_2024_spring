@@ -1,16 +1,12 @@
 package school.redrover.domain;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
-public class SlimHudson {
+public class SlimHudson extends BaseHudson {
 
-    @SerializedName("_class")
-    private String clazz;
     private List<SlimJob> jobs;
 
-    public List<SlimJob> getJob() {
+    public List<SlimJob> getJobs() {
         return jobs;
     }
 
