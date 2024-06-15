@@ -33,26 +33,26 @@ public class PeoplePage extends BasePage<PeoplePage> {
     @FindBy(css = ".jenkins-table__link")
     private List<WebElement> userIDList;
 
-    @FindBy(linkText= "User ID")
-    WebElement titleUserID;
+    @FindBy(linkText = "User ID")
+    private WebElement titleUserID;
 
     @FindBy(css = "tr[id^='person-'] > td:nth-child(3)")
     private List<WebElement> nameList;
 
-    @FindBy(linkText= "Name")
-    WebElement titleName;
+    @FindBy(linkText = "Name")
+    private WebElement titleName;
 
     @FindBy(css = "tr[id^='person-'] > td:nth-child(4)")
     private List<WebElement> lastCommitActivityList;
 
-    @FindBy(linkText= "Last Commit Activity")
-    WebElement titleLastCommitActivity;
+    @FindBy(linkText = "Last Commit Activity")
+    private WebElement titleLastCommitActivity;
 
     @FindBy(css = "tr[id^='person-'] > td:nth-child(5)")
-    private List<WebElement> OnOffList;
+    private List<WebElement> onOffList;
 
-    @FindBy(linkText= "On")
-    WebElement titleOn;
+    @FindBy(linkText = "On")
+    private WebElement titleOn;
 
     public PeoplePage(WebDriver driver) {
         super(driver);
@@ -120,7 +120,7 @@ public class PeoplePage extends BasePage<PeoplePage> {
     }
 
     public List<String> getOnOffList() {
-        return OnOffList.stream().map(WebElement::getText).toList();
+        return onOffList.stream().map(WebElement::getText).toList();
     }
 
     public PeoplePage clickTitleOn() {

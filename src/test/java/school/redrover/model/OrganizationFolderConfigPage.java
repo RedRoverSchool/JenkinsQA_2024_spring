@@ -58,7 +58,7 @@ public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFol
     @FindBy(css = "[descriptorid*='UntrustedBranchProperty'] .dd-handle")
     private WebElement untrustedPropertyDragAndDropIcon;
 
-    @FindBy(css = "[descriptorid$='RateLimitBranchProperty'")
+    @FindBy(css = "[descriptorid$='RateLimitBranchProperty']")
     private WebElement throttleBuildsProperty;
 
     @FindBy(css = "[name='props'] [class='repeated-chunk__header']")

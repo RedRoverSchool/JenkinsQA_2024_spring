@@ -8,13 +8,13 @@ import school.redrover.model.base.BasePage;
 public class ViewConfigPage extends BasePage<ViewConfigPage> {
 
     @FindBy(xpath = "//div[@class='tab active']")
-    WebElement newViewName;
+    private WebElement newViewName;
 
-    public ViewConfigPage(WebDriver driver) { super(driver); }
+    public ViewConfigPage(WebDriver driver) {
+        super(driver);
+    }
 
     public String getNewViewName() {
-
-       return newViewName.getText();
-
+        return newViewName.getText();
     }
 }

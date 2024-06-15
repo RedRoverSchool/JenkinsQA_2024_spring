@@ -26,17 +26,17 @@ public class ViewsTest extends BaseTest {
         Assert.assertTrue(textVisibility, "'My Views' didn't open");
     }
 
-    public void createView(String VIEW_NAME) {
+    public void createView(String viewName) {
         new HomePage(getDriver())
                 .clickPlusToCreateView()
-                .setViewName(VIEW_NAME)
+                .setViewName(viewName)
                 .clickListViewRadioButton()
                 .clickCreateViewButton();
     }
 
     @Test
     public void testDisplayViewWithListViewConstraints() {
-        final String INVISIBLE = "invisible";
+        final String invisible = "invisible";
 
         List<String> projectNameList = new HomePage(getDriver())
                 .clickNewItem()
@@ -44,7 +44,7 @@ public class ViewsTest extends BaseTest {
                 .selectFolderAndClickOk()
                 .clickLogo()
                 .clickNewItem()
-                .setItemName(INVISIBLE)
+                .setItemName(invisible)
                 .selectPipelineAndClickOk()
                 .clickLogo()
                 .clickPlusToCreateView()
@@ -58,8 +58,8 @@ public class ViewsTest extends BaseTest {
         List<String> expectedProjectNameList = List.of(VISIBLE);
         int expectedProjectListSize = 1;
 
-        Assert.assertTrue(projectNameList.size() == expectedProjectListSize &&
-                        projectNameList.equals(expectedProjectNameList),
+        Assert.assertTrue(projectNameList.size() == expectedProjectListSize
+                        && projectNameList.equals(expectedProjectNameList),
                 "Error displaying projects in View");
     }
 
@@ -104,7 +104,8 @@ public class ViewsTest extends BaseTest {
     public void testAddColumnToPipelineView() {
         final String pipelineName = "NewPipeline";
         final List<String> expectedPipelineViewList =
-                List.of("S", "W", "Name" + "\n" + "  ↓", "Last Success", "Last Failure", "Last Duration", "Git Branches");
+                List.of("S", "W", "Name" + "\n" + "  ↓",
+                        "Last Success", "Last Failure", "Last Duration", "Git Branches");
 
         List<String> actualPipelineViewList = new HomePage(getDriver())
                 .clickNewItem()

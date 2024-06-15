@@ -77,12 +77,6 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
                 .click().perform();
     }
 
-    public boolean areElementsEnabled(List<WebElement> elements) {
-        return elements
-                .stream()
-                .allMatch(WebElement::isEnabled);
-    }
-
     public String getText(WebElement webElement) {
         return webElement.getText();
     }
@@ -160,4 +154,7 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
         return htmlBody.getCssValue("background-color");
     }
 
+    public String getTitle() {
+        return getDriver().getTitle();
+    }
 }

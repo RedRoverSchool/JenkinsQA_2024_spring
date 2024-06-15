@@ -1,39 +1,75 @@
 package school.redrover.model;
 
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.By;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
 
-    @FindBy(css = "[href='configureSecurity']")
+    @FindBy(css = "[href = 'configure']")
+    private WebElement systemLink;
+
+    @FindBy(css = "[href = 'configureTools']")
+    private WebElement toolsLink;
+
+    @FindBy(css = "[href = 'pluginManager']")
+    private WebElement pluginsLink;
+
+    @FindBy(css = "[href = 'computer']")
+    private WebElement nodesLink;
+
+    @FindBy(css = "[href = 'cloud']")
+    private WebElement cloudsLink;
+
+    @FindBy(css = "[href = 'appearance']")
+    private WebElement appearanceLink;
+
+    @FindBy(css = "[href = 'configureSecurity']")
     private WebElement securityLink;
+
+    @FindBy(css = "[href = 'credentials']")
+    private WebElement credentialsLink;
+
+    @FindBy(css = "[href = 'configureCredentials']")
+    private WebElement credentialProvidersLink;
+
+    @FindBy(css = "[href = 'securityRealm/']")
+    private WebElement usersLink;
+
+    @FindBy(css = "[href = 'systemInfo']")
+    private WebElement systemInformationLink;
+
+    @FindBy(css = "[href = 'log']")
+    private WebElement systemLogLink;
+
+    @FindBy(css = "[href = 'load-statistics']")
+    private WebElement loadStatisticsLink;
+
+    @FindBy(css = "[href = 'about']")
+    private WebElement aboutJenkinsLink;
+
+    @FindBy(css = "[href = 'administrativeMonitor/OldData/']")
+    private WebElement manageOldDataLink;
+
+    @FindBy(css = "[href = '#']")
+    private WebElement reloadConfigurationFromDiskLink;
+
+    @FindBy(css = "[href = 'cli']")
+    private WebElement jenkinsCLILink;
+
+    @FindBy(css = "[href = 'script']")
+    private WebElement scriptConsoleLink;
+
+    @FindBy(css = "[href = 'prepareShutdown']")
+    private WebElement prepareForShutdownLink;
 
     @FindBy(id = "settings-search-bar")
     private WebElement searchInput;
-
-    @FindBy(css = "[href='appearance']")
-    private WebElement appearanceButton;
-
-    @FindBy(css = "[href='computer']")
-    private WebElement nodesButton;
-
-    @FindBy(xpath = "(//div[@class='jenkins-section__items'])[5]/div[contains(@class, 'item')]")
-    private List<WebElement> toolsAndActionsSections;
-
-    @FindBy(css = "[href='securityRealm/']")
-    private WebElement usersLink;
 
     @FindBy(className = "jenkins-search__shortcut")
     private WebElement shortcut;
@@ -44,222 +80,215 @@ public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
     @FindBy(tagName = "h1")
     private WebElement pageHeading;
 
-    @FindBy(css = "[href='#']")
-    private WebElement reloadConfigurationFromDiskLink;
-
     @FindBy(css = "[class*='search__results__no-results']")
     private WebElement noSearchResultsPopUp;
 
     @FindBy(css = ".jenkins-search__results a:nth-child(2)")
     private WebElement secondSearchResult;
 
-    @FindBy(css = ".jenkins-section__item")
-    private List<WebElement> sectionsLinksList;
-
-    @FindBy(xpath = "(//div[@class='jenkins-section__items'])[3]//dt")
-    private List<WebElement> systemInformationBlockTitles;
-
-    @FindBy(xpath = "(//div[@class='jenkins-section__items'])[3]//dd [position() mod 2 = 1]")
-    private List<WebElement> systemInformationBlockDescriptions;
-
-    @FindBy(xpath = "(//div[@class='jenkins-section__items'])[5]//dt")
-    private List<WebElement> toolsAndActionsBlockTitles;
-
-    @FindBy(xpath = "(//div[@class='jenkins-section__items'])[5]//dd [position() mod 2 = 1]")
-    private List<WebElement> toolsAndActionsBlockDescriptions;
-
-    @FindBy(xpath = "//section[contains(@class, 'jenkins-section')][2]//div//dt")
-    private List<WebElement> securitySectionNameList;
-
-    @FindBy(xpath = "//section[contains(@class, 'jenkins-section')][2]//div//dd[. !='']")
-    private List<WebElement> securitySectionDescriptionList;
-
-    @FindBy(xpath = "//div[@class='jenkins-section__item']//dt")
-    private List<WebElement> manageJenkinsLinkList;
-
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
 
-    public SecurityPage clickSecurity() {
+    @Step("Click 'System' link")
+    public SystemConfigurationPage clickSystemLink() {
+        systemLink.click();
+
+        return new SystemConfigurationPage(getDriver());
+    }
+
+    @Step("Click 'Tools' link")
+    public ToolsConfigurationPage clickToolsLink() {
+        toolsLink.click();
+
+        return new ToolsConfigurationPage(getDriver());
+    }
+
+    @Step("Click 'Plugins' link")
+    public PluginUpdatesPage clickPluginsLink() {
+        pluginsLink.click();
+
+        return new PluginUpdatesPage(getDriver());
+    }
+
+    @Step("Click 'Nodes' link")
+    public NodesTablePage clickNodesLink() {
+        nodesLink.click();
+
+        return new NodesTablePage(getDriver());
+    }
+
+    @Step("Click 'Clouds' link")
+    public CloudsPage clickCloudsLink() {
+        cloudsLink.click();
+
+        return new CloudsPage(getDriver());
+    }
+
+    @Step("Click 'Appearance' link")
+    public AppearancePage clickAppearanceLink() {
+        appearanceLink.click();
+
+        return new AppearancePage(getDriver());
+    }
+
+    @Step("Click 'Security' link")
+    public SecurityPage clickSecurityLink() {
         securityLink.click();
 
         return new SecurityPage(getDriver());
     }
 
-    public boolean isSearchInputDisplayed() {
-        return searchInput.isDisplayed();
+    @Step("Click 'Credentials' link")
+    public CredentialsPage clickCredentialsLink() {
+        credentialsLink.click();
+
+        return new CredentialsPage(getDriver());
     }
 
-    @Step("Click on Appearance button in System Configuration")
-    public AppearancePage clickAppearanceButton() {
-        appearanceButton.click();
+    @Step("Click 'Credential Providers' link")
+    public CredentialProvidersPage clickCredentialProvidersLink() {
+        credentialProvidersLink.click();
 
-        return new AppearancePage(getDriver());
+        return new CredentialProvidersPage(getDriver());
     }
 
-    public boolean areToolsAndActionsSectionsEnabled() {
-        return areElementsEnabled(toolsAndActionsSections);
-    }
-
-    public UsersPage clickUsers() {
+    @Step("Click 'Users' link")
+    public UsersPage clickUsersLink() {
         usersLink.click();
 
         return new UsersPage(getDriver());
     }
 
-    public boolean isSearchFieldActivateElement() {
-        return searchInput.equals(getDriver().switchTo().activeElement());
+    @Step("Click 'System Information' link")
+    public SystemInformationPage clickSystemInformationLink() {
+        systemInformationLink.click();
+
+        return new SystemInformationPage(getDriver());
     }
 
-    public boolean isSearchHintDisplayed() {
-        return searchHint.isDisplayed();
+    @Step("Click 'System Log' link")
+    public LogRecordersPage clickSystemLogLink() {
+        systemLogLink.click();
+
+        return new LogRecordersPage(getDriver());
     }
 
+    @Step("Click 'Load Statistics' link")
+    public LoadStatisticsPage clickLoadStatisticsLink() {
+        loadStatisticsLink.click();
+
+        return new LoadStatisticsPage(getDriver());
+    }
+
+    @Step("Click 'About Jenkins' link")
+    public AboutJenkinsPage clickAboutJenkinsLink() {
+        aboutJenkinsLink.click();
+
+        return new AboutJenkinsPage(getDriver());
+    }
+
+    @Step("Click 'Manage Old Data' link")
+    public ManageOldDataPage clickManageOldDataLink() {
+        manageOldDataLink.click();
+
+        return new ManageOldDataPage(getDriver());
+    }
+
+    @Step("Click 'Reload Configuration from Disk' link")
+    public ReloadConfigurationDialog clickReloadConfigurationFromDiskLink() {
+        reloadConfigurationFromDiskLink.click();
+
+        return new ReloadConfigurationDialog(getDriver());
+    }
+
+    @Step("Click 'Jenkins CLI' link")
+    public JenkinsCLIPage clickJenkinsCLILink() {
+        jenkinsCLILink.click();
+
+        return new JenkinsCLIPage(getDriver());
+    }
+
+    @Step("Click 'Script Console' link")
+    public JobBuildConsolePage clickScriptConsoleLink() {
+        scriptConsoleLink.click();
+
+        return new JobBuildConsolePage(getDriver());
+    }
+
+    @Step("Click 'Prepare for Shutdown' link")
+    public PrepareForShutdownPage clickPrepareForShutdownLink() {
+        prepareForShutdownLink.click();
+
+        return new PrepareForShutdownPage(getDriver());
+    }
+
+    @Step("Press slash key")
     public ManageJenkinsPage pressSlashKey() {
         securityLink.sendKeys("/");
 
         return new ManageJenkinsPage(getDriver());
     }
 
-    public ManageJenkinsPage hoverMouseOverTheTooltip() {
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(shortcut);
-        actions.perform();
+    @Step("Hover mouse over search input '/' icon")
+    public ManageJenkinsPage hoverMouseOverSlashIcon() {
+        (new Actions(getDriver()))
+                .moveToElement(shortcut)
+                .perform();
 
         return new ManageJenkinsPage(getDriver());
     }
 
-    public String getSearchHintText() {
-        return searchHint.getAttribute("tooltip");
-    }
-
-    public NodesTablePage clickNodes() {
-        nodesButton.click();
-
-        return new NodesTablePage(getDriver());
-    }
-
-    public String getPageHeadingText() {
-        return pageHeading.getText();
-    }
-
-    public ReloadConfigurationDialog clickReloadConfigurationFromDisk() {
-        reloadConfigurationFromDiskLink.click();
-
-        return new ReloadConfigurationDialog(getDriver());
-    }
-
-    public String getSearchInputPlaceholderText() {
-        return searchInput.getDomProperty("placeholder");
-    }
-
-    public ManageJenkinsPage typeSearchSettingsRequest(String request) {
+    @Step("Type '{request}' in search input")
+    public ManageJenkinsPage typeInSearchInput(String request) {
         searchInput.sendKeys(request);
 
         return this;
     }
 
-    public String getNoSearchResultsPopUpText() {
-        return getWait2().until(ExpectedConditions.visibilityOf(noSearchResultsPopUp)).getText();
-    }
-
+    @Step("Click on second search result in dropdown")
     public <T> T clickSecondSearchResult(T page) {
         getWait2().until(ExpectedConditions.visibilityOf(secondSearchResult)).click();
 
         return page;
     }
 
-    public boolean areSectionsLinksClickable() {
-        for (WebElement element : sectionsLinksList) {
-            try {
-                getWait2().until(ExpectedConditions.elementToBeClickable(element));
-            } catch (Exception e) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public Integer getNumberOfSectionLinks() {
-        return sectionsLinksList.size();
-    }
-
-    public Map<String, String> getSystemInformationBlockTitlesAndDescriptions() {
-        Map<String, String> actualTitlesAndDescriptions = new LinkedHashMap<>();
-        for (int i = 0; i < systemInformationBlockTitles.size(); i++) {
-            String actualTitle = systemInformationBlockTitles.get(i).getText();
-            String actualDescription = systemInformationBlockDescriptions.get(i).getText();
-
-            actualTitlesAndDescriptions.put(actualTitle, actualDescription);
-        }
-        return actualTitlesAndDescriptions;
-    }
-
-    public Map<String, String> getToolsAndActionsBlockTitlesAndDescriptions() {
-        Map<String, String> actualTitlesAndDescriptions = new LinkedHashMap<>();
-        for (int i = 0; i < toolsAndActionsBlockTitles.size(); i++) {
-            String actualTitle = toolsAndActionsBlockTitles.get(i).getText();
-            String actualDescription = toolsAndActionsBlockDescriptions.get(i).getText();
-
-            actualTitlesAndDescriptions.put(actualTitle, actualDescription);
-        }
-        return actualTitlesAndDescriptions;
-    }
-
-    public boolean areToolsAndActionsSectionsAndDescriptionsMatchingInCorrectOrder(Map<String, String> expected) {
-        int index = 0;
-        for (Map.Entry<String, String> expectedEntry : expected.entrySet()) {
-            Iterator<Map.Entry<String, String>> iterator = getToolsAndActionsBlockTitlesAndDescriptions().entrySet().iterator();
-            Map.Entry<String, String> actualEntry = null;
-            for (int i = 0; i <= index; i++) {
-                actualEntry = iterator.next();
-            }
-            if (!actualEntry.getKey().equals(expectedEntry.getKey()) ||
-                    !actualEntry.getValue().equals(expectedEntry.getValue())) {
-                return false;
-            }
-            index++;
-        }
-        return true;
-    }
-
-    public String clickManageLink(String link) {
+    @Step("Click '{link}' link and get page current URL")
+    public String clickManageLinkAndGetCurrentUrl(String link) {
         getDriver().findElement(By.xpath("//dt[text()='" + link + "']")).click();
 
         return getDriver().getCurrentUrl();
     }
 
-    public List<String> getSecurityBlockElementList() {
-        List<String> textList = new ArrayList<>();
-        List<WebElement> securityBlockElementList = securitySectionNameList;
+    @Step("Click '{link}' link and get page title")
+    public String clickManageLinkAndGetTitle(String link) {
+        getDriver().findElement(By.xpath("//dt[text()='" + link + "']")).click();
 
-        for (WebElement element : securityBlockElementList) {
-            textList.add(element.getText());
-        }
-
-        return textList;
+        return getDriver().getTitle();
     }
 
-    public List<String> getSecurityBlockDescriptionList() {
-        List<String> textList = new ArrayList<>();
-        List<WebElement> securityDescriptionList = securitySectionDescriptionList;
-
-        for (WebElement element : securityDescriptionList) {
-            textList.add(element.getText());
-        }
-
-        return textList;
+    public String getPageHeadingText() {
+        return pageHeading.getText();
     }
 
-    public List<String> getListOfManageJenkinsLinks() {
-        List<String> linkTextList = new ArrayList<>();
-        List<WebElement> linkList = manageJenkinsLinkList;
+    public String getSearchInputPlaceholderText() {
+        return searchInput.getDomProperty("placeholder");
+    }
 
-        for (WebElement link : linkList) {
-            linkTextList.add(link.getText());
-        }
+    public String getLinkDescription(String link) {
+        return getDriver().findElement(
+                By.xpath("//dt[text()='" + link + "']/following-sibling::dd[1]")).getText();
+    }
 
-        return linkTextList;
+    public String getNoSearchResultsPopupText() {
+        return getWait2().until(ExpectedConditions.visibilityOf(noSearchResultsPopUp)).getText();
+    }
+
+    public boolean isSearchInputActive() {
+        return searchInput.equals(getDriver().switchTo().activeElement());
+    }
+
+    public String getSlashIconTooltipText() {
+        return searchHint.getAttribute("tooltip");
     }
 }

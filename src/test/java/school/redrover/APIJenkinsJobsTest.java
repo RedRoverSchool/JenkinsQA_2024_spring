@@ -29,12 +29,12 @@ import java.util.Base64;
 
 public class APIJenkinsJobsTest {
 
-    private static final String username = ProjectUtils.getUserName();
-    private static final String password = ProjectUtils.getPassword();
+    private static final String USERNAME = ProjectUtils.getUserName();
+    private static final String PASSWORD = ProjectUtils.getPassword();
 
     @Test
     public void testCrumbAndToken() {
-        String auth = username + ":" + password;
+        String auth = USERNAME + ":" + PASSWORD;
         String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes());
 
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
@@ -91,12 +91,12 @@ public class APIJenkinsJobsTest {
         String url = ProjectUtils.getUrl() + "/job/NEW_JOB/build";
 
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            String auth = username + ":" + password;
+            String auth = USERNAME + ":" + PASSWORD;
             String encodedAuth = java.util.Base64.getEncoder().encodeToString(auth.getBytes());
 
             Crumb crumb = getCrumb(encodedAuth, httpClient);
             Token token = getToken(encodedAuth, crumb, httpClient);
-            String credAuth = username + ":" + token.getData().getTokenValue();
+            String credAuth = USERNAME + ":" + token.getData().getTokenValue();
             String authToken = Base64.getEncoder().encodeToString(credAuth.getBytes());
 
             String jsonData = "{\"parameter\": [{\"name\":\"id\", \"value\":\"123\"}, {\"name\":\"verbosity\", \"value\":\"high\"}]}";
@@ -108,7 +108,7 @@ public class APIJenkinsJobsTest {
 
             try (CloseableHttpResponse response = httpClient.execute(request)) {
                 int statusCode = response.getStatusLine().getStatusCode();
-                Assert.assertEquals( statusCode, 201);
+                Assert.assertEquals(statusCode, 201);
                 HttpEntity entity = response.getEntity();
                 Assert.assertNotNull(entity);
                 String responseString = EntityUtils.toString(entity);
@@ -143,7 +143,7 @@ public class APIJenkinsJobsTest {
     }
 
     private String get(String url) {
-        String auth = username + ":" + password;
+        String auth = USERNAME + ":" + PASSWORD;
         String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes());
 
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
@@ -163,7 +163,7 @@ public class APIJenkinsJobsTest {
     }
 
     private String post(String url, String body) {
-        String auth = username + ":" + password;
+        String auth = USERNAME + ":" + PASSWORD;
         String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes());
 
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
@@ -171,7 +171,7 @@ public class APIJenkinsJobsTest {
 
             Crumb crumb = getCrumb(encodedAuth, httpClient);
             Token token = getToken(encodedAuth, crumb, httpClient);
-            String credAuth = username + ":" + token.getData().getTokenValue();
+            String credAuth = USERNAME + ":" + token.getData().getTokenValue();
             String authToken = Base64.getEncoder().encodeToString(credAuth.getBytes());
             request.setHeader(HttpHeaders.AUTHORIZATION, "Basic " + authToken);
             request.setEntity(new StringEntity(body, ContentType.APPLICATION_XML));

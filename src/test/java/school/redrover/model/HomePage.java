@@ -322,8 +322,8 @@ public class HomePage extends BasePage<HomePage> {
     public HomePage openDashboardBreadcrumbsDropdown() {
         WebElement chevron = dashboardBreadcrumbs.findElement(By.cssSelector("[class$='chevron']"));
         ((JavascriptExecutor) getDriver()).executeScript(
-                "arguments[0].dispatchEvent(new Event('mouseenter'));" +
-                        "arguments[0].dispatchEvent(new Event('click'));",
+                "arguments[0].dispatchEvent(new Event('mouseenter'));"
+                        + "arguments[0].dispatchEvent(new Event('click'));",
                 chevron);
 
         return this;
