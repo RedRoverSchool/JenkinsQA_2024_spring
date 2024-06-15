@@ -239,7 +239,7 @@ public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
         return new ManageJenkinsPage(getDriver());
     }
 
-    @Step("Type in search input {request}")
+    @Step("Type '{request}' in search input")
     public ManageJenkinsPage typeInSearchInput(String request) {
         searchInput.sendKeys(request);
 
@@ -253,14 +253,14 @@ public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
         return page;
     }
 
-    @Step("Click {link} link and get page current URL")
+    @Step("Click '{link}' link and get page current URL")
     public String clickManageLinkAndGetCurrentUrl(String link) {
         getDriver().findElement(By.xpath("//dt[text()='" + link + "']")).click();
 
         return getDriver().getCurrentUrl();
     }
 
-    @Step("Click {link} link and get page title")
+    @Step("Click '{link}' link and get page title")
     public String clickManageLinkAndGetTitle(String link) {
         getDriver().findElement(By.xpath("//dt[text()='" + link + "']")).click();
 

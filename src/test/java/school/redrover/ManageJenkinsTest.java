@@ -88,13 +88,13 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test(dataProvider = "manageLinksDescriptionsProvider")
     @Story("US_09.002 View 'Manage Jenkins' page > Visibility and clickability")
-    @Description("Check {linkName} link description text")
+    @Description("Check link description text")
     public void testLinksDescriptionText(String linkName, String description) {
         String linkDescription = new HomePage(getDriver())
                 .clickManageJenkins()
                 .getLinkDescription(linkName);
 
-        Allure.step("Expected result: Link description is " + description);
+        Allure.step("Expected result: Link " + linkName + " description is " + description);
         Assert.assertEquals(linkDescription, description);
     }
 
@@ -106,7 +106,7 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test(dataProvider = "manageLinksEndpointsProvider")
     @Story("US_09.004 View 'Manage Jenkins' page > Redirection")
-    @Description("Check redirect to right URL after click on {link}")
+    @Description("Check redirect to right URL after click on link")
     public void testManageJenkinsLinksRedirectionURL(String linkName, String endpoint) {
         String currentUrl = new HomePage(getDriver())
                 .clickManageJenkins()
@@ -123,7 +123,7 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test(dataProvider = "manageLinksPageTitlesProvider")
     @Story("US_09.004 View 'Manage Jenkins' page > Redirection")
-    @Description("Check page title {linkName} after click on {link}")
+    @Description("Check page title after click on link")
     public void testManageJenkinsLinksRedirectToPage(String linkName, String pageTitle) {
         String title = new HomePage(getDriver())
                 .clickManageJenkins()
