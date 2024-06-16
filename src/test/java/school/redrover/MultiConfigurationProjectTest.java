@@ -185,7 +185,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         String actualYesButtonColor = new HomePage(getDriver())
                 .clickSpecificMultiConfigurationProjectName(PROJECT_NAME)
-                .clickSidebarDelete()
+                .clickDeleteOnSidebar()
                 .getYesButtonColorDeletingViaSidebar();
 
         Assert.assertEquals(actualYesButtonColor, expectedColorNone);

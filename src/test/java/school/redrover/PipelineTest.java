@@ -4,7 +4,6 @@ import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -139,7 +138,7 @@ public class PipelineTest extends BaseTest {
                 .typeItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
-                .clickSidebarDeleteButton()
+                .clickDeleteOnSidebar()
                 .getYesButtonColorDeletingViaSidebar();
 
         Assert.assertEquals(yesButtonHexColor, "#e6001f", "The confirmation button color is not red");
@@ -158,8 +157,8 @@ public class PipelineTest extends BaseTest {
                 .clickSpecificPipelineName(PIPELINE_NAME)
                 .hoverOverBreadcrumbsName()
                 .clickBreadcrumbsDropdownArrow()
-                .clickBreadcrumbsDeleteButton()
-                .clickYes(new HomePage(getDriver()))
+                .clickDeleteOnBreadcrumbsMenu()
+                .clickYes()
                 .isItemDeleted(PIPELINE_NAME);
 
         Assert.assertTrue(isPipelineDeleted, PIPELINE_NAME + " was not deleted");
@@ -231,10 +230,10 @@ public class PipelineTest extends BaseTest {
                 .typeItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
-                .clickSidebarRenameButton()
+                .clickRenameOnSidebar()
                 .clearNameInputField()
-                .setNewName(NEW_PIPELINE_NAME)
-                .clickSaveRenameButton()
+                .typeNewName(NEW_PIPELINE_NAME)
+                .clickRenameButton()
                 .getProjectName();
 
         Assert.assertEquals(displayedName, NEW_PIPELINE_NAME);
@@ -390,10 +389,10 @@ public class PipelineTest extends BaseTest {
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
                 .clickBreadcrumbsDropdownArrow()
-                .clickBreadcrumbsRenameButton()
+                .clickRenameOnBreadcrumbsMenu()
                 .clearNameInputField()
-                .setNewName(NEW_PIPELINE_NAME)
-                .clickSaveRenameButton()
+                .typeNewName(NEW_PIPELINE_NAME)
+                .clickRenameButton()
                 .getProjectName();
 
         Assert.assertEquals(displayedNewName, NEW_PIPELINE_NAME);
@@ -432,7 +431,7 @@ public class PipelineTest extends BaseTest {
                 .sendScript(stagesQtt, PIPELINE_SCRIPT)
                 .clickSaveButton()
                 .makeBuilds(buildsQtt)
-                .getSagesQtt();
+                .getStagesQuantity();
 
         Assert.assertEquals(actualSagesQtt, stagesQtt);
     }
@@ -513,7 +512,7 @@ public class PipelineTest extends BaseTest {
         final String greenHexColor = "#1ea64b";
 
         String actualHexColor = new HomePage(getDriver())
-                .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
+                .clickSpecificPipelineName(PIPELINE_NAME)
                 .getHexColorSuccessMark();
 
         Assert.assertEquals(actualHexColor, greenHexColor);
@@ -583,8 +582,8 @@ public class PipelineTest extends BaseTest {
                 .selectPipelineAndClickOk()
                 .clickLogo()
                 .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
-                .clickSidebarDeleteButton()
-                .clickYes(new HomePage(getDriver()))
+                .clickDeleteOnSidebar()
+                .clickYes()
                 .getItemList();
 
         Assert.assertTrue(jobList.isEmpty());
@@ -630,8 +629,8 @@ public class PipelineTest extends BaseTest {
                 .scrollToPipelineScript()
                 .sendScript(numberOfStages, pipelineScript)
                 .clickSaveButton()
-                .clickOnBuildNowOnSidebar()
-                .getConsoleOuputForAllStages(numberOfStages);
+                .clickBuildNowOnSidebarAndWait()
+                .getConsoleOutputForAllStages(numberOfStages);
 
         Assert.assertEquals(actualConsoleOuputForAllStages, expectedConsoleOuputForAllStages);
     }
@@ -660,7 +659,6 @@ public class PipelineTest extends BaseTest {
                 .sendScript(1, pipelineScript)
                 .clickSaveButton()
                 .makeBuilds(5)
-                .waitBuildToFinish()
                 .getBuildHistoryList();
 
         List<String> expectedOrder = new ArrayList<>(actualOrder);
@@ -686,7 +684,6 @@ public class PipelineTest extends BaseTest {
                 .sendScript(1, PIPELINE_SCRIPT)
                 .clickSaveButton()
                 .makeBuilds(2)
-                .waitBuildToFinish()
                 .getColorOfCell();
 
         Assert.assertEquals(backgroundColor, "rgba(0, 255, 0, 0.1)");
@@ -712,8 +709,8 @@ public class PipelineTest extends BaseTest {
                 .selectPipelineAndClickOk()
                 .scrollToPipelineScript()
                 .sendScript(numberOfStages, PIPELINE_SCRIPT)
-                .clickSaveButton().clickOnBuildNowOnSidebar()
-                .waitBuildToFinish()
+                .clickSaveButton()
+                .clickBuildNowOnSidebarAndWait()
                 .getStageHeaderNameList();
 
         Assert.assertEquals(actualStageHeaderNameList, expectedHeaderNameList);
@@ -765,10 +762,8 @@ public class PipelineTest extends BaseTest {
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
-                .clickJobByName(PIPELINE_NAME,
-                        new PipelineProjectPage(getDriver()))
-                .clickOnBuildNowOnSidebar()
-                .waitForBuildScheduledPopUp()
+                .clickSpecificPipelineName(PIPELINE_NAME)
+                .clickBuildNowOnSidebarAndWait()
                 .clickLogo()
                 .clickBuildHistory()
                 .clickBuild1Console()
@@ -853,10 +848,8 @@ public class PipelineTest extends BaseTest {
                 .scrollToPipelineScript()
                 .selectSamplePipelineScript("hello")
                 .clickSaveButton()
-                .clickOnBuildNowOnSidebar()
-                .waitBuildToFinish()
-                .clickOnBuildNowOnSidebar()
-                .waitBuildToFinish();
+                .clickBuildNowOnSidebarAndWait()
+                .clickBuildNowOnSidebarAndWait();
 
         Assert.assertTrue(pipelineProjectPage.isBuildAppear(2, PIPELINE_NAME), "there is no second build");
         Assert.assertEquals(pipelineProjectPage.numberOfBuild(), 1);
@@ -892,7 +885,7 @@ public class PipelineTest extends BaseTest {
                 .clickAdvancedButton()
                 .setDisplayNameDescription(DESCRIPTION)
                 .clickSaveButton()
-                .getProjectsDisplayNameInHeader();
+                .getProjectName();
 
         Assert.assertEquals(projectsDisplayNameInHeader, DESCRIPTION);
     }
@@ -908,7 +901,7 @@ public class PipelineTest extends BaseTest {
                 .clickAdvancedButton()
                 .setDisplayNameDescription(editedDisplayNameText)
                 .clickSaveButton()
-                .getProjectsDisplayNameInHeader();
+                .getProjectName();
 
         Assert.assertTrue(projectsDisplayNameInHeader.contains(editedDisplayNameText),
                 "DisplayName is not edited correctly");
@@ -923,7 +916,7 @@ public class PipelineTest extends BaseTest {
                 .clickAdvancedButton()
                 .clearDisplayNameDescription()
                 .clickSaveButton()
-                .getProjectsDisplayNameInHeader();
+                .getProjectName();
 
         Assert.assertEquals(projectsDisplayNameInHeader, PIPELINE_NAME);
     }
@@ -1106,7 +1099,7 @@ public class PipelineTest extends BaseTest {
                 .selectPipelineAndClickOk()
                 .selectDropdownDefinition(2)
                 .clickSaveButton()
-                .clickOnBuildNowOnSidebar()
+                .clickBuildNowOnSidebarAndWait()
                 .clickLogo()
                 .clickBuildHistory()
                 .clickBuild1Console()

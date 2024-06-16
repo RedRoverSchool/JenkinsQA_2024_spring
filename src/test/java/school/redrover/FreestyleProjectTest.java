@@ -226,9 +226,9 @@ public class FreestyleProjectTest extends BaseTest {
                 .selectFreestyleAndClickOk()
                 .clickSaveButton()
                 .clickAddDescription()
-                .setDescription(FREESTYLE_PROJECT_DESCRIPTION)
+                .typeDescription(FREESTYLE_PROJECT_DESCRIPTION)
                 .clickSaveButton()
-                .getProjectDescriptionText();
+                .getDescriptionText();
 
         Allure.step("The project description matches: " + FREESTYLE_PROJECT_DESCRIPTION);
         Assert.assertTrue(projectDescription.matches(FREESTYLE_PROJECT_DESCRIPTION));
@@ -242,9 +242,9 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickEditDescription()
                 .clearDescription()
-                .setDescription(EDITED_PROJECT_DESCRIPTION)
+                .typeDescription(EDITED_PROJECT_DESCRIPTION)
                 .clickSaveButton()
-                .getProjectDescriptionText();
+                .getDescriptionText();
 
         Allure.step("Expected result: The project description should be updated to: " + EDITED_PROJECT_DESCRIPTION);
         Assert.assertEquals(projectDescriptionText, EDITED_PROJECT_DESCRIPTION);

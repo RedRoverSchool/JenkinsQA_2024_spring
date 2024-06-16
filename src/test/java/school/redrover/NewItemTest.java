@@ -256,7 +256,7 @@ public class NewItemTest extends BaseTest {
                 .getCurrentUrl();
         String pageHeading = new FreestyleConfigPage(getDriver())
                 .clickSaveButton()
-                .getPageHeadingText();
+                .getProjectName();
 
         Assert.assertTrue(isTypeChecked);
         Assert.assertTrue(currentUrl.contains(PROJECT_NAME));

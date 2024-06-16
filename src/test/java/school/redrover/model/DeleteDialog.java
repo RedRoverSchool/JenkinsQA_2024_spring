@@ -21,11 +21,4 @@ public class DeleteDialog extends BasePage {
         return page;
     }
 
-    public String getYesButtonColorDeletingViaSidebar() {
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-
-        return (String) js.executeScript(
-                "return window.getComputedStyle(arguments[0]).getPropertyValue('--color');",
-                yesButton);
-    }
 }

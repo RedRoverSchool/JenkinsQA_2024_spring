@@ -54,7 +54,7 @@ public class OrganizationFolderTest extends BaseTest {
     public void testAddDescriptionViaAddDescriptionButton() {
         String textInDescription = new OrganizationFolderProjectPage(getDriver())
                 .clickAddDescription()
-                .setDescription(ORGANIZATION_FOLDER_DESCRIPTION)
+                .typeDescription(ORGANIZATION_FOLDER_DESCRIPTION)
                 .clickSaveButton()
                 .getDescriptionText();
 
@@ -133,9 +133,10 @@ public class OrganizationFolderTest extends BaseTest {
 
         List<String> itemList = new HomePage(getDriver())
                 .clickJobByName(ORGANIZATION_FOLDER_NAME, new OrganizationFolderProjectPage(getDriver()))
-                .clickSidebarRenameButton()
-                .setNewName(newOrganizationFolderName)
-                .clickRename()
+                .clickRenameOnSidebar()
+                .clearNameInputField()
+                .typeNewName(newOrganizationFolderName)
+                .clickRenameButton()
                 .clickLogo()
                 .getItemList();
 
@@ -150,7 +151,7 @@ public class OrganizationFolderTest extends BaseTest {
         String titleText = new HomePage(getDriver())
                 .clickJobByName(ORGANIZATION_FOLDER_NAME, new OrganizationFolderProjectPage(getDriver()))
                 .clickSidebarScanOrganizationFolderLog()
-                .getScanText();
+                .getProjectName();
 
         Assert.assertEquals(titleText, "Scan Organization Folder Log",
                 "The page title does not match 'Scan Organization Folder Log'");

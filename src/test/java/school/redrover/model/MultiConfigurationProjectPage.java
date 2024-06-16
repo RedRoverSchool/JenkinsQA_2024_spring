@@ -75,22 +75,11 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
         return this;
     }
 
-    public MultiConfigurationProjectPage clearDescription() {
-        descriptionField.clear();
-        return this;
-    }
-
     public MultiConfigurationProjectPage clickSaveDescription() {
         saveButton.click();
 
         return this;
     }
-
-    public String getDescriptionText() {
-
-        return getWait2().until(ExpectedConditions.visibilityOf(description)).getText();
-    }
-
 
     @Step("Click on the button 'Configure' on sidebar")
     public MultiConfigurationConfigPage clickConfigureButton() {

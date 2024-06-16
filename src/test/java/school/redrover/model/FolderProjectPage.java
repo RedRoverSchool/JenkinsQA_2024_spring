@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseProjectPage;
 
 import java.util.List;
@@ -77,7 +76,7 @@ public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
         return breadcrumbsName.getText();
     }
 
-    public FolderRenamePage clickOnRenameButton() {
+    public FolderRenamePage clickRenameButton() {
         renameButton.click();
 
         return new FolderRenamePage(getDriver());
@@ -108,20 +107,6 @@ public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
     public FolderProjectPage setDescription(String text) {
         textareaDescription.sendKeys(text);
         return this;
-    }
-
-    public FolderProjectPage clearDescription() {
-        textareaDescription.clear();
-        return this;
-    }
-
-    public FolderProjectPage clickSaveButton() {
-        saveButton.click();
-        return this;
-    }
-
-    public String getDescriptionText() {
-        return description.getText();
     }
 
     public String getItemInTableName() {

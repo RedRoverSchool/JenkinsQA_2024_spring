@@ -149,7 +149,7 @@ public class FolderTest extends BaseTest {
 
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
                 .clickJobByName(FOLDER_NAME, new FolderProjectPage(getDriver()))
-                .clickOnRenameButton()
+                .clickRenameButton()
                 .setNewName(NEW_FOLDER_NAME)
                 .clickRename();
         String folderRenamedName = folderProjectPage

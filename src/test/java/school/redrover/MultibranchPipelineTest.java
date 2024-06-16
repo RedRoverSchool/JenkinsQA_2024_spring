@@ -169,10 +169,10 @@ public class MultibranchPipelineTest extends BaseTest {
 
         List<String> itemList = new HomePage(getDriver())
                 .clickJobByName(MULTI_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
-                .clickSidebarRenameButton()
-                .clearNewNameInput()
-                .setItemName(RENAMED_MULTI_PIPELINE)
-                .clickRename(new MultibranchPipelineProjectPage(getDriver()))
+                .clickRenameOnSidebar()
+                .clearNameInputField()
+                .typeNewName(RENAMED_MULTI_PIPELINE)
+                .clickRenameButton()
                 .clickLogo()
                 .getItemList();
 
@@ -186,11 +186,11 @@ public class MultibranchPipelineTest extends BaseTest {
         TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
 
         String errorMessage = new HomePage(getDriver())
-                .clickJobByName(MULTI_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
-                .clickSidebarRenameButton()
-                .clearNewNameInput()
-                .setItemName(MULTI_PIPELINE_NAME)
-                .clickRename(new MultibranchPipelineErrorPage(getDriver()))
+                .clickSpecificMultibranchPipelineName(MULTI_PIPELINE_NAME)
+                .clickRenameOnSidebar()
+                .clearNameInputField()
+                .typeNewName(MULTI_PIPELINE_NAME)
+                .clickRenameButton()
                 .getErrorText();
 
         Assert.assertEquals(errorMessage, "The new name is the same as the current name.");

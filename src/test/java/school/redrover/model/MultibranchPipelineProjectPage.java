@@ -78,12 +78,6 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage<MultibranchP
         return disableMPMessage.getCssValue("color");
     }
 
-    public MultibranchPipelineRenamePage clickSidebarRenameButton() {
-        sidebarRenameButton.click();
-
-        return new MultibranchPipelineRenamePage(getDriver());
-    }
-
     public List<String> getSidebarTasksListHavingExistingFolder() {
         return sidebarTasksList
                 .stream()
