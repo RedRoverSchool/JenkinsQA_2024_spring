@@ -1,5 +1,6 @@
 package school.redrover;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
@@ -47,9 +48,10 @@ public class FolderTest extends BaseTest {
     @Story("US_04.004  Add and edit description of the folder ")
     @Description("Add description of the folder and save it")
     public void testAddDescription() {
-        String textInDescription = new FolderProjectPage(getDriver())
-                .clickAddOrEditDescription()
-                .setDescription(FOLDER_DESCRIPTION_FIRST)
+        String textInDescription = new HomePage(getDriver())
+                .clickSpecificFolderName(FOLDER_NAME)
+                .clickAddDescription()
+                .typeDescription(FOLDER_DESCRIPTION_FIRST)
                 .clickSaveButton()
                 .getDescriptionText();
 
@@ -60,10 +62,11 @@ public class FolderTest extends BaseTest {
     @Story("US_04.004  Add and edit description of the folder ")
     @Description("Edit description of the folder and save it")
     public void testChangeDescription() {
-        String textInDescription = new FolderProjectPage(getDriver())
-                .clickAddOrEditDescription()
+        String textInDescription = new HomePage(getDriver())
+                .clickSpecificFolderName(FOLDER_NAME)
+                .clickEditDescription()
                 .clearDescription()
-                .setDescription(FOLDER_DESCRIPTION_SECOND)
+                .typeDescription(FOLDER_DESCRIPTION_SECOND)
                 .clickSaveButton()
                 .getDescriptionText();
 
@@ -106,11 +109,13 @@ public class FolderTest extends BaseTest {
                 .clickSpecificFolderName(FOLDER_NAME)
                 .hoverOverBreadcrumbsName()
                 .clickBreadcrumbsDropdownArrow()
-                .clickDropdownRenameButton()
-                .setNewName(NEW_FOLDER_NAME)
-                .clickRename();
+                .clickRenameOnDropdown()
+                .typeNewName(NEW_FOLDER_NAME)
+                .clickRenameButton();
+
         String folderStatusPageHeading = folderProjectPage
                 .getProjectName();
+
         HomePage renewHomePage = folderProjectPage
                 .clickLogo();
 
@@ -147,18 +152,24 @@ public class FolderTest extends BaseTest {
     public void testRenameFolderViaSidebarMenu() {
         TestUtils.createFolderProject(this, FOLDER_NAME);
 
-        FolderProjectPage folderProjectPage = new HomePage(getDriver())
-                .clickJobByName(FOLDER_NAME, new FolderProjectPage(getDriver()))
+        String folderRenamedName = new HomePage(getDriver())
+                .clickSpecificFolderName(FOLDER_NAME)
+                .clickRenameOnSidebar()
+                .clearNameInputField()
+                .typeNewName(NEW_FOLDER_NAME)
                 .clickRenameButton()
-                .setNewName(NEW_FOLDER_NAME)
-                .clickRename();
-        String folderRenamedName = folderProjectPage
                 .getProjectName();
-        HomePage renewHomePage = folderProjectPage
+
+        HomePage renewHomePage = new  FolderProjectPage(getDriver())
                 .clickLogo();
 
+        Allure.step("Folder name on project page as entered during renaming");
         Assert.assertEquals(folderRenamedName, NEW_FOLDER_NAME);
+
+        Allure.step("Folder with renamed name is exists on dashboard");
         Assert.assertTrue(renewHomePage.isItemExists(NEW_FOLDER_NAME));
+
+        Allure.step("Folder with old name is missing on dashboard");
         Assert.assertTrue(renewHomePage.isItemDeleted(FOLDER_NAME));
     }
     @Test
@@ -189,7 +200,7 @@ public class FolderTest extends BaseTest {
                 .clickJobByName(FOLDER_TO_MOVE, new FolderProjectPage(getDriver()))
                 .hoverOverBreadcrumbsName()
                 .clickBreadcrumbsDropdownArrow()
-                .clickDropdownMoveButton()
+                .clickMoveOnDropdown()
                 .chooseDestinationFromListAndMove(FOLDER_NAME)
                 .clickMainFolderName(FOLDER_NAME)
                 .getNestedProjectName();
@@ -205,7 +216,7 @@ public class FolderTest extends BaseTest {
 
         boolean isItemCreated = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
-                .clickNewItemInsideFolder()
+                .clickNewItemOnSidebar()
                 .typeItemName(multiConfigurationProject)
                 .selectFreestyleAndClickOk()
                 .clickLogo()
@@ -294,7 +305,7 @@ public class FolderTest extends BaseTest {
                 .getMessageFromEmptyFolder();
 
         String actualCreateJobLinkText = new FolderProjectPage(getDriver())
-                .getTextWhereClickForCreateJob();
+                .getLinkTextForCreateJob();
 
         Boolean isLinkForCreateJobDisplayed = new FolderProjectPage(getDriver())
                 .isLinkForCreateJobDisplayed();
@@ -313,7 +324,7 @@ public class FolderTest extends BaseTest {
 
         String fullProjectName = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
-                .clickNewItemInsideFolder()
+                .clickNewItemOnSidebar()
                 .typeItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
@@ -322,7 +333,7 @@ public class FolderTest extends BaseTest {
         String itemName = new PipelineProjectPage(getDriver())
                 .clickLogo()
                 .clickSpecificFolderName(FOLDER_NAME)
-                .getItemInTableName();
+                .getItemNameFromDashboard();
 
         Assert.assertTrue(fullProjectName.contains(expectedFullProjectName), "The text does not contain the expected project name.");
         Assert.assertEquals(itemName, PIPELINE_NAME);
@@ -334,13 +345,13 @@ public class FolderTest extends BaseTest {
     public void testCreateTwoInnerFolder() {
         List<String> itemNames = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
-                .clickNewItemInsideFolder()
+                .clickNewItemOnSidebar()
                 .typeItemName(FOLDER_TO_MOVE)
                 .selectFolderAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
                 .clickSpecificFolderName(FOLDER_NAME)
-                .clickNewItemInsideFolder()
+                .clickNewItemOnSidebar()
                 .typeItemName(FOLDER_TO_MOVE_2)
                 .selectFolderAndClickOk()
                 .clickSaveButton()
@@ -357,7 +368,7 @@ public class FolderTest extends BaseTest {
     public void testCreateFreeStyleProjectInsideRootFolder() {
         List<String> insideFolderItemList = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
-                .clickNewItemInsideFolder()
+                .clickNewItemOnSidebar()
                 .typeItemName(IVAN_S_FREE_STYLE_PROJECT)
                 .selectFreestyleAndClickOk()
                 .clickSaveButton()
@@ -375,7 +386,7 @@ public class FolderTest extends BaseTest {
         List<String> jobList = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
                 .clickDeleteOnSidebar()
-                .clickYesForDeleteFolder()
+                .clickYes()
                 .getItemList();
 
         Assert.assertListNotContainsObject(jobList, FOLDER_NAME, FOLDER_NAME + " not removed!");

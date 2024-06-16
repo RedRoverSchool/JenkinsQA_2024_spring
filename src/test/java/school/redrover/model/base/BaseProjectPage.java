@@ -49,6 +49,12 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
     @FindBy(css = "[class*='dropdown'] [href$='rename']")
     private WebElement breadcrumbsRename;
 
+    @FindBy(css = "[class*='dropdown'] [href$='rename']")
+    private WebElement dropdownRename;
+
+    @FindBy(css = "[class*='dropdown'] [href$='move']")
+    private WebElement dropdownMove;
+
     @FindBy(css = "[href^='/job'] [class$='dropdown-chevron']")
     private WebElement breadcrumbsDropdownArrow;
 
@@ -68,6 +74,7 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
         super(driver);
     }
 
+    @Step("Get item name on Project page")
     public String getProjectName() {
         return projectName.getText();
     }
@@ -185,6 +192,7 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
                 yesButton);
     }
 
+    @Step("Click 'Rename' on the sidebar")
     public ProjectRenamePage<T> clickRenameOnSidebar() {
         sidebarRename.click();
 
@@ -197,7 +205,13 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
         return (T) this;
     }
 
-    public ProjectRenamePage<T> clickRenameOnBreadcrumbsMenu() {
+    public ProjectRenamePage<T> clickRenameOnBreadcrumbs() {
+        breadcrumbsRename.click();
+
+        return new ProjectRenamePage<>(getDriver(), (T) this);
+    }
+
+    public ProjectRenamePage<T> clickRenameOnDropdown() {
         breadcrumbsRename.click();
 
         return new ProjectRenamePage<>(getDriver(), (T) this);
@@ -221,4 +235,13 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
         return (T) this;
     }
 
+    public String getBreadcrumbName() {
+        return breadcrumbsName.getText();
+    }
+
+    public MovePage clickMoveOnDropdown() {
+        dropdownMove.click();
+
+        return new MovePage(getDriver());
+    }
 }

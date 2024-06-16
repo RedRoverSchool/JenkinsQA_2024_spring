@@ -389,7 +389,7 @@ public class PipelineTest extends BaseTest {
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
                 .clickBreadcrumbsDropdownArrow()
-                .clickRenameOnBreadcrumbsMenu()
+                .clickRenameOnBreadcrumbs()
                 .clearNameInputField()
                 .typeNewName(NEW_PIPELINE_NAME)
                 .clickRenameButton()

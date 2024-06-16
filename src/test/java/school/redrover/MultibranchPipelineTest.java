@@ -226,7 +226,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         MultibranchPipelineProjectPage multibranchPipelineProjectPage = new HomePage(getDriver())
                 .clickJobByName(FOLDER_NAME, new FolderProjectPage(getDriver()))
-                .clickNewItemInsideFolder()
+                .clickNewItemOnSidebar()
                 .typeItemName(MULTI_PIPELINE_NAME)
                 .selectMultibranchPipelineAndClickOk()
                 .clickSaveButton();

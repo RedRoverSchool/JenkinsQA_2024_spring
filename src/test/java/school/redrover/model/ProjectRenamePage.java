@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -25,18 +26,21 @@ public class ProjectRenamePage<T extends BaseProjectPage<T>> extends BasePage<T>
         return returnPage;
     }
 
+    @Step("Clear old name in input field")
     public ProjectRenamePage<T> clearNameInputField() {
         nameInputField.clear();
 
         return this;
     }
 
+    @Step("Type new name on rename page")
     public ProjectRenamePage<T> typeNewName(String name) {
         nameInputField.sendKeys(name);
 
         return this;
     }
 
+    @Step("Click on the 'Rename' button for confirmation")
     public T clickRenameButton() {
         renameButton.click();
 
