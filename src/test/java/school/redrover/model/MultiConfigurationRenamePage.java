@@ -13,7 +13,9 @@ public class MultiConfigurationRenamePage extends BasePage<MultiConfigurationRen
     @FindBy(name = "Submit")
     private WebElement renameButton;
 
-    public MultiConfigurationRenamePage(WebDriver driver) { super(driver); }
+    public MultiConfigurationRenamePage(WebDriver driver) {
+        super(driver);
+    }
 
     public MultiConfigurationRenamePage changeProjectNameWithoutClear(String text) {
         renameText.sendKeys(text);

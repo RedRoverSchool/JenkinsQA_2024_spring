@@ -7,7 +7,10 @@ import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import school.redrover.model.*;
+import school.redrover.model.FolderProjectPage;
+import school.redrover.model.FreestyleProjectPage;
+import school.redrover.model.HomePage;
+import school.redrover.model.ItemErrorPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 

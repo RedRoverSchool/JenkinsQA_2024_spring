@@ -6,6 +6,10 @@ import java.util.stream.Collectors;
 
 public final class OrderUtils {
 
+    private OrderUtils() {
+        throw new UnsupportedOperationException();
+    }
+
     private static <T> void orderMethod(
             T currentMethod, Map<String, T> methodMap, Map<String, Set<T>> dependedMap, Set<T> usedSet,
             List<T> destinationList, Function<T, String> getNameFunction, Function<T, String[]> getDependencyFunction) {

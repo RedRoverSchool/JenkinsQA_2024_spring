@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public final class TestUtils {
 
-    public static class Item {
+    public static final class Item {
         public static final String FREESTYLE_PROJECT = "hudson_model_FreeStyleProject";
         public static final String PIPELINE = "org_jenkinsci_plugins_workflow_job_WorkflowJob";
         public static final String MULTI_CONFIGURATION_PROJECT = "hudson_matrix_MatrixProject";
@@ -18,6 +18,10 @@ public final class TestUtils {
         public static final String MULTI_BRANCH_PIPELINE = "org_jenkinsci_plugins_workflow_"
                 + "multibranch_WorkflowMultiBranchProject";
         public static final String ORGANIZATION_FOLDER = "jenkins_branch_OrganizationFolder";
+    }
+
+    private TestUtils() {
+        throw new UnsupportedOperationException();
     }
 
     public static String asURL(String str) {

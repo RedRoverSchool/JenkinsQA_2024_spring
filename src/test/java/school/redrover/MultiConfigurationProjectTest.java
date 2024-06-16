@@ -6,7 +6,12 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.model.*;
+import school.redrover.model.CreateNewItemPage;
+import school.redrover.model.FolderProjectPage;
+import school.redrover.model.HomePage;
+import school.redrover.model.MultiConfigurationProjectPage;
+import school.redrover.model.MultibranchPipelineConfigPage;
+import school.redrover.model.SearchResultPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
