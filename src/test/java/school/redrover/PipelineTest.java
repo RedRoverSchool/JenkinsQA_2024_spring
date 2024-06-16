@@ -453,6 +453,7 @@ public class PipelineTest extends BaseTest {
                 .clickSaveButton()
                 .isDisableButtonVisible();
 
+        Allure.step("Expected result: 'Disable Project' button is visible");
         Assert.assertTrue(isDisableButtonDisplayed, "Can't find the button");
     }
 
