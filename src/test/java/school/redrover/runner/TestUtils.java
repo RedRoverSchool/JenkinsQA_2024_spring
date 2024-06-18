@@ -10,13 +10,18 @@ import java.util.UUID;
 
 public final class TestUtils {
 
-    public static class Item {
+    public static final class Item {
         public static final String FREESTYLE_PROJECT = "hudson_model_FreeStyleProject";
         public static final String PIPELINE = "org_jenkinsci_plugins_workflow_job_WorkflowJob";
         public static final String MULTI_CONFIGURATION_PROJECT = "hudson_matrix_MatrixProject";
         public static final String FOLDER = "com_cloudbees_hudson_plugins_folder_Folder";
-        public static final String MULTI_BRANCH_PIPELINE = "org_jenkinsci_plugins_workflow_multibranch_WorkflowMultiBranchProject";
+        public static final String MULTI_BRANCH_PIPELINE = "org_jenkinsci_plugins_workflow_"
+                + "multibranch_WorkflowMultiBranchProject";
         public static final String ORGANIZATION_FOLDER = "jenkins_branch_OrganizationFolder";
+    }
+
+    private TestUtils() {
+        throw new UnsupportedOperationException();
     }
 
     public static String asURL(String str) {
@@ -53,7 +58,7 @@ public final class TestUtils {
         }
     }
 
-    @Step("Create the Freestyle project")
+    @Step("Create the Freestyle project: {name}")
     public static HomePage createFreestyleProject(BaseTest baseTest, String name) {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
@@ -63,7 +68,7 @@ public final class TestUtils {
                 .clickLogo();
     }
 
-    @Step("Create the Pipeline")
+    @Step("Create the Pipeline: {name}")
     public static HomePage createPipelineProject(BaseTest baseTest, String name) {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
@@ -73,7 +78,7 @@ public final class TestUtils {
                 .clickLogo();
     }
 
-    @Step("Create the Multi-configuration project")
+    @Step("Create the Multi-configuration project: {name}")
     public static HomePage createMultiConfigurationProject(BaseTest baseTest, String name) {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
@@ -83,7 +88,7 @@ public final class TestUtils {
                 .clickLogo();
     }
 
-    @Step("Create the Folder")
+    @Step("Create the Folder: {name}")
     public static HomePage createFolderProject(BaseTest baseTest, String name) {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
@@ -93,7 +98,7 @@ public final class TestUtils {
                 .clickLogo();
     }
 
-    @Step("Create the Multibranch Pipeline")
+    @Step("Create the Multibranch Pipeline: {name}")
     public static HomePage createMultibranchProject(BaseTest baseTest, String name) {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
@@ -103,7 +108,7 @@ public final class TestUtils {
                 .clickLogo();
     }
 
-    @Step("Create the Organization Folder")
+    @Step("Create the Organization Folder: {name}")
     public static HomePage createOrganizationFolderProject(BaseTest baseTest, String name) {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
@@ -120,8 +125,17 @@ public final class TestUtils {
     public static void resetJenkinsTheme(BaseTest baseTest) {
         new HomePage(baseTest.getDriver())
                 .clickManageJenkins()
-                .clickAppearanceButton()
+                .clickAppearanceLink()
                 .switchToDefaultTheme()
+                .clickLogo();
+    }
+
+    @Step("Set insensitiveSearch = {flag} user setting")
+    public static void setInsensitiveSearchUserSetting(BaseTest baseTest, boolean flag) {
+        new HomePage(baseTest.getDriver())
+                .getHeader().goToAdminConfigurePage()
+                .turnInsensitiveSearch(flag)
+                .clickApplyButton()
                 .clickLogo();
     }
 

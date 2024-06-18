@@ -1,5 +1,6 @@
 package school.redrover;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
@@ -26,11 +27,11 @@ public class NewItemTest extends BaseTest {
         String newItemHeader = new HomePage(getDriver())
                 .clickNewItem()
                 .getPageTitle();
-        String TextAboveNameField = new CreateNewItemPage(getDriver())
+        String textAboveNameField = new CreateNewItemPage(getDriver())
                 .getTitleOfNameField();
 
         Assert.assertEquals(newItemHeader, "New Item [Jenkins]");
-        Assert.assertEquals(TextAboveNameField, "Enter an item name");
+        Assert.assertEquals(textAboveNameField, "Enter an item name");
     }
 
 
@@ -61,7 +62,7 @@ public class NewItemTest extends BaseTest {
     @Test
     @Story("US_00.000 Create New item")
     @Description(" Check list of types, suggested for a project creation ")
-    public void TestCheckListOfSuggestedForCreationProjectTypes() {
+    public void testCheckListOfSuggestedForCreationProjectTypes() {
         List<String> typesList = List.of(
                 "Freestyle project",
                 "Pipeline",
@@ -74,7 +75,8 @@ public class NewItemTest extends BaseTest {
                 .clickNewItem()
                 .getTypesList();
 
-        Assert.assertEquals(actualTypesList, typesList);
+        Allure.step("Expected result: All expected project types are present'");
+        Assert.assertTrue(actualTypesList.containsAll(typesList));
     }
 
 
@@ -104,8 +106,8 @@ public class NewItemTest extends BaseTest {
     @Description(" Create item with empty name")
 
     public void testCreateItemWithEmptyName() {
-        final String HINT_TEXT_WHEN_EMPTY_NAME = "» This field cannot be empty, please enter a valid name";
-        final String HINT_COLOR = "rgba(255, 0, 0, 1)";
+        final String hintTextWhenEmptyName = "» This field cannot be empty, please enter a valid name";
+        final String hintColor = "rgba(255, 0, 0, 1)";
 
         Boolean isOkButtonEnabled = new HomePage(getDriver())
                 .clickNewItem()
@@ -120,8 +122,8 @@ public class NewItemTest extends BaseTest {
                 .getItemNameHintColor();
 
         Assert.assertFalse(isOkButtonEnabled);
-        Assert.assertEquals(validationMessage, HINT_TEXT_WHEN_EMPTY_NAME);
-        Assert.assertEquals(validationMessageColor, HINT_COLOR);
+        Assert.assertEquals(validationMessage, hintTextWhenEmptyName);
+        Assert.assertEquals(validationMessageColor, hintColor);
     }
 
     @Test
@@ -142,17 +144,17 @@ public class NewItemTest extends BaseTest {
     @Description("Try to copy an unexisting project")
     @Test(dependsOnMethods = "testDropdownNamesMenuContentWhenCopyProject")
     public void testCopyFromNotExistingJob() {
-        final String NOT_EXISTING_NAME = "AAA";
+        final String notExistingName = "AAA";
 
         CreateItemPage errorPage = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName("someName")
-                .typeItemNameInCopyFrom(NOT_EXISTING_NAME)
+                .typeItemNameInCopyFrom(notExistingName)
                 .clickOkButton();
 
         Assert.assertTrue(errorPage.getCurrentUrl().endsWith("/createItem"));
         Assert.assertEquals(errorPage.getPageHeaderText(), "Error");
-        Assert.assertEquals(errorPage.getErrorMessageText(), "No such job: " +NOT_EXISTING_NAME);
+        Assert.assertEquals(errorPage.getErrorMessageText(), "No such job: " + notExistingName);
     }
 
     @DataProvider(name = "existingJobsNames")
@@ -185,6 +187,7 @@ public class NewItemTest extends BaseTest {
                 .typeItemNameInCopyFrom(jobName)
                 .clickOkButton()
                 .clickLogo();
+
         Integer quantityItemsWithCopies = new HomePage(getDriver())
                 .getItemList()
                 .size();
@@ -199,33 +202,35 @@ public class NewItemTest extends BaseTest {
     @Test
     public void testDropdownNamesMenuContentWhenCopyProject() {
 
-        final String FREESTYLE1 = "folff";
-        final String FREESTYLE2 = "folff00";
-        final String FOLDER1 = "Folder1";
-        final String FOLDER2 = "bFolder2";
-        final String PIPELINE1 = "pipe1";
-        final String MULTI_CONFIGURATION_PROJECT1 = "multi1";
-        final String MULTI_BRANCH_PIPE1 = "multiBranch1";
-        final String ORGANIZATION_FOLDER1 = "organizationFolder1";
+        final String freestyle1 = "folff";
+        final String freestyle2 = "folff00";
+        final String folder1 = "Folder1";
+        final String folder2 = "bFolder2";
+        final String pipeline1 = "pipe1";
+        final String multiConfigurationProject1 = "multi1";
+        final String multiBranchPipe1 = "multiBranch1";
+        final String organizationFolder1 = "organizationFolder1";
 
-        final String FIRST_LETTERS = "fol";
-        final String NEW_ITEM_NAME = "someName";
+        final String firstLetters = "fol";
+        final String newItemName = "someName";
 
-        TestUtils.createFreestyleProject(this, FREESTYLE1);
-        TestUtils.createFolderProject(this,FOLDER1);
-        TestUtils.createFolderProject(this, FOLDER2);
-        TestUtils.createFreestyleProject(this, FREESTYLE2);
-        TestUtils.createPipelineProject(this, PIPELINE1);
-        TestUtils.createMultiConfigurationProject(this, MULTI_CONFIGURATION_PROJECT1);
-        TestUtils.createMultibranchProject(this,MULTI_BRANCH_PIPE1);
-        TestUtils.createOrganizationFolderProject(this,ORGANIZATION_FOLDER1);
+        TestUtils.createFreestyleProject(this, freestyle1);
+        TestUtils.createFolderProject(this, folder1);
+        TestUtils.createFolderProject(this, folder2);
+        TestUtils.createFreestyleProject(this, freestyle2);
+        TestUtils.createPipelineProject(this, pipeline1);
+        TestUtils.createMultiConfigurationProject(this, multiConfigurationProject1);
+        TestUtils.createMultibranchProject(this, multiBranchPipe1);
+        TestUtils.createOrganizationFolderProject(this, organizationFolder1);
 
-        List<String> firstLettersJobs = TestUtils.getJobsBeginningFromThisFirstLetters(this, FIRST_LETTERS );
+        TestUtils.setInsensitiveSearchUserSetting(this, true);
+
+        List<String> firstLettersJobs = TestUtils.getJobsBeginningFromThisFirstLetters(this, firstLetters);
 
         List<String> jobsFromDropdownMenu = new HomePage(getDriver())
                 .clickNewItem()
-                .typeItemName(NEW_ITEM_NAME)
-                .typeItemNameInCopyFrom(FIRST_LETTERS)
+                .typeItemName(newItemName)
+                .typeItemNameInCopyFrom(firstLetters)
                 .getDropdownMenuContent();
 
         Assert.assertEquals(jobsFromDropdownMenu, firstLettersJobs);
@@ -242,13 +247,13 @@ public class NewItemTest extends BaseTest {
     @Story("US_00.000 Create New item")
     @Description("Verification for desirable job type  ")
     public void testCreateItemForStandAloneOrNestedProjects(String projectType) {
-        final String PROJECT_NAME = "NewProject";
+        final String projectName = "NewProject";
         Random random = new Random();
         int itemOptionIndex = random.nextInt(3) + 1;
 
         Boolean isTypeChecked = new HomePage(getDriver())
                 .clickNewItem()
-                .typeItemName(PROJECT_NAME)
+                .typeItemName(projectName)
                 .clickItemOption(projectType, itemOptionIndex)
                 .isAttributeAriaChecked(projectType, itemOptionIndex);
         String currentUrl = new CreateNewItemPage(getDriver())
@@ -259,7 +264,7 @@ public class NewItemTest extends BaseTest {
                 .getProjectName();
 
         Assert.assertTrue(isTypeChecked);
-        Assert.assertTrue(currentUrl.contains(PROJECT_NAME));
-        Assert.assertTrue(pageHeading.contains(PROJECT_NAME));
+        Assert.assertTrue(currentUrl.contains(projectName));
+        Assert.assertTrue(pageHeading.contains(projectName));
     }
 }

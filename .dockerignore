@@ -1,0 +1,13 @@
+.git
+.github
+.idea
+jenkins_data
+src/test/java/school/redrover/old
+target
+.dockerignore
+.gitignore
+aqa.dockerfile
+jenkins.dockerfile
+LICENSE
+my.iws
+README.md

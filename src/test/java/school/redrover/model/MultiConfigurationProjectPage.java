@@ -126,7 +126,8 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
     }
 
     public boolean isDescriptionEmpty() {
-        return getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div#description>div")));
+        return getWait10().until(
+                ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div#description>div")));
     }
 
     public MultiConfigurationMovePage clickMoveOptionInMenu() {

@@ -21,7 +21,7 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
     @FindBy(xpath = "//td[contains(@class, 'progress-bar')]")
     private WebElement buildProgressBar;
 
-    @FindBy(css = "[aria-describedby^='tippy'")
+    @FindBy(css = "[aria-describedby^='tippy']")
     private WebElement buildScheduledPopUp;
 
     @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
@@ -137,6 +137,19 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
                 .moveToElement(fullStageViewButton)
                 .pause(2000)
                 .perform();
+
+        return this;
+    }
+
+    public String getColorOfAddDescriptionButtonBackground() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+
+        return (String) js.executeScript("return window.getComputedStyle(arguments[0], '::before')"
+                + ".getPropertyValue('--item-background--hover');", addOrEditDescriptionButton);
+    }
+
+    public PipelineProjectPage hoverOnAddDescriptionButton() {
+        hoverOverElement(addOrEditDescriptionButton);
 
         return this;
     }

@@ -12,7 +12,7 @@ import java.util.List;
 
 public class FooterFrame<T extends BasePage<T>> extends BaseFrame<T> {
 
-    public FooterFrame(WebDriver driver, T returnPage ) {
+    public FooterFrame(WebDriver driver, T returnPage) {
         super(driver, returnPage);
     }
 

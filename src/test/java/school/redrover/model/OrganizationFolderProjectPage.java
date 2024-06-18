@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -26,6 +27,7 @@ public class OrganizationFolderProjectPage extends BaseProjectPage<OrganizationF
         super(driver);
     }
 
+    @Step("Click 'Configure' on sidebar menu")
     public OrganizationFolderConfigPage clickConfigure() {
         configureButton.click();
 
@@ -36,6 +38,7 @@ public class OrganizationFolderProjectPage extends BaseProjectPage<OrganizationF
         return itemIcon.getAttribute("title");
     }
 
+    @Step("Click on 'Pipeline Syntax' in the sidebar menu")
     public PipelineSyntaxPage clickSidebarPipelineSyntax() {
         pipelineSyntaxButton.click();
 
@@ -47,6 +50,11 @@ public class OrganizationFolderProjectPage extends BaseProjectPage<OrganizationF
         return this;
     }
 
+    public String getScanText() {
+        return scanText.getText();
+    }
+
+    @Step("Click 'Yes' button in the confirming deletion dialog")
     public HomePage clickYesForDeleteOrganizationFolder() {
         yesButtonOnDeleteOrganizationFolderAlert.click();
         return new HomePage(getDriver());

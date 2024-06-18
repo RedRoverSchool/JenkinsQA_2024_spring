@@ -20,7 +20,7 @@ public class SearchBoxTest extends BaseTest {
                 .getHeader().typeSearchQueryPressEnter("config")
                 .getHeadingText();
 
-        Assert.assertEquals(systemPageTitle,"System");
+        Assert.assertEquals(systemPageTitle, "System");
     }
 
     @Test
@@ -93,7 +93,7 @@ public class SearchBoxTest extends BaseTest {
     }
 
     @Test
-    public void testSearchPipeline(){
+    public void testSearchPipeline() {
         String searchResult = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName(PIPELINE_NAME)
@@ -107,31 +107,31 @@ public class SearchBoxTest extends BaseTest {
 
     @Test
     public void testStartSearchBox() {
-        final String EXPECTED_RESULT_TEXT = "manage";
-        final String SEARCHING_TEXT = "ma";
+        final String expectedResultText = "manage";
+        final String searchingText = "ma";
 
         String searchResult = new HomePage(getDriver())
-                .getHeader().typeSearchQueryPressEnter(SEARCHING_TEXT)
+                .getHeader().typeSearchQueryPressEnter(searchingText)
                 .getTextFromMainPanel();
 
-        Assert.assertTrue(searchResult.contains(EXPECTED_RESULT_TEXT));
+        Assert.assertTrue(searchResult.contains(expectedResultText));
     }
 
     @Test
     public void testSearchResultHeading() {
-        final String SEARCHING_TEXT = "i";
+        final String searchingText = "i";
 
         String resultHeading = new HomePage(getDriver())
-                .getHeader().typeSearchQueryPressEnter(SEARCHING_TEXT)
+                .getHeader().typeSearchQueryPressEnter(searchingText)
                 .getMatchLogResult();
 
-        String expectedSearchResult = "Search for '%s'".formatted(SEARCHING_TEXT);
+        String expectedSearchResult = "Search for '%s'".formatted(searchingText);
 
         Assert.assertEquals(resultHeading, expectedSearchResult);
     }
 
     @Test
-    public void testAccessToUserDoc(){
+    public void testAccessToUserDoc() {
         String tutorialPageTitle = new HomePage(getDriver())
                 .openTutorial()
                 .getHeadingText();

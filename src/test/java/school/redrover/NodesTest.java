@@ -1,6 +1,10 @@
 package school.redrover;
 
-import io.qameta.allure.*;
+import io.qameta.allure.Allure;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Step;
+import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -234,7 +238,7 @@ public class NodesTest extends BaseTest {
     public void testCreateNodeWithInvalidData() {
         String actualResult = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickNodes()
+                .clickNodesLink()
                 .clickNewNodeButton()
                 .typeNodeName("!")
                 .selectPermanentAgentRadioButton()
@@ -251,7 +255,7 @@ public class NodesTest extends BaseTest {
     public void testCreateNodeFromManageJenkins() {
         List<String> nodesList = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickNodes()
+                .clickNodesLink()
                 .clickNewNodeButton()
                 .typeNodeName(NODE_NAME)
                 .selectPermanentAgentRadioButton()

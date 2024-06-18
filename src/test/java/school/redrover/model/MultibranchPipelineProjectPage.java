@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -29,7 +30,7 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage<MultibranchP
     private WebElement confirmDeleteButton;
 
     @FindBy(css = "a[href$='rename']")
-    private WebElement sidebarRenameButton;
+    private WebElement renameOnSidebar;
 
     @FindBy(css = "[href $='move']")
     private WebElement moveOnSidebar;
@@ -47,18 +48,21 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage<MultibranchP
         super(driver);
     }
 
-    public MultibranchPipelineConfigPage selectConfigure() {
+    @Step("Click 'Configure' on sidebar")
+    public MultibranchPipelineConfigPage clickConfigure() {
         configureButton.click();
 
         return new MultibranchPipelineConfigPage(getDriver());
     }
 
+    @Step("Click 'Enable' button")
     public MultibranchPipelineProjectPage clickEnableButton() {
         enableMPButton.click();
 
         return this;
     }
 
+    @Step("Click 'Disable Multibranch Pipeline'")
     public MultibranchPipelineProjectPage clickDisableProjectButton() {
         disableProjectButton.click();
 
@@ -89,22 +93,21 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage<MultibranchP
         return sidebarTasksList.size();
     }
 
-    public MultibranchPipelineProjectPage clickDeleteButton() {
+    @Step("Click 'Delete Multibranch Pipeline' on sidebar menu")
+    public DeleteDialog clickDeleteOnSideBarMenu() {
         sidebarDeleteButton.click();
-        return this;
+
+        return new DeleteDialog(getDriver());
     }
 
-    public HomePage confirmDeleteButton() {
-        confirmDeleteButton.click();
-        return clickLogo();
-    }
-
-    public MultibranchPipelineProjectPage clickMPDropdownArrow() {
+    @Step("Click Dropdown arrow on breadcrumbs for Multibranch Ppeline")
+    public MultibranchPipelineProjectPage clickMultibranchPipelineDropdownArrowOnBreadcrumbs() {
         clickBreadcrumbsDropdownArrow(breadcrumbsDropdownArrow);
 
         return this;
     }
 
+    @Step("Click 'Delete Multibranch Pipeline' on breadcrumbs dropdown menu")
     public DeleteDialog<MultibranchPipelineProjectPage> clickDeleteMultibranchPipelineInBreadcrumbs() {
         deleteMultibranchPipelineInBreadcrumbsLink.click();
 
@@ -122,7 +125,8 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage<MultibranchP
         return sideBarItemList;
     }
 
-    public MovePage clickMoveOnSidebar(String name) {
+    @Step("Click 'Move' on sidebar menu")
+    public MovePage clickMoveOnSidebar() {
         moveOnSidebar.click();
 
         return new MovePage(getDriver());

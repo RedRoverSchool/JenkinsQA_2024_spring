@@ -117,6 +117,7 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
     @Step("Click on the 'Build Now' on sidebar menu")
     public FreestyleProjectPage clickBuildNowOnSideBar() {
         buildNowSideBar.click();
+        getWait10().until(ExpectedConditions.visibilityOf(greenMarkBuildSuccess));
 
         return this;
     }
@@ -131,17 +132,15 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
         return buildInfo.getText();
     }
 
-    @Step("Wait for green mark appearance, indicating that project is successfully build")
-    public FreestyleProjectPage waitForGreenMarkBuildSuccessAppearance() {
-        getWait10().until(ExpectedConditions.visibilityOf(greenMarkBuildSuccess));
-
-        return this;
-    }
-
     public String getFullProjectPath() {
         return projectPath.getText();
     }
 
+    public String getPageHeadingText() {
+        return pageHeading.getText();
+    }
+
+    @Step("Click 'Success Console Output' button")
     public JobBuildConsolePage clickSuccessConsoleOutputButton() {
         getWait60().until(ExpectedConditions.elementToBeClickable(successConsoleOutputButton)).click();
 

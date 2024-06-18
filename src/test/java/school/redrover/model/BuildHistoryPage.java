@@ -27,7 +27,7 @@ public class BuildHistoryPage extends BasePage<BuildHistoryPage> {
     private WebElement buildNameOnTimeline;
 
     @FindBy(className = "console-output")
-    private WebElement TextConsoleOutput;
+    private WebElement textConsoleOutput;
 
     @FindBy(xpath = "//li[@class='permalink-item']")
     private List<WebElement> permalinkList;

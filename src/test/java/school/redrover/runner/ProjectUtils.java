@@ -38,6 +38,10 @@ public final class ProjectUtils {
 
     private static Properties properties;
 
+    private ProjectUtils() {
+        throw new UnsupportedOperationException();
+    }
+
     private static void initProperties() {
         if (properties == null) {
             properties = new Properties();

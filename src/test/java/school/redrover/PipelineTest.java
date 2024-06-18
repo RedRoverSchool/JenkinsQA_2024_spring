@@ -29,7 +29,6 @@ public class PipelineTest extends BaseTest {
 
     private static final String PIPELINE_SCRIPT = "pipeline {\nagent any\n\nstages {\n";
 
-
     @Test
     @Story("US_02.000 Create Pipeline")
     @Description("Create Pipeline with valid name and verify if created project is shown on the HomePage")
@@ -346,7 +345,7 @@ public class PipelineTest extends BaseTest {
 
         List<String> actualBuildsList = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickNodes()
+                .clickNodesLink()
                 .clickBuiltInNodeName()
                 .turnNodeOnIfOffline()
                 .clickNewItem()
@@ -422,7 +421,7 @@ public class PipelineTest extends BaseTest {
 
         int actualSagesQtt = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickNodes()
+                .clickNodesLink()
                 .clickBuiltInNodeName()
                 .turnNodeOnIfOffline()
                 .clickNewItem()
@@ -646,7 +645,7 @@ public class PipelineTest extends BaseTest {
 
         List<String> actualOrder = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickNodes()
+                .clickNodesLink()
                 .clickOnBuiltInNode()
                 .clickBringThisNodeBackOnlineButton()
                 .clickLogo()
@@ -671,7 +670,7 @@ public class PipelineTest extends BaseTest {
     public void testBuildColorGreen() {
         String backgroundColor = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickNodes()
+                .clickNodesLink()
                 .clickOnBuiltInNode()
                 .clickBringThisNodeBackOnlineButton()
                 .clickLogo()
@@ -712,6 +711,23 @@ public class PipelineTest extends BaseTest {
                 .getStageHeaderNameList();
 
         Assert.assertEquals(actualStageHeaderNameList, expectedHeaderNameList);
+    }
+
+    @Test
+    @Story("US_02.005 Edit description")
+    @Description("Verify button Add Description background color on mouse hover")
+    public void testVerifyColorOfAddDescriptionButtonBackground() {
+        String expectedColor = "rgba(175,175,207,.175)";
+
+        String actualColor = new HomePage(getDriver())
+                .clickNewItem()
+                .setItemName(PIPELINE_NAME)
+                .selectPipelineAndClickOk()
+                .clickSaveButton()
+                .hoverOnAddDescriptionButton()
+                .getColorOfAddDescriptionButtonBackground();
+
+        Assert.assertEquals(actualColor, expectedColor);
     }
 
     @Test

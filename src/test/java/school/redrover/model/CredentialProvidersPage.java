@@ -14,7 +14,7 @@ public class CredentialProvidersPage extends BasePage<CredentialProvidersPage> {
         super(driver);
     }
 
-   public String getPageHeading() {
+    public String getPageHeading() {
         return pageHeading.getText();
-   }
+    }
 }

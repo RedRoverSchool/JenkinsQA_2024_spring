@@ -26,7 +26,9 @@ public class ViewMyListConfigPage extends BasePage<ViewMyListConfigPage> {
     @FindBy(xpath = "//button[contains(text(),' Git Branches')]")
     private WebElement gitBranchesColumn;
 
-    public ViewMyListConfigPage(WebDriver driver) { super(driver); }
+    public ViewMyListConfigPage(WebDriver driver) {
+        super(driver);
+    }
 
     public ViewMyListConfigPage clickProjectName(String projectName) {
         getDriver().findElement(By.cssSelector("label[title=" + projectName + "]")).click();

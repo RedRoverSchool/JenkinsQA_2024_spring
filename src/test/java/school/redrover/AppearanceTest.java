@@ -22,7 +22,7 @@ public class AppearanceTest extends BaseTest {
         int quantityOfThemes = new HomePage(getDriver())
                 .openDashboardBreadcrumbsDropdown()
                 .clickManageFromDashboardBreadcrumbsMenu()
-                .clickAppearanceButton()
+                .clickAppearanceLink()
                 .getThemesList()
                 .size();
 
@@ -36,7 +36,7 @@ public class AppearanceTest extends BaseTest {
     public void testDarkThemeSwitchNotification() {
         String notificationText = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickAppearanceButton()
+                .clickAppearanceLink()
                 .clickDarkThemeButton()
                 .clickApply()
                 .getNotificationText();
@@ -50,7 +50,7 @@ public class AppearanceTest extends BaseTest {
     public void testDarkThemeColor() {
         String backgroundColor = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickAppearanceButton()
+                .clickAppearanceLink()
                 .clickDarkThemeButton()
                 .clickApply()
                 .getBackgroundColor();
@@ -67,7 +67,7 @@ public class AppearanceTest extends BaseTest {
     public void testDarkThemeApply() {
         final String actualThemeApplied = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickAppearanceButton()
+                .clickAppearanceLink()
                 .clickDarkThemeButton()
                 .clickApplyButton()
                 .getCurrentThemeAttribute();
@@ -81,7 +81,7 @@ public class AppearanceTest extends BaseTest {
     public void testDefaultThemeApply() {
         final String actualThemeApplied = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickAppearanceButton()
+                .clickAppearanceLink()
                 .clickDefaultThemeButton()
                 .clickApplyButton()
                 .getCurrentThemeAttribute();
@@ -95,7 +95,7 @@ public class AppearanceTest extends BaseTest {
     public void testSystemThemeApply() {
         final String actualThemeApplied = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickAppearanceButton()
+                .clickAppearanceLink()
                 .clickSystemThemeButton()
                 .clickApplyButton()
                 .getCurrentThemeAttribute();

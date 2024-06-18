@@ -33,7 +33,9 @@ public class AppearancePage extends BasePage<AppearancePage> {
         super(driver);
     }
 
-    public List<WebElement> getThemesList() { return themesList; }
+    public List<WebElement> getThemesList() {
+        return themesList;
+    }
 
     public boolean isDefaultThemeNotSelected() {
         return !defaultThemeButton.isSelected();
@@ -63,7 +65,7 @@ public class AppearancePage extends BasePage<AppearancePage> {
         return this;
     }
 
-    public AppearancePage clickApply(){
+    public AppearancePage clickApply() {
         applyButton.click();
         return new AppearancePage(getDriver());
     }
@@ -73,7 +75,7 @@ public class AppearancePage extends BasePage<AppearancePage> {
             clickDefaultThemeButton();
             clickApplyButton();
         }
-            return this;
+        return this;
     }
 
     public String getCurrentThemeAttribute() {
