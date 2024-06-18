@@ -99,7 +99,8 @@ public class SearchBoxTest extends BaseTest {
                 .typeItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .clickLogo()
-                .getHeader().typeProjectNameToSearchInputFieldAndPressEnter(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
+                .getHeader().typeProjectNameToSearchInputFieldAndPressEnter(
+                        PIPELINE_NAME, new PipelineProjectPage(getDriver()))
                 .getHeadingText();
 
         Assert.assertEquals(searchResult, PIPELINE_NAME,  "Pipeline is not found");

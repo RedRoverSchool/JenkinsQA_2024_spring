@@ -90,7 +90,7 @@ public class BuildHistoryPage extends BasePage<BuildHistoryPage> {
                 .stream()
                 .map(WebElement::getText)
                 .map(permalink -> permalink.split(",")[0].trim())
-                .collect(Collectors.toList());
+                .toList();
     }
 
 }

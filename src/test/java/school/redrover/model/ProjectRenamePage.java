@@ -17,7 +17,7 @@ public class ProjectRenamePage<T extends BaseProjectPage<T>> extends BasePage<T>
     @FindBy(name = "Submit")
     private WebElement renameButton;
 
-    public ProjectRenamePage(WebDriver driver, T returnPage ) {
+    public ProjectRenamePage(WebDriver driver, T returnPage) {
         super(driver);
         this.returnPage = returnPage;
     }

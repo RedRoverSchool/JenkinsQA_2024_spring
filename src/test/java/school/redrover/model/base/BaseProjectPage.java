@@ -8,14 +8,18 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.*;
+import school.redrover.model.FolderProjectPage;
+import school.redrover.model.HomePage;
+import school.redrover.model.ProjectMovePage;
+import school.redrover.model.ProjectRenamePage;
+import school.redrover.model.RenameErrorPage;
 
 import java.util.List;
 
 public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends BasePage<T> {
 
     @FindBy(css = "dialog .jenkins-button--primary")
-    WebElement yesButton;
+    private WebElement yesButton;
 
     @FindBy(name = "Submit")
     private WebElement saveButton;
@@ -62,8 +66,8 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
     private WebElement breadcrumbsFirstName;
 
     @FindBys({
-            @FindBy(id = "tasks"),
-            @FindBy(className = "task-link-text")
+        @FindBy(id = "tasks"),
+        @FindBy(className = "task-link-text")
     })
     private List<WebElement> taskList;
 
@@ -239,8 +243,8 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
 
     @Step("Click breadcrumbs arrow after project name to call menu")
     public T clickBreadcrumbsArrowAfterProjectName(String name) {
-        WebElement arrowAfterName = getDriver().findElement
-                (By.cssSelector("[href$='" + name + "/'] [class$='dropdown-chevron']"));
+        WebElement arrowAfterName = getDriver().findElement(
+                By.cssSelector("[href$='" + name + "/'] [class$='dropdown-chevron']"));
 
         clickBreadcrumbsDropdownArrow(arrowAfterName);
 
@@ -297,8 +301,8 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
         return sidebarTasksList.size();
     }
 
-    public boolean isProjectInsideFolder(String projectName, String folderName) {
-        return breadcrumbs.getAttribute("data-href").contains(folderName + "/job/" + projectName);
+    public boolean isProjectInsideFolder(String jobName, String folderName) {
+        return breadcrumbs.getAttribute("data-href").contains(folderName + "/job/" + jobName);
     }
 
 }

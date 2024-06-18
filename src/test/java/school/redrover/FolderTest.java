@@ -136,8 +136,9 @@ public class FolderTest extends BaseTest {
     @Description("Rename Folder via main page dropdown")
     public void testRenameFolderViaMainPageDropdownMenu() {
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
-                .openItemDropdownWithSelenium(NEW_FOLDER_NAME)
+                .openItemDropdown(NEW_FOLDER_NAME)
                 .clickRenameOnDropdown()
+                .clearNameInputField()
                 .typeNewName(THIRD_FOLDER_NAME)
                 .clickRenameButtonWhenRenamedViaDropdown(new FolderProjectPage(getDriver()));
 
@@ -195,7 +196,7 @@ public class FolderTest extends BaseTest {
                 .clickMoveOnBreadcrumbs()
                 .selectDestinationFolderFromList(FOLDER_NAME)
                 .clickMoveButtonWhenMovedViaBreadcrumbs()
-                .clickBreadcrumbsArrowAfterProjectName(FOLDER_NAME)
+                .clickFolderNameOnBreadcrumbs(FOLDER_NAME)
                 .getNestedProjectName();
 
         Allure.step("Expected result: Nested project is in destination Folder");

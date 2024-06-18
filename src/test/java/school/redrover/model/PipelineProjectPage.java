@@ -241,10 +241,12 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
     public List<String> getConsoleOutputForAllStages(int numberOfStages) {
         List<String> consoleOutputForAllStages = new ArrayList<>();
         for (int i = 1; i <= numberOfStages; i++) {
-            getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("td[class='stage-cell stage-cell-" + (i - 1) + " SUCCESS']"))).click();
+            getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                    By.cssSelector("td[class='stage-cell stage-cell-" + (i - 1) + " SUCCESS']"))).click();
             buildStageLogsButton.click();
 
-            consoleOutputForAllStages.add(getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("pre[class='console-output']"))).getText());
+            consoleOutputForAllStages.add(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                    By.cssSelector("pre[class='console-output']"))).getText());
 
             closeStageLogsButton.click();
             getWait2().until(ExpectedConditions.invisibilityOf(closeStageLogsButton));
