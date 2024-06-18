@@ -111,7 +111,7 @@ public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
     }
 
     @Step("Click 'Yes' in confirming dialog")
-    public FolderProjectPage clickYesForConfirmDelete() {
+    public FolderProjectPage clickYesToConfirmDelete() {
         getWait2().until(ExpectedConditions.visibilityOf(yesButton)).click();
 
         return this;

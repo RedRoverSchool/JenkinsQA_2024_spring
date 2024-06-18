@@ -71,9 +71,6 @@ public class HomePage extends BasePage<HomePage> {
     @FindBy(css = "[href$='builds']")
     private WebElement buildHistoryOnSidebar;
 
-    @FindBy(xpath = "//a[contains(@href, '/move')]")
-    private WebElement moveOption;
-
     @FindBy(xpath = "//a[@href='/asynchPeople/']")
     private WebElement peopleButton;
 
