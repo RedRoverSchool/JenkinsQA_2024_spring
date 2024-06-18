@@ -124,7 +124,8 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test(dependsOnMethods = "testVerifyProjectDisabledMessageColorOnStatusPage")
     @Story("US_05.003  Enable Multibranch pipeline")
-    @Description("Verify that a previously disabled project can be enabled back by checking that disable button is displayed")
+    @Description("Verify that a previously disabled project can be enabled back "
+            + "by checking that disable button is displayed")
     public void testEnableProject() {
         String disableMultibranchPipelineButtonText = new HomePage(getDriver())
                 .clickJobByName(MULTI_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
@@ -139,7 +140,8 @@ public class MultibranchPipelineTest extends BaseTest {
     @Story("US_05.004 Disable Multibranch Pipeline")
     @Description("Verify the correct tooltip text is displayed when hovering over the toggle button")
     public void testDisabledTooltip() {
-        final String tooltipText = "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
+        final String tooltipText = "(No new builds within this Multibranch Pipeline "
+                + "will be executed until it is re-enabled)";
 
         MultibranchPipelineConfigPage multibranchPipelineConfigPage = new HomePage(getDriver())
                 .clickJobByName(MULTI_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
@@ -269,8 +271,9 @@ public class MultibranchPipelineTest extends BaseTest {
     @Description("Verify list of sidebar tasks for a project.")
     public void testVerifyProjectSidebarMenuList() {
         final List<String> expectedSidebarList =
-                List.of("Status", "Configure", "Scan Multibranch Pipeline Log", "Multibranch Pipeline Events",
-                        "Delete Multibranch Pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
+                List.of("Status", "Configure", "Scan Multibranch Pipeline Log",
+                        "Multibranch Pipeline Events", "Delete Multibranch Pipeline", "People",
+                        "Build History", "Rename", "Pipeline Syntax", "Credentials");
 
         TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
 
@@ -299,7 +302,8 @@ public class MultibranchPipelineTest extends BaseTest {
                 .getNestedProjectName();
 
         Allure.step("Expected result: Nested folder is displayed on Folder Project Page");
-        Assert.assertEquals(nestedMultibranchPipeline, MULTI_PIPELINE_NAME, MULTI_PIPELINE_NAME + "is not moved successfully");
+        Assert.assertEquals(nestedMultibranchPipeline, MULTI_PIPELINE_NAME,
+                MULTI_PIPELINE_NAME + "is not moved successfully");
     }
 
     @Test

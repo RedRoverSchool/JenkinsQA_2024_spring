@@ -97,8 +97,7 @@ public class BuildHistoryTest extends BaseTest {
                         "Last completed build (#1)");
 
         List<String> permalinksActual = new HomePage(getDriver())
-                .clickScheduleBuildForItem(PROJECT_NAME)
-                .clickJobByName(PROJECT_NAME, new BuildHistoryPage(getDriver()))
+                .clickBuildHistory()
                 .getPermalinkList();
 
         Allure.step("Expected result:Permalinks should be displayed on the BuildHistory Page");

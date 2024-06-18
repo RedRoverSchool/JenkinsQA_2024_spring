@@ -23,9 +23,9 @@ public class ProjectMovePage<T extends BaseProjectPage<T>> extends BasePage<T> {
         this.returnPage = null;
     }
 
-    public ProjectMovePage(WebDriver driver, T returnPage) {
+    public ProjectMovePage(WebDriver driver, T returnProjectPage) {
         super(driver);
-        this.returnPage = returnPage;
+        returnPage = returnProjectPage;
     }
 
     public T getReturnPage() {

@@ -1,13 +1,21 @@
 package school.redrover.model;
 
 import io.qameta.allure.Step;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseProjectPage;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
@@ -75,7 +83,8 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         Set<String> backgroundColor = new HashSet<>();
         for (int i = 1; i <= 2; i++) {
             WebElement element = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                    By.xpath("//tr[@data-runid='" + i + "']/td[@class='stage-cell stage-cell-0 SUCCESS']/div[@class='cell-color']")));
+                    By.xpath("//tr[@data-runid='" + i +
+                            "']/td[@class='stage-cell stage-cell-0 SUCCESS']/div[@class='cell-color']")));
 
             backgroundColor.add(element.getCssValue("background-color"));
         }
@@ -107,7 +116,8 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
 
     public boolean isBuildAppear(int buildNumber, String jobName) {
         getDriver().navigate().refresh();
-        WebElement nBuild = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[@class = 'build-row-cell']//a[text() = '#" + buildNumber + "']")));
+        WebElement nBuild = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//td[@class = 'build-row-cell']//a[text() = '#" + buildNumber + "']")));
 
         return nBuild.getAttribute("href").contains("/job/" + jobName.replaceAll(" ", "%20") + "/2/");
     }
@@ -129,7 +139,9 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
 
     public String getColorOfFullStageViewButtonBackground() {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        return (String) js.executeScript("return window.getComputedStyle(arguments[0], '::before').getPropertyValue('background-color');", fullStageViewButton);
+        return (String) js.executeScript(
+                "return window.getComputedStyle(arguments[0], '::before').getPropertyValue('background-color');",
+                fullStageViewButton);
     }
 
     public PipelineProjectPage hoverOnFullStageViewButton() {
@@ -230,7 +242,8 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
     @Step("Get Stage header name list")
     public List<String> getStageHeaderNameList() {
         List<String> headerList = new ArrayList<>();
-        for (WebElement stageHeaderElement : getWait10().until(ExpectedConditions.visibilityOfAllElements(stageHeaderNameList))) {
+        for (WebElement stageHeaderElement :
+                getWait10().until(ExpectedConditions.visibilityOfAllElements(stageHeaderNameList))) {
             headerList.add(stageHeaderElement.getText());
         }
 

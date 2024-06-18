@@ -44,7 +44,7 @@ public class OrganizationFolderProjectPage extends BaseProjectPage<OrganizationF
     }
 
     @Step("Click on the 'Scan Organization Folder Log' on the sidebar menu")
-    public OrganizationFolderProjectPage clickSidebarScanOrganizationFolderLog(){
+    public OrganizationFolderProjectPage clickSidebarScanOrganizationFolderLog() {
         sidebarScanOrganizationFolderLog.click();
 
         return this;
