@@ -135,32 +135,37 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         super(driver);
     }
 
+    @Step("Click 'Save' button")
     public PipelineProjectPage clickSaveButton() {
         saveButton.click();
 
         return this;
     }
 
-    public PipelineProjectPage clickChangeDescription() {
+    @Step("Click 'Edit description'")
+    public PipelineProjectPage clickEditDescription() {
+        addOrEditDescriptionButton.click();
+        getWait2().until(ExpectedConditions.invisibilityOf(addOrEditDescriptionButton));
+
+        return this;
+    }
+
+    @Step("Click 'Add description'")
+    public PipelineProjectPage clickAddDescription() {
         addOrEditDescriptionButton.click();
 
         return this;
     }
 
-    public PipelineProjectPage setDescription(String name) {
-        descriptionInput.sendKeys(name);
+    @Step("Type {description} to input description field")
+    public PipelineProjectPage setDescription(String description) {
+        descriptionInput.sendKeys(description);
 
         return this;
     }
 
     public String getDescriptionText() {
         return displayedDescription.getText();
-    }
-
-    public PipelineProjectPage waitAddDescriptionButtonDisappears() {
-        getWait2().until(ExpectedConditions.invisibilityOf(addOrEditDescriptionButton));
-
-        return this;
     }
 
     public PipelineProjectPage clickShowDescriptionPreview() {
@@ -192,12 +197,15 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         return backgroundColor.iterator().next();
     }
 
+    @Step("Click on the end of existed description")
     public PipelineProjectPage clickOnDescriptionInput() {
         descriptionInput.click();
 
         return this;
     }
 
+
+    @Step("Make the description field not active by sending a TAB key")
     public PipelineProjectPage makeDescriptionFieldNotActive() {
         new Actions(getDriver()).sendKeys(Keys.TAB).perform();
 
@@ -212,7 +220,8 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
                 descriptionInput);
     }
 
-    public DeleteDialog clickSidebarDeleteButton() {
+    @Step("Click 'Delete Pipeline' on Sidebar menu")
+    public DeleteDialog clickDeleteOnSidebarMenu() {
         sidebarDeleteButton.click();
 
         return new DeleteDialog(getDriver());
@@ -225,25 +234,23 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         return new PipelineConfigPage(getDriver());
     }
 
-    public PipelineProjectPage hoverOverBreadcrumbsName() {
+    @Step("Click Project Breadcrumbs dropdown menu")
+    public PipelineProjectPage clickProjectBreadcrumbsDropdownArrow() {
         hoverOverElement(breadcrumbsName);
-
-        return this;
-    }
-
-    public PipelineProjectPage clickBreadcrumbsDropdownArrow() {
         clickSpecificDropdownArrow(breadcrumbsDropdownArrow);
 
         return this;
     }
 
+    @Step("Click 'Delete' on Breadcrumbs dropdown menu")
     public DeleteDialog clickBreadcrumbsDeleteButton() {
         breadcrumbsDeleteButton.click();
 
         return new DeleteDialog(getDriver());
     }
 
-    public PipelineRenamePage clickSidebarRenameButton() {
+    @Step("Click 'Rename' on Sidebar menu")
+    public PipelineRenamePage clickRenameOnSidebarMenu() {
         sidebarRenameButton.click();
 
         return new PipelineRenamePage(getDriver());
@@ -279,7 +286,8 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         return getWait5().until(ExpectedConditions.visibilityOfAllElements(listOfBuilds)).size();
     }
 
-    public FullStageViewPage clickFullStageViewButton() {
+    @Step("Click 'Full Stage View' on Sidebar menu")
+    public FullStageViewPage clickFullStageViewOnSidebarMenu() {
         getWait5().until(ExpectedConditions.elementToBeClickable(fullStageViewButton)).click();
 
         return new FullStageViewPage(getDriver());
@@ -303,6 +311,7 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         return (String) js.executeScript("return window.getComputedStyle(arguments[0], '::before').getPropertyValue('background-color');", fullStageViewButton);
     }
 
+    @Step("Hover on 'Full Stage View' on Sidebar menu")
     public PipelineProjectPage hoverOnFullStageViewButton() {
         new Actions(getDriver()).scrollToElement(fullStageViewButton)
                 .moveToElement(fullStageViewButton)
@@ -325,6 +334,7 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         return this;
     }
 
+    @Step("Click 'Build Now' certain amount times")
     public PipelineProjectPage makeBuilds(int buildsQtt) {
         for (int i = 1; i <= buildsQtt; i++) {
             getWait5().until(ExpectedConditions.elementToBeClickable(
@@ -340,13 +350,15 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         return fullProjectNameLocation.getText();
     }
 
-    public PipelineChangesPage clickDropdownChangesButton() {
+    @Step("Click 'Changes' on dropdown menu")
+    public PipelineChangesPage clickChangesOnDropdownMenu() {
         dropdownChangesButton.click();
 
         return new PipelineChangesPage(getDriver());
     }
 
-    public PipelineRenamePage clickBreadcrumbsRenameButton() {
+    @Step("Click 'Rename' button on Breadcrumbs dropdown menu")
+    public PipelineRenamePage clickRenameOnBreadcrumbsDropdownMenu() {
         breadcrumbsRenameButton.click();
 
         return new PipelineRenamePage(getDriver());
@@ -387,6 +399,7 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         return this;
     }
 
+    @Step("Click 'Enable' button")
     public PipelineProjectPage clickEnableButton() {
         enableButton.click();
 

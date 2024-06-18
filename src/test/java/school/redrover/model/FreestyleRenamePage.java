@@ -34,10 +34,10 @@ public class FreestyleRenamePage extends BasePage<FreestyleRenamePage> {
     }
 
     @Step("Clear 'New Name' input field and type new name for the Project")
-    public ItemErrorPage clearNameAndClickRenameButton() {
+    public CreateItemErrorPage clearNameAndClickRenameButton() {
         textBox.clear();
         submitButton.click();
 
-        return new ItemErrorPage(getDriver());
+        return new CreateItemErrorPage(getDriver());
     }
 }

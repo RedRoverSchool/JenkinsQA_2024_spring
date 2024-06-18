@@ -7,10 +7,10 @@ import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import school.redrover.model.CreateItemErrorPage;
 import school.redrover.model.FolderProjectPage;
 import school.redrover.model.FreestyleProjectPage;
 import school.redrover.model.HomePage;
-import school.redrover.model.ItemErrorPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -110,7 +110,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .setItemName("   ")
                 .selectFreeStyleProject()
-                .clickOkAnyway(new ItemErrorPage(getDriver()))
+                .clickOkAnyway(new CreateItemErrorPage(getDriver()))
                 .getErrorText();
 
         Allure.step("Expected result: Error message " + expectedErrorMessage + "is displayed");
@@ -128,7 +128,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(projectName)
                 .selectFreeStyleProject()
-                .clickOkAnyway(new ItemErrorPage(getDriver()))
+                .clickOkAnyway(new CreateItemErrorPage(getDriver()))
                 .getProblemText();
 
         Allure.step("Expected result: Error message " + expectedErrorMessage + "is displayed");
@@ -145,7 +145,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .setItemName(FREESTYLE_PROJECT_NAME)
                 .selectFreeStyleProject()
-                .clickOkAnyway(new ItemErrorPage(getDriver()))
+                .clickOkAnyway(new CreateItemErrorPage(getDriver()))
                 .getErrorText();
 
         Allure.step("Expected result: Error Message " + expectedErrorMessage + "is displayed");
