@@ -7,10 +7,7 @@ import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import school.redrover.model.FolderProjectPage;
-import school.redrover.model.FreestyleProjectPage;
-import school.redrover.model.HomePage;
-import school.redrover.model.ItemErrorPage;
+import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -319,10 +316,10 @@ public class FreestyleProjectTest extends BaseTest {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
         List<String> itemList = new HomePage(getDriver())
-                .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-                .clickRename()
-                .setNewName(RENAMED_FREESTYLE_PROJECT_NAME)
-                .clickRename()
+                .clickSpecificFreestyleProjectName(FREESTYLE_PROJECT_NAME)
+                .clickRenameOnSidebar()
+                .typeNewName(RENAMED_FREESTYLE_PROJECT_NAME)
+                .clickRenameButtonWhenRenamedViaSidebar()
                 .clickLogo()
                 .getItemList();
 
@@ -355,11 +352,11 @@ public class FreestyleProjectTest extends BaseTest {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
         List<String> itemList = new HomePage(getDriver())
-                .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-                .clickBreadcrumbsArrowAfterName()
-                .clickBreadcrumbsDropdownRenameProject(FREESTYLE_PROJECT_NAME)
+                .clickSpecificFreestyleProjectName(FREESTYLE_PROJECT_NAME)
+                .clickBreadcrumbsArrowAfterProjectName(FREESTYLE_PROJECT_NAME)
+                .clickRenameOnBreadcrumbsMenu()
                 .typeNewName(RENAMED_FREESTYLE_PROJECT_NAME)
-                .clickRename(new FreestyleProjectPage(getDriver()))
+                .clickRenameButtonWhenRenamedViaBreadcrumbs()
                 .clickLogo()
                 .getItemList();
 
@@ -377,8 +374,9 @@ public class FreestyleProjectTest extends BaseTest {
 
         String errorMessage = new HomePage(getDriver())
                 .openItemDropdown(FREESTYLE_PROJECT_NAME)
-                .clickRenameOnDropdownForFreestyleProject()
-                .clearNameAndClickRenameButton()
+                .clickRenameOnDropdown()
+                .clearNameInputField()
+                .clickRenameButtonWhenRenamedViaDropdown(new RenameErrorPage(getDriver()))
                 .getErrorText();
 
         Allure.step("Expected result: error message" + expectedErrorMessage + "is displayed");
@@ -392,9 +390,9 @@ public class FreestyleProjectTest extends BaseTest {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
         List<String> projectList = new HomePage(getDriver())
-                .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-                .clickDelete()
-                .clickYesInConfirmDeleteDialog()
+                .clickSpecificFreestyleProjectName(FREESTYLE_PROJECT_NAME)
+                .clickDeleteOnSidebar()
+                .clickYesWhenDeletedItemOnHomePage()
                 .getItemList();
 
         Allure.step("Expected result: project list on Home Page is empty");
@@ -410,10 +408,10 @@ public class FreestyleProjectTest extends BaseTest {
         TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
 
         String welcomeJenkinsHeader = new HomePage(getDriver())
-                .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-                .clickBreadcrumbsArrowAfterName()
-                .clickDelete()
-                .clickYesInConfirmDeleteDialog()
+                .clickSpecificFreestyleProjectName(FREESTYLE_PROJECT_NAME)
+                .clickBreadcrumbsArrowAfterProjectName(FREESTYLE_PROJECT_NAME)
+                .clickDeleteOnBreadcrumbsMenu()
+                .clickYesWhenDeletedItemOnHomePage()
                 .getHeadingText();
 
         Allure.step("Expected result: " + expectedHeader + "is displayed indicating there are no projects exists");

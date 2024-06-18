@@ -10,6 +10,7 @@ import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends BasePage<T> {
@@ -66,6 +67,9 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
             @FindBy(className = "task-link-text")
     })
     private List<WebElement> taskList;
+
+    @FindBy(css = "[class^='task-link-wrapper']")
+    private List<WebElement> sidebarTasksList;
 
     public BaseProjectPage(WebDriver driver) {
         super(driver);
@@ -265,6 +269,30 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
         breadcrumbsMove.click();
 
         return new MovePage<>(getDriver(), (T) this);
+    }
+
+    public String getColorOfAddDescriptionButtonBackground() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+
+        return (String) js.executeScript("return window.getComputedStyle(arguments[0], '::before')"
+                + ".getPropertyValue('--item-background--hover');", addOrEditDescriptionButton);
+    }
+
+    public T hoverOnAddDescriptionButton() {
+        hoverOverElement(addOrEditDescriptionButton);
+
+        return (T) this;
+    }
+
+    public List<String> getSidebarTasksListHavingExistingFolder() {
+        return sidebarTasksList
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+    }
+
+    public Integer getSidebarTasksSize() {
+        return sidebarTasksList.size();
     }
 
 }

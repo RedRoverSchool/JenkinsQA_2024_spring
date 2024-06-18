@@ -45,7 +45,7 @@ public class OrganizationFolderTest extends BaseTest {
                 .selectOrganizationFolderAndClickOk()
                 .selectDefaultIcon()
                 .clickSaveButton()
-                .getOrganizationFolderIcon();
+                .getAttributeTitleFromOrganizationFolderIcon();
 
         Allure.step("Expected result: Folder icon is displayed");
         Assert.assertEquals(organizationFolderIcon, "Folder");
@@ -204,9 +204,9 @@ public class OrganizationFolderTest extends BaseTest {
         TestUtils.createOrganizationFolderProject(this, ORGANIZATION_FOLDER_NAME);
 
         List<String> itemList = new HomePage(getDriver())
-                .clickJobByName(ORGANIZATION_FOLDER_NAME, new OrganizationFolderProjectPage(getDriver()))
+                .clickSpecificOrganizationFolderName(ORGANIZATION_FOLDER_NAME)
                 .clickDeleteOnSidebar()
-                .clickYesForDeleteOrganizationFolder()
+                .clickYesWhenDeletedItemOnHomePage()
                 .getItemList();
 
         Allure.step("Expected result: Deleted project is not present in the item list");

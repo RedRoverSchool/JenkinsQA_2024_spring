@@ -177,13 +177,6 @@ public class HomePage extends BasePage<HomePage> {
         return new DeleteDialog<>(getDriver(), this);
     }
 
-    @Step("Click 'Rename' on dropdown menu")
-    public FreestyleRenamePage clickRenameOnDropdownForFreestyleProject() {
-        dropdownRename.click();
-
-        return new FreestyleRenamePage(getDriver());
-    }
-
     @Step("Click 'Rename' on the project dropdown menu")
     public ProjectRenamePage<?> clickRenameOnDropdown() {
         dropdownRename.click();
@@ -255,12 +248,6 @@ public class HomePage extends BasePage<HomePage> {
                 .perform();
 
         return this;
-    }
-
-    public MultiConfigurationRenamePage clickRenameOnDropdownForMultiConfigurationProject() {
-        dropdownRename.click();
-
-        return new MultiConfigurationRenamePage(getDriver());
     }
 
     public MultiConfigurationMovePage selectMoveFromDropdown() {
@@ -419,13 +406,6 @@ public class HomePage extends BasePage<HomePage> {
                 By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
 
         return new FreestyleProjectPage(getDriver());
-    }
-
-    @Step("Click 'Rename' on dropdown menu for the folder")
-    public FolderRenamePage clickRenameOnDropdownForFolder() {
-        dropdownRename.click();
-
-        return new FolderRenamePage(getDriver());
     }
 
     @Step("Click 'Pipeline Syntax' from dropdown menu")

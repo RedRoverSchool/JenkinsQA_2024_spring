@@ -41,9 +41,9 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         String newProjectName = new HomePage(getDriver())
                 .openItemDropdown(PROJECT_NAME)
-                .clickRenameOnDropdownForMultiConfigurationProject()
-                .changeProjectNameWithoutClear(addToProjectName)
-                .clickRenameButton()
+                .clickRenameOnDropdown()
+                .typeNewName(addToProjectName)
+                .clickRenameButtonWhenRenamedViaDropdown(new MultiConfigurationProjectPage(getDriver()))
                 .getProjectName();
 
         Assert.assertEquals(newProjectName,
@@ -237,15 +237,16 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateMultiConfigurationProject")
     @Story("US_03.004  Rename project")
     @Description("Check,an existing project can be renamed")
-    public void testRenameMCProject() {
+    public void testRenameProject() {
 
         HomePage homePage = new HomePage(getDriver());
 
         homePage
-                .clickJobByName(PROJECT_NAME, new MultiConfigurationProjectPage(getDriver()))
-                .clickRenameInMenu()
-                .changeProjectNameWithClear(RANDOM_PROJECT_NAME)
-                .clickRenameButton()
+                .clickSpecificMultiConfigurationProjectName(PROJECT_NAME)
+                .clickRenameOnSidebar()
+                .clearNameInputField()
+                .typeNewName(RANDOM_PROJECT_NAME)
+                .clickRenameButtonWhenRenamedViaSidebar()
                 .clickLogo();
 
         Assert.assertTrue(homePage.isItemExists(RANDOM_PROJECT_NAME) && !homePage.isItemExists(PROJECT_NAME));

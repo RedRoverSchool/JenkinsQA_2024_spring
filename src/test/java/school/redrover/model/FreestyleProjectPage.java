@@ -19,15 +19,6 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
     @FindBy(xpath = "//a[contains(@href, 'configure')]")
     private WebElement configureButton;
 
-    @FindBy(xpath = "//a[contains(@href, 'confirm-rename')]")
-    private WebElement renameButton;
-
-    @FindBy(xpath = "//div[@id = 'tasks']/div[6]/span")
-    private WebElement deleteButton;
-
-    @FindBy(xpath = "//button[@data-id='ok']")
-    private WebElement yesButton;
-
     @FindBy(linkText = "Build Now")
     private WebElement buildNowSideBar;
 
@@ -43,12 +34,8 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
     @FindBy(xpath = "//form[@id='enable-project']")
     private WebElement disabledStatusMessage;
 
-    @FindBy(css = "[href^='/job'] [class$='dropdown-chevron']")
-    private WebElement breadcrumbsDropdownArrow;
-
     @FindBy(xpath = "//div[@class='build-icon']")
     private WebElement greenMarkBuildSuccess;
-
 
     public FreestyleProjectPage(WebDriver driver) {
         super(driver);
@@ -72,46 +59,11 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
         return this;
     }
 
-    @Step("Click on the breadcrumbs dropdown menu for the project")
-    public FreestyleProjectPage clickBreadcrumbsArrowAfterName() {
-        clickBreadcrumbsDropdownArrow(breadcrumbsDropdownArrow);
-
-        return this;
-    }
-
-    @Step("Click on the 'Rename' from breadcrumbs dropdown menu")
-    public RenameDialogPage clickBreadcrumbsDropdownRenameProject(String oldItemName) {
-        getDriver().findElement(By.xpath("//div[@class='jenkins-dropdown']//a[@href='/job/" + oldItemName + "/confirm-rename']")).click();
-
-        return new RenameDialogPage(getDriver());
-    }
-
     @Step("Click on the 'Configure' on sidebar menu")
     public FreestyleConfigPage clickConfigure() {
         configureButton.click();
 
         return new FreestyleConfigPage(getDriver());
-    }
-
-    @Step("Click on the 'Rename' on sidebar menu")
-    public FreestyleRenamePage clickRename() {
-        renameButton.click();
-
-        return new FreestyleRenamePage(getDriver());
-    }
-
-    @Step("Click on the 'Delete Project' on sidebar menu")
-    public FreestyleProjectPage clickDelete() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(deleteButton)).click();
-
-        return this;
-    }
-
-    @Step("Click 'Yes' button in confirming deletion dialog")
-    public HomePage clickYesInConfirmDeleteDialog() {
-        yesButton.click();
-
-        return new HomePage(getDriver());
     }
 
     @Step("Click on the 'Build Now' on sidebar menu")
@@ -134,10 +86,6 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
 
     public String getFullProjectPath() {
         return projectPath.getText();
-    }
-
-    public String getPageHeadingText() {
-        return pageHeading.getText();
     }
 
     @Step("Click 'Success Console Output' button")

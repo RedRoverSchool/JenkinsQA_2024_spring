@@ -6,11 +6,9 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.model.DeleteDialog;
 import school.redrover.model.FolderProjectPage;
 import school.redrover.model.HomePage;
 import school.redrover.model.MultibranchPipelineConfigPage;
-import school.redrover.model.MultibranchPipelineErrorPage;
 import school.redrover.model.MultibranchPipelineProjectPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
@@ -89,7 +87,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .selectMultibranchPipelineAndClickOk()
                 .clickToggleToDisable()
                 .clickSaveButton()
-                .getDisableMultibranchPipelineText();
+                .getTextOfDisableMultibranchPipeline();
 
         Allure.step("Expected result: " + expectedWarningText + " is displayed");
         Assert.assertEquals(disableWarningText, expectedWarningText);
@@ -104,7 +102,7 @@ public class MultibranchPipelineTest extends BaseTest {
         String disabledMessage = new HomePage(getDriver())
                 .clickSpecificMultibranchPipelineName(MULTI_PIPELINE_NAME)
                 .clickDisableProjectButton()
-                .getDisableMultibranchPipelineText();
+                .getTextOfDisableMultibranchPipeline();
 
         Allure.step("Expected result: " + expectedWarningText + " is displayed");
         Assert.assertEquals(disabledMessage, expectedWarningText);
@@ -118,7 +116,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         String disabledMessageColor = new HomePage(getDriver())
                 .clickSpecificMultibranchPipelineName(MULTI_PIPELINE_NAME)
-                .getDisableMultibranchPipelineTextColor();
+                .getColorOfDisableMultibranchPipelineText();
 
         Allure.step("Expected result: The disabled project message color is " + expectedColor);
         Assert.assertEquals(disabledMessageColor, expectedColor);
@@ -278,7 +276,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         List<String> multibranchPipelineSidebarList = new HomePage(getDriver())
                 .clickJobByName(MULTI_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
-                .getProjectSidebarList();
+                .getSidebarTasksListHavingExistingFolder();
 
         Allure.step("Expected result: Sidebar tasks list should match " + expectedSidebarList);
         Assert.assertEquals(multibranchPipelineSidebarList.size(), 10);
@@ -293,11 +291,11 @@ public class MultibranchPipelineTest extends BaseTest {
         TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
 
         String nestedMultibranchPipeline = new HomePage(getDriver())
-                .clickJobByName(MULTI_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
-                .clickMoveOnSidebar(MULTI_PIPELINE_NAME)
+                .clickSpecificPipelineName(MULTI_PIPELINE_NAME)
+                .clickMoveOnSidebar()
                 .selectDestinationFolderFromList(FOLDER_NAME)
-                .clickLogo()
-                .clickJobByName(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .clickMoveButtonWhenMovedViaSidebar()
+                .clickFolderNameOnBreadcrumbs(FOLDER_NAME)
                 .getNestedProjectName();
 
         Allure.step("Expected result: Nested folder is displayed on Folder Project Page");
@@ -328,7 +326,7 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testDeleteViaBreadcrumbs() {
         boolean isProjectDeleted = new HomePage(getDriver())
                 .clickSpecificMultibranchPipelineName(RENAMED_MULTI_PIPELINE)
-                .clickMultibranchPipelineDropdownArrowOnBreadcrumbs()
+                .clickBreadcrumbsArrowAfterProjectName(RENAMED_MULTI_PIPELINE)
                 .clickDeleteOnBreadcrumbsMenu()
                 .clickYesWhenDeletedItemOnHomePage()
                 .isItemDeleted(RENAMED_MULTI_PIPELINE);
@@ -344,10 +342,9 @@ public class MultibranchPipelineTest extends BaseTest {
         TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
 
         boolean isItemDeleted = new HomePage(getDriver())
-                .clickJobByName(MULTI_PIPELINE_NAME,
-                        new MultibranchPipelineProjectPage(getDriver()))
-                .clickDeleteOnSideBarMenu()
-                .clickYes(new HomePage(getDriver()))
+                .clickSpecificPipelineName(MULTI_PIPELINE_NAME)
+                .clickDeleteOnSidebar()
+                .clickYesWhenDeletedItemOnHomePage()
                 .isItemDeleted(MULTI_PIPELINE_NAME);
 
         Allure.step("Expected result: Project is not displayed on Home Page");

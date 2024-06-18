@@ -137,11 +137,13 @@ public class FolderTest extends BaseTest {
     public void testRenameFolderViaMainPageDropdownMenu() {
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
                 .openItemDropdownWithSelenium(NEW_FOLDER_NAME)
-                .clickRenameOnDropdownForFolder()
-                .setNewName(THIRD_FOLDER_NAME)
-                .clickRename();
+                .clickRenameOnDropdown()
+                .typeNewName(THIRD_FOLDER_NAME)
+                .clickRenameButtonWhenRenamedViaDropdown(new FolderProjectPage(getDriver()));
+
         String folderStatusPageHeading = folderProjectPage
                 .getProjectName();
+
         HomePage renewHomePage = folderProjectPage
                 .clickLogo();
 

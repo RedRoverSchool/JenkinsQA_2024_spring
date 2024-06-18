@@ -119,12 +119,6 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
         return breadcrumbs.getAttribute("data-href").contains(folderName + "/job/" + projectName);
     }
 
-    public MultiConfigurationRenamePage clickRenameInMenu() {
-        menuRename.click();
-
-        return new MultiConfigurationRenamePage(getDriver());
-    }
-
     public boolean isDescriptionEmpty() {
         return getWait10().until(
                 ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div#description>div")));

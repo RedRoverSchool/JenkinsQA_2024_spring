@@ -721,7 +721,7 @@ public class PipelineTest extends BaseTest {
 
         String actualColor = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(PIPELINE_NAME)
+                .typeItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
                 .hoverOnAddDescriptionButton()

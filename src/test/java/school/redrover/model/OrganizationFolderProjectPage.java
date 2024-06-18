@@ -15,13 +15,10 @@ public class OrganizationFolderProjectPage extends BaseProjectPage<OrganizationF
     private WebElement itemIcon;
 
     @FindBy(xpath = "//a[contains(@href,'pipeline-syntax')]")
-    private WebElement pipelineSyntaxButton;
-
-    @FindBy(xpath = "//button[@data-id='ok']")
-    private WebElement yesButtonOnDeleteOrganizationFolderAlert;
+    private WebElement sidebarPipelineSyntax;
 
     @FindBy(xpath = "//a[contains(@href,'console')]")
-    private WebElement scanButton;
+    private WebElement sidebarScanOrganizationFolderLog;
 
     public OrganizationFolderProjectPage(WebDriver driver) {
         super(driver);
@@ -34,29 +31,22 @@ public class OrganizationFolderProjectPage extends BaseProjectPage<OrganizationF
         return new OrganizationFolderConfigPage(getDriver());
     }
 
-    public String getOrganizationFolderIcon() {
+    @Step("Get attribute 'title' from Organization Folder icon")
+    public String getAttributeTitleFromOrganizationFolderIcon() {
         return itemIcon.getAttribute("title");
     }
 
     @Step("Click on 'Pipeline Syntax' in the sidebar menu")
     public PipelineSyntaxPage clickSidebarPipelineSyntax() {
-        pipelineSyntaxButton.click();
+        sidebarPipelineSyntax.click();
 
         return new PipelineSyntaxPage(getDriver());
     }
 
+    @Step("Click on the 'Scan Organization Folder Log' on the sidebar menu")
     public OrganizationFolderProjectPage clickSidebarScanOrganizationFolderLog(){
-        scanButton.click();
+        sidebarScanOrganizationFolderLog.click();
+
         return this;
-    }
-
-    public String getScanText() {
-        return scanText.getText();
-    }
-
-    @Step("Click 'Yes' button in the confirming deletion dialog")
-    public HomePage clickYesForDeleteOrganizationFolder() {
-        yesButtonOnDeleteOrganizationFolderAlert.click();
-        return new HomePage(getDriver());
     }
 }
