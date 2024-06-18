@@ -312,7 +312,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         String actualPageHeading = new HomePage(getDriver())
                 .openItemDropdown(MULTI_PIPELINE_NAME)
-                .clickDeleteInDropdown()
+                .clickDeleteOnDropdown()
                 .clickYesForConfirmDelete()
                 .getHeadingText();
 

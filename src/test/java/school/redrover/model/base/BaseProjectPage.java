@@ -10,7 +10,6 @@ import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends BasePage<T> {
@@ -70,6 +69,9 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
 
     @FindBy(css = "[class^='task-link-wrapper']")
     private List<WebElement> sidebarTasksList;
+
+    @FindBy(css = "#breadcrumbBar li:last-child")
+    private WebElement breadcrumbs;
 
     public BaseProjectPage(WebDriver driver) {
         super(driver);
@@ -258,17 +260,17 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
     }
 
     @Step("Click 'Move' on the sidebar Menu")
-    public MovePage<T> clickMoveOnSidebar() {
+    public ProjectMovePage<T> clickMoveOnSidebar() {
         sidebarMove.click();
 
-        return new MovePage<>(getDriver(), (T) this);
+        return new ProjectMovePage<>(getDriver(), (T) this);
     }
 
     @Step("Click 'Move' on the breadcrumbs dropdown Menu")
-    public MovePage<T> clickMoveOnBreadcrumbs() {
+    public ProjectMovePage<T> clickMoveOnBreadcrumbs() {
         breadcrumbsMove.click();
 
-        return new MovePage<>(getDriver(), (T) this);
+        return new ProjectMovePage<>(getDriver(), (T) this);
     }
 
     public String getColorOfAddDescriptionButtonBackground() {
@@ -293,6 +295,10 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
 
     public Integer getSidebarTasksSize() {
         return sidebarTasksList.size();
+    }
+
+    public boolean isProjectInsideFolder(String projectName, String folderName) {
+        return breadcrumbs.getAttribute("data-href").contains(folderName + "/job/" + projectName);
     }
 
 }

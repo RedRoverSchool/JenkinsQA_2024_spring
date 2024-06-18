@@ -170,13 +170,6 @@ public class HomePage extends BasePage<HomePage> {
         return this;
     }
 
-    @Step("Click 'Delete' in dropdown menu")
-    public DeleteDialog<HomePage> clickDeleteInDropdown() {
-        dropdownDelete.click();
-
-        return new DeleteDialog<>(getDriver(), this);
-    }
-
     @Step("Click 'Rename' on the project dropdown menu")
     public ProjectRenamePage<?> clickRenameOnDropdown() {
         dropdownRename.click();
@@ -185,10 +178,10 @@ public class HomePage extends BasePage<HomePage> {
     }
 
     @Step("Click 'Move' on the project dropdown menu")
-    public MovePage<?> clickMoveOnDropdown() {
+    public ProjectMovePage<?> clickMoveOnDropdown() {
         dropdownMove.click();
 
-        return new MovePage<>(getDriver());
+        return new ProjectMovePage<>(getDriver());
     }
 
     @Step("Click on the link 'Build Executor Status'")
@@ -248,12 +241,6 @@ public class HomePage extends BasePage<HomePage> {
                 .perform();
 
         return this;
-    }
-
-    public MultiConfigurationMovePage selectMoveFromDropdown() {
-        dropdownMove.click();
-
-        return new MultiConfigurationMovePage(getDriver());
     }
 
     @Step("Click on the specific Pipeline name")
@@ -422,8 +409,6 @@ public class HomePage extends BasePage<HomePage> {
     @Step("Click 'Delete' in dropdown menu")
     public HomePage clickDeleteOnDropdown() {
         dropdownDelete.click();
-
-        getWait5().until(ExpectedConditions.visibilityOf(yesButton)).click();
 
         return this;
     }

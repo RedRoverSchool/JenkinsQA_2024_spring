@@ -15,7 +15,7 @@ public class BuildHistoryPage extends BasePage<BuildHistoryPage> {
     private WebElement buildHistoryItemDropdownArrow;
 
     @FindBy(css = "[href$='Delete']")
-    private WebElement dropdownDeleteButton;
+    private WebElement dropdownDelete;
 
     @FindBy(css = "td [class$='link'][href*='job']")
     private List<WebElement> buildsList;
@@ -31,6 +31,9 @@ public class BuildHistoryPage extends BasePage<BuildHistoryPage> {
 
     @FindBy(xpath = "//li[@class='permalink-item']")
     private List<WebElement> permalinkList;
+
+    @FindBy(css = "dialog .jenkins-button--primary")
+    private WebElement yesButton;
 
     public BuildHistoryPage(WebDriver driver) {
         super(driver);
@@ -48,10 +51,16 @@ public class BuildHistoryPage extends BasePage<BuildHistoryPage> {
         return this;
     }
 
-    public DeleteDialog<BuildHistoryPage> clickItemDeleteButton() {
-        dropdownDeleteButton.click();
+    public BuildHistoryPage clickDeleteOnDropdown() {
+        dropdownDelete.click();
 
-        return new DeleteDialog<>(getDriver(), this);
+        return this;
+    }
+
+    public BuildHistoryPage clickYesToConfirmDelete() {
+        yesButton.click();
+
+        return this;
     }
 
     public List<String> getBuildsList() {

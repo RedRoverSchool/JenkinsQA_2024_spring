@@ -8,7 +8,7 @@ import org.openqa.selenium.support.ui.Select;
 import school.redrover.model.base.BasePage;
 import school.redrover.model.base.BaseProjectPage;
 
-public class MovePage<T extends BaseProjectPage<T>> extends BasePage<T> {
+public class ProjectMovePage<T extends BaseProjectPage<T>> extends BasePage<T> {
 
     private final T returnPage;
 
@@ -18,12 +18,12 @@ public class MovePage<T extends BaseProjectPage<T>> extends BasePage<T> {
     @FindBy(name = "destination")
     private WebElement selectDestination;
 
-    public MovePage(WebDriver driver) {
+    public ProjectMovePage(WebDriver driver) {
         super(driver);
         this.returnPage = null;
     }
 
-    public MovePage(WebDriver driver, T returnPage) {
+    public ProjectMovePage(WebDriver driver, T returnPage) {
         super(driver);
         this.returnPage = returnPage;
     }
@@ -33,7 +33,7 @@ public class MovePage<T extends BaseProjectPage<T>> extends BasePage<T> {
     }
 
     @Step("Select the destination Folder to move the project")
-    public MovePage<T> selectDestinationFolderFromList(String destination) {
+    public ProjectMovePage<T> selectDestinationFolderFromList(String destination) {
         new Select(selectDestination)
                 .selectByValue("/" + destination);
 
@@ -55,9 +55,9 @@ public class MovePage<T extends BaseProjectPage<T>> extends BasePage<T> {
     }
 
     @Step("Click 'Move' button when moved via project dropdown")
-    public <E> E clickMoveButtonWhenMovedViaDropdown(E returnPage) {
+    public <E> E clickMoveButtonWhenMovedViaDropdown(E returnProjectPage) {
         moveButton.click();
 
-        return returnPage;
+        return returnProjectPage;
     }
 }

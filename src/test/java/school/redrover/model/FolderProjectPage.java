@@ -1,7 +1,6 @@
 package school.redrover.model;
 
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -65,13 +64,6 @@ public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
                 .toList();
     }
 
-    @Step("Click on the main folder name on breadcrumbs")
-    public FolderProjectPage clickMainFolderName(String mainFolder) {
-        getDriver().findElement(By.cssSelector("[class*='breadcrumbs']>[href*='job/" + mainFolder + "']")).click();
-
-        return new FolderProjectPage(getDriver());
-    }
-
     @Step("Get first item name inside Folder")
     public String getNestedProjectName() {
         return nestedProjectName.getText();
@@ -98,10 +90,10 @@ public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
     }
 
     @Step("Click 'Move' on the project dropdown menu")
-    public MovePage<?> clickMoveOnDropdown() {
+    public ProjectMovePage<?> clickMoveOnDropdown() {
         dropdownMove.click();
 
-        return new MovePage<>(getDriver());
+        return new ProjectMovePage<>(getDriver());
     }
 
     @Step("Click 'Rename' on the project dropdown menu")

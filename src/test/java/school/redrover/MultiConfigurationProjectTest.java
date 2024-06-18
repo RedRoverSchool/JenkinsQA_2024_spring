@@ -281,9 +281,9 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         Assert.assertTrue(new HomePage(getDriver())
                 .openItemDropdownWithSelenium(PROJECT_NAME)
-                .selectMoveFromDropdown()
-                .selectFolder(folderName)
-                .clickMove()
+                .clickMoveOnDropdown()
+                .selectDestinationFolderFromList(folderName)
+                .clickMoveButtonWhenMovedViaDropdown(new MultiConfigurationProjectPage(getDriver()))
                 .isProjectInsideFolder(PROJECT_NAME, folderName));
     }
 
@@ -377,16 +377,18 @@ public class MultiConfigurationProjectTest extends BaseTest {
         TestUtils.createFolderProject(this, FOLDER_NAME);
         TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
 
-        new HomePage(getDriver())
-                .clickJobByName(PROJECT_NAME, new MultiConfigurationProjectPage(getDriver()))
-                .clickMoveOptionInMenu()
-                .selectFolder(FOLDER_NAME)
-                .clickMove()
-                .clickLogo()
-                .clickSpecificFolderName(FOLDER_NAME);
+        boolean isProjectMoved = new HomePage(getDriver())
+                .clickSpecificMultiConfigurationProjectName(PROJECT_NAME)
+                .clickMoveOnSidebar()
+                .selectDestinationFolderFromList(FOLDER_NAME)
+                .clickMoveButtonWhenMovedViaSidebar()
+                .clickFolderNameOnBreadcrumbs(FOLDER_NAME)
+                .getItemListInsideFolder()
+                .contains(PROJECT_NAME);
 
-        boolean isProjectMoved = new FolderProjectPage(getDriver()).getItemListInsideFolder().contains(PROJECT_NAME);
-        boolean isProjectDeleted = new HomePage(getDriver()).isItemDeleted(FOLDER_NAME);
+        boolean isProjectDeleted = new FolderProjectPage(getDriver())
+                .clickLogo()
+                .isItemDeleted(PROJECT_NAME);
 
         Assert.assertTrue(isProjectMoved && isProjectDeleted);
     }

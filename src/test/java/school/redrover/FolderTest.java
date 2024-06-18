@@ -227,7 +227,7 @@ public class FolderTest extends BaseTest {
     public void testDeleteFolderViaDropdown() {
         boolean isFolderDeleted = new HomePage(getDriver())
                 .openItemDropdown(FOLDER_NAME)
-                .clickDeleteInDropdown()
+                .clickDeleteOnDropdown()
                 .clickYesForConfirmDelete()
                 .isItemDeleted(FOLDER_NAME);
 

@@ -177,8 +177,8 @@ public class PipelineTest extends BaseTest {
                 .clickBuildHistory()
                 .hoverOverItemName(PIPELINE_NAME)
                 .clickItemDropdownArrow()
-                .clickItemDeleteButton()
-                .clickYesForConfirmDelete()
+                .clickDeleteOnDropdown()
+                .clickYesToConfirmDelete()
                 .isBuildDeleted(PIPELINE_NAME);
 
         Assert.assertTrue(isBuildDeleted, PIPELINE_NAME + " build is in the Build history table");
@@ -596,7 +596,7 @@ public class PipelineTest extends BaseTest {
                 .selectPipelineAndClickOk()
                 .clickLogo()
                 .openItemDropdown(PIPELINE_NAME)
-                .clickDeleteInDropdown()
+                .clickDeleteOnDropdown()
                 .clickYesForConfirmDelete()
                 .isItemDeleted(PIPELINE_NAME);
 
