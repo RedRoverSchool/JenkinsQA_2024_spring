@@ -20,7 +20,7 @@ public class RenameDialogPage extends BasePage<RenameDialogPage> {
     }
 
     @Step("Clear 'New Name' input field and type new name for the Project")
-    public RenameDialogPage setNewItemName(String newItemName) {
+    public RenameDialogPage typeNewName(String newItemName) {
         inputNewNameField.clear();
         inputNewNameField.sendKeys(newItemName);
 

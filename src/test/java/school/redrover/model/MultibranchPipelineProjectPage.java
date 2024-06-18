@@ -100,15 +100,15 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage<MultibranchP
     }
 
     public MultibranchPipelineProjectPage clickMPDropdownArrow() {
-        clickSpecificDropdownArrow(breadcrumbsDropdownArrow);
+        clickBreadcrumbsDropdownArrow(breadcrumbsDropdownArrow);
 
         return this;
     }
 
-    public DeleteDialog clickDeleteMultibranchPipelineInBreadcrumbs(DeleteDialog dialog) {
+    public DeleteDialog<MultibranchPipelineProjectPage> clickDeleteMultibranchPipelineInBreadcrumbs() {
         deleteMultibranchPipelineInBreadcrumbsLink.click();
 
-        return dialog;
+        return new DeleteDialog<>(getDriver(), this);
     }
 
     public List<String> getProjectSidebarList() {

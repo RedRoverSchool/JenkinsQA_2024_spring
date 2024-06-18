@@ -119,12 +119,6 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
         return breadcrumbs.getAttribute("data-href").contains(folderName + "/job/" + projectName);
     }
 
-    public DeleteDialog clickSidebarDelete() {
-        sidebarDelete.click();
-
-        return new DeleteDialog(getDriver());
-    }
-
     public MultiConfigurationRenamePage clickRenameInMenu() {
         menuRename.click();
 
@@ -141,13 +135,9 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
     }
 
     public MultiConfigurationProjectPage clickBreadcrumbsProjectDropdownArrow() {
-        clickSpecificDropdownArrow(breadcrumbsProjectDropdownArrow);
+        clickBreadcrumbsDropdownArrow(breadcrumbsProjectDropdownArrow);
 
         return this;
     }
 
-    public DeleteDialog clickDropdownDelete() {
-        breadcrumbsDropdownDelete.click();
-        return new DeleteDialog(getDriver());
-    }
 }

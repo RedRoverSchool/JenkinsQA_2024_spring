@@ -24,7 +24,7 @@ public class BuildHistoryTest extends BaseTest {
         TestUtils.createFreestyleProject(this, PROJECT_NAME);
 
         List<String> list = new HomePage(getDriver())
-                .scheduleBuildForItem(PROJECT_NAME)
+                .clickScheduleBuildForItem(PROJECT_NAME)
                 .clickBuildHistory()
                 .getBuildsList();
 
@@ -98,7 +98,7 @@ public class BuildHistoryTest extends BaseTest {
         TestUtils.createFreestyleProject(this, PROJECT_NAME);
 
         List<String> permalinksActual = new HomePage(getDriver())
-                .scheduleBuildForItem(PROJECT_NAME)
+                .clickScheduleBuildForItem(PROJECT_NAME)
                 .clickJobByName(PROJECT_NAME, new BuildHistoryPage(getDriver()))
                 .getPermalinkList();
 

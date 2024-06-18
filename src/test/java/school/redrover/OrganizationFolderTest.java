@@ -136,7 +136,7 @@ public class OrganizationFolderTest extends BaseTest {
                 .clickRenameOnSidebar()
                 .clearNameInputField()
                 .typeNewName(newOrganizationFolderName)
-                .clickRenameButton()
+                .clickRenameButtonWhenRenamedViaSidebar()
                 .clickLogo()
                 .getItemList();
 

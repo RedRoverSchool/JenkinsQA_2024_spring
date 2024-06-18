@@ -1,6 +1,7 @@
 package school.redrover.model.base;
 
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,6 +13,9 @@ import school.redrover.model.*;
 import java.util.List;
 
 public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends BasePage<T> {
+
+    @FindBy(css = "dialog .jenkins-button--primary")
+    WebElement yesButton;
 
     @FindBy(name = "Submit")
     private WebElement saveButton;
@@ -42,27 +46,20 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
 
     @FindBy(css = "a[href*='rename']")
     private WebElement sidebarRename;
-
-    @FindBy(css = "dialog .jenkins-button--primary")
-    WebElement yesButton;
-
-    @FindBy(css = "[class*='dropdown'] [href$='rename']")
-    private WebElement breadcrumbsRename;
-
-    @FindBy(css = "[class*='dropdown'] [href$='rename']")
-    private WebElement dropdownRename;
-
-    @FindBy(css = "[class*='dropdown'] [href$='move']")
-    private WebElement dropdownMove;
-
-    @FindBy(css = "[href^='/job'] [class$='dropdown-chevron']")
-    private WebElement breadcrumbsDropdownArrow;
+    @FindBy(xpath = "//a[contains(@href,'move')]")
+    private WebElement sidebarMove;
 
     @FindBy(css = "[class*='dropdown'] [href$='Delete']")
     private WebElement breadcrumbsDelete;
 
+    @FindBy(css = "[class*='dropdown'] [href$='rename']")
+    private WebElement breadcrumbsRename;
+
+    @FindBy(css = "[class*='dropdown'] [href$='move']")
+    private WebElement breadcrumbsMove;
+
     @FindBy(css = "[class*='breadcrumbs']>[href*='job']")
-    private WebElement breadcrumbsName;
+    private WebElement breadcrumbsFirstName;
 
     @FindBys({
             @FindBy(id = "tasks"),
@@ -79,14 +76,14 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
         return projectName.getText();
     }
 
-    @Step("Click on 'Add description'")
+    @Step("Click on the 'Add description'")
     public T clickAddDescription() {
         addOrEditDescriptionButton.click();
 
         return (T) this;
     }
 
-    @Step("Click on 'Edit description'")
+    @Step("Click on the 'Edit description'")
     public T clickEditDescription() {
         addOrEditDescriptionButton.click();
 
@@ -118,6 +115,7 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
         return (T) this;
     }
 
+    @Step("Click on description texarea to make it active")
     public T clickOnDescriptionInput() {
         descriptionInput.click();
 
@@ -164,24 +162,32 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
         return getDriver().switchTo().activeElement().getCssValue("box-shadow").split(" 0px")[0];
     }
 
+    @Step("Click on the 'Delete' on the sidebar")
     public T clickDeleteOnSidebar() {
         sidebarDelete.click();
 
         return (T) this;
     }
 
+    @Step("Click on the 'Delete' on the breadcrumbs")
     public T clickDeleteOnBreadcrumbsMenu() {
         breadcrumbsDelete.click();
 
         return (T) this;
     }
 
-
-    public HomePage clickYes() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(yesButton)).click();
-        this.clickLogo();
+    @Step("Click 'Yes' for confirmation delete item from Home Page")
+    public HomePage clickYesWhenDeletedItemOnHomePage() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(yesButton)).click();
 
         return new HomePage(getDriver());
+    }
+
+    @Step("Click 'Yes' for confirmation delete item from Folder")
+    public FolderProjectPage clickYesWhenDeletedItemInFolder() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(yesButton)).click();
+
+        return new FolderProjectPage(getDriver());
     }
 
     public String getYesButtonColorDeletingViaSidebar() {
@@ -199,19 +205,8 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
         return new ProjectRenamePage<>(getDriver(), (T) this);
     }
 
-    public T clickBreadcrumbsDropdownArrow() {
-        clickSpecificDropdownArrow(breadcrumbsDropdownArrow);
-
-        return (T) this;
-    }
-
-    public ProjectRenamePage<T> clickRenameOnBreadcrumbs() {
-        breadcrumbsRename.click();
-
-        return new ProjectRenamePage<>(getDriver(), (T) this);
-    }
-
-    public ProjectRenamePage<T> clickRenameOnDropdown() {
+    @Step("Click 'Rename' on the breadcrumbs")
+    public ProjectRenamePage<T> clickRenameOnBreadcrumbsMenu() {
         breadcrumbsRename.click();
 
         return new ProjectRenamePage<>(getDriver(), (T) this);
@@ -221,7 +216,7 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
         return new RenameErrorPage(getDriver()).getErrorText();
     }
 
-    @Step("Check task presenсe on sidebar")
+    @Step("Check task presence on sidebar")
     public boolean isTaskPresentOnSidebar(String task) {
         getWait2().until(ExpectedConditions.visibilityOfAllElements(taskList));
 
@@ -229,19 +224,47 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
                 .anyMatch(element -> task.equals(element.getText()));
     }
 
-    public T hoverOverBreadcrumbsName() {
-        hoverOverElement(breadcrumbsName);
+    @Step("Hover cursor over project name on breadcrumbs to show arrow")
+    public T hoverOverProjectNameOnBreadcrumbs(String name) {
+        hoverOverElement(getDriver().findElement(By.linkText(name)));
 
         return (T) this;
     }
 
+    @Step("Click breadcrumbs arrow after project name to call menu")
+    public T clickBreadcrumbsArrowAfterProjectName(String name) {
+        WebElement arrowAfterName = getDriver().findElement
+                (By.cssSelector("[href$='" + name + "/'] [class$='dropdown-chevron']"));
+
+        clickBreadcrumbsDropdownArrow(arrowAfterName);
+
+        return (T) this;
+    }
+
+    @Step("Click specific Folder name on breadcrumbs")
+    public FolderProjectPage clickFolderNameOnBreadcrumbs(String name) {
+        getDriver().findElement(By.linkText(name)).click();
+
+        return new FolderProjectPage(getDriver());
+    }
+
+    @Step("Get Item name from breadcrumbs")
     public String getBreadcrumbName() {
-        return breadcrumbsName.getText();
+        return breadcrumbsFirstName.getText();
     }
 
-    public MovePage clickMoveOnDropdown() {
-        dropdownMove.click();
+    @Step("Click 'Move' on the sidebar Menu")
+    public MovePage<T> clickMoveOnSidebar() {
+        sidebarMove.click();
 
-        return new MovePage(getDriver());
+        return new MovePage<>(getDriver(), (T) this);
     }
+
+    @Step("Click 'Move' on the breadcrumbs dropdown Menu")
+    public MovePage<T> clickMoveOnBreadcrumbs() {
+        breadcrumbsMove.click();
+
+        return new MovePage<>(getDriver(), (T) this);
+    }
+
 }

@@ -253,8 +253,8 @@ public class MultiConfigurationProjectTest extends BaseTest {
         List<String> itemsList = new HomePage(getDriver())
                 .clickSpecificMultiConfigurationProjectName(PROJECT_NAME)
                 .clickBreadcrumbsProjectDropdownArrow()
-                .clickDropdownDelete()
-                .clickYes(new HomePage(getDriver()))
+                .clickDeleteOnBreadcrumbsMenu()
+                .clickYesWhenDeletedItemOnHomePage()
                 .getItemList();
 
         Assert.assertListNotContainsObject(itemsList, PROJECT_NAME,
@@ -286,9 +286,9 @@ public class MultiConfigurationProjectTest extends BaseTest {
         HomePage homePage = TestUtils.createMultiConfigurationProject(this, RANDOM_PROJECT_NAME);
 
         boolean isProjectDeleted = homePage
-                .clickJobByName(RANDOM_PROJECT_NAME, new MultiConfigurationProjectPage(getDriver()))
-                .clickSidebarDelete()
-                .clickYes(homePage)
+                .clickSpecificMultiConfigurationProjectName(RANDOM_PROJECT_NAME)
+                .clickDeleteOnSidebar()
+                .clickYesWhenDeletedItemOnHomePage()
                 .isItemDeleted(RANDOM_PROJECT_NAME);
 
         Assert.assertTrue(isProjectDeleted);

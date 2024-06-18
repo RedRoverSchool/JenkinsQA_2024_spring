@@ -6,8 +6,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseProjectPage;
 
-public class MovePage extends BasePage<MovePage> {
+public class MovePage<T extends BaseProjectPage<T>> extends BasePage<T> {
+
+    private final T returnPage;
 
     @FindBy(name = "Submit")
     private WebElement moveButton;
@@ -17,23 +20,44 @@ public class MovePage extends BasePage<MovePage> {
 
     public MovePage(WebDriver driver) {
         super(driver);
+        this.returnPage = null;
     }
 
-    @Step("Select existed folder, in which you want to move the project and click 'Move' button")
-    public FreestyleProjectPage chooseFolderAndConfirmMove(String folderName) {
-
-        Select selectDefinition = new Select(selectDestination);
-        selectDefinition.selectByValue("/" + folderName);
-        moveButton.click();
-
-        return new FreestyleProjectPage(getDriver());
+    public MovePage(WebDriver driver, T returnPage) {
+        super(driver);
+        this.returnPage = returnPage;
     }
 
-    public FolderProjectPage chooseDestinationFromListAndMove(String destination) {
+    public T getReturnPage() {
+        return returnPage;
+    }
+
+    @Step("Select the destination Folder to move the project")
+    public MovePage<T> selectDestinationFolderFromList(String destination) {
         new Select(selectDestination)
                 .selectByValue("/" + destination);
+
+        return this;
+    }
+
+    @Step("Click 'Move' button when moved via sidebar")
+    public T clickMoveButtonWhenMovedViaSidebar() {
         moveButton.click();
 
-        return new FolderProjectPage(getDriver());
+        return getReturnPage();
+    }
+
+    @Step("Click 'Move' button when moved via breadcrumbs")
+    public T clickMoveButtonWhenMovedViaBreadcrumbs() {
+        moveButton.click();
+
+        return getReturnPage();
+    }
+
+    @Step("Click 'Move' button when moved via project dropdown")
+    public <E> E clickMoveButtonWhenMovedViaDropdown(E returnPage) {
+        moveButton.click();
+
+        return returnPage;
     }
 }

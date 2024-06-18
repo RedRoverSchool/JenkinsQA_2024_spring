@@ -35,11 +35,8 @@ public class HomePage extends BasePage<HomePage> {
     @FindBy(css = "[href='/newView']")
     private WebElement newView;
 
-    @FindBy(css = "[href*='rename']")
-    private WebElement renameFromDropdown;
-
-    @FindBy(css = "[href*='move']")
-    private WebElement moveFromDropdown;
+    @FindBy(css = "[class*='dropdown'] [href$='rename']")
+    private WebElement dropdownRename;
 
     @FindBy(xpath = "//a[@class='sortheader' and text()='Name']")
     private WebElement columnNameTitle;
@@ -72,7 +69,7 @@ public class HomePage extends BasePage<HomePage> {
     private WebElement passiveViewName;
 
     @FindBy(css = "[href$='builds']")
-    private WebElement buildHistoryButton;
+    private WebElement buildHistoryOnSidebar;
 
     @FindBy(xpath = "//a[contains(@href, '/move')]")
     private WebElement moveOption;
@@ -172,22 +169,31 @@ public class HomePage extends BasePage<HomePage> {
         return this;
     }
 
-    public DeleteDialog clickDeleteInDropdown(DeleteDialog dialog) {
+    public DeleteDialog<HomePage> clickDeleteInDropdown() {
         dropdownDelete.click();
-        return dialog;
+
+        return new DeleteDialog<>(getDriver(), this);
     }
 
     @Step("Click 'Rename' on dropdown menu")
     public FreestyleRenamePage clickRenameOnDropdownForFreestyleProject() {
-        renameFromDropdown.click();
+        dropdownRename.click();
 
         return new FreestyleRenamePage(getDriver());
     }
 
-    @Step("Click 'Move' in project dropdown menu")
-    public MovePage clickMoveInDropdown() {
+    @Step("Click 'Rename' on the project dropdown menu")
+    public ProjectRenamePage<?> clickRenameOnDropdown() {
+        dropdownRename.click();
+
+        return new ProjectRenamePage<>(getDriver());
+    }
+
+    @Step("Click 'Move' on the project dropdown menu")
+    public MovePage<?> clickMoveOnDropdown() {
         dropdownMove.click();
-        return new MovePage(getDriver());
+
+        return new MovePage<>(getDriver());
     }
 
     @Step("Click on the link 'Build Executor Status'")
@@ -249,13 +255,13 @@ public class HomePage extends BasePage<HomePage> {
     }
 
     public MultiConfigurationRenamePage clickRenameOnDropdownForMultiConfigurationProject() {
-        renameFromDropdown.click();
+        dropdownRename.click();
 
         return new MultiConfigurationRenamePage(getDriver());
     }
 
     public MultiConfigurationMovePage selectMoveFromDropdown() {
-        moveFromDropdown.click();
+        dropdownMove.click();
 
         return new MultiConfigurationMovePage(getDriver());
     }
@@ -341,12 +347,6 @@ public class HomePage extends BasePage<HomePage> {
         return new FullStageViewPage(getDriver());
     }
 
-    public MultibranchPipelineRenamePage clickRenameOnDropdownForMultibranchPipeline() {
-        renameFromDropdown.click();
-
-        return new MultibranchPipelineRenamePage(getDriver());
-    }
-
     @Step("Click the project by name")
     public <T> T clickJobByName(String name, T page) {
         getDriver().findElement(By.xpath(
@@ -377,14 +377,14 @@ public class HomePage extends BasePage<HomePage> {
         return activeViewName.getCssValue("background-color");
     }
 
-    public HomePage scheduleBuildForItem(String itemName) {
+    public HomePage clickScheduleBuildForItem(String itemName) {
         getDriver().findElement(By.xpath("//a[contains(@tooltip,'Schedule a Build for " + itemName + "')]")).click();
 
         return this;
     }
 
     public BuildHistoryPage clickBuildHistory() {
-        buildHistoryButton.click();
+        buildHistoryOnSidebar.click();
 
         return new BuildHistoryPage(getDriver());
     }
@@ -393,12 +393,6 @@ public class HomePage extends BasePage<HomePage> {
         getWait2().until(ExpectedConditions.visibilityOf(builSchedulePopUp));
 
         return this;
-    }
-
-    public MovePage chooseFolderToMove() {
-        getWait5().until(ExpectedConditions.visibilityOf(moveOption)).click();
-
-        return new MovePage(getDriver());
     }
 
     public PeoplePage clickPeopleOnSidebar() {
@@ -424,7 +418,7 @@ public class HomePage extends BasePage<HomePage> {
     }
 
     public FolderRenamePage clickRenameOnDropdownForFolder() {
-        renameFromDropdown.click();
+        dropdownRename.click();
 
         return new FolderRenamePage(getDriver());
     }
@@ -439,11 +433,18 @@ public class HomePage extends BasePage<HomePage> {
         return viewNameList.size();
     }
 
-    @Step("Click 'Delete' in dropdown menu and confirm it by click 'Yes' in confirming dialog ")
-    public HomePage clickDeleteOnDropdownAndConfirm() {
+    @Step("Click 'Delete' in dropdown menu")
+    public HomePage clickDeleteOnDropdown() {
         dropdownDelete.click();
 
         getWait5().until(ExpectedConditions.visibilityOf(yesButton)).click();
+
+        return this;
+    }
+
+    @Step("Click 'Yes' in confirming dialog")
+    public HomePage clickYesForConfirmDelete() {
+        getWait2().until(ExpectedConditions.visibilityOf(yesButton)).click();
 
         return this;
     }

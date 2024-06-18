@@ -155,10 +155,10 @@ public class PipelineTest extends BaseTest {
                 .clickSaveButton()
                 .clickLogo()
                 .clickSpecificPipelineName(PIPELINE_NAME)
-                .hoverOverBreadcrumbsName()
-                .clickBreadcrumbsDropdownArrow()
+                .hoverOverProjectNameOnBreadcrumbs(PIPELINE_NAME)
+                .clickBreadcrumbsArrowAfterProjectName(PIPELINE_NAME)
                 .clickDeleteOnBreadcrumbsMenu()
-                .clickYes()
+                .clickYesWhenDeletedItemOnHomePage()
                 .isItemDeleted(PIPELINE_NAME);
 
         Assert.assertTrue(isPipelineDeleted, PIPELINE_NAME + " was not deleted");
@@ -174,13 +174,12 @@ public class PipelineTest extends BaseTest {
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
-                .scheduleBuildForItem(PIPELINE_NAME)
+                .clickScheduleBuildForItem(PIPELINE_NAME)
                 .clickBuildHistory()
                 .hoverOverItemName(PIPELINE_NAME)
                 .clickItemDropdownArrow()
                 .clickItemDeleteButton()
-                .clickYes(new HomePage(getDriver()))
-                .clickBuildHistory()
+                .clickYesForConfirmDelete()
                 .isBuildDeleted(PIPELINE_NAME);
 
         Assert.assertTrue(isBuildDeleted, PIPELINE_NAME + " build is in the Build history table");
@@ -233,7 +232,7 @@ public class PipelineTest extends BaseTest {
                 .clickRenameOnSidebar()
                 .clearNameInputField()
                 .typeNewName(NEW_PIPELINE_NAME)
-                .clickRenameButton()
+                .clickRenameButtonWhenRenamedViaSidebar()
                 .getProjectName();
 
         Assert.assertEquals(displayedName, NEW_PIPELINE_NAME);
@@ -371,8 +370,8 @@ public class PipelineTest extends BaseTest {
                 .typeItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
-                .hoverOverBreadcrumbsName()
-                .clickBreadcrumbsDropdownArrow()
+                .hoverOverProjectNameOnBreadcrumbs(PIPELINE_NAME)
+                .clickBreadcrumbsArrowAfterProjectName(PIPELINE_NAME)
                 .clickDropdownChangesButton()
                 .getPageHeading();
 
@@ -388,11 +387,12 @@ public class PipelineTest extends BaseTest {
                 .typeItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
-                .clickBreadcrumbsDropdownArrow()
-                .clickRenameOnBreadcrumbs()
+                .hoverOverProjectNameOnBreadcrumbs(PIPELINE_NAME)
+                .clickBreadcrumbsArrowAfterProjectName(PIPELINE_NAME)
+                .clickRenameOnBreadcrumbsMenu()
                 .clearNameInputField()
                 .typeNewName(NEW_PIPELINE_NAME)
-                .clickRenameButton()
+                .clickRenameButtonWhenRenamedViaBreadcrumbs()
                 .getProjectName();
 
         Assert.assertEquals(displayedNewName, NEW_PIPELINE_NAME);
@@ -497,7 +497,7 @@ public class PipelineTest extends BaseTest {
                 List.of("Last build (#1)", "Last stable build (#1)", "Last successful build (#1)", "Last completed build (#1)");
 
         List<String> actualPermalinkList = new HomePage(getDriver())
-                .scheduleBuildForItem(PIPELINE_NAME)
+                .clickScheduleBuildForItem(PIPELINE_NAME)
                 .waitForBuildSchedulePopUp()
                 .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
                 .getPermalinkList();
@@ -523,7 +523,7 @@ public class PipelineTest extends BaseTest {
     @Description("Сheck builds history descending order")
     public void testCheckBuildsHistoryDescendingOrder() {
         List<String> actualBuildsOrderList = new HomePage(getDriver())
-                .scheduleBuildForItem(PIPELINE_NAME)
+                .clickScheduleBuildForItem(PIPELINE_NAME)
                 .waitForBuildSchedulePopUp()
                 .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
                 .getBuildHistoryList();
@@ -547,7 +547,7 @@ public class PipelineTest extends BaseTest {
                 .setNumberBuildsToKeep(maxNumberBuildsToKeep)
                 .clickSaveButton()
                 .clickLogo()
-                .scheduleBuildForItem(PIPELINE_NAME)
+                .clickScheduleBuildForItem(PIPELINE_NAME)
                 .waitForBuildSchedulePopUp()
                 .clickBuildHistory()
                 .getBuildsList();
@@ -576,14 +576,12 @@ public class PipelineTest extends BaseTest {
     @Story("US_02.007 Delete Pipeline")
     @Description("Delete project via sidebar menu 'Delete Pipeline'")
     public void testDeleteSidebarMenu() {
+        TestUtils.createPipelineProject(this, PIPELINE_NAME);
+
         List<String> jobList = new HomePage(getDriver())
-                .clickNewItem()
-                .typeItemName(PIPELINE_NAME)
-                .selectPipelineAndClickOk()
-                .clickLogo()
-                .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
+                .clickSpecificPipelineName(PIPELINE_NAME)
                 .clickDeleteOnSidebar()
-                .clickYes()
+                .clickYesWhenDeletedItemOnHomePage()
                 .getItemList();
 
         Assert.assertTrue(jobList.isEmpty());
@@ -599,8 +597,8 @@ public class PipelineTest extends BaseTest {
                 .selectPipelineAndClickOk()
                 .clickLogo()
                 .openItemDropdown(PIPELINE_NAME)
-                .clickDeleteInDropdown(new DeleteDialog(getDriver()))
-                .clickYes(new HomePage(getDriver()))
+                .clickDeleteInDropdown()
+                .clickYesForConfirmDelete()
                 .isItemDeleted(PIPELINE_NAME);
 
         Assert.assertTrue(isPipelineDeleted, "Pipeline was not deleted successfully.");
@@ -778,7 +776,7 @@ public class PipelineTest extends BaseTest {
     public void testRunBuildByTriangleButton() {
 
         String consoleOutput = new HomePage(getDriver())
-                .scheduleBuildForItem(PIPELINE_NAME)
+                .clickScheduleBuildForItem(PIPELINE_NAME)
                 .waitForBuildSchedulePopUp()
                 .clickBuildHistory()
                 .clickBuild1Console()

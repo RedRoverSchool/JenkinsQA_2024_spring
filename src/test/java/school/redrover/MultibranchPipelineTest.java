@@ -172,7 +172,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .clickRenameOnSidebar()
                 .clearNameInputField()
                 .typeNewName(RENAMED_MULTI_PIPELINE)
-                .clickRenameButton()
+                .clickRenameButtonWhenRenamedViaSidebar()
                 .clickLogo()
                 .getItemList();
 
@@ -190,7 +190,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .clickRenameOnSidebar()
                 .clearNameInputField()
                 .typeNewName(MULTI_PIPELINE_NAME)
-                .clickRenameButton()
+                .clickRenameButtonWhenRenamedViaSidebar()
                 .getErrorText();
 
         Assert.assertEquals(errorMessage, "The new name is the same as the current name.");
@@ -205,10 +205,10 @@ public class MultibranchPipelineTest extends BaseTest {
 
         List<String> itemList = new HomePage(getDriver())
                 .openItemDropdown(MULTI_PIPELINE_NAME)
-                .clickRenameOnDropdownForMultibranchPipeline()
-                .clearNewNameInput()
-                .setItemName(RENAMED_MULTI_PIPELINE)
-                .clickRename(new MultibranchPipelineProjectPage(getDriver()))
+                .clickRenameOnDropdown()
+                .clearNameInputField()
+                .typeNewName(RENAMED_MULTI_PIPELINE)
+                .clickRenameButtonWhenRenamedViaDropdown(new MultibranchPipelineProjectPage(getDriver()))
                 .clickLogo()
                 .getItemList();
 
@@ -263,7 +263,7 @@ public class MultibranchPipelineTest extends BaseTest {
         String nestedMultibranchPipeline = new HomePage(getDriver())
                 .clickJobByName(MULTI_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
                 .clickMoveOnSidebar(MULTI_PIPELINE_NAME)
-                .chooseDestinationFromListAndMove(FOLDER_NAME)
+                .selectDestinationFolderFromList(FOLDER_NAME)
                 .clickLogo()
                 .clickJobByName(FOLDER_NAME, new FolderProjectPage(getDriver()))
                 .getNestedProjectName();
@@ -279,8 +279,8 @@ public class MultibranchPipelineTest extends BaseTest {
 
         String actualPageHeading = new HomePage(getDriver())
                 .openItemDropdown(MULTI_PIPELINE_NAME)
-                .clickDeleteInDropdown(new DeleteDialog(getDriver()))
-                .clickYes(new HomePage(getDriver()))
+                .clickDeleteInDropdown()
+                .clickYesForConfirmDelete()
                 .getHeadingText();
 
         Assert.assertEquals(actualPageHeading, "Welcome to Jenkins!");
@@ -293,8 +293,8 @@ public class MultibranchPipelineTest extends BaseTest {
         boolean isProjectDeleted = new HomePage(getDriver())
                 .clickSpecificMultibranchPipelineName(RENAMED_MULTI_PIPELINE)
                 .clickMPDropdownArrow()
-                .clickDeleteMultibranchPipelineInBreadcrumbs(new DeleteDialog(getDriver()))
-                .clickYes(new HomePage(getDriver()))
+                .clickDeleteOnBreadcrumbsMenu()
+                .clickYesWhenDeletedItemOnHomePage()
                 .isItemDeleted(RENAMED_MULTI_PIPELINE);
 
         Assert.assertTrue(isProjectDeleted, RENAMED_MULTI_PIPELINE + " was not deleted");

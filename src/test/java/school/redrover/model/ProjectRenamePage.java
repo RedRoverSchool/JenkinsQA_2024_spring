@@ -22,6 +22,11 @@ public class ProjectRenamePage<T extends BaseProjectPage<T>> extends BasePage<T>
         this.returnPage = returnPage;
     }
 
+    public ProjectRenamePage(WebDriver driver) {
+        super(driver);
+        this.returnPage = null;
+    }
+
     public T getReturnPage() {
         return returnPage;
     }
@@ -33,17 +38,32 @@ public class ProjectRenamePage<T extends BaseProjectPage<T>> extends BasePage<T>
         return this;
     }
 
-    @Step("Type new name on rename page")
+    @Step("Type new name in input field on project rename page")
     public ProjectRenamePage<T> typeNewName(String name) {
         nameInputField.sendKeys(name);
 
         return this;
     }
 
-    @Step("Click on the 'Rename' button for confirmation")
-    public T clickRenameButton() {
+    @Step("Click 'Rename' button for confirmation when renamed via sidebar")
+    public T clickRenameButtonWhenRenamedViaSidebar() {
         renameButton.click();
 
         return getReturnPage();
+    }
+
+    @Step("Click 'Rename' button for confirmation when renamed via breadcrumbs")
+    public T clickRenameButtonWhenRenamedViaBreadcrumbs() {
+        renameButton.click();
+
+        return getReturnPage();
+    }
+
+
+    @Step("Click 'Rename' button for confirmation when rename via project dropdown")
+    public <E> E clickRenameButtonWhenRenamedViaDropdown(E returnPage) {
+        renameButton.click();
+
+        return returnPage;
     }
 }

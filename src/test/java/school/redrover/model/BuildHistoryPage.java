@@ -43,15 +43,15 @@ public class BuildHistoryPage extends BasePage<BuildHistoryPage> {
     }
 
     public BuildHistoryPage clickItemDropdownArrow() {
-        clickSpecificDropdownArrow(buildHistoryItemDropdownArrow);
+        clickBreadcrumbsDropdownArrow(buildHistoryItemDropdownArrow);
 
         return this;
     }
 
-    public DeleteDialog clickItemDeleteButton() {
+    public DeleteDialog<BuildHistoryPage> clickItemDeleteButton() {
         dropdownDeleteButton.click();
 
-        return new DeleteDialog(getDriver());
+        return new DeleteDialog<>(getDriver(), this);
     }
 
     public List<String> getBuildsList() {

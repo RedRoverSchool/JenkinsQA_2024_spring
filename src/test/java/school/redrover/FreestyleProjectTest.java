@@ -175,9 +175,9 @@ public class FreestyleProjectTest extends BaseTest {
 
         String actualText = new HomePage(getDriver())
                 .clickSpecificFreestyleProjectName(FREESTYLE_PROJECT_NAME)
-                .clickMove()
-                .choosePath(FOLDER_NAME)
-                .clickMoveButton()
+                .clickMoveOnSidebar()
+                .selectDestinationFolderFromList(FOLDER_NAME)
+                .clickMoveButtonWhenMovedViaSidebar()
                 .getFullProjectPath();
 
         Allure.step("Expected result: The full project path should contain: " + expectedText);
@@ -193,10 +193,10 @@ public class FreestyleProjectTest extends BaseTest {
 
         List<String> projectList = new HomePage(getDriver())
                 .openItemDropdown(FREESTYLE_PROJECT_NAME)
-                .clickMoveInDropdown()
-                .chooseFolderAndConfirmMove(FOLDER_NAME)
-                .clickLogo()
-                .clickJobByName(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .clickMoveOnDropdown()
+                .selectDestinationFolderFromList(FOLDER_NAME)
+                .clickMoveButtonWhenMovedViaDropdown(new FreestyleProjectPage(getDriver()))
+                .clickFolderNameOnBreadcrumbs(FOLDER_NAME)
                 .getItemListInsideFolder();
 
         Allure.step("Expected result: The project list inside the folder contain moved project");
@@ -336,9 +336,10 @@ public class FreestyleProjectTest extends BaseTest {
 
         String projectName = new HomePage(getDriver())
                 .openItemDropdown(FREESTYLE_PROJECT_NAME)
-                .clickRenameOnDropdownForFreestyleProject()
-                .setNewName(RENAMED_FREESTYLE_PROJECT_NAME)
-                .clickRename()
+                .clickRenameOnDropdown()
+                .clearNameInputField()
+                .typeNewName(RENAMED_FREESTYLE_PROJECT_NAME)
+                .clickRenameButtonWhenRenamedViaDropdown(new FreestyleProjectPage(getDriver()))
                 .getProjectName();
 
         Allure.step("Expected result: Renamed Freestyle Project is displayed");
@@ -353,9 +354,9 @@ public class FreestyleProjectTest extends BaseTest {
 
         List<String> itemList = new HomePage(getDriver())
                 .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-                .clickBreadcrumbsDropdownArrow()
+                .clickBreadcrumbsArrowAfterName()
                 .clickBreadcrumbsDropdownRenameProject(FREESTYLE_PROJECT_NAME)
-                .setNewItemName(RENAMED_FREESTYLE_PROJECT_NAME)
+                .typeNewName(RENAMED_FREESTYLE_PROJECT_NAME)
                 .clickRename(new FreestyleProjectPage(getDriver()))
                 .clickLogo()
                 .getItemList();
@@ -408,7 +409,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         String welcomeJenkinsHeader = new HomePage(getDriver())
                 .clickJobByName(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-                .clickBreadcrumbsDropdownArrow()
+                .clickBreadcrumbsArrowAfterName()
                 .clickDelete()
                 .clickYesInConfirmDeleteDialog()
                 .getHeadingText();
@@ -425,7 +426,8 @@ public class FreestyleProjectTest extends BaseTest {
 
         boolean isItemDeleted = new HomePage(getDriver())
                 .openItemDropdown(FREESTYLE_PROJECT_NAME)
-                .clickDeleteOnDropdownAndConfirm()
+                .clickDeleteOnDropdown()
+                .clickYesForConfirmDelete()
                 .isItemDeleted(FREESTYLE_PROJECT_NAME);
 
         Allure.step("Expected result: the project is not displayed on Home Page");

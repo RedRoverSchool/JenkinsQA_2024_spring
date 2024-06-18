@@ -16,9 +16,6 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
     @FindBy(css = "#enable-project button")
     private WebElement enableButton;
 
-    @FindBy(xpath = "//a[contains(@href,'move')]")
-    private WebElement moveButton;
-
     @FindBy(xpath = "//a[contains(@href, 'configure')]")
     private WebElement configureButton;
 
@@ -76,8 +73,8 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
     }
 
     @Step("Click on the breadcrumbs dropdown menu for the project")
-    public FreestyleProjectPage clickBreadcrumbsDropdownArrow() {
-        clickSpecificDropdownArrow(breadcrumbsDropdownArrow);
+    public FreestyleProjectPage clickBreadcrumbsArrowAfterName() {
+        clickBreadcrumbsDropdownArrow(breadcrumbsDropdownArrow);
 
         return this;
     }
@@ -87,13 +84,6 @@ public class FreestyleProjectPage extends BaseProjectPage<FreestyleProjectPage> 
         getDriver().findElement(By.xpath("//div[@class='jenkins-dropdown']//a[@href='/job/" + oldItemName + "/confirm-rename']")).click();
 
         return new RenameDialogPage(getDriver());
-    }
-
-    @Step("Click on the 'Move' on sidebar Menu")
-    public FreestyleMovePage clickMove() {
-        moveButton.click();
-
-        return new FreestyleMovePage(getDriver());
     }
 
     @Step("Click on the 'Configure' on sidebar menu")

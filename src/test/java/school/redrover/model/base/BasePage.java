@@ -64,7 +64,7 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
                 .perform();
     }
 
-    public void clickSpecificDropdownArrow(WebElement element) {
+    public void clickBreadcrumbsDropdownArrow(WebElement element) {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
                 "arguments[0].dispatchEvent(new Event('click'));", element);
     }

@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseProjectPage;
 
 import java.util.List;
@@ -20,9 +21,6 @@ public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
     @FindBy(xpath = "//a[.='New Item']")
     private WebElement newItemOnSidebar;
 
-    @FindBy(xpath = "//tr[contains(@id,'job_')]/td[3]/a")
-    private WebElement itemInTable;
-
     @FindBy(css = "td [href*='job']:first-child")
     private WebElement nestedProjectName;
 
@@ -31,6 +29,18 @@ public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
 
     @FindBy(css = "a.content-block__link")
     private WebElement createAJob;
+
+    @FindBy(css = "[class*='dropdown'] [href$='move']")
+    private WebElement dropdownMove;
+
+    @FindBy(css = "[class*='dropdown'] [href$='rename']")
+    private WebElement dropdownRename;
+
+    @FindBy(css = "[class*='dropdown'] [href$='Delete']")
+    private WebElement dropdownDelete;
+
+    @FindBy(xpath = "//button[@data-id='ok']")
+    private WebElement yesButton;
 
     public FolderProjectPage(WebDriver driver) {
         super(driver);
@@ -53,11 +63,6 @@ public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
                 .stream()
                 .map(WebElement::getText)
                 .toList();
-    }
-
-    @Step("Get Item name from dashboard")
-    public String getItemNameFromDashboard() {
-        return itemInTable.getText();
     }
 
     @Step("Click on the main folder name on breadcrumbs")
@@ -91,4 +96,33 @@ public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
     public Boolean isLinkForCreateJobDisplayed() {
         return createAJob.isDisplayed();
     }
+
+    @Step("Click 'Move' on the project dropdown menu")
+    public MovePage<?> clickMoveOnDropdown() {
+        dropdownMove.click();
+
+        return new MovePage<>(getDriver());
+    }
+
+    @Step("Click 'Rename' on the project dropdown menu")
+    public ProjectRenamePage<?> clickRenameOnDropdown() {
+        dropdownRename.click();
+
+        return new ProjectRenamePage<>(getDriver());
+    }
+
+    @Step("Click 'Delete' on dropdown menu")
+    public FolderProjectPage clickDeleteOnDropdown() {
+        dropdownDelete.click();
+
+        return this;
+    }
+
+    @Step("Click 'Yes' in confirming dialog")
+    public FolderProjectPage clickYesForConfirmDelete() {
+        getWait2().until(ExpectedConditions.visibilityOf(yesButton)).click();
+
+        return this;
+    }
+
 }
