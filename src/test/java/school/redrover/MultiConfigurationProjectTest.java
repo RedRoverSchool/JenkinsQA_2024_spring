@@ -56,7 +56,9 @@ public class MultiConfigurationProjectTest extends BaseTest {
     public void testAddDescription() {
         final String text = "❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
 
-        String description = TestUtils.createMultiConfigurationProject(this, PROJECT_NAME)
+        TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
+
+        String description = new HomePage(getDriver())
                 .clickSpecificMultiConfigurationProjectName(PROJECT_NAME)
                 .clickAddDescriptionButton()
                 .addOrEditDescription(text)

@@ -11,10 +11,6 @@ import java.util.List;
 
 public class FooterFrame<T extends BasePage<T>> extends BaseFrame<T> {
 
-    public FooterFrame(WebDriver driver, T returnPage) {
-        super(driver, returnPage);
-    }
-
     @FindBy(css = "[class$=jenkins_ver]")
     private WebElement version;
 
@@ -24,15 +20,12 @@ public class FooterFrame<T extends BasePage<T>> extends BaseFrame<T> {
     @FindBy(xpath = "//div/a[@href='/manage/about']")
     private WebElement aboutJenkinsDropdownItem;
 
-    @FindBy(xpath = "//div/a[@href='https://www.jenkins.io/participate/']")
-    private WebElement involvedDropdownItem;
-
-    @FindBy(xpath = "//div/a[@href='https://www.jenkins.io/']")
-    private WebElement websiteDropdownItem;
-
     @FindBy(className = "jenkins-dropdown__item")
     private List<WebElement> dropdownElements;
 
+    public FooterFrame(WebDriver driver, T returnPage) {
+        super(driver, returnPage);
+    }
 
     public String getVersionOnFooter() {
 

@@ -24,8 +24,8 @@ public final class TestUtils {
     }
 
     @Step("Create the Freestyle project: '{name}'")
-    public static HomePage createFreestyleProject(BaseTest baseTest, String name) {
-        return new HomePage(baseTest.getDriver())
+    public static void createFreestyleProject(BaseTest baseTest, String name) {
+        new HomePage(baseTest.getDriver())
                 .clickNewItem()
                 .typeItemName(name.trim())
                 .selectFreestyleAndClickOk()
@@ -34,8 +34,8 @@ public final class TestUtils {
     }
 
     @Step("Create the Pipeline project: '{name}'")
-    public static HomePage createPipelineProject(BaseTest baseTest, String name) {
-        return new HomePage(baseTest.getDriver())
+    public static void createPipelineProject(BaseTest baseTest, String name) {
+        new HomePage(baseTest.getDriver())
                 .clickNewItem()
                 .typeItemName(name.trim())
                 .selectPipelineAndClickOk()
@@ -44,8 +44,8 @@ public final class TestUtils {
     }
 
     @Step("Create the Multi-configuration project: '{name}'")
-    public static HomePage createMultiConfigurationProject(BaseTest baseTest, String name) {
-        return new HomePage(baseTest.getDriver())
+    public static void createMultiConfigurationProject(BaseTest baseTest, String name) {
+        new HomePage(baseTest.getDriver())
                 .clickNewItem()
                 .typeItemName(name.trim())
                 .selectMultiConfigurationAndClickOk()
@@ -54,8 +54,8 @@ public final class TestUtils {
     }
 
     @Step("Create the Folder: '{name}'")
-    public static HomePage createFolderProject(BaseTest baseTest, String name) {
-        return new HomePage(baseTest.getDriver())
+    public static void createFolderProject(BaseTest baseTest, String name) {
+        new HomePage(baseTest.getDriver())
                 .clickNewItem()
                 .typeItemName(name.trim())
                 .selectFolderAndClickOk()
@@ -64,8 +64,8 @@ public final class TestUtils {
     }
 
     @Step("Create the Multibranch Pipeline: '{name}'")
-    public static HomePage createMultibranchProject(BaseTest baseTest, String name) {
-        return new HomePage(baseTest.getDriver())
+    public static void createMultibranchProject(BaseTest baseTest, String name) {
+        new HomePage(baseTest.getDriver())
                 .clickNewItem()
                 .typeItemName(name.trim())
                 .selectMultibranchPipelineAndClickOk()
@@ -75,8 +75,8 @@ public final class TestUtils {
     }
 
     @Step("Create the Organization Folder: '{name}'")
-    public static HomePage createOrganizationFolderProject(BaseTest baseTest, String name) {
-        return new HomePage(baseTest.getDriver())
+    public static void createOrganizationFolderProject(BaseTest baseTest, String name) {
+        new HomePage(baseTest.getDriver())
                 .clickNewItem()
                 .typeItemName(name.trim())
                 .selectOrganizationFolderAndClickOk()

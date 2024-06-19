@@ -189,13 +189,6 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
         return new HomePage(getDriver());
     }
 
-    @Step("Click 'Yes' for confirmation delete item from Folder")
-    public FolderProjectPage clickYesWhenDeletedItemInFolder() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(yesButton)).click();
-
-        return new FolderProjectPage(getDriver());
-    }
-
     public String getYesButtonColorDeletingViaSidebar() {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
 
