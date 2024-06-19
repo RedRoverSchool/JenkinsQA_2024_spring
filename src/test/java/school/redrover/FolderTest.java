@@ -345,7 +345,8 @@ public class FolderTest extends BaseTest {
                 .isItemExistsInsideFolder(PIPELINE_NAME);
 
         Allure.step("Expected result: Full Project name contains both Project names");
-        Assert.assertTrue(fullProjectName.contains(expectedFullProjectName), "The text does not contain the expected project name.");
+        Assert.assertTrue(fullProjectName.contains(expectedFullProjectName),
+                "The text does not contain the expected project name.");
 
         Assert.assertTrue(isItemExistsInsideFolder, "Job inside Folder not created");
     }
@@ -389,7 +390,8 @@ public class FolderTest extends BaseTest {
                 .getItemListInsideFolder();
 
         Allure.step("Expected result: Item list inside folder contains Freestyle project");
-        Assert.assertListContainsObject(insideFolderItemList, IVAN_S_FREE_STYLE_PROJECT, "FreeStyle Project was not created");
+        Assert.assertListContainsObject(insideFolderItemList, IVAN_S_FREE_STYLE_PROJECT,
+                "FreeStyle Project was not created");
     }
 
     @Test(dependsOnMethods = "testCreateFreeStyleProjectInsideRootFolder")

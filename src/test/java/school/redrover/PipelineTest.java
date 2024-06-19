@@ -484,7 +484,10 @@ public class PipelineTest extends BaseTest {
     @Description("Check permalinks after build is scheduled")
     public void testPermalinksBuildDetails() {
         final List<String> expectedPermalinkList =
-                List.of("Last build (#1)", "Last stable build (#1)", "Last successful build (#1)", "Last completed build (#1)");
+                List.of("Last build (#1)",
+                        "Last stable build (#1)",
+                        "Last successful build (#1)",
+                        "Last completed build (#1)");
 
         List<String> actualPermalinkList = new HomePage(getDriver())
                 .clickScheduleBuildForItemAndWaitForBuildSchedulePopUp(PIPELINE_NAME)
@@ -1093,7 +1096,8 @@ public class PipelineTest extends BaseTest {
 
     @Test
     @Story("US_02.004 Verify the Pipeline configuration")
-    @Description("02.004.11 Verify that build is failed when user set to use Pipeline script from repository and don't set the repository")
+    @Description("02.004.11 Verify that build is failed "
+            + "when user set to use Pipeline script from repository and don't set the repository")
     public void testBuildWithoutScriptRepository() {
         String errorMessageConsole = new HomePage(getDriver())
                 .clickNewItem()

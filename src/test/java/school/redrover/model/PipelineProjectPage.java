@@ -83,8 +83,8 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         Set<String> backgroundColor = new HashSet<>();
         for (int i = 1; i <= 2; i++) {
             WebElement element = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                    By.xpath("//tr[@data-runid='" + i +
-                            "']/td[@class='stage-cell stage-cell-0 SUCCESS']/div[@class='cell-color']")));
+                    By.xpath("//tr[@data-runid='" + i
+                            + "']/td[@class='stage-cell stage-cell-0 SUCCESS']/div[@class='cell-color']")));
 
             backgroundColor.add(element.getCssValue("background-color"));
         }
@@ -246,8 +246,8 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
     @Step("Get Stage header name list")
     public List<String> getStageHeaderNameList() {
         List<String> headerList = new ArrayList<>();
-        for (WebElement stageHeaderElement :
-                getWait10().until(ExpectedConditions.visibilityOfAllElements(stageHeaderNameList))) {
+        for (WebElement stageHeaderElement : getWait10().until(
+                ExpectedConditions.visibilityOfAllElements(stageHeaderNameList))) {
             headerList.add(stageHeaderElement.getText());
         }
 

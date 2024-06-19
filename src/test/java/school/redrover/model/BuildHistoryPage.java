@@ -9,7 +9,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class BuildHistoryPage extends BasePage<BuildHistoryPage> {
 

@@ -183,9 +183,15 @@ public class OrganizationFolderTest extends BaseTest {
     @Story("US_06.007  Pipeline syntax")
     @Description("Verify that the pipeline syntax sidebar contains the expected list of items.")
     public void testPipelineSyntaxSidebarList() {
-        final List<String> expectedPipelineSyntaxSidebarList = List.of("Back", "Snippet Generator", "Declarative Directive Generator",
-                "Declarative Online Documentation", "Steps Reference",
-                "Global Variables Reference", "Online Documentation", "Examples Reference",
+        final List<String> expectedPipelineSyntaxSidebarList = List.of(
+                "Back",
+                "Snippet Generator",
+                "Declarative Directive Generator",
+                "Declarative Online Documentation",
+                "Steps Reference",
+                "Global Variables Reference",
+                "Online Documentation",
+                "Examples Reference",
                 "IntelliJ IDEA GDSL");
 
         List<String> actualPipelineSyntaxSidebarList = new HomePage(getDriver())
@@ -251,7 +257,14 @@ public class OrganizationFolderTest extends BaseTest {
     @Story("US_06.001  Use Configuration page")
     @Description("Verify that the 'Throttle Builds' dropdown contains the correct time period options.")
     public void testThrottleBuildsTimePeriodOptions() {
-        final List<String> expectedTimePeriodOptions = List.of("Second", "Minute", "Hour", "Day", "Week", "Month", "Year");
+        final List<String> expectedTimePeriodOptions = List.of(
+                "Second",
+                "Minute",
+                "Hour",
+                "Day",
+                "Week",
+                "Month",
+                "Year");
 
         TestUtils.createOrganizationFolderProject(this, ORGANIZATION_FOLDER_NAME);
 
