@@ -119,12 +119,6 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
         return (T) this;
     }
 
-    public T waitAddDescriptionButtonDisappears() {
-        getWait2().until(ExpectedConditions.invisibilityOf(addOrEditDescriptionButton));
-
-        return (T) this;
-    }
-
     @Step("Click on description texarea to make it active")
     public T clickOnDescriptionInput() {
         descriptionInput.click();
@@ -169,6 +163,8 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
     }
 
     public String getColorOfTextAreaBorderBacklight() {
+        getWait2().until(ExpectedConditions.invisibilityOf(addOrEditDescriptionButton));
+
         return getDriver().switchTo().activeElement().getCssValue("box-shadow").split(" 0px")[0];
     }
 
