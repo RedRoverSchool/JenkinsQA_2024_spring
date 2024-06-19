@@ -110,7 +110,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName("   ")
                 .selectFreeStyleProject()
-                .clickOkAnyway(new ItemErrorPage(getDriver()))
+                .clickOkAnyway(new CreateItemErrorPage(getDriver()))
                 .getErrorText();
 
         Allure.step("Expected result: Error message " + expectedErrorMessage + "is displayed");
@@ -128,7 +128,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(projectName)
                 .selectFreeStyleProject()
-                .clickOkAnyway(new ItemErrorPage(getDriver()))
+                .clickOkAnyway(new CreateItemErrorPage(getDriver()))
                 .getProblemText();
 
         Allure.step("Expected result: Error message " + expectedErrorMessage + "is displayed");
@@ -145,7 +145,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(FREESTYLE_PROJECT_NAME)
                 .selectFreeStyleProject()
-                .clickOkAnyway(new ItemErrorPage(getDriver()))
+                .clickOkAnyway(new CreateItemErrorPage(getDriver()))
                 .getErrorText();
 
         Allure.step("Expected result: Error Message " + expectedErrorMessage + "is displayed");

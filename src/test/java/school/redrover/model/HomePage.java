@@ -351,22 +351,26 @@ public class HomePage extends BasePage<HomePage> {
         return activeViewName.getCssValue("background-color");
     }
 
-    public HomePage clickScheduleBuildForItem(String itemName) {
+    @Step("Click green triangle to schedule build for project")
+    public HomePage clickScheduleBuildForItemAndWaitForBuildSchedulePopUP(String itemName) {
         getDriver().findElement(By.xpath("//a[contains(@tooltip,'Schedule a Build for " + itemName + "')]")).click();
+        getWait2().until(ExpectedConditions.visibilityOf(buildSchedulePopUp));
 
         return this;
     }
 
+    @Step("Click 'Build History' on sidebar menu")
     public BuildHistoryPage clickBuildHistory() {
         buildHistoryOnSidebar.click();
 
         return new BuildHistoryPage(getDriver());
     }
 
-    public HomePage waitForBuildSchedulePopUp() {
-        getWait2().until(ExpectedConditions.visibilityOf(buildSchedulePopUp));
+    @Step("Select folder to move")
+    public MovePage chooseFolderToMove() {
+        getWait5().until(ExpectedConditions.visibilityOf(moveOption)).click();
 
-        return this;
+        return new MovePage(getDriver());
     }
 
     @Step("Click 'People' on sidebar")

@@ -38,6 +38,7 @@ public class NodeBuiltInStatusPage extends BasePage<NodeBuiltInStatusPage> {
                 .toList();
     }
 
+    @Step("Turn node 'On' if 'Offline' status")
     public HomePage turnNodeOnIfOffline() {
         try {
             nodeOnlineButton.click();

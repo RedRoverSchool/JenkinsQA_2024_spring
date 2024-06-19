@@ -7,21 +7,21 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 
-public class ItemErrorPage extends BasePage<ItemErrorPage> {
+public class CreateItemErrorPage extends BasePage<CreateItemErrorPage> {
 
     @FindBy(css = "#main-panel p")
-    private WebElement underErrorText;
+    private WebElement errorDescribingText;
 
     @FindBy(xpath = "//h2")
     private WebElement underOopsProblemText;
 
-    public ItemErrorPage(WebDriver driver) {
+    public CreateItemErrorPage(WebDriver driver) {
         super(driver);
     }
 
     public String getErrorText() {
 
-        return getWait2().until(ExpectedConditions.visibilityOf(underErrorText)).getText();
+        return getWait2().until(ExpectedConditions.visibilityOf(errorDescribingText)).getText();
     }
 
     public String getProblemText() {
