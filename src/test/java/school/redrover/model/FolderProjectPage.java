@@ -58,10 +58,7 @@ public class FolderProjectPage extends BaseProjectPage<FolderProjectPage> {
 
     @Step("Get Item list inside folder")
     public List<String> getItemListInsideFolder() {
-        return itemsList
-                .stream()
-                .map(WebElement::getText)
-                .toList();
+        return itemsList.stream().map(WebElement::getText).toList();
     }
 
     @Step("Get first item name inside Folder")

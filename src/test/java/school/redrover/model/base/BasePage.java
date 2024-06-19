@@ -87,9 +87,9 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
                 .click().perform();
     }
 
-    public String getText(WebElement webElement) {
-        return webElement.getText();
-    }
+//    public String getText(WebElement webElement) {
+//        return webElement.getText();
+//    }
 
     public String getHeadingText() {
         return heading.getText();

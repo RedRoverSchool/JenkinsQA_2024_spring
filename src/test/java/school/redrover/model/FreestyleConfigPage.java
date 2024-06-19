@@ -76,7 +76,7 @@ public class FreestyleConfigPage extends BaseConfigPage<FreestyleProjectPage, Fr
 
     @Step("Click 'Add timestamps to the Console Output' Checkbox")
     public FreestyleConfigPage clickAddTimestampsCheckbox() {
-        super.scrollToElement(buildEnvironmentHeading);
+        scrollToElement(buildEnvironmentHeading);
         addTimestampsCheckbox.click();
 
         return this;

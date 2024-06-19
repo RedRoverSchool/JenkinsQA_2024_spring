@@ -10,6 +10,7 @@ import school.redrover.model.base.BasePage;
 import java.util.List;
 
 public class UserConfigurePage extends BasePage<UserConfigurePage> {
+
     @FindBy(xpath = "//button[text()='Add new Token']")
     private WebElement addNewTokenButton;
 
@@ -42,6 +43,7 @@ public class UserConfigurePage extends BasePage<UserConfigurePage> {
         return new UserPage(getDriver());
     }
 
+    //    TODO refactor this one - split into steps
     public String[] getTokenUuidUser(String projectName) {
 
         scrollIntoViewCenter(addNewTokenButton);

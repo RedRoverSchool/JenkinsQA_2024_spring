@@ -112,14 +112,14 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
         return (T) this;
     }
 
-    @Step("Type description text in the input text area")
+    @Step("Type description '{text}' in the input text area")
     public T typeDescription(String text) {
         descriptionInput.sendKeys(text);
 
         return (T) this;
     }
 
-    @Step("Click on description texarea to make it active")
+    @Step("Click on description textarea to make it active")
     public T clickOnDescriptionInput() {
         descriptionInput.click();
 

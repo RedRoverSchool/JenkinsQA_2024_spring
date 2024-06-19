@@ -199,10 +199,10 @@ public class HomePage extends BasePage<HomePage> {
         return getDriver().findElement(By.cssSelector("[href='/computer/" + name + "/']")).isDisplayed();
     }
 
-    @Step("Click on the specific Multi-configuration project name")
+    @Step("Click on the '{itemName}' Multi-configuration project name")
     public MultiConfigurationProjectPage clickSpecificMultiConfigurationProjectName(String itemName) {
         getDriver().findElement(
-                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
+                By.cssSelector("td>[href^='job/" + TestUtils.asURL(itemName) + "']")).click();
 
         return new MultiConfigurationProjectPage(getDriver());
     }
@@ -240,10 +240,10 @@ public class HomePage extends BasePage<HomePage> {
         return this;
     }
 
-    @Step("Click on the specific Pipeline name")
+    @Step("Click on the '{itemName}' Pipeline name")
     public PipelineProjectPage clickSpecificPipelineName(String itemName) {
         getDriver().findElement(
-                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
+                By.cssSelector("td>[href^='job/" + TestUtils.asURL(itemName) + "']")).click();
 
         return new PipelineProjectPage(getDriver());
     }
@@ -256,10 +256,10 @@ public class HomePage extends BasePage<HomePage> {
         return getItemList().contains(name);
     }
 
-    @Step("Click on the specific Multibranch Pipeline name")
+    @Step("Click on the '{itemName}' Multibranch Pipeline name")
     public MultibranchPipelineProjectPage clickSpecificMultibranchPipelineName(String itemName) {
         getDriver().findElement(
-                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
+                By.cssSelector("td>[href^='job/" + TestUtils.asURL(itemName) + "']")).click();
 
         return new MultibranchPipelineProjectPage(getDriver());
     }
@@ -288,10 +288,10 @@ public class HomePage extends BasePage<HomePage> {
         return projectIcon.getSize().height;
     }
 
-    @Step("Click on the specific Organization Folder name")
+    @Step("Click on the '{itemName}' Organization Folder name")
     public OrganizationFolderProjectPage clickSpecificOrganizationFolderName(String itemName) {
         getDriver().findElement(
-                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
+                By.cssSelector("td>[href^='job/" + TestUtils.asURL(itemName) + "']")).click();
 
         return new OrganizationFolderProjectPage(getDriver());
     }
@@ -351,7 +351,7 @@ public class HomePage extends BasePage<HomePage> {
         return activeViewName.getCssValue("background-color");
     }
 
-    @Step("Click green triangle to schedule build for project")
+    @Step("Click green triangle to schedule build for '{itemName}' project")
     public HomePage clickScheduleBuildForItemAndWaitForBuildSchedulePopUp(String itemName) {
         getDriver().findElement(
                 By.xpath("//a[contains(@tooltip,'Schedule a Build for " + itemName + "')]")).click();
@@ -377,7 +377,7 @@ public class HomePage extends BasePage<HomePage> {
     @Step("Click '{itemName}' Folder name")
     public FolderProjectPage clickSpecificFolderName(String itemName) {
         getDriver().findElement(
-                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
+                By.cssSelector("td>[href^='job/" + TestUtils.asURL(itemName) + "']")).click();
 
         return new FolderProjectPage(getDriver());
     }
@@ -385,7 +385,7 @@ public class HomePage extends BasePage<HomePage> {
     @Step("Click '{itemName}' Freestyle project name")
     public FreestyleProjectPage clickSpecificFreestyleProjectName(String itemName) {
         getDriver().findElement(
-                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
+                By.cssSelector("td>[href^='job/" + TestUtils.asURL(itemName) + "']")).click();
 
         return new FreestyleProjectPage(getDriver());
     }

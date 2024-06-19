@@ -6,19 +6,8 @@ import school.redrover.model.HomePage;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.UUID;
 
 public final class TestUtils {
-
-    public static final class Item {
-        public static final String FREESTYLE_PROJECT = "hudson_model_FreeStyleProject";
-        public static final String PIPELINE = "org_jenkinsci_plugins_workflow_job_WorkflowJob";
-        public static final String MULTI_CONFIGURATION_PROJECT = "hudson_matrix_MatrixProject";
-        public static final String FOLDER = "com_cloudbees_hudson_plugins_folder_Folder";
-        public static final String MULTI_BRANCH_PIPELINE = "org_jenkinsci_plugins_workflow_"
-                + "multibranch_WorkflowMultiBranchProject";
-        public static final String ORGANIZATION_FOLDER = "jenkins_branch_OrganizationFolder";
-    }
 
     private TestUtils() {
         throw new UnsupportedOperationException();
@@ -34,31 +23,7 @@ public final class TestUtils {
                 .replaceAll("%7E", "~");
     }
 
-    public static HomePage createNewItem(BaseTest baseTest, String projectName, String itemClassName) {
-        switch (itemClassName) {
-            case Item.FREESTYLE_PROJECT -> {
-                return createFreestyleProject(baseTest, projectName);
-            }
-            case Item.PIPELINE -> {
-                return createPipelineProject(baseTest, projectName);
-            }
-            case Item.MULTI_CONFIGURATION_PROJECT -> {
-                return createMultiConfigurationProject(baseTest, projectName);
-            }
-            case Item.FOLDER -> {
-                return createFolderProject(baseTest, projectName);
-            }
-            case Item.MULTI_BRANCH_PIPELINE -> {
-                return createMultibranchProject(baseTest, projectName);
-            }
-            case Item.ORGANIZATION_FOLDER -> {
-                return createOrganizationFolderProject(baseTest, projectName);
-            }
-            default -> throw new IllegalArgumentException("Project type name incorrect");
-        }
-    }
-
-    @Step("Create the Freestyle project: {name}")
+    @Step("Create the Freestyle project: '{name}'")
     public static HomePage createFreestyleProject(BaseTest baseTest, String name) {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
@@ -68,7 +33,7 @@ public final class TestUtils {
                 .clickLogo();
     }
 
-    @Step("Create the Pipeline: {name}")
+    @Step("Create the Pipeline project: '{name}'")
     public static HomePage createPipelineProject(BaseTest baseTest, String name) {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
@@ -78,7 +43,7 @@ public final class TestUtils {
                 .clickLogo();
     }
 
-    @Step("Create the Multi-configuration project: {name}")
+    @Step("Create the Multi-configuration project: '{name}'")
     public static HomePage createMultiConfigurationProject(BaseTest baseTest, String name) {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
@@ -88,7 +53,7 @@ public final class TestUtils {
                 .clickLogo();
     }
 
-    @Step("Create the Folder: {name}")
+    @Step("Create the Folder: '{name}'")
     public static HomePage createFolderProject(BaseTest baseTest, String name) {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
@@ -98,17 +63,18 @@ public final class TestUtils {
                 .clickLogo();
     }
 
-    @Step("Create the Multibranch Pipeline: {name}")
+    @Step("Create the Multibranch Pipeline: '{name}'")
     public static HomePage createMultibranchProject(BaseTest baseTest, String name) {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
                 .typeItemName(name.trim())
                 .selectMultibranchPipelineAndClickOk()
+//                TODO why commented?
 //                .clickSaveButton()
                 .clickLogo();
     }
 
-    @Step("Create the Organization Folder: {name}")
+    @Step("Create the Organization Folder: '{name}'")
     public static HomePage createOrganizationFolderProject(BaseTest baseTest, String name) {
         return new HomePage(baseTest.getDriver())
                 .clickNewItem()
@@ -116,10 +82,6 @@ public final class TestUtils {
                 .selectOrganizationFolderAndClickOk()
                 .clickSaveButton()
                 .clickLogo();
-    }
-
-    public static String randomString() {
-        return UUID.randomUUID().toString();
     }
 
     public static void resetJenkinsTheme(BaseTest baseTest) {

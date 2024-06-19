@@ -47,7 +47,7 @@ public class HeaderTest extends BaseTest {
                 .clickWarningIcon()
                 .getHeader()
                 .clickManageJenkinsTooltipLink()
-                .getPageHeadingText();
+                .getHeadingText();
 
         Assert.assertTrue(pageTitle.contains("Manage Jenkins"));
         Assert.assertTrue(getDriver().getCurrentUrl().contains("/manage/"));
@@ -60,7 +60,7 @@ public class HeaderTest extends BaseTest {
         String actualPageTitle = new HomePage(getDriver())
                 .getHeader()
                 .clickLogOut()
-                .getSignInToJenkinsTitle();
+                .getHeadingText();
 
         Assert.assertEquals(actualPageTitle, "Sign in to Jenkins");
     }
