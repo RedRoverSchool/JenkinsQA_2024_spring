@@ -239,7 +239,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.009 Full stage view")
+    @Story("US_02.009 Full Stage View")
     @Description("Project's name and 'Stage View' are displayed after clicking 'Full Stage View' button in the sidebar")
     public void testFullStageViewButton() {
         final String pipelineName = "New Pipeline";
@@ -257,7 +257,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.009 Full stage view")
+    @Story("US_02.009 Full Stage View")
     @Description("Verify the presence of the full stage view button in the sidebar")
     void testVerifyThePresenceOfTheFullStageViewButtonInTheSidebar() {
         final String pipelineName = "New Pipeline group_java_autoqa_rrschool";
@@ -273,7 +273,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.009 Full stage view")
+    @Story("US_02.009 Full Stage View")
     @Description("Verify that the breadcrumb navigation displays the correct hierarchy")
     public void testBreadcrumbsOnFullStageViewPage() {
         final String expectedResult = "Dashboard > " + PIPELINE_NAME + " > Full Stage View";
@@ -290,7 +290,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testBreadcrumbsOnFullStageViewPage")
-    @Story("US_02.009 Full stage view")
+    @Story("US_02.009 Full Stage View")
     @Description("Button Color Changes on Hover")
     public void testColorWhenHoveringMouseOnFullStageViewButton() {
         final String expectedColor = "rgba(175, 175, 207, 0.15)";
@@ -309,7 +309,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.009 Full stage view")
+    @Story("US_02.009 Full Stage View")
     @Description("Verify the heading after clicking the ‘Full Stage View’ button in the dropdown menu displays")
     public void testFullStageViewButtonInDropdown() {
         final String expectedResult = PIPELINE_NAME + " - Stage View";
@@ -326,7 +326,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    @Story("US_02.009 Full stage view")
+    @Story("US_02.009 Full Stage View")
     @Description("Verify the list of the last 10 builds for the pipeline is displayed")
     public void testTableWithLast10Builds() {
         final int stagesQtt = 2;

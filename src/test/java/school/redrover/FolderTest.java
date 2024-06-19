@@ -44,10 +44,12 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(folderBreadcrumbName, FOLDER_NAME, "Breadcrumb name doesn't match " + FOLDER_NAME);
     }
 
-    @Test(dependsOnMethods = "testCreateViaCreateAJob")
+    @Test
     @Story("US_04.004  Add and edit description of the folder ")
     @Description("Add description of the folder and save it")
     public void testAddDescription() {
+        TestUtils.createFolderProject(this, FOLDER_NAME);
+
         String textInDescription = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
                 .clickAddDescription()
@@ -62,7 +64,7 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testAddDescription")
     @Story("US_04.004  Add and edit description of the folder ")
     @Description("Edit description of the folder and save it")
-    public void testChangeDescription() {
+    public void testEditDescription() {
         String textInDescription = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
                 .clickEditDescription()
@@ -105,10 +107,12 @@ public class FolderTest extends BaseTest {
                 "The error message is different");
     }
 
-    @Test(dependsOnMethods = "testCreateViaCreateAJob")
+    @Test
     @Story("US_04.001 Rename Folder")
     @Description("Rename Folder via Breadcrumbs dropdown menu")
-    public void testRenameFolderViaFolderBreadcrumbsDropdownMenu() {
+    public void testRenameFolderViaBreadcrumbs() {
+        TestUtils.createFolderProject(this, FOLDER_NAME);
+
         FolderProjectPage folderProjectPage = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
                 .hoverOverProjectNameOnBreadcrumbs(FOLDER_NAME)
@@ -131,7 +135,7 @@ public class FolderTest extends BaseTest {
         Assert.assertTrue(renewHomePage.isItemDeleted(FOLDER_NAME));
     }
 
-    @Test(dependsOnMethods = {"testCreateViaCreateAJob", "testRenameFolderViaFolderBreadcrumbsDropdownMenu"})
+    @Test(dependsOnMethods = "testRenameFolderViaBreadcrumbs")
     @Story("US_04.001 Rename Folder")
     @Description("Rename Folder via main page dropdown")
     public void testRenameFolderViaMainPageDropdownMenu() {
@@ -292,7 +296,7 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testCheckNewFolderIsEmpty")
     @Story("US_04.000  Create Folder")
     @Description("Validate that a newly created folder is empty")
-    public void testNewlyCreatedFolderIsEmptyAJ() {
+    public void testCreatedFolderIsEmpty() {
         final String folderName = "NewProjectFolder";
         final String thisFolderIsEmptyMessage = "This folder is empty";
         final String createAJobLinkText = "Create a job";
@@ -325,7 +329,7 @@ public class FolderTest extends BaseTest {
         Assert.assertTrue(isLinkForCreateJobDisplayed, "newJobLink is NOT displayed");
     }
 
-    @Test(dependsOnMethods = "testNewlyCreatedFolderIsEmptyAJ")
+    @Test(dependsOnMethods = "testCreatedFolderIsEmpty")
     @Story("US_04.005  Create a job inside folder")
     @Description("Add Pipeline Project inside folder")
     public void testCreateJobPipelineInFolder() {
