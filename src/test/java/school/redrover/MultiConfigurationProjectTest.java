@@ -416,6 +416,6 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickConfigureButton()
                 .getToggleStatusMessage();
 
-        Assert.assertTrue(enableMessage.matches("Enabled"),"Substring not found");
+        Assert.assertTrue(enableMessage.matches("Enabled"), "Substring not found");
     }
 }

@@ -2,7 +2,6 @@ package school.redrover;
 
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
-import io.qameta.allure.Step;
 import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.Test;
