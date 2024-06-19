@@ -107,8 +107,8 @@ public class PipelineTest extends BaseTest {
         TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
         String currentTextAreaBorderBacklightColor = new HomePage(getDriver())
-                .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
-                .clickEditDescription()
+                .clickSpecificPipelineName(PIPELINE_NAME)
+                .clickAddDescription()
                 .getColorOfTextAreaBorderBacklight();
 
         Allure.step("Expected result: the text area border backlight color is verified");

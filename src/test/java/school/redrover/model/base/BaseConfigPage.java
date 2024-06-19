@@ -14,9 +14,9 @@ public abstract class BaseConfigPage<
     @FindBy(name = "Submit")
     private WebElement saveButton;
 
-    public BaseConfigPage(WebDriver driver, ProjectPage projectPage) {
+    public BaseConfigPage(WebDriver driver, ProjectPage specificProjectPage) {
         super(driver);
-        this.projectPage = projectPage;
+        projectPage = specificProjectPage;
     }
 
     @Step("Click on the button 'Save'")

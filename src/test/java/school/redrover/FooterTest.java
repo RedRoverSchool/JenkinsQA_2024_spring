@@ -65,8 +65,9 @@ public class FooterTest extends BaseTest {
     }
 
     @Test
-    @Story("US_12.002 'Jenkins 2.440.2' button > Visibility, clickability and functionality")
-    @Description("Check Jenkins version in the footer on the Home, New Item, People, Build History, Manage Jenkins, My Views pages")
+    @Story("US_12.002 'Jenkins 2.440.2' button > Visibility, click ability and functionality")
+    @Description("Check Jenkins version in the footer on the "
+            + "Home, New Item, People, Build History, Manage Jenkins, My Views pages")
     public void testVersionFooterOnEachPage() {
         List<String> versionList = new ArrayList<>();
 
