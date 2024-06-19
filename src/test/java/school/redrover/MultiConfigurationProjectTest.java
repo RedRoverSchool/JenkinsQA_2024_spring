@@ -236,20 +236,20 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateMultiConfigurationProject")
     @Story("US_03.004  Rename project")
-    @Description("Check,an existing project can be renamed")
+    @Description("Check if an existing project can be renamed")
     public void testRenameProject() {
+        final String newProjectName = "Project new name";
 
-        HomePage homePage = new HomePage(getDriver());
-
-        homePage
+        List<String> itemList = new HomePage(getDriver())
                 .clickSpecificMultiConfigurationProjectName(PROJECT_NAME)
                 .clickRenameOnSidebar()
                 .clearNameInputField()
-                .typeNewName(PROJECT_NAME)
+                .typeNewName(newProjectName)
                 .clickRenameButtonWhenRenamedViaSidebar()
-                .clickLogo();
+                .clickLogo()
+                .getItemList();
 
-        Assert.assertTrue(homePage.isItemExists(PROJECT_NAME) && !homePage.isItemExists(PROJECT_NAME));
+        Assert.assertTrue(itemList.contains(newProjectName));
     }
 
     @Test

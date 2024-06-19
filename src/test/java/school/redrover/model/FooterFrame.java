@@ -23,6 +23,9 @@ public class FooterFrame<T extends BasePage<T>> extends BaseFrame<T> {
     @FindBy(className = "jenkins-dropdown__item")
     private List<WebElement> dropdownElements;
 
+    @FindBy(css = "div.tippy-box")
+    private WebElement tippyBox;
+
     public FooterFrame(WebDriver driver, T returnPage) {
         super(driver, returnPage);
     }
@@ -51,6 +54,7 @@ public class FooterFrame<T extends BasePage<T>> extends BaseFrame<T> {
     }
 
     public List<String> getVersionDropdownElementsValues() {
+        getWait2().until(ExpectedConditions.visibilityOf(tippyBox));
         return dropdownElements.stream().map(WebElement::getText).toList();
     }
 }
