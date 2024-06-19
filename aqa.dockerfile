@@ -38,8 +38,8 @@ COPY ./src /tests/src
 ENV JAVA_HOME /usr/lib/jvm/temurin-17-jdk-amd64
 
 # Запускаем maven
-#CMD ["mvn","test"]
-CMD ["mvn", "-Dtest=*PipelineT*", "test"]
+CMD ["mvn","test"]
+#CMD ["mvn", "-Dtest=*PipelineT*", "test"]
 #CMD ["mvn", "-Dtest=*Folder4*", "test"]
 #CMD ["mvn", "-Dtest=*100*,MultiConfigurationProjectTest,NewItem11Test", "test"]
 #CMD ["sleep", "infinity"]
