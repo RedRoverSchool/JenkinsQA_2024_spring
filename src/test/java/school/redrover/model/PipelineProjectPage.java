@@ -91,14 +91,6 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
         return backgroundColor.iterator().next();
     }
 
-    @Step("Click on the end of existed description")
-    public PipelineProjectPage clickOnDescriptionInput() {
-        descriptionInput.click();
-
-        return this;
-    }
-
-
     @Step("Make the description field not active by sending a TAB key")
     public PipelineProjectPage makeDescriptionFieldNotActive() {
         new Actions(getDriver()).sendKeys(Keys.TAB).perform();

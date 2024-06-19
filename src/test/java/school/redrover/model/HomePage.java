@@ -352,8 +352,9 @@ public class HomePage extends BasePage<HomePage> {
     }
 
     @Step("Click green triangle to schedule build for project")
-    public HomePage clickScheduleBuildForItemAndWaitForBuildSchedulePopUP(String itemName) {
-        getDriver().findElement(By.xpath("//a[contains(@tooltip,'Schedule a Build for " + itemName + "')]")).click();
+    public HomePage clickScheduleBuildForItemAndWaitForBuildSchedulePopUp(String itemName) {
+        getDriver().findElement(
+                By.xpath("//a[contains(@tooltip,'Schedule a Build for " + itemName + "')]")).click();
         getWait2().until(ExpectedConditions.visibilityOf(buildSchedulePopUp));
 
         return this;
@@ -364,13 +365,6 @@ public class HomePage extends BasePage<HomePage> {
         buildHistoryOnSidebar.click();
 
         return new BuildHistoryPage(getDriver());
-    }
-
-    @Step("Select folder to move")
-    public MovePage chooseFolderToMove() {
-        getWait5().until(ExpectedConditions.visibilityOf(moveOption)).click();
-
-        return new MovePage(getDriver());
     }
 
     @Step("Click 'People' on sidebar")

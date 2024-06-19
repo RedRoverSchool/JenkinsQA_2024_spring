@@ -170,7 +170,7 @@ public class PipelineTest extends BaseTest {
         TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
         boolean isBuildDeleted = new HomePage(getDriver())
-                .clickScheduleBuildForItemAndWaitForBuildSchedulePopUP(PIPELINE_NAME)
+                .clickScheduleBuildForItemAndWaitForBuildSchedulePopUp(PIPELINE_NAME)
                 .clickBuildHistory()
                 .clickItemDropdownArrow(PIPELINE_NAME)
                 .clickItemDeleteButton()
@@ -485,7 +485,7 @@ public class PipelineTest extends BaseTest {
                 List.of("Last build (#1)", "Last stable build (#1)", "Last successful build (#1)", "Last completed build (#1)");
 
         List<String> actualPermalinkList = new HomePage(getDriver())
-                .clickScheduleBuildForItemAndWaitForBuildSchedulePopUP(PIPELINE_NAME)
+                .clickScheduleBuildForItemAndWaitForBuildSchedulePopUp(PIPELINE_NAME)
                 .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
                 .getPermalinkList();
 
@@ -512,7 +512,7 @@ public class PipelineTest extends BaseTest {
     @Description("Check builds history descending order")
     public void testCheckBuildsHistoryDescendingOrder() {
         List<String> actualBuildsOrderList = new HomePage(getDriver())
-                .clickScheduleBuildForItemAndWaitForBuildSchedulePopUP(PIPELINE_NAME)
+                .clickScheduleBuildForItemAndWaitForBuildSchedulePopUp(PIPELINE_NAME)
                 .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
                 .getBuildHistoryList();
 
@@ -536,7 +536,7 @@ public class PipelineTest extends BaseTest {
                 .setNumberBuildsToKeep(maxNumberBuildsToKeep)
                 .clickSaveButton()
                 .clickLogo()
-                .clickScheduleBuildForItemAndWaitForBuildSchedulePopUP(PIPELINE_NAME)
+                .clickScheduleBuildForItemAndWaitForBuildSchedulePopUp(PIPELINE_NAME)
                 .clickBuildHistory()
                 .getBuildsList();
 
@@ -782,7 +782,7 @@ public class PipelineTest extends BaseTest {
     public void testRunBuildByTriangleButton() {
 
         String consoleOutput = new HomePage(getDriver())
-                .clickScheduleBuildForItemAndWaitForBuildSchedulePopUP(PIPELINE_NAME)
+                .clickScheduleBuildForItemAndWaitForBuildSchedulePopUp(PIPELINE_NAME)
                 .clickBuildHistory()
                 .clickBuild1Console()
                 .getConsoleOutputMessage();
