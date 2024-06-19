@@ -7,7 +7,9 @@ import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import school.redrover.model.*;
+import school.redrover.model.CreateNewItemPage;
+import school.redrover.model.HomePage;
+import school.redrover.model.PipelineProjectPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -89,7 +91,8 @@ public class PipelineTest extends BaseTest {
         TestUtils.createPipelineProject(this, PIPELINE_NAME);
 
         String actualPipelineName = new HomePage(getDriver())
-                .getHeader().searchProjectByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
+                .getHeader()
+                .typeProjectNameToSearchInputFieldAndPressEnter(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
                 .getProjectName();
 
         Allure.step("Expected result: Searched Project is displayed");
@@ -139,7 +142,7 @@ public class PipelineTest extends BaseTest {
 
         String yesButtonHexColor = new HomePage(getDriver())
                 .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
-                .clickDeleteOnSidebarMenu()
+                .clickDeleteOnSidebar()
                 .getYesButtonColorDeletingViaSidebar();
 
         Allure.step("Expected result: the color of 'Yes' button is verified");
@@ -154,9 +157,9 @@ public class PipelineTest extends BaseTest {
 
         boolean isPipelineDeleted = new HomePage(getDriver())
                 .clickSpecificPipelineName(PIPELINE_NAME)
-                .clickProjectBreadcrumbsDropdownArrow()
-                .clickBreadcrumbsDeleteButton()
-                .clickYes(new HomePage(getDriver()))
+                .clickBreadcrumbsArrowAfterProjectName(PIPELINE_NAME)
+                .clickDeleteOnBreadcrumbsMenu()
+                .clickYesWhenDeletedItemOnHomePage()
                 .isItemDeleted(PIPELINE_NAME);
 
         Allure.step("Expected result: Project is not displayed on Home page");
@@ -173,9 +176,8 @@ public class PipelineTest extends BaseTest {
                 .clickScheduleBuildForItemAndWaitForBuildSchedulePopUp(PIPELINE_NAME)
                 .clickBuildHistory()
                 .clickItemDropdownArrow(PIPELINE_NAME)
-                .clickItemDeleteButton()
-                .clickYes(new HomePage(getDriver()))
-                .clickBuildHistory()
+                .clickDeleteOnDropdown()
+                .clickYesToConfirmDelete()
                 .isBuildDeleted(PIPELINE_NAME);
 
         Allure.step("Expected result: Build is not displayed on the Build History page");
@@ -191,7 +193,7 @@ public class PipelineTest extends BaseTest {
         String descriptionText = new HomePage(getDriver())
                 .clickSpecificPipelineName(PIPELINE_NAME)
                 .clickAddDescription()
-                .setDescription(DESCRIPTION)
+                .typeDescription(DESCRIPTION)
                 .clickSaveButton()
                 .getDescriptionText();
 
@@ -226,10 +228,10 @@ public class PipelineTest extends BaseTest {
 
         String displayedName = new HomePage(getDriver())
                 .clickSpecificPipelineName(PIPELINE_NAME)
-                .clickRenameOnSidebarMenu()
+                .clickRenameOnSidebar()
                 .clearNameInputField()
                 .typeNewName(NEW_PIPELINE_NAME)
-                .clickRenameButton()
+                .clickRenameButtonWhenRenamedViaSidebar()
                 .getProjectName();
 
         Allure.step("Expected result: Renamed Project is displayed");
@@ -357,7 +359,7 @@ public class PipelineTest extends BaseTest {
 
         String actualPageHeading = new HomePage(getDriver())
                 .clickSpecificPipelineName(PIPELINE_NAME)
-                .clickProjectBreadcrumbsDropdownArrow()
+                .clickBreadcrumbsArrowAfterProjectName(PIPELINE_NAME)
                 .clickChangesOnDropdownMenu()
                 .getPageHeading();
 
@@ -373,11 +375,11 @@ public class PipelineTest extends BaseTest {
 
         String displayedNewName = new HomePage(getDriver())
                 .clickSpecificPipelineName(PIPELINE_NAME)
-                .clickProjectBreadcrumbsDropdownArrow()
-                .clickRenameOnBreadcrumbsDropdownMenu()
+                .clickBreadcrumbsArrowAfterProjectName(PIPELINE_NAME)
+                .clickRenameOnBreadcrumbsMenu()
                 .clearNameInputField()
                 .typeNewName(NEW_PIPELINE_NAME)
-                .clickRenameButton()
+                .clickRenameButtonWhenRenamedViaBreadcrumbs()
                 .getProjectName();
 
         Allure.step("Expected result: Renamed Project is displayed");

@@ -44,7 +44,7 @@ public class BuildHistoryPage extends BasePage<BuildHistoryPage> {
     @Step("Click Project arrow to open dropdown menu")
     public BuildHistoryPage clickItemDropdownArrow(String name) {
         hoverOverElement(getDriver().findElement(By.cssSelector("td [href='/job/" + name + "/']")));
-        clickSpecificDropdownArrow(buildHistoryItemDropdownArrow);
+        clickBreadcrumbsDropdownArrow(buildHistoryItemDropdownArrow);
 
         return this;
     }
