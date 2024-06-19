@@ -23,23 +23,34 @@ public class DashboardTest extends BaseTest {
     @Story("US_16.005 Side Menu Items")
     @Description("Check all Side Menu Items exist")
     @Test
-    public void testDashboardMenu() {
-        final List<String> expectedSidebarMenu = List.of(
+    public void testDashboardSideMenu() {
+        final List<String> expectedSideMenu = List.of(
                 "New Item",
                 "People",
                 "Build History",
                 "Manage Jenkins",
                 "My Views");
 
-        List<String> actualSidebarMenu = new HomePage(getDriver())
+        List<String> actualSideMenu = new HomePage(getDriver())
                 .getSidebarMenuList();
 
-        Assert.assertEquals(actualSidebarMenu, expectedSidebarMenu);
+        Assert.assertEquals(actualSideMenu, expectedSideMenu);
+    }
+
+    @Story("US_16.005 Side Menu Items")
+    @Description("Verify People Side Menu Header")
+    @Test
+    public void testPeopleOnSideMenu() {
+        String actualHeading = new HomePage(getDriver())
+                .clickPeopleOnSidebar()
+                .getHeadingText();
+
+        Assert.assertEquals(actualHeading, "People");
     }
 
     @Story("US_16.003 Item Chevron Menu > List of Menu Items")
     @Description("Check all Folder Chevron Menu Items exist")
-    @Test(dependsOnMethods = "testDashboardMenu")
+    @Test(dependsOnMethods = "testDashboardSideMenu")
     public void testFolderChevronMenu() {
         final String folderName = "A Folder";
 
@@ -188,6 +199,34 @@ public class DashboardTest extends BaseTest {
         Assert.assertEquals(chevronMenu, organizationFolderMenu);
     }
 
+    @Story("US_16.007 Item Sorting")
+    @Description("Check items sorting by Name in natural and reverse order")
+    @Test(dependsOnMethods = "testOrganizationFolderChevronMenu")
+    public void testSortItemsByNameInTable() {
+
+        List<String> reverseSortedByClickNameList = new HomePage(getDriver())
+                .clickTitleForSortByName()
+                .getItemList();
+
+        List<String> sortedByClickNameList = new HomePage(getDriver())
+                .clickTitleForSortByName()
+                .getItemList();
+
+        List<String> reverseSortedByStreamNameList = reverseSortedByClickNameList
+                .stream()
+                .sorted(Collections.reverseOrder())
+                .toList();
+
+        List<String> sortedByStreamNameList = reverseSortedByClickNameList
+                .stream()
+                .sorted()
+                .toList();
+
+        Assert.assertEquals(reverseSortedByClickNameList, reverseSortedByStreamNameList);
+        Assert.assertEquals(sortedByClickNameList, sortedByStreamNameList);
+    }
+
+
     @Story("US_16.002 Dashboard > View")
     @Description("Create List View")
     @Test(dependsOnMethods = "testPipelineChevronMenu")
@@ -239,7 +278,8 @@ public class DashboardTest extends BaseTest {
 
         Assert.assertEquals(newViewName, VIEW_NAME);
     }
-
+    @Story("US_16.002 Dashboard > View")
+    @Description("Check background of active, hover and inactive Views")
     @Test (dependsOnMethods = "testCreateMyView")
     public void testBackgroundColorOfViewName() {
 
@@ -261,34 +301,10 @@ public class DashboardTest extends BaseTest {
     }
 
 
-    @Test(dependsOnMethods = "testBackgroundColorOfViewName")
-    public void testSortItemsByNameInTable() {
-
-        List<String> reverseSortedByClickNameList = new HomePage(getDriver())
-                .clickTitleForSortByName()
-                .getItemList();
-
-        List<String> sortedByClickNameList = new HomePage(getDriver())
-                .clickTitleForSortByName()
-                .getItemList();
-
-        List<String> reverseSortedByStreamNameList = reverseSortedByClickNameList
-                .stream()
-                .sorted(Collections.reverseOrder())
-                .toList();
-
-        List<String> sortedByStreamNameList = reverseSortedByClickNameList
-                .stream()
-                .sorted()
-                .toList();
-
-        Assert.assertEquals(reverseSortedByClickNameList, reverseSortedByStreamNameList);
-        Assert.assertEquals(sortedByClickNameList, sortedByStreamNameList);
-    }
 
 
 
-    @Story("US_16.002 Change Icon Size")
+    @Story("US_16.004 Change Icon Size")
     @Description("Verify Icon Size changes")
     @Test (dependsOnMethods = "testCreateMyView")
     public void testChangeIconSize() {
@@ -304,15 +320,8 @@ public class DashboardTest extends BaseTest {
         }
     }
 
-    @Test
-    public void testPeopleOnSidebar() {
-        String actualHeading = new HomePage(getDriver())
-                .clickPeopleOnSidebar()
-                .getHeadingText();
-
-        Assert.assertEquals(actualHeading, "People");
-    }
-
+    @Story("US_16.008 Start Page")
+    @Description("Verify Start Page Header")
     @Test
     public void testStartPageHeading() {
         String actualHeading = new HomePage(getDriver())
