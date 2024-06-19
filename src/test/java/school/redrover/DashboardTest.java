@@ -63,7 +63,7 @@ public class DashboardTest extends BaseTest {
 
     @Story("US_16.003 Item Chevron Menu > List of Menu Items")
     @Description("Check all Freestyle Project Menu Items exist")
-    @Test(dependsOnMethods = "testDashboardMenu")
+    @Test(dependsOnMethods = "testFolderChevronMenu")
     public void testFreestyleProjectChevronMenu() {
 
         String freestyleName = "Freestyle";
@@ -88,7 +88,7 @@ public class DashboardTest extends BaseTest {
 
     @Story("US_16.003 Item Chevron Menu > List of Menu Items")
     @Description("Check all Pipeline Project Menu Items exist")
-    @Test(dependsOnMethods = "testDashboardMenu")
+    @Test(dependsOnMethods = "testFolderChevronMenu")
     public void testPipelineChevronMenu() {
         final List<String> pipelineMenu = List.of(
                 "Changes",
@@ -111,7 +111,7 @@ public class DashboardTest extends BaseTest {
 
     @Story("US_16.003 Item Chevron Menu > List of Menu Items")
     @Description("Check all Multi-configuration Project Menu Items exist")
-    @Test(dependsOnMethods = "testDashboardMenu")
+    @Test(dependsOnMethods = "testFolderChevronMenu")
     public void testMultiConfigurationProjectChevronMenu() {
 
         final List<String> multiConfigurationMenu = List.of(
@@ -134,7 +134,7 @@ public class DashboardTest extends BaseTest {
 
     @Story("US_16.003 Item Chevron Menu > List of Menu Items")
     @Description("Check all Multibranch Pipeline Menu Items exist")
-    @Test(dependsOnMethods = "testDashboardMenu")
+    @Test(dependsOnMethods = "testFolderChevronMenu")
     public void testMultibranchPipelineChevronMenu() {
 
         String multibranchPipeline = "Multibranch Pipeline";
@@ -163,7 +163,7 @@ public class DashboardTest extends BaseTest {
 
     @Story("US_16.003 Item Chevron Menu > List of Menu Items")
     @Description("Check all Organization Folder Menu Items exist")
-    @Test(dependsOnMethods = "testDashboardMenu")
+    @Test(dependsOnMethods = "testFolderChevronMenu")
     public void testOrganizationFolderChevronMenu() {
         String organizationFolderName = "RedRover Organization";
 
@@ -188,8 +188,9 @@ public class DashboardTest extends BaseTest {
         Assert.assertEquals(chevronMenu, organizationFolderMenu);
     }
 
-
-    @Test(dependsOnMethods = "testOrganizationFolderChevronMenu")
+    @Story("US_16.002 Dashboard > View")
+    @Description("Create List View")
+    @Test(dependsOnMethods = "testPipelineChevronMenu")
     public void testCreateListView() {
         String createdViewName = new HomePage(getDriver())
                 .clickPlusToCreateView()
@@ -202,8 +203,9 @@ public class DashboardTest extends BaseTest {
         Assert.assertEquals(createdViewName, VIEW_NAME);
     }
 
-
-    @Test(dependsOnMethods = "testCreateListView")
+    @Story("US_16.002 Dashboard > View")
+    @Description("Verify all items added to New List View")
+    @Test(dependsOnMethods = {"testCreateListView", "testPipelineChevronMenu", "testMultiConfigurationProjectChevronMenu" })
     public void testAddItemsToView() {
 
         List<String> projectNameList = new HomePage(getDriver())
@@ -219,22 +221,26 @@ public class DashboardTest extends BaseTest {
                 List.of(MULTI_CONFIGURATION_PROJECT_NAME, PIPELINE_NAME));
     }
 
+    @Story("US_16.002 Dashboard > View")
+    @Description("Create My View")
+    @Test
+    public void testCreateMyView() {
+        String newViewName =
+                new HomePage(getDriver())
+                        .clickCreateAJob()
+                        .setItemName(MULTI_CONFIGURATION_PROJECT_NAME)
+                        .selectMultiConfigurationAndClickOk()
+                        .clickLogo()
+                        .clickPlusToCreateView()
+                        .setViewName(VIEW_NAME)
+                        .clickMyViewRadioButton()
+                        .clickCreateMyView()
+                        .getNewViewName();
 
-    @Test(dependsOnMethods = "testAddItemsToView")
-    public void testChangeIconSize() {
-
-        List<Integer> expectedSizeOfProjectIconList = List.of(16, 20, 24);
-
-        for (int i = 0; i < expectedSizeOfProjectIconList.size(); i++) {
-            int iconHeight = new HomePage(getDriver())
-                    .clickIconForChangeSize(i)
-                    .getProjectIconHeight();
-
-            Assert.assertEquals(iconHeight, expectedSizeOfProjectIconList.get(i));
-        }
+        Assert.assertEquals(newViewName, VIEW_NAME);
     }
 
-    @Test(dependsOnMethods = "testChangeIconSize")
+    @Test (dependsOnMethods = "testCreateMyView")
     public void testBackgroundColorOfViewName() {
 
         String passiveColor = new HomePage(getDriver())
@@ -280,21 +286,22 @@ public class DashboardTest extends BaseTest {
         Assert.assertEquals(sortedByClickNameList, sortedByStreamNameList);
     }
 
-    @Test
-    public void testCreateMyView() {
-        String newViewName =
-                new HomePage(getDriver())
-                        .clickCreateAJob()
-                        .typeItemName(MULTI_CONFIGURATION_PROJECT_NAME)
-                        .selectMultiConfigurationAndClickOk()
-                        .clickLogo()
-                        .clickPlusToCreateView()
-                        .setViewName(VIEW_NAME)
-                        .clickMyViewRadioButton()
-                        .clickCreateMyView()
-                        .getNewViewName();
 
-        Assert.assertEquals(newViewName, VIEW_NAME);
+
+    @Story("US_16.002 Change Icon Size")
+    @Description("Verify Icon Size changes")
+    @Test (dependsOnMethods = "testCreateMyView")
+    public void testChangeIconSize() {
+
+        List<Integer> expectedSizeOfProjectIconList = List.of(16, 20, 24);
+
+        for (int i = 0; i < expectedSizeOfProjectIconList.size(); i++) {
+            int iconHeight = new HomePage(getDriver())
+                    .clickIconForChangeSize(i)
+                    .getProjectIconHeight();
+
+            Assert.assertEquals(iconHeight, expectedSizeOfProjectIconList.get(i));
+        }
     }
 
     @Test
