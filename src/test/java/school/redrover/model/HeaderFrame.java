@@ -91,7 +91,7 @@ public class HeaderFrame<T extends BasePage<T>> extends BaseFrame<T> {
         return getWait2().until(ExpectedConditions.visibilityOf(searchFieldText)).getText();
     }
 
-    @Step("Type Project {name} to the Header Search box and click 'Enter'")
+    @Step("Type Project {projectName} to the Header Search box and click 'Enter'")
     public <ProjectPage extends BaseProjectPage<?>> ProjectPage typeProjectNameToSearchInputFieldAndPressEnter(
             String projectName, ProjectPage projectPage) {
         searchBox.sendKeys(projectName + Keys.ENTER);

@@ -50,12 +50,6 @@ public class HomePage extends BasePage<HomePage> {
     @FindBy(css = "a[href $= '/move']")
     private WebElement dropdownMove;
 
-    @FindBy(css = "div#breadcrumbBar a[href = '/']")
-    private WebElement dashboardBreadcrumbs;
-
-    @FindBy(css = "[class='tippy-box'] [href='/manage']")
-    private WebElement manageFromDashboardBreadcrumbsMenu;
-
     @FindBy(css = "[aria-describedby*='tippy']")
     private WebElement buildSchedulePopUp;
 
@@ -296,24 +290,6 @@ public class HomePage extends BasePage<HomePage> {
                 By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
 
         return new OrganizationFolderProjectPage(getDriver());
-    }
-
-    @Step("Click on Chevron of the Dashboard")
-    public HomePage openDashboardBreadcrumbsDropdown() {
-        WebElement chevron = dashboardBreadcrumbs.findElement(By.cssSelector("[class$='chevron']"));
-        ((JavascriptExecutor) getDriver()).executeScript(
-                "arguments[0].dispatchEvent(new Event('mouseenter'));"
-                        + "arguments[0].dispatchEvent(new Event('click'));",
-                chevron);
-
-        return this;
-    }
-
-    @Step("Click on Manage Jenkins in the Dashboard dropdown menu")
-    public ManageJenkinsPage clickManageFromDashboardBreadcrumbsMenu() {
-        manageFromDashboardBreadcrumbsMenu.click();
-
-        return new ManageJenkinsPage(getDriver());
     }
 
     @Step("Click on 'Full Stage View' on Item dropdown menu")
