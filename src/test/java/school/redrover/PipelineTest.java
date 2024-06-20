@@ -727,8 +727,8 @@ public class PipelineTest extends BaseTest {
                 .hoverOnAddDescriptionButton()
                 .getColorOfAddDescriptionButtonBackground();
 
-        Allure.step("Expected result: " +
-                "The background color of the 'Add Description' button on mouse hover matches" + expectedColor);
+        Allure.step("Expected result: "
+                + "The background color of the 'Add Description' button on mouse hover matches" + expectedColor);
         Assert.assertEquals(actualColor, expectedColor);
     }
 
@@ -938,8 +938,8 @@ public class PipelineTest extends BaseTest {
                 .clickOnUseGroovySandboxCheckbox()
                 .isScriptApprovalLinkShown();
 
-        Allure.step("Expected result: " +
-                "Script Approval link is shown when 'Use Groovy Sandbox' checkbox is unchecked");
+        Allure.step("Expected result: "
+                + "Script Approval link is shown when 'Use Groovy Sandbox' checkbox is unchecked");
         Assert.assertTrue(isScriptApprovalLinkShown, "Uncheck of 'Use Groovy Sandbox' checkbox doesn't work");
     }
 
