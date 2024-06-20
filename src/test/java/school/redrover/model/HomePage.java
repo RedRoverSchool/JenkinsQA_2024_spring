@@ -268,14 +268,14 @@ public class HomePage extends BasePage<HomePage> {
                 .toList();
     }
 
-    @Step("Click the \"Name\" column header to sort the table by name")
+    @Step("Click the 'Name' column header to sort the table by name")
     public HomePage clickTitleForSortByName() {
         columnNameTitle.click();
 
         return new HomePage(getDriver());
     }
 
-    @Step("Click the {i} icon in list of icons to change Icon size")
+    @Step("Click the element at index {i} in the change icon size list")
     public HomePage clickIconForChangeSize(int i) {
         sizeIcon.get(i).click();
 
