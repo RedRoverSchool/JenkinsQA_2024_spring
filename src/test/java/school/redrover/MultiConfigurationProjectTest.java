@@ -296,7 +296,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickMoveOnDropdown()
                 .selectDestinationFolderFromList(folderName)
                 .clickMoveButtonWhenMovedViaDropdown(new MultiConfigurationProjectPage(getDriver()))
-                .isProjectInsideFolder(PROJECT_NAME, FOLDER_NAME);
+                .isProjectInsideFolder(PROJECT_NAME, folderName);
 
         Allure.step("Expected result : the project is inside of the folder");
         Assert.assertTrue(isProjectInsideFolder);
