@@ -57,7 +57,7 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
     @FindBy(name = "quiet_period")
     private WebElement quietPeriodInputField;
 
-    @FindBy(xpath = "//div[text()='Number of seconds']")
+    @FindBy(xpath = "//input[@name='quiet_period']")
     private WebElement numberOfSecondsHint;
 
     @FindBy(xpath = "//div[@class='form-container tr']//div[@class='error']")
@@ -102,18 +102,31 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
         return this;
     }
 
-    public PipelineConfigPage clickAdvancedProjectOptionsMenu() {
+    @Step("Click 'Advanced Project Options' on Sidebar")
+    public PipelineConfigPage clickAdvancedProjectOptionsOnSidebar() {
         getWait5().until(ExpectedConditions.elementToBeClickable(advancedProjectOptionsMenu)).click();
 
         return this;
     }
 
+    @Step("Click 'Advanced' under 'Advanced Project Options")
     public PipelineConfigPage clickAdvancedButton() {
         JavascriptExecutor executor = (JavascriptExecutor) getDriver();
         executor.executeScript("arguments[0].dispatchEvent(new Event('click'));",
                 advancedButton);
 
         return this;
+    }
+
+    private WebElement getTooltipLocator(String tooltipText) {
+        return getDriver().findElement(By.cssSelector("a[tooltip='Help for feature: " + tooltipText + "']"));
+    }
+
+    public boolean isTooltipDisplayed(String tooltipText) {
+        WebElement tooltip = getTooltipLocator(tooltipText);
+        hoverOverElement(tooltip);
+
+        return tooltip.isDisplayed();
     }
 
     public List<String> getSectionsNameList() {
@@ -123,6 +136,7 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
                 .toList();
     }
 
+    @Step("Scroll to 'Quiet period' checkbox")
     public PipelineConfigPage scrollToQuietPeriodCheckbox() {
         new Actions(getDriver())
                 .scrollToElement(quietPeriodCheckbox)
@@ -132,34 +146,32 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
         return this;
     }
 
+    @Step("Click 'Quiet period' checkbox")
     public PipelineConfigPage clickQuietPeriodCheckbox() {
         quietPeriodCheckbox.click();
 
         return this;
     }
 
+    @Step("Click 'Pipeline speed/durability override' checkbox")
     public PipelineConfigPage clickPipelineSpeedDurabilityOverrideCheckbox() {
         getWait5().until(ExpectedConditions.elementToBeClickable(pipelineSpeedDurabilityOverrideCheckbox)).click();
 
         return this;
     }
 
+    @Step("Clear 'Number of seconds' input field and type {number} of seconds")
     public PipelineConfigPage setNumberOfSecondsInQuietPeriodInputField(int seconds) {
         quietPeriodInputField.clear();
-        quietPeriodInputField.sendKeys(String.valueOf(seconds));
+        quietPeriodInputField.sendKeys(String.valueOf(seconds) + Keys.TAB);
 
         return this;
     }
 
+    @Step("Clear 'Number of seconds' input field and type {number} of seconds")
     public PipelineConfigPage setNumberOfSecondsInQuietPeriodInputField(double seconds) {
         quietPeriodInputField.clear();
-        quietPeriodInputField.sendKeys(String.valueOf(seconds));
-
-        return this;
-    }
-
-    public PipelineConfigPage clickNumberOfSecondsHint() {
-        numberOfSecondsHint.click();
+        quietPeriodInputField.sendKeys(String.valueOf(seconds) + Keys.TAB);
 
         return this;
     }
@@ -173,6 +185,7 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
         return getWait5().until(ExpectedConditions.visibilityOf(errorMessageForQuietPeriodInputField)).getText();
     }
 
+    @Step("Select 'Custom Pipeline Speed/Durability Level' by index from dropdown menu")
     public PipelineConfigPage selectCustomPipelineSpeedDurabilityLevel(int index) {
         Select dropdown = new Select(customPipelineSpeedDurabilityLevelInput);
         dropdown.selectByIndex(index);
@@ -186,13 +199,15 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
     }
 
 
-    public PipelineConfigPage setDisplayNameDescription(String name) {
+    @Step("Type {name} in the 'Display Name' input field")
+    public PipelineConfigPage setDisplayName(String name) {
         getWait5().until(ExpectedConditions.elementToBeClickable(displayNameTextField)).sendKeys(name);
 
         return this;
     }
 
-    public PipelineConfigPage clearDisplayNameDescription() {
+    @Step("Clear 'Display Name' input field")
+    public PipelineConfigPage clearDisplayName() {
         getWait10().until(ExpectedConditions.elementToBeClickable(displayNameTextField)).clear();
 
         return this;
@@ -217,12 +232,23 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
         return this;
     }
 
-    public PipelineConfigPage scrollToPipelineScript() {
+    @Step("Click 'try sample Pipeline...' to open dropdown menu")
+    public PipelineConfigPage clickTrySamplePipelineScript() {
         getWait5().until(ExpectedConditions.elementToBeClickable(scrollToPipelineScript)).click();
 
         return this;
     }
 
+    @Step("Scroll into the button of page")
+    public PipelineConfigPage scrollIntoTheButtonOfPage() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        WebElement element = getDriver().findElement(By.xpath("//a[@href='api/']"));
+        js.executeScript("arguments[0].scrollIntoView(true);", element);
+
+        return this;
+    }
+
+    @Step("Select {script name} option by value")
     public PipelineConfigPage selectSamplePipelineScript(String scriptName) {
         WebElement sampleScript = getWait5().until(ExpectedConditions.visibilityOf(samplePipelineScript));
         Select sampleScriptSelect = new Select(sampleScript);
@@ -244,6 +270,7 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
         return this;
     }
 
+    @Step("Select from 'Definition' dropdown menu the script option")
     public PipelineConfigPage selectDropdownDefinition(Integer index) {
         WebElement dropDownDefinition = getDriver().findElement(By.xpath(
                 "//section[@class = 'jenkins-section']"
@@ -251,11 +278,6 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
 
         getWait5().until(ExpectedConditions.visibilityOf(dropDownDefinition)).click();
         return this;
-    }
-
-    public boolean isPipelineDisplayed() {
-        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//*[@id='pipeline']"))).isDisplayed();
     }
 
     @Step("Click 'Preview'")
@@ -310,7 +332,7 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
         return this;
     }
 
-
+    @Step("Click 'Use Groovy Sandbox' checkbox")
     public PipelineConfigPage clickOnUseGroovySandboxCheckbox() {
         getWait5().until(ExpectedConditions.visibilityOf(useGroovySandboxCheckbox)).click();
 
