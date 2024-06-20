@@ -439,7 +439,7 @@ public class ManageJenkinsTest extends BaseTest {
                 .clickManageJenkins()
                 .typeInSearchInput("Credential")
                 .clickSecondSearchResult(new CredentialProvidersPage(getDriver()))
-                .getPageHeading();
+                .getHeadingText();
 
         Allure.step("Expected result: Page heading is 'Credential Providers'");
         Assert.assertEquals(pageToNavigateHeading, "Credential Providers");

@@ -159,6 +159,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
 
     public CreateItemPage clickOkButton() {
         okButton.click();
+
         return new CreateItemPage(getDriver());
     }
 
@@ -176,11 +177,13 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
     @Step("Select 'Freestyle Project'")
     public CreateNewItemPage selectFreeStyleProject() {
         freestyleItem.click();
+
         return this;
     }
 
     public CreateNewItemPage clearItemNameField() {
         nameText.sendKeys(Keys.CONTROL + "a", Keys.BACK_SPACE);
+
         return this;
     }
 

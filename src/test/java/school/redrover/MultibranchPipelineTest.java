@@ -173,7 +173,6 @@ public class MultibranchPipelineTest extends BaseTest {
     @Story("US_05.003  Enable Multibranch pipeline")
     @Description("Verify the status toggle of a project reflects that the project is enable.")
     public void testEnableProjectToggleStatus() {
-        TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
 
         String statusToggle = new HomePage(getDriver())
                 .clickSpecificMultibranchPipelineName(MULTI_PIPELINE_NAME)

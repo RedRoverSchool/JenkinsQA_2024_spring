@@ -77,6 +77,7 @@ public class AppearancePage extends BasePage<AppearancePage> {
             clickDefaultThemeButton();
             clickApplyButton();
         }
+
         return this;
     }
 

@@ -361,7 +361,7 @@ public class PipelineTest extends BaseTest {
                 .clickSpecificPipelineName(PIPELINE_NAME)
                 .clickBreadcrumbsArrowAfterProjectName(PIPELINE_NAME)
                 .clickChangesOnDropdownMenu()
-                .getPageHeading();
+                .getHeadingText();
 
         Allure.step("Expected result: 'Changes' heading for the Project is displayed");
         Assert.assertEquals(actualPageHeading, "Changes");

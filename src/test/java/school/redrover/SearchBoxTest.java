@@ -5,6 +5,7 @@ import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.PipelineProjectPage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,12 +51,7 @@ public class SearchBoxTest extends BaseTest {
     }
 
     public void createFolder(String folderName) {
-        new HomePage(getDriver())
-                .clickNewItem()
-                .typeItemName(folderName)
-                .selectFolderAndClickOk()
-                .clickSaveButton()
-                .clickLogo();
+        TestUtils.createFolderProject(this, folderName);
     }
 
     @Test

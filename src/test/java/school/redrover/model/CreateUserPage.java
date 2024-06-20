@@ -98,5 +98,4 @@ public class CreateUserPage extends BasePage<CreateUserPage> {
     public WebElement getEmailErrorMsgField() {
         return emailErrorMsg;
     }
-
 }

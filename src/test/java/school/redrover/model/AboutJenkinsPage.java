@@ -23,6 +23,7 @@ public class AboutJenkinsPage extends BasePage<AboutJenkinsPage> {
         return versionJenkins.getText().split(" ")[1];
     }
 
+    //    TODO refactor this - no data inside model
     public boolean isExistJenkinsInformationFooter() {
         List<String> tabBarMenu = List.of(
                 "Mavenized dependencies",

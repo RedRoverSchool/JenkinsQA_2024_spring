@@ -30,7 +30,7 @@ public class UserTest extends BaseTest {
                 .clickUserNameOnHeader()
                 .getUserID();
 
-        Assert.assertEquals(userID, "admin");
+        Assert.assertEquals(userID, "Jenkins User ID: admin");
     }
 
     @Test(dependsOnMethods = "testCheckUserID")

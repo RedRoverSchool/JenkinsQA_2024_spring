@@ -26,7 +26,7 @@ public class FooterTest extends BaseTest {
                 .getFooter().clickVersion()
                 .getFooter().getVersionDropdownElementsValues();
 
-        Assert.assertEquals(actualDropdownElementsValues, expectedDropdownElementsValues, "Allarm!");
+        Assert.assertEquals(actualDropdownElementsValues, expectedDropdownElementsValues);
     }
 
     @Test
@@ -35,7 +35,7 @@ public class FooterTest extends BaseTest {
     public void testRestAPIButtonTitle() {
         String titleText = new HomePage(getDriver())
                 .getFooter().clickApiLink()
-                .getApiPageTitleText();
+                .getTitle();
 
         Assert.assertEquals(titleText, "Remote API [Jenkins]");
     }
