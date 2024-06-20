@@ -12,6 +12,7 @@ import school.redrover.runner.TestUtils;
 
 import java.util.Collections;
 import java.util.List;
+
 @Epic("Dashboard")
 public class DashboardTest extends BaseTest {
 
@@ -48,7 +49,7 @@ public class DashboardTest extends BaseTest {
                 .clickPeopleOnSidebar()
                 .getHeadingText();
 
-        Allure.step("Expected results: The header text should be "+ expectedPageHeader);
+        Allure.step("Expected results: The header text should be " + expectedPageHeader);
         Assert.assertEquals(actualHeading, expectedPageHeader);
     }
 
@@ -250,13 +251,14 @@ public class DashboardTest extends BaseTest {
                 .clickOkButton()
                 .getActiveViewName();
 
-        Allure.step("Expected results: New Created List View name is "+VIEW_NAME);
+        Allure.step("Expected results: New Created List View name is " + VIEW_NAME);
         Assert.assertEquals(createdViewName, VIEW_NAME);
     }
 
     @Story("US_16.002 Dashboard > View")
     @Description("Verify all items added to New List View")
-    @Test(dependsOnMethods = {"testCreateListView", "testPipelineChevronMenu", "testMultiConfigurationProjectChevronMenu" })
+    @Test(dependsOnMethods = {"testCreateListView", "testPipelineChevronMenu",
+            "testMultiConfigurationProjectChevronMenu"})
     public void testAddItemsToView() {
 
         List<String> projectNameList = new HomePage(getDriver())
@@ -267,7 +269,8 @@ public class DashboardTest extends BaseTest {
                 .clickOkButton()
                 .getProjectNames();
 
-        Allure.step("Expected results: "+PIPELINE_NAME+ " and " + MULTI_CONFIGURATION_PROJECT_NAME+" Job items added to New List View");
+        Allure.step("Expected results: " + PIPELINE_NAME + " and " + MULTI_CONFIGURATION_PROJECT_NAME +
+                " Job items added to New List View");
         Assert.assertEquals(
                 projectNameList,
                 List.of(MULTI_CONFIGURATION_PROJECT_NAME, PIPELINE_NAME));
@@ -289,12 +292,13 @@ public class DashboardTest extends BaseTest {
                         .clickCreateMyView()
                         .getNewViewName();
 
-        Allure.step("Expected results: New Created My View name is "+VIEW_NAME);
+        Allure.step("Expected results: New Created My View name is " + VIEW_NAME);
         Assert.assertEquals(newViewName, VIEW_NAME);
     }
+
     @Story("US_16.002 Dashboard > View")
     @Description("Check background of active, hover and inactive Views")
-    @Test (dependsOnMethods = "testCreateMyView")
+    @Test(dependsOnMethods = "testCreateMyView")
     public void testBackgroundColorOfViewName() {
 
         String passiveColor = new HomePage(getDriver())
@@ -317,7 +321,7 @@ public class DashboardTest extends BaseTest {
 
     @Story("US_16.004 Change Icon Size")
     @Description("Verify Icon Size changes")
-    @Test (dependsOnMethods = "testCreateMyView")
+    @Test(dependsOnMethods = "testCreateMyView")
     public void testChangeIconSize() {
 
         List<Integer> expectedSizeOfProjectIconList = List.of(16, 20, 24);
@@ -327,7 +331,7 @@ public class DashboardTest extends BaseTest {
                     .clickIconForChangeSize(i)
                     .getProjectIconHeight();
 
-            Allure.step("Expected results: Icon size is "+expectedSizeOfProjectIconList.get(i));
+            Allure.step("Expected results: Icon size is " + expectedSizeOfProjectIconList.get(i));
             Assert.assertEquals(iconHeight, expectedSizeOfProjectIconList.get(i));
         }
     }
@@ -336,12 +340,12 @@ public class DashboardTest extends BaseTest {
     @Description("Verify Start Page Header")
     @Test
     public void testStartPageHeading() {
-        final String expectedHeader= "Welcome to Jenkins!";
+        final String expectedHeader = "Welcome to Jenkins!";
         String actualHeading = new HomePage(getDriver())
                 .getHeadingText();
 
-        Allure.step("Expected results: Start Page Header is "+expectedHeader);
-        Assert.assertEquals(actualHeading,expectedHeader);
+        Allure.step("Expected results: Start Page Header is " + expectedHeader);
+        Assert.assertEquals(actualHeading, expectedHeader);
     }
 
     @Story("US_16.006 Edit Dashboard Description")
@@ -361,7 +365,7 @@ public class DashboardTest extends BaseTest {
         final String actualLinkText = new HomePage(getDriver())
                 .getEditDescriptionLinkText();
 
-        Allure.step("Expected results: Dashboard Description is "+ expectedDescription + " and new text to change description is " + expectedLinkText);
+        Allure.step("Expected results: Dashboard Description is " + expectedDescription + " and new text to change description is " + expectedLinkText);
         Assert.assertEquals(actualDescription, expectedDescription);
         Assert.assertEquals(actualLinkText, expectedLinkText);
     }
