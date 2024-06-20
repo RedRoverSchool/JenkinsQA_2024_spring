@@ -122,8 +122,8 @@ public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
         return new CloudsPage(getDriver());
     }
 
-    @Step("Click 'Appearance' link")
-    public AppearancePage clickAppearanceLink() {
+    @Step("Click 'Appearance' on the Manage Jenkins page")
+    public AppearancePage clickAppearance() {
         appearanceLink.click();
 
         return new AppearancePage(getDriver());

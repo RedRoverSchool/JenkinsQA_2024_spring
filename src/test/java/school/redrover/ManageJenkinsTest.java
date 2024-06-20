@@ -204,7 +204,7 @@ public class ManageJenkinsTest extends BaseTest {
     public void testRedirectionToAppearancePage() {
         String pageTitle = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickAppearanceLink()
+                .clickAppearance()
                 .getHeadingText();
 
         Allure.step("Expected result: Page heading is 'Appearance'");

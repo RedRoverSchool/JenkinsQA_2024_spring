@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -33,6 +34,7 @@ public class AppearancePage extends BasePage<AppearancePage> {
         super(driver);
     }
 
+    @Step("Get list of Jenkins color themes")
     public List<WebElement> getThemesList() {
         return themesList;
     }
@@ -41,36 +43,35 @@ public class AppearancePage extends BasePage<AppearancePage> {
         return !defaultThemeButton.isSelected();
     }
 
+    @Step("Click on the Dark color theme")
     public AppearancePage clickDarkThemeButton() {
         darkThemeButton.click();
 
         return this;
     }
 
+    @Step("Click on the System color theme")
     public AppearancePage clickSystemThemeButton() {
         systemThemeButton.click();
 
         return this;
     }
 
+    @Step("Click on the Default color theme")
     public AppearancePage clickDefaultThemeButton() {
         defaultThemeButton.click();
 
         return this;
     }
 
+    @Step("Click on the 'Apply' button")
     public AppearancePage clickApplyButton() {
         applyButton.click();
 
         return this;
     }
 
-    public AppearancePage clickApply() {
-        applyButton.click();
-
-        return new AppearancePage(getDriver());
-    }
-
+    @Step("Switch to default color theme")
     public AppearancePage switchToDefaultTheme() {
         if (isDefaultThemeNotSelected()) {
             clickDefaultThemeButton();
@@ -80,13 +81,14 @@ public class AppearancePage extends BasePage<AppearancePage> {
         return this;
     }
 
+    @Step("Get current theme attribute 'data-theme'")
     public String getCurrentThemeAttribute() {
         return getDriver().findElement(By.cssSelector("html[data-theme]"))
                 .getAttribute("data-theme");
     }
 
+    @Step("Get notification about apply theme changes")
     public String getNotificationText() {
-        return getWait2().until(ExpectedConditions.visibilityOf(notification)).getText();
+        return getWait10().until(ExpectedConditions.visibilityOf(notification)).getText();
     }
-
 }

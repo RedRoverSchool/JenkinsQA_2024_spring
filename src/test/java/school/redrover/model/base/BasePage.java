@@ -14,6 +14,7 @@ import school.redrover.model.FooterFrame;
 import school.redrover.model.FreestyleProjectPage;
 import school.redrover.model.HeaderFrame;
 import school.redrover.model.HomePage;
+import school.redrover.model.ManageJenkinsPage;
 import school.redrover.runner.ProjectUtils;
 
 import java.util.ArrayList;
@@ -31,6 +32,12 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
 
     @FindBy(id = "jenkins-name-icon")
     private WebElement logo;
+
+    @FindBy(css = "div#breadcrumbBar a[href = '/']")
+    private WebElement dashboardBreadcrumbs;
+
+    @FindBy(css = "[class='tippy-box'] [href='/manage']")
+    private WebElement manageJenkinsOnDashboardBreadcrumbsMenu;
 
     public BasePage(WebDriver driver) {
         super(driver);
@@ -159,12 +166,31 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
         return this;
     }
 
+    @Step("Get background color of page body")
     public String getBackgroundColor() {
-
         return htmlBody.getCssValue("background-color");
     }
 
     public String getTitle() {
         return getDriver().getTitle();
+    }
+
+    @Step("Click on the Dashboard chevron on the breadcrumbs")
+    public T openDashboardBreadcrumbsDropdownMenu() {
+        WebElement chevron = dashboardBreadcrumbs.findElement(By.cssSelector("[class$='chevron']"));
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].dispatchEvent(new Event('mouseenter'));"
+                        + "arguments[0].dispatchEvent(new Event('click'));",
+                chevron);
+
+        return (T) this;
+    }
+
+    @Step("Click on Manage Jenkins on the Dashboard breadcrumbs menu")
+    public ManageJenkinsPage clickManageJenkinsOnBreadcrumbsMenu() {
+        getWait60().until(ExpectedConditions.visibilityOf(manageJenkinsOnDashboardBreadcrumbsMenu));
+        manageJenkinsOnDashboardBreadcrumbsMenu.click();
+
+        return new ManageJenkinsPage(getDriver());
     }
 }

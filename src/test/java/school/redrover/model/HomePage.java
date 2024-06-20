@@ -2,7 +2,6 @@ package school.redrover.model;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -49,12 +48,6 @@ public class HomePage extends BasePage<HomePage> {
 
     @FindBy(css = "a[href $= '/move']")
     private WebElement dropdownMove;
-
-    @FindBy(css = "div#breadcrumbBar a[href = '/']")
-    private WebElement dashboardBreadcrumbs;
-
-    @FindBy(css = "[class='tippy-box'] [href='/manage']")
-    private WebElement manageFromDashboardBreadcrumbsMenu;
 
     @FindBy(css = "[aria-describedby*='tippy']")
     private WebElement buildSchedulePopUp;
@@ -296,24 +289,6 @@ public class HomePage extends BasePage<HomePage> {
                 By.cssSelector("td>[href^='job/" + TestUtils.asURL(itemName) + "']")).click();
 
         return new OrganizationFolderProjectPage(getDriver());
-    }
-
-    @Step("Click on Chevron of the Dashboard")
-    public HomePage openDashboardBreadcrumbsDropdown() {
-        WebElement chevron = dashboardBreadcrumbs.findElement(By.cssSelector("[class$='chevron']"));
-        ((JavascriptExecutor) getDriver()).executeScript(
-                "arguments[0].dispatchEvent(new Event('mouseenter'));"
-                        + "arguments[0].dispatchEvent(new Event('click'));",
-                chevron);
-
-        return this;
-    }
-
-    @Step("Click on Manage Jenkins in the Dashboard dropdown menu")
-    public ManageJenkinsPage clickManageFromDashboardBreadcrumbsMenu() {
-        manageFromDashboardBreadcrumbsMenu.click();
-
-        return new ManageJenkinsPage(getDriver());
     }
 
     @Step("Click on 'Full Stage View' on Item dropdown menu")
