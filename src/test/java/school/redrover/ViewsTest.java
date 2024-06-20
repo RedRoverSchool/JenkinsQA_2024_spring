@@ -2,6 +2,7 @@ package school.redrover;
 
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -13,6 +14,7 @@ import school.redrover.runner.BaseTest;
 
 import java.util.List;
 
+@Epic("Views")
 public class ViewsTest extends BaseTest {
 
     private static final String MY_VIEW_NAME = "EmployeeView";
