@@ -69,9 +69,10 @@ public class ViewMyListConfigPage extends BasePage<ViewMyListConfigPage> {
         return this;
     }
 
-    public ViewMyListConfigPage checkProjectForAddingToView(String name) {
+    @Step("Select the checkbox with the label Title '{title}'")
+    public ViewMyListConfigPage checkProjectForAddingToView(String title) {
         clickElementFromTheBottomOfThePage(getDriver().findElement(
-                By.xpath("//label[contains(@title, '" + name + "')]")));
+                By.xpath("//label[contains(@title, '" + title + "')]")));
         return this;
     }
 

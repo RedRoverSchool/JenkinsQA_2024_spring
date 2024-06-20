@@ -268,11 +268,14 @@ public class HomePage extends BasePage<HomePage> {
                 .toList();
     }
 
+    @Step("Click the \"Name\" column header to sort the table by name")
     public HomePage clickTitleForSortByName() {
         columnNameTitle.click();
+
         return new HomePage(getDriver());
     }
 
+    @Step("Click the {i} icon to change Icon size")
     public HomePage clickIconForChangeSize(int i) {
         sizeIcon.get(i).click();
 
@@ -305,6 +308,7 @@ public class HomePage extends BasePage<HomePage> {
         return page;
     }
 
+    @Step("Hover over Passive View Name")
     public HomePage moveMouseToPassiveViewName() {
         new Actions(getDriver())
                 .moveToElement(passiveViewName)
@@ -313,6 +317,7 @@ public class HomePage extends BasePage<HomePage> {
         return this;
     }
 
+    @Step("Click right mouse button")
     public HomePage mouseClick() {
         new Actions(getDriver())
                 .click()
@@ -408,12 +413,14 @@ public class HomePage extends BasePage<HomePage> {
         return new MyViewsPage(getDriver());
     }
 
+    @Step("Click Edit Description")
     public HomePage clickEditDescription() {
         editDescriptionLink.click();
 
         return this;
     }
 
+    @Step("Type Description: '{text}'")
     public HomePage typeDescription(String text) {
         descriptionTextarea.clear();
         descriptionTextarea.sendKeys(text);
@@ -421,6 +428,7 @@ public class HomePage extends BasePage<HomePage> {
         return this;
     }
 
+    @Step("Click Save Button to edit description")
     public HomePage clickSaveButton() {
         saveButton.click();
 
@@ -445,7 +453,7 @@ public class HomePage extends BasePage<HomePage> {
 
         return tooltip.isDisplayed();
     }
-
+    @Step("Get Side Menu List")
     public List<String> getSidebarMenuList() {
         List<String> menuList = new ArrayList<>();
         for (WebElement element : sidebarMenuList) {

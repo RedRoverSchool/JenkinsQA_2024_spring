@@ -1,5 +1,6 @@
 package school.redrover;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
@@ -20,37 +21,40 @@ public class DashboardTest extends BaseTest {
 
     private static final String VIEW_NAME = "RedRover";
 
-    @Story("US_16.005 Side Menu Items")
-    @Description("Check all Side Menu Items exist")
+    @Story("US_16.005 Sidebar Menu Menu Items")
+    @Description("Check all Sidebar Menu Items exist")
     @Test
-    public void testDashboardSideMenu() {
-        final List<String> expectedSideMenu = List.of(
+    public void testSidebarMenuItemsList() {
+        final List<String> expectedSidebarMenu = List.of(
                 "New Item",
                 "People",
                 "Build History",
                 "Manage Jenkins",
                 "My Views");
 
-        List<String> actualSideMenu = new HomePage(getDriver())
+        List<String> actualSidebarMenu = new HomePage(getDriver())
                 .getSidebarMenuList();
 
-        Assert.assertEquals(actualSideMenu, expectedSideMenu);
+        Allure.step("Expected results: All expected Sidebar Menu items exist");
+        Assert.assertEquals(actualSidebarMenu, expectedSidebarMenu);
     }
 
-    @Story("US_16.005 Side Menu Items")
-    @Description("Verify People Side Menu Header")
+    @Story("US_16.005 Sidebar Menu Items")
+    @Description("Verify People Sidebar Menu Header")
     @Test
-    public void testPeopleOnSideMenu() {
+    public void testPeopleOnSidebarMenu() {
+        final String expectedPageHeader = "People";
         String actualHeading = new HomePage(getDriver())
                 .clickPeopleOnSidebar()
                 .getHeadingText();
 
-        Assert.assertEquals(actualHeading, "People");
+        Allure.step("Expected results: The header text should be "+ expectedPageHeader);
+        Assert.assertEquals(actualHeading, expectedPageHeader);
     }
 
     @Story("US_16.003 Item Chevron Menu > List of Menu Items")
     @Description("Check all Folder Chevron Menu Items exist")
-    @Test(dependsOnMethods = "testDashboardSideMenu")
+    @Test(dependsOnMethods = "testSidebarMenuItemsList")
     public void testFolderChevronMenu() {
         final String folderName = "A Folder";
 
@@ -69,6 +73,7 @@ public class DashboardTest extends BaseTest {
                 .openItemDropdown(folderName)
                 .getDropdownMenu();
 
+        Allure.step("Expected results: All expected Folder Chevron Menu items exist");
         Assert.assertEquals(chevronMenu, folderMenu);
     }
 
@@ -94,6 +99,7 @@ public class DashboardTest extends BaseTest {
                 .openItemDropdown(freestyleName)
                 .getDropdownMenu();
 
+        Allure.step("Expected results: All expected Freestyle Chevron Menu items exist");
         Assert.assertEquals(chevronMenu, freestyleMenu);
     }
 
@@ -117,6 +123,7 @@ public class DashboardTest extends BaseTest {
                 .openItemDropdown(PIPELINE_NAME)
                 .getDropdownMenu();
 
+        Allure.step("Expected results: All expected Pipeline Chevron Menu items exist");
         Assert.assertEquals(chevronMenu, pipelineMenu);
     }
 
@@ -140,6 +147,7 @@ public class DashboardTest extends BaseTest {
                 .openItemDropdown(MULTI_CONFIGURATION_PROJECT_NAME)
                 .getDropdownMenu();
 
+        Allure.step("Expected results: All expected Multi-configuration Chevron Menu items exist");
         Assert.assertEquals(chevronMenu, multiConfigurationMenu);
     }
 
@@ -168,6 +176,7 @@ public class DashboardTest extends BaseTest {
                 .openItemDropdown(multibranchPipeline)
                 .getDropdownMenu();
 
+        Allure.step("Expected results: All expected Multibranch Pipeline Chevron Menu items exist");
         Assert.assertEquals(chevronMenu, multibranchPipelineMenu);
     }
 
@@ -196,6 +205,7 @@ public class DashboardTest extends BaseTest {
                 .openItemDropdown(organizationFolderName)
                 .getDropdownMenu();
 
+        Allure.step("Expected results: All expected Organization Folder Chevron Menu items exist");
         Assert.assertEquals(chevronMenu, organizationFolderMenu);
     }
 
@@ -222,6 +232,7 @@ public class DashboardTest extends BaseTest {
                 .sorted()
                 .toList();
 
+        Allure.step("Expected results:Table sorted by Name in reverse and then alphabetical order");
         Assert.assertEquals(reverseSortedByClickNameList, reverseSortedByStreamNameList);
         Assert.assertEquals(sortedByClickNameList, sortedByStreamNameList);
     }
@@ -239,6 +250,7 @@ public class DashboardTest extends BaseTest {
                 .clickOkButton()
                 .getActiveViewName();
 
+        Allure.step("Expected results: New Created List View name is "+VIEW_NAME);
         Assert.assertEquals(createdViewName, VIEW_NAME);
     }
 
@@ -255,6 +267,7 @@ public class DashboardTest extends BaseTest {
                 .clickOkButton()
                 .getProjectNames();
 
+        Allure.step("Expected results: "+PIPELINE_NAME+ " and " + MULTI_CONFIGURATION_PROJECT_NAME+" Job items added to New List View");
         Assert.assertEquals(
                 projectNameList,
                 List.of(MULTI_CONFIGURATION_PROJECT_NAME, PIPELINE_NAME));
@@ -267,7 +280,7 @@ public class DashboardTest extends BaseTest {
         String newViewName =
                 new HomePage(getDriver())
                         .clickCreateAJob()
-                        .setItemName(MULTI_CONFIGURATION_PROJECT_NAME)
+                        .typeItemName(MULTI_CONFIGURATION_PROJECT_NAME)
                         .selectMultiConfigurationAndClickOk()
                         .clickLogo()
                         .clickPlusToCreateView()
@@ -276,6 +289,7 @@ public class DashboardTest extends BaseTest {
                         .clickCreateMyView()
                         .getNewViewName();
 
+        Allure.step("Expected results: New Created My View name is "+VIEW_NAME);
         Assert.assertEquals(newViewName, VIEW_NAME);
     }
     @Story("US_16.002 Dashboard > View")
@@ -295,14 +309,11 @@ public class DashboardTest extends BaseTest {
                 .mouseClick()
                 .getColorOfActiveViewNameBackground();
 
+        Allure.step("Expected results: colors of active, passive and hovered over Views are different");
         Assert.assertNotEquals(passiveColor, hoverColor);
         Assert.assertNotEquals(hoverColor, activeColor);
         Assert.assertNotEquals(activeColor, passiveColor);
     }
-
-
-
-
 
     @Story("US_16.004 Change Icon Size")
     @Description("Verify Icon Size changes")
@@ -316,6 +327,7 @@ public class DashboardTest extends BaseTest {
                     .clickIconForChangeSize(i)
                     .getProjectIconHeight();
 
+            Allure.step("Expected results: Icon size is "+expectedSizeOfProjectIconList.get(i));
             Assert.assertEquals(iconHeight, expectedSizeOfProjectIconList.get(i));
         }
     }
@@ -324,10 +336,12 @@ public class DashboardTest extends BaseTest {
     @Description("Verify Start Page Header")
     @Test
     public void testStartPageHeading() {
+        final String expectedHeader= "Welcome to Jenkins!";
         String actualHeading = new HomePage(getDriver())
                 .getHeadingText();
 
-        Assert.assertEquals(actualHeading, "Welcome to Jenkins!");
+        Allure.step("Expected results: Start Page Header is "+expectedHeader);
+        Assert.assertEquals(actualHeading,expectedHeader);
     }
 
     @Story("US_16.006 Edit Dashboard Description")
@@ -347,6 +361,7 @@ public class DashboardTest extends BaseTest {
         final String actualLinkText = new HomePage(getDriver())
                 .getEditDescriptionLinkText();
 
+        Allure.step("Expected results: Dashboard Description is "+ expectedDescription + " and new text to change description is " + expectedLinkText);
         Assert.assertEquals(actualDescription, expectedDescription);
         Assert.assertEquals(actualLinkText, expectedLinkText);
     }

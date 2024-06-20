@@ -52,6 +52,7 @@ public class CreateNewViewPage extends BasePage<CreateNewViewPage> {
         return this;
     }
 
+    @Step("Click 'Create' button to create My View")
     public ViewConfigPage clickCreateMyView() {
         createButton.click();
 
