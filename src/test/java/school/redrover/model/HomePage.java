@@ -35,11 +35,8 @@ public class HomePage extends BasePage<HomePage> {
     @FindBy(css = "[href='/newView']")
     private WebElement newView;
 
-    @FindBy(css = "[href*='rename']")
-    private WebElement renameFromDropdown;
-
-    @FindBy(css = "[href*='move']")
-    private WebElement moveFromDropdown;
+    @FindBy(css = "[class*='dropdown'] [href$='rename']")
+    private WebElement dropdownRename;
 
     @FindBy(xpath = "//a[@class='sortheader' and text()='Name']")
     private WebElement columnNameTitle;
@@ -72,10 +69,7 @@ public class HomePage extends BasePage<HomePage> {
     private WebElement passiveViewName;
 
     @FindBy(css = "[href$='builds']")
-    private WebElement buildHistoryButton;
-
-    @FindBy(xpath = "//a[contains(@href, '/move')]")
-    private WebElement moveOption;
+    private WebElement buildHistoryOnSidebar;
 
     @FindBy(xpath = "//a[@href='/asynchPeople/']")
     private WebElement peopleButton;
@@ -149,13 +143,14 @@ public class HomePage extends BasePage<HomePage> {
         return new CreateNewItemPage(getDriver());
     }
 
-    @Step("Click 'Create a Job'")
+    @Step("Click on the 'Create a job' at start page")
     public CreateNewItemPage clickCreateAJob() {
         createAJobLink.click();
 
         return new CreateNewItemPage(getDriver());
     }
 
+    @Step("Get Item list from Dashboard")
     public List<String> getItemList() {
         return itemList.stream()
                 .map(WebElement::getText)
@@ -172,23 +167,18 @@ public class HomePage extends BasePage<HomePage> {
         return this;
     }
 
-    @Step("Click 'Delete' in dropdown menu")
-    public DeleteDialog clickDeleteInDropdown(DeleteDialog dialog) {
-        dropdownDelete.click();
-        return dialog;
+    @Step("Click 'Rename' on the project dropdown menu")
+    public ProjectRenamePage<?> clickRenameOnDropdown() {
+        dropdownRename.click();
+
+        return new ProjectRenamePage<>(getDriver());
     }
 
-    @Step("Click 'Rename' on dropdown menu")
-    public FreestyleRenamePage clickRenameOnDropdownForFreestyleProject() {
-        renameFromDropdown.click();
-
-        return new FreestyleRenamePage(getDriver());
-    }
-
-    @Step("Click 'Move' in project dropdown menu")
-    public MovePage clickMoveInDropdown() {
+    @Step("Click 'Move' on the project dropdown menu")
+    public ProjectMovePage<?> clickMoveOnDropdown() {
         dropdownMove.click();
-        return new MovePage(getDriver());
+
+        return new ProjectMovePage<>(getDriver());
     }
 
     @Step("Click on the link 'Build Executor Status'")
@@ -209,10 +199,10 @@ public class HomePage extends BasePage<HomePage> {
         return getDriver().findElement(By.cssSelector("[href='/computer/" + name + "/']")).isDisplayed();
     }
 
-    @Step("Click on the specific Multi-configuration project name")
+    @Step("Click on the '{itemName}' Multi-configuration project name")
     public MultiConfigurationProjectPage clickSpecificMultiConfigurationProjectName(String itemName) {
         getDriver().findElement(
-                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
+                By.cssSelector("td>[href^='job/" + TestUtils.asURL(itemName) + "']")).click();
 
         return new MultiConfigurationProjectPage(getDriver());
     }
@@ -224,12 +214,14 @@ public class HomePage extends BasePage<HomePage> {
         return new ManageJenkinsPage(getDriver());
     }
 
+    @Step("Click '+' button to create a new View")
     public CreateNewViewPage clickPlusToCreateView() {
         newView.click();
 
         return new CreateNewViewPage(getDriver());
     }
 
+    @Step("Click View Name on the 'Homepage'")
     public ViewPage clickViewName(String viewName) {
         getDriver().findElement(By.linkText(viewName)).click();
 
@@ -250,24 +242,10 @@ public class HomePage extends BasePage<HomePage> {
         return this;
     }
 
-    @Step("Click on 'Rename' in Dropdown menu for Multi Configuration Project")
-    public MultiConfigurationRenamePage clickRenameOnDropdownForMultiConfigurationProject() {
-        renameFromDropdown.click();
-
-        return new MultiConfigurationRenamePage(getDriver());
-    }
-
-    @Step("Select 'Move' from dropdown menu")
-    public MultiConfigurationMovePage selectMoveFromDropdown() {
-        moveFromDropdown.click();
-
-        return new MultiConfigurationMovePage(getDriver());
-    }
-
-    @Step("Click on the specific Pipeline name")
+    @Step("Click on the '{itemName}' Pipeline name")
     public PipelineProjectPage clickSpecificPipelineName(String itemName) {
         getDriver().findElement(
-                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
+                By.cssSelector("td>[href^='job/" + TestUtils.asURL(itemName) + "']")).click();
 
         return new PipelineProjectPage(getDriver());
     }
@@ -280,10 +258,10 @@ public class HomePage extends BasePage<HomePage> {
         return getItemList().contains(name);
     }
 
-    @Step("Click on the specific Multibranch Pipeline name")
+    @Step("Click on the '{itemName}' Multibranch Pipeline name")
     public MultibranchPipelineProjectPage clickSpecificMultibranchPipelineName(String itemName) {
         getDriver().findElement(
-                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
+                By.cssSelector("td>[href^='job/" + TestUtils.asURL(itemName) + "']")).click();
 
         return new MultibranchPipelineProjectPage(getDriver());
     }
@@ -312,10 +290,10 @@ public class HomePage extends BasePage<HomePage> {
         return projectIcon.getSize().height;
     }
 
-    @Step("Click on the specific Organization Folder name")
+    @Step("Click on the '{itemName}' Organization Folder name")
     public OrganizationFolderProjectPage clickSpecificOrganizationFolderName(String itemName) {
         getDriver().findElement(
-                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
+                By.cssSelector("td>[href^='job/" + TestUtils.asURL(itemName) + "']")).click();
 
         return new OrganizationFolderProjectPage(getDriver());
     }
@@ -343,13 +321,6 @@ public class HomePage extends BasePage<HomePage> {
         getWait5().until(ExpectedConditions.elementToBeClickable(fullStageViewOnDropdown)).click();
 
         return new FullStageViewPage(getDriver());
-    }
-
-    @Step("Click 'Rename' on dropdown menu")
-    public MultibranchPipelineRenamePage clickRenameOnDropdownForMultibranchPipeline() {
-        renameFromDropdown.click();
-
-        return new MultibranchPipelineRenamePage(getDriver());
     }
 
     @Step("Click the '{name}' project name")
@@ -382,9 +353,10 @@ public class HomePage extends BasePage<HomePage> {
         return activeViewName.getCssValue("background-color");
     }
 
-    @Step("Click green triangle to schedule build for project")
-    public HomePage scheduleBuildForItemAndWaitForBuildSchedulePopUP(String itemName) {
-        getDriver().findElement(By.xpath("//a[contains(@tooltip,'Schedule a Build for " + itemName + "')]")).click();
+    @Step("Click green triangle to schedule build for '{itemName}' project")
+    public HomePage clickScheduleBuildForItemAndWaitForBuildSchedulePopUp(String itemName) {
+        getDriver().findElement(
+                By.xpath("//a[contains(@tooltip,'Schedule a Build for " + itemName + "')]")).click();
         getWait2().until(ExpectedConditions.visibilityOf(buildSchedulePopUp));
 
         return this;
@@ -392,16 +364,9 @@ public class HomePage extends BasePage<HomePage> {
 
     @Step("Click 'Build History' on sidebar menu")
     public BuildHistoryPage clickBuildHistory() {
-        buildHistoryButton.click();
+        buildHistoryOnSidebar.click();
 
         return new BuildHistoryPage(getDriver());
-    }
-
-    @Step("Select folder to move")
-    public MovePage chooseFolderToMove() {
-        getWait5().until(ExpectedConditions.visibilityOf(moveOption)).click();
-
-        return new MovePage(getDriver());
     }
 
     @Step("Click 'People' on sidebar")
@@ -414,7 +379,7 @@ public class HomePage extends BasePage<HomePage> {
     @Step("Click '{itemName}' Folder name")
     public FolderProjectPage clickSpecificFolderName(String itemName) {
         getDriver().findElement(
-                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
+                By.cssSelector("td>[href^='job/" + TestUtils.asURL(itemName) + "']")).click();
 
         return new FolderProjectPage(getDriver());
     }
@@ -422,16 +387,9 @@ public class HomePage extends BasePage<HomePage> {
     @Step("Click '{itemName}' Freestyle project name")
     public FreestyleProjectPage clickSpecificFreestyleProjectName(String itemName) {
         getDriver().findElement(
-                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
+                By.cssSelector("td>[href^='job/" + TestUtils.asURL(itemName) + "']")).click();
 
         return new FreestyleProjectPage(getDriver());
-    }
-
-    @Step("Click 'Rename' on dropdown menu for the folder")
-    public FolderRenamePage clickRenameOnDropdownForFolder() {
-        renameFromDropdown.click();
-
-        return new FolderRenamePage(getDriver());
     }
 
     @Step("Click 'Pipeline Syntax' from dropdown menu")
@@ -441,15 +399,21 @@ public class HomePage extends BasePage<HomePage> {
         return new PipelineSyntaxPage(getDriver());
     }
 
+    @Step("Get list of View names")
     public int getSizeViewNameList() {
         return viewNameList.size();
     }
 
-    @Step("Click 'Delete' in dropdown menu and confirm it by click 'Yes' in confirming dialog ")
-    public HomePage clickDeleteOnDropdownAndConfirm() {
+    @Step("Click 'Delete' in dropdown menu")
+    public HomePage clickDeleteOnDropdown() {
         dropdownDelete.click();
 
-        getWait5().until(ExpectedConditions.visibilityOf(yesButton)).click();
+        return this;
+    }
+
+    @Step("Click 'Yes' in confirming dialog")
+    public HomePage clickYesForConfirmDelete() {
+        getWait2().until(ExpectedConditions.visibilityOf(yesButton)).click();
 
         return this;
     }

@@ -71,7 +71,7 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
                 .perform();
     }
 
-    public void clickSpecificDropdownArrow(WebElement element) {
+    public void clickBreadcrumbsDropdownArrow(WebElement element) {
         ((JavascriptExecutor) getDriver()).executeScript(
                 """
                         arguments[0].dispatchEvent(new Event('mouseenter'));
@@ -85,10 +85,6 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
                 .scrollByAmount(0, 100)
                 .moveToElement(webElement)
                 .click().perform();
-    }
-
-    public String getText(WebElement webElement) {
-        return webElement.getText();
     }
 
     public String getHeadingText() {
@@ -141,6 +137,7 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
         js.executeScript("window.scrollTo(0, 0);");
     }
 
+//    TODO refactor this one -
     public static ExpectedCondition<Boolean> isElementInViewPort(WebElement element) {
         return new ExpectedCondition<>() {
             @Override

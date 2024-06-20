@@ -11,7 +11,10 @@ public class OrderForTests implements IMethodInterceptor {
 
     @Override
     public List<IMethodInstance> intercept(List<IMethodInstance> list, ITestContext iTestContext) {
-        return OrderUtils.orderMethods(list, m -> m.getMethod().getQualifiedName(), m -> m.getMethod().getMethodsDependedUpon())
+        return OrderUtils.orderMethods(
+                        list,
+                        m -> m.getMethod().getQualifiedName(),
+                        m -> m.getMethod().getMethodsDependedUpon())
                 .stream().flatMap(List::stream).collect(Collectors.toList());
     }
 }

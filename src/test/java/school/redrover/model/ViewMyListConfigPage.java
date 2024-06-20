@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -30,18 +31,23 @@ public class ViewMyListConfigPage extends BasePage<ViewMyListConfigPage> {
         super(driver);
     }
 
+    @Step("Click Project Name on 'ViewListConfigPage'")
     public ViewMyListConfigPage clickProjectName(String projectName) {
-        getDriver().findElement(By.cssSelector("label[title=" + projectName + "]")).click();
+      WebElement jobOnConfigurePage =  getDriver().findElement(By.cssSelector("label[title=" + projectName + "]"));
+      ((JavascriptExecutor) getDriver()).executeScript("window.scrollBy(0,250)", "");
+      jobOnConfigurePage.click();
 
-        return this;
+      return this;
     }
 
+    @Step("Click 'Ok' button on 'ViewMyListConfigPage'")
     public ViewPage clickOkButton() {
         okButton.click();
 
         return new ViewPage(getDriver());
     }
 
+    @Step("Click 'Add column' button on 'ViewMyListConfigPage'")
     public ViewMyListConfigPage clickAddColumn() {
         WebElement addColumn = getDriver().findElement(By.cssSelector("[suffix='columns']>svg"));
         ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView(true);", addColumn);
@@ -56,6 +62,7 @@ public class ViewMyListConfigPage extends BasePage<ViewMyListConfigPage> {
         return this;
     }
 
+    @Step("Choose 'Git Branches' column from the dropdown menu")
     public ViewMyListConfigPage clickGitBranchColumn() {
         getWait5().until(ExpectedConditions.elementToBeClickable(gitBranchesColumn)).click();
 
@@ -68,6 +75,7 @@ public class ViewMyListConfigPage extends BasePage<ViewMyListConfigPage> {
         return this;
     }
 
+    @Step("Scroll to have 'Submit' button on the page")
     public ViewMyListConfigPage scrollIntoSubmit() {
         scrollIntoView(okButton);
 

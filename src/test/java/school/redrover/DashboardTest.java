@@ -289,7 +289,7 @@ public class DashboardTest extends BaseTest {
         String newViewName =
                 new HomePage(getDriver())
                         .clickCreateAJob()
-                        .setItemName(MULTI_CONFIGURATION_PROJECT_NAME)
+                        .typeItemName(MULTI_CONFIGURATION_PROJECT_NAME)
                         .selectMultiConfigurationAndClickOk()
                         .clickLogo()
                         .clickPlusToCreateView()

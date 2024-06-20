@@ -67,6 +67,7 @@ public class AppearancePage extends BasePage<AppearancePage> {
 
     public AppearancePage clickApply() {
         applyButton.click();
+
         return new AppearancePage(getDriver());
     }
 
@@ -75,6 +76,7 @@ public class AppearancePage extends BasePage<AppearancePage> {
             clickDefaultThemeButton();
             clickApplyButton();
         }
+
         return this;
     }
 
@@ -84,7 +86,6 @@ public class AppearancePage extends BasePage<AppearancePage> {
     }
 
     public String getNotificationText() {
-
         return getWait2().until(ExpectedConditions.visibilityOf(notification)).getText();
     }
 

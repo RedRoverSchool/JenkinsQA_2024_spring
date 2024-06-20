@@ -94,7 +94,8 @@ public class HeaderFrame<T extends BasePage<T>> extends BaseFrame<T> {
     }
 
     @Step("Type Project {name} to the Header Search box and click 'Enter'")
-    public <ProjectPage extends BaseProjectPage<?>> ProjectPage searchProjectByName(String projectName, ProjectPage projectPage) {
+    public <ProjectPage extends BaseProjectPage<?>> ProjectPage typeProjectNameToSearchInputFieldAndPressEnter(
+            String projectName, ProjectPage projectPage) {
         searchBox.sendKeys(projectName + Keys.ENTER);
 
         return projectPage;

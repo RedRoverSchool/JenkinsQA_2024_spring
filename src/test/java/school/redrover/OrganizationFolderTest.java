@@ -26,7 +26,7 @@ public class OrganizationFolderTest extends BaseTest {
     public void testCreateViaSidebarMenu() {
         String itemPageHeading = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .typeItemName(ORGANIZATION_FOLDER_NAME)
                 .selectOrganizationFolderAndClickOk()
                 .clickSaveButton()
                 .getProjectName();
@@ -41,11 +41,11 @@ public class OrganizationFolderTest extends BaseTest {
     public void testCreateWithDefaultIcon() {
         String organizationFolderIcon = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(ORGANIZATION_FOLDER_NAME)
+                .typeItemName(ORGANIZATION_FOLDER_NAME)
                 .selectOrganizationFolderAndClickOk()
                 .selectDefaultIcon()
                 .clickSaveButton()
-                .getOrganizationFolderIcon();
+                .getAttributeTitleFromOrganizationFolderIcon();
 
         Allure.step("Expected result: Folder icon is displayed");
         Assert.assertEquals(organizationFolderIcon, "Folder");
@@ -57,7 +57,7 @@ public class OrganizationFolderTest extends BaseTest {
     public void testAddDescriptionViaAddDescriptionButton() {
         String textInDescription = new OrganizationFolderProjectPage(getDriver())
                 .clickAddDescription()
-                .setDescription(ORGANIZATION_FOLDER_DESCRIPTION)
+                .typeDescription(ORGANIZATION_FOLDER_DESCRIPTION)
                 .clickSaveButton()
                 .getDescriptionText();
 
@@ -141,9 +141,10 @@ public class OrganizationFolderTest extends BaseTest {
 
         List<String> itemList = new HomePage(getDriver())
                 .clickJobByName(ORGANIZATION_FOLDER_NAME, new OrganizationFolderProjectPage(getDriver()))
-                .clickSidebarRename()
-                .setNewName(newOrganizationFolderName)
-                .clickRename()
+                .clickRenameOnSidebar()
+                .clearNameInputField()
+                .typeNewName(newOrganizationFolderName)
+                .clickRenameButtonWhenRenamedViaSidebar()
                 .clickLogo()
                 .getItemList();
 
@@ -159,7 +160,7 @@ public class OrganizationFolderTest extends BaseTest {
         String titleText = new HomePage(getDriver())
                 .clickJobByName(ORGANIZATION_FOLDER_NAME, new OrganizationFolderProjectPage(getDriver()))
                 .clickSidebarScanOrganizationFolderLog()
-                .getScanText();
+                .getProjectName();
 
         Allure.step("Title 'Scan Organization Folder Log' is displayed");
         Assert.assertEquals(titleText, "Scan Organization Folder Log",
@@ -182,9 +183,15 @@ public class OrganizationFolderTest extends BaseTest {
     @Story("US_06.007  Pipeline syntax")
     @Description("Verify that the pipeline syntax sidebar contains the expected list of items.")
     public void testPipelineSyntaxSidebarList() {
-        final List<String> expectedPipelineSyntaxSidebarList = List.of("Back", "Snippet Generator", "Declarative Directive Generator",
-                "Declarative Online Documentation", "Steps Reference",
-                "Global Variables Reference", "Online Documentation", "Examples Reference",
+        final List<String> expectedPipelineSyntaxSidebarList = List.of(
+                "Back",
+                "Snippet Generator",
+                "Declarative Directive Generator",
+                "Declarative Online Documentation",
+                "Steps Reference",
+                "Global Variables Reference",
+                "Online Documentation",
+                "Examples Reference",
                 "IntelliJ IDEA GDSL");
 
         List<String> actualPipelineSyntaxSidebarList = new HomePage(getDriver())
@@ -203,9 +210,9 @@ public class OrganizationFolderTest extends BaseTest {
         TestUtils.createOrganizationFolderProject(this, ORGANIZATION_FOLDER_NAME);
 
         List<String> itemList = new HomePage(getDriver())
-                .clickJobByName(ORGANIZATION_FOLDER_NAME, new OrganizationFolderProjectPage(getDriver()))
-                .clickSidebarDelete()
-                .clickYesForDeleteOrganizationFolder()
+                .clickSpecificOrganizationFolderName(ORGANIZATION_FOLDER_NAME)
+                .clickDeleteOnSidebar()
+                .clickYesWhenDeletedItemOnHomePage()
                 .getItemList();
 
         Allure.step("Expected result: Deleted project is not present in the item list");
@@ -250,7 +257,14 @@ public class OrganizationFolderTest extends BaseTest {
     @Story("US_06.001  Use Configuration page")
     @Description("Verify that the 'Throttle Builds' dropdown contains the correct time period options.")
     public void testThrottleBuildsTimePeriodOptions() {
-        final List<String> expectedTimePeriodOptions = List.of("Second", "Minute", "Hour", "Day", "Week", "Month", "Year");
+        final List<String> expectedTimePeriodOptions = List.of(
+                "Second",
+                "Minute",
+                "Hour",
+                "Day",
+                "Week",
+                "Month",
+                "Year");
 
         TestUtils.createOrganizationFolderProject(this, ORGANIZATION_FOLDER_NAME);
 

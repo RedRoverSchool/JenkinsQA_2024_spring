@@ -29,9 +29,6 @@ public class FreestyleConfigPage extends BaseConfigPage<FreestyleProjectPage, Fr
     @FindBy(css = "span:has(input[name='hudson-plugins-timestamper-TimestamperBuildWrapper'])")
     private WebElement addTimestampsCheckbox;
 
-    @FindBy(name = "Submit")
-    private WebElement saveButton;
-
     public FreestyleConfigPage(WebDriver driver) {
         super(driver, new FreestyleProjectPage(driver));
     }
@@ -44,13 +41,6 @@ public class FreestyleConfigPage extends BaseConfigPage<FreestyleProjectPage, Fr
         descriptionField.sendKeys(description);
 
         return new FreestyleConfigPage(getDriver());
-    }
-
-    @Step("Click 'Save' button")
-    public FreestyleProjectPage clickSaveButton() {
-        saveButton.click();
-
-        return new FreestyleProjectPage(getDriver());
     }
 
     @Step("Scroll page to 'Build Triggers Heading'")
@@ -76,7 +66,7 @@ public class FreestyleConfigPage extends BaseConfigPage<FreestyleProjectPage, Fr
 
     @Step("Click 'Add timestamps to the Console Output' Checkbox")
     public FreestyleConfigPage clickAddTimestampsCheckbox() {
-        super.scrollToElement(buildEnvironmentHeading);
+        scrollToElement(buildEnvironmentHeading);
         addTimestampsCheckbox.click();
 
         return this;

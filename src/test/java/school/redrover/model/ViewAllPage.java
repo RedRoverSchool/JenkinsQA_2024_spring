@@ -17,7 +17,7 @@ public class ViewAllPage extends BasePage<ViewAllPage> {
         super(driver);
     }
 
-    @Step("Click 'All' dropdown menu on Breadcrumbs and select Project name")
+    @Step("Click 'All' dropdown menu on Breadcrumbs and select '{name}'")
     public FolderProjectPage clickBreadcrumbAllDropdownMenuAndSelectProjectName(String name) {
         allDropdownChevron.click();
 

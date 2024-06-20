@@ -26,7 +26,7 @@ public class BuildHistoryTest extends BaseTest {
         TestUtils.createFreestyleProject(this, PROJECT_NAME);
 
         List<String> list = new HomePage(getDriver())
-                .scheduleBuildForItemAndWaitForBuildSchedulePopUP(PROJECT_NAME)
+                .clickScheduleBuildForItemAndWaitForBuildSchedulePopUp(PROJECT_NAME)
                 .clickBuildHistory()
                 .getBuildsList();
 

@@ -21,7 +21,7 @@ public class UserPage extends BasePage<UserPage> {
 
     public String getUserID() {
 
-        return jenkinsUserID.getText().replace("Jenkins User ID:", "").trim();
+        return jenkinsUserID.getText();
     }
 
     @Step("Click 'Configure' on sidebar")

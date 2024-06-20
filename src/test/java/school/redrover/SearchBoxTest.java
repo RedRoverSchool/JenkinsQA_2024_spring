@@ -5,6 +5,7 @@ import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.PipelineProjectPage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,12 +51,7 @@ public class SearchBoxTest extends BaseTest {
     }
 
     public void createFolder(String folderName) {
-        new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(folderName)
-                .selectFolderAndClickOk()
-                .clickSaveButton()
-                .clickLogo();
+        TestUtils.createFolderProject(this, folderName);
     }
 
     @Test
@@ -96,10 +92,11 @@ public class SearchBoxTest extends BaseTest {
     public void testSearchPipeline() {
         String searchResult = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(PIPELINE_NAME)
+                .typeItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .clickLogo()
-                .getHeader().searchProjectByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
+                .getHeader().typeProjectNameToSearchInputFieldAndPressEnter(
+                        PIPELINE_NAME, new PipelineProjectPage(getDriver()))
                 .getHeadingText();
 
         Assert.assertEquals(searchResult, PIPELINE_NAME,  "Pipeline is not found");

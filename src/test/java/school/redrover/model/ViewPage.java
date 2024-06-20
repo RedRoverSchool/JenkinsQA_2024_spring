@@ -1,9 +1,11 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.annotations.Test;
 import school.redrover.model.base.BasePage;
 
 import java.util.ArrayList;
@@ -42,6 +44,7 @@ public class ViewPage extends BasePage<ViewPage> {
         return new ViewMyListConfigPage(getDriver());
     }
 
+    @Step("Click 'Delete View' link on the side bar menu")
     public HomePage clickDeleteViewSideBarAndConfirmDeletion() {
         deleteViewButton.click();
         getWait5().until(ExpectedConditions.elementToBeClickable(confirmButton)).click();
@@ -67,6 +70,7 @@ public class ViewPage extends BasePage<ViewPage> {
         return columnNameList.stream().map(WebElement::getText).toList();
     }
 
+    @Step("Get list of Project View names")
     public List<String> getProjectViewTitleList() {
         List<String> actualPipelineViewList = new ArrayList<>();
         List<WebElement> projectViewTitles =

@@ -11,7 +11,8 @@ import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
 
-public class OrganizationFolderConfigPage extends BaseConfigPage<OrganizationFolderProjectPage, OrganizationFolderConfigPage> {
+public class OrganizationFolderConfigPage extends
+        BaseConfigPage<OrganizationFolderProjectPage, OrganizationFolderConfigPage> {
 
     @FindBy(id = "tasks")
     private WebElement sidebarMenu;

@@ -9,7 +9,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class BuildHistoryPage extends BasePage<BuildHistoryPage> {
 
@@ -17,7 +16,7 @@ public class BuildHistoryPage extends BasePage<BuildHistoryPage> {
     private WebElement buildHistoryItemDropdownArrow;
 
     @FindBy(css = "[href$='Delete']")
-    private WebElement dropdownDeleteButton;
+    private WebElement dropdownDelete;
 
     @FindBy(css = "td [class$='link'][href*='job']")
     private List<WebElement> buildsList;
@@ -34,6 +33,9 @@ public class BuildHistoryPage extends BasePage<BuildHistoryPage> {
     @FindBy(xpath = "//li[@class='permalink-item']")
     private List<WebElement> permalinkList;
 
+    @FindBy(css = "dialog .jenkins-button--primary")
+    private WebElement yesButton;
+
     public BuildHistoryPage(WebDriver driver) {
         super(driver);
     }
@@ -41,16 +43,27 @@ public class BuildHistoryPage extends BasePage<BuildHistoryPage> {
     @Step("Click Project arrow to open dropdown menu")
     public BuildHistoryPage clickItemDropdownArrow(String name) {
         hoverOverElement(getDriver().findElement(By.cssSelector("td [href='/job/" + name + "/']")));
-        clickSpecificDropdownArrow(buildHistoryItemDropdownArrow);
+        clickBreadcrumbsDropdownArrow(buildHistoryItemDropdownArrow);
 
         return this;
     }
 
-    @Step("Click 'Delete' in dropdown menu")
-    public DeleteDialog clickItemDeleteButton() {
-        dropdownDeleteButton.click();
+    public BuildHistoryPage clickItemDropdownArrow() {
+        clickBreadcrumbsDropdownArrow(buildHistoryItemDropdownArrow);
 
-        return new DeleteDialog(getDriver());
+        return this;
+    }
+
+    public BuildHistoryPage clickDeleteOnDropdown() {
+        dropdownDelete.click();
+
+        return this;
+    }
+
+    public BuildHistoryPage clickYesToConfirmDelete() {
+        yesButton.click();
+
+        return this;
     }
 
     public List<String> getBuildsList() {
@@ -80,7 +93,7 @@ public class BuildHistoryPage extends BasePage<BuildHistoryPage> {
                 .stream()
                 .map(WebElement::getText)
                 .map(permalink -> permalink.split(",")[0].trim())
-                .collect(Collectors.toList());
+                .toList();
     }
 
 }

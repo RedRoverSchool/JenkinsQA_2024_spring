@@ -77,9 +77,6 @@ public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
     @FindBy(xpath = "//div[@aria-describedby='tippy-6']")
     private WebElement searchHint;
 
-    @FindBy(tagName = "h1")
-    private WebElement pageHeading;
-
     @FindBy(css = "[class*='search__results__no-results']")
     private WebElement noSearchResultsPopUp;
 
@@ -265,10 +262,6 @@ public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
         getDriver().findElement(By.xpath("//dt[text()='" + link + "']")).click();
 
         return getDriver().getTitle();
-    }
-
-    public String getPageHeadingText() {
-        return pageHeading.getText();
     }
 
     public String getSearchInputPlaceholderText() {

@@ -21,7 +21,7 @@ public class CreateNodePage extends BasePage<CreateNodePage> {
         super(driver);
     }
 
-    @Step("Type the text to name input field")
+    @Step("Type the '{name}' text to name input field")
     public CreateNodePage typeNodeName(String name) {
         nameInput.sendKeys(name);
 

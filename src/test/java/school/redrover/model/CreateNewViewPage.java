@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -23,24 +24,28 @@ public class CreateNewViewPage extends BasePage<CreateNewViewPage> {
         super(driver);
     }
 
+    @Step("Type new View name in the view name field")
     public CreateNewViewPage setViewName(String viewName) {
         viewNameText.sendKeys(viewName);
 
         return this;
     }
 
+    @Step("Click 'List View' radio button")
     public CreateNewViewPage clickListViewRadioButton() {
         listViewRadioButton.click();
 
         return this;
     }
 
+    @Step("Click 'Create' button on 'CreteNewViewPage'")
     public ViewMyListConfigPage clickCreateViewButton() {
         createButton.click();
 
         return new ViewMyListConfigPage(getDriver());
     }
 
+    @Step("Check 'My View' radio button ")
     public CreateNewViewPage clickMyViewRadioButton() {
         myViewRadioButton.click();
 
@@ -53,6 +58,7 @@ public class CreateNewViewPage extends BasePage<CreateNewViewPage> {
         return new ViewConfigPage(getDriver());
     }
 
+    @Step("Click 'Create' button on 'CreteNewViewPage'")
     public ViewPage clickCreateButtonUponChoosingMyView() {
         createButton.click();
 

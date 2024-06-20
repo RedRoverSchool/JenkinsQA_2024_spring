@@ -30,7 +30,7 @@ public class UserTest extends BaseTest {
                 .clickUserNameOnHeader()
                 .getUserID();
 
-        Assert.assertEquals(userID, "admin");
+        Assert.assertEquals(userID, "Jenkins User ID: admin");
     }
 
     @Test(dependsOnMethods = "testCheckUserID")
@@ -169,7 +169,7 @@ public class UserTest extends BaseTest {
         //Test steps
         final String actualConsoleLogs = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(projectName)
+                .typeItemName(projectName)
                 .selectFreestyleAndClickOk()
                 .scrollToBuildTriggersHeading()
                 .clickTriggerBuildsRemotelyCheckbox()

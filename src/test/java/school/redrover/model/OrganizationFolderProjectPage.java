@@ -15,34 +15,10 @@ public class OrganizationFolderProjectPage extends BaseProjectPage<OrganizationF
     private WebElement itemIcon;
 
     @FindBy(xpath = "//a[contains(@href,'pipeline-syntax')]")
-    private WebElement pipelineSyntaxButton;
-
-    @FindBy(xpath = "//a[contains(.,'Rename')]")
-    private WebElement renameButton;
-
-    @FindBy(xpath = "//*[@id='description-link']")
-    private WebElement descriptionLink;
-
-    @FindBy(xpath = "//textarea[@name='description']")
-    private WebElement textareaDescription;
-
-    @FindBy(xpath = "//*[@name='Submit']")
-    private WebElement saveButton;
-
-    @FindBy(xpath = "//*[@id='description']/div")
-    private WebElement description;
-
-    @FindBy(xpath = "//a[@data-title='Delete Organization Folder']")
-    private WebElement deleteOnSidebar;
-
-    @FindBy(xpath = "//button[@data-id='ok']")
-    private WebElement yesButtonOnDeleteOrganizationFolderAlert;
+    private WebElement sidebarPipelineSyntax;
 
     @FindBy(xpath = "//a[contains(@href,'console')]")
-    private WebElement scanButton;
-
-    @FindBy(xpath = "//h1")
-    private WebElement scanText;
+    private WebElement sidebarScanOrganizationFolderLog;
 
     public OrganizationFolderProjectPage(WebDriver driver) {
         super(driver);
@@ -55,65 +31,22 @@ public class OrganizationFolderProjectPage extends BaseProjectPage<OrganizationF
         return new OrganizationFolderConfigPage(getDriver());
     }
 
-    public String getOrganizationFolderIcon() {
+    @Step("Get attribute 'title' from Organization Folder icon")
+    public String getAttributeTitleFromOrganizationFolderIcon() {
         return itemIcon.getAttribute("title");
     }
 
     @Step("Click on 'Pipeline Syntax' in the sidebar menu")
     public PipelineSyntaxPage clickSidebarPipelineSyntax() {
-        pipelineSyntaxButton.click();
+        sidebarPipelineSyntax.click();
 
         return new PipelineSyntaxPage(getDriver());
     }
 
-    @Step("Click 'Rename' on sidebar menu")
-    public OrganizationFolderRenamePage clickSidebarRename() {
-        renameButton.click();
-
-        return new OrganizationFolderRenamePage(getDriver());
-    }
-
-    @Step("Click 'Add description'")
-    public OrganizationFolderProjectPage clickAddDescription() {
-        descriptionLink.click();
-        return this;
-    }
-
-    @Step("Type description text into description input field")
-    public OrganizationFolderProjectPage setDescription(String text) {
-        textareaDescription.sendKeys(text);
-        return this;
-    }
-
-    @Step("Click 'Save' button")
-    public OrganizationFolderProjectPage clickSaveButton() {
-        saveButton.click();
-        return this;
-    }
-
-    public String getDescriptionText() {
-        return description.getText();
-    }
-
-    @Step("Click 'Delete Organization Folder' on sidebar menu")
-    public OrganizationFolderProjectPage clickSidebarDelete() {
-        deleteOnSidebar.click();
-        return this;
-    }
-
-    @Step("Click 'Scan Organization Folder Log' on the sidebar menu")
+    @Step("Click on the 'Scan Organization Folder Log' on the sidebar menu")
     public OrganizationFolderProjectPage clickSidebarScanOrganizationFolderLog() {
-        scanButton.click();
+        sidebarScanOrganizationFolderLog.click();
+
         return this;
-    }
-
-    public String getScanText() {
-        return scanText.getText();
-    }
-
-    @Step("Click 'Yes' button in the confirming deletion dialog")
-    public HomePage clickYesForDeleteOrganizationFolder() {
-        yesButtonOnDeleteOrganizationFolderAlert.click();
-        return new HomePage(getDriver());
     }
 }

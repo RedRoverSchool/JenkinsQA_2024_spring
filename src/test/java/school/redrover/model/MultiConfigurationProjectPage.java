@@ -20,9 +20,6 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
     @FindBy(name = "Submit")
     private WebElement saveButton;
 
-    @FindBy(css = "#description>div:first-child")
-    private WebElement description;
-
     @FindBy(linkText = "Configure")
     private WebElement configureButton;
 
@@ -41,20 +38,8 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
     @FindBy(css = "[id='enable-project']")
     private WebElement disableMessage;
 
-    @FindBy(css = "#breadcrumbBar li:last-child")
-    private WebElement breadcrumbs;
-
     @FindBy(css = "[href^='/job'] [class$='dropdown-chevron']")
     private WebElement breadcrumbsProjectDropdownArrow;
-
-    @FindBy(css = "button[href $= '/doDelete']")
-    private WebElement breadcrumbsDropdownDelete;
-
-    @FindBy(xpath = "//*[span = 'Delete Multi-configuration project']")
-    private WebElement sidebarDelete;
-
-    @FindBy(xpath = "//*[contains(@href, 'rename')]")
-    private WebElement menuRename;
 
     @FindBy(xpath = "//*[contains(@href, 'move')]")
     private WebElement moveOptionInMenu;
@@ -91,13 +76,7 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
         return this;
     }
 
-    public String getDescriptionText() {
-
-        return getWait2().until(ExpectedConditions.visibilityOf(description)).getText();
-    }
-
-
-    @Step("Click on the 'Configure' button  on the sidebar")
+    @Step("Click on the button 'Configure' on sidebar")
     public MultiConfigurationConfigPage clickConfigureButton() {
         configureButton.click();
 
@@ -134,44 +113,14 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
         return disableMessage.getText();
     }
 
-    public boolean isProjectInsideFolder(String projectName, String folderName) {
-        return breadcrumbs.getAttribute("data-href").contains(folderName + "/job/" + projectName);
-    }
-
-    @Step("Click on 'Delete' in sidebar menu")
-    public DeleteDialog clickSidebarDelete() {
-        sidebarDelete.click();
-
-        return new DeleteDialog(getDriver());
-    }
-
-    @Step("Click 'Rename' in the sidebar menu")
-    public MultiConfigurationRenamePage clickRenameInMenu() {
-        menuRename.click();
-
-        return new MultiConfigurationRenamePage(getDriver());
-    }
-
     public boolean isDescriptionEmpty() {
         return getWait10().until(
                 ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div#description>div")));
     }
 
-    public MultiConfigurationMovePage clickMoveOptionInMenu() {
-        moveOptionInMenu.click();
-        return new MultiConfigurationMovePage(getDriver());
-    }
-
-    @Step("Click on a Project's breadcrumbs chevron")
     public MultiConfigurationProjectPage clickBreadcrumbsProjectDropdownArrow() {
-        clickSpecificDropdownArrow(breadcrumbsProjectDropdownArrow);
+        clickBreadcrumbsDropdownArrow(breadcrumbsProjectDropdownArrow);
 
         return this;
-    }
-
-    @Step("Click on 'Delete' in  breadcrumbs dropdown menu")
-    public DeleteDialog clickDropdownDelete() {
-        breadcrumbsDropdownDelete.click();
-        return new DeleteDialog(getDriver());
     }
 }
