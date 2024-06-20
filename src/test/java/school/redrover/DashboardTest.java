@@ -257,8 +257,8 @@ public class DashboardTest extends BaseTest {
 
     @Story("US_16.002 Dashboard > View")
     @Description("Verify all items added to New List View")
-    @Test(dependsOnMethods = {"testCreateListView", "testPipelineChevronMenu",
-            "testMultiConfigurationProjectChevronMenu"})
+    @Test(dependsOnMethods =
+        {"testCreateListView", "testPipelineChevronMenu", "testMultiConfigurationProjectChevronMenu"})
     public void testAddItemsToView() {
 
         List<String> projectNameList = new HomePage(getDriver())
@@ -269,8 +269,8 @@ public class DashboardTest extends BaseTest {
                 .clickOkButton()
                 .getProjectNames();
 
-        Allure.step("Expected results: " + PIPELINE_NAME + " and " + MULTI_CONFIGURATION_PROJECT_NAME +
-                " Job items added to New List View");
+        Allure.step("Expected results: " + PIPELINE_NAME + " and " + MULTI_CONFIGURATION_PROJECT_NAME
+                + " Job items added to New List View");
         Assert.assertEquals(
                 projectNameList,
                 List.of(MULTI_CONFIGURATION_PROJECT_NAME, PIPELINE_NAME));
@@ -365,7 +365,8 @@ public class DashboardTest extends BaseTest {
         final String actualLinkText = new HomePage(getDriver())
                 .getEditDescriptionLinkText();
 
-        Allure.step("Expected results: Dashboard Description is " + expectedDescription + " and new text to change description is " + expectedLinkText);
+        Allure.step("Expected results: Dashboard Description is " + expectedDescription
+                + " and new text to change description is " + expectedLinkText);
         Assert.assertEquals(actualDescription, expectedDescription);
         Assert.assertEquals(actualLinkText, expectedLinkText);
     }
