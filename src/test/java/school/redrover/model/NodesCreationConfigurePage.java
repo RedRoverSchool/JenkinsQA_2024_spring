@@ -10,6 +10,7 @@ public class NodesCreationConfigurePage extends BasePage<NodesCreationConfigureP
 
     @FindBy(name = "Submit")
     private WebElement saveButton;
+
     @FindBy(name = "_.labelString")
     private WebElement labelsField;
 

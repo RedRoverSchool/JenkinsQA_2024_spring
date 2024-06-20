@@ -69,8 +69,7 @@ public final class TestUtils {
                 .clickNewItem()
                 .typeItemName(name.trim())
                 .selectMultibranchPipelineAndClickOk()
-//                TODO why commented?
-//                .clickSaveButton()
+                .clickSaveButton()
                 .clickLogo();
     }
 
