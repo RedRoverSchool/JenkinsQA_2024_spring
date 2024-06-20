@@ -312,7 +312,7 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
 
 
     public PipelineConfigPage clickOnUseGroovySandboxCheckbox() {
-        getWait5().until(ExpectedConditions.visibilityOf(useGroovySandboxCheckbox)).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(useGroovySandboxCheckbox)).click();
 
         return new PipelineConfigPage(getDriver());
     }
