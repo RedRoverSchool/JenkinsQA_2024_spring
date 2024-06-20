@@ -24,7 +24,7 @@ public class CreateNewViewPage extends BasePage<CreateNewViewPage> {
         super(driver);
     }
 
-    @Step("Type new View name in the view name field")
+    @Step("Type new View name {viewName} in the view name field")
     public CreateNewViewPage setViewName(String viewName) {
         viewNameText.sendKeys(viewName);
 
