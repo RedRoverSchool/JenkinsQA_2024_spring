@@ -83,6 +83,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return new PipelineConfigPage(getDriver());
     }
 
+    @Step("Select Multi Configuration and click 'Ok' button")
     public MultiConfigurationConfigPage selectMultiConfigurationAndClickOk() {
         multiConfigurationItem.click();
         okButton.click();

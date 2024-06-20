@@ -48,12 +48,14 @@ public class MultiConfigurationConfigPage extends
         super(driver, new MultiConfigurationProjectPage(driver));
     }
 
+    @Step("Switch a toggle")
     public MultiConfigurationConfigPage clickToggleSwitch() {
         toggleSwitch.click();
 
         return this;
     }
 
+    @Step("Click on 'Apply' button")
     public MultiConfigurationConfigPage clickApply() {
         applyButton.click();
 
@@ -117,12 +119,14 @@ public class MultiConfigurationConfigPage extends
                 .toList();
     }
 
+    @Step("Click on Project Name in Breadcrumbs ")
     public MultiConfigurationProjectPage clickBreadcrumbsProjectName() {
         breadcrumbsProjectName.click();
 
         return new MultiConfigurationProjectPage(getDriver());
     }
 
+    @Step("Hover over a Switch toggle")
     public MultiConfigurationConfigPage hoverOverToggleSwitch() {
         new Actions(getDriver())
                 .moveToElement(toggleSwitch)

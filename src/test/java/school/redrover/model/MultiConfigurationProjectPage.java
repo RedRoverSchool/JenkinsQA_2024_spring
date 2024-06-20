@@ -63,23 +63,28 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
         super(driver);
     }
 
+    @Step("Click  on 'Add Description' Button")
     public MultiConfigurationProjectPage clickAddDescriptionButton() {
         addDescriptionButton.click();
 
         return this;
     }
 
+
+    @Step("Type a description into the 'Description' input field")
     public MultiConfigurationProjectPage addOrEditDescription(String description) {
         descriptionField.sendKeys(description);
 
         return this;
     }
 
+    @Step("Clear 'Description' input field")
     public MultiConfigurationProjectPage clearDescription() {
         descriptionField.clear();
         return this;
     }
 
+    @Step("Click on 'Save description' button")
     public MultiConfigurationProjectPage clickSaveDescription() {
         saveButton.click();
 
@@ -92,13 +97,14 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
     }
 
 
-    @Step("Click on the button 'Configure' on sidebar")
+    @Step("Click on the 'Configure' button  on the sidebar")
     public MultiConfigurationConfigPage clickConfigureButton() {
         configureButton.click();
 
         return new MultiConfigurationConfigPage(getDriver());
     }
 
+    @Step("Click on 'Preview' button ")
     public MultiConfigurationProjectPage clickPreview() {
         previewButton.click();
 
@@ -110,12 +116,14 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
         return previewTextArea.getText();
     }
 
+    @Step("Click on 'Disable' button")
     public MultiConfigurationProjectPage clickDisableProject() {
         disableProjectButton.click();
 
         return this;
     }
 
+    @Step("Click on the 'Enable' button.")
     public MultiConfigurationProjectPage clickEnableButton() {
         enableProjectButton.click();
 
@@ -130,12 +138,14 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
         return breadcrumbs.getAttribute("data-href").contains(folderName + "/job/" + projectName);
     }
 
+    @Step("Click on 'Delete' in sidebar menu")
     public DeleteDialog clickSidebarDelete() {
         sidebarDelete.click();
 
         return new DeleteDialog(getDriver());
     }
 
+    @Step("Click 'Rename' in the sidebar menu")
     public MultiConfigurationRenamePage clickRenameInMenu() {
         menuRename.click();
 
@@ -152,12 +162,14 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
         return new MultiConfigurationMovePage(getDriver());
     }
 
+    @Step("Click on a Project's breadcrumbs chevron")
     public MultiConfigurationProjectPage clickBreadcrumbsProjectDropdownArrow() {
         clickSpecificDropdownArrow(breadcrumbsProjectDropdownArrow);
 
         return this;
     }
 
+    @Step("Click on 'Delete' in  breadcrumbs dropdown menu")
     public DeleteDialog clickDropdownDelete() {
         breadcrumbsDropdownDelete.click();
         return new DeleteDialog(getDriver());

@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -17,12 +18,14 @@ public class MultiConfigurationRenamePage extends BasePage<MultiConfigurationRen
         super(driver);
     }
 
+    @Step("Change Project Name Without Clearing")
     public MultiConfigurationRenamePage changeProjectNameWithoutClear(String text) {
         renameText.sendKeys(text);
 
         return this;
     }
 
+    @Step("Clear a name input field. Type {text} to this input field")
     public MultiConfigurationRenamePage changeProjectNameWithClear(String text) {
         renameText.clear();
         renameText.sendKeys(text);
@@ -30,6 +33,7 @@ public class MultiConfigurationRenamePage extends BasePage<MultiConfigurationRen
         return this;
     }
 
+    @Step("Click on 'Rename' button")
     public MultiConfigurationProjectPage clickRenameButton() {
         renameButton.click();
 

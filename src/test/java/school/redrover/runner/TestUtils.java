@@ -34,6 +34,7 @@ public final class TestUtils {
                 .replaceAll("%7E", "~");
     }
 
+    @Step("Create '{projectName}' {itemClassName}")
     public static HomePage createNewItem(BaseTest baseTest, String projectName, String itemClassName) {
         switch (itemClassName) {
             case Item.FREESTYLE_PROJECT -> {

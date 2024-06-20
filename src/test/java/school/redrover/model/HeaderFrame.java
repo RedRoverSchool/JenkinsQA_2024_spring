@@ -63,12 +63,14 @@ public class HeaderFrame<T extends BasePage<T>> extends BaseFrame<T> {
         return new UserPage(getDriver());
     }
 
+    @Step("Type a text into Search field in a header")
     public T typeTextToSearchField(String text) {
         searchBox.sendKeys(text);
 
         return getReturnPage();
     }
 
+    @Step("Click 'Enter' on the search field")
     public SearchResultPage pressEnterOnSearchField() {
         searchBox.sendKeys(Keys.ENTER);
 

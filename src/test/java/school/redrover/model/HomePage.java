@@ -250,12 +250,14 @@ public class HomePage extends BasePage<HomePage> {
         return this;
     }
 
+    @Step("Click on 'Rename' in Dropdown menu for Multi Configuration Project")
     public MultiConfigurationRenamePage clickRenameOnDropdownForMultiConfigurationProject() {
         renameFromDropdown.click();
 
         return new MultiConfigurationRenamePage(getDriver());
     }
 
+    @Step("Select 'Move' from dropdown menu")
     public MultiConfigurationMovePage selectMoveFromDropdown() {
         moveFromDropdown.click();
 

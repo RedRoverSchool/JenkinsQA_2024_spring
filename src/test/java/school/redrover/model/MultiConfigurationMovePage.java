@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -18,12 +19,14 @@ public class MultiConfigurationMovePage extends BasePage<MultiConfigurationMoveP
         super(driver);
     }
 
+    @Step("Select a Folder")
     public MultiConfigurationMovePage selectFolder(String folderName) {
         new Select(selectDestination).selectByValue("/" + folderName);
 
         return this;
     }
 
+    @Step("Click on 'Move' ")
     public MultiConfigurationProjectPage clickMove() {
         moveButton.click();
 
