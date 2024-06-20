@@ -275,7 +275,7 @@ public class HomePage extends BasePage<HomePage> {
         return new HomePage(getDriver());
     }
 
-    @Step("Click the {i} icon to change Icon size")
+    @Step("Click the {i} icon in list of icons to change Icon size")
     public HomePage clickIconForChangeSize(int i) {
         sizeIcon.get(i).click();
 
