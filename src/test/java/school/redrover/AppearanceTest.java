@@ -112,7 +112,7 @@ public class AppearanceTest extends BaseTest {
                 .getCurrentThemeAttribute();
 
         Allure.step("Expected results: Attribute of current color theme - '{expectedThemeAttribute}'");
-        Assert.assertTrue(actualThemeApplied.contains("system"));
+        Assert.assertTrue(actualThemeApplied.contains(expectedThemeAttribute));
     }
 
     @Step("Reset color theme to default")
