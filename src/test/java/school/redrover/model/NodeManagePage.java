@@ -38,6 +38,7 @@ public class NodeManagePage extends BasePage<NodeManagePage> {
         return new NodeManagePage(getDriver());
     }
 
+    // TODO refactor needed
     @Step("Click on the button 'Bring This Node Back Online'")
     public NodeManagePage clickBringThisNodeBackOnlineButton() {
         try {
