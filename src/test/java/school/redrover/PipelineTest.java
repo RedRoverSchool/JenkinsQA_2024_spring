@@ -331,7 +331,8 @@ public class PipelineTest extends BaseTest {
     public void testTableWithLast10Builds() {
         final int stagesQuantity = 2;
         final int buildsQuantity = 13;
-        final List<String> expectedBuildsList = IntStream.range(0, 10).mapToObj(i -> "#" + (buildsQuantity - i)).toList();
+        final List<String> expectedBuildsList =
+                IntStream.range(0, 10).mapToObj(i -> "#" + (buildsQuantity - i)).toList();
 
         List<String> actualBuildsList = new HomePage(getDriver())
                 .clickManageJenkins()
