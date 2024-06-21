@@ -33,11 +33,11 @@ public class ViewMyListConfigPage extends BasePage<ViewMyListConfigPage> {
 
     @Step("Click Project Name on 'ViewListConfigPage'")
     public ViewMyListConfigPage clickProjectName(String projectName) {
-      WebElement jobOnConfigurePage =  getDriver().findElement(By.cssSelector("label[title=" + projectName + "]"));
-      ((JavascriptExecutor) getDriver()).executeScript("window.scrollBy(0,250)", "");
-      jobOnConfigurePage.click();
+        WebElement jobOnConfigurePage = getDriver().findElement(By.cssSelector("label[title=" + projectName + "]"));
+        ((JavascriptExecutor) getDriver()).executeScript("window.scrollBy(0,250)", "");
+        jobOnConfigurePage.click();
 
-      return this;
+        return this;
     }
 
     @Step("Click 'Ok' button on 'ViewMyListConfigPage'")

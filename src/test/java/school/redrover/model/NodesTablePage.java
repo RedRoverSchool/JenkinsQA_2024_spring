@@ -54,7 +54,7 @@ public class NodesTablePage extends BasePage<NodesTablePage> {
 
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));"
-                + "arguments[0].dispatchEvent(new Event('click'));",
+                        + "arguments[0].dispatchEvent(new Event('click'));",
                 dropdownChevron);
 
         return this;
@@ -97,7 +97,7 @@ public class NodesTablePage extends BasePage<NodesTablePage> {
     }
 
     @Step("Click on the Node name 'Built-In Node'")
-    public NodeBuiltInStatusPage clickBuiltInNodeName() {
+    public NodeBuiltInStatusPage clickBuiltInNode() {
         builtInNode.click();
 
         return new NodeBuiltInStatusPage(getDriver());
@@ -109,10 +109,5 @@ public class NodesTablePage extends BasePage<NodesTablePage> {
                 By.xpath("//a[@href='../computer/" + TestUtils.asURL(nodeName) + "/']")).click();
 
         return new NodePage(getDriver());
-    }
-
-    public NodeManagePage clickOnBuiltInNode() {
-        builtInNode.click();
-        return new NodeManagePage(getDriver());
     }
 }

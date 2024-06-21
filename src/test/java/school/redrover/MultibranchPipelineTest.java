@@ -221,7 +221,6 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Allure.step("Expected result: Error: " + expectedErrorMessage + " is displayed");
         Assert.assertEquals(errorMessage, expectedErrorMessage);
-
     }
 
     @Test

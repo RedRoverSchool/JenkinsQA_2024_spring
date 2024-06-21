@@ -275,7 +275,7 @@ public class HomePage extends BasePage<HomePage> {
         return new HomePage(getDriver());
     }
 
-    @Step("Click the element at index {i} in the change icon size list")
+    @Step("Click the element at index '{i}' in the change icon size list")
     public HomePage clickIconForChangeSize(int i) {
         sizeIcon.get(i).click();
 
@@ -443,16 +443,6 @@ public class HomePage extends BasePage<HomePage> {
         return editDescriptionLink.getText();
     }
 
-    private WebElement getTooltipLocator(String tooltipText) {
-        return getDriver().findElement(By.cssSelector("a[tooltip='Help for feature: " + tooltipText + "']"));
-    }
-
-    public boolean isTooltipDisplayed(String tooltipText) {
-        WebElement tooltip = getTooltipLocator(tooltipText);
-        hoverOverElement(tooltip);
-
-        return tooltip.isDisplayed();
-    }
     @Step("Get Side Menu List")
     public List<String> getSidebarMenuList() {
         List<String> menuList = new ArrayList<>();

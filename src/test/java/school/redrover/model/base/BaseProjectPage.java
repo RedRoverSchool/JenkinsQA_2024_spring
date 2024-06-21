@@ -146,12 +146,14 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
         return displayedDescription.getText();
     }
 
+    @Step("Click 'Preview' under description input field")
     public T clickShowDescriptionPreview() {
         showDescriptionPreview.click();
 
         return (T) this;
     }
 
+    @Step("Click 'Hide preview' under description input field")
     public T clickHideDescriptionPreview() {
         hideDescriptionPreview.click();
 
@@ -273,6 +275,7 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
                 + ".getPropertyValue('--item-background--hover');", addOrEditDescriptionButton);
     }
 
+    @Step("Hover on 'Add Description' button")
     public T hoverOnAddDescriptionButton() {
         hoverOverElement(addOrEditDescriptionButton);
 

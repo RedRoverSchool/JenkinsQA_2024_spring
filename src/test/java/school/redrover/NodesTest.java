@@ -115,7 +115,7 @@ public class NodesTest extends BaseTest {
 
         List<String> actualMonitoringDataValues = new HomePage(getDriver())
                 .clickBuildExecutorStatusLink()
-                .clickBuiltInNodeName()
+                .clickBuiltInNode()
                 .clickMonitoringDataButton()
                 .getMonitoringDataElementsList();
 
@@ -209,7 +209,7 @@ public class NodesTest extends BaseTest {
 
         String actualNodeStatusMessage = new HomePage(getDriver())
                 .clickBuildExecutorStatusLink()
-                .clickOnBuiltInNode()
+                .clickBuiltInNode()
                 .clickMarkThisNodeTemporaryOfflineButton()
                 .clickMarkThisNodeTemporaryOfflineConfirmationButton()
                 .getNodeOfflineStatusText();
@@ -224,11 +224,11 @@ public class NodesTest extends BaseTest {
     public void testSwitchNodeToOnlineStatus() {
         Boolean isNodeOffline = new HomePage(getDriver())
                 .clickBuildExecutorStatusLink()
-                .clickOnBuiltInNode()
+                .clickBuiltInNode()
                 .clickBringThisNodeBackOnlineButton()
                 .isNodeOfflineStatusMessageDisplayed();
 
-        Allure.step("Expected result: Message about Disconecting is missing");
+        Allure.step("Expected result: Message about Disconnecting is missing");
         Assert.assertFalse(isNodeOffline);
     }
 
