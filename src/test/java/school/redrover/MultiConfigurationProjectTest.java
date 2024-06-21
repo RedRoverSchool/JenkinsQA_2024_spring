@@ -205,7 +205,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickDeleteOnSidebar()
                 .getYesButtonColorDeletingViaSidebar();
 
-        Allure.step("Expected result : 'Yes' button color is red (#e6001f).");
+        Allure.step("Expected result: 'Yes' button color is red (#e6001f).");
         Assert.assertEquals(actualYesButtonColor, expectedColorNone);
     }
 
@@ -362,12 +362,11 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .getHeader()
                 .pressEnterOnSearchField();
 
-        String currentUrl = searchResultPage.getCurrentUrl();
-        String searchResult = searchResultPage.getTextFromMainPanel();
+        Allure.step("Expected result: Project found");
+        Assert.assertTrue(searchResultPage.getTextFromMainPanel().contains(PROJECT_NAME));
 
-        Allure.step("Expected results :1 - the main panel of the page , we have been redirected to, contains '" + PROJECT_NAME + "'," +
-                                            "2 - it's URL contains '" + PROJECT_NAME +"'.");
-        Assert.assertTrue(currentUrl.contains(PROJECT_NAME) && searchResult.contains(PROJECT_NAME));
+        Allure.step("Expected result: Page URL contains project name");
+        Assert.assertTrue(searchResultPage.getCurrentUrl().contains(PROJECT_NAME));
     }
 
     @Test
@@ -409,7 +408,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickLogo()
                 .isItemDeleted(PROJECT_NAME);
 
-        Allure.step("Expected result : the project is moved from dashboard to the folder '" + FOLDER_NAME +"' ");
+        Allure.step("Expected result : the project is moved from dashboard to the folder '" + FOLDER_NAME + "' ");
         Assert.assertTrue(isProjectMoved && isProjectDeleted);
     }
 
