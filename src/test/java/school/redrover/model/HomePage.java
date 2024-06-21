@@ -435,17 +435,6 @@ public class HomePage extends BasePage<HomePage> {
         return editDescriptionLink.getText();
     }
 
-    private WebElement getTooltipLocator(String tooltipText) {
-        return getDriver().findElement(By.cssSelector("a[tooltip='Help for feature: " + tooltipText + "']"));
-    }
-
-    public boolean isTooltipDisplayed(String tooltipText) {
-        WebElement tooltip = getTooltipLocator(tooltipText);
-        hoverOverElement(tooltip);
-
-        return tooltip.isDisplayed();
-    }
-
     public List<String> getSidebarMenuList() {
         List<String> menuList = new ArrayList<>();
         for (WebElement element : sidebarMenuList) {

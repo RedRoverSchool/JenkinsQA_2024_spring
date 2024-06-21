@@ -19,7 +19,7 @@ public abstract class BaseConfigPage<
         projectPage = specificProjectPage;
     }
 
-    @Step("Click on the button 'Save'")
+    @Step("Click on the 'Save' button ")
     public ProjectPage clickSaveButton() {
         saveButton.click();
 

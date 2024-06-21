@@ -77,6 +77,7 @@ public class BuildHistoryPage extends BasePage<BuildHistoryPage> {
         return !getBuildsList().contains(name);
     }
 
+    @Step("Click console for build #1")
     public BuildConsoleOutputPage clickBuild1Console() {
         buildConsole.click();
 
