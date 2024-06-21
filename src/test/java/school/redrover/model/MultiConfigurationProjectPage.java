@@ -60,11 +60,11 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
         return this;
     }
 
-    @Step("Clear 'Description' input field")
-    public MultiConfigurationProjectPage clearDescription() {
-        descriptionField.clear();
-        return this;
-    }
+//    @Step("Clear 'Description' input field")
+//    public MultiConfigurationProjectPage clearDescription() {
+//        descriptionField.clear();
+//        return this;
+//    }
 
     @Step("Click on 'Save description' button")
     public MultiConfigurationProjectPage clickSaveDescription() {
