@@ -329,9 +329,9 @@ public class PipelineTest extends BaseTest {
     @Story("US_02.009 Full Stage View")
     @Description("Verify the list of the last 10 builds for the pipeline is displayed")
     public void testTableWithLast10Builds() {
-        final int stagesQtt = 2;
-        final int buildsQtt = 13;
-        final List<String> expectedBuildsList = IntStream.range(0, 10).mapToObj(i -> "#" + (buildsQtt - i)).toList();
+        final int stagesQuantity = 2;
+        final int buildsQuantity = 13;
+        final List<String> expectedBuildsList = IntStream.range(0, 10).mapToObj(i -> "#" + (buildsQuantity - i)).toList();
 
         List<String> actualBuildsList = new HomePage(getDriver())
                 .clickManageJenkins()
@@ -341,9 +341,9 @@ public class PipelineTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
-                .sendScript(stagesQtt, PIPELINE_SCRIPT)
+                .sendScript(stagesQuantity, PIPELINE_SCRIPT)
                 .clickSaveButton()
-                .makeBuilds(buildsQtt)
+                .makeBuilds(buildsQuantity)
                 .clickFullStageViewOnSidebarMenu()
                 .getItemList();
 
@@ -405,11 +405,11 @@ public class PipelineTest extends BaseTest {
     @Test
     @Story("US_02.004 Verify the Pipeline configuration")
     @Description("Verify that a pipeline with a specified number of stages can be created via pipeline script")
-    public void testStagesQtt() {
-        final int stagesQtt = 5;
-        final int buildsQtt = 1;
+    public void testStagesQuantity() {
+        final int stagesQuantity = 5;
+        final int buildsQuantity = 1;
 
-        int actualSagesQtt = new HomePage(getDriver())
+        int actualSagesQuantity = new HomePage(getDriver())
                 .clickManageJenkins()
                 .clickNodesLink()
                 .clickBuiltInNode()
@@ -417,13 +417,13 @@ public class PipelineTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
-                .sendScript(stagesQtt, PIPELINE_SCRIPT)
+                .sendScript(stagesQuantity, PIPELINE_SCRIPT)
                 .clickSaveButton()
-                .makeBuilds(buildsQtt)
+                .makeBuilds(buildsQuantity)
                 .getStagesQuantity();
 
         Allure.step("Expected result: The number of stages in the created pipeline is verified");
-        Assert.assertEquals(actualSagesQtt, stagesQtt);
+        Assert.assertEquals(actualSagesQuantity, stagesQuantity);
     }
 
     @Test
@@ -531,14 +531,14 @@ public class PipelineTest extends BaseTest {
     @Test(dependsOnMethods = "testCheckBuildsHistoryDescendingOrder")
     @Story("US_02.011 Take the information about a project built")
     @Description("Check numbers of builds in the Build History in descending order")
-    public void testSetNumberBuildsToKeep() {
+    public void testSetOfNumberBuildsToKeep() {
         final int maxNumberBuildsToKeep = 1;
 
         List<String> buildList = new HomePage(getDriver())
                 .clickJobByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
                 .clickConfigureOnSidebar()
                 .clickDiscardOldBuilds()
-                .setNumberBuildsToKeep(maxNumberBuildsToKeep)
+                .setNumberOfBuildsToKeep(maxNumberBuildsToKeep)
                 .clickSaveButton()
                 .clickLogo()
                 .clickScheduleBuildForItemAndWaitForBuildSchedulePopUp(PIPELINE_NAME)
@@ -839,7 +839,7 @@ public class PipelineTest extends BaseTest {
                 .typeItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .clickDiscardOldBuilds()
-                .setNumberBuildsToKeep(1)
+                .setNumberOfBuildsToKeep(1)
                 .clickTrySamplePipelineScript()
                 .selectSamplePipelineScript("hello")
                 .clickSaveButton()

@@ -91,13 +91,19 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
     @FindBy(linkText = "Script Approval Configuration")
     private WebElement scriptApprovalLink;
 
+    @FindBy(className = "ace_text-input")
+    private WebElement scriptInput;
+
+    @FindBy(xpath = "//a[@href='api/']")
+    private WebElement restAPI;
+
     public PipelineConfigPage(WebDriver driver) {
         super(driver, new PipelineProjectPage(driver));
     }
 
     @Step("Type {description} to Description input field")
-    public PipelineConfigPage addDescription(String descriptionText) {
-        getWait2().until(ExpectedConditions.visibilityOf(descriptionTextArea)).sendKeys(descriptionText);
+    public PipelineConfigPage addDescription(String description) {
+        getWait2().until(ExpectedConditions.visibilityOf(descriptionTextArea)).sendKeys(description);
 
         return this;
     }
@@ -160,7 +166,7 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
         return this;
     }
 
-    @Step("Clear 'Number of seconds' input field and type {number} of seconds")
+    @Step("Clear 'Number of seconds' input field and type type quantity of seconds")
     public PipelineConfigPage setNumberOfSecondsInQuietPeriodInputField(int seconds) {
         quietPeriodInputField.clear();
         quietPeriodInputField.sendKeys(String.valueOf(seconds) + Keys.TAB);
@@ -168,7 +174,7 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
         return this;
     }
 
-    @Step("Clear 'Number of seconds' input field and type {number} of seconds")
+    @Step("Clear 'Number of seconds' input field and type quantity of seconds")
     public PipelineConfigPage setNumberOfSecondsInQuietPeriodInputField(double seconds) {
         quietPeriodInputField.clear();
         quietPeriodInputField.sendKeys(String.valueOf(seconds) + Keys.TAB);
@@ -220,11 +226,11 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
         return this;
     }
 
-    @Step("Type {number} of builds to keep")
-    public PipelineConfigPage setNumberBuildsToKeep(int numberOfBuilds) {
-        WheelInput.ScrollOrigin scrollFromDuildField = WheelInput.ScrollOrigin.fromElement(numberBuildsToKeep);
+    @Step("Type quantity of builds to keep")
+    public PipelineConfigPage setNumberOfBuildsToKeep(int numberOfBuilds) {
+        WheelInput.ScrollOrigin scrollFromBuildField = WheelInput.ScrollOrigin.fromElement(numberBuildsToKeep);
         new Actions(getDriver())
-                .scrollFromOrigin(scrollFromDuildField, 0, 80)
+                .scrollFromOrigin(scrollFromBuildField, 0, 80)
                 .pause(Duration.ofMillis(200))
                 .perform();
         getWait5().until(ExpectedConditions.visibilityOf(numberBuildsToKeep)).sendKeys(String.valueOf(numberOfBuilds));
@@ -242,13 +248,13 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
     @Step("Scroll into the button of page")
     public PipelineConfigPage scrollIntoTheButtonOfPage() {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        WebElement element = getDriver().findElement(By.xpath("//a[@href='api/']"));
+        WebElement element = restAPI;
         js.executeScript("arguments[0].scrollIntoView(true);", element);
 
         return this;
     }
 
-    @Step("Select {script name} option by value")
+    @Step("Select {scriptName} option by value")
     public PipelineConfigPage selectSamplePipelineScript(String scriptName) {
         WebElement sampleScript = getWait5().until(ExpectedConditions.visibilityOf(samplePipelineScript));
         Select sampleScriptSelect = new Select(sampleScript);
@@ -258,13 +264,13 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
     }
 
     @Step("Type {script} to 'Script' input field")
-    public PipelineConfigPage sendScript(int stagesQtt, String pipelineScript) {
-        getDriver().findElement(By.className("ace_text-input")).sendKeys(pipelineScript);
+    public PipelineConfigPage sendScript(int stagesQuantity, String script) {
+        scriptInput.sendKeys(script);
 
-        for (int i = 1; i <= stagesQtt; i++) {
+        for (int i = 1; i <= stagesQuantity; i++) {
 
             String stage = "\nstage('stage " + i + "') {\nsteps {\necho 'test " + i + "'\n";
-            getDriver().findElement(By.className("ace_text-input")).sendKeys(stage, Keys.ARROW_DOWN, Keys.ARROW_DOWN);
+            scriptInput.sendKeys(stage, Keys.ARROW_DOWN, Keys.ARROW_DOWN);
         }
 
         return this;
