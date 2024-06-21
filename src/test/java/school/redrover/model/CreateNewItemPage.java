@@ -59,7 +59,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         super(driver);
     }
 
-    @Step("Type {name} to name input field")
+    @Step("Type '{name}' to name input field")
     public CreateNewItemPage typeItemName(String name) {
         getWait5().until(ExpectedConditions.visibilityOf(nameText));
         nameText.sendKeys(name);
@@ -83,7 +83,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return new PipelineConfigPage(getDriver());
     }
 
-    @Step("Select Multi Configuration and click 'Ok' button")
+    @Step("Select 'Multi Configuration' and click 'Ok' button")
     public MultiConfigurationConfigPage selectMultiConfigurationAndClickOk() {
         multiConfigurationItem.click();
         okButton.click();
@@ -91,6 +91,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return new MultiConfigurationConfigPage(getDriver());
     }
 
+    @Step("Select 'Multi Configuration' option")
     public CreateNewItemPage selectMultiConfiguration() {
         multiConfigurationItem.click();
 
@@ -105,7 +106,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return new FolderConfigPage(getDriver());
     }
 
-    @Step("Select 'Folder'")
+    @Step("Select 'Folder' option")
     public CreateNewItemPage selectFolder() {
         folderItem.click();
 
@@ -141,7 +142,6 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return this;
     }
 
-    @Step("Get error message about invalid character or duplicate name")
     public String getErrorMessageInvalidCharacterOrDuplicateName() {
         return errorItemNameInvalid.getText();
     }
@@ -150,7 +150,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return errorMessageEmptyName.getText();
     }
 
-    @Step("Type {name} in the input field 'Copy from'")
+    @Step("Type '{name}' in the input field 'Copy from'")
     public CreateNewItemPage typeItemNameInCopyFrom(String name) {
         clickElementFromTheBottomOfThePage(copyFromInputField);
         copyFromInputField.sendKeys(name);
@@ -175,13 +175,14 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return allJobFromThisLetter.stream().map(WebElement::getText).toList();
     }
 
-    @Step("Select 'Freestyle Project'")
+    @Step("Select 'Freestyle Project' option")
     public CreateNewItemPage selectFreeStyleProject() {
         freestyleItem.click();
 
         return this;
     }
 
+    @Step("Clear 'Item name' input")
     public CreateNewItemPage clearItemNameField() {
         nameText.sendKeys(Keys.CONTROL + "a", Keys.BACK_SPACE);
 
