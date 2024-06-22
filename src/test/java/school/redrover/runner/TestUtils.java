@@ -107,4 +107,19 @@ public final class TestUtils {
                 .filter(el -> el.substring(0, firstLetters.length()).equalsIgnoreCase(firstLetters))
                 .toList();
     }
+
+    @Step("Create User: '{username}'")
+    public static void createUser(BaseTest baseTest, String username) {
+        new HomePage(baseTest.getDriver())
+                .clickManageJenkins()
+                .clickUsersLink()
+                .clickCreateUser()
+                .typeUserName(username)
+                .setPassword(username)
+                .setConfirmPassword(username)
+                .setFullName(username.replaceAll("_", " "))
+                .setEmailAddress(username + "@domain.com")
+                .clickCreateUser()
+                .clickLogo();
+    }
 }
