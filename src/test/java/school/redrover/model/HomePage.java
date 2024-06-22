@@ -124,6 +124,11 @@ public class HomePage extends BasePage<HomePage> {
     @FindBy(css = "tr > td > .jenkins-table__link > span:first-child")
     private List<WebElement> itemList;
 
+    @FindBy(className = "sortheader")
+    private List<WebElement> columnHeaderList;
+
+    @FindBy(css = "[initialsortdir='down'] [class='sortheader']")
+    private WebElement nameColumnHeading;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -208,13 +213,13 @@ public class HomePage extends BasePage<HomePage> {
     }
 
     @Step("Click '+' button to create a new View")
-    public CreateNewViewPage clickPlusToCreateView() {
+    public CreateViewPage clickPlusToCreateView() {
         newView.click();
 
-        return new CreateNewViewPage(getDriver());
+        return new CreateViewPage(getDriver());
     }
 
-    @Step("Click View Name on the 'Homepage'")
+    @Step("Click View name '{viewName}' on the dashboard")
     public ViewPage clickViewName(String viewName) {
         getDriver().findElement(By.linkText(viewName)).click();
 
@@ -333,6 +338,10 @@ public class HomePage extends BasePage<HomePage> {
         return activeViewName.getCssValue("background-color");
     }
 
+    public String getActiveViewName() {
+        return activeViewName.getText();
+    }
+
     @Step("Click green triangle to schedule build for '{itemName}' project")
     public HomePage clickScheduleBuildForItemAndWaitForBuildSchedulePopUp(String itemName) {
         getDriver().findElement(
@@ -379,8 +388,8 @@ public class HomePage extends BasePage<HomePage> {
         return new PipelineSyntaxPage(getDriver());
     }
 
-    @Step("Get list of View names")
-    public int getSizeViewNameList() {
+    @Step("Get size of View names list")
+    public int getSizeOfViewNameList() {
         return viewNameList.size();
     }
 
@@ -407,13 +416,13 @@ public class HomePage extends BasePage<HomePage> {
         return disabledProjectList.stream().map(WebElement::getText).toList();
     }
 
-    public MyViewsPage clickMyViewsOnSidebar() {
+    public ViewPage clickMyViewsOnSidebar() {
         myViewsOnSidebar.click();
 
-        return new MyViewsPage(getDriver());
+        return new ViewPage(getDriver());
     }
 
-    @Step("Click Edit Description")
+    @Step("Click 'Edit Description'")
     public HomePage clickEditDescription() {
         editDescriptionLink.click();
 
@@ -479,7 +488,6 @@ public class HomePage extends BasePage<HomePage> {
 
     public String catchBuildNowDoneMessage() {
         return getWait2().until(ExpectedConditions.visibilityOf(buildDoneGreenMessage)).getText();
-
     }
 
     public boolean isNodesDisplayedOnExecutorsPanel() {
@@ -495,4 +503,18 @@ public class HomePage extends BasePage<HomePage> {
         return statusIcon.getAttribute("tooltip");
     }
 
+    @Step("Get size of list of column header on View")
+    public int getSizeColumnHeaderList() {
+        return columnHeaderList.size();
+    }
+
+    @Step("Get list of column header on View")
+    public List<String> getColumnHeaderList() {
+        return columnHeaderList.stream().map(WebElement::getText).toList();
+    }
+
+    @Step("Get text of Name column header")
+    public String getNameColumnText() {
+        return nameColumnHeading.getText().replace("\n ", "");
+    }
 }

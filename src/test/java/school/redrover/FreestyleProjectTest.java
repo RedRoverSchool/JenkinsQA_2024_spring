@@ -212,7 +212,8 @@ public class FreestyleProjectTest extends BaseTest {
     public void testMoveProjectToFolderViaBreadcrumb() {
         List<String> itemListInsideFolder = new HomePage(getDriver())
                 .getHeader().clickMyViewsOnHeaderDropdown()
-                .clickBreadcrumbAllDropdownMenuAndSelectProjectName(FOLDER_NAME)
+                .clickAllDropdownMenuOnBreadcrumbs()
+                .clickOnProjectNameOnBreadcrumbsMenu(FOLDER_NAME)
                 .getItemListInsideFolder();
 
         Allure.step("Expected result: The project list inside the folder contain moved project");

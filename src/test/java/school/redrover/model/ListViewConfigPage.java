@@ -7,16 +7,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
-public class ViewMyListConfigPage extends BasePage<ViewMyListConfigPage> {
+public class ListViewConfigPage extends BasePage<ListViewConfigPage> {
 
     @FindBy(name = "Submit")
     private WebElement okButton;
 
     @FindBy(css = "div.jenkins-dropdown button:last-child")
-    private WebElement projectDescriptionFromDropdown;
+    private WebElement projectDescriptionFromAddColumnDropdown;
 
     @FindBy(css = "[descriptorid$='DescriptionColumn'] .dd-handle")
     private WebElement projectDescriptionColumnHandle;
@@ -27,28 +26,28 @@ public class ViewMyListConfigPage extends BasePage<ViewMyListConfigPage> {
     @FindBy(xpath = "//button[contains(text(),' Git Branches')]")
     private WebElement gitBranchesColumn;
 
-    public ViewMyListConfigPage(WebDriver driver) {
+    public ListViewConfigPage(WebDriver driver) {
         super(driver);
     }
 
-    @Step("Click Project Name on 'ViewListConfigPage'")
-    public ViewMyListConfigPage clickProjectName(String projectName) {
-        WebElement jobOnConfigurePage = getDriver().findElement(By.cssSelector("label[title=" + projectName + "]"));
+    @Step("Click checkbox before '{projectName} for including it to this View")
+    public ListViewConfigPage clickCheckboxWithJobName(String jobName) {
+        WebElement jobOnConfigurePage = getDriver().findElement(By.cssSelector("label[title=" + jobName + "]"));
         ((JavascriptExecutor) getDriver()).executeScript("window.scrollBy(0,250)", "");
         jobOnConfigurePage.click();
 
         return this;
     }
 
-    @Step("Click 'Ok' button on 'ViewMyListConfigPage'")
+    @Step("Click 'Ok' button for saving configuration")
     public ViewPage clickOkButton() {
         okButton.click();
 
         return new ViewPage(getDriver());
     }
 
-    @Step("Click 'Add column' button on 'ViewMyListConfigPage'")
-    public ViewMyListConfigPage clickAddColumn() {
+    @Step("Click 'Add column' button")
+    public ListViewConfigPage clickAddColumn() {
         WebElement addColumn = getDriver().findElement(By.cssSelector("[suffix='columns']>svg"));
         ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView(true);", addColumn);
         addColumn.click();
@@ -56,43 +55,43 @@ public class ViewMyListConfigPage extends BasePage<ViewMyListConfigPage> {
         return this;
     }
 
-    public ViewMyListConfigPage clickColumnName() {
-        projectDescriptionFromDropdown.click();
-
-        return this;
-    }
-
-    @Step("Choose 'Git Branches' column from the dropdown menu")
-    public ViewMyListConfigPage clickGitBranchColumn() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(gitBranchesColumn)).click();
+    @Step("Select and click on column name {columnName}")
+    public ListViewConfigPage selectAndClickOnColumnName(String columnName) {
+        getDriver().findElement(By.xpath("//button[contains(text(),'" + columnName + "')]")).click();
 
         return this;
     }
 
     @Step("Select the checkbox with the label Title '{title}'")
-    public ViewMyListConfigPage checkProjectForAddingToView(String title) {
+    public ListViewConfigPage checkProjectForAddingToView(String title) {
         clickElementFromTheBottomOfThePage(getDriver().findElement(
                 By.xpath("//label[contains(@title, '" + title + "')]")));
         return this;
     }
 
-    @Step("Scroll to have 'Submit' button on the page")
-    public ViewMyListConfigPage scrollIntoSubmit() {
-        scrollIntoView(okButton);
+    @Step("Scroll to 'Ok' button")
+    public ListViewConfigPage scrollToOkButton() {
+        scrollToElement(okButton);
 
         return this;
     }
 
-    public ViewPage moveDescriptionToStatusColumn() {
+    @Step("Scroll to column name '{columnName}'")
+    public ListViewConfigPage scrollToColumnName(String columnName) {
+        scrollToElement(getDriver().findElement(By.xpath(
+                "//div[contains(text(),'" + columnName + "')]")));
+
+        return this;
+    }
+
+    @Step("Click and hold mouse cursor on column 'Project description' and move it to column 'Status'")
+    public ListViewConfigPage moveDescriptionColumnToStatusColumn() {
         new Actions(getDriver())
                 .clickAndHold(projectDescriptionColumnHandle)
                 .moveToElement(statusColumn)
                 .release(statusColumn)
-                .build()
                 .perform();
 
-        clickOkButton();
-
-        return new ViewPage(getDriver());
+        return this;
     }
 }
