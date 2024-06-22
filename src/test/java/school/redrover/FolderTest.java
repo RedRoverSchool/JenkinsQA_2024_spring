@@ -88,8 +88,7 @@ public class FolderTest extends BaseTest {
                 .getErrorMessageInvalidCharacterOrDuplicateName();
 
         Allure.step("Expected result: The error message is displayed");
-        Assert.assertEquals(errorMessageText, "» “.” is not an allowed name",
-                "The error message is different");
+        Assert.assertEquals(errorMessageText, "» “.” is not an allowed name");
     }
 
     @Test
@@ -103,8 +102,7 @@ public class FolderTest extends BaseTest {
                 .getErrorMessageInvalidCharacterOrDuplicateName();
 
         Allure.step("Expected result: The error message is displayed");
-        Assert.assertEquals(errorMessageText, "» A name cannot end with ‘.’",
-                "The error message is different");
+        Assert.assertEquals(errorMessageText, "» A name cannot end with ‘.’");
     }
 
     @Test
@@ -153,8 +151,7 @@ public class FolderTest extends BaseTest {
                 .clickLogo();
 
         Allure.step("Expected result: the renamed Project is displayed");
-        Assert.assertEquals(folderStatusPageHeading, THIRD_FOLDER_NAME,
-                "The Folder name is not equal to " + THIRD_FOLDER_NAME);
+        Assert.assertEquals(folderStatusPageHeading, THIRD_FOLDER_NAME);
         Assert.assertTrue(renewHomePage.isItemExists(THIRD_FOLDER_NAME));
         Assert.assertTrue(renewHomePage.isItemDeleted(NEW_FOLDER_NAME));
     }

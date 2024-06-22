@@ -105,7 +105,7 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
         return addOrEditDescriptionButton.isEnabled();
     }
 
-    @Step("Clear previous description")
+    @Step("Clear 'Description' input field")
     public T clearDescription() {
         descriptionInput.clear();
 

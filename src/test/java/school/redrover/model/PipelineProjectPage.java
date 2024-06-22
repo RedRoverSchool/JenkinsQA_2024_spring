@@ -100,7 +100,7 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
 
     @Step("Click on the 'Configure' on sidebar")
     public PipelineConfigPage clickConfigureOnSidebar() {
-        sidebarConfigureButton.click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(sidebarConfigureButton)).click();
 
         return new PipelineConfigPage(getDriver());
     }

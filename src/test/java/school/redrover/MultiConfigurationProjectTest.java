@@ -16,20 +16,12 @@ import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
 import java.util.List;
-import java.util.Random;
 
 @Epic("Multi-configuration project")
 public class MultiConfigurationProjectTest extends BaseTest {
 
     private static final String PROJECT_NAME = "MCProject";
     private static final String FOLDER_NAME = "Folder_name";
-
-    private String generateRandomNumber() {
-        Random r = new Random();
-        int randomNumber = r.nextInt(100) + 1;
-        return String.valueOf(randomNumber);
-    }
-
 
     @Test
     @Story("US_03.004  Rename project")
@@ -45,7 +37,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickRenameButtonWhenRenamedViaDropdown(new MultiConfigurationProjectPage(getDriver()))
                 .getProjectName();
 
-        Allure.step("Expected result : Project name has  been changed .");
+        Allure.step("Expected result: Project name has been changed");
         Assert.assertEquals(newProjectName,
                 "Project " + PROJECT_NAME + addToProjectName,
                 "Project name has not been changed");
@@ -66,7 +58,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickSaveDescription()
                 .getDescriptionText();
 
-        Allure.step("Expected result :" + text + " has been added to description.");
+        Allure.step("Expected result: '{test}' has been added to description");
         Assert.assertEquals(description, text);
     }
 
@@ -91,7 +83,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickSaveDescription()
                 .getDescriptionText();
 
-        Allure.step("Expected result :  the description has been edited.");
+        Allure.step("Expected result: the description has been edited.");
         Assert.assertEquals(descriptionText, additionalText + text);
     }
 
@@ -110,7 +102,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickPreview()
                 .getPreviewText();
 
-        Allure.step("Expected result : the preview field contains the same text as in the description field . ");
+        Allure.step("Expected result: the preview field contains the same text as in the description field");
         Assert.assertEquals(previewText, text);
     }
 
@@ -131,7 +123,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickLogo()
                 .getItemList();
 
-        Allure.step("Expected result : the list of items on the Dashboard contains the project as wel as it's copy .");
+        Allure.step("Expected result: the list of items on the Dashboard contains the project and it's copy");
         Assert.assertTrue(projectList.contains(newProjectName) && projectList.contains(PROJECT_NAME));
     }
 
@@ -155,7 +147,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickSaveDescription()
                 .isDescriptionEmpty();
 
-        Allure.step("Expected result : the description field is empty. ");
+        Allure.step("Expected result: the description field is empty");
         Assert.assertTrue(isDescriptionDeleted);
     }
 
@@ -188,7 +180,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .hoverOverToggleSwitch()
                 .getToggleTooltipText();
 
-        Allure.step("Expected result : 'Enable or disable the current project' text has been appeared.");
+        Allure.step("Expected result : 'Enable or disable the current project' tooltip present");
         Assert.assertEquals(toggleTooltipText, "Enable or disable the current project");
     }
 
@@ -205,7 +197,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickDeleteOnSidebar()
                 .getYesButtonColorDeletingViaSidebar();
 
-        Allure.step("Expected result : 'Yes' button color is red (#e6001f).");
+        Allure.step("Expected result: 'Yes' button color is red (#e6001f)");
         Assert.assertEquals(actualYesButtonColor, expectedColorNone);
     }
 
@@ -224,7 +216,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         boolean isErrorMessageCorrect = createNewItemPage.getErrorMessageEmptyName().contains(errorMessage);
         boolean isCanNotPressOkButton = createNewItemPage.isOkButtonNotActive();
 
-        Allure.step("Expected result : 'This field cannot be empty' error message has appeared and 'OK' button is not active.");
+        Allure.step("Expected result: 'This field cannot be empty' error message has appeared and 'OK' button is not active.");
         Assert.assertTrue(isErrorMessageCorrect && isCanNotPressOkButton);
     }
 
@@ -240,7 +232,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickLogo()
                 .getItemList();
 
-        Allure.step("Expected result : the list of items on the Dashboard contains the project '" + PROJECT_NAME + "'");
+        Allure.step("Expected result: the list of items on the Dashboard contains the created project");
         Assert.assertTrue(projectNameList.contains(PROJECT_NAME));
     }
 
@@ -260,7 +252,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickLogo()
                 .getItemList();
 
-        Allure.step("Expected result :the list of items on the Dashboard contains the project with new name, but doesn't contain old project");
+        Allure.step("Expected result: the list of items on the Dashboard contains the renamed project");
         Assert.assertTrue(itemList.contains(newProjectName));
     }
 
@@ -278,7 +270,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickYesWhenDeletedItemOnHomePage()
                 .getItemList();
 
-        Allure.step("Expected result :the list of items on the Dashboard doesn't contain deleted project.");
+        Allure.step("Expected result: the list of items on the Dashboard doesn't contain deleted project");
         Assert.assertListNotContainsObject(itemsList, PROJECT_NAME, "Project not deleted");
     }
 
@@ -298,7 +290,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickMoveButtonWhenMovedViaDropdown(new MultiConfigurationProjectPage(getDriver()))
                 .isProjectInsideFolder(PROJECT_NAME, folderName);
 
-        Allure.step("Expected result : the project is inside of the folder");
+        Allure.step("Expected result: the project is inside of the folder");
         Assert.assertTrue(isProjectInsideFolder);
     }
 
@@ -315,7 +307,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickYesWhenDeletedItemOnHomePage()
                 .isItemDeleted(PROJECT_NAME);
 
-        Allure.step("Expected result :the list of items on the Dashboard doesn't contain deleted project.");
+        Allure.step("Expected result: the list of items on the Dashboard doesn't contain deleted project");
         Assert.assertTrue(isProjectDeleted);
     }
 
@@ -323,10 +315,10 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Story("US_03.006  Edit configuration")
     @Description("Add discard old builds configurations to project")
     public void testAddDiscardOldBuildsConfigurationsToProject() {
-        final String daysToKeep = generateRandomNumber();
-        final String numToKeep = generateRandomNumber();
-        final String artifactDaysToKeep = generateRandomNumber();
-        final String artifactNumToKeep = generateRandomNumber();
+        final String daysToKeep = "12";
+        final String numToKeep = "34";
+        final String artifactDaysToKeep = "56";
+        final String artifactNumToKeep = "78";
 
         TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
 
@@ -344,7 +336,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickAdvancedButton()
                 .getDiscardOldBuildsListText();
 
-        Allure.step("Expected result : Values of discard old builds parameters are the same as entered");
+        Allure.step("Expected result: Values of discard old builds parameters are the same as entered");
         Assert.assertEquals(
                 discardOldBuildsList,
                 List.of(daysToKeep, numToKeep, artifactDaysToKeep, artifactNumToKeep));
@@ -362,12 +354,11 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .getHeader()
                 .pressEnterOnSearchField();
 
-        String currentUrl = searchResultPage.getCurrentUrl();
-        String searchResult = searchResultPage.getTextFromMainPanel();
+        Allure.step("Expected result: Project found");
+        Assert.assertTrue(searchResultPage.getTextFromMainPanel().contains(PROJECT_NAME));
 
-        Allure.step("Expected results :1 - the main panel of the page , we have been redirected to, contains '" + PROJECT_NAME + "'," +
-                                            "2 - it's URL contains '" + PROJECT_NAME +"'.");
-        Assert.assertTrue(currentUrl.contains(PROJECT_NAME) && searchResult.contains(PROJECT_NAME));
+        Allure.step("Expected result: Page URL contains project name");
+        Assert.assertTrue(searchResultPage.getCurrentUrl().contains(PROJECT_NAME));
     }
 
     @Test
@@ -384,7 +375,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickLogo()
                 .getDisabledProjectListText();
 
-        Allure.step("Expected result : the disabled project is marked by specific icon on dashboard");
+        Allure.step("Expected result: the disabled project is marked by specific icon on dashboard");
         Assert.assertTrue(disabledProjectList.contains(PROJECT_NAME));
     }
 
@@ -409,7 +400,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickLogo()
                 .isItemDeleted(PROJECT_NAME);
 
-        Allure.step("Expected result : the project is moved from dashboard to the folder '" + FOLDER_NAME +"' ");
+        Allure.step("Expected result: the project is moved to the folder '" + FOLDER_NAME + "' ");
         Assert.assertTrue(isProjectMoved && isProjectDeleted);
     }
 
@@ -441,6 +432,6 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .getToggleStatusMessage();
 
         Allure.step("Expected result : 'Enabled' message has appeared");
-        Assert.assertTrue(enableMessage.matches("Enabled"), "Substring not found");
+        Assert.assertEquals(enableMessage, "Enabled");
     }
 }

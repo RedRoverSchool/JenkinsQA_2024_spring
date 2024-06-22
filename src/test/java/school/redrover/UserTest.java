@@ -24,7 +24,6 @@ public class UserTest extends BaseTest {
 
     @Test
     public void testCheckUserID() {
-
         String userID = new HomePage(getDriver())
                 .getHeader()
                 .clickUserNameOnHeader()
@@ -60,7 +59,6 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(userFullName, "User");
     }
 
-    @Ignore
     @Test
     public void testUsersSortingByName() {
 
@@ -77,7 +75,6 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(names, names.stream().sorted(Comparator.reverseOrder()).toList());
     }
 
-    @Ignore
     @Test
     public void testUsersSortingByUserID() {
 

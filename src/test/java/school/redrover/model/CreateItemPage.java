@@ -25,5 +25,4 @@ public class CreateItemPage extends BasePage<CreateItemPage> {
     public String getErrorMessageText() {
         return errorMessage.getText();
     }
-
 }

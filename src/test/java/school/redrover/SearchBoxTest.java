@@ -55,11 +55,8 @@ public class SearchBoxTest extends BaseTest {
     }
 
     @Test
-    public void testSearchWithCaseSensitiveOn() {
-        new HomePage(getDriver())
-                .getHeader().goToAdminConfigurePage()
-                .turnInsensitiveSearch(false)
-                .clickApplyButton();
+    public void testSearchWithInsensitiveSearchOff() {
+        TestUtils.setInsensitiveSearchUserSetting(this, false);
 
         final String searchResult1 = new HomePage(getDriver())
                 .getHeader().typeSearchQueryPressEnter(UPPER_CASE_INPUT)
@@ -72,11 +69,8 @@ public class SearchBoxTest extends BaseTest {
     }
 
     @Test
-    public void testSearchWithCaseSensitiveOff() {
-        new HomePage(getDriver())
-                .getHeader().goToAdminConfigurePage()
-                .turnInsensitiveSearch(true)
-                .clickApplyButton();
+    public void testSearchWithInsensitiveSearchOn() {
+        TestUtils.setInsensitiveSearchUserSetting(this, true);
 
         final String searchResult1 = new HomePage(getDriver())
                 .getHeader().typeSearchQueryPressEnter(UPPER_CASE_INPUT)

@@ -833,7 +833,7 @@ public class PipelineTest extends BaseTest {
 
     @Test
     @Story("US_02.004 Verify the Pipeline configuration")
-    @Description("02.004.14 Verify that Discard OldB uilds By Count option is saved")
+    @Description("02.004.14 Verify that Discard Old Builds By Count option is saved")
     public void testDiscardOldBuildsByCount() {
         PipelineProjectPage pipelineProjectPage = new HomePage(getDriver())
                 .clickCreateAJob()
