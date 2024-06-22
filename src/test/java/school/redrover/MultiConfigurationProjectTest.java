@@ -216,7 +216,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         boolean isErrorMessageCorrect = createNewItemPage.getErrorMessageEmptyName().contains(errorMessage);
         boolean isCanNotPressOkButton = createNewItemPage.isOkButtonNotActive();
 
-        Allure.step("Expected result: 'This field cannot be empty' error message has appeared and 'OK' button is not active.");
+        Allure.step("Expected result: Error message has appeared and 'OK' button is not active.");
         Assert.assertTrue(isErrorMessageCorrect && isCanNotPressOkButton);
     }
 
@@ -349,10 +349,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         TestUtils.createMultiConfigurationProject(this, PROJECT_NAME);
 
         SearchResultPage searchResultPage = new HomePage(getDriver())
-                .getHeader()
-                .typeTextToSearchField(PROJECT_NAME)
-                .getHeader()
-                .pressEnterOnSearchField();
+                .getHeader().typeSearchQueryAndPressEnter(PROJECT_NAME);
 
         Allure.step("Expected result: Project found");
         Assert.assertTrue(searchResultPage.getTextFromMainPanel().contains(PROJECT_NAME));

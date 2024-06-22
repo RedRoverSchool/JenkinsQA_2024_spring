@@ -1,9 +1,11 @@
 package school.redrover;
 
 import io.qameta.allure.Allure;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.CreateUserPage;
 import school.redrover.model.HomePage;
@@ -13,8 +15,8 @@ import school.redrover.runner.BaseTest;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.UUID;
 
+@Epic("User")
 public class UserTest extends BaseTest {
 
     private static final String USER_NAME = "TestUser";
@@ -23,18 +25,23 @@ public class UserTest extends BaseTest {
     private static final String EMAIL_ADDRESS = "test@gmail.com";
 
     @Test
-    public void testCheckUserID() {
+    @Story("US_13.001  Create User")
+    @Description("Check current Jenkins user ID")
+    public void testCheckCurrentUserID() {
         String userID = new HomePage(getDriver())
                 .getHeader()
                 .clickUserNameOnHeader()
                 .getUserID();
 
+        Allure.step("Expected result:  Jenkins user ID is present on page");
         Assert.assertEquals(userID, "Jenkins User ID: admin");
     }
 
-    @Test(dependsOnMethods = "testCheckUserID")
+    @Test
+    @Story("US_13.001  Create User")
+    @Description("Create user via manage jenkins page")
     public void testCreateUserViaManageJenkins() {
-        List<String> userName = new HomePage(getDriver())
+        List<String> userNamesList = new HomePage(getDriver())
                 .clickManageJenkins()
                 .clickUsersLink()
                 .clickCreateUser()
@@ -44,106 +51,121 @@ public class UserTest extends BaseTest {
                 .setFullName(FULL_NAME)
                 .setEmailAddress(EMAIL_ADDRESS)
                 .clickCreateUser()
-                .getUsersList();
+                .getUserIDList();
 
-        Assert.assertTrue(userName.contains("TestUser"));
+        Allure.step("Expected result:  User is present on page");
+        Assert.assertTrue(userNamesList.contains("TestUser"));
     }
 
     @Test(dependsOnMethods = "testCreateUserViaManageJenkins")
+    @Story("US_13.008  Search")
+    @Description("Check search box dropdown hints for users")
     public void testSearchForUserThroughSearchBar() {
 
         String userFullName = new HomePage(getDriver())
                 .getHeader().typeTextToSearchField(FULL_NAME)
                 .getHeader().getSearchFieldText();
 
+        Allure.step("Expected result:  User hint is present into search box dropdown");
         Assert.assertEquals(userFullName, "User");
     }
 
-    @Test
-    public void testUsersSortingByName() {
-
+    @Test(dependsOnMethods = "testRedirectToUserPage")
+    @Story("US_13.006  Sorting")
+    @Description("Check that users can be sorted descending by full name clicking 'Name' column header")
+    public void testUsersSortingByFullNameDesc() {
         List<String> names = new HomePage(getDriver())
                 .clickManageJenkins()
                 .clickUsersLink()
-                .createUserWithRandomData()
-                .createUserWithRandomData()
-                .createUserWithRandomData()
-                .createUserWithRandomData()
                 .clickColumnNameHeader()
-                .getUserNames();
+                .getUserNamesList();
 
+        Allure.step("Expected result:  Users are sorted descending by full name");
         Assert.assertEquals(names, names.stream().sorted(Comparator.reverseOrder()).toList());
     }
 
-    @Test
-    public void testUsersSortingByUserID() {
+    @Test(dependsOnMethods = "testRedirectToUserPage")
+    @Story("US_13.006  Sorting")
+    @Description("Check that users can be sorted descending by userID clicking 'User ID' column header")
+    public void testUsersSortingByUserIDDesc() {
 
         List<String> userIDList = new HomePage(getDriver())
                 .clickManageJenkins()
                 .clickUsersLink()
-                .createUserWithRandomData()
-                .createUserWithRandomData()
-                .createUserWithRandomData()
-                .createUserWithRandomData()
                 .clickColumnUserIDHeader()
                 .getUserIDList();
 
+        Allure.step("Expected result:  Users are sorted descending by userID");
         Assert.assertEquals(userIDList, userIDList.stream().sorted(Comparator.reverseOrder()).toList());
-    }
-
-    public String randomString() {
-        return UUID.randomUUID()
-                .toString()
-                .substring(0, 7);
-    }
-
-    public String randomEmail() {
-        return randomString() + "@" + randomString() + ".com";
     }
 
     @DataProvider(name = "usersCreateDataProvider")
     public Object[][] usersCreateDataProvider() {
         return new Object[][]{
-                {"Ivan", randomString(), randomString(), randomEmail()},
-                {"Maria", randomString(), randomString(), randomEmail()},
-                {"Sofia", randomString(), randomString(), randomEmail()},
-                {"Irina", randomString(), randomString(), randomEmail()}
+                {"elena", "p1elena", "elena elena", "m4Elena@domain.com"},
+                {"maria", "p2maria", "maria maria", "m1Maria@domain.com"},
+                {"sofia", "p3sofia", "sofia sofia", "m2Sofia@domain.com"},
+                {"irina", "p4irina", "irina irina", "m3Irina@domain.com"}
         };
     }
 
     @Test(dataProvider = "usersCreateDataProvider")
+    @Story("US_13.001  Create User")
+    @Description("Check redirect to user page")
     public void testRedirectToUserPage(String username, String password, String fullName, String email) {
 
         String currentUrl = new HomePage(getDriver())
                 .clickManageJenkins()
                 .clickUsersLink()
-                .createUser(username, password, fullName, email)
-                .clickLogo()
-                .clickPeopleOnSidebar()
+                .clickCreateUser()
+                .typeUserName(username)
+                .setPassword(password)
+                .setConfirmPassword(password)
+                .setFullName(fullName)
+                .setEmailAddress(email)
+                .clickCreateUser()
                 .clickUser(username)
                 .getCurrentUrl();
 
-        Assert.assertTrue(currentUrl.contains(username.toLowerCase()));
+        Allure.step("Expected result:  Page URL contains username");
+        Assert.assertTrue(currentUrl.contains(username));
     }
 
-    @Test
-    public void testErrorMessageForEmptyField() {
+
+    @Test(dependsOnMethods = "testRedirectToUserPage")
+    @Story("US_13.001  Create User")
+    @Description("Check create user form fields validation error messages for empty input")
+    public void testErrorMessageForEmptyFields() {
 
         new HomePage(getDriver())
                 .clickManageJenkins()
                 .clickUsersLink()
-                .createUser("", "", "", "");
+                .clickCreateUser()
+                .typeUserName("")
+                .setPassword("")
+                .setConfirmPassword("")
+                .setFullName("")
+                .setEmailAddress("")
+                .clickCreateUser();
 
         CreateUserPage createUserPage = new CreateUserPage(getDriver());
 
+        Allure.step("Expected result:  Username error message");
         Assert.assertNotNull(createUserPage.getUsernameErrorMsgField());
-        Assert.assertNotNull(createUserPage.getPasswordErrorMsgField());
-        Assert.assertNotNull(createUserPage.getFullNameErrorMsgField());
-        Assert.assertNotNull(createUserPage.getEmailErrorMsgField());
 
+        Allure.step("Expected result:  Password error message");
+        Assert.assertNotNull(createUserPage.getPasswordErrorMsgField());
+
+        Allure.step("Expected result:  Full name error message");
+        Assert.assertNotNull(createUserPage.getFullNameErrorMsgField());
+
+        Allure.step("Expected result:  Email error message");
+        Assert.assertNotNull(createUserPage.getEmailErrorMsgField());
     }
 
     @Test
+    @Story("US_13.007  Remotely trigger a job for current user")
+    @Description("Remotely trigger a Freestyle job for current user")
     public void testFreestyleJobRemoteTriggering() {
         final String projectName = "Project1";
         final String tokenName = "tokenForProject1";

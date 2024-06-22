@@ -77,7 +77,7 @@ public class PipelineTest extends BaseTest {
     @Description("Find created project by partial name, using 'Search' input field")
     public void testFindProjectByPartialNameMatch() {
         List<String> searchResult = new HomePage(getDriver())
-                .getHeader().typeSearchQueryPressEnter("First")
+                .getHeader().typeSearchQueryAndPressEnter("First")
                 .getSearchResult();
 
         Allure.step("Expected result: Searched Project is displayed");

@@ -1,21 +1,19 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class UsersPage extends BasePage<UsersPage> {
 
     @FindBy(css = "[href='addUser']")
     private WebElement createUserLink;
-
-    @FindBy(css = "[class*='jenkins-table__link']")
-    private List<WebElement> usersList;
 
     @FindBy(css = "thead th:nth-child(3)>a")
     private WebElement columnNameHeader;
@@ -33,80 +31,43 @@ public class UsersPage extends BasePage<UsersPage> {
         super(driver);
     }
 
+    @Step("Click 'Create User' link")
     public CreateUserPage clickCreateUser() {
         createUserLink.click();
 
         return new CreateUserPage(getDriver());
     }
 
-    public List<String> getUsersList() {
-        return usersList.stream()
-                .map(WebElement::getText)
-                .toList();
-    }
-
-    public UsersPage createUserWithRandomData() {
-        String password = randomString();
-        clickCreateUser()
-                .typeUserName(randomString())
-                .setPassword(password)
-                .setConfirmPassword(password)
-                .setFullName(randomString())
-                .setEmailAddress(randomEmail())
-                .clickCreateUser();
-
-        return this;
-    }
-
-    public String randomString() {
-        return UUID.randomUUID()
-                .toString()
-                .substring(0, 7);
-    }
-
-    public String randomEmail() {
-        return randomString() + "@" + randomString() + ".com";
-    }
-
+    @Step("Click 'Name' column header")
     public UsersPage clickColumnNameHeader() {
         columnNameHeader.click();
 
         return this;
     }
 
+    @Step("Click 'User ID' column header")
     public UsersPage clickColumnUserIDHeader() {
         columnUserIDHeader.click();
 
         return this;
     }
 
-    public List<String> getUserNames() {
-        List<String> names = new ArrayList<>();
-        for (WebElement element : userNameList) {
-            names.add(element.getText());
-        }
+    @Step("Click '{username}' user")
+    public UserPage clickUser(String username) {
+        WebElement name = getDriver().findElement(By.cssSelector("td > [href*='" + username + "']"));
+        new Actions(getDriver())
+                .moveToElement(name)
+                .click()
+                .perform();
 
-        return names;
+        return new UserPage(getDriver());
+    }
+
+    public List<String> getUserNamesList() {
+        return userNameList.stream().map(WebElement::getText).toList();
     }
 
     public List<String> getUserIDList() {
-
-        return userIDList
-                .stream()
-                .map(WebElement::getText)
-                .toList();
-    }
-
-    public UsersPage createUser(String username, String password, String fullName, String email) {
-
-        clickCreateUser()
-                .typeUserName(username)
-                .setPassword(password)
-                .setConfirmPassword(password)
-                .setFullName(fullName)
-                .setEmailAddress(email)
-                .clickCreateUser();
-
-        return this;
+        return userIDList.stream().map(WebElement::getText).toList();
     }
 }

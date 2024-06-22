@@ -132,7 +132,8 @@ public abstract class BaseTest {
                     "png");
         }
 
-        if (methodsOrder.isGroupFinished(method) && !(!ProjectUtils.isServerRun() && !testResult.isSuccess() && !ProjectUtils.closeBrowserIfError())) {
+        boolean shouldStop = ProjectUtils.isServerRun() || testResult.isSuccess() || ProjectUtils.closeBrowserIfError();
+        if (methodsOrder.isGroupFinished(method) && shouldStop) {
             stopDriver();
         }
 

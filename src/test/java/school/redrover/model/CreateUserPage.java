@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -41,42 +42,49 @@ public class CreateUserPage extends BasePage<CreateUserPage> {
         super(driver);
     }
 
-    public CreateUserPage typeUserName(String userName) {
-        userNameField.sendKeys(userName);
+    @Step("Type '{username}' to username field")
+    public CreateUserPage typeUserName(String username) {
+        userNameField.sendKeys(username);
 
         return new CreateUserPage(getDriver());
     }
 
+    @Step("Clear user name field")
     public CreateUserPage clearUserNameField() {
         userNameField.clear();
 
         return new CreateUserPage(getDriver());
     }
 
+    @Step("Type '{password}' to password field")
     public CreateUserPage setPassword(String password) {
         password1Input.sendKeys(password);
 
         return new CreateUserPage(getDriver());
     }
 
+    @Step("Type '{confirmPassword}' to confirm password field")
     public CreateUserPage setConfirmPassword(String confirmPassword) {
         password2Input.sendKeys(confirmPassword);
 
         return new CreateUserPage(getDriver());
     }
 
+    @Step("Type '{fullName}' to full name field")
     public CreateUserPage setFullName(String fullName) {
         fullNameInput.sendKeys(fullName);
 
         return new CreateUserPage(getDriver());
     }
 
+    @Step("Type '{emailAddress}' to email field")
     public CreateUserPage setEmailAddress(String emailAddress) {
         emailAddressInput.sendKeys(emailAddress);
 
         return new CreateUserPage(getDriver());
     }
 
+    @Step("Click 'Create User' button")
     public UsersPage clickCreateUser() {
         createUserButton.click();
 

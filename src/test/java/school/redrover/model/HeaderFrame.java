@@ -57,13 +57,14 @@ public class HeaderFrame<T extends BasePage<T>> extends BaseFrame<T> {
         super(driver, returnPage);
     }
 
+    @Step("Click username")
     public UserPage clickUserNameOnHeader() {
         userNameOnHeader.click();
 
         return new UserPage(getDriver());
     }
 
-    @Step("Type a text into Search field in a header")
+    @Step("Type '{text}' to header Search field")
     public T typeTextToSearchField(String text) {
         searchBox.sendKeys(text);
 
@@ -77,8 +78,8 @@ public class HeaderFrame<T extends BasePage<T>> extends BaseFrame<T> {
         return new SearchResultPage(getDriver());
     }
 
-    @Step("Type text for search to input field and press 'Enter'")
-    public SearchResultPage typeSearchQueryPressEnter(String searchQuery) {
+    @Step("Type '{searchQuery}' for search to input field and press 'Enter'")
+    public SearchResultPage typeSearchQueryAndPressEnter(String searchQuery) {
         searchBox.sendKeys(searchQuery, Keys.ENTER);
         return new SearchResultPage(getDriver());
     }
@@ -93,7 +94,7 @@ public class HeaderFrame<T extends BasePage<T>> extends BaseFrame<T> {
         return getWait2().until(ExpectedConditions.visibilityOf(searchFieldText)).getText();
     }
 
-    @Step("Type Project {projectName} to the Header Search box and click 'Enter'")
+    @Step("Type '{projectName}' to the Header Search box and click 'Enter'")
     public <ProjectPage extends BaseProjectPage<?>> ProjectPage typeProjectNameToSearchInputFieldAndPressEnter(
             String projectName, ProjectPage projectPage) {
         searchBox.sendKeys(projectName + Keys.ENTER);

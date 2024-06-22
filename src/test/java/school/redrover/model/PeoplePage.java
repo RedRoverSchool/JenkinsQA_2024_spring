@@ -59,23 +59,28 @@ public class PeoplePage extends BasePage<PeoplePage> {
         super(driver);
     }
 
+    @Step("Click '{userID}' user")
     public UserPage clickUser(String userID) {
         getDriver().findElement(By.cssSelector("td > [href*='" + userID.toLowerCase() + "']")).click();
+
         return new UserPage(getDriver());
     }
 
     public PeoplePage clickSmallIconButton() {
         smallIconButton.click();
+
         return this;
     }
 
     public PeoplePage clickMediumIconButton() {
         mediumIconButton.click();
+
         return this;
     }
 
     public PeoplePage clickLargeIconButton() {
         largeIconButton.click();
+
         return this;
     }
 

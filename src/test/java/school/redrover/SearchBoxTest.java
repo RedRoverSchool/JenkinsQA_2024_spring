@@ -18,7 +18,7 @@ public class SearchBoxTest extends BaseTest {
     @Test
     public void testSearchWithValidData() {
         String systemPageTitle = new HomePage(getDriver())
-                .getHeader().typeSearchQueryPressEnter("config")
+                .getHeader().typeSearchQueryAndPressEnter("config")
                 .getHeadingText();
 
         Assert.assertEquals(systemPageTitle, "System");
@@ -43,8 +43,7 @@ public class SearchBoxTest extends BaseTest {
         folders.forEach(this::createFolder);
 
         List<String> searchResult = new HomePage(getDriver())
-                .getHeader().typeTextToSearchField(firstLetterOfFolderName)
-                .getHeader().pressEnterOnSearchField()
+                .getHeader().typeSearchQueryAndPressEnter(firstLetterOfFolderName)
                 .getSearchResult();
 
         Assert.assertTrue(searchResult.containsAll(folders), "Folders aren't found");
@@ -59,10 +58,10 @@ public class SearchBoxTest extends BaseTest {
         TestUtils.setInsensitiveSearchUserSetting(this, false);
 
         final String searchResult1 = new HomePage(getDriver())
-                .getHeader().typeSearchQueryPressEnter(UPPER_CASE_INPUT)
+                .getHeader().typeSearchQueryAndPressEnter(UPPER_CASE_INPUT)
                 .getNoMatchText();
         final String searchResult2 = new HomePage(getDriver())
-                .getHeader().typeSearchQueryPressEnter(LOWER_CASE_INPUT)
+                .getHeader().typeSearchQueryAndPressEnter(LOWER_CASE_INPUT)
                 .getMatchLogResult();
 
         Assert.assertFalse(searchResult1.matches(searchResult2));
@@ -73,10 +72,10 @@ public class SearchBoxTest extends BaseTest {
         TestUtils.setInsensitiveSearchUserSetting(this, true);
 
         final String searchResult1 = new HomePage(getDriver())
-                .getHeader().typeSearchQueryPressEnter(UPPER_CASE_INPUT)
+                .getHeader().typeSearchQueryAndPressEnter(UPPER_CASE_INPUT)
                 .getMatchLogResult();
         final String searchResult2 = new HomePage(getDriver())
-                .getHeader().typeSearchQueryPressEnter(LOWER_CASE_INPUT)
+                .getHeader().typeSearchQueryAndPressEnter(LOWER_CASE_INPUT)
                 .getMatchLogResult();
 
         Assert.assertTrue(searchResult1.matches(searchResult2));
@@ -102,7 +101,7 @@ public class SearchBoxTest extends BaseTest {
         final String searchingText = "ma";
 
         String searchResult = new HomePage(getDriver())
-                .getHeader().typeSearchQueryPressEnter(searchingText)
+                .getHeader().typeSearchQueryAndPressEnter(searchingText)
                 .getTextFromMainPanel();
 
         Assert.assertTrue(searchResult.contains(expectedResultText));
@@ -113,7 +112,7 @@ public class SearchBoxTest extends BaseTest {
         final String searchingText = "i";
 
         String resultHeading = new HomePage(getDriver())
-                .getHeader().typeSearchQueryPressEnter(searchingText)
+                .getHeader().typeSearchQueryAndPressEnter(searchingText)
                 .getMatchLogResult();
 
         String expectedSearchResult = "Search for '%s'".formatted(searchingText);

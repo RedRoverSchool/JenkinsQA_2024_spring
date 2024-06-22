@@ -277,7 +277,7 @@ public class NodesTest extends BaseTest {
                 .clickNode(NODE_NAME)
                 .clickDeleteAgent()
                 .clickYesButton()
-                .getHeader().typeSearchQueryPressEnter(NODE_NAME)
+                .getHeader().typeSearchQueryAndPressEnter(NODE_NAME)
                 .getNoMatchText();
 
         Allure.step("Expected result: Node '" + NODE_NAME + "' not found");
