@@ -111,12 +111,12 @@ public class HeaderFrame<T extends BasePage<T>> extends BaseFrame<T> {
                 .perform();
     }
 
-    @Step("Click 'MyViews' on the header dropdown menu")
-    public ViewAllPage clickMyViewsOnHeaderDropdown() {
+    @Step("Click 'My Views' on the header dropdown menu")
+    public ViewPage clickMyViewsOnHeaderDropdown() {
         clickChevronForOpenHeaderUsernameDropdown();
         myViewsOnDropdown.click();
 
-        return new ViewAllPage(getDriver());
+        return new ViewPage(getDriver());
     }
 
     public T clickWarningIcon() {

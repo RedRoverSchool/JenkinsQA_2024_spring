@@ -5,6 +5,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
@@ -21,6 +22,10 @@ public class DashboardTest extends BaseTest {
     private static final String MULTI_CONFIGURATION_PROJECT_NAME = "MCPN";
 
     private static final String VIEW_NAME = "RedRover";
+
+    private static final String VIEW_IN_PROGRESS = "in progress";
+
+    private static final String MY_VIEW_NAME = "EmployeeView";
 
     @Story("US_16.005 Sidebar Menu Menu Items")
     @Description("Check all Sidebar Menu Items exist")
@@ -239,15 +244,15 @@ public class DashboardTest extends BaseTest {
     }
 
 
-    @Story("US_16.002 Dashboard > View")
-    @Description("Create List View")
+    @Story("US_16.002 Create and edit View")
+    @Description("Create the 'List View'")
     @Test(dependsOnMethods = "testPipelineChevronMenu")
     public void testCreateListView() {
         String createdViewName = new HomePage(getDriver())
                 .clickPlusToCreateView()
-                .setViewName(VIEW_NAME)
+                .typeViewName(VIEW_NAME)
                 .clickListViewRadioButton()
-                .clickCreateViewButton()
+                .clickCreateButtonForListView()
                 .clickOkButton()
                 .getActiveViewName();
 
@@ -255,10 +260,10 @@ public class DashboardTest extends BaseTest {
         Assert.assertEquals(createdViewName, VIEW_NAME);
     }
 
-    @Story("US_16.002 Dashboard > View")
+    @Story("US_16.002 Create and edit View")
     @Description("Verify all items added to New List View")
     @Test(dependsOnMethods =
-        {"testCreateListView", "testPipelineChevronMenu", "testMultiConfigurationProjectChevronMenu"})
+            {"testCreateListView", "testPipelineChevronMenu", "testMultiConfigurationProjectChevronMenu"})
     public void testAddItemsToView() {
 
         List<String> projectNameList = new HomePage(getDriver())
@@ -267,7 +272,7 @@ public class DashboardTest extends BaseTest {
                 .checkProjectForAddingToView(PIPELINE_NAME)
                 .checkProjectForAddingToView(MULTI_CONFIGURATION_PROJECT_NAME)
                 .clickOkButton()
-                .getProjectNames();
+                .getItemList();
 
         Allure.step("Expected results: " + PIPELINE_NAME + " and " + MULTI_CONFIGURATION_PROJECT_NAME
                 + " Job items added to New List View");
@@ -276,8 +281,8 @@ public class DashboardTest extends BaseTest {
                 List.of(MULTI_CONFIGURATION_PROJECT_NAME, PIPELINE_NAME));
     }
 
-    @Story("US_16.002 Dashboard > View")
-    @Description("Create My View")
+    @Story("US_16.002 Create and edit View")
+    @Description("Create the 'My View'")
     @Test
     public void testCreateMyView() {
         String newViewName =
@@ -287,16 +292,16 @@ public class DashboardTest extends BaseTest {
                         .selectMultiConfigurationAndClickOk()
                         .clickLogo()
                         .clickPlusToCreateView()
-                        .setViewName(VIEW_NAME)
+                        .typeViewName(VIEW_NAME)
                         .clickMyViewRadioButton()
-                        .clickCreateMyView()
-                        .getNewViewName();
+                        .clickCreateButtonForMyView()
+                        .getActiveViewName();
 
         Allure.step("Expected results: New Created My View name is " + VIEW_NAME);
         Assert.assertEquals(newViewName, VIEW_NAME);
     }
 
-    @Story("US_16.002 Dashboard > View")
+    @Story("US_16.002 Create and edit View")
     @Description("Check background of active, hover and inactive Views")
     @Test(dependsOnMethods = "testCreateMyView")
     public void testBackgroundColorOfViewName() {
@@ -336,7 +341,7 @@ public class DashboardTest extends BaseTest {
         }
     }
 
-    @Story("US_16.008 Start Page")
+    @Story("US_16.001 Start Page")
     @Description("Verify Start Page Header")
     @Test
     public void testStartPageHeading() {
@@ -369,5 +374,101 @@ public class DashboardTest extends BaseTest {
                 + " and new text to change description is " + expectedLinkText);
         Assert.assertEquals(actualDescription, expectedDescription);
         Assert.assertEquals(actualLinkText, expectedLinkText);
+    }
+
+    @Test
+    @Story("US_16.002 Create and edit View")
+    @Description("Go to 'My Views' from  username dropdown on header")
+    public void testGoToMyViewsFromUsernameDropdownOnHeader() {
+        String views = "My Views";
+
+        boolean textVisibility = new HomePage(getDriver())
+                .getHeader().clickMyViewsOnHeaderDropdown()
+                .isThereTextInBreadcrumbs(views);
+
+        Assert.assertTrue(textVisibility, "'My Views' didn't open");
+    }
+
+    @Test
+    @Story("US_16.002 Create and edit View")
+    @Description("Add column into 'List View' and check it")
+    public void testAddColumnIntoListView() {
+        final String visible = "visible";
+
+        TestUtils.createFolderProject(this, visible);
+
+        int numberOfColumns = new HomePage(getDriver())
+                .clickPlusToCreateView()
+                .typeViewName(VIEW_IN_PROGRESS)
+                .clickListViewRadioButton()
+                .clickCreateButtonForListView()
+                .clickCheckboxWithJobName(visible)
+                .clickAddColumn()
+                .selectAndClickOnColumnName("Project description")
+                .clickOkButton()
+                .clickLogo()
+                .clickViewName(VIEW_IN_PROGRESS)
+                .getSizeColumnHeaderList();
+
+        Allure.step("Expected result: Number of columns on dashboard table - 7");
+        Assert.assertEquals(numberOfColumns, 7, "Description column is not added");
+    }
+
+    @Ignore
+    @Test(dependsOnMethods = "testAddColumnIntoListView")
+    @Story("US_16.002 Create and edit View")
+    @Description("Change order of columns on dashboard table")
+    public void testChangeOrderOfColumns() {
+        List<String> columnNameText = new HomePage(getDriver())
+                .clickViewName(VIEW_IN_PROGRESS)
+                .clickEditViewOnSidebar()
+                .scrollToColumnName("Project description")
+                .drugAndDropDescriptionColumnToStatusColumn()
+                .clickOkButton()
+                .getColumnHeaderList();
+
+        Allure.step("Expected result: Column 'Project description' is a first on dashboard table");
+        Assert.assertEquals(columnNameText.get(0), "Description");
+    }
+
+    @Test
+    @Story("US_16.002 Create and edit View")
+    @Description("Check new column is added to the View Headline")
+    public void testAddColumnToView() {
+        final String pipelineName = "NewPipeline";
+        final List<String> expectedPipelineViewList =
+                List.of("S", "W", "Name" + "\n" + "  ↓",
+                        "Last Success", "Last Failure", "Last Duration", "Git Branches");
+
+        TestUtils.createPipelineProject(this, pipelineName);
+
+        List<String> actualPipelineViewList = new HomePage(getDriver())
+                .clickPlusToCreateView()
+                .typeViewName(MY_VIEW_NAME)
+                .clickListViewRadioButton()
+                .clickCreateButtonForListView()
+                .clickCheckboxWithJobName(pipelineName)
+                .scrollToOkButton()
+                .clickAddColumn()
+                .selectAndClickOnColumnName("Git Branches")
+                .clickOkButton()
+                .getColumnHeaderList();
+
+        Allure.step("Expected result: New column should be added to the view list");
+        Assert.assertEquals(actualPipelineViewList, expectedPipelineViewList);
+    }
+
+    @Test(dependsOnMethods = "testAddColumnToView")
+    @Story("US_16.002 Create and edit View")
+    @Description("Verify a View list does not contain recently deleted View name")
+    public void testDeleteView() {
+        int viewNameListSize = new HomePage(getDriver())
+                .clickViewName(MY_VIEW_NAME)
+                .clickDeleteViewOnSidebar()
+                .clickYesToConfirmDeletion()
+                .getSizeOfViewNameList();
+
+        Allure.step("Expected result:View name should be deleted from View List. Number of Viewes now - 2.");
+        Assert.assertEquals(viewNameListSize, 2);
     }
 }

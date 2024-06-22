@@ -6,7 +6,7 @@ import io.cucumber.java.en.When;
 import org.testng.Assert;
 
 import school.redrover.model.CreateNewItemPage;
-import school.redrover.model.CreateNewViewPage;
+import school.redrover.model.CreateViewPage;
 import school.redrover.model.FreestyleConfigPage;
 import school.redrover.model.FreestyleProjectPage;
 import school.redrover.model.HomePage;
@@ -38,7 +38,7 @@ public class ViewSteps {
 
     private OrganizationFolderProjectPage organizationFolderProjectPage;
 
-    private CreateNewViewPage createNewViewPage;
+    private CreateViewPage createViewPage;
 
     private ViewPage viewPage;
 
@@ -95,22 +95,22 @@ public class ViewSteps {
 
     @And("Click '+' to create New View")
     public void clickPlusToCreateNewView() {
-        createNewViewPage = homePage.clickPlusToCreateView();
+        createViewPage = homePage.clickPlusToCreateView();
     }
 
     @And("Type View name {string}")
     public void typeViewName(String name) {
-        createNewViewPage = createNewViewPage.setViewName(name);
+        createViewPage = createViewPage.typeViewName(name);
     }
 
     @And("Set View type as 'My View'")
     public void setViewTypeAsMyView() {
-        createNewViewPage = createNewViewPage.clickMyViewRadioButton();
+        createViewPage = createViewPage.clickMyViewRadioButton();
     }
 
     @And("Click Create button upon choosing My View")
     public void clickCreateButtonUponChoosingMyView() {
-        viewPage = createNewViewPage.clickCreateButtonUponChoosingMyView();
+        viewPage = createViewPage.clickCreateButtonForMyView();
     }
 
     @Then("Sorting column text is {string}")
@@ -120,6 +120,6 @@ public class ViewSteps {
 
     @Then("Sorted items by name in view list order should be:")
     public void assertProjectNamesListInViewOrder(List<String> expectedSortedItemsByNameList) {
-        Assert.assertEquals(viewPage.getProjectNames(), expectedSortedItemsByNameList);
+        Assert.assertEquals(viewPage.getItemList(), expectedSortedItemsByNameList);
     }
 }

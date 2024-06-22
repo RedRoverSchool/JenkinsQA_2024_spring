@@ -66,6 +66,7 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
         js.executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
     }
 
+    @Step("Check existence of text on breadcrumbs")
     public boolean isThereTextInBreadcrumbs(String text) {
         return getDriver().findElements(By.className("jenkins-breadcrumbs__list-item"))
                 .stream()
