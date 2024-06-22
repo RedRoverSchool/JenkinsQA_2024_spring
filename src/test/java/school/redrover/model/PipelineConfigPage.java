@@ -337,6 +337,7 @@ public class PipelineConfigPage extends BaseConfigPage<PipelineProjectPage, Pipe
 
     @Step("Click 'Use Groovy Sandbox' checkbox")
     public PipelineConfigPage clickOnUseGroovySandboxCheckbox() {
+        scrollIntoViewCenter(useGroovySandboxCheckbox);
         getWait5().until(ExpectedConditions.elementToBeClickable(useGroovySandboxCheckbox)).click();
 
         return new PipelineConfigPage(getDriver());

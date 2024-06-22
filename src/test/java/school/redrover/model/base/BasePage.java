@@ -103,10 +103,6 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block:'center'});", e);
     }
 
-    public void scrollIntoView(WebElement element) {
-        ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView(true);", element);
-    }
-
     public String getCurrentUrl() {
         return getDriver().getCurrentUrl();
     }
