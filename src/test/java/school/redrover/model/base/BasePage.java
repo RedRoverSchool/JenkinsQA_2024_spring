@@ -160,6 +160,7 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
         };
     }
 
+    @Step("Click on the 'Tutorial icon' in the header 'Search box'")
     public BasePage<T> openTutorial() {
         getWait5().until(ExpectedConditions.visibilityOf(tutorialIcon)).click();
 

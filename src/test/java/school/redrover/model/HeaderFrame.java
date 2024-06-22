@@ -71,19 +71,20 @@ public class HeaderFrame<T extends BasePage<T>> extends BaseFrame<T> {
         return getReturnPage();
     }
 
-    @Step("Click 'Enter' on the search field")
+    @Step("Press 'Enter' on the search field")
     public SearchResultPage pressEnterOnSearchField() {
         searchBox.sendKeys(Keys.ENTER);
 
         return new SearchResultPage(getDriver());
     }
 
-    @Step("Type '{searchQuery}' for search to input field and press 'Enter'")
+    @Step("Type '{searchQuery}' to the header 'Search box' and press 'Enter'")
     public SearchResultPage typeSearchQueryAndPressEnter(String searchQuery) {
         searchBox.sendKeys(searchQuery, Keys.ENTER);
         return new SearchResultPage(getDriver());
     }
 
+    @Step("Click first suggested variant in search box dropdown")
     public T chooseAndClickFirstSuggestListVariant() {
         getWait5().until(ExpectedConditions.visibilityOf(firstSuggestListVariant)).click();
 
@@ -94,7 +95,7 @@ public class HeaderFrame<T extends BasePage<T>> extends BaseFrame<T> {
         return getWait2().until(ExpectedConditions.visibilityOf(searchFieldText)).getText();
     }
 
-    @Step("Type '{projectName}' to the Header Search box and click 'Enter'")
+    @Step("Type '{projectName}' to the header 'Search box' and press 'Enter'")
     public <ProjectPage extends BaseProjectPage<?>> ProjectPage typeProjectNameToSearchInputFieldAndPressEnter(
             String projectName, ProjectPage projectPage) {
         searchBox.sendKeys(projectName + Keys.ENTER);
@@ -148,6 +149,7 @@ public class HeaderFrame<T extends BasePage<T>> extends BaseFrame<T> {
         return new AdminConfigurePage(getDriver());
     }
 
+    @Step("Click 'log out' header link")
     public SignInToJenkinsPage clickLogOut() {
         logOutIcon.click();
 

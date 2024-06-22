@@ -26,19 +26,6 @@ public class UserTest extends BaseTest {
 
     @Test
     @Story("US_13.001  Create User")
-    @Description("Check current Jenkins user ID")
-    public void testCheckCurrentUserID() {
-        String userID = new HomePage(getDriver())
-                .getHeader()
-                .clickUserNameOnHeader()
-                .getUserID();
-
-        Allure.step("Expected result:  Jenkins user ID is present on page");
-        Assert.assertEquals(userID, "Jenkins User ID: admin");
-    }
-
-    @Test
-    @Story("US_13.001  Create User")
     @Description("Create user via manage jenkins page")
     public void testCreateUserViaManageJenkins() {
         List<String> userNamesList = new HomePage(getDriver())

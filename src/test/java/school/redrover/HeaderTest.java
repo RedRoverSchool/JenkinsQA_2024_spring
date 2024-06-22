@@ -1,5 +1,6 @@
 package school.redrover;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
@@ -54,8 +55,35 @@ public class HeaderTest extends BaseTest {
     }
 
     @Test
+    @Story("US_14.007 Username on header")
+    @Description("Check user page redirection")
+    public void testCheckCurrentUserID() {
+        String userID = new HomePage(getDriver())
+                .getHeader()
+                .clickUserNameOnHeader()
+                .getUserID();
+
+        Allure.step("Expected result:  Jenkins user ID is present on page");
+        Assert.assertEquals(userID, "Jenkins User ID: admin");
+    }
+
+    @Test
+    @Story("US_14.007 Username on header")
+    @Description("Check 'My Views' page redirection from username dropdown")
+    public void testGoToMyViewsFromUsernameDropdown() {
+        String views = "My Views";
+
+        boolean textVisibility = new HomePage(getDriver())
+                .getHeader()
+                .clickMyViewsOnHeaderDropdown()
+                .isThereTextInBreadcrumbs(views);
+
+        Assert.assertTrue(textVisibility, "Page 'My Views' didn't open");
+    }
+
+    @Test
     @Story("US_14.005  Entrance to the user's account")
-    @Description("Check user logout")
+    @Description("Check user logout from header")
     public void testLogout() {
         String actualPageTitle = new HomePage(getDriver())
                 .getHeader()

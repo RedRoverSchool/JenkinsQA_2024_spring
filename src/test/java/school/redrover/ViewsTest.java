@@ -21,18 +21,11 @@ public class ViewsTest extends BaseTest {
     private static final String VIEW_NAME = "in progress";
     private static final String VISIBLE = "visible";
 
-    @Test
-    public void testGoToMyViewsFromUsernameDropdown() {
-        String views = "My Views";
 
-        boolean textVisibility = new HomePage(getDriver())
-                .getHeader().clickMyViewsOnHeaderDropdown()
-                .isThereTextInBreadcrumbs(views);
-
-        Assert.assertTrue(textVisibility, "'My Views' didn't open");
-    }
 
     @Test
+    @Story("")
+    @Description("")
     public void testDisplayViewWithListViewConstraints() {
         final String invisible = "invisible";
 
@@ -72,6 +65,8 @@ public class ViewsTest extends BaseTest {
 
 
     @Test
+    @Story("")
+    @Description("")
     public void testAddColumnIntoListView() {
 
         new HomePage(getDriver())
@@ -96,6 +91,8 @@ public class ViewsTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testAddColumnIntoListView")
+    @Story("")
+    @Description("")
     public void testChangeOrderOfColumns() {
 
         List<String> columnNameText = new HomePage(getDriver())
