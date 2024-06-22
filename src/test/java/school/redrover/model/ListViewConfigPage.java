@@ -14,17 +14,11 @@ public class ListViewConfigPage extends BasePage<ListViewConfigPage> {
     @FindBy(name = "Submit")
     private WebElement okButton;
 
-    @FindBy(css = "div.jenkins-dropdown button:last-child")
-    private WebElement projectDescriptionFromAddColumnDropdown;
-
     @FindBy(css = "[descriptorid$='DescriptionColumn'] .dd-handle")
     private WebElement projectDescriptionColumnHandle;
 
     @FindBy(css = "[descriptorid$='StatusColumn']")
     private WebElement statusColumn;
-
-    @FindBy(xpath = "//button[contains(text(),' Git Branches')]")
-    private WebElement gitBranchesColumn;
 
     public ListViewConfigPage(WebDriver driver) {
         super(driver);
@@ -85,13 +79,17 @@ public class ListViewConfigPage extends BasePage<ListViewConfigPage> {
     }
 
     @Step("Click and hold mouse cursor on column 'Project description' and move it to column 'Status'")
-    public ListViewConfigPage moveDescriptionColumnToStatusColumn() {
-        new Actions(getDriver())
-                .clickAndHold(projectDescriptionColumnHandle)
-                .moveToElement(statusColumn)
-                .release(statusColumn)
+    public ListViewConfigPage drugAndDropDescriptionColumnToStatusColumn() {
+        Actions actions = new Actions(getDriver());
+        actions.clickAndHold(projectDescriptionColumnHandle).moveByOffset(30, -100)
                 .perform();
 
+        actions.moveByOffset(100, -100).perform();
+        actions.release().perform();
+
+        new Actions(getDriver())
+                .dragAndDrop(projectDescriptionColumnHandle, statusColumn)
+                .perform();
         return this;
     }
 }

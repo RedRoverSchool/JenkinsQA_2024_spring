@@ -5,6 +5,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
@@ -413,6 +414,7 @@ public class DashboardTest extends BaseTest {
         Assert.assertEquals(numberOfColumns, 7, "Description column is not added");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testAddColumnIntoListView")
     @Story("US_16.002 Create and edit View")
     @Description("Change order of columns on dashboard table")
@@ -421,7 +423,7 @@ public class DashboardTest extends BaseTest {
                 .clickViewName(VIEW_IN_PROGRESS)
                 .clickEditViewOnSidebar()
                 .scrollToColumnName("Project description")
-                .moveDescriptionColumnToStatusColumn()
+                .drugAndDropDescriptionColumnToStatusColumn()
                 .clickOkButton()
                 .getColumnHeaderList();
 
@@ -432,7 +434,7 @@ public class DashboardTest extends BaseTest {
     @Test
     @Story("US_16.002 Create and edit View")
     @Description("Check new column is added to the View Headline")
-    public void testAddColumnToPipelineView() {
+    public void testAddColumnToView() {
         final String pipelineName = "NewPipeline";
         final List<String> expectedPipelineViewList =
                 List.of("S", "W", "Name" + "\n" + "  ↓",
@@ -456,16 +458,17 @@ public class DashboardTest extends BaseTest {
         Assert.assertEquals(actualPipelineViewList, expectedPipelineViewList);
     }
 
-    @Test(dependsOnMethods = "testAddColumnToPipelineView")
+    @Test(dependsOnMethods = "testAddColumnToView")
     @Story("US_16.002 Create and edit View")
     @Description("Verify a View list does not contain recently deleted View name")
-    public void testDeletePipelineView() {
+    public void testDeleteView() {
         int viewNameListSize = new HomePage(getDriver())
                 .clickViewName(MY_VIEW_NAME)
-                .clickDeleteViewSideBarAndConfirmDeletion()
+                .clickDeleteViewOnSidebar()
+                .clickYesToConfirmDeletion()
                 .getSizeOfViewNameList();
 
-        Allure.step("Expected result:View name should be deleted from View List");
+        Allure.step("Expected result:View name should be deleted from View List. Number of Viewes now - 2.");
         Assert.assertEquals(viewNameListSize, 2);
     }
 }

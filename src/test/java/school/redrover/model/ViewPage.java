@@ -33,9 +33,15 @@ public class ViewPage extends HomePage {
         return new ListViewConfigPage(getDriver());
     }
 
-    @Step("Click 'Delete View' link on the side bar menu")
-    public HomePage clickDeleteViewSideBarAndConfirmDeletion() {
+    @Step("Click 'Delete View' link on the sidebar menu")
+    public ViewPage clickDeleteViewOnSidebar() {
         deleteViewButton.click();
+
+        return this;
+    }
+
+    @Step("Click 'Yes' to confirm deletion")
+    public HomePage clickYesToConfirmDeletion() {
         getWait5().until(ExpectedConditions.elementToBeClickable(confirmButton)).click();
 
         return new HomePage(getDriver());
