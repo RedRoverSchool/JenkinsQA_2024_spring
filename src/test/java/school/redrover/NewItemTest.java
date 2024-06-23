@@ -7,7 +7,7 @@ import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import school.redrover.model.CreateItemPage;
+import school.redrover.model.CreateItemErrorPage;
 import school.redrover.model.CreateNewItemPage;
 import school.redrover.model.FreestyleConfigPage;
 import school.redrover.model.HomePage;
@@ -146,15 +146,15 @@ public class NewItemTest extends BaseTest {
     public void testCopyFromNotExistingJob() {
         final String notExistingName = "AAA";
 
-        CreateItemPage errorPage = new HomePage(getDriver())
+        CreateItemErrorPage errorPage = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName("someName")
                 .typeItemNameInCopyFrom(notExistingName)
-                .clickOkButton();
+                .clickOkButtonWhenError();
 
         Assert.assertTrue(errorPage.getCurrentUrl().endsWith("/createItem"));
-        Assert.assertEquals(errorPage.getPageHeaderText(), "Error");
-        Assert.assertEquals(errorPage.getErrorMessageText(), "No such job: " + notExistingName);
+        Assert.assertEquals(errorPage.getHeadingText(), "Error");
+        Assert.assertEquals(errorPage.getErrorText(), "No such job: " + notExistingName);
     }
 
     @DataProvider(name = "existingJobsNames")
@@ -180,12 +180,12 @@ public class NewItemTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(jobName)
                 .clickProjectType(type)
-                .clickOkButton()
+                .clickOkButtonWhenError()
                 .clickLogo()
                 .clickNewItem()
                 .typeItemName(jobName + "Copy")
                 .typeItemNameInCopyFrom(jobName)
-                .clickOkButton()
+                .clickOkButtonWhenError()
                 .clickLogo();
 
         Integer quantityItemsWithCopies = new HomePage(getDriver())
@@ -257,7 +257,7 @@ public class NewItemTest extends BaseTest {
                 .clickItemOption(projectType, itemOptionIndex)
                 .isAttributeAriaChecked(projectType, itemOptionIndex);
         String currentUrl = new CreateNewItemPage(getDriver())
-                .clickOkButton()
+                .clickOkButtonWhenError()
                 .getCurrentUrl();
         String pageHeading = new FreestyleConfigPage(getDriver())
                 .clickSaveButton()
