@@ -5,7 +5,6 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
@@ -414,7 +413,6 @@ public class DashboardTest extends BaseTest {
         Assert.assertEquals(numberOfColumns, 7, "Description column is not added");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testAddColumnIntoListView")
     @Story("US_16.002 Create and edit View")
     @Description("Change order of columns on dashboard table")
@@ -423,7 +421,7 @@ public class DashboardTest extends BaseTest {
                 .clickViewName(VIEW_IN_PROGRESS)
                 .clickEditViewOnSidebar()
                 .scrollToColumnName("Project description")
-                .drugAndDropDescriptionColumnToStatusColumn()
+                .dragAndDropDescriptionColumnToStatusColumn()
                 .clickOkButton()
                 .getColumnHeaderList();
 

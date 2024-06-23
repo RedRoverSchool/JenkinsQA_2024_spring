@@ -72,24 +72,24 @@ public class ListViewConfigPage extends BasePage<ListViewConfigPage> {
 
     @Step("Scroll to column name '{columnName}'")
     public ListViewConfigPage scrollToColumnName(String columnName) {
-        scrollToElement(getDriver().findElement(By.xpath(
+        scrollIntoViewCenter(getDriver().findElement(By.xpath(
                 "//div[contains(text(),'" + columnName + "')]")));
-
         return this;
     }
 
     @Step("Click and hold mouse cursor on column 'Project description' and move it to column 'Status'")
-    public ListViewConfigPage drugAndDropDescriptionColumnToStatusColumn() {
-        Actions actions = new Actions(getDriver());
-        actions.clickAndHold(projectDescriptionColumnHandle).moveByOffset(30, -100)
+    public ListViewConfigPage dragAndDropDescriptionColumnToStatusColumn() {
+        new Actions(getDriver())
+                .clickAndHold(projectDescriptionColumnHandle)
                 .perform();
 
-        actions.moveByOffset(100, -100).perform();
-        actions.release().perform();
+        scrollIntoViewCenter(statusColumn);
 
         new Actions(getDriver())
-                .dragAndDrop(projectDescriptionColumnHandle, statusColumn)
+                .moveToElement(statusColumn)
+                .release(statusColumn)
                 .perform();
+
         return this;
     }
 }

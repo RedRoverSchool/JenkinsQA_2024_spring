@@ -59,7 +59,7 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
     @FindBy(xpath = "//th[contains(@class,'stage-header-name')]")
     private List<WebElement> stageHeaderNameList;
 
-    @FindBy(xpath = "//div[@id = 'buildHistory']//tr[@class != 'build-search-row']")
+    @FindBy(xpath = "//div[@id = 'buildHistory']//tr[@class != 'build-search-row' and @class != 'transitive']")
     private List<WebElement> listOfBuilds;
 
     @FindBy(xpath = "//div[@class='pane-content']//a[contains(text(),'#')]")
@@ -123,6 +123,8 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
     }
 
     public int numberOfBuild() {
+        getDriver().navigate().refresh();
+
         return getWait5().until(ExpectedConditions.visibilityOfAllElements(listOfBuilds)).size();
     }
 
@@ -208,12 +210,13 @@ public class PipelineProjectPage extends BaseProjectPage<PipelineProjectPage> {
 
     @Step("Get permalink list")
     public List<String> getPermalinkList() {
+        getDriver().navigate().refresh();
 
         return getWait10().until(ExpectedConditions.visibilityOfAllElements(permalinkList))
                 .stream()
                 .map(WebElement::getText)
                 .map(permalink -> permalink.split(",")[0].trim())
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Step("Get color of Succes Mark")
