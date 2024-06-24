@@ -9,6 +9,8 @@ import school.redrover.model.base.BasePage;
 
 public class ErrorPage extends BasePage<ErrorPage> {
 
+    @FindBy(xpath = "//h1")
+    private WebElement pageHeader;
     @FindBy(css = "#main-panel p")
     private WebElement errorDescribingText;
 
@@ -28,4 +30,10 @@ public class ErrorPage extends BasePage<ErrorPage> {
 
         return getWait5().until(ExpectedConditions.visibilityOf(underOopsProblemText)).getText();
     }
+
+    public String getPageHeaderText() {
+
+        return getWait2().until(ExpectedConditions.visibilityOf(pageHeader)).getText();
+    }
+
 }

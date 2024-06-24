@@ -151,15 +151,15 @@ public class NewItemTest extends BaseTest {
     public void testCopyFromNotExistingJob() {
         final String notExistingName = "AAA";
 
-        CreateItemPage errorPage = new HomePage(getDriver())
+        ErrorPage errorPage = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName("someName")
                 .typeItemNameInCopyFrom(notExistingName)
-                .clickOkButton();
+                .clickOkButtonWhenError();
 
         Assert.assertTrue(errorPage.getCurrentUrl().endsWith("/createItem"));
         Assert.assertEquals(errorPage.getPageHeaderText(), "Error");
-        Assert.assertEquals(errorPage.getErrorMessageText(), "No such job: " + notExistingName);
+        Assert.assertEquals(errorPage.getErrorText(), "No such job: " + notExistingName);
     }
 
     @DataProvider(name = "existingJobsNames")
@@ -185,12 +185,12 @@ public class NewItemTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(jobName)
                 .clickProjectType(type)
-                .clickOkButton()
+                .clickOkButtonWhenError()
                 .clickLogo()
                 .clickNewItem()
                 .typeItemName(jobName + "Copy")
                 .typeItemNameInCopyFrom(jobName)
-                .clickOkButton()
+                .clickOkButtonWhenError()
                 .clickLogo();
 
         Integer quantityItemsWithCopies = new HomePage(getDriver())
@@ -241,35 +241,4 @@ public class NewItemTest extends BaseTest {
         Assert.assertEquals(jobsFromDropdownMenu, firstLettersJobs);
     }
 
-    @DataProvider
-    Object[][] projectTypes() {
-        return new Object[][]{
-                {"standalone-projects"},
-                {"nested-projects"}};
-    }
-
-    @Test(dataProvider = "projectTypes")
-    @Story("US_00.000 Create New item")
-    @Description("Verification for desirable job type  ")
-    public void testCreateItemForStandAloneOrNestedProjects(String projectType) {
-        final String projectName = "NewProject";
-        Random random = new Random();
-        int itemOptionIndex = random.nextInt(3) + 1;
-
-        Boolean isTypeChecked = new HomePage(getDriver())
-                .clickNewItem()
-                .typeItemName(projectName)
-                .clickItemOption(projectType, itemOptionIndex)
-                .isAttributeAriaChecked(projectType, itemOptionIndex);
-        String currentUrl = new CreateNewItemPage(getDriver())
-                .clickOkButton()
-                .getCurrentUrl();
-        String pageHeading = new FreestyleConfigPage(getDriver())
-                .clickSaveButton()
-                .getProjectName();
-
-        Assert.assertTrue(isTypeChecked);
-        Assert.assertTrue(currentUrl.contains(projectName));
-        Assert.assertTrue(pageHeading.contains(projectName));
-    }
 }

@@ -159,6 +159,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return this;
     }
 
+    @Step("Click OK button")
     public ErrorPage clickOkButtonWhenError() {
         okButton.click();
 
