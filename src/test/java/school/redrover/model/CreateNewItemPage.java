@@ -159,11 +159,20 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return this;
     }
 
+
     @Step("Click 'Ok' button.")
     public CreateItemPage clickOkButton() {
         okButton.click();
 
         return new CreateItemPage(getDriver());
+    }
+  
+   @Step("Click 'Ok' button.")
+  
+    public ErrorPage clickOkButtonWhenError() {
+        okButton.click();
+
+        return new ErrorPage(getDriver());
     }
 
     public boolean isOkButtonNotActive() {

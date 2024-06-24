@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 
-public class CreateItemErrorPage extends BasePage<CreateItemErrorPage> {
+public class ErrorPage extends BasePage<ErrorPage> {
 
     @FindBy(css = "#main-panel p")
     private WebElement errorDescribingText;
@@ -15,7 +15,7 @@ public class CreateItemErrorPage extends BasePage<CreateItemErrorPage> {
     @FindBy(xpath = "//h2")
     private WebElement underOopsProblemText;
 
-    public CreateItemErrorPage(WebDriver driver) {
+    public ErrorPage(WebDriver driver) {
         super(driver);
     }
 

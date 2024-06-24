@@ -7,7 +7,7 @@ import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import school.redrover.model.CreateItemPage;
+import school.redrover.model.ErrorPage;
 import school.redrover.model.CreateNewItemPage;
 import school.redrover.model.FreestyleConfigPage;
 import school.redrover.model.HomePage;
@@ -152,16 +152,16 @@ public class NewItemTest extends BaseTest {
     public void testCopyFromNotExistingJob() {
         final String notExistingName = "AAA";
 
-        CreateItemPage errorPage = new HomePage(getDriver())
+        ErrorPage errorPage = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName("someName")
                 .typeItemNameInCopyFrom(notExistingName)
-                .clickOkButton();
+                .clickOkButtonWhenError();
 
         Allure.step("Expected result: a user has been redirected to the page with '/createItem' end-point, there is 'Error' header  and 'No such job " + notExistingName + "' message on this page.");
         Assert.assertTrue(errorPage.getCurrentUrl().endsWith("/createItem"));
-        Assert.assertEquals(errorPage.getPageHeaderText(), "Error");
-        Assert.assertEquals(errorPage.getErrorMessageText(), "No such job: " + notExistingName);
+        Assert.assertEquals(errorPage.getHeadingText(), "Error");
+        Assert.assertEquals(errorPage.getErrorText(), "No such job: " + notExistingName);
     }
 
     @DataProvider(name = "existingJobsNames")
@@ -188,12 +188,12 @@ public class NewItemTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(jobName)
                 .clickProjectType(type)
-                .clickOkButton()
+                .clickOkButtonWhenError()
                 .clickLogo()
                 .clickNewItem()
                 .typeItemName(jobName + "Copy")
                 .typeItemNameInCopyFrom(jobName)
-                .clickOkButton()
+                .clickOkButtonWhenError()
                 .clickLogo();
 
         Integer quantityItemsWithCopies = new HomePage(getDriver())
@@ -245,5 +245,6 @@ public class NewItemTest extends BaseTest {
         Allure.step("Expected result: the dropdown menu contains all existing items , beginning from the letters, have been typed in  input field 'Copy from'.");
         Assert.assertEquals(jobsFromDropdownMenu, firstLettersJobs);
     }
+
 
 }
