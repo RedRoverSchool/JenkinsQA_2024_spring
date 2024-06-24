@@ -7,7 +7,7 @@ import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import school.redrover.model.CreateItemPage;
+import school.redrover.model.ErrorPage;
 import school.redrover.model.CreateNewItemPage;
 import school.redrover.model.FreestyleConfigPage;
 import school.redrover.model.HomePage;
@@ -141,7 +141,6 @@ public class NewItemTest extends BaseTest {
                 .clearItemNameField()
                 .selectFolder();
 
-        Allure.step("Expected result: 'OK' button is not active.");
         Assert.assertFalse(createNewItemPage.isOkButtonEnabled());
     }
 
@@ -158,7 +157,6 @@ public class NewItemTest extends BaseTest {
                 .typeItemNameInCopyFrom(notExistingName)
                 .clickOkButton();
 
-        Allure.step("Expected result: a user has been redirected to the page with '/createItem' end-point, there is 'Error' header  and 'No such job " + notExistingName + "' message on this page.");
         Assert.assertTrue(errorPage.getCurrentUrl().endsWith("/createItem"));
         Assert.assertEquals(errorPage.getPageHeaderText(), "Error");
         Assert.assertEquals(errorPage.getErrorMessageText(), "No such job: " + notExistingName);
@@ -199,7 +197,6 @@ public class NewItemTest extends BaseTest {
                 .getItemList()
                 .size();
 
-        Allure.step("Expected result: there are two items on the Dashboard - given project or folder and it's copy.");
         Assert.assertEquals(quantityItemsWithCopies, 2);
         Assert.assertTrue(homePage.isItemExists(jobName + "Copy"));
         Assert.assertTrue(homePage.isItemExists(jobName));
@@ -241,8 +238,38 @@ public class NewItemTest extends BaseTest {
                 .typeItemNameInCopyFrom(firstLetters)
                 .getDropdownMenuContent();
 
-        Allure.step("Expected result: the dropdown menu contains all existing items , beginning from the letters, have been typed in  input field 'Copy from'.");
         Assert.assertEquals(jobsFromDropdownMenu, firstLettersJobs);
     }
 
+    @DataProvider
+    Object[][] projectTypes() {
+        return new Object[][]{
+                {"standalone-projects"},
+                {"nested-projects"}};
+    }
+
+    @Test(dataProvider = "projectTypes")
+    @Story("US_00.000 Create New item")
+    @Description("Verification for desirable job type  ")
+    public void testCreateItemForStandAloneOrNestedProjects(String projectType) {
+        final String projectName = "NewProject";
+        Random random = new Random();
+        int itemOptionIndex = random.nextInt(3) + 1;
+
+        Boolean isTypeChecked = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(projectName)
+                .clickItemOption(projectType, itemOptionIndex)
+                .isAttributeAriaChecked(projectType, itemOptionIndex);
+        String currentUrl = new CreateNewItemPage(getDriver())
+                .clickOkButton()
+                .getCurrentUrl();
+        String pageHeading = new FreestyleConfigPage(getDriver())
+                .clickSaveButton()
+                .getProjectName();
+
+        Assert.assertTrue(isTypeChecked);
+        Assert.assertTrue(currentUrl.contains(projectName));
+        Assert.assertTrue(pageHeading.contains(projectName));
+    }
 }

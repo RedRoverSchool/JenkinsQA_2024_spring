@@ -7,10 +7,9 @@ import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import school.redrover.model.CreateItemErrorPage;
+import school.redrover.model.ErrorPage;
 import school.redrover.model.FreestyleProjectPage;
 import school.redrover.model.HomePage;
-import school.redrover.model.RenameErrorPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -110,7 +109,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName("   ")
                 .selectFreeStyleProject()
-                .clickOkAnyway(new CreateItemErrorPage(getDriver()))
+                .clickOkAnyway(new ErrorPage(getDriver()))
                 .getErrorText();
 
         Allure.step("Expected result: Error message " + expectedErrorMessage + "is displayed");
@@ -128,7 +127,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(projectName)
                 .selectFreeStyleProject()
-                .clickOkAnyway(new CreateItemErrorPage(getDriver()))
+                .clickOkAnyway(new ErrorPage(getDriver()))
                 .getProblemText();
 
         Allure.step("Expected result: Error message " + expectedErrorMessage + "is displayed");
@@ -145,7 +144,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(FREESTYLE_PROJECT_NAME)
                 .selectFreeStyleProject()
-                .clickOkAnyway(new CreateItemErrorPage(getDriver()))
+                .clickOkAnyway(new ErrorPage(getDriver()))
                 .getErrorText();
 
         Allure.step("Expected result: Error Message " + expectedErrorMessage + "is displayed");
@@ -382,7 +381,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .openItemDropdown(FREESTYLE_PROJECT_NAME)
                 .clickRenameOnDropdown()
                 .clearNameInputField()
-                .clickRenameButtonWhenRenamedViaDropdown(new RenameErrorPage(getDriver()))
+                .clickRenameButtonWhenRenamedViaDropdown(new ErrorPage(getDriver()))
                 .getErrorText();
 
         Allure.step("Expected result: error message" + expectedErrorMessage + "is displayed");

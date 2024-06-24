@@ -153,7 +153,7 @@ public class NodesTest extends BaseTest {
                 .typeNodeName(nodeName)
                 .selectPermanentAgentRadioButton()
                 .clickCreateButtonOnError()
-                .getErrorMessageText();
+                .getErrorText();
 
         Allure.step("Expected result: Error message: Agent called ‘" + nodeName + "’ already exists");
         Assert.assertEquals(actualResult, expectedResult);
@@ -243,7 +243,7 @@ public class NodesTest extends BaseTest {
                 .typeNodeName("!")
                 .selectPermanentAgentRadioButton()
                 .clickCreateButtonOnError()
-                .getErrorMessageText();
+                .getErrorText();
 
         Allure.step("Expected result: Error message - ‘!’ is an unsafe character");
         Assert.assertEquals(actualResult, "‘!’ is an unsafe character");
