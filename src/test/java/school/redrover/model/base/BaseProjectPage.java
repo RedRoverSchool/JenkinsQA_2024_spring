@@ -12,7 +12,7 @@ import school.redrover.model.FolderProjectPage;
 import school.redrover.model.HomePage;
 import school.redrover.model.ProjectMovePage;
 import school.redrover.model.ProjectRenamePage;
-import school.redrover.model.RenameErrorPage;
+import school.redrover.model.ErrorPage;
 
 import java.util.List;
 
@@ -214,7 +214,7 @@ public abstract class BaseProjectPage<T extends BaseProjectPage<T>> extends Base
     }
 
     public String getErrorText() {
-        return new RenameErrorPage(getDriver()).getErrorText();
+        return new ErrorPage(getDriver()).getErrorText();
     }
 
     @Step("Check task presence on sidebar")

@@ -7,7 +7,7 @@ import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import school.redrover.model.CreateItemErrorPage;
+import school.redrover.model.ErrorPage;
 import school.redrover.model.CreateNewItemPage;
 import school.redrover.model.FreestyleConfigPage;
 import school.redrover.model.HomePage;
@@ -146,7 +146,7 @@ public class NewItemTest extends BaseTest {
     public void testCopyFromNotExistingJob() {
         final String notExistingName = "AAA";
 
-        CreateItemErrorPage errorPage = new HomePage(getDriver())
+        ErrorPage errorPage = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName("someName")
                 .typeItemNameInCopyFrom(notExistingName)

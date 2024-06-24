@@ -43,9 +43,9 @@ public class CreateNodePage extends BasePage<CreateNodePage> {
     }
 
     @Step("Click on the button 'Create'")
-    public NodesErrorPage clickCreateButtonOnError() {
+    public ErrorPage clickCreateButtonOnError() {
         createButton.click();
 
-        return new NodesErrorPage(getDriver());
+        return new ErrorPage(getDriver());
     }
 }

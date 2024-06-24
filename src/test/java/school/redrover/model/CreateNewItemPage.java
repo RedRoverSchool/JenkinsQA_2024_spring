@@ -158,10 +158,10 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return this;
     }
 
-    public CreateItemErrorPage clickOkButtonWhenError() {
+    public ErrorPage clickOkButtonWhenError() {
         okButton.click();
 
-        return new CreateItemErrorPage(getDriver());
+        return new ErrorPage(getDriver());
     }
 
     public boolean isOkButtonNotActive() {
