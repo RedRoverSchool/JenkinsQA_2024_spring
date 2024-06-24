@@ -125,7 +125,8 @@ public class NewItemTest extends BaseTest {
         String validationMessageColor = new CreateNewItemPage(getDriver())
                 .getItemNameHintColor();
 
-        Allure.step("Expected result: Red color text '» This field cannot be empty, please enter a valid name' appears and 'OK' button is not active. ");
+        Allure.step("Expected result: red color text '» This field cannot be empty, please enter a valid name'" +
+                " appears and 'OK' button is not active. ");
         Assert.assertFalse(isOkButtonEnabled);
         Assert.assertEquals(validationMessage, hintTextWhenEmptyName);
         Assert.assertEquals(validationMessageColor, hintColor);
@@ -141,6 +142,7 @@ public class NewItemTest extends BaseTest {
                 .clearItemNameField()
                 .selectFolder();
 
+        Allure.step("Expected result: Ok button is not active.");
         Assert.assertFalse(createNewItemPage.isOkButtonEnabled());
     }
 
@@ -157,8 +159,10 @@ public class NewItemTest extends BaseTest {
                 .typeItemNameInCopyFrom(notExistingName)
                 .clickOkButtonWhenError();
 
+        Allure.step("Expected result:a user has been redirected to the page with '/createItem' end-point," +
+                " there is 'Error' header  and 'No such job '" + notExistingName + "' message on this page.");
         Assert.assertTrue(errorPage.getCurrentUrl().endsWith("/createItem"));
-        Assert.assertEquals(errorPage.getPageHeaderText(), "Error");
+        Assert.assertEquals(errorPage.getHeadingText(), "Error");
         Assert.assertEquals(errorPage.getErrorText(), "No such job: " + notExistingName);
     }
 
@@ -197,9 +201,9 @@ public class NewItemTest extends BaseTest {
                 .getItemList()
                 .size();
 
+        Allure.step("Expected result: there are two items on the Dashboard - given project or folder and it's copy.");
         Assert.assertEquals(quantityItemsWithCopies, 2);
-        Assert.assertTrue(homePage.isItemExists(jobName + "Copy"));
-        Assert.assertTrue(homePage.isItemExists(jobName));
+        Assert.assertTrue(homePage.isItemExists(jobName + "Copy") && homePage.isItemExists(jobName));
     }
 
     @Story("US_00.007 Create a new item from other existing")
@@ -238,6 +242,8 @@ public class NewItemTest extends BaseTest {
                 .typeItemNameInCopyFrom(firstLetters)
                 .getDropdownMenuContent();
 
+        Allure.step("Expected result: the dropdown menu contains all existing items , " +
+                "beginning from the letters, have been typed in the 'Copy from' input field .");
         Assert.assertEquals(jobsFromDropdownMenu, firstLettersJobs);
     }
 
