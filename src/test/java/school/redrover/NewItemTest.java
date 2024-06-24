@@ -177,6 +177,7 @@ public class NewItemTest extends BaseTest {
                 {"Organization Folder", "organizationFolder1"}
         };
     }
+
     @Story("US_00.007 Create a new item from other existing")
     @Description(" Create a new item from other existing one for ALL types of jobs.")
     @Test(dataProvider = "existingJobsNames")
