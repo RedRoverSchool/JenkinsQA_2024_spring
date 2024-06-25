@@ -10,6 +10,7 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -37,15 +38,13 @@ import java.util.List;
 
 @Epic("Jenkins API")
 public class APIJenkinsJobsTest {
-    private static final String USERNAME = ProjectUtils.getUserName();
-    private static final String PASSWORD = ProjectUtils.getPassword();
     private static final String JOBS_URL = "/api/json?pretty=true";
     private static String encodedAuth;
     private static Token token;
 
     @BeforeClass
     public void beforeClass() {
-        encodedAuth = Base64.getEncoder().encodeToString((USERNAME + ":" + PASSWORD).getBytes());
+        encodedAuth = Base64.getEncoder().encodeToString((ProjectUtils.getUserName() + ":" + ProjectUtils.getPassword()).getBytes());
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             token = getToken(getCrumb(httpClient), httpClient);
 
@@ -53,6 +52,12 @@ public class APIJenkinsJobsTest {
             ProjectUtils.log(e.getMessage());
             throw new RuntimeException("Failed to initialize Crumb and Token", e);
         }
+    }
+
+    @Test(dataProvider = "jobDataProvider", priority = 5)
+    public void testDelete(String jobName, String jobDescription) {
+        String url = ProjectUtils.getUrl() + "/job/" + jobName;
+        delete(url);
     }
 
     @DataProvider(name = "jobDataProvider")
@@ -118,7 +123,7 @@ public class APIJenkinsJobsTest {
 
     @Test(dataProvider = "jobDataProvider")
     @Story("Build existed job with Json")
-    @Description("Check the status of job")
+    @Description("Check the status of job after Run")
     public void testRunJob(String job, String desc) {
         post(ProjectUtils.getUrl() + "/job/" + job + "/build", getJson(), ContentType.APPLICATION_JSON, 201);
         SlimHudson slimHudson = new Gson().fromJson(getJsonJobs(), SlimHudson.class);
@@ -161,12 +166,12 @@ public class APIJenkinsJobsTest {
 
     private static String getBasicAuthToken() {
         String password = token.getData().getTokenValue();
-        byte[] credAuth = (USERNAME + ":" + password).getBytes();
+        byte[] credAuth = (ProjectUtils.getUserName() + ":" + password).getBytes();
 
         return "Basic " + Base64.getEncoder().encodeToString(credAuth);
     }
 
-    private static Token getToken(Crumb crumb, CloseableHttpClient httpClient) throws IOException {
+    private Token getToken(Crumb crumb, CloseableHttpClient httpClient) throws IOException {
         String url = ProjectUtils.getUrl() + "/me/descriptorByName/jenkins.security.ApiTokenProperty/generateNewToken";
         HttpPost httpPost = new HttpPost(url);
         httpPost.setHeader(HttpHeaders.AUTHORIZATION, "Basic " + encodedAuth);
@@ -175,29 +180,42 @@ public class APIJenkinsJobsTest {
         return new Gson().fromJson(getEntity(httpClient, httpPost, 200), Token.class);
     }
 
-    private static Crumb getCrumb(CloseableHttpClient httpClient) throws IOException {
+    private Crumb getCrumb(CloseableHttpClient httpClient) throws IOException {
         HttpGet httpGet = new HttpGet(getCrumbUrl());
         httpGet.setHeader(HttpHeaders.AUTHORIZATION, "Basic " + encodedAuth);
 
         return new Gson().fromJson(getEntity(httpClient, httpGet, 200), Crumb.class);
     }
 
-    private static String getCrumbUrl() {
+    private String getCrumbUrl() {
         String xpath = "concat(//crumbRequestField,\":\",//crumb)";
         String query = URLEncoder.encode(xpath, StandardCharsets.UTF_8);
 
         return ProjectUtils.getUrl() + "/crumbIssuer/api/json?xpath=" + query;
     }
 
-    private static String getEntity(CloseableHttpClient httpClient,
-                                    HttpRequestBase request,
-                                    int status) throws IOException {
+    private String getEntity(CloseableHttpClient httpClient,
+                             HttpRequestBase request,
+                             int status) throws IOException {
         try (CloseableHttpResponse response = httpClient.execute(request)) {
             Assert.assertEquals(response.getStatusLine().getStatusCode(), status);
             HttpEntity entity = response.getEntity();
             Assert.assertNotNull(entity);
 
             return EntityUtils.toString(entity);
+        }
+    }
+
+    private void delete(String url) {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpDelete request = new HttpDelete(url);
+            request.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthToken());
+
+            getEntity(httpClient, request, 302);
+
+        } catch (IOException e) {
+            ProjectUtils.log(e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -211,8 +229,8 @@ public class APIJenkinsJobsTest {
 
         } catch (IOException e) {
             ProjectUtils.log(e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
-        return "";
     }
 
     private String post(String url, String body, ContentType contentType, int status) {
@@ -225,7 +243,7 @@ public class APIJenkinsJobsTest {
 
         } catch (IOException e) {
             ProjectUtils.log(e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
-        return "";
     }
 }

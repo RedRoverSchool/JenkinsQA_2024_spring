@@ -136,6 +136,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return page;
     }
 
+    @Step("Choose a project type.")
     public CreateNewItemPage clickProjectType(String type) {
         getDriver().findElement(By.xpath("//span[text()='" + type + "']")).click();
 
@@ -158,6 +159,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return this;
     }
 
+    @Step("Click OK button")
     public ErrorPage clickOkButtonWhenError() {
         okButton.click();
 

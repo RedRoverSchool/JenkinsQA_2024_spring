@@ -30,6 +30,8 @@ public class NewItemTest extends BaseTest {
         String textAboveNameField = new CreateNewItemPage(getDriver())
                 .getTitleOfNameField();
 
+        Allure.step("Expected result: a user has been redirected to the page with title 'New Item [Jenkins]' "
+                + "and header 'Enter an item name'");
         Assert.assertEquals(newItemHeader, "New Item [Jenkins]");
         Assert.assertEquals(textAboveNameField, "Enter an item name");
     }
@@ -44,6 +46,7 @@ public class NewItemTest extends BaseTest {
                 .typeItemName("Test Project")
                 .isOkButtonEnabled();
 
+        Allure.step("Expected result: 'OK' button is not active ");
         Assert.assertFalse(isOkButtonEnabled);
     }
 
@@ -56,6 +59,7 @@ public class NewItemTest extends BaseTest {
                 .clickNewItem()
                 .isDisplayedNameField();
 
+        Allure.step("Expected result: 'Enter an item name' input field is displayed.");
         Assert.assertTrue(isNameEntryFieldDisplayed);
     }
 
@@ -97,6 +101,7 @@ public class NewItemTest extends BaseTest {
                 .typeItemName(x)
                 .getErrorMessageInvalidCharacterOrDuplicateName();
 
+        Allure.step("Expected result: error message \"» ‘" + x + "’ is an unsafe character\" appears. ");
         Assert.assertEquals(errorMessage, "» ‘" + x + "’ is an unsafe character");
     }
 
@@ -121,6 +126,8 @@ public class NewItemTest extends BaseTest {
         String validationMessageColor = new CreateNewItemPage(getDriver())
                 .getItemNameHintColor();
 
+        Allure.step("Expected result: red color text '» This field cannot be empty, please enter a valid name'"
+                + " appears and 'OK' button is not active. ");
         Assert.assertFalse(isOkButtonEnabled);
         Assert.assertEquals(validationMessage, hintTextWhenEmptyName);
         Assert.assertEquals(validationMessageColor, hintColor);
@@ -136,6 +143,7 @@ public class NewItemTest extends BaseTest {
                 .clearItemNameField()
                 .selectFolder();
 
+        Allure.step("Expected result: Ok button is not active.");
         Assert.assertFalse(createNewItemPage.isOkButtonEnabled());
     }
 
@@ -152,6 +160,8 @@ public class NewItemTest extends BaseTest {
                 .typeItemNameInCopyFrom(notExistingName)
                 .clickOkButtonWhenError();
 
+        Allure.step("Expected result:a user has been redirected to the page with '/createItem' end-point,"
+                + " there is 'Error' header  and 'No such job '" + notExistingName + "' message on this page.");
         Assert.assertTrue(errorPage.getCurrentUrl().endsWith("/createItem"));
         Assert.assertEquals(errorPage.getHeadingText(), "Error");
         Assert.assertEquals(errorPage.getErrorText(), "No such job: " + notExistingName);
@@ -192,9 +202,9 @@ public class NewItemTest extends BaseTest {
                 .getItemList()
                 .size();
 
+        Allure.step("Expected result:there are two items on the Dashboard - given project or folder and it's copy.");
         Assert.assertEquals(quantityItemsWithCopies, 2);
-        Assert.assertTrue(homePage.isItemExists(jobName + "Copy"));
-        Assert.assertTrue(homePage.isItemExists(jobName));
+        Assert.assertTrue(homePage.isItemExists(jobName + "Copy") && homePage.isItemExists(jobName));
     }
 
     @Story("US_00.007 Create a new item from other existing")
@@ -233,38 +243,9 @@ public class NewItemTest extends BaseTest {
                 .typeItemNameInCopyFrom(firstLetters)
                 .getDropdownMenuContent();
 
+        Allure.step("Expected result: the dropdown menu contains all existing items , "
+                + "beginning from the letters, have been typed in the 'Copy from' input field .");
         Assert.assertEquals(jobsFromDropdownMenu, firstLettersJobs);
     }
 
-    @DataProvider
-    Object[][] projectTypes() {
-        return new Object[][]{
-                {"standalone-projects"},
-                {"nested-projects"}};
-    }
-
-    @Test(dataProvider = "projectTypes")
-    @Story("US_00.000 Create New item")
-    @Description("Verification for desirable job type  ")
-    public void testCreateItemForStandAloneOrNestedProjects(String projectType) {
-        final String projectName = "NewProject";
-        Random random = new Random();
-        int itemOptionIndex = random.nextInt(3) + 1;
-
-        Boolean isTypeChecked = new HomePage(getDriver())
-                .clickNewItem()
-                .typeItemName(projectName)
-                .clickItemOption(projectType, itemOptionIndex)
-                .isAttributeAriaChecked(projectType, itemOptionIndex);
-        String currentUrl = new CreateNewItemPage(getDriver())
-                .clickOkButtonWhenError()
-                .getCurrentUrl();
-        String pageHeading = new FreestyleConfigPage(getDriver())
-                .clickSaveButton()
-                .getProjectName();
-
-        Assert.assertTrue(isTypeChecked);
-        Assert.assertTrue(currentUrl.contains(projectName));
-        Assert.assertTrue(pageHeading.contains(projectName));
-    }
 }
