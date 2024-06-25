@@ -470,22 +470,26 @@ public class HomePage extends BasePage<HomePage> {
         return num != 0;
     }
 
+    @Step("Click green build arrow button")
     public HomePage clickGreenBuildArrowButton() {
         greenBuildArrow.click();
 
         return this;
     }
 
+    @Step("Get build scheduled message")
     public String getBuildScheduledMessage() {
         return buildScheduledMessagePopUp.getAttribute("data-notification");
     }
 
+    @Step("Click 'Build Now' from dropdown menu")
     public HomePage clickBuildNowFromDropdown() {
         dropdownBuild.click();
 
         return this;
     }
 
+    @Step("Catch 'Build Now' done message")
     public String catchBuildNowDoneMessage() {
         return getWait2().until(ExpectedConditions.visibilityOf(buildDoneGreenMessage)).getText();
     }

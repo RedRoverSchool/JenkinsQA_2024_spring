@@ -1,14 +1,13 @@
 package school.redrover;
 
-import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.BuildHistoryPage;
 import school.redrover.model.FreestyleProjectPage;
 import school.redrover.model.HomePage;
+import school.redrover.runner.AssertUtils;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -30,8 +29,9 @@ public class BuildHistoryTest extends BaseTest {
                 .clickBuildHistory()
                 .getBuildsList();
 
-        Allure.step("Expected result:list contains project name in the table on the Homepage");
-        Assert.assertTrue(list.contains(PROJECT_NAME));
+        AssertUtils
+                .allureAnnotation("List contains project name in the table on the Homepage")
+                .listContainsObject(list, PROJECT_NAME, "Project name not found in list!");
     }
 
     @Test
@@ -49,8 +49,9 @@ public class BuildHistoryTest extends BaseTest {
                 .clickBuildHistory()
                 .isDisplayedBuildOnTimeline();
 
-        Allure.step("Expected result:project name appears in the table on the BuildHistory Page");
-        Assert.assertTrue(isProjectNameOnTimeline);
+        AssertUtils
+                .allureAnnotation("Project name appears in the table on the BuildHistory Page")
+                .isTrue(isProjectNameOnTimeline);
     }
 
     @Test
@@ -65,8 +66,9 @@ public class BuildHistoryTest extends BaseTest {
                 .clickGreenBuildArrowButton()
                 .getBuildScheduledMessage();
 
-        Allure.step("'Build scheduled' message should appear after clicking green triangle button");
-        Assert.assertEquals(buildScheduledMessageReceived, buildScheduledMessageActual);
+        AssertUtils
+                .allureAnnotation("'Build scheduled' message should appear after clicking green triangle button")
+                .equals(buildScheduledMessageReceived, buildScheduledMessageActual);
     }
 
     @Test
@@ -82,8 +84,9 @@ public class BuildHistoryTest extends BaseTest {
                 .clickBuildNowFromDropdown()
                 .catchBuildNowDoneMessage();
 
-        Allure.step("Expected result: message should appear after clicking 'Build Now' from dropdown menu");
-        Assert.assertEquals(buildDoneGreenMessageActual, buildDoneGreenMessageExpected);
+        AssertUtils
+                .allureAnnotation("message should appear after clicking 'Build Now' from dropdown menu")
+                .equals(buildDoneGreenMessageActual, buildDoneGreenMessageExpected);
     }
 
     @Test(dependsOnMethods = "testGetTableBuildHistory")
@@ -100,7 +103,8 @@ public class BuildHistoryTest extends BaseTest {
                 .clickJobByName(PROJECT_NAME, new BuildHistoryPage(getDriver()))
                 .getPermalinkList();
 
-        Allure.step("Expected result:Permalinks should be displayed on the BuildHistory Page");
-        Assert.assertEquals(permalinksActual, permalinksExpected);
+        AssertUtils
+                .allureAnnotation("Permalinks should be displayed on the BuildHistory Page")
+                .equals(permalinksActual, permalinksExpected);
     }
 }

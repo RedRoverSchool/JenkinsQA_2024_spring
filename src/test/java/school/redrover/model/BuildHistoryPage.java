@@ -57,6 +57,7 @@ public class BuildHistoryPage extends BasePage<BuildHistoryPage> {
         return this;
     }
 
+    @Step("Get Builds list")
     public List<String> getBuildsList() {
         return buildsList
                 .stream()
@@ -75,10 +76,12 @@ public class BuildHistoryPage extends BasePage<BuildHistoryPage> {
         return new BuildConsoleOutputPage(getDriver());
     }
 
+    @Step("Check displayed build on timeline")
     public boolean isDisplayedBuildOnTimeline() {
         return buildNameOnTimeline.isDisplayed();
     }
 
+    @Step("Get permalink list")
     public List<String> getPermalinkList() {
 
         return getWait10().until(ExpectedConditions.visibilityOfAllElements(permalinkList))
