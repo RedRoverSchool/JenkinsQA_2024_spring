@@ -61,7 +61,7 @@ public class AppearanceTest extends BaseTest {
                 .getBackgroundColor();
 
         AssertUtils
-                .allureAnnotation("After applying changes color of body page: '{expectedColor}'")
+                .allureAnnotation(String.format("After applying changes color of body page - '%s'", expectedColor))
                 .equals(backgroundColor, expectedColor,
                 "The background color doesn't match the theme");
     }
@@ -80,7 +80,7 @@ public class AppearanceTest extends BaseTest {
                 .getCurrentThemeAttribute();
 
         AssertUtils
-                .allureAnnotation("Attribute of current color theme - '{expectedThemeAttribute}'")
+                .allureAnnotation(String.format("Attribute of current color theme - '%s'", expectedThemeAttribute))
                 .equals(actualThemeApplied, expectedThemeAttribute);
     }
 
@@ -98,7 +98,7 @@ public class AppearanceTest extends BaseTest {
                 .getCurrentThemeAttribute();
 
         AssertUtils
-                .allureAnnotation("Attribute of current color theme - '{expectedThemeAttribute}'")
+                .allureAnnotation(String.format("Attribute of current color theme - '%s'", expectedThemeAttribute))
                 .equals(actualThemeApplied, expectedThemeAttribute);
     }
 
@@ -116,7 +116,7 @@ public class AppearanceTest extends BaseTest {
                 .getCurrentThemeAttribute();
 
         AssertUtils
-                .allureAnnotation("Attribute of current color theme - '{expectedThemeAttribute}'")
+                .allureAnnotation(String.format("Attribute of current color theme - '%s'", expectedThemeAttribute))
                 .isTrue(actualThemeApplied.contains(expectedThemeAttribute));
     }
 
