@@ -44,7 +44,8 @@ public class APIJenkinsJobsTest {
 
     @BeforeClass
     public void beforeClass() {
-        encodedAuth = Base64.getEncoder().encodeToString((ProjectUtils.getUserName() + ":" + ProjectUtils.getPassword()).getBytes());
+        encodedAuth = Base64.getEncoder().encodeToString(
+                (ProjectUtils.getUserName() + ":" + ProjectUtils.getPassword()).getBytes());
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             token = getToken(getCrumb(httpClient), httpClient);
 

@@ -6,10 +6,10 @@ import org.testng.Assert;
 import java.util.List;
 
 public final class AssertUtils {
-    private static final String prefix = "Expected results:";
+    private static final String PREFIX = "Expected results:";
 
     public static AssertUtils allureAnnotation(String expectedResults) {
-        Allure.step(String.format("%s %s", prefix, expectedResults));
+        Allure.step(String.format("%s %s", PREFIX, expectedResults));
 
         return new AssertUtils();
     }

@@ -9,13 +9,11 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.model.ErrorPage;
 import school.redrover.model.CreateNewItemPage;
-import school.redrover.model.FreestyleConfigPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
 import java.util.List;
-import java.util.Random;
 
 @Epic("New item")
 public class NewItemTest extends BaseTest {
