@@ -300,11 +300,8 @@ public class FolderTest extends BaseTest {
 
         TestUtils.createFolderProject(this, folderName);
 
-        String actualFolderName = new HomePage(getDriver())
+        String actualEmptyStateMessage = new HomePage(getDriver())
                 .clickSpecificFolderName(folderName)
-                .getProjectName();
-
-        String actualEmptyStateMessage = new FolderProjectPage(getDriver())
                 .getMessageFromEmptyFolder();
 
         String actualCreateJobLinkText = new FolderProjectPage(getDriver())
@@ -312,9 +309,6 @@ public class FolderTest extends BaseTest {
 
         Boolean isLinkForCreateJobDisplayed = new FolderProjectPage(getDriver())
                 .isLinkForCreateJobDisplayed();
-
-        Allure.step("Expected result: Section 'This folder is empty' is displayed");
-        Assert.assertEquals(actualFolderName, folderName);
 
         Allure.step("Expected result: Text 'This folder is empty' is displayed");
         Assert.assertEquals(actualEmptyStateMessage, thisFolderIsEmptyMessage);

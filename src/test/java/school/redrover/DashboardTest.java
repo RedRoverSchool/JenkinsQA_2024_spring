@@ -26,7 +26,7 @@ public class DashboardTest extends BaseTest {
 
     private static final String MY_VIEW_NAME = "EmployeeView";
 
-    @Story("US_16.005 Sidebar Menu Menu Items")
+    @Story("US_16.005 Sidebar Menu Items")
     @Description("Check all Sidebar Menu Items exist")
     @Test
     public void testSidebarMenuItemsList() {

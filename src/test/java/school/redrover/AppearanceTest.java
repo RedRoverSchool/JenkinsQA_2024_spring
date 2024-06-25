@@ -1,15 +1,14 @@
 package school.redrover;
 
-import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Step;
 import io.qameta.allure.Story;
-import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import school.redrover.model.AppearancePage;
 import school.redrover.model.HomePage;
+import school.redrover.runner.AssertUtils;
 import school.redrover.runner.BaseTest;
 
 @Epic("Manage Jenkins")
@@ -27,8 +26,9 @@ public class AppearanceTest extends BaseTest {
                 .getThemesList()
                 .size();
 
-        Allure.step("Expected results: 3 color themes available for selection");
-        Assert.assertEquals(quantityOfThemes, 3);
+        AssertUtils
+                .allureAnnotation("3 color themes available for selection")
+                .equals(quantityOfThemes, 3);
     }
 
     @Test
@@ -42,8 +42,9 @@ public class AppearanceTest extends BaseTest {
                 .clickApplyButton()
                 .getNotificationText();
 
-        Allure.step("Expected results: After applying changes notification 'Saved' is displayed");
-        Assert.assertEquals(notificationText, "Saved");
+        AssertUtils
+                .allureAnnotation("After applying changes notification 'Saved' is displayed")
+                .equals(notificationText, "Saved");
     }
 
     @Test
@@ -59,8 +60,9 @@ public class AppearanceTest extends BaseTest {
                 .clickApplyButton()
                 .getBackgroundColor();
 
-        Allure.step("Expected results: After applying changes color of body page: '{expectedColor}'");
-        Assert.assertEquals(backgroundColor, expectedColor,
+        AssertUtils
+                .allureAnnotation("After applying changes color of body page: '{expectedColor}'")
+                .equals(backgroundColor, expectedColor,
                 "The background color doesn't match the theme");
     }
 
@@ -77,8 +79,9 @@ public class AppearanceTest extends BaseTest {
                 .clickApplyButton()
                 .getCurrentThemeAttribute();
 
-        Allure.step("Expected results: Attribute of current color theme - '{expectedThemeAttribute}'");
-        Assert.assertEquals(actualThemeApplied, expectedThemeAttribute);
+        AssertUtils
+                .allureAnnotation("Attribute of current color theme - '{expectedThemeAttribute}'")
+                .equals(actualThemeApplied, expectedThemeAttribute);
     }
 
     @Story("US_09.005 Appearance")
@@ -94,8 +97,9 @@ public class AppearanceTest extends BaseTest {
                 .clickApplyButton()
                 .getCurrentThemeAttribute();
 
-        Allure.step("Expected results: Attribute of current color theme - '{expectedThemeAttribute}'");
-        Assert.assertEquals(actualThemeApplied, expectedThemeAttribute);
+        AssertUtils
+                .allureAnnotation("Attribute of current color theme - '{expectedThemeAttribute}'")
+                .equals(actualThemeApplied, expectedThemeAttribute);
     }
 
     @Story("US_09.005 Appearance")
@@ -111,8 +115,9 @@ public class AppearanceTest extends BaseTest {
                 .clickApplyButton()
                 .getCurrentThemeAttribute();
 
-        Allure.step("Expected results: Attribute of current color theme - '{expectedThemeAttribute}'");
-        Assert.assertTrue(actualThemeApplied.contains(expectedThemeAttribute));
+        AssertUtils
+                .allureAnnotation("Attribute of current color theme - '{expectedThemeAttribute}'")
+                .isTrue(actualThemeApplied.contains(expectedThemeAttribute));
     }
 
     @Step("Reset color theme to default")

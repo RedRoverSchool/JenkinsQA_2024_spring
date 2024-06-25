@@ -1,13 +1,12 @@
 package school.redrover;
 
-import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import org.openqa.selenium.Dimension;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
+import school.redrover.runner.AssertUtils;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -26,7 +25,9 @@ public class PeopleTest extends BaseTest {
                 .clickPeopleOnSidebar()
                 .getNamesList();
 
-        Assert.assertListContainsObject(namesList, "admin", "People page is not correct!");
+        AssertUtils
+                .allureAnnotation("Name 'admin' is displayed on People page")
+                .listContainsObject(namesList, "admin", "People page is not correct!");
     }
 
     @Test
@@ -35,10 +36,12 @@ public class PeopleTest extends BaseTest {
     public void testChangeIconSizeToSmall() {
         final Dimension actualIconSize = new HomePage(getDriver())
                 .clickPeopleOnSidebar()
-                .clickSmallIconButton()
+                .clickIconS()
                 .getUserIconSize();
 
-        Assert.assertEquals(actualIconSize, new Dimension(16, 16));
+        AssertUtils
+                .allureAnnotation("Icon size on page is Small")
+                .equals(actualIconSize, new Dimension(16, 16));
     }
 
     @Test
@@ -47,10 +50,12 @@ public class PeopleTest extends BaseTest {
     public void testChangeIconSizeToMedium() {
         final Dimension actualIconSize = new HomePage(getDriver())
                 .clickPeopleOnSidebar()
-                .clickMediumIconButton()
+                .clickIconM()
                 .getUserIconSize();
 
-        Assert.assertEquals(actualIconSize, new Dimension(20, 20));
+        AssertUtils
+                .allureAnnotation("Icon size on page is Medium")
+                .equals(actualIconSize, new Dimension(20, 20));
     }
 
     @Test
@@ -59,10 +64,12 @@ public class PeopleTest extends BaseTest {
     public void testChangeIconSizeToLarge() {
         final Dimension actualIconSize = new HomePage(getDriver())
                 .clickPeopleOnSidebar()
-                .clickLargeIconButton()
+                .clickIconL()
                 .getUserIconSize();
 
-        Assert.assertEquals(actualIconSize, new Dimension(24, 24));
+        AssertUtils
+                .allureAnnotation("Icon size on page is Large")
+                .equals(actualIconSize, new Dimension(24, 24));
     }
 
     public void createUser(String username) {
@@ -73,9 +80,18 @@ public class PeopleTest extends BaseTest {
     @Story("US_07.002 Sort people")
     @Description("Sort people by user ID")
     public void testSortPeopleByUserIdDescending() {
-        List<String> userslist = List.of("johndoe21", "janesmith1985", "david_lee92",
-                "emily_williams", "alex_johnson", "chris_evans",
-                "mary_jones", "michael_brown", "steve_rogers", "lisa_taylor");
+        List<String> userslist = List.of(
+                "johndoe21",
+                "janesmith1985",
+                "david_lee92",
+                "emily_williams",
+                "alex_johnson",
+                "chris_evans",
+                "mary_jones",
+                "michael_brown",
+                "steve_rogers",
+                "lisa_taylor");
+
         userslist.forEach(this::createUser);
 
         List<String> userIDList = new HomePage(getDriver())
@@ -83,8 +99,9 @@ public class PeopleTest extends BaseTest {
                 .clickTitleUserID()
                 .getUserIDList();
 
-        Allure.step("Expected result:  Table is sorted descending by User ID");
-        Assert.assertEquals(userIDList, userIDList.stream().sorted(Collections.reverseOrder()).toList());
+        AssertUtils
+                .allureAnnotation("Table is sorted descending by User ID")
+                .equals(userIDList, userIDList.stream().sorted(Collections.reverseOrder()).toList());
     }
 
     @Test(dependsOnMethods = "testSortPeopleByUserIdDescending")
@@ -97,8 +114,9 @@ public class PeopleTest extends BaseTest {
                 .clickTitleName()
                 .getNamesList();
 
-        Allure.step("Expected result:  Table is sorted descending by full name");
-        Assert.assertEquals(namesList, namesList.stream().sorted(Collections.reverseOrder()).toList());
+        AssertUtils
+                .allureAnnotation("Table is sorted descending by full name")
+                .equals(namesList, namesList.stream().sorted(Collections.reverseOrder()).toList());
     }
 
     @Test(dependsOnMethods = "testSortPeopleByUserIdDescending")
@@ -110,10 +128,10 @@ public class PeopleTest extends BaseTest {
                 .clickTitleLastCommitActivity()
                 .getLastCommitActivityList();
 
-        Allure.step("Expected result:  Table is sorted descending by last commit activity");
-        Assert.assertEquals(
-                lastCommitActivityList,
-                lastCommitActivityList.stream().sorted(Collections.reverseOrder()).toList());
+        AssertUtils
+                .allureAnnotation("Table is sorted descending by last commit activity")
+                .equals(lastCommitActivityList,
+                        lastCommitActivityList.stream().sorted(Collections.reverseOrder()).toList());
     }
 
     @Test(dependsOnMethods = "testSortPeopleByUserIdDescending")
@@ -125,7 +143,8 @@ public class PeopleTest extends BaseTest {
                 .clickTitleOn()
                 .getOnOffList();
 
-        Allure.step("Expected result:  Table is sorted descending by state");
-        Assert.assertEquals(onOffList, onOffList.stream().sorted(Collections.reverseOrder()).toList());
+        AssertUtils
+                .allureAnnotation("Table is sorted descending by state")
+                .equals(onOffList, onOffList.stream().sorted(Collections.reverseOrder()).toList());
     }
 }
