@@ -127,7 +127,7 @@ public class NewItemTest extends BaseTest {
                 .getItemNameHintColor();
 
         Allure.step("Expected result: red color text '» This field cannot be empty, please enter a valid name'"
-                +" appears and 'OK' button is not active. ");
+                + " appears and 'OK' button is not active. ");
         Assert.assertFalse(isOkButtonEnabled);
         Assert.assertEquals(validationMessage, hintTextWhenEmptyName);
         Assert.assertEquals(validationMessageColor, hintColor);
