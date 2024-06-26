@@ -60,8 +60,9 @@ public class APIJenkins1Test {
 
             try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
                 Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
-
-                token = EntityUtils.toString(response.getEntity()).substring(150, 184);
+                String token1 = EntityUtils.toString(response.getEntity());
+                System.out.println("token>>> " + token1);
+                token = token1.substring(153, 187);
                 System.out.println("token>>> " + token);
             }
         }
