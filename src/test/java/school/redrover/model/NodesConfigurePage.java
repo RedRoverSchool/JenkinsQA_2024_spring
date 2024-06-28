@@ -16,12 +16,15 @@ public class NodesConfigurePage extends BasePage<NodesConfigurePage> {
     @FindBy(css = "[tooltip^='Help for feature']")
     private List<WebElement> tooltipsConfigureNodePage;
 
-    public NodesConfigurePage(WebDriver driver) { super(driver); }
+    public NodesConfigurePage(WebDriver driver) {
+        super(driver);
+    }
 
     public List<String> getTooltipsOnConfigureNodePage() {
         List<String> actualList = new ArrayList<>();
         for (WebElement e : tooltipsConfigureNodePage) {
-            ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView({block:'center'});", e);
+            ((JavascriptExecutor) getDriver()).executeScript(
+                    "return arguments[0].scrollIntoView({block:'center'});", e);
 
             new Actions(getDriver())
                     .pause(300)

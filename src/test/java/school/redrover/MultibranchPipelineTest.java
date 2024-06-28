@@ -1,11 +1,15 @@
 package school.redrover;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.model.*;
+import school.redrover.model.FolderProjectPage;
+import school.redrover.model.HomePage;
+import school.redrover.model.MultibranchPipelineConfigPage;
+import school.redrover.model.MultibranchPipelineProjectPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -24,12 +28,13 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testCreateProjectViaSidebarMenu() {
         List<String> itemList = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(MULTI_PIPELINE_NAME)
+                .typeItemName(MULTI_PIPELINE_NAME)
                 .selectMultibranchPipelineAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
                 .getItemList();
 
+        Allure.step("Expected result: Created Project is displayed on Home page");
         Assert.assertListContainsObject(itemList, MULTI_PIPELINE_NAME, "Item is not found");
     }
 
@@ -37,12 +42,15 @@ public class MultibranchPipelineTest extends BaseTest {
     @Story("US_05.000  Create Multibranch Pipeline")
     @Description("Verify error message is displayed when creating a project without a name")
     public void testCreateProjectWithEmptyName() {
+        final String expectedErrorText = "» This field cannot be empty, please enter a valid name";
+
         String errorName = new HomePage(getDriver())
                 .clickNewItem()
-                .selectMultiConfigurationAndClickOk()
+                .selectMultibranchPipelineAndClickOk()
                 .getErrorRequiresName();
 
-        Assert.assertTrue(errorName.contains("This field cannot be empty, please enter a valid name"));
+        Allure.step("Expected result: Error message: " + expectedErrorText + "is displayed");
+        Assert.assertEquals(errorName, expectedErrorText);
     }
 
     @Test
@@ -56,93 +64,108 @@ public class MultibranchPipelineTest extends BaseTest {
 
         List<String> itemList = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(secondItemName)
+                .typeItemName(secondItemName)
                 .typeItemNameInCopyFrom(firstProjectName)
                 .clickOkAnyway(new MultibranchPipelineConfigPage(getDriver()))
                 .clickLogo()
                 .getItemList();
 
+        Allure.step("Expected result: Created Project from existing is displayed on Home page");
         Assert.assertListContainsObject(itemList, secondItemName,
                 "Copy of " + firstProjectName + "not created!");
     }
 
     @Test
-    @Story("US_05.004  Disable Multibranch Pipeline")
+    @Story("US_05.004 Disable Multibranch Pipeline")
     @Description("Verify a project can be disabled via toggle.")
     public void testDisableProjectViaToggle() {
+        final String expectedWarningText = "This Multibranch Pipeline is currently disabled";
+
         String disableWarningText = new HomePage(getDriver())
                 .clickCreateAJob()
-                .setItemName(MULTI_PIPELINE_NAME)
+                .typeItemName(MULTI_PIPELINE_NAME)
                 .selectMultibranchPipelineAndClickOk()
-                .clickToggle()
+                .clickToggleToDisable()
                 .clickSaveButton()
-                .getDisableMultibranchPipelineText();
+                .getTextOfDisableMultibranchPipeline();
 
-        Assert.assertEquals(disableWarningText, "This Multibranch Pipeline is currently disabled");
+        Allure.step("Expected result: " + expectedWarningText + " is displayed");
+        Assert.assertEquals(disableWarningText, expectedWarningText);
     }
 
     @Test(dependsOnMethods = "testCreateProjectViaSidebarMenu")
-    @Story("US_05.004  Disable Multibranch pipeline")
+    @Story("US_05.004 Disable Multibranch Pipeline")
     @Description("Verify a project can be disabled via Disable Project Button.")
     public void testDisabledProjectViaDisableProjectButton() {
+        final String expectedWarningText = "This Multibranch Pipeline is currently disabled";
+
         String disabledMessage = new HomePage(getDriver())
                 .clickSpecificMultibranchPipelineName(MULTI_PIPELINE_NAME)
                 .clickDisableProjectButton()
-                .getDisableMultibranchPipelineText();
+                .getTextOfDisableMultibranchPipeline();
 
-        Assert.assertEquals(disabledMessage, "This Multibranch Pipeline is currently disabled");
+        Allure.step("Expected result: " + expectedWarningText + " is displayed");
+        Assert.assertEquals(disabledMessage, expectedWarningText);
     }
 
     @Test(dependsOnMethods = "testDisabledProjectViaDisableProjectButton")
-    @Story("US_05.004  Disable Multibranch pipeline")
+    @Story("US_05.004 Disable Multibranch Pipeline")
     @Description("Verify that the color of the disabled project message")
     public void testVerifyProjectDisabledMessageColorOnStatusPage() {
+        final String expectedColor = "rgba(254, 130, 10, 1)";
+
         String disabledMessageColor = new HomePage(getDriver())
                 .clickSpecificMultibranchPipelineName(MULTI_PIPELINE_NAME)
-                .getDisableMultibranchPipelineTextColor();
+                .getColorOfDisableMultibranchPipelineText();
 
-        Assert.assertEquals(disabledMessageColor, "rgba(254, 130, 10, 1)");
+        Allure.step("Expected result: The disabled project message color is " + expectedColor);
+        Assert.assertEquals(disabledMessageColor, expectedColor);
     }
 
     @Test(dependsOnMethods = "testVerifyProjectDisabledMessageColorOnStatusPage")
     @Story("US_05.003  Enable Multibranch pipeline")
-    @Description("Verify that a previously disabled project can be enabled back by checking that disable button is displayed")
+    @Description("Verify that a previously disabled project can be enabled back "
+            + "by checking that disable button is displayed")
     public void testEnableProject() {
         String disableMultibranchPipelineButtonText = new HomePage(getDriver())
                 .clickJobByName(MULTI_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
                 .clickEnableButton()
                 .getDisableMultibranchPipelineButtonText();
 
+        Allure.step("Expected result:'Disable Multibranch Pipeline' button is displayed");
         Assert.assertEquals(disableMultibranchPipelineButtonText, "Disable Multibranch Pipeline");
     }
 
     @Test(dependsOnMethods = "testEnableProject")
-    @Story("US_05.004  Disable Multibranch pipeline")
+    @Story("US_05.004 Disable Multibranch Pipeline")
     @Description("Verify the correct tooltip text is displayed when hovering over the toggle button")
     public void testDisabledTooltip() {
-        final String tooltipText = "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
+        final String tooltipText = "(No new builds within this Multibranch Pipeline "
+                + "will be executed until it is re-enabled)";
 
         MultibranchPipelineConfigPage multibranchPipelineConfigPage = new HomePage(getDriver())
                 .clickJobByName(MULTI_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
-                .selectConfigure()
+                .clickConfigure()
                 .hoverOverToggle();
 
+        Allure.step("Expected result: Toggle has tooltip " + tooltipText);
         Assert.assertTrue(multibranchPipelineConfigPage.isTooltipDisplayed());
         Assert.assertEquals(multibranchPipelineConfigPage.getTooltipText(), tooltipText);
     }
 
     @Test
-    @Story("US_05.004  Disable Multibranch pipeline")
+    @Story("US_05.004 Disable Multibranch Pipeline")
     @Description("Verify that the status toggle of a project reflects that the project is disabled.")
     public void testDisabledProjectToggleStatus() {
         String statusToggle = new HomePage(getDriver()).clickCreateAJob()
-                .setItemName(MULTI_PIPELINE_NAME)
+                .typeItemName(MULTI_PIPELINE_NAME)
                 .selectMultibranchPipelineAndClickOk()
-                .clickOnToggle()
+                .clickToggleToDisable()
                 .clickSaveButton()
-                .selectConfigure()
+                .clickConfigure()
                 .getStatusToggle();
 
+        Allure.step("Expected result: The status toggle reflects that the project is disabled");
         Assert.assertEquals(statusToggle, "false");
     }
 
@@ -150,14 +173,14 @@ public class MultibranchPipelineTest extends BaseTest {
     @Story("US_05.003  Enable Multibranch pipeline")
     @Description("Verify the status toggle of a project reflects that the project is enable.")
     public void testEnableProjectToggleStatus() {
-        TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
 
         String statusToggle = new HomePage(getDriver())
-                .clickJobByName(MULTI_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
+                .clickSpecificMultibranchPipelineName(MULTI_PIPELINE_NAME)
                 .clickEnableButton()
-                .selectConfigure()
+                .clickConfigure()
                 .getStatusToggle();
 
+        Allure.step("Expected result: The status toggle reflects that the project is enabled");
         Assert.assertEquals(statusToggle, "true");
     }
 
@@ -169,13 +192,14 @@ public class MultibranchPipelineTest extends BaseTest {
 
         List<String> itemList = new HomePage(getDriver())
                 .clickJobByName(MULTI_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
-                .clickSidebarRenameButton()
-                .clearNewNameInput()
-                .setItemName(RENAMED_MULTI_PIPELINE)
-                .clickRename(new MultibranchPipelineProjectPage(getDriver()))
+                .clickRenameOnSidebar()
+                .clearNameInputField()
+                .typeNewName(RENAMED_MULTI_PIPELINE)
+                .clickRenameButtonWhenRenamedViaSidebar()
                 .clickLogo()
                 .getItemList();
 
+        Allure.step("Expected result: Renamed Project is displayed on Home Page");
         Assert.assertListContainsObject(itemList, RENAMED_MULTI_PIPELINE, "Item is not renamed successfully");
     }
 
@@ -183,18 +207,20 @@ public class MultibranchPipelineTest extends BaseTest {
     @Story("US_05.001  Rename Multibranch pipeline")
     @Description("Verify error message is displayed when attempting to rename project to the same name")
     public void testRenameProjectWithNameSameAsCurrent() {
+        final String expectedErrorMessage = "The new name is the same as the current name.";
+
         TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
 
         String errorMessage = new HomePage(getDriver())
-                .clickJobByName(MULTI_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
-                .clickSidebarRenameButton()
-                .clearNewNameInput()
-                .setItemName(MULTI_PIPELINE_NAME)
-                .clickRename(new MultibranchPipelineErrorPage(getDriver()))
+                .clickSpecificMultibranchPipelineName(MULTI_PIPELINE_NAME)
+                .clickRenameOnSidebar()
+                .clearNameInputField()
+                .typeNewName(MULTI_PIPELINE_NAME)
+                .clickRenameButtonWhenRenamedViaSidebar()
                 .getErrorText();
 
-        Assert.assertEquals(errorMessage, "The new name is the same as the current name.");
-
+        Allure.step("Expected result: Error: " + expectedErrorMessage + " is displayed");
+        Assert.assertEquals(errorMessage, expectedErrorMessage);
     }
 
     @Test
@@ -205,13 +231,14 @@ public class MultibranchPipelineTest extends BaseTest {
 
         List<String> itemList = new HomePage(getDriver())
                 .openItemDropdown(MULTI_PIPELINE_NAME)
-                .clickRenameOnDropdownForMultibranchPipeline()
-                .clearNewNameInput()
-                .setItemName(RENAMED_MULTI_PIPELINE)
-                .clickRename(new MultibranchPipelineProjectPage(getDriver()))
+                .clickRenameOnDropdown()
+                .clearNameInputField()
+                .typeNewName(RENAMED_MULTI_PIPELINE)
+                .clickRenameButtonWhenRenamedViaDropdown(new MultibranchPipelineProjectPage(getDriver()))
                 .clickLogo()
                 .getItemList();
 
+        Allure.step("Expected result: Renamed Project is displayed on Home Page");
         Assert.assertListContainsObject(itemList, RENAMED_MULTI_PIPELINE, "Item is not renamed successfully");
     }
 
@@ -222,15 +249,17 @@ public class MultibranchPipelineTest extends BaseTest {
         final List<String> sidebarTasks = List.of("Status", "Configure", "Scan Multibranch Pipeline Log",
                 "Multibranch Pipeline Events", "Delete Multibranch Pipeline", "People", "Build History", "Move",
                 "Rename", "Pipeline Syntax", "Credentials");
+
         TestUtils.createFolderProject(this, FOLDER_NAME);
 
         MultibranchPipelineProjectPage multibranchPipelineProjectPage = new HomePage(getDriver())
                 .clickJobByName(FOLDER_NAME, new FolderProjectPage(getDriver()))
-                .clickNewItemInsideFolder()
-                .setItemName(MULTI_PIPELINE_NAME)
+                .clickNewItemOnSidebar()
+                .typeItemName(MULTI_PIPELINE_NAME)
                 .selectMultibranchPipelineAndClickOk()
                 .clickSaveButton();
 
+        Allure.step("Expected result: Sidebar tasks list should match " + sidebarTasks);
         Assert.assertEquals(multibranchPipelineProjectPage.getSidebarTasksSize(), 11);
         Assert.assertEquals(multibranchPipelineProjectPage.getSidebarTasksListHavingExistingFolder(), sidebarTasks);
     }
@@ -240,15 +269,17 @@ public class MultibranchPipelineTest extends BaseTest {
     @Description("Verify list of sidebar tasks for a project.")
     public void testVerifyProjectSidebarMenuList() {
         final List<String> expectedSidebarList =
-                List.of("Status", "Configure", "Scan Multibranch Pipeline Log", "Multibranch Pipeline Events",
-                        "Delete Multibranch Pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
+                List.of("Status", "Configure", "Scan Multibranch Pipeline Log",
+                        "Multibranch Pipeline Events", "Delete Multibranch Pipeline", "People",
+                        "Build History", "Rename", "Pipeline Syntax", "Credentials");
 
         TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
 
         List<String> multibranchPipelineSidebarList = new HomePage(getDriver())
                 .clickJobByName(MULTI_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
-                .getProjectSidebarList();
+                .getSidebarTasksListHavingExistingFolder();
 
+        Allure.step("Expected result: Sidebar tasks list should match " + expectedSidebarList);
         Assert.assertEquals(multibranchPipelineSidebarList.size(), 10);
         Assert.assertEquals(multibranchPipelineSidebarList, expectedSidebarList);
     }
@@ -261,29 +292,34 @@ public class MultibranchPipelineTest extends BaseTest {
         TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
 
         String nestedMultibranchPipeline = new HomePage(getDriver())
-                .clickJobByName(MULTI_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
-                .clickMoveOnSidebar(MULTI_PIPELINE_NAME)
-                .chooseDestinationFromListAndMove(FOLDER_NAME)
-                .clickLogo()
-                .clickJobByName(FOLDER_NAME, new FolderProjectPage(getDriver()))
+                .clickSpecificPipelineName(MULTI_PIPELINE_NAME)
+                .clickMoveOnSidebar()
+                .selectDestinationFolderFromList(FOLDER_NAME)
+                .clickMoveButtonWhenMovedViaSidebar()
+                .clickFolderNameOnBreadcrumbs(FOLDER_NAME)
                 .getNestedProjectName();
 
-        Assert.assertEquals(nestedMultibranchPipeline, MULTI_PIPELINE_NAME, MULTI_PIPELINE_NAME + "is not moved successfully");
+        Allure.step("Expected result: Nested folder is displayed on Folder Project Page");
+        Assert.assertEquals(nestedMultibranchPipeline, MULTI_PIPELINE_NAME,
+                MULTI_PIPELINE_NAME + "is not moved successfully");
     }
 
     @Test
     @Story("US_05.005  Delete Multibranch Pipeline")
     @Description("Verify the deletion of Multibranch Pipeline via dropdown menu.")
     public void testDeleteViaDashboardDropdown() {
+        final String pageTitle = "Welcome to Jenkins!";
+
         TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
 
         String actualPageHeading = new HomePage(getDriver())
                 .openItemDropdown(MULTI_PIPELINE_NAME)
-                .clickDeleteInDropdown(new DeleteDialog(getDriver()))
-                .clickYes(new HomePage(getDriver()))
+                .clickDeleteOnDropdown()
+                .clickYesForConfirmDelete()
                 .getHeadingText();
 
-        Assert.assertEquals(actualPageHeading, "Welcome to Jenkins!");
+        Allure.step("Expected result: Title " + pageTitle + "is displayed, indicating no projects exist");
+        Assert.assertEquals(actualPageHeading, pageTitle);
     }
 
     @Test(dependsOnMethods = "testRenameMultibranchPipelineViaSideBar")
@@ -292,11 +328,12 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testDeleteViaBreadcrumbs() {
         boolean isProjectDeleted = new HomePage(getDriver())
                 .clickSpecificMultibranchPipelineName(RENAMED_MULTI_PIPELINE)
-                .clickMPDropdownArrow()
-                .clickDeleteMultibranchPipelineInBreadcrumbs(new DeleteDialog(getDriver()))
-                .clickYes(new HomePage(getDriver()))
+                .clickBreadcrumbsArrowAfterProjectName(RENAMED_MULTI_PIPELINE)
+                .clickDeleteOnBreadcrumbsMenu()
+                .clickYesWhenDeletedItemOnHomePage()
                 .isItemDeleted(RENAMED_MULTI_PIPELINE);
 
+        Allure.step("Expected result: Project is not displayed on Home Page");
         Assert.assertTrue(isProjectDeleted, RENAMED_MULTI_PIPELINE + " was not deleted");
     }
 
@@ -307,12 +344,12 @@ public class MultibranchPipelineTest extends BaseTest {
         TestUtils.createMultibranchProject(this, MULTI_PIPELINE_NAME);
 
         boolean isItemDeleted = new HomePage(getDriver())
-                .clickJobByName(MULTI_PIPELINE_NAME,
-                        new MultibranchPipelineProjectPage(getDriver()))
-                .clickDeleteButton()
-                .confirmDeleteButton()
+                .clickSpecificPipelineName(MULTI_PIPELINE_NAME)
+                .clickDeleteOnSidebar()
+                .clickYesWhenDeletedItemOnHomePage()
                 .isItemDeleted(MULTI_PIPELINE_NAME);
 
+        Allure.step("Expected result: Project is not displayed on Home Page");
         Assert.assertTrue(isItemDeleted);
     }
 }

@@ -1,7 +1,12 @@
 package school.redrover;
 
-import io.qameta.allure.*;
+import io.qameta.allure.Allure;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Step;
+import io.qameta.allure.Story;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.NodesTablePage;
@@ -14,6 +19,14 @@ import java.util.List;
 public class NodesTest extends BaseTest {
 
     private static final String NODE_NAME = "FirstNode";
+
+    @BeforeMethod
+    private void beforeMethod() {
+        HomePage homePage = new HomePage(getDriver());
+        if (homePage.isNodesDisplayedOnExecutorsPanel()) {
+            homePage.clickOnExecutorPanelToggle();
+        }
+    }
 
     @Step("Create Node")
     public void createNode(String nodeName) {
@@ -88,7 +101,7 @@ public class NodesTest extends BaseTest {
     }
 
     @Test
-    @Story("US_15.003 Check list of Monitoring Data")
+    @Story("US_15.005 Check list of Monitoring Data")
     @Description("Verify Monitoring Data list of the Built-In Node")
     public void testBuiltInNodeMonitoringDataList() {
         final List<String> expectedMonitoringDataValues = new ArrayList<>(List.of(
@@ -102,7 +115,7 @@ public class NodesTest extends BaseTest {
 
         List<String> actualMonitoringDataValues = new HomePage(getDriver())
                 .clickBuildExecutorStatusLink()
-                .clickBuiltInNodeName()
+                .clickBuiltInNode()
                 .clickMonitoringDataButton()
                 .getMonitoringDataElementsList();
 
@@ -117,7 +130,7 @@ public class NodesTest extends BaseTest {
         createNode(NODE_NAME);
 
         boolean isNodeExist = new NodesTablePage(getDriver())
-                .openDropDownChevron(NODE_NAME)
+                .openDropdownChevron(NODE_NAME)
                 .clickDeleteAgentOnDropdownMenu()
                 .clickYesInDeleteAgentWindow()
                 .isContainNode(NODE_NAME);
@@ -140,7 +153,7 @@ public class NodesTest extends BaseTest {
                 .typeNodeName(nodeName)
                 .selectPermanentAgentRadioButton()
                 .clickCreateButtonOnError()
-                .getErrorMessageText();
+                .getErrorText();
 
         Allure.step("Expected result: Error message: Agent called ‘" + nodeName + "’ already exists");
         Assert.assertEquals(actualResult, expectedResult);
@@ -196,7 +209,7 @@ public class NodesTest extends BaseTest {
 
         String actualNodeStatusMessage = new HomePage(getDriver())
                 .clickBuildExecutorStatusLink()
-                .clickOnBuiltInNode()
+                .clickBuiltInNode()
                 .clickMarkThisNodeTemporaryOfflineButton()
                 .clickMarkThisNodeTemporaryOfflineConfirmationButton()
                 .getNodeOfflineStatusText();
@@ -211,11 +224,11 @@ public class NodesTest extends BaseTest {
     public void testSwitchNodeToOnlineStatus() {
         Boolean isNodeOffline = new HomePage(getDriver())
                 .clickBuildExecutorStatusLink()
-                .clickOnBuiltInNode()
+                .clickBuiltInNode()
                 .clickBringThisNodeBackOnlineButton()
                 .isNodeOfflineStatusMessageDisplayed();
 
-        Allure.step("Expected result: Message about Disconecting is missing");
+        Allure.step("Expected result: Message about Disconnecting is missing");
         Assert.assertFalse(isNodeOffline);
     }
 
@@ -225,12 +238,12 @@ public class NodesTest extends BaseTest {
     public void testCreateNodeWithInvalidData() {
         String actualResult = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickNodes()
+                .clickNodesLink()
                 .clickNewNodeButton()
                 .typeNodeName("!")
                 .selectPermanentAgentRadioButton()
                 .clickCreateButtonOnError()
-                .getErrorMessageText();
+                .getErrorText();
 
         Allure.step("Expected result: Error message - ‘!’ is an unsafe character");
         Assert.assertEquals(actualResult, "‘!’ is an unsafe character");
@@ -242,7 +255,7 @@ public class NodesTest extends BaseTest {
     public void testCreateNodeFromManageJenkins() {
         List<String> nodesList = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickNodes()
+                .clickNodesLink()
                 .clickNewNodeButton()
                 .typeNodeName(NODE_NAME)
                 .selectPermanentAgentRadioButton()
@@ -264,7 +277,7 @@ public class NodesTest extends BaseTest {
                 .clickNode(NODE_NAME)
                 .clickDeleteAgent()
                 .clickYesButton()
-                .getHeader().typeSearchQueryPressEnter(NODE_NAME)
+                .getHeader().typeSearchQueryAndPressEnter(NODE_NAME)
                 .getNoMatchText();
 
         Allure.step("Expected result: Node '" + NODE_NAME + "' not found");

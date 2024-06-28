@@ -11,16 +11,14 @@ import school.redrover.model.base.BaseConfigPage;
 
 import java.util.List;
 
-public class MultiConfigurationConfigPage extends BaseConfigPage<MultiConfigurationProjectPage,MultiConfigurationConfigPage> {
+public class MultiConfigurationConfigPage extends
+        BaseConfigPage<MultiConfigurationProjectPage, MultiConfigurationConfigPage> {
 
     @FindBy(className = "jenkins-toggle-switch__label")
     private WebElement toggleSwitch;
 
     @FindBy(name = "Apply")
     private WebElement applyButton;
-
-    @FindBy(id = "itemname-required")
-    private WebElement errorRequiresName;
 
     @FindBy(xpath = "//label[text()='Discard old builds']")
     private WebElement discardOldBuildsCheckbox;
@@ -35,7 +33,7 @@ public class MultiConfigurationConfigPage extends BaseConfigPage<MultiConfigurat
     private WebElement advancedButton;
 
     @FindBy(css = "[name*='artifactDaysToKeepStr']")
-    private WebElement DaysToKeepArtifacts;
+    private WebElement daysToKeepArtifacts;
 
     @FindBy(css = "[name*='artifactNumToKeepStr']")
     private WebElement artifactNumToKeepStr;
@@ -50,12 +48,14 @@ public class MultiConfigurationConfigPage extends BaseConfigPage<MultiConfigurat
         super(driver, new MultiConfigurationProjectPage(driver));
     }
 
+    @Step("Switch a toggle")
     public MultiConfigurationConfigPage clickToggleSwitch() {
         toggleSwitch.click();
 
         return this;
     }
 
+    @Step("Click on 'Apply' button")
     public MultiConfigurationConfigPage clickApply() {
         applyButton.click();
 
@@ -68,10 +68,6 @@ public class MultiConfigurationConfigPage extends BaseConfigPage<MultiConfigurat
 
     public String getToggleStatusMessage() {
         return toggleSwitch.getText();
-    }
-
-    public String getErrorRequiresName() {
-        return errorRequiresName.getText();
     }
 
     @Step("Click on the checkbox 'Discard old builds'")
@@ -104,7 +100,7 @@ public class MultiConfigurationConfigPage extends BaseConfigPage<MultiConfigurat
 
     @Step("Enter number of days to keep artifacts in the input field")
     public MultiConfigurationConfigPage enterNumberOfDaysToKeepArtifacts(String days) {
-        DaysToKeepArtifacts.sendKeys(days);
+        daysToKeepArtifacts.sendKeys(days);
 
         return this;
     }
@@ -123,12 +119,14 @@ public class MultiConfigurationConfigPage extends BaseConfigPage<MultiConfigurat
                 .toList();
     }
 
+    @Step("Click on Project Name in Breadcrumbs ")
     public MultiConfigurationProjectPage clickBreadcrumbsProjectName() {
         breadcrumbsProjectName.click();
 
         return new MultiConfigurationProjectPage(getDriver());
     }
 
+    @Step("Hover over a Switch toggle")
     public MultiConfigurationConfigPage hoverOverToggleSwitch() {
         new Actions(getDriver())
                 .moveToElement(toggleSwitch)
@@ -139,6 +137,7 @@ public class MultiConfigurationConfigPage extends BaseConfigPage<MultiConfigurat
 
     public String getToggleTooltipText() {
 
-        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.tippy-box>div"))).getText();
+        return getWait2().until(
+                ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.tippy-box>div"))).getText();
     }
 }

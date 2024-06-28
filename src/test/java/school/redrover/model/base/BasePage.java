@@ -1,14 +1,22 @@
 package school.redrover.model.base;
 
 import io.qameta.allure.Step;
-import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WindowType;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.model.*;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.model.FooterFrame;
+import school.redrover.model.FreestyleProjectPage;
+import school.redrover.model.HeaderFrame;
+import school.redrover.model.HomePage;
+import school.redrover.model.ManageJenkinsPage;
+import school.redrover.runner.ProjectUtils;
 
-import java.util.List;
 import java.util.ArrayList;
 
 public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
@@ -24,6 +32,12 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
 
     @FindBy(id = "jenkins-name-icon")
     private WebElement logo;
+
+    @FindBy(css = "div#breadcrumbBar a[href = '/']")
+    private WebElement dashboardBreadcrumbs;
+
+    @FindBy(css = "[class='tippy-box'] [href='/manage']")
+    private WebElement manageJenkinsOnDashboardBreadcrumbsMenu;
 
     public BasePage(WebDriver driver) {
         super(driver);
@@ -47,15 +61,16 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
     public void openElementDropdown(WebElement element) {
         WebElement chevron = element.findElement(By.cssSelector("[class $= 'chevron']"));
 
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", chevron);
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", chevron);
+        js.executeScript("arguments[0].dispatchEvent(new Event('click'));", chevron);
     }
 
+    @Step("Check existence of text on breadcrumbs")
     public boolean isThereTextInBreadcrumbs(String text) {
         return getDriver().findElements(By.className("jenkins-breadcrumbs__list-item"))
                 .stream()
-                .anyMatch(e -> e.getText()
-                        .contains(text));
+                .anyMatch(e -> e.getText().contains(text));
     }
 
     public void hoverOverElement(WebElement element) {
@@ -64,9 +79,12 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
                 .perform();
     }
 
-    public void clickSpecificDropdownArrow(WebElement element) {
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
-                "arguments[0].dispatchEvent(new Event('click'));", element);
+    public void clickBreadcrumbsDropdownArrow(WebElement element) {
+        ((JavascriptExecutor) getDriver()).executeScript(
+                """
+                        arguments[0].dispatchEvent(new Event('mouseenter'));
+                        arguments[0].dispatchEvent(new Event('click'));""",
+                element);
     }
 
     protected void clickElementFromTheBottomOfThePage(WebElement webElement) {
@@ -77,22 +95,12 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
                 .click().perform();
     }
 
-    public boolean areElementsEnabled(List<WebElement> elements) {
-        return elements
-                .stream()
-                .allMatch(WebElement::isEnabled);
-    }
-
-    public String getText(WebElement webElement) {
-        return webElement.getText();
-    }
-
     public String getHeadingText() {
         return heading.getText();
     }
 
-    public void scrollIntoView(WebElement element) {
-        ((JavascriptExecutor) getDriver()).executeScript("return arguments[0].scrollIntoView(true);", element);
+    public void scrollIntoViewCenter(WebElement e) {
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block:'center'});", e);
     }
 
     public String getCurrentUrl() {
@@ -103,30 +111,29 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
     }
 
-    public FreestyleProjectPage triggerJobViaHTTPRequest(String token, String user, String projectName) {
-        final String postBuildJob = "http://" + user + ":" + token + "@localhost:8080/job/Project1/build?token=" + projectName;
+    @Step("Trigger remotely '{projectName}' job as user '{user}' with '{tName}' token via HTTPRequest")
+    public FreestyleProjectPage triggerJobViaHTTPRequest(String token, String user, String projectName, String tName) {
+        final String postBuildJob = "http://" + user + ":" + token + "@" + ProjectUtils.getUrl().substring(7)
+                + "job/" + projectName + "/build?token=" + tName;
 
         getDriver().switchTo().newWindow(WindowType.TAB);
         getDriver().navigate().to(postBuildJob);
-
-        List<String> tabs = new ArrayList<>(getDriver().getWindowHandles());
-
-        getDriver().switchTo().window(tabs.get(0));
+        getDriver().switchTo().window((new ArrayList<>(getDriver().getWindowHandles())).get(0));
 
         return new FreestyleProjectPage(getDriver());
     }
 
+    @Step("Revoke '{user}' token with uuid='{uuid}' via HTTPRequest")
     public void revokeTokenViaHTTPRequest(String token, String uuid, String user) {
-        final String postRevokeToken = "http://" + user + ":" + token + "@localhost:8080/user/" + user
-                + "/descriptorByName/jenkins.security.ApiTokenProperty/revoke?tokenUuid=" + uuid;
+        final String postRevokeToken = "http://" + user + ":" + token + "@" + ProjectUtils.getUrl().substring(7)
+                + "user/" + user + "/descriptorByName/jenkins.security.ApiTokenProperty/revoke?tokenUuid=" + uuid;
 
         getDriver().switchTo().newWindow(WindowType.TAB);
         getDriver().navigate().to(postRevokeToken);
+
         getWait5().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
 
-        List<String> tabs = new ArrayList<>(getDriver().getWindowHandles());
-
-        getDriver().switchTo().window(tabs.get(0));
+        getDriver().switchTo().window((new ArrayList<>(getDriver().getWindowHandles())).get(0));
     }
 
     public void scrollToTopOfPage() {
@@ -134,30 +141,54 @@ public abstract class BasePage<T extends BasePage<T>> extends BaseModel {
         js.executeScript("window.scrollTo(0, 0);");
     }
 
+//    TODO refactor this one -
     public static ExpectedCondition<Boolean> isElementInViewPort(WebElement element) {
         return new ExpectedCondition<>() {
             @Override
             public Boolean apply(WebDriver driver) {
                 JavascriptExecutor js = (JavascriptExecutor) driver;
                 return (Boolean) js.executeScript(
-                        "let rect = arguments[0].getBoundingClientRect();" +
-                                "return (rect.top >= 0 && rect.left >= 0 && " +
-                                "rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && " +
-                                "rect.right <= (window.innerWidth || document.documentElement.clientWidth));",
+                        "let rect = arguments[0].getBoundingClientRect();"
+                                + "return (rect.top >= 0 && rect.left >= 0 && "
+                                + "rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && "
+                                + "rect.right <= (window.innerWidth || document.documentElement.clientWidth));",
                         element);
             }
         };
     }
 
+    @Step("Click on the 'Tutorial icon' in the header 'Search box'")
     public BasePage<T> openTutorial() {
         getWait5().until(ExpectedConditions.visibilityOf(tutorialIcon)).click();
 
         return this;
     }
 
+    @Step("Get background color of page body")
     public String getBackgroundColor() {
-
         return htmlBody.getCssValue("background-color");
     }
 
+    public String getTitle() {
+        return getDriver().getTitle();
+    }
+
+    @Step("Click on the Dashboard chevron on the breadcrumbs")
+    public T openDashboardBreadcrumbsDropdownMenu() {
+        WebElement chevron = dashboardBreadcrumbs.findElement(By.cssSelector("[class$='chevron']"));
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].dispatchEvent(new Event('mouseenter'));"
+                        + "arguments[0].dispatchEvent(new Event('click'));",
+                chevron);
+
+        return (T) this;
+    }
+
+    @Step("Click on Manage Jenkins on the Dashboard breadcrumbs menu")
+    public ManageJenkinsPage clickManageJenkinsOnBreadcrumbsMenu() {
+        getWait60().until(ExpectedConditions.visibilityOf(manageJenkinsOnDashboardBreadcrumbsMenu));
+        manageJenkinsOnDashboardBreadcrumbsMenu.click();
+
+        return new ManageJenkinsPage(getDriver());
+    }
 }

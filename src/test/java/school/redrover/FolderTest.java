@@ -1,12 +1,12 @@
 package school.redrover;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import org.openqa.selenium.Keys;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.model.DeleteDialog;
 import school.redrover.model.FolderProjectPage;
 import school.redrover.model.HomePage;
 import school.redrover.model.PipelineProjectPage;
@@ -21,7 +21,7 @@ public class FolderTest extends BaseTest {
     private static final String FOLDER_NAME = "First_Folder";
     private static final String NEW_FOLDER_NAME = "Renamed_First_Folder";
     private static final String THIRD_FOLDER_NAME = "Dependant_Test_Folder";
-    private static final String FOLDER_TO_MOVE = "Folder_to_move_into_the_first";
+    private static final String MOVED_FOLDER = "Folder_to_move_into_the_first";
     private static final String FOLDER_TO_MOVE_2 = "Folder_to_move_into_the_first_2";
     private static final String PIPELINE_NAME = "Pipeline Sv";
     private static final String IVAN_S_FREE_STYLE_PROJECT = "Ivan's Freestyle";
@@ -35,38 +35,45 @@ public class FolderTest extends BaseTest {
     public void testCreateViaCreateAJob() {
         String folderBreadcrumbName = new HomePage(getDriver())
                 .clickCreateAJob()
-                .setItemName(FOLDER_NAME)
+                .typeItemName(FOLDER_NAME)
                 .selectFolderAndClickOk()
                 .clickSaveButton()
                 .getBreadcrumbName();
 
+        Allure.step("Expected result: Created project name matches breadcrumb name");
         Assert.assertEquals(folderBreadcrumbName, FOLDER_NAME, "Breadcrumb name doesn't match " + FOLDER_NAME);
     }
 
-    @Test(dependsOnMethods = "testCreateViaCreateAJob")
+    @Test
     @Story("US_04.004  Add and edit description of the folder ")
     @Description("Add description of the folder and save it")
     public void testAddDescription() {
-        String textInDescription = new FolderProjectPage(getDriver())
-                .clickAddOrEditDescription()
-                .setDescription(FOLDER_DESCRIPTION_FIRST)
+        TestUtils.createFolderProject(this, FOLDER_NAME);
+
+        String textInDescription = new HomePage(getDriver())
+                .clickSpecificFolderName(FOLDER_NAME)
+                .clickAddDescription()
+                .typeDescription(FOLDER_DESCRIPTION_FIRST)
                 .clickSaveButton()
                 .getDescriptionText();
 
+        Allure.step("Expected result: Description text is displayed");
         Assert.assertEquals(textInDescription, FOLDER_DESCRIPTION_FIRST);
     }
 
     @Test(dependsOnMethods = "testAddDescription")
     @Story("US_04.004  Add and edit description of the folder ")
     @Description("Edit description of the folder and save it")
-    public void testChangeDescription() {
-        String textInDescription = new FolderProjectPage(getDriver())
-                .clickAddOrEditDescription()
+    public void testEditDescription() {
+        String textInDescription = new HomePage(getDriver())
+                .clickSpecificFolderName(FOLDER_NAME)
+                .clickEditDescription()
                 .clearDescription()
-                .setDescription(FOLDER_DESCRIPTION_SECOND)
+                .typeDescription(FOLDER_DESCRIPTION_SECOND)
                 .clickSaveButton()
                 .getDescriptionText();
 
+        Allure.step("Expected result: New description text is displayed");
         Assert.assertEquals(textInDescription, FOLDER_DESCRIPTION_SECOND);
     }
 
@@ -77,11 +84,11 @@ public class FolderTest extends BaseTest {
         String errorMessageText = new HomePage(getDriver())
                 .clickNewItem()
                 .selectFolder()
-                .setItemName(".")
+                .typeItemName(".")
                 .getErrorMessageInvalidCharacterOrDuplicateName();
 
-        Assert.assertEquals(errorMessageText, "» “.” is not an allowed name",
-                "The error message is different");
+        Allure.step("Expected result: The error message is displayed");
+        Assert.assertEquals(errorMessageText, "» “.” is not an allowed name");
     }
 
     @Test
@@ -91,43 +98,62 @@ public class FolderTest extends BaseTest {
         String errorMessageText = new HomePage(getDriver())
                 .clickNewItem()
                 .selectFolder()
-                .setItemName("Folder." + Keys.TAB)
+                .typeItemName("Folder." + Keys.TAB)
                 .getErrorMessageInvalidCharacterOrDuplicateName();
 
-        Assert.assertEquals(errorMessageText, "» A name cannot end with ‘.’",
-                "The error message is different");
+        Allure.step("Expected result: The error message is displayed");
+        Assert.assertEquals(errorMessageText, "» A name cannot end with ‘.’");
     }
 
-    @Test(dependsOnMethods = "testCreateViaCreateAJob")
+    @Test
     @Story("US_04.001 Rename Folder")
     @Description("Rename Folder via Breadcrumbs dropdown menu")
-    public void testRenameFolderViaFolderBreadcrumbsDropdownMenu() {
-        String folderStatusPageHeading = new HomePage(getDriver())
+    public void testRenameFolderViaBreadcrumbs() {
+        TestUtils.createFolderProject(this, FOLDER_NAME);
+
+        FolderProjectPage folderProjectPage = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
-                .hoverOverBreadcrumbsName()
-                .clickBreadcrumbsDropdownArrow()
-                .clickDropdownRenameButton()
-                .setNewName(NEW_FOLDER_NAME)
-                .clickRename()
+                .hoverOverProjectNameOnBreadcrumbs(FOLDER_NAME)
+                .clickBreadcrumbsArrowAfterProjectName(FOLDER_NAME)
+                .clickRenameOnBreadcrumbsMenu()
+                .clearNameInputField()
+                .typeNewName(NEW_FOLDER_NAME)
+                .clickRenameButtonWhenRenamedViaBreadcrumbs();
+
+        String folderStatusPageHeading = folderProjectPage
                 .getProjectName();
 
+        HomePage renewHomePage = folderProjectPage
+                .clickLogo();
+
+        Allure.step("Expected result: the renamed Project is displayed");
         Assert.assertEquals(folderStatusPageHeading, NEW_FOLDER_NAME,
                 "The Folder name is not equal to " + NEW_FOLDER_NAME);
+        Assert.assertTrue(renewHomePage.isItemExists(NEW_FOLDER_NAME));
+        Assert.assertTrue(renewHomePage.isItemDeleted(FOLDER_NAME));
     }
 
-    @Test(dependsOnMethods = {"testCreateViaCreateAJob", "testRenameFolderViaFolderBreadcrumbsDropdownMenu"})
+    @Test(dependsOnMethods = "testRenameFolderViaBreadcrumbs")
     @Story("US_04.001 Rename Folder")
     @Description("Rename Folder via main page dropdown")
     public void testRenameFolderViaMainPageDropdownMenu() {
-        String folderStatusPageHeading = new HomePage(getDriver())
-                .openItemDropdownWithSelenium(NEW_FOLDER_NAME)
-                .clickRenameOnDropdownForFolder()
-                .setNewName(THIRD_FOLDER_NAME)
-                .clickRename()
+        FolderProjectPage folderProjectPage = new HomePage(getDriver())
+                .openItemDropdown(NEW_FOLDER_NAME)
+                .clickRenameOnDropdown()
+                .clearNameInputField()
+                .typeNewName(THIRD_FOLDER_NAME)
+                .clickRenameButtonWhenRenamedViaDropdown(new FolderProjectPage(getDriver()));
+
+        String folderStatusPageHeading = folderProjectPage
                 .getProjectName();
 
-        Assert.assertEquals(folderStatusPageHeading, THIRD_FOLDER_NAME,
-                "The Folder name is not equal to " + THIRD_FOLDER_NAME);
+        HomePage renewHomePage = folderProjectPage
+                .clickLogo();
+
+        Allure.step("Expected result: the renamed Project is displayed");
+        Assert.assertEquals(folderStatusPageHeading, THIRD_FOLDER_NAME);
+        Assert.assertTrue(renewHomePage.isItemExists(THIRD_FOLDER_NAME));
+        Assert.assertTrue(renewHomePage.isItemDeleted(NEW_FOLDER_NAME));
     }
 
     @Test
@@ -137,13 +163,24 @@ public class FolderTest extends BaseTest {
         TestUtils.createFolderProject(this, FOLDER_NAME);
 
         String folderRenamedName = new HomePage(getDriver())
-                .clickJobByName(FOLDER_NAME, new FolderProjectPage(getDriver()))
-                .clickOnRenameButton()
-                .setNewName(NEW_FOLDER_NAME)
-                .clickRename()
+                .clickSpecificFolderName(FOLDER_NAME)
+                .clickRenameOnSidebar()
+                .clearNameInputField()
+                .typeNewName(NEW_FOLDER_NAME)
+                .clickRenameButtonWhenRenamedViaSidebar()
                 .getProjectName();
 
+        HomePage renewHomePage = new  FolderProjectPage(getDriver())
+                .clickLogo();
+
+        Allure.step("Expected result: Folder name on project page as entered during renaming");
         Assert.assertEquals(folderRenamedName, NEW_FOLDER_NAME);
+
+        Allure.step("Expected result: Folder with renamed name is exists on dashboard");
+        Assert.assertTrue(renewHomePage.isItemExists(NEW_FOLDER_NAME));
+
+        Allure.step("Expected result: Folder with old name is missing on dashboard");
+        Assert.assertTrue(renewHomePage.isItemDeleted(FOLDER_NAME));
     }
 
     @Test
@@ -151,18 +188,20 @@ public class FolderTest extends BaseTest {
     @Description("Verify a Folder can be moved into another Folder via breadcrumbs")
     public void testFolderMovedIntoAnotherFolderViaBreadcrumbs() {
         TestUtils.createFolderProject(this, FOLDER_NAME);
-        TestUtils.createFolderProject(this, FOLDER_TO_MOVE);
+        TestUtils.createFolderProject(this, MOVED_FOLDER);
 
         String nestedFolder = new HomePage(getDriver())
-                .clickJobByName(FOLDER_TO_MOVE, new FolderProjectPage(getDriver()))
-                .hoverOverBreadcrumbsName()
-                .clickBreadcrumbsDropdownArrow()
-                .clickDropdownMoveButton()
-                .chooseDestinationFromListAndMove(FOLDER_NAME)
-                .clickMainFolderName(FOLDER_NAME)
+                .clickSpecificFolderName(MOVED_FOLDER)
+                .hoverOverProjectNameOnBreadcrumbs(MOVED_FOLDER)
+                .clickBreadcrumbsArrowAfterProjectName(MOVED_FOLDER)
+                .clickMoveOnBreadcrumbs()
+                .selectDestinationFolderFromList(FOLDER_NAME)
+                .clickMoveButtonWhenMovedViaBreadcrumbs()
+                .clickFolderNameOnBreadcrumbs(FOLDER_NAME)
                 .getNestedProjectName();
 
-        Assert.assertEquals(nestedFolder, FOLDER_TO_MOVE, FOLDER_TO_MOVE + " is not in " + FOLDER_NAME);
+        Allure.step("Expected result: Nested project is in destination Folder");
+        Assert.assertEquals(nestedFolder, MOVED_FOLDER, MOVED_FOLDER + " is not in " + FOLDER_NAME);
     }
 
     @Test(dependsOnMethods = "testFolderMovedIntoAnotherFolderViaBreadcrumbs")
@@ -173,46 +212,49 @@ public class FolderTest extends BaseTest {
 
         boolean isItemCreated = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
-                .clickNewItemInsideFolder()
-                .setItemName(multiConfigurationProject)
+                .clickNewItemOnSidebar()
+                .typeItemName(multiConfigurationProject)
                 .selectFreestyleAndClickOk()
                 .clickLogo()
                 .clickSpecificFolderName(FOLDER_NAME)
                 .isItemExistsInsideFolder(multiConfigurationProject);
 
+        Allure.step("Expected result: Nested project is created");
         Assert.assertTrue(isItemCreated);
     }
 
     @Test(dependsOnMethods = "testCreateMultiConfigurationProjectInFolder")
-    @Story("US_04.003  Delete Folder")
+    @Story("US_04.003 Delete Folder")
     @Description("Delete folder from dropdown menu")
     public void testDeleteFolderViaDropdown() {
         boolean isFolderDeleted = new HomePage(getDriver())
                 .openItemDropdown(FOLDER_NAME)
-                .clickDeleteInDropdown(new DeleteDialog(getDriver()))
-                .clickYes(new HomePage(getDriver()))
+                .clickDeleteOnDropdown()
+                .clickYesForConfirmDelete()
                 .isItemDeleted(FOLDER_NAME);
 
+        Allure.step("Expected result: Project is deleted and not displayed on Home page anymore");
         Assert.assertTrue(isFolderDeleted);
     }
 
     @Test
     @Story("US_04.002  Move Folder to Folder")
     @Description("Verify a Folder can be moved into another Folder via dropdown menu")
-    public void testMoveFolderToFolderViaDropDownMenu() {
-        TestUtils.createFolderProject(this, FOLDER_TO_MOVE);
+    public void testMoveFolderToFolderViaDropdownMenu() {
+        TestUtils.createFolderProject(this, MOVED_FOLDER);
         TestUtils.createFolderProject(this, FOLDER_NAME);
 
         List<String> folderNameList = new HomePage(getDriver())
-                .openItemDropdown(FOLDER_TO_MOVE)
-                .chooseFolderToMove()
-                .chooseDestinationFromListAndMove(FOLDER_NAME)
+                .openItemDropdown(MOVED_FOLDER)
+                .clickMoveOnDropdown()
+                .selectDestinationFolderFromList(FOLDER_NAME)
+                .clickMoveButtonWhenMovedViaDropdown(new FolderProjectPage(getDriver()))
                 .clickLogo()
                 .clickSpecificFolderName(FOLDER_NAME)
                 .getItemListInsideFolder();
 
-        Assert.assertEquals(folderNameList.get(0), FOLDER_TO_MOVE);
-    }
+        Allure.step("Expected result: Nested project is displayed in destination Folder");
+        Assert.assertEquals(folderNameList.get(0), MOVED_FOLDER);    }
 
     @Test
     @Story("US_04.000  Create Folder")
@@ -220,7 +262,7 @@ public class FolderTest extends BaseTest {
     public void testCreateViaSidebarMenu() {
         String folderName = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName(FOLDER_NAME)
+                .typeItemName(FOLDER_NAME)
                 .selectFolderAndClickOk()
                 .clickSaveButton()
                 .getBreadcrumbName();
@@ -229,7 +271,10 @@ public class FolderTest extends BaseTest {
                 .clickLogo()
                 .getItemList();
 
+        Allure.step("Expected result: Created Project is displayed on Breadcrumbs");
         Assert.assertEquals(folderName, FOLDER_NAME);
+
+        Allure.step("Expected result: Created Project is displayed on Dashboard");
         Assert.assertListContainsObject(itemList, FOLDER_NAME, "Folder is not created");
     }
 
@@ -241,39 +286,41 @@ public class FolderTest extends BaseTest {
                 .clickSpecificFolderName(FOLDER_NAME)
                 .isFolderEmpty();
 
+        Allure.step("Expected result: Section 'This folder is empty' is displayed");
         Assert.assertTrue(isFolderEmpty);
     }
 
     @Test(dependsOnMethods = "testCheckNewFolderIsEmpty")
     @Story("US_04.000  Create Folder")
     @Description("Validate that a newly created folder is empty")
-    public void testNewlyCreatedFolderIsEmptyAJ() {
+    public void testCreatedFolderIsEmpty() {
         final String folderName = "NewProjectFolder";
         final String thisFolderIsEmptyMessage = "This folder is empty";
         final String createAJobLinkText = "Create a job";
 
         TestUtils.createFolderProject(this, folderName);
 
-        String actualFolderName = new HomePage(getDriver())
+        String actualEmptyStateMessage = new HomePage(getDriver())
                 .clickSpecificFolderName(folderName)
-                .getProjectName();
-
-        String actualEmptyStateMessage = new FolderProjectPage(getDriver())
                 .getMessageFromEmptyFolder();
 
         String actualCreateJobLinkText = new FolderProjectPage(getDriver())
-                .getTextWhereClickForCreateJob();
+                .getLinkTextForCreateJob();
 
         Boolean isLinkForCreateJobDisplayed = new FolderProjectPage(getDriver())
                 .isLinkForCreateJobDisplayed();
 
-        Assert.assertEquals(actualFolderName, folderName);
+        Allure.step("Expected result: Text 'This folder is empty' is displayed");
         Assert.assertEquals(actualEmptyStateMessage, thisFolderIsEmptyMessage);
+
+        Allure.step("Expected result: Text for creating job link = 'Create a job'");
         Assert.assertEquals(actualCreateJobLinkText, createAJobLinkText);
+
+        Allure.step("Expected result: Link for creating job' is displayed");
         Assert.assertTrue(isLinkForCreateJobDisplayed, "newJobLink is NOT displayed");
     }
 
-    @Test(dependsOnMethods = "testNewlyCreatedFolderIsEmptyAJ")
+    @Test(dependsOnMethods = "testCreatedFolderIsEmpty")
     @Story("US_04.005  Create a job inside folder")
     @Description("Add Pipeline Project inside folder")
     public void testCreateJobPipelineInFolder() {
@@ -281,19 +328,22 @@ public class FolderTest extends BaseTest {
 
         String fullProjectName = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
-                .clickNewItemInsideFolder()
-                .setItemName(PIPELINE_NAME)
+                .clickNewItemOnSidebar()
+                .typeItemName(PIPELINE_NAME)
                 .selectPipelineAndClickOk()
                 .clickSaveButton()
                 .getFullProjectNameLocationText();
 
-        String itemName = new PipelineProjectPage(getDriver())
+        boolean isItemExistsInsideFolder = new PipelineProjectPage(getDriver())
                 .clickLogo()
                 .clickSpecificFolderName(FOLDER_NAME)
-                .getItemInTableName();
+                .isItemExistsInsideFolder(PIPELINE_NAME);
 
-        Assert.assertTrue(fullProjectName.contains(expectedFullProjectName), "The text does not contain the expected project name.");
-        Assert.assertEquals(itemName, PIPELINE_NAME);
+        Allure.step("Expected result: Full Project name contains both Project names");
+        Assert.assertTrue(fullProjectName.contains(expectedFullProjectName),
+                "The text does not contain the expected project name.");
+
+        Assert.assertTrue(isItemExistsInsideFolder, "Job inside Folder not created");
     }
 
     @Test(dependsOnMethods = "testCreateJobPipelineInFolder")
@@ -302,21 +352,22 @@ public class FolderTest extends BaseTest {
     public void testCreateTwoInnerFolder() {
         List<String> itemNames = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
-                .clickNewItemInsideFolder()
-                .setItemName(FOLDER_TO_MOVE)
+                .clickNewItemOnSidebar()
+                .typeItemName(MOVED_FOLDER)
                 .selectFolderAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
                 .clickSpecificFolderName(FOLDER_NAME)
-                .clickNewItemInsideFolder()
-                .setItemName(FOLDER_TO_MOVE_2)
+                .clickNewItemOnSidebar()
+                .typeItemName(FOLDER_TO_MOVE_2)
                 .selectFolderAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
                 .clickSpecificFolderName(FOLDER_NAME)
                 .getItemListInsideFolder();
 
-        Assert.assertTrue(itemNames.contains(FOLDER_TO_MOVE) && itemNames.contains(FOLDER_TO_MOVE_2));
+        Allure.step("Expected result: Item list inside folder contains both created projects");
+        Assert.assertTrue(itemNames.contains(MOVED_FOLDER) && itemNames.contains(FOLDER_TO_MOVE_2));
     }
 
     @Test(dependsOnMethods = "testCreateTwoInnerFolder")
@@ -325,27 +376,30 @@ public class FolderTest extends BaseTest {
     public void testCreateFreeStyleProjectInsideRootFolder() {
         List<String> insideFolderItemList = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
-                .clickNewItemInsideFolder()
-                .setItemName(IVAN_S_FREE_STYLE_PROJECT)
+                .clickNewItemOnSidebar()
+                .typeItemName(IVAN_S_FREE_STYLE_PROJECT)
                 .selectFreestyleAndClickOk()
                 .clickSaveButton()
                 .clickLogo()
                 .clickSpecificFolderName(FOLDER_NAME)
                 .getItemListInsideFolder();
 
-        Assert.assertListContainsObject(insideFolderItemList, IVAN_S_FREE_STYLE_PROJECT, "FreeStyle Project was not created");
+        Allure.step("Expected result: Item list inside folder contains Freestyle project");
+        Assert.assertListContainsObject(insideFolderItemList, IVAN_S_FREE_STYLE_PROJECT,
+                "FreeStyle Project was not created");
     }
 
     @Test(dependsOnMethods = "testCreateFreeStyleProjectInsideRootFolder")
-    @Story("04.003  Delete Folder")
+    @Story("US_04.003 Delete Folder")
     @Description("Delete folder from folder's page using left menu panel")
     public void testDeleteFolder() {
         List<String> jobList = new HomePage(getDriver())
                 .clickSpecificFolderName(FOLDER_NAME)
                 .clickDeleteOnSidebar()
-                .clickYesForDeleteFolder()
+                .clickYesWhenDeletedItemOnHomePage()
                 .getItemList();
 
+        Allure.step("Expected result: the project is not displayed on Home Page");
         Assert.assertListNotContainsObject(jobList, FOLDER_NAME, FOLDER_NAME + " not removed!");
     }
 
@@ -355,10 +409,11 @@ public class FolderTest extends BaseTest {
     public void testCreateProjectInvalidChar() {
         String header1Text = new HomePage(getDriver())
                 .clickNewItem()
-                .setItemName("Fold%erdate")
+                .typeItemName("Fold%erdate")
                 .selectFolderAndClickOk()
                 .getHeadingText();
 
+        Allure.step("Expected result: The Error message is displayed");
         Assert.assertEquals(header1Text, "Error");
     }
 }

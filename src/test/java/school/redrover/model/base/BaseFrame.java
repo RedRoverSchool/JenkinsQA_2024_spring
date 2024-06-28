@@ -2,7 +2,7 @@ package school.redrover.model.base;
 
 import org.openqa.selenium.WebDriver;
 
-public abstract class BaseFrame<T extends BasePage<T>> extends BaseModel{
+public abstract class BaseFrame<T extends BasePage<T>> extends BaseModel {
 
     private final T returnPage;
 

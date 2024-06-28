@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import school.redrover.model.base.BasePage;
+import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
@@ -39,7 +40,6 @@ public class NodesTablePage extends BasePage<NodesTablePage> {
     }
 
 
-
     @Step("Click on the button 'New Node'")
     public CreateNodePage clickNewNodeButton() {
         newNodeButton.click();
@@ -48,10 +48,14 @@ public class NodesTablePage extends BasePage<NodesTablePage> {
     }
 
     @Step("Move cursor to the Name and click on the dropdown chevron")
-    public NodesTablePage openDropDownChevron(String name) {
-        WebElement dropdownChevron = getDriver().findElement(By.cssSelector("#node_" + name + " > td:nth-child(2) > a > button"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));" +
-            "arguments[0].dispatchEvent(new Event('click'));", dropdownChevron);
+    public NodesTablePage openDropdownChevron(String name) {
+        WebElement dropdownChevron = getDriver().findElement(
+                By.cssSelector("#node_" + name + " > td:nth-child(2) > a > button"));
+
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));"
+                        + "arguments[0].dispatchEvent(new Event('click'));",
+                dropdownChevron);
 
         return this;
     }
@@ -93,7 +97,7 @@ public class NodesTablePage extends BasePage<NodesTablePage> {
     }
 
     @Step("Click on the Node name 'Built-In Node'")
-    public NodeBuiltInStatusPage clickBuiltInNodeName() {
+    public NodeBuiltInStatusPage clickBuiltInNode() {
         builtInNode.click();
 
         return new NodeBuiltInStatusPage(getDriver());
@@ -101,14 +105,9 @@ public class NodesTablePage extends BasePage<NodesTablePage> {
 
     @Step("Click on the Node with the specified name")
     public NodePage clickNode(String nodeName) {
-        getDriver().findElement(By.xpath("//a[@href='../computer/" +
-                nodeName.replaceAll(" ", "%20") + "/']")).click();
+        getDriver().findElement(
+                By.xpath("//a[@href='../computer/" + TestUtils.asURL(nodeName) + "/']")).click();
 
         return new NodePage(getDriver());
-    }
-
-    public NodeManagePage clickOnBuiltInNode() {
-        builtInNode.click();
-        return new NodeManagePage(getDriver());
     }
 }

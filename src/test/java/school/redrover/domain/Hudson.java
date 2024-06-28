@@ -1,12 +1,8 @@
 package school.redrover.domain;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
-public class Hudson {
-    @SerializedName("_class")
-    private String clazz;
+public class Hudson extends BaseHudson {
     private List<AssignedLabel> assignedLabels;
     private String mode;
     private String nodeDescription;
@@ -20,9 +16,6 @@ public class Hudson {
     private boolean quietingDown;
     private int slaveAgentPort;
     private UnlabeledLoad unlabeledLoad;
-    private String url;
-    private boolean useCrumbs;
-    private boolean useSecurity;
     private List<View> views;
 
     public List<AssignedLabel> getAssignedLabels() {
@@ -71,18 +64,6 @@ public class Hudson {
 
     public UnlabeledLoad getUnlabeledLoad() {
         return unlabeledLoad;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public boolean isUseCrumbs() {
-        return useCrumbs;
-    }
-
-    public boolean isUseSecurity() {
-        return useSecurity;
     }
 
     public List<View> getViews() {

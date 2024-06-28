@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -11,7 +12,7 @@ import java.util.List;
 public class FullStageViewPage extends BasePage<FullStageViewPage> {
 
     @FindBy(xpath = "//h2")
-    private WebElement H2HeadingText;
+    private WebElement h2HeadingText;
 
     @FindBy(id = "breadcrumbBar")
     private WebElement breadcrumbBarText;
@@ -23,8 +24,9 @@ public class FullStageViewPage extends BasePage<FullStageViewPage> {
         super(driver);
     }
 
+    @Step("Get page heading <h2>")
     public String getH2HeadingText() {
-        return getWait5().until(ExpectedConditions.visibilityOf(H2HeadingText)).getText();
+        return getWait5().until(ExpectedConditions.visibilityOf(h2HeadingText)).getText();
     }
 
     public String getBreadcrumbsText() {

@@ -2,7 +2,6 @@ package school.redrover.model;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -16,6 +15,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class HomePage extends BasePage<HomePage> {
+
+    @FindBy(xpath = "//a[.='New Item']")
+    private WebElement newItem;
 
     @FindBy(linkText = "Create a job")
     private WebElement createAJobLink;
@@ -32,11 +34,8 @@ public class HomePage extends BasePage<HomePage> {
     @FindBy(css = "[href='/newView']")
     private WebElement newView;
 
-    @FindBy(css = "[href*='rename']")
-    private WebElement renameFromDropdown;
-
-    @FindBy(css = "[href*='move']")
-    private WebElement moveFromDropdown;
+    @FindBy(css = "[class*='dropdown'] [href$='rename']")
+    private WebElement dropdownRename;
 
     @FindBy(xpath = "//a[@class='sortheader' and text()='Name']")
     private WebElement columnNameTitle;
@@ -50,17 +49,11 @@ public class HomePage extends BasePage<HomePage> {
     @FindBy(css = "a[href $= '/move']")
     private WebElement dropdownMove;
 
-    @FindBy(css = "div#breadcrumbBar a[href = '/']")
-    private WebElement dashboardBreadcrumbs;
-
-    @FindBy(css = "[class='tippy-box'] [href='/manage']")
-    private WebElement manageFromDashboardBreadcrumbsMenu;
-
     @FindBy(css = "[aria-describedby*='tippy']")
-    private WebElement builSchedulePopUp;
+    private WebElement buildSchedulePopUp;
 
     @FindBy(xpath = "//a[contains(@href, 'workflow-stage')]")
-    private WebElement fullStageViewButton;
+    private WebElement fullStageViewOnDropdown;
 
     @FindBy(css = ".tab.active a")
     private WebElement activeViewName;
@@ -69,10 +62,7 @@ public class HomePage extends BasePage<HomePage> {
     private WebElement passiveViewName;
 
     @FindBy(css = "[href$='builds']")
-    private WebElement buildHistoryButton;
-
-    @FindBy(xpath = "//a[contains(@href, '/move')]")
-    private WebElement moveOption;
+    private WebElement buildHistoryOnSidebar;
 
     @FindBy(xpath = "//a[@href='/asynchPeople/']")
     private WebElement peopleButton;
@@ -113,52 +103,80 @@ public class HomePage extends BasePage<HomePage> {
     @FindBy(xpath = "//td[@class='jenkins-table__cell--tight']//span[@data-notification='Build scheduled']")
     private WebElement buildScheduledMessagePopUp;
 
+    @FindBy(css = "#notification-bar > span")
+    private WebElement buildDoneGreenMessage;
+
+    @FindBy(css = "button[href $= '/build?delay=0sec']")
+    private WebElement dropdownBuild;
+
+    @FindBy(xpath = "//button[@data-id='ok']")
+    private WebElement yesButton;
+
+    @FindBy(css = "#executors")
+    private WebElement executors;
+
+    @FindBy(css = "[href='/toggleCollapse?paneId=executors']")
+    private WebElement toggleCollapse;
+
+    @FindBy(css = "tbody [tooltip]")
+    private WebElement statusIcon;
+
+    @FindBy(css = "tr > td > .jenkins-table__link > span:first-child")
+    private List<WebElement> itemList;
+
+    @FindBy(className = "sortheader")
+    private List<WebElement> columnHeaderList;
+
+    @FindBy(css = "[initialsortdir='down'] [class='sortheader']")
+    private WebElement nameColumnHeading;
 
     public HomePage(WebDriver driver) {
         super(driver);
     }
 
+    @Step("Click 'New Item' on sidebar menu")
     public CreateNewItemPage clickNewItem() {
-        getDriver().findElement(By.xpath("//a[.='New Item']")).click();
+        newItem.click();
 
         return new CreateNewItemPage(getDriver());
     }
 
+    @Step("Click on the 'Create a job' at start page")
     public CreateNewItemPage clickCreateAJob() {
         createAJobLink.click();
 
         return new CreateNewItemPage(getDriver());
     }
 
+    @Step("Get Item list from Dashboard")
     public List<String> getItemList() {
-        return getDriver().findElements(By.cssSelector("tr > td > .jenkins-table__link > span:first-child"))
-                .stream()
+        return itemList.stream()
                 .map(WebElement::getText)
                 .toList();
     }
 
+    @Step("Click project dropdown menu")
     public HomePage openItemDropdown(String projectName) {
         WebElement element = getDriver().findElement(By.cssSelector(String.format(
                 "td>a[href = 'job/%s/']",
                 TestUtils.asURL(projectName))));
         openElementDropdown(element);
+
         return this;
     }
 
-    public DeleteDialog clickDeleteInDropdown(DeleteDialog dialog) {
-        dropdownDelete.click();
-        return dialog;
+    @Step("Click 'Rename' on the project dropdown menu")
+    public ProjectRenamePage<?> clickRenameOnDropdown() {
+        dropdownRename.click();
+
+        return new ProjectRenamePage<>(getDriver());
     }
 
-    public FreestyleRenamePage clickRenameOnDropdownForFreestyleProject() {
-        renameFromDropdown.click();
-
-        return new FreestyleRenamePage(getDriver());
-    }
-
-    public MovePage clickMoveInDropdown() {
+    @Step("Click 'Move' on the project dropdown menu")
+    public ProjectMovePage<?> clickMoveOnDropdown() {
         dropdownMove.click();
-        return new MovePage(getDriver());
+
+        return new ProjectMovePage<>(getDriver());
     }
 
     @Step("Click on the link 'Build Executor Status'")
@@ -179,10 +197,10 @@ public class HomePage extends BasePage<HomePage> {
         return getDriver().findElement(By.cssSelector("[href='/computer/" + name + "/']")).isDisplayed();
     }
 
-    @Step("Click on the specific Multi-configuration project name")
+    @Step("Click on the '{itemName}' Multi-configuration project name")
     public MultiConfigurationProjectPage clickSpecificMultiConfigurationProjectName(String itemName) {
         getDriver().findElement(
-                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
+                By.cssSelector("td>[href^='job/" + TestUtils.asURL(itemName) + "']")).click();
 
         return new MultiConfigurationProjectPage(getDriver());
     }
@@ -194,18 +212,21 @@ public class HomePage extends BasePage<HomePage> {
         return new ManageJenkinsPage(getDriver());
     }
 
-    public CreateNewViewPage clickPlusToCreateView() {
+    @Step("Click '+' button to create a new View")
+    public CreateViewPage clickPlusToCreateView() {
         newView.click();
 
-        return new CreateNewViewPage(getDriver());
+        return new CreateViewPage(getDriver());
     }
 
+    @Step("Click View name '{viewName}' on the dashboard")
     public ViewPage clickViewName(String viewName) {
         getDriver().findElement(By.linkText(viewName)).click();
 
         return new ViewPage(getDriver());
     }
 
+    @Step("Open dropdown menu of the Project")
     public HomePage openItemDropdownWithSelenium(String projectName) {
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(
@@ -219,22 +240,10 @@ public class HomePage extends BasePage<HomePage> {
         return this;
     }
 
-    public MultiConfigurationRenamePage clickRenameOnDropdownForMultiConfigurationProject() {
-        renameFromDropdown.click();
-
-        return new MultiConfigurationRenamePage(getDriver());
-    }
-
-    public MultiConfigurationMovePage selectMoveFromDropdown() {
-        moveFromDropdown.click();
-
-        return new MultiConfigurationMovePage(getDriver());
-    }
-
-    @Step("Click on the specific Pipeline name")
+    @Step("Click on the '{itemName}' Pipeline name")
     public PipelineProjectPage clickSpecificPipelineName(String itemName) {
         getDriver().findElement(
-                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
+                By.cssSelector("td>[href^='job/" + TestUtils.asURL(itemName) + "']")).click();
 
         return new PipelineProjectPage(getDriver());
     }
@@ -247,10 +256,10 @@ public class HomePage extends BasePage<HomePage> {
         return getItemList().contains(name);
     }
 
-    @Step("Click on the specific Multibranch Pipeline name")
+    @Step("Click on the '{itemName}' Multibranch Pipeline name")
     public MultibranchPipelineProjectPage clickSpecificMultibranchPipelineName(String itemName) {
         getDriver().findElement(
-                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
+                By.cssSelector("td>[href^='job/" + TestUtils.asURL(itemName) + "']")).click();
 
         return new MultibranchPipelineProjectPage(getDriver());
     }
@@ -264,11 +273,14 @@ public class HomePage extends BasePage<HomePage> {
                 .toList();
     }
 
+    @Step("Click the 'Name' column header to sort the table by name")
     public HomePage clickTitleForSortByName() {
         columnNameTitle.click();
+
         return new HomePage(getDriver());
     }
 
+    @Step("Click the element at index '{i}' in the change icon size list")
     public HomePage clickIconForChangeSize(int i) {
         sizeIcon.get(i).click();
 
@@ -279,50 +291,29 @@ public class HomePage extends BasePage<HomePage> {
         return projectIcon.getSize().height;
     }
 
-    @Step("Click on the specific Organization Folder name")
+    @Step("Click on the '{itemName}' Organization Folder name")
     public OrganizationFolderProjectPage clickSpecificOrganizationFolderName(String itemName) {
         getDriver().findElement(
-                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
+                By.cssSelector("td>[href^='job/" + TestUtils.asURL(itemName) + "']")).click();
 
         return new OrganizationFolderProjectPage(getDriver());
     }
 
-    @Step("Click on Chevron of the Dashboard")
-    public HomePage openDashboardBreadcrumbsDropdown() {
-        WebElement chevron = dashboardBreadcrumbs.findElement(By.cssSelector("[class$='chevron']"));
-        ((JavascriptExecutor) getDriver()).executeScript(
-                "arguments[0].dispatchEvent(new Event('mouseenter'));" +
-                        "arguments[0].dispatchEvent(new Event('click'));",
-                chevron);
-
-        return this;
-    }
-
-    @Step("Click on Manage Jenkins in the Dashboard dropdown menu")
-    public ManageJenkinsPage clickManageFromDashboardBreadcrumbsMenu() {
-        manageFromDashboardBreadcrumbsMenu.click();
-
-        return new ManageJenkinsPage(getDriver());
-    }
-
-    public FullStageViewPage clickFullStageViewButton() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(fullStageViewButton)).click();
+    @Step("Click on 'Full Stage View' on Item dropdown menu")
+    public FullStageViewPage clickFullStageViewOnDropdown() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(fullStageViewOnDropdown)).click();
 
         return new FullStageViewPage(getDriver());
     }
 
-    public MultibranchPipelineRenamePage clickRenameOnDropdownForMultibranchPipeline() {
-        renameFromDropdown.click();
-
-        return new MultibranchPipelineRenamePage(getDriver());
-    }
-
+    @Step("Click the '{name}' project name")
     public <T> T clickJobByName(String name, T page) {
         getDriver().findElement(By.xpath(
                 "//td/a[@href='job/" + name.replace(" ", "%20") + "/']")).click();
         return page;
     }
 
+    @Step("Hover over Passive View Name")
     public HomePage moveMouseToPassiveViewName() {
         new Actions(getDriver())
                 .moveToElement(passiveViewName)
@@ -331,6 +322,7 @@ public class HomePage extends BasePage<HomePage> {
         return this;
     }
 
+    @Step("Click right mouse button")
     public HomePage mouseClick() {
         new Actions(getDriver())
                 .click()
@@ -338,83 +330,84 @@ public class HomePage extends BasePage<HomePage> {
         return this;
     }
 
-    public String getPassiveViewNameBackgroundColor() {
+    public String getColorOfPassiveViewNameBackground() {
         return passiveViewName.getCssValue("background-color");
     }
 
-    public String getActiveViewNameBackgroundColor() {
+    public String getColorOfActiveViewNameBackground() {
         return activeViewName.getCssValue("background-color");
     }
 
-    public HomePage scheduleBuildForItem(String itemName) {
-        getDriver().findElement(By.xpath("//a[contains(@tooltip,'Schedule a Build for " + itemName + "')]")).click();
+    public String getActiveViewName() {
+        return activeViewName.getText();
+    }
+
+    @Step("Click green triangle to schedule build for '{itemName}' project")
+    public HomePage clickScheduleBuildForItemAndWaitForBuildSchedulePopUp(String itemName) {
+        getDriver().findElement(
+                By.xpath("//a[contains(@tooltip,'Schedule a Build for " + itemName + "')]")).click();
+        getWait2().until(ExpectedConditions.visibilityOf(buildSchedulePopUp));
 
         return this;
     }
 
+    @Step("Click 'Build History' on sidebar menu")
     public BuildHistoryPage clickBuildHistory() {
-        buildHistoryButton.click();
+        buildHistoryOnSidebar.click();
 
         return new BuildHistoryPage(getDriver());
     }
 
-    public HomePage waitForBuildSchedulePopUp() {
-        getWait2().until(ExpectedConditions.visibilityOf(builSchedulePopUp));
-
-        return this;
-    }
-
-    public MovePage chooseFolderToMove() {
-        getWait5().until(ExpectedConditions.visibilityOf(moveOption)).click();
-
-        return new MovePage(getDriver());
-    }
-
+    @Step("Click 'People' on sidebar")
     public PeoplePage clickPeopleOnSidebar() {
         peopleButton.click();
 
         return new PeoplePage(getDriver());
     }
 
-    @Step("Click on the specific Folder name")
+    @Step("Click '{itemName}' Folder name")
     public FolderProjectPage clickSpecificFolderName(String itemName) {
         getDriver().findElement(
-                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
+                By.cssSelector("td>[href^='job/" + TestUtils.asURL(itemName) + "']")).click();
 
         return new FolderProjectPage(getDriver());
     }
 
-    @Step("Click on the specific Freestyle project name")
+    @Step("Click '{itemName}' Freestyle project name")
     public FreestyleProjectPage clickSpecificFreestyleProjectName(String itemName) {
         getDriver().findElement(
-                By.cssSelector("td>[href^='job/" + itemName.replace(" ", "%20") + "']")).click();
+                By.cssSelector("td>[href^='job/" + TestUtils.asURL(itemName) + "']")).click();
 
         return new FreestyleProjectPage(getDriver());
     }
 
-    public FolderRenamePage clickRenameOnDropdownForFolder() {
-        renameFromDropdown.click();
-
-        return new FolderRenamePage(getDriver());
-    }
-
+    @Step("Click 'Pipeline Syntax' from dropdown menu")
     public PipelineSyntaxPage openItemPipelineSyntaxFromDropdown() {
         dropdownPipelineSyntax.click();
 
         return new PipelineSyntaxPage(getDriver());
     }
 
-    public int getSizeViewNameList() {
+    @Step("Get size of View names list")
+    public int getSizeOfViewNameList() {
         return viewNameList.size();
     }
 
-    public HomePage clickDeleteOnDropdownAndConfirm() {
+    @Step("Click 'Delete' in dropdown menu")
+    public HomePage clickDeleteOnDropdown() {
         dropdownDelete.click();
-        getDriver().findElement(By.cssSelector("button[data-id='ok']")).click();
 
         return this;
     }
 
+    @Step("Click 'Yes' in confirming dialog")
+    public HomePage clickYesForConfirmDelete() {
+        getWait2().until(ExpectedConditions.visibilityOf(yesButton)).click();
+
+        return this;
+    }
+
+    @Step("Get Tooltip of green Build arrow")
     public String getBuildStatus() {
         return greenBuildArrow.getAttribute("tooltip");
     }
@@ -423,18 +416,20 @@ public class HomePage extends BasePage<HomePage> {
         return disabledProjectList.stream().map(WebElement::getText).toList();
     }
 
-    public MyViewsPage clickMyViewsOnSidebar() {
+    public ViewPage clickMyViewsOnSidebar() {
         myViewsOnSidebar.click();
 
-        return new MyViewsPage(getDriver());
+        return new ViewPage(getDriver());
     }
 
+    @Step("Click 'Edit Description'")
     public HomePage clickEditDescription() {
         editDescriptionLink.click();
 
         return this;
     }
 
+    @Step("Type Description: '{text}'")
     public HomePage typeDescription(String text) {
         descriptionTextarea.clear();
         descriptionTextarea.sendKeys(text);
@@ -442,6 +437,7 @@ public class HomePage extends BasePage<HomePage> {
         return this;
     }
 
+    @Step("Click Save Button to edit description")
     public HomePage clickSaveButton() {
         saveButton.click();
 
@@ -456,17 +452,7 @@ public class HomePage extends BasePage<HomePage> {
         return editDescriptionLink.getText();
     }
 
-    private WebElement getTooltipLocator(String tooltipText) {
-        return getDriver().findElement(By.cssSelector("a[tooltip='Help for feature: " + tooltipText + "']"));
-    }
-
-    public boolean isTooltipDisplayed(String tooltipText) {
-        WebElement tooltip = getTooltipLocator(tooltipText);
-        hoverOverElement(tooltip);
-
-        return tooltip.isDisplayed();
-    }
-
+    @Step("Get Side Menu List")
     public List<String> getSidebarMenuList() {
         List<String> menuList = new ArrayList<>();
         for (WebElement element : sidebarMenuList) {
@@ -476,17 +462,63 @@ public class HomePage extends BasePage<HomePage> {
         return menuList;
     }
 
-    public int getBuildButtonCountForProject(String projetcName) {
-        return getDriver().findElements(By.xpath("//table//a[@title= 'Schedule a Build for " + projetcName + "']")).size();
+    @Step("Checking for a button of Schedule a Build for the Pipeline")
+    public boolean isButtonOfScheduleABuildExist(String projectName) {
+        int num = getDriver().findElements(By.xpath(
+                "//table//a[@title= 'Schedule a Build for " + projectName + "']")).size();
+
+        return num != 0;
     }
 
+    @Step("Click green build arrow button")
     public HomePage clickGreenBuildArrowButton() {
         greenBuildArrow.click();
 
         return this;
     }
 
+    @Step("Get build scheduled message")
     public String getBuildScheduledMessage() {
         return buildScheduledMessagePopUp.getAttribute("data-notification");
+    }
+
+    @Step("Click 'Build Now' from dropdown menu")
+    public HomePage clickBuildNowFromDropdown() {
+        dropdownBuild.click();
+
+        return this;
+    }
+
+    @Step("Catch 'Build Now' done message")
+    public String catchBuildNowDoneMessage() {
+        return getWait2().until(ExpectedConditions.visibilityOf(buildDoneGreenMessage)).getText();
+    }
+
+    public boolean isNodesDisplayedOnExecutorsPanel() {
+        return executors.getText().contains("built-in node");
+    }
+
+    public void clickOnExecutorPanelToggle() {
+        toggleCollapse.click();
+    }
+
+    @Step("Get status icon tooltip")
+    public String getStatusIconTooltip() {
+        return statusIcon.getAttribute("tooltip");
+    }
+
+    @Step("Get size of list of column header on View")
+    public int getSizeColumnHeaderList() {
+        return columnHeaderList.size();
+    }
+
+    @Step("Get list of column header on View")
+    public List<String> getColumnHeaderList() {
+        return columnHeaderList.stream().map(WebElement::getText).toList();
+    }
+
+    @Step("Get text of Name column header")
+    public String getNameColumnText() {
+        return nameColumnHeading.getText().replace("\n ", "");
     }
 }

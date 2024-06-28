@@ -20,9 +20,6 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
     @FindBy(name = "Submit")
     private WebElement saveButton;
 
-    @FindBy(css = "#description>div:first-child")
-    private WebElement description;
-
     @FindBy(linkText = "Configure")
     private WebElement configureButton;
 
@@ -41,56 +38,40 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
     @FindBy(css = "[id='enable-project']")
     private WebElement disableMessage;
 
-    @FindBy(css = "#breadcrumbBar li:last-child")
-    private WebElement breadcrumbs;
-
     @FindBy(css = "[href^='/job'] [class$='dropdown-chevron']")
     private WebElement breadcrumbsProjectDropdownArrow;
-
-    @FindBy(css = "button[href $= '/doDelete']")
-    private WebElement breadcrumbsDropdownDelete;
-
-    @FindBy(xpath = "//*[span = 'Delete Multi-configuration project']")
-    private WebElement sidebarDelete;
-
-    @FindBy(xpath = "//*[contains(@href, 'rename')]")
-    private WebElement menuRename;
-
-    @FindBy(xpath = "//*[contains(@href, 'move')]")
-    private WebElement moveOptionInMenu;
 
     public MultiConfigurationProjectPage(WebDriver driver) {
         super(driver);
     }
 
+    @Step("Click  on 'Add Description' Button")
     public MultiConfigurationProjectPage clickAddDescriptionButton() {
         addDescriptionButton.click();
 
         return this;
     }
 
+
+    @Step("Type a description into the 'Description' input field")
     public MultiConfigurationProjectPage addOrEditDescription(String description) {
         descriptionField.sendKeys(description);
 
         return this;
     }
 
-    public MultiConfigurationProjectPage clearDescription() {
-        descriptionField.clear();
-        return this;
-    }
+//    @Step("Clear 'Description' input field")
+//    public MultiConfigurationProjectPage clearDescription() {
+//        descriptionField.clear();
+//        return this;
+//    }
 
+    @Step("Click on 'Save description' button")
     public MultiConfigurationProjectPage clickSaveDescription() {
         saveButton.click();
 
         return this;
     }
-
-    public String getDescriptionText() {
-
-        return getWait2().until(ExpectedConditions.visibilityOf(description)).getText();
-    }
-
 
     @Step("Click on the button 'Configure' on sidebar")
     public MultiConfigurationConfigPage clickConfigureButton() {
@@ -99,6 +80,7 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
         return new MultiConfigurationConfigPage(getDriver());
     }
 
+    @Step("Click on 'Preview' button ")
     public MultiConfigurationProjectPage clickPreview() {
         previewButton.click();
 
@@ -110,12 +92,14 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
         return previewTextArea.getText();
     }
 
+    @Step("Click on 'Disable' button")
     public MultiConfigurationProjectPage clickDisableProject() {
         disableProjectButton.click();
 
         return this;
     }
 
+    @Step("Click on the 'Enable' button.")
     public MultiConfigurationProjectPage clickEnableButton() {
         enableProjectButton.click();
 
@@ -126,39 +110,14 @@ public class MultiConfigurationProjectPage extends BaseProjectPage<MultiConfigur
         return disableMessage.getText();
     }
 
-    public boolean isProjectInsideFolder(String projectName, String folderName) {
-        return breadcrumbs.getAttribute("data-href").contains(folderName + "/job/" + projectName);
-    }
-
-    public DeleteDialog clickSidebarDelete() {
-        sidebarDelete.click();
-
-        return new DeleteDialog(getDriver());
-    }
-
-    public MultiConfigurationRenamePage clickRenameInMenu() {
-        menuRename.click();
-
-        return new MultiConfigurationRenamePage(getDriver());
-    }
-
     public boolean isDescriptionEmpty() {
-        return getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div#description>div")));
-    }
-
-    public MultiConfigurationMovePage clickMoveOptionInMenu() {
-        moveOptionInMenu.click();
-        return new MultiConfigurationMovePage(getDriver());
+        return getWait10().until(
+                ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div#description>div")));
     }
 
     public MultiConfigurationProjectPage clickBreadcrumbsProjectDropdownArrow() {
-        clickSpecificDropdownArrow(breadcrumbsProjectDropdownArrow);
+        clickBreadcrumbsDropdownArrow(breadcrumbsProjectDropdownArrow);
 
         return this;
-    }
-
-    public DeleteDialog clickDropdownDelete() {
-        breadcrumbsDropdownDelete.click();
-        return new DeleteDialog(getDriver());
     }
 }

@@ -4,12 +4,11 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import org.openqa.selenium.Dimension;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
-import school.redrover.model.PeoplePage;
-import school.redrover.model.UsersPage;
+import school.redrover.runner.AssertUtils;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,15 +25,62 @@ public class PeopleTest extends BaseTest {
                 .clickPeopleOnSidebar()
                 .getNamesList();
 
-        Assert.assertListContainsObject(namesList, "admin", "People page is not correct!");
+        AssertUtils
+                .allureAnnotation("Name 'admin' is displayed on People page")
+                .listContainsObject(namesList, "admin", "People page is not correct!");
+    }
+
+    @Test
+    @Story("US_07.003 Icon size")
+    @Description("Check icon size after change to Small")
+    public void testChangeIconSizeToSmall() {
+        final Dimension actualIconSize = new HomePage(getDriver())
+                .clickPeopleOnSidebar()
+                .clickIconS()
+                .getUserIconSize();
+
+        AssertUtils
+                .allureAnnotation("Icon size on page is Small")
+                .equals(actualIconSize, new Dimension(16, 16));
+    }
+
+    @Test
+    @Story("US_07.003 Icon size")
+    @Description("Check icon size after change to Medium")
+    public void testChangeIconSizeToMedium() {
+        final Dimension actualIconSize = new HomePage(getDriver())
+                .clickPeopleOnSidebar()
+                .clickIconM()
+                .getUserIconSize();
+
+        AssertUtils
+                .allureAnnotation("Icon size on page is Medium")
+                .equals(actualIconSize, new Dimension(20, 20));
+    }
+
+    @Test
+    @Story("US_07.003 Icon size")
+    @Description("Check icon size after change to Large")
+    public void testChangeIconSizeToLarge() {
+        final Dimension actualIconSize = new HomePage(getDriver())
+                .clickPeopleOnSidebar()
+                .clickIconL()
+                .getUserIconSize();
+
+        AssertUtils
+                .allureAnnotation("Icon size on page is Large")
+                .equals(actualIconSize, new Dimension(24, 24));
+    }
+
+    public void createUser(String username) {
+        TestUtils.createUser(this, username);
     }
 
     @Test
     @Story("US_07.002 Sort people")
-    @Description("Sort people by UserID, Name, Last Commit Activity, On/Off Value")
-    public void testSortPeople() {
-
-        final List<String> userNamesList = List.of(
+    @Description("Sort people by user ID")
+    public void testSortPeopleByUserIdDescending() {
+        List<String> userslist = List.of(
                 "johndoe21",
                 "janesmith1985",
                 "david_lee92",
@@ -46,108 +92,59 @@ public class PeopleTest extends BaseTest {
                 "steve_rogers",
                 "lisa_taylor");
 
-        new HomePage(getDriver())
-                .clickManageJenkins()
-                .clickUsers();
+        userslist.forEach(this::createUser);
 
-        for (String userName : userNamesList) {
-
-            new UsersPage(getDriver())
-                    .clickCreateUser()
-                    .clearUserNameField()
-                    .typeUserName(userName)
-                    .setPassword(userName)
-                    .setConfirmPassword(userName)
-                    .setFullName(userName.replaceAll("\\d", ""))
-                    .setEmailAddress(userName + "@example.com")
-                    .clickCreateUser();
-        }
-
-        List<String> expectedUserIDList = new UsersPage(getDriver())
-                .clickLogo()
+        List<String> userIDList = new HomePage(getDriver())
                 .clickPeopleOnSidebar()
-                .getUserIDList()
-                .stream()
-                .sorted(Collections.reverseOrder())
-                .toList();
-
-        List<String> actualUserIDList = new PeoplePage(getDriver())
                 .clickTitleUserID()
                 .getUserIDList();
 
+        AssertUtils
+                .allureAnnotation("Table is sorted descending by User ID")
+                .equals(userIDList, userIDList.stream().sorted(Collections.reverseOrder()).toList());
+    }
 
-        List<String> expectedNamesList = new PeoplePage(getDriver())
-                .getNamesList()
-                .stream()
-                .sorted(Collections.reverseOrder())
-                .toList();
+    @Test(dependsOnMethods = "testSortPeopleByUserIdDescending")
+    @Story("US_07.002 Sort people")
+    @Description("Sort people descending by full name")
+    public void testSortPeopleByFullNameDescending() {
 
-        List<String> actualNamesList = new PeoplePage(getDriver())
+        List<String> namesList = new HomePage(getDriver())
+                .clickPeopleOnSidebar()
                 .clickTitleName()
                 .getNamesList();
 
+        AssertUtils
+                .allureAnnotation("Table is sorted descending by full name")
+                .equals(namesList, namesList.stream().sorted(Collections.reverseOrder()).toList());
+    }
 
-        List<String> expectedLastCommitActivityList = new PeoplePage(getDriver())
-                .getLastCommitActivityList()
-                .stream()
-                .sorted(Collections.reverseOrder())
-                .toList();
-
-        List<String> actualLastCommitActivityList = new PeoplePage(getDriver())
+    @Test(dependsOnMethods = "testSortPeopleByUserIdDescending")
+    @Story("US_07.002 Sort people")
+    @Description("Sort people by last commit activity")
+    public void testSortPeopleByLastCommitActivityDescending() {
+        List<String> lastCommitActivityList = new HomePage(getDriver())
+                .clickPeopleOnSidebar()
                 .clickTitleLastCommitActivity()
                 .getLastCommitActivityList();
 
+        AssertUtils
+                .allureAnnotation("Table is sorted descending by last commit activity")
+                .equals(lastCommitActivityList,
+                        lastCommitActivityList.stream().sorted(Collections.reverseOrder()).toList());
+    }
 
-        List<String> expectedOnOffList = new PeoplePage(getDriver())
-                .getOnOffList()
-                .stream()
-                .sorted(Collections.reverseOrder())
-                .toList();
-
-        List<String> actualOnOffList = new PeoplePage(getDriver())
+    @Test(dependsOnMethods = "testSortPeopleByUserIdDescending")
+    @Story("US_07.002 Sort people")
+    @Description("Sort people by on/off state value")
+    public void testSortPeopleByStateDescending() {
+        List<String> onOffList = new HomePage(getDriver())
+                .clickPeopleOnSidebar()
                 .clickTitleOn()
                 .getOnOffList();
 
-        Assert.assertEquals(actualUserIDList, expectedUserIDList);
-        Assert.assertEquals(actualNamesList, expectedNamesList);
-        Assert.assertEquals(actualLastCommitActivityList, expectedLastCommitActivityList);
-        Assert.assertEquals(actualOnOffList, expectedOnOffList);
-
-    }
-
-    @Test
-    @Story("US_07.003 Icon size")
-    @Description("Check icon size after change to Small")
-    public void testChangeIconSizeToSmall() {
-        final Dimension actualIconSize = new HomePage(getDriver())
-                .clickPeopleOnSidebar()
-                .clickSmallIconButton()
-                .getUserIconSize();
-
-        Assert.assertEquals(actualIconSize, new Dimension(16, 16));
-    }
-
-    @Test
-    @Story("US_07.003 Icon size")
-    @Description("Check icon size after change to Medium")
-    public void testChangeIconSizeToMedium() {
-        final Dimension actualIconSize = new HomePage(getDriver())
-                .clickPeopleOnSidebar()
-                .clickMediumIconButton()
-                .getUserIconSize();
-
-        Assert.assertEquals(actualIconSize, new Dimension(20, 20));
-    }
-
-    @Test
-    @Story("US_07.003 Icon size")
-    @Description("Check icon size after change to Large")
-    public void testChangeIconSizeToLarge() {
-        final Dimension actualIconSize = new HomePage(getDriver())
-                .clickPeopleOnSidebar()
-                .clickLargeIconButton()
-                .getUserIconSize();
-
-        Assert.assertEquals(actualIconSize, new Dimension(24, 24));
+        AssertUtils
+                .allureAnnotation("Table is sorted descending by state")
+                .equals(onOffList, onOffList.stream().sorted(Collections.reverseOrder()).toList());
     }
 }

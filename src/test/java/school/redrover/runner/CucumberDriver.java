@@ -9,10 +9,14 @@ import org.openqa.selenium.WebDriver;
 import java.net.URI;
 
 
-public class CucumberDriver {
+public final class CucumberDriver {
 
     private static URI uri;
     private static WebDriver driver;
+
+    private CucumberDriver() {
+        throw new UnsupportedOperationException();
+    }
 
     @Before
     public static void before(Scenario scenario) {
@@ -29,7 +33,7 @@ public class CucumberDriver {
 
     @After
     public static void after(Scenario scenario) {
-        if(scenario.isFailed() && ProjectUtils.isServerRun()) {
+        if (scenario.isFailed() && ProjectUtils.isServerRun()) {
             ProjectUtils.takeScreenshot(driver, scenario.getName(), "CucumberTest");
         }
 

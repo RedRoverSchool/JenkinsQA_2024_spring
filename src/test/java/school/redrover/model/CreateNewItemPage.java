@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -45,26 +46,28 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
     @FindBy(id = "itemname-required")
     private WebElement errorMessageEmptyName;
 
-    @FindBy(id = "itemname-required")
-    private WebElement itemNameHint;
-
     @FindBy(css = "label.h3")
     private WebElement titleOfNameField;
 
     @FindBy(css = "#items span")
     private List<WebElement> typesList;
 
+    @FindBy(css = "li[style='']")
+    private List<WebElement> copyFromDropdownContent;
+
     public CreateNewItemPage(WebDriver driver) {
         super(driver);
     }
 
-    public CreateNewItemPage setItemName(String name) {
+    @Step("Type '{name}' to name input field")
+    public CreateNewItemPage typeItemName(String name) {
         getWait5().until(ExpectedConditions.visibilityOf(nameText));
         nameText.sendKeys(name);
 
         return this;
     }
 
+    @Step("Select 'Freestyle project' and click 'Ok' button")
     public FreestyleConfigPage selectFreestyleAndClickOk() {
         freestyleItem.click();
         okButton.click();
@@ -72,6 +75,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return new FreestyleConfigPage(getDriver());
     }
 
+    @Step("Select 'Pipeline' and click 'Ok' button")
     public PipelineConfigPage selectPipelineAndClickOk() {
         pipelineItem.click();
         okButton.click();
@@ -79,6 +83,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return new PipelineConfigPage(getDriver());
     }
 
+    @Step("Select 'Multi Configuration' and click 'Ok' button")
     public MultiConfigurationConfigPage selectMultiConfigurationAndClickOk() {
         multiConfigurationItem.click();
         okButton.click();
@@ -86,12 +91,14 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return new MultiConfigurationConfigPage(getDriver());
     }
 
+    @Step("Select 'Multi Configuration' option")
     public CreateNewItemPage selectMultiConfiguration() {
         multiConfigurationItem.click();
 
         return this;
     }
 
+    @Step("Select 'Folder' and click 'Ok' button")
     public FolderConfigPage selectFolderAndClickOk() {
         folderItem.click();
         okButton.click();
@@ -99,12 +106,14 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return new FolderConfigPage(getDriver());
     }
 
+    @Step("Select 'Folder' option")
     public CreateNewItemPage selectFolder() {
         folderItem.click();
 
         return this;
     }
 
+    @Step("Select 'Multibranch Pipeline' and click 'OK' button")
     public MultibranchPipelineConfigPage selectMultibranchPipelineAndClickOk() {
         multibranchPipelineItem.click();
         okButton.click();
@@ -112,6 +121,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return new MultibranchPipelineConfigPage(getDriver());
     }
 
+    @Step("Select 'Organization Folder' and click 'Ok' button")
     public OrganizationFolderConfigPage selectOrganizationFolderAndClickOk() {
         organizationFolderItem.click();
         okButton.click();
@@ -119,12 +129,14 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return new OrganizationFolderConfigPage(getDriver());
     }
 
+    @Step("Click 'Ok' button")
     public <T> T clickOkAnyway(T page) {
         okButton.click();
 
         return page;
     }
 
+    @Step("Choose a project type.")
     public CreateNewItemPage clickProjectType(String type) {
         getDriver().findElement(By.xpath("//span[text()='" + type + "']")).click();
 
@@ -139,6 +151,7 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return errorMessageEmptyName.getText();
     }
 
+    @Step("Type '{name}' in the input field 'Copy from'")
     public CreateNewItemPage typeItemNameInCopyFrom(String name) {
         clickElementFromTheBottomOfThePage(copyFromInputField);
         copyFromInputField.sendKeys(name);
@@ -146,43 +159,45 @@ public class CreateNewItemPage extends BasePage<CreateNewItemPage> {
         return this;
     }
 
-    public CreateItemPage clickOkButton() {
+    @Step("Click OK button")
+    public ErrorPage clickOkButtonWhenError() {
         okButton.click();
-        return new CreateItemPage(getDriver());
+
+        return new ErrorPage(getDriver());
     }
 
     public boolean isOkButtonNotActive() {
-        try {
-            getDriver().findElement(By.xpath("//button[contains(@class, 'disabled') and text()='OK']"));
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        return !okButton.isEnabled();
     }
 
     public List<String> getDropdownMenuContent() {
         List<WebElement> allJobFromThisLetter = getWait10().until(
-                ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("li[style='']")));
+                ExpectedConditions.visibilityOfAllElements(copyFromDropdownContent));
 
         return allJobFromThisLetter.stream().map(WebElement::getText).toList();
     }
 
+    @Step("Select 'Freestyle Project' option")
     public CreateNewItemPage selectFreeStyleProject() {
         freestyleItem.click();
+
         return this;
     }
 
+    @Step("Clear 'Item name' input")
     public CreateNewItemPage clearItemNameField() {
         nameText.sendKeys(Keys.CONTROL + "a", Keys.BACK_SPACE);
+
         return this;
     }
 
+    @Step("Get hint on creating an item name")
     public String getItemNameHintText() {
-        return itemNameHint.getText();
+        return errorMessageEmptyName.getText();
     }
 
     public String getItemNameHintColor() {
-        return itemNameHint.getCssValue("color");
+        return errorMessageEmptyName.getCssValue("color");
     }
 
     public Boolean isOkButtonEnabled() {

@@ -1,14 +1,14 @@
 package school.redrover;
 
-import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
+import io.qameta.allure.Step;
 import io.qameta.allure.Story;
-import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import school.redrover.model.AppearancePage;
 import school.redrover.model.HomePage;
+import school.redrover.runner.AssertUtils;
 import school.redrover.runner.BaseTest;
 
 @Epic("Manage Jenkins")
@@ -17,17 +17,18 @@ public class AppearanceTest extends BaseTest {
     @Test
     @Story("US_09.005 Appearance")
     @Description("Check number of color themes that are available")
-    public void testAppearanceQuantityOfThemesViaDashboardDropDown() {
+    public void testAppearanceQuantityOfThemesViaDashboardDropdown() {
 
         int quantityOfThemes = new HomePage(getDriver())
-                .openDashboardBreadcrumbsDropdown()
-                .clickManageFromDashboardBreadcrumbsMenu()
-                .clickAppearanceButton()
+                .openDashboardBreadcrumbsDropdownMenu()
+                .clickManageJenkinsOnBreadcrumbsMenu()
+                .clickAppearance()
                 .getThemesList()
                 .size();
 
-        Allure.step("Expected results: 3 color themes available for selection");
-        Assert.assertEquals(quantityOfThemes, 3);
+        AssertUtils
+                .allureAnnotation("3 color themes available for selection")
+                .equals(quantityOfThemes, 3);
     }
 
     @Test
@@ -36,28 +37,32 @@ public class AppearanceTest extends BaseTest {
     public void testDarkThemeSwitchNotification() {
         String notificationText = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickAppearanceButton()
+                .clickAppearance()
                 .clickDarkThemeButton()
-                .clickApply()
+                .clickApplyButton()
                 .getNotificationText();
 
-        Assert.assertEquals(notificationText, "Saved");
+        AssertUtils
+                .allureAnnotation("After applying changes notification 'Saved' is displayed")
+                .equals(notificationText, "Saved");
     }
 
     @Test
     @Story("US_09.005 Appearance")
     @Description("Check background color after switch to Dark theme")
     public void testDarkThemeColor() {
+        final String expectedColor = "rgba(31, 31, 35, 1)";
+
         String backgroundColor = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickAppearanceButton()
+                .clickAppearance()
                 .clickDarkThemeButton()
-                .clickApply()
+                .clickApplyButton()
                 .getBackgroundColor();
 
-        Assert.assertEquals(
-                backgroundColor,
-                "rgba(31, 31, 35, 1)",
+        AssertUtils
+                .allureAnnotation(String.format("After applying changes color of body page - '%s'", expectedColor))
+                .equals(backgroundColor, expectedColor,
                 "The background color doesn't match the theme");
     }
 
@@ -65,44 +70,57 @@ public class AppearanceTest extends BaseTest {
     @Story("US_09.005 Appearance")
     @Description("Change color theme to Dark and check It")
     public void testDarkThemeApply() {
+        final String expectedThemeAttribute = "dark";
+
         final String actualThemeApplied = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickAppearanceButton()
+                .clickAppearance()
                 .clickDarkThemeButton()
                 .clickApplyButton()
                 .getCurrentThemeAttribute();
 
-        Assert.assertEquals(actualThemeApplied, "dark");
+        AssertUtils
+                .allureAnnotation(String.format("Attribute of current color theme - '%s'", expectedThemeAttribute))
+                .equals(actualThemeApplied, expectedThemeAttribute);
     }
 
     @Story("US_09.005 Appearance")
     @Description("Change color theme to Default and check It")
     @Test
     public void testDefaultThemeApply() {
+        final String expectedThemeAttribute = "none";
+
         final String actualThemeApplied = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickAppearanceButton()
+                .clickAppearance()
                 .clickDefaultThemeButton()
                 .clickApplyButton()
                 .getCurrentThemeAttribute();
 
-        Assert.assertEquals(actualThemeApplied, "none");
+        AssertUtils
+                .allureAnnotation(String.format("Attribute of current color theme - '%s'", expectedThemeAttribute))
+                .equals(actualThemeApplied, expectedThemeAttribute);
     }
 
     @Story("US_09.005 Appearance")
     @Description("Change color theme to System and check It")
     @Test
     public void testSystemThemeApply() {
+        final String expectedThemeAttribute = "system";
+
         final String actualThemeApplied = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickAppearanceButton()
+                .clickAppearance()
                 .clickSystemThemeButton()
                 .clickApplyButton()
                 .getCurrentThemeAttribute();
 
-        Assert.assertTrue(actualThemeApplied.contains("system"));
+        AssertUtils
+                .allureAnnotation(String.format("Attribute of current color theme - '%s'", expectedThemeAttribute))
+                .isTrue(actualThemeApplied.contains(expectedThemeAttribute));
     }
 
+    @Step("Reset color theme to default")
     @AfterMethod
     public void returnDefaultTheme() {
         AppearancePage appearancePage = new AppearancePage(getDriver());

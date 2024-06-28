@@ -7,7 +7,12 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Ignore;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
 import school.redrover.runner.order.OrderForTests;
 import school.redrover.runner.order.OrderUtils;
 
@@ -56,7 +61,9 @@ public abstract class BaseTest {
     private void stopDriver() {
         try {
             JenkinsUtils.logout(driver);
-        } catch (Exception ignore) {}
+        } catch (Exception ignore) {
+
+        }
 
         closeDriver();
     }
@@ -125,11 +132,14 @@ public abstract class BaseTest {
                     "png");
         }
 
-        if (methodsOrder.isGroupFinished(method) && !(!ProjectUtils.isServerRun() && !testResult.isSuccess() && !ProjectUtils.closeBrowserIfError())) {
+        boolean shouldStop = ProjectUtils.isServerRun() || testResult.isSuccess() || ProjectUtils.closeBrowserIfError();
+        if (methodsOrder.isGroupFinished(method) && shouldStop) {
             stopDriver();
         }
 
-        ProjectUtils.logf("Execution time is %.3f sec", (testResult.getEndMillis() - testResult.getStartMillis()) / 1000.0);
+        ProjectUtils.logf(
+                "Execution time is %.3f sec",
+                (testResult.getEndMillis() - testResult.getStartMillis()) / 1000.0);
     }
 
     protected WebDriver getDriver() {

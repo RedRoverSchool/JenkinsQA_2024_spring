@@ -15,11 +15,15 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class JenkinsUtils {
+public final class JenkinsUtils {
 
     private static final HttpClient client = HttpClient.newBuilder().build();
 
     private static String sessionId;
+
+    private JenkinsUtils() {
+        throw new UnsupportedOperationException();
+    }
 
     private static String getCrumbFromPage(String page) {
         final String CRUMB_TAG = "data-crumb-value=\"";

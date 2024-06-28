@@ -3,9 +3,9 @@ package school.redrover.model;
 import org.openqa.selenium.WebDriver;
 import school.redrover.model.base.BasePage;
 
-public class MyViewsPage extends BasePage<MyViewsPage> {
+public class CloudsPage extends BasePage<CloudsPage> {
 
-    public MyViewsPage(WebDriver driver) {
+    public CloudsPage(WebDriver driver) {
         super(driver);
     }
 }

@@ -23,7 +23,7 @@ public class HeaderFrame<T extends BasePage<T>> extends BaseFrame<T> {
     private WebElement admin;
 
     @FindBy(css = "[href$='admin/my-views']")
-    private WebElement myViewsOnDropDown;
+    private WebElement myViewsOnDropdown;
 
     @FindBy(css = "[class$='am-button security-am']")
     private WebElement warningIcon;
@@ -57,31 +57,35 @@ public class HeaderFrame<T extends BasePage<T>> extends BaseFrame<T> {
         super(driver, returnPage);
     }
 
+    @Step("Click username")
     public UserPage clickUserNameOnHeader() {
         userNameOnHeader.click();
 
         return new UserPage(getDriver());
     }
 
+    @Step("Type '{text}' to header Search field")
     public T typeTextToSearchField(String text) {
         searchBox.sendKeys(text);
 
         return getReturnPage();
     }
 
+    @Step("Press 'Enter' on the search field")
     public SearchResultPage pressEnterOnSearchField() {
         searchBox.sendKeys(Keys.ENTER);
 
         return new SearchResultPage(getDriver());
     }
 
-    @Step("Type text for search to input field and press 'Enter'")
-    public SearchResultPage typeSearchQueryPressEnter(String searchQuery) {
+    @Step("Type '{searchQuery}' to the header 'Search box' and press 'Enter'")
+    public SearchResultPage typeSearchQueryAndPressEnter(String searchQuery) {
         searchBox.sendKeys(searchQuery, Keys.ENTER);
         return new SearchResultPage(getDriver());
     }
 
-    public T chooseAndClickFirstSuggestListVariant(){
+    @Step("Click first suggested variant in search box dropdown")
+    public T chooseAndClickFirstSuggestListVariant() {
         getWait5().until(ExpectedConditions.visibilityOf(firstSuggestListVariant)).click();
 
         return getReturnPage();
@@ -91,7 +95,9 @@ public class HeaderFrame<T extends BasePage<T>> extends BaseFrame<T> {
         return getWait2().until(ExpectedConditions.visibilityOf(searchFieldText)).getText();
     }
 
-    public <ProjectPage extends BaseProjectPage<?>> ProjectPage searchProjectByName(String projectName, ProjectPage projectPage) {
+    @Step("Type '{projectName}' to the header 'Search box' and press 'Enter'")
+    public <ProjectPage extends BaseProjectPage<?>> ProjectPage typeProjectNameToSearchInputFieldAndPressEnter(
+            String projectName, ProjectPage projectPage) {
         searchBox.sendKeys(projectName + Keys.ENTER);
 
         return projectPage;
@@ -105,11 +111,12 @@ public class HeaderFrame<T extends BasePage<T>> extends BaseFrame<T> {
                 .perform();
     }
 
-    public ViewAllPage clickMyViewsOnHeaderDropdown() {
+    @Step("Click 'My Views' on the header dropdown menu")
+    public ViewPage clickMyViewsOnHeaderDropdown() {
         clickChevronForOpenHeaderUsernameDropdown();
-        myViewsOnDropDown.click();
+        myViewsOnDropdown.click();
 
-        return new ViewAllPage(getDriver());
+        return new ViewPage(getDriver());
     }
 
     public T clickWarningIcon() {
@@ -119,9 +126,7 @@ public class HeaderFrame<T extends BasePage<T>> extends BaseFrame<T> {
     }
 
     public String getWarningTooltipText() {
-        WebElement warningTooltipText = getWait5().until(ExpectedConditions.visibilityOf(warningTooltipLocator));
-
-        return warningTooltipText.getText();
+        return getWait5().until(ExpectedConditions.visibilityOf(warningTooltipLocator)).getText();
     }
 
     public ManageJenkinsPage clickManageJenkinsTooltipLink() {
@@ -144,6 +149,7 @@ public class HeaderFrame<T extends BasePage<T>> extends BaseFrame<T> {
         return new AdminConfigurePage(getDriver());
     }
 
+    @Step("Click 'log out' header link")
     public SignInToJenkinsPage clickLogOut() {
         logOutIcon.click();
 

@@ -2,9 +2,15 @@ package school.redrover;
 
 import com.google.common.net.HttpHeaders;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import io.qameta.allure.Allure;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Story;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -14,11 +20,13 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import school.redrover.domain.auth.Crumb;
 import school.redrover.domain.Hudson;
 import school.redrover.domain.SlimHudson;
+import school.redrover.domain.SlimJob;
+import school.redrover.domain.auth.Crumb;
 import school.redrover.domain.auth.Token;
 import school.redrover.runner.ProjectUtils;
 
@@ -26,167 +34,217 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.List;
 
+@Epic("Jenkins API")
 public class APIJenkinsJobsTest {
+    private static final String JOBS_URL = "/api/json?pretty=true";
+    private static String encodedAuth;
+    private static Token token;
 
-    private static final String username = ProjectUtils.getUserName();
-    private static final String password = ProjectUtils.getPassword();
-
-    @Test
-    public void testCrumbAndToken() {
-        String auth = username + ":" + password;
-        String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes());
-
+    @BeforeClass
+    public void beforeClass() {
+        encodedAuth = Base64.getEncoder().encodeToString(
+                (ProjectUtils.getUserName() + ":" + ProjectUtils.getPassword()).getBytes());
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            Crumb crumb = getCrumb(encodedAuth, httpClient);
-            Token token = getToken(encodedAuth, crumb, httpClient);
-            Assert.assertNotNull(token);
+            token = getToken(getCrumb(httpClient), httpClient);
+
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            ProjectUtils.log(e.getMessage());
+            throw new RuntimeException("Failed to initialize Crumb and Token", e);
         }
     }
 
-    private Token getToken(String encodedAuth, Crumb crumb, CloseableHttpClient httpClient) throws IOException {
+    @Test(dataProvider = "jobDataProvider", priority = 5)
+    public void testDelete(String jobName, String jobDescription) {
+        String url = ProjectUtils.getUrl() + "/job/" + jobName;
+        delete(url);
+    }
+
+    @DataProvider(name = "jobDataProvider")
+    public Object[][] jobDataProvider() {
+        return new Object[][]{
+                {"NEW_JOB", "Description for job"},
+                {"NEW_JOB_1", "Description for job 1"},
+                {"NEW_JOB_2", "Description for job 2"}
+        };
+    }
+
+    @Test
+    @Story("Check to build a project")
+    @Description("Verify that a token and crumb created and check status 200")
+    public void testToken() {
+        Allure.step("Expected results: token is valid for using");
+        Assert.assertNotNull(token);
+    }
+
+    @Test(dependsOnMethods = "testCreateNewJob")
+    @Story("Test get jobs with Json ContentType")
+    @Description("Verify that a jobs returned correct json format")
+    public void testGetJobs() {
+        String jsonResponse = getJsonJobs();
+        SlimHudson slimHudson = new Gson().fromJson(jsonResponse, SlimHudson.class);
+        Hudson hudson = new Gson().fromJson(jsonResponse, Hudson.class);
+
+        Allure.step("Expected results: job entity should not be null");
+        Assert.assertNotNull(hudson, "Hudson should not be null");
+        Allure.step("Expected results: job entity should not be null");
+        Assert.assertNotNull(slimHudson, "SlimHudson should not be null");
+        Allure.step("Expected results: job entity has name and status");
+        slimHudson.getJobs().stream().map(SlimJob::getName).forEach(Assert::assertNotNull);
+    }
+
+    @Test(dataProvider = "jobDataProvider")
+    @Story("Create new job with XML ContentType")
+    @Description("Check the status code is returned 200 after jobs is created")
+    public void testCreateNewJob(String jobName, String jobDescription) {
+        String url = ProjectUtils.getUrl() + "/createItem?name=" + jobName;
+        String jobXml = """
+                <project>
+                    <actions/>
+                    <description>""" + jobDescription + """
+                    </description>
+                    <keepDependencies>false</keepDependencies>
+                    <properties/>
+                    <scm class="hudson.scm.NullSCM"/>
+                    <canRoam>true</canRoam>
+                    <disabled>false</disabled>
+                    <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+                    <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+                    <triggers/>
+                    <concurrentBuild>false</concurrentBuild>
+                    <builders/>
+                    <publishers/>
+                    <buildWrappers/>
+                </project>""";
+
+        Allure.step("Expected results: job entity has been created");
+        Assert.assertNotNull(post(url, jobXml, ContentType.APPLICATION_XML, 200));
+    }
+
+    @Test(dataProvider = "jobDataProvider")
+    @Story("Build existed job with Json")
+    @Description("Check the status of job after Run")
+    public void testRunJob(String job, String desc) {
+        post(ProjectUtils.getUrl() + "/job/" + job + "/build", getJson(), ContentType.APPLICATION_JSON, 201);
+        SlimHudson slimHudson = new Gson().fromJson(getJsonJobs(), SlimHudson.class);
+        List<SlimJob> jobs = slimHudson.getJobs();
+
+        Allure.step("Checking if slimHudson is using crumbs");
+        Assert.assertTrue(slimHudson.isUseCrumbs());
+        Allure.step("Checking if slimHudson is using security");
+        Assert.assertTrue(slimHudson.isUseSecurity());
+
+        Allure.step("Expected results: job entity has been built with same name and verify status");
+        Assert.assertFalse(slimHudson.getJobs().isEmpty());
+
+        Allure.step("Expected results: Job name should match the provided job");
+        jobs.stream().filter(slimJob -> slimJob.getName().equals(job)).forEach(slimJob ->
+                Assert.assertEquals(slimJob.getName(), job));
+    }
+
+    private String getJsonJobs() {
+        return get(ProjectUtils.getUrl() + JOBS_URL);
+    }
+
+    private String getJson() {
+        JsonObject jsonData = new JsonObject();
+        JsonArray parameters = new JsonArray();
+        parameters.add(getParams("id", "123"));
+        parameters.add(getParams("verbosity", "high"));
+        jsonData.add("parameter", parameters);
+
+        return jsonData.toString();
+    }
+
+    private JsonObject getParams(String name, String value) {
+        JsonObject param = new JsonObject();
+        param.addProperty("name", name);
+        param.addProperty("value", value);
+
+        return param;
+    }
+
+    private static String getBasicAuthToken() {
+        String password = token.getData().getTokenValue();
+        byte[] credAuth = (ProjectUtils.getUserName() + ":" + password).getBytes();
+
+        return "Basic " + Base64.getEncoder().encodeToString(credAuth);
+    }
+
+    private Token getToken(Crumb crumb, CloseableHttpClient httpClient) throws IOException {
         String url = ProjectUtils.getUrl() + "/me/descriptorByName/jenkins.security.ApiTokenProperty/generateNewToken";
         HttpPost httpPost = new HttpPost(url);
         httpPost.setHeader(HttpHeaders.AUTHORIZATION, "Basic " + encodedAuth);
         httpPost.setHeader(crumb.getCrumbRequestField(), crumb.getCrumb());
-        String entity = getEntity(httpClient, httpPost);
-        return new Gson().fromJson(entity, Token.class);
+
+        return new Gson().fromJson(getEntity(httpClient, httpPost, 200), Token.class);
     }
 
-    private Crumb getCrumb(String encodedAuth, CloseableHttpClient httpClient) throws IOException {
+    private Crumb getCrumb(CloseableHttpClient httpClient) throws IOException {
+        HttpGet httpGet = new HttpGet(getCrumbUrl());
+        httpGet.setHeader(HttpHeaders.AUTHORIZATION, "Basic " + encodedAuth);
+
+        return new Gson().fromJson(getEntity(httpClient, httpGet, 200), Crumb.class);
+    }
+
+    private String getCrumbUrl() {
         String xpath = "concat(//crumbRequestField,\":\",//crumb)";
         String query = URLEncoder.encode(xpath, StandardCharsets.UTF_8);
-        String crumbUrl = ProjectUtils.getUrl() + "/crumbIssuer/api/json?xpath=" + query;
-        HttpGet httpGet = new HttpGet(crumbUrl);
-        httpGet.setHeader(HttpHeaders.AUTHORIZATION, "Basic " + encodedAuth);
-        String entity = getEntity(httpClient, httpGet);
-        return new Gson().fromJson(entity, Crumb.class);
+
+        return ProjectUtils.getUrl() + "/crumbIssuer/api/json?xpath=" + query;
     }
 
-    private String getEntity(CloseableHttpClient httpClient, HttpRequestBase request) throws IOException {
+    private String getEntity(CloseableHttpClient httpClient,
+                             HttpRequestBase request,
+                             int status) throws IOException {
         try (CloseableHttpResponse response = httpClient.execute(request)) {
-            Assert.assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK);
+            Assert.assertEquals(response.getStatusLine().getStatusCode(), status);
             HttpEntity entity = response.getEntity();
             Assert.assertNotNull(entity);
+
             return EntityUtils.toString(entity);
         }
     }
 
-    @Test
-    public void testGetJobs() {
-        String url = ProjectUtils.getUrl() + "/api/json?pretty=true";
-        String jsonResponse = get(url);
-        SlimHudson hudsonModel = new Gson().fromJson(jsonResponse, SlimHudson.class);
-        Hudson hudson = new Gson().fromJson(jsonResponse, Hudson.class);
-        Assert.assertNotNull(hudson);
-        Assert.assertNotNull(hudsonModel);
-    }
-
-    @Test
-    @Ignore
-    public void testBuild() {
-//        String jenkinsUrl = "http://localhost:8080/job/Joba/buildWithParameters";
-        String url = ProjectUtils.getUrl() + "/job/NEW_JOB/build";
-
+    private void delete(String url) {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            String auth = username + ":" + password;
-            String encodedAuth = java.util.Base64.getEncoder().encodeToString(auth.getBytes());
+            HttpDelete request = new HttpDelete(url);
+            request.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthToken());
 
-            Crumb crumb = getCrumb(encodedAuth, httpClient);
-            Token token = getToken(encodedAuth, crumb, httpClient);
-            String credAuth = username + ":" + token.getData().getTokenValue();
-            String authToken = Base64.getEncoder().encodeToString(credAuth.getBytes());
+            getEntity(httpClient, request, 302);
 
-            String jsonData = "{\"parameter\": [{\"name\":\"id\", \"value\":\"123\"}, {\"name\":\"verbosity\", \"value\":\"high\"}]}";
-            StringEntity params = new StringEntity("json=" + jsonData, ContentType.APPLICATION_FORM_URLENCODED);
-            HttpPost request = new HttpPost(url);
-            request.setHeader(HttpHeaders.AUTHORIZATION, "Basic " + authToken);
-
-            request.setEntity(params);
-
-            try (CloseableHttpResponse response = httpClient.execute(request)) {
-                int statusCode = response.getStatusLine().getStatusCode();
-                Assert.assertEquals( statusCode, 201);
-                HttpEntity entity = response.getEntity();
-                Assert.assertNotNull(entity);
-                String responseString = EntityUtils.toString(entity);
-                Assert.assertNotNull(responseString);
-            }
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            ProjectUtils.log(e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
     }
 
-    @Test
-    public void testCreateNewJob() {
-        String url = "http://localhost:8080/createItem?name=NEW_JOB";
-        String jobXml = "<project>\n" +
-                "  <actions/>\n" +
-                "  <description>My new job description</description>\n" +
-                "  <keepDependencies>false</keepDependencies>\n" +
-                "  <properties/>\n" +
-                "  <scm class=\"hudson.scm.NullSCM\"/>\n" +
-                "  <canRoam>true</canRoam>\n" +
-                "  <disabled>false</disabled>\n" +
-                "  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>\n" +
-                "  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>\n" +
-                "  <triggers/>\n" +
-                "  <concurrentBuild>false</concurrentBuild>\n" +
-                "  <builders/>\n" +
-                "  <publishers/>\n" +
-                "  <buildWrappers/>\n" +
-                "</project>";
-
-        post(url, jobXml);
-    }
-
     private String get(String url) {
-        String auth = username + ":" + password;
-        String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes());
-
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpGet request = new HttpGet(url);
             request.addHeader(HttpHeaders.USER_AGENT, "Googlebot");
             request.addHeader(HttpHeaders.AUTHORIZATION, "Basic " + encodedAuth);
 
-            try (CloseableHttpResponse response = httpClient.execute(request)) {
-                int statusCode = response.getStatusLine().getStatusCode();
-                Assert.assertEquals(statusCode, 200);
-                return EntityUtils.toString(response.getEntity());
-            }
+            return getEntity(httpClient, request, 200);
+
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            ProjectUtils.log(e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
-        return "";
     }
 
-    private String post(String url, String body) {
-        String auth = username + ":" + password;
-        String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes());
-
+    private String post(String url, String body, ContentType contentType, int status) {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpPost request = new HttpPost(url);
+            request.setHeader(HttpHeaders.AUTHORIZATION, getBasicAuthToken());
+            request.setEntity(new StringEntity(body, contentType));
 
-            Crumb crumb = getCrumb(encodedAuth, httpClient);
-            Token token = getToken(encodedAuth, crumb, httpClient);
-            String credAuth = username + ":" + token.getData().getTokenValue();
-            String authToken = Base64.getEncoder().encodeToString(credAuth.getBytes());
-            request.setHeader(HttpHeaders.AUTHORIZATION, "Basic " + authToken);
-            request.setEntity(new StringEntity(body, ContentType.APPLICATION_XML));
+            return getEntity(httpClient, request, status);
 
-            try (CloseableHttpResponse response = httpClient.execute(request)) {
-                int statusCode = response.getStatusLine().getStatusCode();
-                Assert.assertEquals(statusCode, 200);
-                HttpEntity entity = response.getEntity();
-                if (entity != null) {
-                    return EntityUtils.toString(entity);
-                }
-            }
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            ProjectUtils.log(e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
-        return "";
     }
 }

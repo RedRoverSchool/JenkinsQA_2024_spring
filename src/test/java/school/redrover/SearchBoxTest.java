@@ -1,40 +1,58 @@
 package school.redrover;
 
+import io.qameta.allure.Allure;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.PipelineProjectPage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Epic("Header")
 public class SearchBoxTest extends BaseTest {
     private static final String UPPER_CASE_INPUT = "Log";
     private static final String LOWER_CASE_INPUT = "log";
     private static final String PIPELINE_NAME = "Pipeline";
 
     @Test
+    @Story("US_14.002 Search box")
+    @Description("Check redirection for valid data search input")
     public void testSearchWithValidData() {
         String systemPageTitle = new HomePage(getDriver())
-                .getHeader().typeSearchQueryPressEnter("config")
+                .getHeader()
+                .typeSearchQueryAndPressEnter("config")
                 .getHeadingText();
 
-        Assert.assertEquals(systemPageTitle,"System");
-    }
-
-    @Test
-    public void testSearchUsingSuggestList() {
-        String systemPageTitle = new HomePage(getDriver())
-                .getHeader().typeTextToSearchField("c")
-                .getHeader().chooseAndClickFirstSuggestListVariant()
-                .getHeader().pressEnterOnSearchField()
-                .getHeadingText();
-
+        Allure.step("Expected result: Redirected to correct page");
         Assert.assertEquals(systemPageTitle, "System");
     }
 
     @Test
+    @Story("US_14.002 Search box")
+    @Description("Check redirection from search box suggestion list")
+    public void testSearchUsingSuggestList() {
+        String systemPageTitle = new HomePage(getDriver())
+                .getHeader()
+                .typeTextToSearchField("c")
+                .getHeader()
+                .chooseAndClickFirstSuggestListVariant()
+                .getHeader()
+                .pressEnterOnSearchField()
+                .getHeadingText();
+
+        Allure.step("Expected result: Redirected to correct page");
+        Assert.assertEquals(systemPageTitle, "System");
+    }
+
+    @Test
+    @Story("US_14.002 Search box")
+    @Description("Check search for folder projects by first letter")
     public void testFindFolderByOneLetter() {
         final String firstLetterOfFolderName = "F";
 
@@ -42,100 +60,115 @@ public class SearchBoxTest extends BaseTest {
         folders.forEach(this::createFolder);
 
         List<String> searchResult = new HomePage(getDriver())
-                .getHeader().typeTextToSearchField(firstLetterOfFolderName)
-                .getHeader().pressEnterOnSearchField()
+                .getHeader()
+                .typeSearchQueryAndPressEnter(firstLetterOfFolderName)
                 .getSearchResult();
 
+        Allure.step("Expected result: All folders are present in search results");
         Assert.assertTrue(searchResult.containsAll(folders), "Folders aren't found");
     }
 
     public void createFolder(String folderName) {
-        new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(folderName)
-                .selectFolderAndClickOk()
-                .clickSaveButton()
-                .clickLogo();
+        TestUtils.createFolderProject(this, folderName);
     }
 
     @Test
-    public void testSearchWithCaseSensitiveOn() {
-        new HomePage(getDriver())
-                .getHeader().goToAdminConfigurePage()
-                .turnInsensitiveSearch(false)
-                .clickApplyButton();
+    @Story("US_14.002 Search box")
+    @Description("Check case sensitive search")
+    public void testSearchWithInsensitiveSearchOff() {
+        TestUtils.setInsensitiveSearchUserSetting(this, false);
 
-        final String searchResult1 = new HomePage(getDriver())
-                .getHeader().typeSearchQueryPressEnter(UPPER_CASE_INPUT)
+        final String uppercaseResult = new HomePage(getDriver())
+                .getHeader()
+                .typeSearchQueryAndPressEnter(UPPER_CASE_INPUT)
                 .getNoMatchText();
-        final String searchResult2 = new HomePage(getDriver())
-                .getHeader().typeSearchQueryPressEnter(LOWER_CASE_INPUT)
+
+        final String lowercaseResult = new HomePage(getDriver())
+                .getHeader()
+                .typeSearchQueryAndPressEnter(LOWER_CASE_INPUT)
                 .getMatchLogResult();
 
-        Assert.assertFalse(searchResult1.matches(searchResult2));
+        Allure.step("Expected result: Different search results for uppercase and lowercase input");
+        Assert.assertNotEquals(uppercaseResult, lowercaseResult);
     }
 
     @Test
-    public void testSearchWithCaseSensitiveOff() {
-        new HomePage(getDriver())
-                .getHeader().goToAdminConfigurePage()
-                .turnInsensitiveSearch(true)
-                .clickApplyButton();
+    @Story("US_14.002 Search box")
+    @Description("Check case insensitive search")
+    public void testSearchWithInsensitiveSearchOn() {
+        TestUtils.setInsensitiveSearchUserSetting(this, true);
 
-        final String searchResult1 = new HomePage(getDriver())
-                .getHeader().typeSearchQueryPressEnter(UPPER_CASE_INPUT)
-                .getMatchLogResult();
-        final String searchResult2 = new HomePage(getDriver())
-                .getHeader().typeSearchQueryPressEnter(LOWER_CASE_INPUT)
+        final String uppercaseResult = new HomePage(getDriver())
+                .getHeader()
+                .typeSearchQueryAndPressEnter(UPPER_CASE_INPUT)
                 .getMatchLogResult();
 
-        Assert.assertTrue(searchResult1.matches(searchResult2));
+        final String lowercaseResult = new HomePage(getDriver())
+                .getHeader()
+                .typeSearchQueryAndPressEnter(LOWER_CASE_INPUT)
+                .getMatchLogResult();
+
+        Allure.step("Expected result: Same search results for uppercase and lowercase input");
+        Assert.assertEquals(uppercaseResult, lowercaseResult);
     }
 
     @Test
-    public void testSearchPipeline(){
+    @Story("US_14.002 Search box")
+    @Description("Check search for pipeline project by full name")
+    public void testSearchPipeline() {
+        TestUtils.createPipelineProject(this, PIPELINE_NAME);
+
         String searchResult = new HomePage(getDriver())
-                .clickNewItem()
-                .setItemName(PIPELINE_NAME)
-                .selectPipelineAndClickOk()
-                .clickLogo()
-                .getHeader().searchProjectByName(PIPELINE_NAME, new PipelineProjectPage(getDriver()))
+                .getHeader()
+                .typeProjectNameToSearchInputFieldAndPressEnter(
+                        PIPELINE_NAME,
+                        new PipelineProjectPage(getDriver()))
                 .getHeadingText();
 
-        Assert.assertEquals(searchResult, PIPELINE_NAME,  "Pipeline is not found");
+        Allure.step("Expected result: Correct search results");
+        Assert.assertEquals(searchResult, PIPELINE_NAME, "Pipeline is not found");
     }
 
     @Test
+    @Story("US_14.002 Search box")
+    @Description("Check search results")
     public void testStartSearchBox() {
-        final String EXPECTED_RESULT_TEXT = "manage";
-        final String SEARCHING_TEXT = "ma";
+        final String expectedResultText = "manage";
+        final String searchingText = "ma";
 
         String searchResult = new HomePage(getDriver())
-                .getHeader().typeSearchQueryPressEnter(SEARCHING_TEXT)
+                .getHeader()
+                .typeSearchQueryAndPressEnter(searchingText)
                 .getTextFromMainPanel();
 
-        Assert.assertTrue(searchResult.contains(EXPECTED_RESULT_TEXT));
+        Allure.step("Expected result: Correct search results");
+        Assert.assertTrue(searchResult.contains(expectedResultText));
     }
 
     @Test
+    @Story("US_14.002 Search box")
+    @Description("Check heading for search results page")
     public void testSearchResultHeading() {
-        final String SEARCHING_TEXT = "i";
+        final String searchingText = "i";
 
         String resultHeading = new HomePage(getDriver())
-                .getHeader().typeSearchQueryPressEnter(SEARCHING_TEXT)
+                .getHeader()
+                .typeSearchQueryAndPressEnter(searchingText)
                 .getMatchLogResult();
 
-        String expectedSearchResult = "Search for '%s'".formatted(SEARCHING_TEXT);
-
-        Assert.assertEquals(resultHeading, expectedSearchResult);
+        Allure.step("Expected result: Correct heading displayed");
+        Assert.assertEquals(resultHeading, "Search for '%s'".formatted(searchingText));
     }
 
     @Test
-    public void testAccessToUserDoc(){
+    @Story("US_14.006 Search-help (Question mark)")
+    @Description("Check tutorial icon redirection")
+    public void testAccessToUserDoc() {
         String tutorialPageTitle = new HomePage(getDriver())
                 .openTutorial()
                 .getHeadingText();
 
+        Allure.step("Expected result: Redirection to search box tutorial page");
         Assert.assertEquals(tutorialPageTitle, "Search Box");
     }
 }

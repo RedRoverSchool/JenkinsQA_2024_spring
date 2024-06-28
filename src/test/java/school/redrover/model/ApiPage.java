@@ -7,8 +7,4 @@ public class ApiPage extends BasePage<ApiPage> {
     public ApiPage(WebDriver driver) {
         super(driver);
     }
-
-    public String getApiPageTitleText() {
-        return getDriver().getTitle();
-    }
 }

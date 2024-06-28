@@ -1,5 +1,9 @@
 package school.redrover;
 
+import io.qameta.allure.Allure;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
@@ -9,17 +13,23 @@ import school.redrover.runner.TestUtils;
 import java.util.Collections;
 import java.util.List;
 
+@Epic("Dashboard")
 public class DashboardTest extends BaseTest {
 
-    private final String PIPELINE_NAME = "The Pipeline";
+    private static final String PIPELINE_NAME = "The Pipeline";
 
-    private final String MULTI_CONFIGURATION_PROJECT_NAME = "MCPN";
+    private static final String MULTI_CONFIGURATION_PROJECT_NAME = "MCPN";
 
-    private final String VIEW_NAME = "RedRover";
+    private static final String VIEW_NAME = "RedRover";
 
+    private static final String VIEW_IN_PROGRESS = "in progress";
 
+    private static final String MY_VIEW_NAME = "EmployeeView";
+
+    @Story("US_16.005 Sidebar Menu Items")
+    @Description("Check all Sidebar Menu Items exist")
     @Test
-    public void testDashboardMenu() {
+    public void testSidebarMenuItemsList() {
         final List<String> expectedSidebarMenu = List.of(
                 "New Item",
                 "People",
@@ -30,33 +40,30 @@ public class DashboardTest extends BaseTest {
         List<String> actualSidebarMenu = new HomePage(getDriver())
                 .getSidebarMenuList();
 
+        Allure.step("Expected results: All expected Sidebar Menu items exist");
         Assert.assertEquals(actualSidebarMenu, expectedSidebarMenu);
     }
 
-    @Test(dependsOnMethods = "testDashboardMenu")
-    public void testEditDescriptionOnDashboard() {
-        final String expectedDescription = "RedRover Projects";
+    @Story("US_16.005 Sidebar Menu Items")
+    @Description("Verify People Sidebar Menu Header")
+    @Test
+    public void testPeopleOnSidebarMenu() {
+        final String expectedPageHeader = "People";
+        String actualHeading = new HomePage(getDriver())
+                .clickPeopleOnSidebar()
+                .getHeadingText();
 
-        final String expectedLinkText = "Edit description";
-
-        String actualDescription = new HomePage(getDriver())
-                .clickEditDescription()
-                .typeDescription(expectedDescription)
-                .clickSaveButton()
-                .getDescription();
-
-        final String actualLinkText = new HomePage(getDriver())
-                .getEditDescriptionLinkText();
-
-        Assert.assertEquals(actualDescription, expectedDescription);
-        Assert.assertEquals(actualLinkText, expectedLinkText);
+        Allure.step("Expected results: The header text should be " + expectedPageHeader);
+        Assert.assertEquals(actualHeading, expectedPageHeader);
     }
 
-    @Test(dependsOnMethods = "testDashboardMenu")
+    @Story("US_16.003 Item Chevron Menu > List of Menu Items")
+    @Description("Check all Folder Chevron Menu Items exist")
+    @Test(dependsOnMethods = "testSidebarMenuItemsList")
     public void testFolderChevronMenu() {
-        String FOLDER_NAME = "A Folder";
+        final String folderName = "A Folder";
 
-        final List<String> FOLDER_MENU = List.of(
+        final List<String> folderMenu = List.of(
                 "Configure",
                 "New Item",
                 "Delete Folder",
@@ -65,21 +72,24 @@ public class DashboardTest extends BaseTest {
                 "Rename",
                 "Credentials");
 
-        TestUtils.createFolderProject(this, FOLDER_NAME);
+        TestUtils.createFolderProject(this, folderName);
 
         List<String> chevronMenu = new HomePage(getDriver())
-                .openItemDropdown(FOLDER_NAME)
+                .openItemDropdown(folderName)
                 .getDropdownMenu();
 
-        Assert.assertEquals(chevronMenu, FOLDER_MENU);
+        Allure.step("Expected results: All expected Folder Chevron Menu items exist");
+        Assert.assertEquals(chevronMenu, folderMenu);
     }
 
-
+    @Story("US_16.003 Item Chevron Menu > List of Menu Items")
+    @Description("Check all Freestyle Project Menu Items exist")
     @Test(dependsOnMethods = "testFolderChevronMenu")
     public void testFreestyleProjectChevronMenu() {
-        String FREESTYLE_PROJECT_NAME = "FREESTYLE";
 
-        final List<String> FREESTYLE_PROJECT_MENU = List.of(
+        String freestyleName = "Freestyle";
+
+        final List<String> freestyleMenu = List.of(
                 "Changes",
                 "Workspace",
                 "Build Now",
@@ -88,19 +98,21 @@ public class DashboardTest extends BaseTest {
                 "Move",
                 "Rename");
 
-        TestUtils.createFreestyleProject(this, FREESTYLE_PROJECT_NAME);
+        TestUtils.createFreestyleProject(this, freestyleName);
 
         List<String> chevronMenu = new HomePage(getDriver())
-                .openItemDropdown(FREESTYLE_PROJECT_NAME)
+                .openItemDropdown(freestyleName)
                 .getDropdownMenu();
 
-        Assert.assertEquals(chevronMenu, FREESTYLE_PROJECT_MENU);
+        Allure.step("Expected results: All expected Freestyle Chevron Menu items exist");
+        Assert.assertEquals(chevronMenu, freestyleMenu);
     }
 
-
-    @Test(dependsOnMethods = "testFreestyleProjectChevronMenu")
+    @Story("US_16.003 Item Chevron Menu > List of Menu Items")
+    @Description("Check all Pipeline Project Menu Items exist")
+    @Test(dependsOnMethods = "testFolderChevronMenu")
     public void testPipelineChevronMenu() {
-        final List<String> PIPELINE_MENU = List.of(
+        final List<String> pipelineMenu = List.of(
                 "Changes",
                 "Build Now",
                 "Configure",
@@ -116,13 +128,16 @@ public class DashboardTest extends BaseTest {
                 .openItemDropdown(PIPELINE_NAME)
                 .getDropdownMenu();
 
-        Assert.assertEquals(chevronMenu, PIPELINE_MENU);
+        Allure.step("Expected results: All expected Pipeline Chevron Menu items exist");
+        Assert.assertEquals(chevronMenu, pipelineMenu);
     }
 
-
-    @Test(dependsOnMethods = "testPipelineChevronMenu")
+    @Story("US_16.003 Item Chevron Menu > List of Menu Items")
+    @Description("Check all Multi-configuration Project Menu Items exist")
+    @Test(dependsOnMethods = "testFolderChevronMenu")
     public void testMultiConfigurationProjectChevronMenu() {
-        final List<String> MULTI_CONFIGURATION_PROJECT_MENU = List.of(
+
+        final List<String> multiConfigurationMenu = List.of(
                 "Changes",
                 "Workspace",
                 "Build Now",
@@ -137,15 +152,18 @@ public class DashboardTest extends BaseTest {
                 .openItemDropdown(MULTI_CONFIGURATION_PROJECT_NAME)
                 .getDropdownMenu();
 
-        Assert.assertEquals(chevronMenu, MULTI_CONFIGURATION_PROJECT_MENU);
+        Allure.step("Expected results: All expected Multi-configuration Chevron Menu items exist");
+        Assert.assertEquals(chevronMenu, multiConfigurationMenu);
     }
 
-
-    @Test(dependsOnMethods = "testMultiConfigurationProjectChevronMenu")
+    @Story("US_16.003 Item Chevron Menu > List of Menu Items")
+    @Description("Check all Multibranch Pipeline Menu Items exist")
+    @Test(dependsOnMethods = "testFolderChevronMenu")
     public void testMultibranchPipelineChevronMenu() {
-        String MULTIBRANCH_PIPELINE_NAME = "MULTIBRANCH_PIPELINE";
 
-        final List<String> MULTIBRANCH_PIPELINE_MENU = List.of(
+        String multibranchPipeline = "Multibranch Pipeline";
+
+        final List<String> multibranchPipelineMenu = List.of(
                 "Configure",
                 "Scan Multibranch Pipeline Log",
                 "Multibranch Pipeline Events",
@@ -157,21 +175,24 @@ public class DashboardTest extends BaseTest {
                 "Pipeline Syntax",
                 "Credentials");
 
-        TestUtils.createMultibranchProject(this, MULTIBRANCH_PIPELINE_NAME);
+        TestUtils.createMultibranchProject(this, multibranchPipeline);
 
         List<String> chevronMenu = new HomePage(getDriver())
-                .openItemDropdown(MULTIBRANCH_PIPELINE_NAME)
+                .openItemDropdown(multibranchPipeline)
                 .getDropdownMenu();
 
-        Assert.assertEquals(chevronMenu, MULTIBRANCH_PIPELINE_MENU);
+        Allure.step("Expected results: All expected Multibranch Pipeline Chevron Menu items exist");
+        Assert.assertEquals(chevronMenu, multibranchPipelineMenu);
     }
 
 
-    @Test(dependsOnMethods = "testMultibranchPipelineChevronMenu")
+    @Story("US_16.003 Item Chevron Menu > List of Menu Items")
+    @Description("Check all Organization Folder Menu Items exist")
+    @Test(dependsOnMethods = "testFolderChevronMenu")
     public void testOrganizationFolderChevronMenu() {
-        String ORGANIZATION_FOLDER_NAME = "RedRover Organization";
+        String organizationFolderName = "RedRover Organization";
 
-        final List<String> ORGANIZATION_FOLDER_MENU = List.of(
+        final List<String> organizationFolderMenu = List.of(
                 "Configure",
                 "Scan Organization Folder Log",
                 "Organization Folder Events",
@@ -183,83 +204,19 @@ public class DashboardTest extends BaseTest {
                 "Pipeline Syntax",
                 "Credentials");
 
-        TestUtils.createOrganizationFolderProject(this, ORGANIZATION_FOLDER_NAME);
+        TestUtils.createOrganizationFolderProject(this, organizationFolderName);
 
         List<String> chevronMenu = new HomePage(getDriver())
-                .openItemDropdown(ORGANIZATION_FOLDER_NAME)
+                .openItemDropdown(organizationFolderName)
                 .getDropdownMenu();
 
-        Assert.assertEquals(chevronMenu, ORGANIZATION_FOLDER_MENU);
+        Allure.step("Expected results: All expected Organization Folder Chevron Menu items exist");
+        Assert.assertEquals(chevronMenu, organizationFolderMenu);
     }
 
-
+    @Story("US_16.007 Item Sorting")
+    @Description("Check items sorting by Name in natural and reverse order")
     @Test(dependsOnMethods = "testOrganizationFolderChevronMenu")
-    public void testCreateListView() {
-        String createdViewName = new HomePage(getDriver())
-                .clickPlusToCreateView()
-                .setViewName(VIEW_NAME)
-                .clickListViewRadioButton()
-                .clickCreateViewButton()
-                .clickOkButton()
-                .getActiveViewName();
-
-        Assert.assertEquals(createdViewName, VIEW_NAME);
-    }
-
-
-    @Test(dependsOnMethods = "testCreateListView")
-    public void testAddItemsToView() {
-
-        List<String> projectNameList = new HomePage(getDriver())
-                .clickViewName(VIEW_NAME)
-                .clickEditViewOnSidebar()
-                .checkProjectForAddingToView(PIPELINE_NAME)
-                .checkProjectForAddingToView(MULTI_CONFIGURATION_PROJECT_NAME)
-                .clickOkButton()
-                .getProjectNames();
-
-        Assert.assertEquals(
-                projectNameList,
-                List.of(MULTI_CONFIGURATION_PROJECT_NAME, PIPELINE_NAME));
-    }
-
-
-    @Test(dependsOnMethods = "testAddItemsToView")
-    public void testChangeIconSize() {
-
-        List<Integer> expectedSizeOfProjectIconList = List.of(16, 20, 24);
-
-        for (int i = 0; i < expectedSizeOfProjectIconList.size(); i++) {
-            int iconHeight = new HomePage(getDriver())
-                    .clickIconForChangeSize(i)
-                    .getProjectIconHeight();
-
-            Assert.assertEquals(iconHeight, expectedSizeOfProjectIconList.get(i));
-        }
-    }
-
-    @Test(dependsOnMethods = "testChangeIconSize")
-    public void testBackgroundColorOfViewName() {
-
-        String passiveColor = new HomePage(getDriver())
-                .getPassiveViewNameBackgroundColor();
-
-        String hoverColor = new HomePage(getDriver())
-                .moveMouseToPassiveViewName()
-                .getPassiveViewNameBackgroundColor();
-
-        String activeColor = new HomePage(getDriver())
-                .moveMouseToPassiveViewName()
-                .mouseClick()
-                .getActiveViewNameBackgroundColor();
-
-        Assert.assertNotEquals(passiveColor, hoverColor);
-        Assert.assertNotEquals(hoverColor, activeColor);
-        Assert.assertNotEquals(activeColor, passiveColor);
-    }
-
-
-    @Test(dependsOnMethods = "testBackgroundColorOfViewName")
     public void testSortItemsByNameInTable() {
 
         List<String> reverseSortedByClickNameList = new HomePage(getDriver())
@@ -280,41 +237,236 @@ public class DashboardTest extends BaseTest {
                 .sorted()
                 .toList();
 
+        Allure.step("Expected results:Table sorted by Name in reverse and then alphabetical order");
         Assert.assertEquals(reverseSortedByClickNameList, reverseSortedByStreamNameList);
         Assert.assertEquals(sortedByClickNameList, sortedByStreamNameList);
     }
 
+
+    @Story("US_16.002 Create and edit View")
+    @Description("Create the 'List View'")
+    @Test(dependsOnMethods = "testPipelineChevronMenu")
+    public void testCreateListView() {
+        String createdViewName = new HomePage(getDriver())
+                .clickPlusToCreateView()
+                .typeViewName(VIEW_NAME)
+                .clickListViewRadioButton()
+                .clickCreateButtonForListView()
+                .clickOkButton()
+                .getActiveViewName();
+
+        Allure.step("Expected results: New Created List View name is " + VIEW_NAME);
+        Assert.assertEquals(createdViewName, VIEW_NAME);
+    }
+
+    @Story("US_16.002 Create and edit View")
+    @Description("Verify all items added to New List View")
+    @Test(dependsOnMethods =
+            {"testCreateListView", "testPipelineChevronMenu", "testMultiConfigurationProjectChevronMenu"})
+    public void testAddItemsToView() {
+
+        List<String> projectNameList = new HomePage(getDriver())
+                .clickViewName(VIEW_NAME)
+                .clickEditViewOnSidebar()
+                .checkProjectForAddingToView(PIPELINE_NAME)
+                .checkProjectForAddingToView(MULTI_CONFIGURATION_PROJECT_NAME)
+                .clickOkButton()
+                .getItemList();
+
+        Allure.step("Expected results: " + PIPELINE_NAME + " and " + MULTI_CONFIGURATION_PROJECT_NAME
+                + " Job items added to New List View");
+        Assert.assertEquals(
+                projectNameList,
+                List.of(MULTI_CONFIGURATION_PROJECT_NAME, PIPELINE_NAME));
+    }
+
+    @Story("US_16.002 Create and edit View")
+    @Description("Create the 'My View'")
     @Test
     public void testCreateMyView() {
         String newViewName =
                 new HomePage(getDriver())
                         .clickCreateAJob()
-                        .setItemName(MULTI_CONFIGURATION_PROJECT_NAME)
+                        .typeItemName(MULTI_CONFIGURATION_PROJECT_NAME)
                         .selectMultiConfigurationAndClickOk()
                         .clickLogo()
                         .clickPlusToCreateView()
-                        .setViewName(VIEW_NAME)
+                        .typeViewName(VIEW_NAME)
                         .clickMyViewRadioButton()
-                        .clickCreateMyView()
-                        .getNewViewName();
+                        .clickCreateButtonForMyView()
+                        .getActiveViewName();
 
+        Allure.step("Expected results: New Created My View name is " + VIEW_NAME);
         Assert.assertEquals(newViewName, VIEW_NAME);
     }
 
+    @Story("US_16.002 Create and edit View")
+    @Description("Check background of active, hover and inactive Views")
+    @Test(dependsOnMethods = "testCreateMyView")
+    public void testBackgroundColorOfViewName() {
+
+        String passiveColor = new HomePage(getDriver())
+                .getColorOfPassiveViewNameBackground();
+
+        String hoverColor = new HomePage(getDriver())
+                .moveMouseToPassiveViewName()
+                .getColorOfPassiveViewNameBackground();
+
+        String activeColor = new HomePage(getDriver())
+                .moveMouseToPassiveViewName()
+                .mouseClick()
+                .getColorOfActiveViewNameBackground();
+
+        Allure.step("Expected results: colors of active, passive and hovered over Views are different");
+        Assert.assertNotEquals(passiveColor, hoverColor);
+        Assert.assertNotEquals(hoverColor, activeColor);
+        Assert.assertNotEquals(activeColor, passiveColor);
+    }
+
+    @Story("US_16.004 Change Icon Size")
+    @Description("Verify Icon Size changes")
+    @Test(dependsOnMethods = "testCreateMyView")
+    public void testChangeIconSize() {
+
+        List<Integer> expectedSizeOfProjectIconList = List.of(16, 20, 24);
+
+        for (int i = 0; i < expectedSizeOfProjectIconList.size(); i++) {
+            int iconHeight = new HomePage(getDriver())
+                    .clickIconForChangeSize(i)
+                    .getProjectIconHeight();
+
+            Allure.step("Expected results: Icon size is " + expectedSizeOfProjectIconList.get(i));
+            Assert.assertEquals(iconHeight, expectedSizeOfProjectIconList.get(i));
+        }
+    }
+
+    @Story("US_16.001 Start Page")
+    @Description("Verify Start Page Header")
     @Test
-    public void testPeopleOnSidebar() {
+    public void testStartPageHeading() {
+        final String expectedHeader = "Welcome to Jenkins!";
         String actualHeading = new HomePage(getDriver())
-                .clickPeopleOnSidebar()
                 .getHeadingText();
 
-        Assert.assertEquals(actualHeading, "People");
+        Allure.step("Expected results: Start Page Header is " + expectedHeader);
+        Assert.assertEquals(actualHeading, expectedHeader);
+    }
+
+    @Story("US_16.006 Edit Dashboard Description")
+    @Description("Test existence and ability to change Dashboard Description")
+    @Test
+    public void testEditDescriptionOnDashboard() {
+        final String expectedDescription = "RedRover Projects";
+
+        final String expectedLinkText = "Edit description";
+
+        String actualDescription = new HomePage(getDriver())
+                .clickEditDescription()
+                .typeDescription(expectedDescription)
+                .clickSaveButton()
+                .getDescription();
+
+        final String actualLinkText = new HomePage(getDriver())
+                .getEditDescriptionLinkText();
+
+        Allure.step("Expected results: Dashboard Description is " + expectedDescription
+                + " and new text to change description is " + expectedLinkText);
+        Assert.assertEquals(actualDescription, expectedDescription);
+        Assert.assertEquals(actualLinkText, expectedLinkText);
     }
 
     @Test
-    public void testStartPageHeading() {
-        String actualHeading = new HomePage(getDriver())
-                .getHeadingText();
+    @Story("US_16.002 Create and edit View")
+    @Description("Go to 'My Views' from  username dropdown on header")
+    public void testGoToMyViewsFromUsernameDropdownOnHeader() {
+        String views = "My Views";
 
-        Assert.assertEquals(actualHeading, "Welcome to Jenkins!");
+        boolean textVisibility = new HomePage(getDriver())
+                .getHeader().clickMyViewsOnHeaderDropdown()
+                .isThereTextInBreadcrumbs(views);
+
+        Assert.assertTrue(textVisibility, "'My Views' didn't open");
+    }
+
+    @Test
+    @Story("US_16.002 Create and edit View")
+    @Description("Add column into 'List View' and check it")
+    public void testAddColumnIntoListView() {
+        final String visible = "visible";
+
+        TestUtils.createFolderProject(this, visible);
+
+        int numberOfColumns = new HomePage(getDriver())
+                .clickPlusToCreateView()
+                .typeViewName(VIEW_IN_PROGRESS)
+                .clickListViewRadioButton()
+                .clickCreateButtonForListView()
+                .clickCheckboxWithJobName(visible)
+                .clickAddColumn()
+                .selectAndClickOnColumnName("Project description")
+                .clickOkButton()
+                .clickLogo()
+                .clickViewName(VIEW_IN_PROGRESS)
+                .getSizeColumnHeaderList();
+
+        Allure.step("Expected result: Number of columns on dashboard table - 7");
+        Assert.assertEquals(numberOfColumns, 7, "Description column is not added");
+    }
+
+    @Test(dependsOnMethods = "testAddColumnIntoListView")
+    @Story("US_16.002 Create and edit View")
+    @Description("Change order of columns on dashboard table")
+    public void testChangeOrderOfColumns() {
+        List<String> columnNameText = new HomePage(getDriver())
+                .clickViewName(VIEW_IN_PROGRESS)
+                .clickEditViewOnSidebar()
+                .scrollToColumnName("Project description")
+                .dragAndDropDescriptionColumnToStatusColumn()
+                .clickOkButton()
+                .getColumnHeaderList();
+
+        Allure.step("Expected result: Column 'Project description' is a first on dashboard table");
+        Assert.assertEquals(columnNameText.get(0), "Description");
+    }
+
+    @Test
+    @Story("US_16.002 Create and edit View")
+    @Description("Check new column is added to the View Headline")
+    public void testAddColumnToView() {
+        final String pipelineName = "NewPipeline";
+        final List<String> expectedPipelineViewList =
+                List.of("S", "W", "Name" + "\n" + "  ↓",
+                        "Last Success", "Last Failure", "Last Duration", "Git Branches");
+
+        TestUtils.createPipelineProject(this, pipelineName);
+
+        List<String> actualPipelineViewList = new HomePage(getDriver())
+                .clickPlusToCreateView()
+                .typeViewName(MY_VIEW_NAME)
+                .clickListViewRadioButton()
+                .clickCreateButtonForListView()
+                .clickCheckboxWithJobName(pipelineName)
+                .scrollToOkButton()
+                .clickAddColumn()
+                .selectAndClickOnColumnName("Git Branches")
+                .clickOkButton()
+                .getColumnHeaderList();
+
+        Allure.step("Expected result: New column should be added to the view list");
+        Assert.assertEquals(actualPipelineViewList, expectedPipelineViewList);
+    }
+
+    @Test(dependsOnMethods = "testAddColumnToView")
+    @Story("US_16.002 Create and edit View")
+    @Description("Verify a View list does not contain recently deleted View name")
+    public void testDeleteView() {
+        int viewNameListSize = new HomePage(getDriver())
+                .clickViewName(MY_VIEW_NAME)
+                .clickDeleteViewOnSidebar()
+                .clickYesToConfirmDeletion()
+                .getSizeOfViewNameList();
+
+        Allure.step("Expected result:View name should be deleted from View List. Number of Viewes now - 2.");
+        Assert.assertEquals(viewNameListSize, 2);
     }
 }
