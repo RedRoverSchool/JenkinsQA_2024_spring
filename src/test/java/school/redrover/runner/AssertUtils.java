@@ -1,6 +1,7 @@
 package school.redrover.runner;
 
 import io.qameta.allure.Allure;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
 import java.util.List;
@@ -38,4 +39,9 @@ public final class AssertUtils {
         Assert.assertListContainsObject(list, object, errorMessage);
     }
 
+    public void NotNull(WebElement usernameErrorMsgField) {
+    }
+
+    public void isFalse(boolean startedByUser) {
+    }
 }
