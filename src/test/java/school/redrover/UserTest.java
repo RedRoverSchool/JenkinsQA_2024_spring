@@ -91,6 +91,7 @@ public class UserTest extends BaseTest {
                 .clickColumnUserIDHeader()
                 .getUserIDList();
 
+
         AssertUtils
                 .allureAnnotation("Users are sorted descending by userID")
                 .equals(userIDList, userIDList.stream().sorted(Comparator.reverseOrder()).toList());
