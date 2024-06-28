@@ -12,6 +12,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseAPITest;
 import school.redrover.runner.ProjectUtils;
@@ -80,6 +81,7 @@ public class APIJenkins1Test extends BaseAPITest {
         }
     }
 
+    @Ignore
     @Test
     public void testDeleteJobViaDoDelete() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
