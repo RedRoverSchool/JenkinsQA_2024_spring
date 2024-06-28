@@ -43,7 +43,6 @@ public class UserTest extends BaseTest {
                 .clickCreateUser()
                 .getUserIDList();
 
-
         AssertUtils
                 .allureAnnotation("User is present on page")
                 .isTrue(userNamesList.contains("TestUser"));
