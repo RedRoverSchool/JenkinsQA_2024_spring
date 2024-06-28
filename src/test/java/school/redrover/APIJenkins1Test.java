@@ -12,7 +12,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseAPITest;
 import school.redrover.runner.ProjectUtils;
@@ -23,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class APIJenkins1Test extends BaseAPITest {
-    private final static String JOB_NAME = "this is the job name two";
+    private final static String JOB_NAME = "this is the job name";
 
     @Test
     public void testCreateJob() throws IOException {
@@ -67,24 +66,25 @@ public class APIJenkins1Test extends BaseAPITest {
         }
     }
 
-    @Test
-    public void testMakeCopy() throws IOException {
+    @Test(dependsOnMethods = "testGetAllJobs")
+    public void testCopyJob() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            HttpPost post = new HttpPost(ProjectUtils.getUrl() + "createItem?name=777&mode=copy&from=12345_copy");
+            HttpPost post = new HttpPost(ProjectUtils.getUrl()
+                    + "createItem?name="
+                    + TestUtils.asURL(JOB_NAME)
+                    + "_copy&mode=copy&from="
+                    + TestUtils.asURL(JOB_NAME));
 
             post.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
 
             try (CloseableHttpResponse response = httpClient.execute(post)) {
 
-//                String jsonString = EntityUtils.toString(response.getEntity());
-//                System.out.println(jsonString);
-
-                Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
+                Assert.assertEquals(response.getStatusLine().getStatusCode(), 302);
             }
         }
     }
 
-    @Test(dependsOnMethods = "testGetAllJobs")
+    @Test(dependsOnMethods = "testCopyJob")
     public void testDeleteJobViaHttpDelete() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
@@ -98,12 +98,15 @@ public class APIJenkins1Test extends BaseAPITest {
         }
     }
 
-    @Ignore
-    @Test
+
+    @Test(dependsOnMethods = "testCopyJob")
     public void testDeleteJobViaDoDelete() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
-            HttpPost httpPost = new HttpPost(ProjectUtils.getUrl() + "job/" + TestUtils.asURL(JOB_NAME) + "/doDelete/");
+            HttpPost httpPost = new HttpPost(ProjectUtils.getUrl()
+                    + "job/"
+                    + TestUtils.asURL(JOB_NAME)
+                    + "_copy/doDelete/");
 
             httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
 

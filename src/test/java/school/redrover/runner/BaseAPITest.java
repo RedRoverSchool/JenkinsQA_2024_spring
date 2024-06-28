@@ -18,10 +18,13 @@ import java.io.IOException;
 import java.util.Base64;
 
 public class BaseAPITest {
+
     private record Crumb(String _class, String crumb, String crumbRequestField) {
     }
+
     private record Token(String tokenName, String tokenUuid, String tokenValue) {
     }
+
     private record Response(String status, Token data) {
     }
 
