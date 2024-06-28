@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class APIJenkins1Test extends BaseAPITest {
-    private final static String JOB_NAME = "this is the job name";
+    private static final String JOB_NAME = "this is the job name";
 
     @Test
     public void testCreateJob() throws IOException {
