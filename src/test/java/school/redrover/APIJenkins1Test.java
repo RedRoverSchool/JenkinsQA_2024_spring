@@ -67,6 +67,23 @@ public class APIJenkins1Test extends BaseAPITest {
         }
     }
 
+    @Test
+    public void testMakeCopy() throws IOException {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpPost post = new HttpPost(ProjectUtils.getUrl() + "createItem?name=777&mode=copy&from=12345_copy");
+
+            post.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
+
+            try (CloseableHttpResponse response = httpClient.execute(post)) {
+
+//                String jsonString = EntityUtils.toString(response.getEntity());
+//                System.out.println(jsonString);
+
+                Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
+            }
+        }
+    }
+
     @Test(dependsOnMethods = "testGetAllJobs")
     public void testDeleteJobViaHttpDelete() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
