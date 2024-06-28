@@ -1,8 +1,10 @@
 package school.redrover;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.model.CreateUserPage;
@@ -15,7 +17,7 @@ import school.redrover.runner.BaseTest;
 import java.util.Comparator;
 import java.util.List;
 
-import static org.testng.Assert.assertListNotContainsObject;
+
 
 @Epic("User")
 public class UserTest extends BaseTest {
@@ -219,10 +221,7 @@ public class UserTest extends BaseTest {
                 .clickConfigureOnSidebar()
                 .getUuidlist();
 
-        AssertUtils
-                .allureAnnotation("Token is revoked")
-                .isFalse(assertListNotContainsObject(uuidList, uuid, "Token was not revoked for this user.");
-
-
+        Allure.step("Expected result: Token is revoked");
+        Assert.assertListNotContainsObject(uuidList, uuid, "Token was not revoked for this user.");
     }
 }
