@@ -124,6 +124,7 @@ public class APIJenkins1Test extends BaseAPITest {
         String viewName = "Customized";
 
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+
             String viewXML = """
                 <hudson.model.ListView>
                     <name>""" + viewName + """
