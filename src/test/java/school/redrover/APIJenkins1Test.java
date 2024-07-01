@@ -1,12 +1,15 @@
 package school.redrover;
 
 import com.google.common.net.HttpHeaders;
+import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
@@ -112,6 +115,48 @@ public class APIJenkins1Test extends BaseAPITest {
 
             try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
                 Assert.assertEquals(response.getStatusLine().getStatusCode(), 302);
+            }
+        }
+    }
+
+    @Test
+    public void testCreateView() throws IOException {
+        String viewName = "Customized";
+
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            String viewXML = """
+                <hudson.model.ListView>
+                    <name>""" + viewName + """
+                    </name>
+                    <filterExecutors>false</filterExecutors>
+                    <filterQueue>false</filterQueue>
+                    <properties class="hudson.model.View$PropertyList"/>
+                    <jobNames>
+                        <comparator class="java.lang.String$CaseInsensitiveComparator"/>
+                    </jobNames>
+                    <jobFilters/>
+                    <columns>
+                        <hudson.views.StatusColumn/>
+                        <hudson.views.WeatherColumn/>
+                        <hudson.views.JobColumn/>
+                        <hudson.views.LastSuccessColumn/>
+                        <hudson.views.LastFailureColumn/>
+                        <hudson.views.LastDurationColumn/>
+                        <hudson.views.BuildButtonColumn/>
+                    </columns>
+                    <recurse>false</recurse>
+                </hudson.model.ListView>""";
+
+            HttpPost httpPost = new HttpPost(ProjectUtils.getUrl() + "createView?name=" + viewName);
+
+            httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
+            httpPost.addHeader(HttpHeaders.CONTENT_TYPE, "application/xml");
+
+            HttpEntity entity = new StringEntity(viewXML, ContentType.APPLICATION_XML);
+            httpPost.setEntity(entity);
+
+            try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+                Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
             }
         }
     }
