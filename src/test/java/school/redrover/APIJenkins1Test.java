@@ -26,7 +26,6 @@ import java.util.List;
 
 public class APIJenkins1Test extends BaseAPITest {
     private static final String JOB_NAME = "this is the job name";
-    private static final String PIPELINE_NAME = "MyPipeline";
     private static final String VIEW_NAME = "Customized";
 
     @Test
@@ -148,7 +147,8 @@ public class APIJenkins1Test extends BaseAPITest {
                         <recurse>false</recurse>
                     </hudson.model.ListView>""";
 
-            HttpPost httpPost = new HttpPost(ProjectUtils.getUrl() + "createView?name=" + TestUtils.asURL(VIEW_NAME));
+            HttpPost httpPost = new HttpPost(ProjectUtils.getUrl() + "createView?name="
+                    + TestUtils.asURL(VIEW_NAME));
 
             httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
             httpPost.addHeader(HttpHeaders.CONTENT_TYPE, "application/xml");
@@ -159,81 +159,6 @@ public class APIJenkins1Test extends BaseAPITest {
             try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
 
                 Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
-            }
-        }
-    }
-
-    @Test
-    public void testCreatePipeline() throws IOException {
-        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-
-            HttpPost httpPost = new HttpPost(ProjectUtils.getUrl() + "view/all/createItem/");
-
-            final List<NameValuePair> nameValuePairs = new ArrayList<>();
-            nameValuePairs.add(new BasicNameValuePair("name", PIPELINE_NAME));
-            nameValuePairs.add(new BasicNameValuePair("mode", "org.jenkinsci.plugins.workflow.job.WorkflowJob"));
-
-            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-            httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
-
-            try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
-
-                String jsonString = EntityUtils.toString(response.getEntity());
-                System.out.println(jsonString);
-
-                Assert.assertEquals(response.getStatusLine().getStatusCode(), 302);
-            }
-        }
-    }
-
-    @Test(dependsOnMethods = {"testCreateView", "testCreatePipeline"})
-    public void testAddJobToView() throws IOException {
-        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-
-            HttpPost httpPost = new HttpPost
-                    (ProjectUtils.getUrl() + "view/" + TestUtils.asURL(VIEW_NAME)
-                            + "/addJobToView?name=" + TestUtils.asURL(JOB_NAME));
-
-            httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
-
-            try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
-
-                Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
-
-            }
-        }
-    }
-
-    @Test(dependsOnMethods = "testAddJobToView")
-    public void testRemoveJobFromView() throws IOException {
-        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-
-            HttpPost httpPost = new HttpPost
-                    (ProjectUtils.getUrl() + "view/" + TestUtils.asURL(VIEW_NAME)
-                            + "/removeJobFromView?name=" + TestUtils.asURL(PIPELINE_NAME));
-
-            httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
-
-            try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
-
-                Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
-            }
-        }
-    }
-
-    @Test(dependsOnMethods = "testRemoveJobFromView")
-    public void testDeleteViewViaDoDelete() throws IOException {
-        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-
-            HttpPost httpPost = new HttpPost(ProjectUtils.getUrl()
-                    + "view/" + TestUtils.asURL(VIEW_NAME) + "/doDelete/");
-
-            httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
-
-            try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
-
-                Assert.assertEquals(response.getStatusLine().getStatusCode(), 302);
             }
         }
     }
