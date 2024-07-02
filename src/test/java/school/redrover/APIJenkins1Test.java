@@ -26,6 +26,8 @@ import java.util.List;
 
 public class APIJenkins1Test extends BaseAPITest {
     private static final String JOB_NAME = "this is the job name";
+    private static final String PIPELINE_NAME = "MyPipeline";
+    private static final String VIEW_NAME = "Customized";
 
     @Test
     public void testCreateJob() throws IOException {
@@ -121,34 +123,32 @@ public class APIJenkins1Test extends BaseAPITest {
 
     @Test
     public void testCreateView() throws IOException {
-        String viewName = "Customized";
-
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
             String viewXML = """
-                <hudson.model.ListView>
-                    <name>""" + viewName + """
-                    </name>
-                    <filterExecutors>false</filterExecutors>
-                    <filterQueue>false</filterQueue>
-                    <properties class="hudson.model.View$PropertyList"/>
-                    <jobNames>
-                        <comparator class="java.lang.String$CaseInsensitiveComparator"/>
-                    </jobNames>
-                    <jobFilters/>
-                    <columns>
-                        <hudson.views.StatusColumn/>
-                        <hudson.views.WeatherColumn/>
-                        <hudson.views.JobColumn/>
-                        <hudson.views.LastSuccessColumn/>
-                        <hudson.views.LastFailureColumn/>
-                        <hudson.views.LastDurationColumn/>
-                        <hudson.views.BuildButtonColumn/>
-                    </columns>
-                    <recurse>false</recurse>
-                </hudson.model.ListView>""";
+                    <hudson.model.ListView>
+                        <name>""" + TestUtils.asURL(VIEW_NAME) + """
+                        </name>
+                        <filterExecutors>false</filterExecutors>
+                        <filterQueue>false</filterQueue>
+                        <properties class="hudson.model.View$PropertyList"/>
+                        <jobNames>
+                            <comparator class="java.lang.String$CaseInsensitiveComparator"/>
+                        </jobNames>
+                        <jobFilters/>
+                        <columns>
+                            <hudson.views.StatusColumn/>
+                            <hudson.views.WeatherColumn/>
+                            <hudson.views.JobColumn/>
+                            <hudson.views.LastSuccessColumn/>
+                            <hudson.views.LastFailureColumn/>
+                            <hudson.views.LastDurationColumn/>
+                            <hudson.views.BuildButtonColumn/>
+                        </columns>
+                        <recurse>false</recurse>
+                    </hudson.model.ListView>""";
 
-            HttpPost httpPost = new HttpPost(ProjectUtils.getUrl() + "createView?name=" + viewName);
+            HttpPost httpPost = new HttpPost(ProjectUtils.getUrl() + "createView?name=" + TestUtils.asURL(VIEW_NAME));
 
             httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
             httpPost.addHeader(HttpHeaders.CONTENT_TYPE, "application/xml");
@@ -157,7 +157,83 @@ public class APIJenkins1Test extends BaseAPITest {
             httpPost.setEntity(entity);
 
             try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+
                 Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
+            }
+        }
+    }
+
+    @Test
+    public void testCreatePipeline() throws IOException {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+
+            HttpPost httpPost = new HttpPost(ProjectUtils.getUrl() + "view/all/createItem/");
+
+            final List<NameValuePair> nameValuePairs = new ArrayList<>();
+            nameValuePairs.add(new BasicNameValuePair("name", PIPELINE_NAME));
+            nameValuePairs.add(new BasicNameValuePair("mode", "org.jenkinsci.plugins.workflow.job.WorkflowJob"));
+
+            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+            httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
+
+            try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+
+                String jsonString = EntityUtils.toString(response.getEntity());
+                System.out.println(jsonString);
+
+                Assert.assertEquals(response.getStatusLine().getStatusCode(), 302);
+            }
+        }
+    }
+
+    @Test(dependsOnMethods = {"testCreateView", "testCreatePipeline"})
+    public void testAddJobToView() throws IOException {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+
+            HttpPost httpPost = new HttpPost
+                    (ProjectUtils.getUrl() + "view/" + TestUtils.asURL(VIEW_NAME)
+                            + "/addJobToView?name=" + TestUtils.asURL(JOB_NAME));
+
+            httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
+
+            try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+
+                Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
+
+            }
+        }
+    }
+
+    @Test(dependsOnMethods = "testAddJobToView")
+    public void testRemoveJobFromView() throws IOException {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+
+            HttpPost httpPost = new HttpPost
+                    (ProjectUtils.getUrl() + "view/" + TestUtils.asURL(VIEW_NAME)
+                            + "/removeJobFromView?name=" + TestUtils.asURL(PIPELINE_NAME));
+
+            httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
+
+            try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+
+                Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
+            }
+        }
+    }
+
+    @Test(dependsOnMethods = "testRemoveJobFromView")
+    public void testDeleteViewViaDoDelete() throws IOException {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+
+            HttpPost httpPost = new HttpPost(ProjectUtils.getUrl()
+                    + "view/" + TestUtils.asURL(VIEW_NAME) + "/doDelete/");
+
+            httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
+
+            try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+
+                Assert.assertEquals(response.getStatusLine().getStatusCode(), 302);
             }
         }
     }
