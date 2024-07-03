@@ -13,10 +13,10 @@ import school.redrover.model.JobBuildConsolePage;
 import school.redrover.model.UserConfigurePage;
 import school.redrover.runner.AssertUtils;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.Comparator;
 import java.util.List;
-
 
 
 @Epic("User")
@@ -54,13 +54,14 @@ public class UserTest extends BaseTest {
     @Description("Check search box dropdown hints for users")
     public void testSearchForUserThroughSearchBar() {
 
+        TestUtils.createUser(this, FULL_NAME);
         String userFullName = new HomePage(getDriver())
                 .getHeader().typeTextToSearchField(FULL_NAME)
                 .getHeader().getSearchFieldText();
 
         AssertUtils
                 .allureAnnotation("User hint is present into search box dropdown")
-                .isTrue(userFullName.contains("User"));
+                .equals(userFullName, "User");
 
     }
 
@@ -77,7 +78,7 @@ public class UserTest extends BaseTest {
         AssertUtils
                 .allureAnnotation("Users are sorted descending by full name")
                 .equals(names, names.stream().sorted(Comparator.reverseOrder()).toList());
-            }
+    }
 
     @Test
     @Story("US_13.006  Sorting")
@@ -94,7 +95,7 @@ public class UserTest extends BaseTest {
         AssertUtils
                 .allureAnnotation("Users are sorted descending by userID")
                 .equals(userIDList, userIDList.stream().sorted(Comparator.reverseOrder()).toList());
-            }
+    }
 
     @DataProvider(name = "usersCreateDataProvider")
     public Object[][] usersCreateDataProvider() {
@@ -164,7 +165,7 @@ public class UserTest extends BaseTest {
         AssertUtils
                 .allureAnnotation("Email error message")
                 .NotNull(createUserPage.getEmailErrorMsgField());
-            }
+    }
 
     @Test
     @Story("US_13.007  Remotely trigger a job for current user")
