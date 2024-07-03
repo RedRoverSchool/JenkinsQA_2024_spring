@@ -226,7 +226,8 @@ public class APIJenkins1Test extends BaseAPITest {
 
                 String jsonString = EntityUtils.toString(response.getEntity());
 
-                Assert.assertTrue(jsonString.contains(PIPELINE_NAME), "Job " + PIPELINE_NAME + " was not found in view " + VIEW_NAME);
+                Assert.assertTrue(jsonString.contains(PIPELINE_NAME),
+                        "Job " + PIPELINE_NAME + " was not found in view " + VIEW_NAME);
             }
         }
     }
