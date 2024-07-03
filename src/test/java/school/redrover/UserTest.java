@@ -152,19 +152,19 @@ public class UserTest extends BaseTest {
 
         AssertUtils
                 .allureAnnotation("Username error message")
-                .NotNull(createUserPage.getUsernameErrorMsgField());
+                .notNull(createUserPage.getUsernameErrorMsgField());
 
         AssertUtils
                 .allureAnnotation("Password error message")
-                .NotNull(createUserPage.getPasswordErrorMsgField());
+                .notNull(createUserPage.getPasswordErrorMsgField());
 
         AssertUtils
                 .allureAnnotation("Full name error message")
-                .NotNull(createUserPage.getFullNameErrorMsgField());
+                .notNull(createUserPage.getFullNameErrorMsgField());
 
         AssertUtils
                 .allureAnnotation("Email error message")
-                .NotNull(createUserPage.getEmailErrorMsgField());
+                .notNull(createUserPage.getEmailErrorMsgField());
     }
 
     @Test
