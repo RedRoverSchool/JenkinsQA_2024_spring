@@ -1,6 +1,0 @@
-"Epic","Feature","Story","FAILED","BROKEN","PASSED","SKIPPED","UNKNOWN"
-"Jenkins API","","Create new job with XML ContentType","0","0","3","0","0"
-"Jenkins API","","","0","0","3","0","0"
-"Jenkins API","","Check to build a project","0","0","1","0","0"
-"Jenkins API","","Build existed job with Json","0","0","3","0","0"
-"Jenkins API","","Test get jobs with Json ContentType","0","0","1","0","0"
