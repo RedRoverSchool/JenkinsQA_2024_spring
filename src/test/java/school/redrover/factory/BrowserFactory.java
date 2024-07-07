@@ -18,20 +18,32 @@ public enum BrowserFactory {
             return new ChromeDriverFactory();
         }
     },
+
     FIREFOX {
         @Override
-        public FirefoxDriverFactory getDriverFactory() {
+        public DriverFactory getDriverFactory() {
             return new FirefoxDriverFactory();
         }
     };
 
-    public static AbstractDriverFactory getFactory(FirefoxOptions options) {
+    public static DriverFactory getFactory(FirefoxOptions options) {
         return new FirefoxDriverFactory(options);
     }
 
-    public static AbstractDriverFactory getFactory(ChromeOptions options) {
+    public static DriverFactory getFactory(ChromeOptions options) {
         return new ChromeDriverFactory(options);
     }
 
     abstract DriverFactory getDriverFactory();
+
+    public static BrowserFactory fromString(String browser) {
+        if (browser == null || browser.isBlank()) {
+            return BrowserFactory.DEFAULT;
+        }
+        try {
+            return BrowserFactory.valueOf(browser.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return BrowserFactory.DEFAULT;
+        }
+    }
 }
