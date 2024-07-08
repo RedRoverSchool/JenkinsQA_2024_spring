@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hudson.model.ListView>
+    <name>${VIEW_NAME}</name>
+    <filterExecutors>false</filterExecutors>
+    <filterQueue>false</filterQueue>
+    <properties class="hudson.model.View$PropertyList"/>
+    <jobNames>
+        <comparator class="java.lang.String$CaseInsensitiveComparator"/>
+        <string>${JOB_NAME}</string>
+    </jobNames>
+    <jobFilters/>
+    <columns>
+        <hudson.views.StatusColumn/>
+        <hudson.views.WeatherColumn/>
+        <hudson.views.JobColumn/>
+        <hudson.views.LastSuccessColumn/>
+        <hudson.views.LastFailureColumn/>
+        <hudson.views.LastDurationColumn/>
+        <hudson.views.BuildButtonColumn/>
+        ${EXTRA_COLUMN}
+    </columns>
+    <recurse>false</recurse>
+</hudson.model.ListView>

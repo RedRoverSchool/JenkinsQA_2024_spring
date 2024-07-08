@@ -19,41 +19,49 @@ import school.redrover.runner.BaseAPITest;
 import school.redrover.runner.ProjectUtils;
 import school.redrover.runner.TestUtils;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 public class APIJenkinsViewTest extends BaseAPITest {
 
+    private static final String VIEW_NAME = "Customized view";
+    private static final String NEW_VIEW_NAME = "New customized view";
     private static final String PIPELINE_NAME = "this is the Pipeline";
-    private static final String VIEW_NAME = "Customized";
+
+    private String toStringAndClose(InputStream inputStream) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+            StringBuilder result = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                result.append(line);
+            }
+            return result.toString();
+        }
+    }
+
+    public String payloadFromResource(String resource) {
+        try {
+            InputStream inputStream = getClass().getResourceAsStream(resource);
+            if (inputStream == null) {
+                throw new IllegalArgumentException("Resource not found: " + resource);
+            }
+            return toStringAndClose(inputStream);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read resource: " + resource, e);
+        }
+    }
 
     @Test
     public void testCreateView() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
-            String viewXML = """
-                    <hudson.model.ListView>
-                        <name>""" + VIEW_NAME + """
-                        </name>
-                        <filterExecutors>false</filterExecutors>
-                        <filterQueue>false</filterQueue>
-                        <properties class="hudson.model.View$PropertyList"/>
-                        <jobNames>
-                            <comparator class="java.lang.String$CaseInsensitiveComparator"/>
-                        </jobNames>
-                        <jobFilters/>
-                        <columns>
-                            <hudson.views.StatusColumn/>
-                            <hudson.views.WeatherColumn/>
-                            <hudson.views.JobColumn/>
-                            <hudson.views.LastSuccessColumn/>
-                            <hudson.views.LastFailureColumn/>
-                            <hudson.views.LastDurationColumn/>
-                            <hudson.views.BuildButtonColumn/>
-                        </columns>
-                        <recurse>false</recurse>
-                    </hudson.model.ListView>""";
+            String viewXML = payloadFromResource("/create-new-view.xml");
+            viewXML = viewXML.replace("${VIEW_NAME}", VIEW_NAME);
 
             HttpPost httpPost = new HttpPost(ProjectUtils.getUrl()
                     + "createView?name="
@@ -66,7 +74,6 @@ public class APIJenkinsViewTest extends BaseAPITest {
             httpPost.setEntity(entity);
 
             try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
-
                 Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
             }
         }
@@ -143,31 +150,11 @@ public class APIJenkinsViewTest extends BaseAPITest {
     private void testAddColumnToView() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
-            String viewXML = """
-                    <hudson.model.ListView>
-                    <name>""" + VIEW_NAME + """
-                    </name>
-                    <filterExecutors>false</filterExecutors>
-                    <filterQueue>false</filterQueue>
-                    <properties class="hudson.model.View$PropertyList"/>
-                    <jobNames>
-                    <comparator class="java.lang.String$CaseInsensitiveComparator"/>
-                    <string>""" + PIPELINE_NAME + """
-                    </string>
-                    </jobNames>
-                    <jobFilters/>
-                    <columns>
-                    <hudson.views.StatusColumn/>
-                    <hudson.views.WeatherColumn/>
-                    <hudson.views.JobColumn/>
-                    <hudson.views.LastSuccessColumn/>
-                    <hudson.views.LastFailureColumn/>
-                    <hudson.views.LastDurationColumn/>
-                    <hudson.views.BuildButtonColumn/>
-                    <hudson.plugins.git.GitBranchSpecifierColumn plugin="git@5.2.2"/>
-                    </columns>
-                    <recurse>false</recurse>
-                    </hudson.model.ListView>""";
+            String viewXML = payloadFromResource("/create-new-view.xml");
+            viewXML = viewXML.replace("${VIEW_NAME}", VIEW_NAME);
+            viewXML = viewXML.replace("${JOB_NAME}", PIPELINE_NAME);
+            viewXML = viewXML.replace("${EXTRA_COLUMN}",
+                    "<hudson.plugins.git.GitBranchSpecifierColumn plugin='git@5.2.2'/>");
 
             HttpPost httpPost = new HttpPost(ProjectUtils.getUrl()
                     + "view/"
@@ -227,12 +214,34 @@ public class APIJenkinsViewTest extends BaseAPITest {
     }
 
     @Test(dependsOnMethods = "testRemoveJobFromView")
+    public void testRenameView() throws IOException {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+
+            HttpPost httpPost = new HttpPost(ProjectUtils.getUrl()
+                    + "view/" + TestUtils.asURL(VIEW_NAME)
+                    + "/configSubmit");
+
+            httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
+            httpPost.addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded");
+
+            String parameters = "name=" + NEW_VIEW_NAME + "&json={}";
+
+            HttpEntity entity = new StringEntity(parameters, ContentType.APPLICATION_FORM_URLENCODED);
+            httpPost.setEntity(entity);
+
+            try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+                Assert.assertEquals(response.getStatusLine().getStatusCode(), 302);
+            }
+        }
+    }
+
+    @Test(dependsOnMethods = "testRenameView")
     public void testDeleteViewViaDoDelete() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
             HttpPost httpPost = new HttpPost(ProjectUtils.getUrl()
                     + "view/"
-                    + TestUtils.asURL(VIEW_NAME)
+                    + TestUtils.asURL(NEW_VIEW_NAME)
                     + "/doDelete/");
 
             httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
