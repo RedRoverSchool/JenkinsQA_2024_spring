@@ -128,7 +128,7 @@ public class UserTest extends BaseTest {
 
         AssertUtils
                 .allureAnnotation("Page URL contains username")
-                .isTrue(currentUrl.contains("Username"));
+                .isTrue(currentUrl.contains(username));
     }
 
 
