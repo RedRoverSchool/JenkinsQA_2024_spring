@@ -49,7 +49,7 @@ public class UserTest extends BaseTest {
 
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateUserViaManageJenkins")
     @Story("US_13.008  Search")
     @Description("Check search box dropdown hints for users")
     public void testSearchForUserThroughSearchBar() {
@@ -65,7 +65,7 @@ public class UserTest extends BaseTest {
 
     }
 
-    @Test
+    @Test(dependsOnMethods = "testRedirectToUserPage")
     @Story("US_13.006  Sorting")
     @Description("Check that users can be sorted descending by full name clicking 'Name' column header")
     public void testUsersSortingByFullNameDesc() {
@@ -80,7 +80,7 @@ public class UserTest extends BaseTest {
                 .equals(names, names.stream().sorted(Comparator.reverseOrder()).toList());
     }
 
-    @Test
+    @Test(dependsOnMethods = "testRedirectToUserPage")
     @Story("US_13.006  Sorting")
     @Description("Check that users can be sorted descending by userID clicking 'User ID' column header")
     public void testUsersSortingByUserIDDesc() {
@@ -107,7 +107,7 @@ public class UserTest extends BaseTest {
         };
     }
 
-    @Test
+    @Test(dataProvider = "usersCreateDataProvider")
     @Story("US_13.001  Create User")
     @Description("Check redirect to user page")
     public void testRedirectToUserPage(String username, String password, String fullName, String email) {
@@ -132,7 +132,7 @@ public class UserTest extends BaseTest {
     }
 
 
-    @Test
+    @Test(dependsOnMethods = "testRedirectToUserPage")
     @Story("US_13.001  Create User")
     @Description("Check create user form fields validation error messages for empty input")
     public void testErrorMessageForEmptyFields() {
