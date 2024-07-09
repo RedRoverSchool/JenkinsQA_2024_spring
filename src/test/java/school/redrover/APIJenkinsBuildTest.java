@@ -50,7 +50,7 @@ public class APIJenkinsBuildTest extends BaseAPITest {
     }
 
     @Test(dependsOnMethods = "testCreateProject")
-    public void testDisablePipeline() throws IOException {
+    public void testDisableProject() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
             HttpPost httpPost = new HttpPost(ProjectUtils.getUrl()
@@ -65,8 +65,8 @@ public class APIJenkinsBuildTest extends BaseAPITest {
         }
     }
 
-    @Test(dependsOnMethods = "testDisablePipeline")
-    public void testVerifyPipelineIsDisabled() throws IOException {
+    @Test(dependsOnMethods = "testDisableProject")
+    public void testVerifyProjectIsDisabled() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
             HttpGet httpGet = new HttpGet(ProjectUtils.getUrl()
@@ -87,8 +87,8 @@ public class APIJenkinsBuildTest extends BaseAPITest {
         }
     }
 
-    @Test(dependsOnMethods = "testVerifyPipelineIsDisabled")
-    public void testEnablePipeline() throws IOException {
+    @Test(dependsOnMethods = "testVerifyProjectIsDisabled")
+    public void testEnableProject() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
             HttpPost httpPost = new HttpPost(ProjectUtils.getUrl()
@@ -103,8 +103,8 @@ public class APIJenkinsBuildTest extends BaseAPITest {
         }
     }
 
-    @Test(dependsOnMethods = "testDisablePipeline")
-    public void testVerifyPipelineIsEnabled() throws IOException {
+    @Test(dependsOnMethods = "testEnableProject")
+    public void testVerifyProjectIsEnabled() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
             HttpGet httpGet = new HttpGet(ProjectUtils.getUrl()
@@ -125,7 +125,7 @@ public class APIJenkinsBuildTest extends BaseAPITest {
         }
     }
 
-    @Test(dependsOnMethods = "testVerifyPipelineIsEnabled")
+    @Test(dependsOnMethods = "testVerifyProjectIsEnabled")
     public void testPerformBuild() throws IOException, InterruptedException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
