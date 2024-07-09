@@ -1,0 +1,7 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Tue Jul 09 05:54:18 GMT 2024","Tue Jul 09 05:54:18 GMT 2024","8","Surefire suite","Surefire test","school.redrover.APIJenkinsBuildTest","school.redrover.APIJenkinsBuildTest","testVerifyProjectIsEnabled","testVerifyProjectIsEnabled",""
+"passed","Tue Jul 09 05:54:18 GMT 2024","Tue Jul 09 05:54:18 GMT 2024","53","Surefire suite","Surefire test","school.redrover.APIJenkinsBuildTest","school.redrover.APIJenkinsBuildTest","testVerifyProjectIsDisabled","testVerifyProjectIsDisabled",""
+"passed","Tue Jul 09 05:54:18 GMT 2024","Tue Jul 09 05:54:18 GMT 2024","74","Surefire suite","Surefire test","school.redrover.APIJenkinsBuildTest","school.redrover.APIJenkinsBuildTest","testCreateProject","testCreateProject",""
+"passed","Tue Jul 09 05:54:18 GMT 2024","Tue Jul 09 05:54:26 GMT 2024","8051","Surefire suite","Surefire test","school.redrover.APIJenkinsBuildTest","school.redrover.APIJenkinsBuildTest","testPerformBuild","testPerformBuild",""
+"passed","Tue Jul 09 05:54:18 GMT 2024","Tue Jul 09 05:54:18 GMT 2024","12","Surefire suite","Surefire test","school.redrover.APIJenkinsBuildTest","school.redrover.APIJenkinsBuildTest","testEnableProject","testEnableProject",""
+"passed","Tue Jul 09 05:54:18 GMT 2024","Tue Jul 09 05:54:18 GMT 2024","100","Surefire suite","Surefire test","school.redrover.APIJenkinsBuildTest","school.redrover.APIJenkinsBuildTest","testDisableProject","testDisableProject",""
