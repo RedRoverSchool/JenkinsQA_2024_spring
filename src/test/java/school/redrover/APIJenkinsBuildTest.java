@@ -52,7 +52,9 @@ public class APIJenkinsBuildTest extends BaseAPITest {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
             HttpPost httpPost = new HttpPost(ProjectUtils.getUrl()
-                    + "job/" + TestUtils.asURL(MULTI_CONFIGURATION_PROJECT_NAME) + "/disable");
+                    + "job/"
+                    + TestUtils.asURL(MULTI_CONFIGURATION_PROJECT_NAME)
+                    + "/disable");
 
             httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
 
@@ -68,7 +70,9 @@ public class APIJenkinsBuildTest extends BaseAPITest {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
             HttpGet httpGet = new HttpGet(ProjectUtils.getUrl()
-                    + "job/" + TestUtils.asURL(MULTI_CONFIGURATION_PROJECT_NAME) + "/api/json");
+                    + "job/"
+                    + TestUtils.asURL(MULTI_CONFIGURATION_PROJECT_NAME)
+                    + "/api/json");
 
             httpGet.addHeader("Authorization", getBasicAuthWithToken());
 
@@ -90,7 +94,9 @@ public class APIJenkinsBuildTest extends BaseAPITest {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
             HttpPost httpPost = new HttpPost(ProjectUtils.getUrl()
-                    + "job/" + TestUtils.asURL(MULTI_CONFIGURATION_PROJECT_NAME) + "/enable");
+                    + "job/"
+                    + TestUtils.asURL(MULTI_CONFIGURATION_PROJECT_NAME)
+                    + "/enable");
 
             httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
 
@@ -106,7 +112,9 @@ public class APIJenkinsBuildTest extends BaseAPITest {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
             HttpGet httpGet = new HttpGet(ProjectUtils.getUrl()
-                    + "job/" + TestUtils.asURL(MULTI_CONFIGURATION_PROJECT_NAME) + "/api/json");
+                    + "job/"
+                    + TestUtils.asURL(MULTI_CONFIGURATION_PROJECT_NAME)
+                    + "/api/json");
 
             httpGet.addHeader("Authorization", getBasicAuthWithToken());
 
@@ -128,7 +136,9 @@ public class APIJenkinsBuildTest extends BaseAPITest {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
             HttpPost httpPost = new HttpPost(ProjectUtils.getUrl()
-                    + "job/" + TestUtils.asURL(MULTI_CONFIGURATION_PROJECT_NAME) + "/build?delay=0sec");
+                    + "job/"
+                    + TestUtils.asURL(MULTI_CONFIGURATION_PROJECT_NAME)
+                    + "/build?delay=0sec");
 
             httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
 
@@ -180,7 +190,11 @@ public class APIJenkinsBuildTest extends BaseAPITest {
     public void testVerifyJobStatusAfterBuild() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
-            HttpGet httpGet = new HttpGet(ProjectUtils.getUrl() + "job/" + TestUtils.asURL(MULTI_CONFIGURATION_PROJECT_NAME) + "/api/json");
+            HttpGet httpGet = new HttpGet(ProjectUtils.getUrl()
+                    + "job/"
+                    + TestUtils.asURL(MULTI_CONFIGURATION_PROJECT_NAME)
+                    + "/api/json");
+
             httpGet.addHeader("Authorization", getBasicAuthWithToken());
 
             try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
