@@ -20,6 +20,7 @@ import school.redrover.runner.TestUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class APIJenkinsBuildTest extends BaseAPITest {
 
@@ -40,9 +41,6 @@ public class APIJenkinsBuildTest extends BaseAPITest {
             httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
 
             try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
-
-                String jsonString = EntityUtils.toString(response.getEntity());
-                System.out.println(jsonString);
 
                 Assert.assertEquals(response.getStatusLine().getStatusCode(), 302);
             }
@@ -137,20 +135,58 @@ public class APIJenkinsBuildTest extends BaseAPITest {
             try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
 
                 Assert.assertEquals(response.getStatusLine().getStatusCode(), 201);
+                System.out.println(response);
 
-                Thread.sleep(8000);
+                String locationHeader = response.getFirstHeader("Location").getValue();
+                System.out.println("Queue location: " + locationHeader);
+
+                String queueApiUrl = locationHeader + "api/json";
+
+                boolean buildStarted = false;
+                int intervalSeconds = 2;
+                int maxRetries = 5;
+
+                for (int i = 0; i < maxRetries && !buildStarted; i++) {
+                    HttpGet httpGet = new HttpGet(queueApiUrl);
+                    httpGet.addHeader("Authorization", getBasicAuthWithToken());
+
+                    try (CloseableHttpResponse queueResponse = httpClient.execute(httpGet)) {
+                        Assert.assertEquals(queueResponse.getStatusLine().getStatusCode(), 200);
+
+                        HttpEntity entity = queueResponse.getEntity();
+                        String jsonString = EntityUtils.toString(entity);
+                        System.out.println("queue" + jsonString);
+
+                        if (jsonString.contains("executable")) {
+                            buildStarted = true;
+                            System.out.println("Build started: " + jsonString);
+                        } else if (jsonString.contains("cancelled")) {
+                            System.out.println("Build was cancelled");
+                            break;
+                        } else {
+                            System.out.println("Build not started yet");
+                        }
+                    }
+
+                    TimeUnit.SECONDS.sleep(intervalSeconds);
+                }
+
+                Assert.assertTrue(buildStarted);
             }
+        }
+    }
 
-            HttpGet httpGet = new HttpGet(ProjectUtils.getUrl()
-                    + "job/" + TestUtils.asURL(MULTI_CONFIGURATION_PROJECT_NAME) + "/api/json");
+    @Test(dependsOnMethods = "testPerformBuild")
+    public void testVerifyJobStatusAfterBuild() throws IOException {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
+            HttpGet httpGet = new HttpGet(ProjectUtils.getUrl() + "job/" + TestUtils.asURL(MULTI_CONFIGURATION_PROJECT_NAME) + "/api/json");
             httpGet.addHeader("Authorization", getBasicAuthWithToken());
 
             try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
-                Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
+                Assert.assertEquals(200, response.getStatusLine().getStatusCode());
 
                 HttpEntity entity = response.getEntity();
-
                 String jsonString = EntityUtils.toString(entity);
                 System.out.println(jsonString);
 

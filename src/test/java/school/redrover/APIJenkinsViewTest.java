@@ -61,7 +61,6 @@ public class APIJenkinsViewTest extends BaseAPITest {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
             String viewXML = payloadFromResource("/create-new-view.xml");
-            viewXML = viewXML.replace("${VIEW_NAME}", VIEW_NAME);
 
             HttpPost httpPost = new HttpPost(ProjectUtils.getUrl()
                     + "createView?name="
@@ -151,10 +150,9 @@ public class APIJenkinsViewTest extends BaseAPITest {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
             String viewXML = payloadFromResource("/create-new-view.xml");
-            viewXML = viewXML.replace("${VIEW_NAME}", VIEW_NAME);
-            viewXML = viewXML.replace("${JOB_NAME}", PIPELINE_NAME);
-            viewXML = viewXML.replace("${EXTRA_COLUMN}",
-                    "<hudson.plugins.git.GitBranchSpecifierColumn plugin='git@5.2.2'/>");
+            String extraGitBranchColumnXML = "<hudson.plugins.git.GitBranchSpecifierColumn plugin='git@5.2.2'/>";
+
+            viewXML = String.format(viewXML, VIEW_NAME, PIPELINE_NAME, extraGitBranchColumnXML);
 
             HttpPost httpPost = new HttpPost(ProjectUtils.getUrl()
                     + "view/"

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <hudson.model.ListView>
-    <name>${VIEW_NAME}</name>
+    <name>%s</name>
     <filterExecutors>false</filterExecutors>
     <filterQueue>false</filterQueue>
     <properties class="hudson.model.View$PropertyList"/>
     <jobNames>
         <comparator class="java.lang.String$CaseInsensitiveComparator"/>
-        <string>${JOB_NAME}</string>
+        <string>%s</string>
     </jobNames>
     <jobFilters/>
     <columns>
@@ -17,7 +17,7 @@
         <hudson.views.LastFailureColumn/>
         <hudson.views.LastDurationColumn/>
         <hudson.views.BuildButtonColumn/>
-        ${EXTRA_COLUMN}
+        %s
     </columns>
     <recurse>false</recurse>
 </hudson.model.ListView>
