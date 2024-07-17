@@ -1,0 +1,41 @@
+{
+  "enable": true,
+  "description": "",
+  "properties": {
+    "stapler-class-bag": "true",
+    "jenkins-model-BuildDiscarderProperty": {
+      "specified": true,
+      "": "0",
+      "strategy": {
+        "daysToKeepStr": "",
+        "numToKeepStr": "2",
+        "artifactDaysToKeepStr": "",
+        "artifactNumToKeepStr": "",
+        "stapler-class": "hudson.tasks.LogRotator",
+        "$class": "hudson.tasks.LogRotator"
+      }
+    },
+    "com-coravy-hudson-plugins-github-GithubProjectProperty": {},
+    "hudson-model-ParametersDefinitionProperty": {
+      "specified": false
+    },
+    "jenkins-branch-RateLimitBranchProperty$JobPropertyImpl": {}
+  },
+  "concurrentBuild": false,
+  "hasCustomQuietPeriod": false,
+  "quiet_period": "5",
+  "hasCustomScmCheckoutRetryCount": false,
+  "scmCheckoutRetryCount": "0",
+  "blockBuildWhenUpstreamBuilding": false,
+  "blockBuildWhenDownstreamBuilding": false,
+  "hasCustomWorkspace": false,
+  "customWorkspace": "",
+  "displayNameOrNull": "",
+  "scm": {
+    "value": "0",
+    "stapler-class": "hudson.scm.NullSCM",
+    "$class": "hudson.scm.NullSCM"
+  },
+  "Submit": "",
+  "core:apply": ""
+}

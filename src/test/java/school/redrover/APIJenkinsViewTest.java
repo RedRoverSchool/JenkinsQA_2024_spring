@@ -17,13 +17,10 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseAPITest;
 import school.redrover.runner.ProjectUtils;
+import school.redrover.runner.ResourceUtils;
 import school.redrover.runner.TestUtils;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,34 +30,11 @@ public class APIJenkinsViewTest extends BaseAPITest {
     private static final String NEW_VIEW_NAME = "New customized view";
     private static final String PIPELINE_NAME = "this is the Pipeline";
 
-    private String toStringAndClose(InputStream inputStream) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-            StringBuilder result = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                result.append(line);
-            }
-            return result.toString();
-        }
-    }
-
-    public String payloadFromResource(String resource) {
-        try {
-            InputStream inputStream = getClass().getResourceAsStream(resource);
-            if (inputStream == null) {
-                throw new IllegalArgumentException("Resource not found: " + resource);
-            }
-            return toStringAndClose(inputStream);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to read resource: " + resource, e);
-        }
-    }
-
     @Test
     public void testCreateView() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
-            String viewXML = payloadFromResource("/create-new-view.xml");
+            String viewXML = ResourceUtils.payloadFromResource("/create-new-view.xml");
 
             HttpPost httpPost = new HttpPost(ProjectUtils.getUrl()
                     + "createView?name="
@@ -149,7 +123,7 @@ public class APIJenkinsViewTest extends BaseAPITest {
     private void testAddColumnToView() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
-            String viewXML = payloadFromResource("/create-new-view.xml");
+            String viewXML = ResourceUtils.payloadFromResource("/create-new-view.xml");
             String extraGitBranchColumnXML = "<hudson.plugins.git.GitBranchSpecifierColumn plugin='git@5.2.2'/>";
 
             viewXML = String.format(viewXML, VIEW_NAME, PIPELINE_NAME, extraGitBranchColumnXML);
