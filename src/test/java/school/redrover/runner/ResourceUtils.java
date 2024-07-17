@@ -8,7 +8,8 @@ import java.nio.charset.StandardCharsets;
 
 public final class ResourceUtils {
 
-    private ResourceUtils() {}
+    private ResourceUtils() {
+    }
 
     private static String toStringAndClose(InputStream inputStream) throws IOException {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
