@@ -43,13 +43,16 @@ public class APIJenkinsJobsTest extends BaseAPITest {
 
     @Test(dataProvider = "jobDataProvider", priority = 5, dependsOnMethods = "testCreateNewJob")
     public void testDelete(String jobName, String jobDescription) {
-        String url = ProjectUtils.getUrl() + "/job/" + jobName;
+        String url = String.format("%s/job/%s", ProjectUtils.getUrl(), jobName);
         delete(url);
     }
 
     @Test(dataProvider = "jobDataProvider", priority = 6, dependsOnMethods = "testDelete")
     public void testJobNotExists(String jobName, String jobDescription) {
-        assertJobNotExists(jobName);
+        String jsonResponse = getJsonJobs();
+        SlimHudson slimHudson = new Gson().fromJson(jsonResponse, SlimHudson.class);
+        boolean isJobExists = slimHudson.jobs().stream().anyMatch(job -> job.name().equals(jobName));
+        Assert.assertFalse(isJobExists);
     }
 
     @DataProvider(name = "jobDataProvider")
@@ -59,15 +62,6 @@ public class APIJenkinsJobsTest extends BaseAPITest {
                 {"NEW_JOB_1", "Description for job 1"},
                 {"NEW_JOB_2", "Description for job 2"}
         };
-    }
-
-    private void assertJobNotExists(String jobName) {
-        String jsonResponse = getJsonJobs();
-        SlimHudson slimHudson = new Gson().fromJson(jsonResponse, SlimHudson.class);
-        boolean jobExists = slimHudson.jobs().stream().anyMatch(job -> job.name().equals(jobName));
-        if (jobExists) {
-            throw new AssertionError("Job still exists after deletion: " + jobName);
-        }
     }
 
     @Test(dependsOnMethods = "testCreateNewJob")
@@ -87,8 +81,9 @@ public class APIJenkinsJobsTest extends BaseAPITest {
     @Story("Create new job with XML ContentType")
     @Description("Check the status code is returned 200 after jobs is created")
     public void testCreateNewJob(String jobName, String jobDescription) {
-        String url = ProjectUtils.getUrl() + "/createItem?name=" + jobName;
+        final String url = String.format("%s/createItem?name=%s", ProjectUtils.getUrl(), jobName);
         String jobXml = String.format(ResourceUtils.payloadFromResource("/create-new-job.xml"), jobDescription);
+
         Allure.step("Expected results: job entity has been created");
         String post = post(url, jobXml, ContentType.APPLICATION_XML, 200);
 
@@ -99,7 +94,8 @@ public class APIJenkinsJobsTest extends BaseAPITest {
     @Story("Build existed job with Json")
     @Description("Check the status of job after Run")
     public void testRunJob(String job, String desc) {
-        post(ProjectUtils.getUrl() + "/job/" + job + "/build", getJson(), ContentType.APPLICATION_JSON, 201);
+        final String url = String.format("%s/job/%s/build", ProjectUtils.getUrl(), job);
+        post(url, getJson(), ContentType.APPLICATION_JSON, 201);
         SlimHudson slimHudson = new Gson().fromJson(getJsonJobs(), SlimHudson.class);
         List<SlimJob> jobs = slimHudson.jobs();
 
@@ -107,7 +103,6 @@ public class APIJenkinsJobsTest extends BaseAPITest {
         Assert.assertTrue(slimHudson.useCrumbs());
         Allure.step("Checking if slimHudson is using security");
         Assert.assertTrue(slimHudson.useSecurity());
-
         Allure.step("Expected results: job entity has been built with same name and verify status");
         Assert.assertFalse(slimHudson.jobs().isEmpty());
 
@@ -160,8 +155,7 @@ public class APIJenkinsJobsTest extends BaseAPITest {
                 if (statusCode == 302) {
                     Header locationHeader = response.getFirstHeader("Location");
                     if (locationHeader != null) {
-                        String newUrl = locationHeader.getValue();
-                        delete(newUrl); // Follow redirect
+                        delete(locationHeader.getValue());
                     } else {
                         throw new RuntimeException("Redirect without Location header");
                     }
@@ -178,7 +172,6 @@ public class APIJenkinsJobsTest extends BaseAPITest {
     private String get(String url) {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpGet request = new HttpGet(url);
-            request.addHeader(HttpHeaders.USER_AGENT, "Googlebot");
             request.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
 
             return getEntity(httpClient, request, 200);
