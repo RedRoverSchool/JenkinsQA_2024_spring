@@ -1,7 +1,0 @@
-"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"passed","Tue Jul 02 06:52:57 GMT 2024","Tue Jul 02 06:52:57 GMT 2024","41","Surefire suite","Surefire test","school.redrover.APIJenkins1Test","school.redrover.APIJenkins1Test","testCopyJob","testCopyJob",""
-"passed","Tue Jul 02 06:52:57 GMT 2024","Tue Jul 02 06:52:57 GMT 2024","77","Surefire suite","Surefire test","school.redrover.APIJenkins1Test","school.redrover.APIJenkins1Test","testDeleteJobViaHttpDelete","testDeleteJobViaHttpDelete",""
-"passed","Tue Jul 02 06:52:57 GMT 2024","Tue Jul 02 06:52:57 GMT 2024","203","Surefire suite","Surefire test","school.redrover.APIJenkins1Test","school.redrover.APIJenkins1Test","testCreateView","testCreateView",""
-"passed","Tue Jul 02 06:52:57 GMT 2024","Tue Jul 02 06:52:57 GMT 2024","80","Surefire suite","Surefire test","school.redrover.APIJenkins1Test","school.redrover.APIJenkins1Test","testCreateJob","testCreateJob",""
-"passed","Tue Jul 02 06:52:57 GMT 2024","Tue Jul 02 06:52:57 GMT 2024","31","Surefire suite","Surefire test","school.redrover.APIJenkins1Test","school.redrover.APIJenkins1Test","testGetAllJobs","testGetAllJobs",""
-"passed","Tue Jul 02 06:52:57 GMT 2024","Tue Jul 02 06:52:57 GMT 2024","14","Surefire suite","Surefire test","school.redrover.APIJenkins1Test","school.redrover.APIJenkins1Test","testDeleteJobViaDoDelete","testDeleteJobViaDoDelete",""
