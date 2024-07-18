@@ -34,10 +34,12 @@ import java.util.List;
 @Epic("Jenkins API")
 public class APIJenkinsJobsTest extends BaseAPITest {
 
-    private record SlimJob(@SerializedName("_class") String clazz, String name, String color) { }
+    private record SlimJob(@SerializedName("_class") String clazz, String name, String color) {
+    }
 
     private record SlimHudson(@SerializedName("_class") String clazz, String url,
-                              boolean useCrumbs, boolean useSecurity, List<SlimJob> jobs) {}
+                              boolean useCrumbs, boolean useSecurity, List<SlimJob> jobs) {
+    }
 
     @Test(dataProvider = "jobDataProvider", priority = 5, dependsOnMethods = "testCreateNewJob")
     public void testDelete(String jobName, String jobDescription) {
