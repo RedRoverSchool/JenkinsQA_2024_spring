@@ -59,8 +59,8 @@ public class APIJenkins1Test extends BaseAPITest {
             try (CloseableHttpResponse response = httpClient.execute(request)) {
 
                 String jsonString = EntityUtils.toString(response.getEntity());
-                System.out.println(jsonString);
 
+                Assert.assertTrue(jsonString.contains(JOB_NAME));
                 Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
             }
         }
