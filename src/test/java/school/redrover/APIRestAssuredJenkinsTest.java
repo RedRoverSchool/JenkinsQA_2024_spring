@@ -5,13 +5,11 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
-import io.restassured.config.EncoderConfig;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.Header;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseAPITest;
 import school.redrover.runner.ProjectUtils;
-import school.redrover.runner.TestUtils;
 
 @Epic("ApiRestAssuredTest")
 public class APIRestAssuredJenkinsTest extends BaseAPITest {
@@ -24,14 +22,14 @@ public class APIRestAssuredJenkinsTest extends BaseAPITest {
     public void testCreateJob() {
         RestAssured.given()
                 .filter(new AllureRestAssured())
-                .log().ifValidationFails(LogDetail.ALL,true)
+                .log().ifValidationFails(LogDetail.ALL, true)
                 .header(new Header("Authorization", getBasicAuthWithToken()))
                 .contentType("multipart/form-data")
                 .multiPart("name", JOB_NAME)
                 .multiPart("mode", "hudson.model.FreeStyleProject")
                 .post(ProjectUtils.getUrl() + "view/all/createItem/")
                 .then()
-                .log().ifValidationFails(LogDetail.ALL,true)
+                .log().ifValidationFails(LogDetail.ALL, true)
                 .statusCode(302);
     }
 
@@ -53,14 +51,14 @@ public class APIRestAssuredJenkinsTest extends BaseAPITest {
     public void testCopyJob() {
         RestAssured.given()
                 .filter(new AllureRestAssured())
-                .log().ifValidationFails(LogDetail.ALL,true)
+                .log().ifValidationFails(LogDetail.ALL, true)
                 .queryParam("name", JOB_NAME + "_copy")
                 .queryParam("mode", "copy")
                 .queryParam("from", JOB_NAME)
                 .header(new Header("Authorization", getBasicAuthWithToken()))
                 .post(ProjectUtils.getUrl() + "createItem")
                 .then()
-                .log().ifValidationFails(LogDetail.ALL,true)
+                .log().ifValidationFails(LogDetail.ALL, true)
                 .statusCode(302);
     }
 
