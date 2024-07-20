@@ -45,7 +45,6 @@ public class APIRestAssuredJenkinsTest extends BaseAPITest {
                 .statusCode(200);
     }
 
-
     @Test(dependsOnMethods = "testGetAllJobs")
     @Story("Create job")
     @Description("Create a copy of exiting job")
@@ -62,7 +61,6 @@ public class APIRestAssuredJenkinsTest extends BaseAPITest {
                 .log().ifValidationFails(LogDetail.ALL, true)
                 .statusCode(302);
     }
-
 
     @Test(dependsOnMethods = "testCopyJob")
     @Story("Delete job")
