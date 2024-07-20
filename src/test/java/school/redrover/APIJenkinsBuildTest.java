@@ -66,7 +66,8 @@ public class APIJenkinsBuildTest extends BaseAPITest {
     public void testSearchProjectName() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
-            HttpGet httpGet = new HttpGet(ProjectUtils.getUrl() + "search/?q=" + TestUtils.asURL(MULTI_CONFIGURATION_PROJECT_NAME));
+            HttpGet httpGet = new HttpGet(ProjectUtils.getUrl() + "search/?q="
+                    + TestUtils.asURL(MULTI_CONFIGURATION_PROJECT_NAME));
 
             httpGet.addHeader("Authorization", getBasicAuthWithToken());
 
