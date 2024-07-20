@@ -11,14 +11,14 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseAPITest;
 import school.redrover.runner.ProjectUtils;
 
-@Epic("ApiRestAssuredTest")
+@Epic("RestAssured Jenkins Api tests")
 public class APIRestAssuredJenkinsTest extends BaseAPITest {
 
     private static final String JOB_NAME = "this is the rest job name";
 
     @Test
-    @Story("Create a freestyle job")
-    @Description("")
+    @Story("Create job")
+    @Description("Create a freestyle job")
     public void testCreateJob() {
         RestAssured.given()
                 .filter(new AllureRestAssured())
@@ -34,8 +34,8 @@ public class APIRestAssuredJenkinsTest extends BaseAPITest {
     }
 
     @Test(dependsOnMethods = "testCreateJob")
-    @Story("Get all jobs")
-    @Description("")
+    @Story("Read job")
+    @Description("Get all jobs")
     public void testGetAllJobs() {
         RestAssured.given()
                 .filter(new AllureRestAssured())
@@ -45,9 +45,10 @@ public class APIRestAssuredJenkinsTest extends BaseAPITest {
                 .statusCode(200);
     }
 
-    @Story("Create a copy of exiting job")
-    @Description("")
+
     @Test(dependsOnMethods = "testGetAllJobs")
+    @Story("Create job")
+    @Description("Create a copy of exiting job")
     public void testCopyJob() {
         RestAssured.given()
                 .filter(new AllureRestAssured())
@@ -62,9 +63,10 @@ public class APIRestAssuredJenkinsTest extends BaseAPITest {
                 .statusCode(302);
     }
 
-    @Story("Delete job by sending a http delete request")
-    @Description("")
+
     @Test(dependsOnMethods = "testCopyJob")
+    @Story("Delete job")
+    @Description("Delete job by sending a http delete request")
     public void testDeleteJobViaHttpDelete() {
         RestAssured.given()
                 .filter(new AllureRestAssured())
@@ -75,8 +77,8 @@ public class APIRestAssuredJenkinsTest extends BaseAPITest {
     }
 
     @Test(dependsOnMethods = "testCopyJob")
-    @Story("Delete job by sending a http post request to /doDelete endpoint")
-    @Description("")
+    @Story("Delete job")
+    @Description("Delete job by sending a http post request to /doDelete endpoint")
     public void testDeleteJobViaDoDelete() {
         RestAssured.given()
                 .filter(new AllureRestAssured())
