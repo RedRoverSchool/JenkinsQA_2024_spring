@@ -1,6 +1,9 @@
 package school.redrover;
 
 import com.google.common.net.HttpHeaders;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Story;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -24,6 +27,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Epic("API Manage Jenkins Views")
+
 public class APIJenkinsViewTest extends BaseAPITest {
 
     private static final String VIEW_NAME = "Customized view";
@@ -31,6 +36,8 @@ public class APIJenkinsViewTest extends BaseAPITest {
     private static final String PIPELINE_NAME = "this is the Pipeline";
 
     @Test
+    @Story("Create View")
+    @Description("Verify that successful list view creation results in 200 status code")
     public void testCreateView() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
@@ -53,6 +60,8 @@ public class APIJenkinsViewTest extends BaseAPITest {
     }
 
     @Test
+    @Story("Create the pipeline project")
+    @Description("Verify that successful pipeline creation results in 302 status code")
     public void testCreatePipeline() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
@@ -77,6 +86,8 @@ public class APIJenkinsViewTest extends BaseAPITest {
     }
 
     @Test(dependsOnMethods = {"testCreateView", "testCreatePipeline"})
+    @Story("Reconfigure View")
+    @Description("Verify that successful adding a job to a list view results in 200 status code")
     public void testAddJobToView() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
@@ -97,6 +108,8 @@ public class APIJenkinsViewTest extends BaseAPITest {
     }
 
     @Test(dependsOnMethods = "testAddJobToView")
+    @Story("Reconfigure View")
+    @Description("Verify that the job is present in the view")
     private void testVerifyJobInView() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
@@ -120,6 +133,8 @@ public class APIJenkinsViewTest extends BaseAPITest {
     }
 
     @Test(dependsOnMethods = "testVerifyJobInView")
+    @Story("Reconfigure View")
+    @Description("Verify that successful adding a column to view results in 200 status code")
     private void testAddColumnToView() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
@@ -147,6 +162,8 @@ public class APIJenkinsViewTest extends BaseAPITest {
     }
 
     @Test(dependsOnMethods = "testAddColumnToView")
+    @Story("Reconfigure View")
+    @Description("Verify that the view contains added column")
     public void testVerifyViewConfigXML() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpGet httpGet = new HttpGet(ProjectUtils.getUrl()
@@ -168,6 +185,8 @@ public class APIJenkinsViewTest extends BaseAPITest {
     }
 
     @Test(dependsOnMethods = "testVerifyViewConfigXML")
+    @Story("Reconfigure View")
+    @Description("Verify that successful removal of job from view results in 200 status code")
     public void testRemoveJobFromView() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
@@ -186,6 +205,8 @@ public class APIJenkinsViewTest extends BaseAPITest {
     }
 
     @Test(dependsOnMethods = "testRemoveJobFromView")
+    @Story("Reconfigure View")
+    @Description("Verify that successful rename of view results in 302 status code")
     public void testRenameView() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
@@ -208,6 +229,8 @@ public class APIJenkinsViewTest extends BaseAPITest {
     }
 
     @Test(dependsOnMethods = "testRenameView")
+    @Story("Delete View")
+    @Description("Verify that successful deletion of view results in 302 status code")
     public void testDeleteViewViaDoDelete() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 

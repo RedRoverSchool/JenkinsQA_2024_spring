@@ -1,6 +1,9 @@
 package school.redrover;
 
 import com.google.common.net.HttpHeaders;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Story;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -27,12 +30,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+@Epic("API Manage Jenkins builds")
+
 public class APIJenkinsBuildTest extends BaseAPITest {
 
     private static final String MULTI_CONFIGURATION_PROJECT_NAME = "this is the MultiConfigName";
     private static final String NEW_MAX_NUMBER_OF_BUILDS_TO_KEEP = "1";
 
     @Test
+    @Story("Create the multi-configuration project")
+    @Description("Verify that successful multi-configuration creation results in 302 status code")
     public void testCreateProject() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
@@ -54,6 +61,29 @@ public class APIJenkinsBuildTest extends BaseAPITest {
     }
 
     @Test(dependsOnMethods = "testCreateProject")
+    @Story("Search the project by name")
+    @Description("Verify that the project can be found using the search box")
+    public void testSearchProjectName() throws IOException {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+
+            HttpGet httpGet = new HttpGet(ProjectUtils.getUrl() + "search/?q=" + TestUtils.asURL(MULTI_CONFIGURATION_PROJECT_NAME));
+
+            httpGet.addHeader("Authorization", getBasicAuthWithToken());
+
+            try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
+                Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
+
+                String responseBody = EntityUtils.toString(response.getEntity());
+                System.out.println("Response: " + responseBody);
+
+                Assert.assertTrue(responseBody.contains(MULTI_CONFIGURATION_PROJECT_NAME));
+            }
+        }
+    }
+
+    @Test(dependsOnMethods = "testSearchProjectName")
+    @Story("Disable the project")
+    @Description("Verify that successful disabling of the project results in 302 status code")
     public void testDisableProject() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
@@ -72,6 +102,8 @@ public class APIJenkinsBuildTest extends BaseAPITest {
     }
 
     @Test(dependsOnMethods = "testDisableProject")
+    @Story("Disable the project")
+    @Description("Verify that project is not buildable")
     public void testVerifyProjectIsDisabled() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
@@ -96,6 +128,8 @@ public class APIJenkinsBuildTest extends BaseAPITest {
     }
 
     @Test(dependsOnMethods = "testVerifyProjectIsDisabled")
+    @Story("Enable the project")
+    @Description("Verify that successful enabling of the project back results in 302 status code")
     public void testEnableProject() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
@@ -114,6 +148,8 @@ public class APIJenkinsBuildTest extends BaseAPITest {
     }
 
     @Test(dependsOnMethods = "testEnableProject")
+    @Story("Enable the project")
+    @Description("Verify that enabled back project is buildable")
     public void testVerifyProjectIsEnabled() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
@@ -138,6 +174,8 @@ public class APIJenkinsBuildTest extends BaseAPITest {
     }
 
     @Test(dependsOnMethods = "testVerifyProjectIsEnabled")
+    @Story("Build the project")
+    @Description("Verify that successful project build results in 201 status code")
     public void testPerformBuild() throws IOException, InterruptedException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
@@ -193,6 +231,8 @@ public class APIJenkinsBuildTest extends BaseAPITest {
     }
 
     @Test(dependsOnMethods = "testPerformBuild")
+    @Story("Build the project")
+    @Description("Verify that the latest build for project is successful")
     public void testVerifyJobStatusAfterBuild() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
@@ -216,6 +256,8 @@ public class APIJenkinsBuildTest extends BaseAPITest {
     }
 
     @Test(dependsOnMethods = "testVerifyJobStatusAfterBuild")
+    @Story("Reconfigure project builds")
+    @Description("Verify that successful change of max number of builds to keep results in 302 status code")
     public void testSetMaxNumberBuildsToKeep() throws IOException {
         String json = ResourceUtils.payloadFromResource("/configSubmit.json");
         json = json.replaceAll("\"numToKeepStr\":\\s*\"2\"",
@@ -246,6 +288,8 @@ public class APIJenkinsBuildTest extends BaseAPITest {
     }
 
     @Test(dependsOnMethods = "testSetMaxNumberBuildsToKeep")
+    @Story("Reconfigure project builds")
+    @Description("Verify that max number of builds to keep is set successfully")
     public void testVerifyMaxNumberBuildsToKeep() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
