@@ -5,10 +5,19 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import io.restassured.RestAssured;
+import io.restassured.filter.log.LogDetail;
 import org.hamcrest.Matchers;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseAPITest;
 import school.redrover.runner.ProjectUtils;
+
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.testng.Assert.assertNotNull;
 
 @Epic("ApiRestAssuredTest2")
 
@@ -33,6 +42,31 @@ public class APIRestAssuredMultiConfigTest extends BaseAPITest {
     }
 
     @Test(dependsOnMethods = "testCreateProject")
+    @Story("Create the multi-configuration project")
+    @Description("Verify error message for project creation with duplicate name.")
+    public void testCreateProjectWithDuplicateName() {
+        String responseBody = given()
+                .log().ifValidationFails(LogDetail.ALL, true)
+                .header(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken())
+                .formParam("name", MULTI_CONFIGURATION_PROJECT_NAME)
+                .formParam("mode", "hudson.matrix.MatrixProject")
+                .when()
+                .log().ifValidationFails(LogDetail.ALL, true)
+                .post(ProjectUtils.getUrl() + "view/all/createItem/")
+                .then()
+                .statusCode(400)
+                .extract().response()
+                .getBody().asString();
+
+        Document document = Jsoup.parse(responseBody);
+        Element element = document.select("p").first();
+
+        assertNotNull(element, "The <p> element was not found in the response.");
+        assertThat(element.text(), containsString(
+                "A job already exists with the name ‘" + MULTI_CONFIGURATION_PROJECT_NAME + "’"));
+    }
+
+    @Test(dependsOnMethods = "testCreateProjectWithDuplicateName")
     @Story("Search the project by name")
     @Description("Verify that a project can be found using the search box")
     public void testSearchProjectName() {
