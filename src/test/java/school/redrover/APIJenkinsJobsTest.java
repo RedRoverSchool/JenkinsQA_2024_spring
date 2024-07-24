@@ -82,7 +82,8 @@ public class APIJenkinsJobsTest extends BaseAPITest {
     @Description("Check the status code is returned 200 after jobs is created")
     public void testCreateNewJob(String jobName, String jobDescription) {
         final String url = String.format("%s/createItem?name=%s", ProjectUtils.getUrl(), jobName);
-        String jobXml = String.format(ResourceUtils.payloadFromResource("/create-new-job.xml"), jobDescription);
+        String jobXml = String.format(
+                ResourceUtils.payloadFromResource("/create-new-job.xml"), jobDescription, "hudson.scm.NullSCM");
 
         Allure.step("Expected results: job entity has been created");
         String post = post(url, jobXml, ContentType.APPLICATION_XML, 200);

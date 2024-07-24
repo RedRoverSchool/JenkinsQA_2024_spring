@@ -3,7 +3,7 @@
     <description>%s</description>
     <keepDependencies>false</keepDependencies>
     <properties/>
-    <scm class="hudson.scm.NullSCM"/>
+    <scm class="%s"/>
     <canRoam>true</canRoam>
     <disabled>false</disabled>
     <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
@@ -14,3 +14,4 @@
     <publishers/>
     <buildWrappers/>
 </project>
+

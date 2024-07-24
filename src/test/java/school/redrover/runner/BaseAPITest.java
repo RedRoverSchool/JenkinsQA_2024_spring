@@ -25,7 +25,7 @@ public class BaseAPITest {
     private record Token(String tokenName, String tokenUuid, String tokenValue) {
     }
 
-    private record Response(String status, Token data) {
+    private record APIResponse(String status, Token data) {
     }
 
     private String token;
@@ -67,7 +67,7 @@ public class BaseAPITest {
             try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
                 Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
 
-                token = new Gson().fromJson(EntityUtils.toString(response.getEntity()), Response.class).data.tokenValue;
+                token = new Gson().fromJson(EntityUtils.toString(response.getEntity()), APIResponse.class).data.tokenValue;
                 ProjectUtils.log(Level.INFO, "Token: " + token);
             }
         }
