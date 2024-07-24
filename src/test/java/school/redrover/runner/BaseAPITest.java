@@ -67,7 +67,8 @@ public class BaseAPITest {
             try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
                 Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
 
-                token = new Gson().fromJson(EntityUtils.toString(response.getEntity()), APIResponse.class).data.tokenValue;
+                token = new Gson().fromJson(
+                        EntityUtils.toString(response.getEntity()), APIResponse.class).data.tokenValue;
                 ProjectUtils.log(Level.INFO, "Token: " + token);
             }
         }
