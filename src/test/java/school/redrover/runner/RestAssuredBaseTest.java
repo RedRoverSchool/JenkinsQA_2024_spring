@@ -7,7 +7,7 @@ import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import org.testng.annotations.BeforeClass;
 
-public class RestAssuredBaseTest extends BaseAPITest{
+public class RestAssuredBaseTest extends BaseAPITest {
 
     @BeforeClass
     public static void setup() {

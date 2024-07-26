@@ -38,7 +38,7 @@ public class APIJenkinsViewTest extends HttpClientBaseTest {
     @Story("Create View")
     @Description("Verify that successful list view creation results in 200 status code")
     public void testCreateView() throws IOException {
-        try (CloseableHttpClient httpClient = httpClientBuilder.build()) {
+        try (CloseableHttpClient httpClient = getHttpClientBuilder().build()) {
 
             String viewXML = ResourceUtils.payloadFromResource("/create-new-view.xml");
 
@@ -62,7 +62,7 @@ public class APIJenkinsViewTest extends HttpClientBaseTest {
     @Story("Create the pipeline project")
     @Description("Verify that successful pipeline creation results in 302 status code")
     public void testCreatePipeline() throws IOException {
-        try (CloseableHttpClient httpClient = httpClientBuilder.build()) {
+        try (CloseableHttpClient httpClient = getHttpClientBuilder().build()) {
 
             HttpPost httpPost = new HttpPost(ProjectUtils.getUrl() + "view/all/createItem/");
 
@@ -88,7 +88,7 @@ public class APIJenkinsViewTest extends HttpClientBaseTest {
     @Story("Reconfigure View")
     @Description("Verify that successful adding a job to a list view results in 200 status code")
     public void testAddJobToView() throws IOException {
-        try (CloseableHttpClient httpClient = httpClientBuilder.build()) {
+        try (CloseableHttpClient httpClient = getHttpClientBuilder().build()) {
 
             HttpPost httpPost = new HttpPost(ProjectUtils.getUrl()
                     + "view/"
@@ -110,7 +110,7 @@ public class APIJenkinsViewTest extends HttpClientBaseTest {
     @Story("Reconfigure View")
     @Description("Verify that the job is present in the view")
     private void testVerifyJobInView() throws IOException {
-        try (CloseableHttpClient httpClient = httpClientBuilder.build()) {
+        try (CloseableHttpClient httpClient = getHttpClientBuilder().build()) {
 
             HttpGet request = new HttpGet(ProjectUtils.getUrl()
                     + "view/"
@@ -135,7 +135,7 @@ public class APIJenkinsViewTest extends HttpClientBaseTest {
     @Story("Reconfigure View")
     @Description("Verify that successful adding a column to view results in 200 status code")
     private void testAddColumnToView() throws IOException {
-        try (CloseableHttpClient httpClient = httpClientBuilder.build()) {
+        try (CloseableHttpClient httpClient = getHttpClientBuilder().build()) {
 
             String viewXML = ResourceUtils.payloadFromResource("/create-new-view.xml");
             String extraGitBranchColumnXML = "<hudson.plugins.git.GitBranchSpecifierColumn plugin='git@5.2.2'/>";
@@ -164,7 +164,7 @@ public class APIJenkinsViewTest extends HttpClientBaseTest {
     @Story("Reconfigure View")
     @Description("Verify that the view contains added column")
     public void testVerifyViewConfigXML() throws IOException {
-        try (CloseableHttpClient httpClient = httpClientBuilder.build()) {
+        try (CloseableHttpClient httpClient = getHttpClientBuilder().build()) {
             HttpGet httpGet = new HttpGet(ProjectUtils.getUrl()
                     + "view/"
                     + TestUtils.asURL(VIEW_NAME)
@@ -187,7 +187,7 @@ public class APIJenkinsViewTest extends HttpClientBaseTest {
     @Story("Reconfigure View")
     @Description("Verify that successful removal of job from view results in 200 status code")
     public void testRemoveJobFromView() throws IOException {
-        try (CloseableHttpClient httpClient = httpClientBuilder.build()) {
+        try (CloseableHttpClient httpClient = getHttpClientBuilder().build()) {
 
             HttpPost httpPost = new HttpPost(ProjectUtils.getUrl()
                     + "view/" + TestUtils.asURL(VIEW_NAME)
@@ -207,7 +207,7 @@ public class APIJenkinsViewTest extends HttpClientBaseTest {
     @Story("Reconfigure View")
     @Description("Verify that successful rename of view results in 302 status code")
     public void testRenameView() throws IOException {
-        try (CloseableHttpClient httpClient = httpClientBuilder.build()) {
+        try (CloseableHttpClient httpClient = getHttpClientBuilder().build()) {
 
             HttpPost httpPost = new HttpPost(ProjectUtils.getUrl()
                     + "view/" + TestUtils.asURL(VIEW_NAME)
@@ -231,7 +231,7 @@ public class APIJenkinsViewTest extends HttpClientBaseTest {
     @Story("Delete View")
     @Description("Verify that successful deletion of view results in 302 status code")
     public void testDeleteViewViaDoDelete() throws IOException {
-        try (CloseableHttpClient httpClient = httpClientBuilder.build()) {
+        try (CloseableHttpClient httpClient = getHttpClientBuilder().build()) {
 
             HttpPost httpPost = new HttpPost(ProjectUtils.getUrl()
                     + "view/"
