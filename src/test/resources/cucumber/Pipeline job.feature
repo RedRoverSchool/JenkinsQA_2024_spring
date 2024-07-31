@@ -19,7 +19,7 @@ Feature: Pipeline job
   Scenario: Build job
     When Click on Green build triangle for "new job name"
     And Click "new job name" leading to Pipeline Project page
-    Then Green successful build mark is displayed
+    Then Permalinks build information is displayed
 
     Scenario: Delete job
       When Click "new job name" leading to Pipeline Project page

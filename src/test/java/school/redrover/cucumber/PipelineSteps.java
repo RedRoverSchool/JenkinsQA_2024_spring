@@ -13,6 +13,8 @@ import school.redrover.model.base.BaseProjectPage;
 import school.redrover.runner.CucumberDriver;
 import school.redrover.runner.ProjectUtils;
 
+import java.util.List;
+
 public class PipelineSteps {
     private CreateNewItemPage createNewItemPage;
     private PipelineConfigPage pipelineConfigPage;
@@ -81,11 +83,12 @@ public class PipelineSteps {
                 .clickScheduleBuildForItemAndWaitForBuildSchedulePopUp(jobName);
     }
 
-    @Then("Green successful build mark is displayed")
-    public void greenSuccessfulBuildMarkIsDisplayed() {
-        String hexColor = pipelineProjectPage.getHexColorSuccessMark();
+    @Then("Permalinks build information is displayed")
+    public void permalinksInformationIsDisplayed() {
+        List<String> permalinkList = pipelineProjectPage.getPermalinkList();
+        System.out.println(permalinkList);
 
-        Assert.assertEquals(hexColor, "#1ea64b");
+        Assert.assertTrue(permalinkList.contains("Last build (#1)"));
     }
 
     @And("Go to Delete Pipeline on sidebar leading to Delete Dialog")
