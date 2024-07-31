@@ -346,7 +346,7 @@ public class HomePage extends BasePage<HomePage> {
     public HomePage clickScheduleBuildForItemAndWaitForBuildSchedulePopUp(String itemName) {
         getDriver().findElement(
                 By.xpath("//a[contains(@tooltip,'Schedule a Build for " + itemName + "')]")).click();
-        getWait2().until(ExpectedConditions.visibilityOf(buildSchedulePopUp));
+        getWait10().until(ExpectedConditions.visibilityOf(buildSchedulePopUp));
 
         return this;
     }
