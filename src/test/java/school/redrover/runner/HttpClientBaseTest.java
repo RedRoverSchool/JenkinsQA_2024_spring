@@ -10,7 +10,12 @@ import org.testng.annotations.BeforeMethod;
 public class HttpClientBaseTest extends BaseAPITest {
 
     private HttpClientBuilder httpClientBuilder;
-    protected CloseableHttpClient httpClient;
+
+    public CloseableHttpClient getHttpClient() {
+        return httpClient;
+    }
+
+    private CloseableHttpClient httpClient;
 
     @BeforeClass
     public void setHttpClientBuilder() {

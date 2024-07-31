@@ -49,7 +49,7 @@ public class APIJenkinsBuildTest extends HttpClientBaseTest {
 
         httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
 
-        try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+        try (CloseableHttpResponse response = getHttpClient().execute(httpPost)) {
 
             Assert.assertEquals(response.getStatusLine().getStatusCode(), 302);
         }
@@ -64,7 +64,7 @@ public class APIJenkinsBuildTest extends HttpClientBaseTest {
 
         httpGet.addHeader("Authorization", getBasicAuthWithToken());
 
-        try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
+        try (CloseableHttpResponse response = getHttpClient().execute(httpGet)) {
             Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
 
             String responseBody = EntityUtils.toString(response.getEntity());
@@ -85,7 +85,7 @@ public class APIJenkinsBuildTest extends HttpClientBaseTest {
 
         httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
 
-        try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+        try (CloseableHttpResponse response = getHttpClient().execute(httpPost)) {
 
             Assert.assertEquals(response.getStatusLine().getStatusCode(), 302);
         }
@@ -102,7 +102,7 @@ public class APIJenkinsBuildTest extends HttpClientBaseTest {
 
         httpGet.addHeader("Authorization", getBasicAuthWithToken());
 
-        try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
+        try (CloseableHttpResponse response = getHttpClient().execute(httpGet)) {
             Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
 
             HttpEntity entity = response.getEntity();
@@ -125,7 +125,7 @@ public class APIJenkinsBuildTest extends HttpClientBaseTest {
 
         httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
 
-        try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+        try (CloseableHttpResponse response = getHttpClient().execute(httpPost)) {
 
             Assert.assertEquals(response.getStatusLine().getStatusCode(), 302);
         }
@@ -142,7 +142,7 @@ public class APIJenkinsBuildTest extends HttpClientBaseTest {
 
         httpGet.addHeader("Authorization", getBasicAuthWithToken());
 
-        try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
+        try (CloseableHttpResponse response = getHttpClient().execute(httpGet)) {
             Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
 
             HttpEntity entity = response.getEntity();
@@ -165,7 +165,7 @@ public class APIJenkinsBuildTest extends HttpClientBaseTest {
 
         httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
 
-        try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+        try (CloseableHttpResponse response = getHttpClient().execute(httpPost)) {
 
             Assert.assertEquals(response.getStatusLine().getStatusCode(), 201);
             System.out.println(response);
@@ -183,7 +183,7 @@ public class APIJenkinsBuildTest extends HttpClientBaseTest {
                 HttpGet httpGet = new HttpGet(queueApiUrl);
                 httpGet.addHeader("Authorization", getBasicAuthWithToken());
 
-                try (CloseableHttpResponse queueResponse = httpClient.execute(httpGet)) {
+                try (CloseableHttpResponse queueResponse = getHttpClient().execute(httpGet)) {
                     Assert.assertEquals(queueResponse.getStatusLine().getStatusCode(), 200);
 
                     HttpEntity entity = queueResponse.getEntity();
@@ -219,7 +219,7 @@ public class APIJenkinsBuildTest extends HttpClientBaseTest {
 
         httpGet.addHeader("Authorization", getBasicAuthWithToken());
 
-        try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
+        try (CloseableHttpResponse response = getHttpClient().execute(httpGet)) {
             Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
 
             HttpEntity entity = response.getEntity();
@@ -254,7 +254,7 @@ public class APIJenkinsBuildTest extends HttpClientBaseTest {
         HttpEntity entity = new StringEntity(parameters, ContentType.APPLICATION_FORM_URLENCODED);
         httpPost.setEntity(entity);
 
-        try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+        try (CloseableHttpResponse response = getHttpClient().execute(httpPost)) {
             Assert.assertEquals(response.getStatusLine().getStatusCode(), 302);
         }
     }
@@ -270,7 +270,7 @@ public class APIJenkinsBuildTest extends HttpClientBaseTest {
 
         request.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
 
-        try (CloseableHttpResponse response = httpClient.execute(request)) {
+        try (CloseableHttpResponse response = getHttpClient().execute(request)) {
 
             Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
 

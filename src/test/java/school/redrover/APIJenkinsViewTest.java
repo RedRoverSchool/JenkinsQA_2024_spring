@@ -49,7 +49,7 @@ public class APIJenkinsViewTest extends HttpClientBaseTest {
         HttpEntity entity = new StringEntity(viewXML, ContentType.APPLICATION_XML);
         httpPost.setEntity(entity);
 
-        try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+        try (CloseableHttpResponse response = getHttpClient().execute(httpPost)) {
             Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
         }
     }
@@ -68,7 +68,7 @@ public class APIJenkinsViewTest extends HttpClientBaseTest {
 
         httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
 
-        try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+        try (CloseableHttpResponse response = getHttpClient().execute(httpPost)) {
 
             String jsonString = EntityUtils.toString(response.getEntity());
             System.out.println(jsonString);
@@ -89,7 +89,7 @@ public class APIJenkinsViewTest extends HttpClientBaseTest {
 
         httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
 
-        try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+        try (CloseableHttpResponse response = getHttpClient().execute(httpPost)) {
 
             Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
 
@@ -107,7 +107,7 @@ public class APIJenkinsViewTest extends HttpClientBaseTest {
 
         request.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
 
-        try (CloseableHttpResponse response = httpClient.execute(request)) {
+        try (CloseableHttpResponse response = getHttpClient().execute(request)) {
 
             Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
 
@@ -138,7 +138,7 @@ public class APIJenkinsViewTest extends HttpClientBaseTest {
         HttpEntity entity = new StringEntity(viewXML, ContentType.APPLICATION_XML);
         httpPost.setEntity(entity);
 
-        try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+        try (CloseableHttpResponse response = getHttpClient().execute(httpPost)) {
 
             Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
         }
@@ -155,7 +155,7 @@ public class APIJenkinsViewTest extends HttpClientBaseTest {
 
         httpGet.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
 
-        try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
+        try (CloseableHttpResponse response = getHttpClient().execute(httpGet)) {
             Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
 
             String responseXML = EntityUtils.toString(response.getEntity());
@@ -176,7 +176,7 @@ public class APIJenkinsViewTest extends HttpClientBaseTest {
 
         httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
 
-        try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+        try (CloseableHttpResponse response = getHttpClient().execute(httpPost)) {
 
             Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
         }
@@ -198,7 +198,7 @@ public class APIJenkinsViewTest extends HttpClientBaseTest {
         HttpEntity entity = new StringEntity(parameters, ContentType.APPLICATION_FORM_URLENCODED);
         httpPost.setEntity(entity);
 
-        try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+        try (CloseableHttpResponse response = getHttpClient().execute(httpPost)) {
             Assert.assertEquals(response.getStatusLine().getStatusCode(), 302);
         }
     }
@@ -215,7 +215,7 @@ public class APIJenkinsViewTest extends HttpClientBaseTest {
 
         httpPost.addHeader(HttpHeaders.AUTHORIZATION, getBasicAuthWithToken());
 
-        try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+        try (CloseableHttpResponse response = getHttpClient().execute(httpPost)) {
 
             Assert.assertEquals(response.getStatusLine().getStatusCode(), 302);
         }
