@@ -7,7 +7,6 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.io.FileHandler;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.factory.DriverManager;
@@ -28,12 +27,9 @@ public final class ProjectUtils {
     private static final String PROP_PORT = PREFIX_PROP + "port";
     private static final String PROP_ADMIN_USERNAME = PREFIX_PROP + "admin.username";
     private static final String PROP_ADMIN_PAS = PREFIX_PROP + "admin.password";
-
     private static final String CLOSE_BROWSER_IF_ERROR = PREFIX_PROP + "closeBrowserIfError";
-
     private static final String ENV_CHROME_OPTIONS = "CHROME_OPTIONS";
     private static final String ENV_APP_OPTIONS = "APP_OPTIONS";
-
     private static final String PROP_CHROME_OPTIONS = PREFIX_PROP + ENV_CHROME_OPTIONS.toLowerCase();
 
     private static Properties properties;
@@ -69,18 +65,8 @@ public final class ProjectUtils {
         }
     }
 
-    static final ChromeOptions chromeOptions;
-
     static {
         initProperties();
-
-        chromeOptions = new ChromeOptions();
-        String options = properties.getProperty(PROP_CHROME_OPTIONS);
-        if (options != null) {
-            for (String argument : options.split(";")) {
-                chromeOptions.addArguments(argument);
-            }
-        }
     }
 
     static boolean isServerRun() {
@@ -105,6 +91,10 @@ public final class ProjectUtils {
         return properties.getProperty(PROP_ADMIN_PAS);
     }
 
+    private static String getOptions() {
+        return properties.getProperty(PROP_CHROME_OPTIONS);
+    }
+
     static void acceptAlert(WebDriver driver) {
         Alert alert = ExpectedConditions.alertIsPresent().apply(driver);
         if (alert != null) {
@@ -112,11 +102,15 @@ public final class ProjectUtils {
         }
     }
 
-    static WebDriver createDriver() {
-        WebDriver driver = DriverManager.getFactory(chromeOptions).getDriver();
+    static WebDriver createDriver(String browser) {
+        WebDriver driver = DriverManager.createDriver(browser, getOptions());
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 
         return driver;
+    }
+
+    static WebDriver createDriver() {
+        return createDriver("chrome");
     }
 
     public static void get(WebDriver driver) {

@@ -1,6 +1,5 @@
 package school.redrover;
 
-
 import com.google.common.net.HttpHeaders;
 import com.google.gson.Gson;
 import io.qameta.allure.Epic;
@@ -18,7 +17,6 @@ import org.testng.annotations.Test;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-
 
 @Epic("APITest")
 public class APITest {

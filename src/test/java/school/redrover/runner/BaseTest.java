@@ -1,6 +1,10 @@
 package school.redrover.runner;
 
 import io.qameta.allure.Allure;
+import java.io.ByteArrayInputStream;
+import java.lang.reflect.Method;
+import java.time.Duration;
+import java.util.Arrays;
 import org.apache.logging.log4j.Level;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -12,20 +16,16 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Listeners;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import school.redrover.runner.order.OrderForTests;
 import school.redrover.runner.order.OrderUtils;
 
-import java.io.ByteArrayInputStream;
-import java.lang.reflect.Method;
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
 @Listeners({FilterForTests.class, OrderForTests.class})
 public abstract class BaseTest {
 
-    private WebDriver driver;
+    private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
     private WebDriverWait wait2;
 
@@ -33,14 +33,15 @@ public abstract class BaseTest {
 
     private WebDriverWait wait10;
 
-    private WebDriverWait wait60;
-
     private OrderUtils.MethodsOrder<Method> methodsOrder;
 
     private void startDriver() {
-        ProjectUtils.log(Level.DEBUG, "Browser open");
+        startDriver("chrome");
+    }
 
-        driver = ProjectUtils.createDriver();
+    private void startDriver(String browser) {
+        ProjectUtils.log(Level.DEBUG, "Browser open");
+        driver.set(ProjectUtils.createDriver(browser));
     }
 
     private void clearData() {
@@ -50,17 +51,17 @@ public abstract class BaseTest {
 
     private void loginWeb() {
         ProjectUtils.log(Level.DEBUG, "Login");
-        JenkinsUtils.login(driver);
+        JenkinsUtils.login(getDriver());
     }
 
     private void getWeb() {
         ProjectUtils.log(Level.DEBUG, "Get web page");
-        ProjectUtils.get(driver);
+        ProjectUtils.get(getDriver());
     }
 
     private void stopDriver() {
         try {
-            JenkinsUtils.logout(driver);
+            JenkinsUtils.logout(getDriver());
         } catch (Exception ignore) {
 
         }
@@ -69,15 +70,13 @@ public abstract class BaseTest {
     }
 
     private void closeDriver() {
-        if (driver != null) {
-            driver.quit();
-
-            driver = null;
+        if (driver.get() != null) {
+            driver.get().quit();
+            driver.remove();
 
             wait2 = null;
             wait5 = null;
             wait10 = null;
-            wait60 = null;
 
             ProjectUtils.log(Level.DEBUG, "Browser closed");
         }
@@ -92,18 +91,19 @@ public abstract class BaseTest {
         methodsOrder = OrderUtils.createMethodsOrder(
                 Arrays.stream(this.getClass().getMethods())
                         .filter(m -> m.getAnnotation(Test.class) != null && m.getAnnotation(Ignore.class) == null)
-                        .collect(Collectors.toList()),
-                m -> m.getName(),
+                        .toList(),
+                Method::getName,
                 m -> m.getAnnotation(Test.class).dependsOnMethods());
     }
 
     @BeforeMethod
-    protected void beforeMethod(Method method) {
+    @Parameters("browser")
+    protected void beforeMethod(@Optional("chrome") String browser, Method method) {
         ProjectUtils.logf("Run %s.%s", this.getClass().getName(), method.getName());
         try {
             if (!methodsOrder.isGroupStarted(method) || methodsOrder.isGroupFinished(method)) {
                 clearData();
-                startDriver();
+                startDriver(browser);
                 getWeb();
                 loginWeb();
             } else {
@@ -143,7 +143,10 @@ public abstract class BaseTest {
     }
 
     protected WebDriver getDriver() {
-        return driver;
+        if (driver.get() == null) {
+            startDriver();
+        }
+        return driver.get();
     }
 
     protected WebDriverWait getWait2() {
@@ -168,13 +171,5 @@ public abstract class BaseTest {
         }
 
         return wait10;
-    }
-
-    protected WebDriverWait getWait60() {
-        if (wait60 == null) {
-            wait60 = new WebDriverWait(getDriver(), Duration.ofSeconds(60));
-        }
-
-        return wait60;
     }
 }

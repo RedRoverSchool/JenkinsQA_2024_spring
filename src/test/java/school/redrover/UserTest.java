@@ -18,7 +18,6 @@ import school.redrover.runner.TestUtils;
 import java.util.Comparator;
 import java.util.List;
 
-
 @Epic("User")
 public class UserTest extends BaseTest {
 
@@ -45,7 +44,7 @@ public class UserTest extends BaseTest {
 
         AssertUtils
                 .allureAnnotation("User is present on page")
-                .isTrue(userNamesList.contains("TestUser"));
+                .isTrue(userNamesList.contains(USER_NAME));
 
     }
 

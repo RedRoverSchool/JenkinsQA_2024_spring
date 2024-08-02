@@ -1,6 +1,7 @@
 package school.redrover.factory;
 
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
 public enum BrowserFactory {
@@ -19,6 +20,13 @@ public enum BrowserFactory {
         }
     },
 
+    EDGE {
+        @Override
+        public DriverFactory getDriverFactory() {
+            return new EdgeDriverFactory();
+        }
+    },
+
     FIREFOX {
         @Override
         public DriverFactory getDriverFactory() {
@@ -32,6 +40,10 @@ public enum BrowserFactory {
 
     public static DriverFactory getFactory(ChromeOptions options) {
         return new ChromeDriverFactory(options);
+    }
+
+    public static DriverFactory getFactory(EdgeOptions options) {
+        return new EdgeDriverFactory(options);
     }
 
     abstract DriverFactory getDriverFactory();
