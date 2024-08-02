@@ -105,6 +105,46 @@ public class PipelineSteps {
     public void pipelineJobNameIsNotListedOnDashboard(String jobName) {
         Assert.assertFalse(homePage.isItemExists(jobName));
     }
+
+    @And("Click Add description")
+    public void clickAddDescription() {
+        pipelineProjectPage.clickAddDescription();
+    }
+
+    @And("Type {string} to description input field")
+    public void typeToDescriptionInputField(String description) {
+        pipelineProjectPage.typeDescription(description);
+    }
+
+    @And("Click Save")
+    public void clickSave() {
+        pipelineProjectPage.clickSaveButton();
+    }
+
+    @Then("Description {string} is displayed on project page")
+    public void jobDescriptionIsDisplayed(String description) {
+        Assert.assertEquals(pipelineProjectPage.getDescriptionText(), description);
+    }
+
+    @And("Click Disable Project")
+    public void clickDisableProject() {
+        pipelineProjectPage.clickDisableButton();
+    }
+
+    @Then("Message {string} is displayed")
+    public void messageIsDisplayed(String statusMessage) {
+        Assert.assertTrue(pipelineProjectPage.getWarningMessageText().contains(statusMessage));
+    }
+
+    @And("Click Enable button")
+    public void clickEnableButton() {
+        pipelineProjectPage.clickEnableButton();
+    }
+
+    @Then("Green build triangle for the job {string} is displayed")
+    public void greenBuildTriangleForTheJobIsDisplayed(String jobName) {
+        Assert.assertTrue(homePage.isButtonOfScheduleABuildExist(jobName));
+    }
 }
 
 
