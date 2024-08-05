@@ -1,4 +1,4 @@
-name: Run tests
+name: CI
 
 on:
   pull_request:
@@ -8,10 +8,6 @@ jobs:
   run-test:
     name: 'Run tests'
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 2
-      matrix:
-        run: ['mvn test', 'mvn test -Dsurefire.suiteXmlFiles=xmlSuits/crossBrowser.xml', 'mvn test -Dsurefire.suiteXmlFiles=xmlSuits/smoke.xml']
 
     steps:
       - name: Git clone
@@ -58,7 +54,21 @@ jobs:
           workdir: 'src/test/java/school/redrover'
 
       - name: Maven test
-        run: ${{ matrix.run }}
+        run: mvn test
+        env:
+          CHROME_OPTIONS: --remote-allow-origins=*;--disable-gpu;--no-sandbox;--disable-dev-shm-usage;--headless=new;--window-size=1920,1080
+          APP_OPTIONS: host=localhost;port=8080;admin.username=${{ secrets.ADMIN_USERNAME }};admin.password=${{ secrets.ADMIN_PASSWORD }}
+          CI_RUN: true
+
+      - name: Maven test
+        run: mvn test -Dsurefire.suiteXmlFiles=xmlSuits/crossBrowser.xml
+        env:
+          CHROME_OPTIONS: --remote-allow-origins=*;--disable-gpu;--no-sandbox;--disable-dev-shm-usage;--headless=new;--window-size=1920,1080
+          APP_OPTIONS: host=localhost;port=8080;admin.username=${{ secrets.ADMIN_USERNAME }};admin.password=${{ secrets.ADMIN_PASSWORD }}
+          CI_RUN: true
+
+      - name: Maven test
+        run: mvn test -Dsurefire.suiteXmlFiles=xmlSuits/smoke.xml
         env:
           CHROME_OPTIONS: --remote-allow-origins=*;--disable-gpu;--no-sandbox;--disable-dev-shm-usage;--headless=new;--window-size=1920,1080
           APP_OPTIONS: host=localhost;port=8080;admin.username=${{ secrets.ADMIN_USERNAME }};admin.password=${{ secrets.ADMIN_PASSWORD }}
