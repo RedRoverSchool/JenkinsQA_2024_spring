@@ -8,9 +8,9 @@
     </groups>
 
     <test name="Regression Test Run">
-        <parameter name="browser" value="firefox"/>
+        <parameter name="browser" value="edge"/>
         <classes>
-            <class name="school.redrover.FolderTest"/>
+            <class name="school.redrover.FreestyleProjectTest"/>
         </classes>
     </test>
 </suite>

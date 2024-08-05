@@ -4,8 +4,8 @@
     <test name="EdgeTest" verbose="10">
         <parameter name="browser" value="edge"/>
         <classes>
-            <class name="school.redrover.UserTest"/>
-            <class name="school.redrover.FolderTest"/>
+            <class name="school.redrover.FooterTest"/>
+            <class name="school.redrover.HeaderTest"/>
         </classes>
     </test>
 </suite>

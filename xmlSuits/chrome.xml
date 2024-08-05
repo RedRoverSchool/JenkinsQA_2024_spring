@@ -4,8 +4,8 @@
     <test name="ChromeTest" verbose="10">
         <parameter name="browser" value="chrome"/>
         <classes>
-            <class name="school.redrover.UserTest"/>
-            <class name="school.redrover.FolderTest"/>
+            <class name="school.redrover.MultibranchPipelineTest"/>
+            <class name="school.redrover.MultiConfigurationProjectTest"/>
         </classes>
     </test>
 </suite>

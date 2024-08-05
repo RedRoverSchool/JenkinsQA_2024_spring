@@ -4,8 +4,7 @@
     <test name="FirefoxTest" verbose="10">
         <parameter name="browser" value="firefox"/>
         <classes>
-            <class name="school.redrover.UserTest"/>
-            <class name="school.redrover.FolderTest"/>
+            <class name="school.redrover.NodesTest"/>
         </classes>
     </test>
 </suite>

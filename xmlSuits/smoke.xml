@@ -7,11 +7,11 @@
         </run>
     </groups>
 
-    <test name="Smoke Test Run" >
+    <test name="Job Test Run" >
         <parameter name="browser" value="chrome"/>
         <classes>
-            <class name="school.redrover.UserTest"/>
             <class name="school.redrover.FolderTest"/>
+            <class name="school.redrover.PipelineTest"/>
         </classes>
     </test>
 </suite>
