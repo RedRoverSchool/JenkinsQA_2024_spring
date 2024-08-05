@@ -1,0 +1,1 @@
+{"total":2,"items":[{"uid":"940a09faf31371a51747026c9d178f0a","name":"Surefire suite","statistic":{"failed":0,"broken":0,"skipped":0,"passed":475,"unknown":0,"total":475}},{"uid":"1314cc09dd046060fcacc5c6d0c971d9","name":"CrossBrowser","statistic":{"failed":0,"broken":0,"skipped":0,"passed":30,"unknown":0,"total":30}}]}
