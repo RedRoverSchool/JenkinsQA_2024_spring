@@ -101,36 +101,4 @@ public class APITest {
                 .body("count", Matchers.equalTo(1302),
                         "results.name", Matchers.hasItems("bulbasaur", "ivysaur"));
     }
-
-    @Test
-    public void restAssuredAllureTest() {
-        File dir = new File(RESULT_PATH);
-        File[] files = dir.listFiles((d, name) -> name.endsWith(".json"));
-        if (files != null) {
-            Arrays.stream(files).forEach(file -> sendJsonToServer(getJsonContent(file)));
-        } else {
-            System.err.println("No files found in the directory: " + RESULT_PATH);
-        }
-    }
-
-    private static String getJsonContent(File file) {
-        try {
-            return new String(Files.readAllBytes(file.toPath()));
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-            throw new RuntimeException(e.getMessage());
-        }
-    }
-
-    private static void sendJsonToServer(String jsonContent) {
-        RestAssured.given()
-                .baseUri(SERVER_URL)
-                .contentType("application/json")
-                .body(jsonContent)
-                .when()
-                .post()
-                .then()
-                .statusCode(201)
-                .body(notNullValue());
-    }
 }
