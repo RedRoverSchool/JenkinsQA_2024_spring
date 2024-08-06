@@ -1,0 +1,20 @@
+<div>POST to /view/all/createItem/</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+name=this+is+the+job+name&amp;mode=hudson.model.FreeStyleProject    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Basic YWRtaW46MTEyYWQ2MzA4YWQwMmQ4N2Y3NjZmN2Y5MzI5YjIzZGUyMw==</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;/view/all/createItem/&#39; -H &#39;Authorization: Basic YWRtaW46MTEyYWQ2MzA4YWQwMmQ4N2Y3NjZmN2Y5MzI5YjIzZGUyMw==&#39; -d &#39;name=this+is+the+job+name&amp;mode=hudson.model.FreeStyleProject&#39;
+    </div>
+
