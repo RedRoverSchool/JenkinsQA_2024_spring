@@ -4,9 +4,9 @@ import com.google.common.net.HttpHeaders;
 import com.google.gson.Gson;
 import io.qameta.allure.Epic;
 import io.restassured.RestAssured;
-import java.io.File;
-import java.nio.file.Files;
-import java.util.Arrays;
+import java.io.IOException;
+import java.util.List;
+import java.util.Objects;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -14,20 +14,11 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.hamcrest.Matchers;
-import static org.hamcrest.Matchers.notNullValue;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
-
 @Epic("APITest")
 public class APITest {
-
-    private static final String SERVER_URL = "https://flask-rest-api-ysf4.onrender.com/json";
-    private static final String RESULT_PATH = "target/allure-results";
-
 
     private static final class Pokemon {
         private String name;
